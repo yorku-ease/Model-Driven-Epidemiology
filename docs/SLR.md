@@ -28,3 +28,5 @@ example:
 
 Moving forward:
 The query is too broad, we must exclude chemical modeling for covid proteins, it is also too specific since articles about epidemiological modeling that do not mention covid (either before 2020, or for other reasons) will be wrongfully filtered out by the covid keyword, that being said, the covid keyword is very powerful since it provides us with recent articles and lets us define the question more broadly, since anything related to covid might be interesting to know about now, even if the query is refined later.
+
+Maybe something like `"covid" "modeling" "software" "tools" -"teaching" -"remote" -"drug" -"clinical"` would do the trick
