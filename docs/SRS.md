@@ -8,7 +8,9 @@ The following document presents the Requirements for the epidemiological modelin
 
 ### Project Objective
 
-The objective is to provide the client with a framework to develop, view, compare, modify and test epidemiological models. This, except testing, will be done using either the Domain Specific Language we will develop, or the graphical editor. The testing or training of models has to do with other software using machine learning which will not be part of this project, but a certain integration between the developped software and the training software has to be made available to minimize complexity during that transfer step from our representation of a model to a trainable representation. Visualizing predictions (time series) will be part of the solution, but not training.
+The objective is to provide the client with a framework to develop, view, compare, modify and test epidemiological models. This will be done using either the Domain Specific Language we will develop, or the graphical editor/viewer.
+
+The training of models has to do with other software using machine learning which will not be part of this project, but a certain integration between the developped software and the training software has to be made available to minimize complexity during that transfer step from our representation of a model to a trainable representation. Visualizing predictions (curves, time series) will be part of the solution, but not training.
 
 ### Context
 
