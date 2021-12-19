@@ -26,6 +26,8 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 ## Nonfunctional Requirements
 
+### Performance
+
 ### Development Tools
 
 ### Tests
