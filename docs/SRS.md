@@ -18,5 +18,18 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 ## Functional Requirements
 
+### Domain Specific Language
+
+### Graphical Editor
+
+### Persistence
 
 ## Nonfunctional Requirements
+
+### Development Tools
+
+### Tests
+
+### Developper Documentation
+
+### User Documentation
