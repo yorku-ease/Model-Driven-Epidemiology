@@ -18,37 +18,61 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 ## 1 Functional Requirements
 
-### 1.1 Domain Specific Language & Compiler
+### 1.1 Modeling
 
-1.1.1. The DSL must support creating model objects
+1.1.1 The model must contain `Population` objects
 
-1.1.2 The DSL must support defining model object properties
+1.1.2 The model must contain `Flow` objects
 
-1.1.3 The DSL must support removing model objects
+1.1.3 The `Population` objects must support connections to other `Population` objects through `Flow` objects
 
-1.1.4 The DSL must support defining model object connections
+1.1.4 `Flow` objects can be of kind `Batch`, `Rate` or `Mix`
 
-1.1.5 A valid DSL file must correspond to a model definition
+1.1.5 `Batches` are `Flows` from population 1 to population 2 with constant value
 
-1.1.6 A valid model must be serializable as a DSL file
+1.1.6 `Rates` are `Flows` from population 1 to population 2 with value directly proportional to the size of population 1
 
-1.1.7 The DSL compiler must have an explanation for the invalidity of a DSL file
+1.1.7 `Mixes` are `Flows` from population 1 to population 2 with value proportional to the product of the size of population 1 and the size of the `Mixed` population 3
 
-1.1.8 The DSL must support comments after the character `#` is found outside a string literal on a line
+### 1.2 Domain Specific Language & Compiler
 
-1.1.9 The DSL must use a reserved keyword `Population` to refer to a Population
+1.2.1. The DSL must support creating model objects
 
-1.1.10 The DSL must use a reserved keyword `Batch` to refer to constant flow from a population to another
+1.2.2 The DSL must support defining model object properties
 
-1.1.11 The DSL must use a reserved keyword `Rate` to refer to a flow from a population to another proportional to the origin population size
+1.2.3 The DSL must support removing model objects
 
-1.1.12 The DSL must use a reserved keyword `Mix` to refer to a flow from a population to another proportional to the product of each population
+1.2.4 The DSL must support defining model object connections
 
-1.1.13 The DSL must support labeling each `Population` with string literals
+1.2.5 A valid DSL file must correspond to a model definition
 
-1.1.14 The DSL must support only named instances of `Population` using the word found after the `Population` keyword (C-Style definitions)
+1.2.6 A valid model must be serializable as a DSL file
 
-1.1.15 The DSL must support names matching the regular expression `[a-zA-Z_][a-zA-Z0-9_]*` (letter or underscore followed with any combination of letter, number or underscore)
+1.2.7 The DSL compiler must have an explanation for the invalidity of a DSL file
+
+1.2.8 The DSL must support comments after the character `#` is found outside a string literal on a line
+
+1.2.9 The DSL must use a reserved keyword `Population` to refer to a Population
+
+1.2.10 The DSL must use a reserved keyword `Batch` to refer to a Batch
+
+1.2.11 The DSL must use a reserved keyword `Rate` to refer to a Rate
+
+1.2.12 The DSL must use a reserved keyword `Mix` to refer to a Mix
+
+1.2.13 The DSL must support labeling each object with string literals
+
+1.2.14 The DSL must only support variable names matching the regular expression `[a-zA-Z_][a-zA-Z0-9_]*` (letter or underscore followed with any combination of letter, number or underscore)
+
+1.2.15 The DSL must support only named instances of `Populations` using the word found after the `Population` keyword (C-Style definitions)
+
+1.2.16 The DSL must support named and unnamed instances of `Flows` using an optional word found after the keywords `Batch`, `Rate` or `Mix`
+
+1.2.17 The DSL must only support definitions of `Batches` referencing 2 populations where the first flows into the second
+
+1.2.18 The DSL must only support definitions of `Rates` referencing 2 populations where the first flows into the second
+
+1.2.19 The DSL must only support definitions of `Mixes` referencing 3 populations where the first mixes with the third and flows into the second
 
 ### 1.2 Graphical Editor
 
