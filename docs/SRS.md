@@ -74,21 +74,21 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.2.19 The DSL must only support definitions of `Mixes` referencing 3 populations where the first mixes with the third and flows into the second
 
-### 1.2 Graphical Editor
+### 1.3 Graphical Editor
 
-1.2.1 The graphical editor must support to creating model objects
+1.3.1 The graphical editor must support to creating model objects
 
-1.2.2 The graphical editor must support to removing model objects
+1.3.2 The graphical editor must support to removing model objects
 
-1.2.3 The graphical editor must support to connecting model objects
+1.3.3 The graphical editor must support to connecting model objects
 
-1.2.4 The graphical editor must support to editing model object properties
+1.3.4 The graphical editor must support to editing model object properties
 
-1.2.5 The graphical editor must support persistence of each change after a save, including item positioning
+1.3.5 The graphical editor must support persistence of each change after a save, including item positioning
 
-1.2.6 The graphical editor must provide an organized default view for models generated with the DSL
+1.3.6 The graphical editor must provide an organized default view for models generated with the DSL
 
-1.2.7 The grapical editor must provide undo-redo stacks of at least 50 actions
+1.3.7 The grapical editor must provide undo-redo stacks of at least 50 actions
 
 ## 2 Nonfunctional Requirements
 
