@@ -1,6 +1,10 @@
 # System Requirements Specification
 
-for a table of contents, see the icon in the top left of the document ![image](https://user-images.githubusercontent.com/43907476/146665040-57daa44b-8263-4a69-ac20-4a5433eecd7b.png) . For a version history of this document, see the commit history.
+For a table of contents, see the icon in the top left of the document ![image](https://user-images.githubusercontent.com/43907476/146665040-57daa44b-8263-4a69-ac20-4a5433eecd7b.png).
+
+For a version history of this document, see the commit history.
+
+[Glossary](https://github.com/polytechnique-ease/Model-Driven-Epidemiology/blob/main/docs/Glossary.md)
 
 ## Introduction
 
