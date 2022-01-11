@@ -96,9 +96,9 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 ### 1.4 Model Views
 
-1.4.1 A mathematical equations view is available for a generated model
+1.4.1 A mathematical equations view is available
 
-1.4.2 A model view is available using Eclipse as a list of model members
+1.4.2 A list of members view is available using Eclipse
 
 1.4.3 A graphical view is available using [Sirius](https://www.eclipse.org/sirius/overview.html)
 
