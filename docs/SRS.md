@@ -104,7 +104,7 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.4.4 A DSL view is available through any text editor
 
-1.4.5 A generated model is an XML file which is a view also available through any text editor
+1.4.5 An XML view available through any text editor
 
 1.4.6 *An expanded graphical view is available using **?*** TBD during a meeting if it is useful
 
