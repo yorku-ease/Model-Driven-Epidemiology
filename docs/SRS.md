@@ -94,6 +94,20 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.3.7 The grapical editor must provide undo-redo stacks of at least 50 actions
 
+### 1.4 Model Views
+
+1.4.1 A mathematical equations view is available for a generated model
+
+1.4.2 A model view is available using Eclipse as a list of model members
+
+1.4.3 A graphical view is available using [Sirius](https://www.eclipse.org/sirius/overview.html)
+
+1.4.4 A DSL view is available through any text editor
+
+1.4.5 A generated model is an XML file which is a view also available through any text editor
+
+1.4.6 *An expanded graphical view is available using **?*** TBD during a meeting if it is useful
+
 ## 2 Nonfunctional Requirements
 
 ### 2.1 Performance
