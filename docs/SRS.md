@@ -96,15 +96,15 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 ### 1.4 Model Views
 
-1.4.1 A mathematical equations view is available
+1.4.1 A mathematical equations view is available using a text editor
 
 1.4.2 A list of members view is available using Eclipse
 
 1.4.3 A graphical view is available using [Sirius](https://www.eclipse.org/sirius/overview.html)
 
-1.4.4 A DSL view is available through any text editor
+1.4.4 A DSL view is available using a text editor
 
-1.4.5 An XML view available through any text editor
+1.4.5 An XML view available using a text editor
 
 1.4.6 *An expanded graphical view is available using **?*** TBD during a meeting if it is useful
 
