@@ -1,32 +1,34 @@
-# This document presents the evolution of the SLR ([Systematic Litterature Review](https://en.wikipedia.org/wiki/Systematic_review))
+# This document presents the evolution of the [Systematic Literature Review](https://en.wikipedia.org/wiki/Systematic_review)
 
-## Exploration phase
+### Query
 
-During this first phase, the direction of the project is still not certain, we are looking for tools, articles, methods, etc.
+We are looking to integrate a few aspects key to [MDE](https://en.wikipedia.org/wiki/Model-driven_engineering) as part of the software research.
 
-### Queries and results
+It is quite hard to formulate exact "Research Questions", the first step of an SLR, but we do have concerns that can be easily identified.
 
-#### 2021-11-10
+Basically our main concern is: What is the best way to make an epidemiological modeling software? Expert knowledge answers that MDE is appropriate.
 
-Query: `"covid" "modeling" "software" "tools"`
+Let's instead identify software specific parts of the MDE process, and of our project, that warrant some research:
 
-Interesting results:
+- Domain Specific Languages (DSLs)
+- Model Evolution
+- Model Version Control
+- Software Product Lines
 
-[Epidemiological modeling in StochSS Live!](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7929247/)
+Epidemiology is, of course, a very important part of the project, but has little to offer for a software researcher. In a final phase of Literature Review, we will try including epidemiological keywords to the queries.
 
-That tools lets us quite easily define models, it seems to lack some functionalities but given the fact that it is available in a browser, it is understandable and very valuable. It is interesting that the tool is meant for modeling potentially epidemics but also chemical reactions.
+Now the first step is to formulate a query that encompasses our research areas:
 
-example:
+# [TODO](TODO)
 
-- S: succeptible
-- I: infected
-- D: dead
-- R: fake recovery state in which you can become succeptible again
-- R2: immune
-- do not mind the numbers, this is just an example
-![image](https://user-images.githubusercontent.com/43907476/141230852-a3f20bdb-3a44-4f9c-8cdd-f6b67eff8fad.png)
+And the second is to identify sources of articles, we chose:
 
-Moving forward:
-The query is too broad, we must exclude chemical modeling for covid proteins, it is also too specific since articles about epidemiological modeling that do not mention covid (either before 2020, or for other reasons) will be wrongfully filtered out by the covid keyword, that being said, the covid keyword is very powerful since it provides us with recent articles and lets us define the question more broadly, since anything related to covid might be interesting to know about now, even if the query is refined later.
+- https://www.springer.com/gp
+- https://dl.acm.org/
+- https://ieeexplore.ieee.org/Xplore/home.jsp
+- https://www.elsevier.ca/ca/
+- https://www.engineeringvillage.com/home.url
 
-Maybe something like `"covid" "modeling" "software" "tools" -"teaching" -"remote" -"drug" -"clinical"` would do the trick
+### Results
+
+#### 2022-01-24
