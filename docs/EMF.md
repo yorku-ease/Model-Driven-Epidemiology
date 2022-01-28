@@ -33,3 +33,23 @@ Epidemic myEpi = (Epidemic) resource.getContents().get(0);
 // then we can make use of the loaded object using a combination of EMF utilities and our defined Model classes
 EList<PopulationDimension> dimensions = myEpi.getPopulationdimension();
 ```
+
+required imports
+
+```java
+import java.util.Map;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+
+import epidemiologyJan11.Epidemic;
+import epidemiologyJan11.PopulationDimension;
+```
+
+EMF must be available, my suggestion way is to create an empty EMF project instead of a Java project in Eclipse.
+
+Metamodeling EMF project has to be in build path for imports to resolve.
