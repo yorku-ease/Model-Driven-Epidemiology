@@ -1,6 +1,6 @@
 # Why do we need versions?
 
-We need to keep track, from an historical viewpoint, of a change history of our representation of an epidemiological model. By keeping the changes to a minimum (not renaming things for example) the equations and graphs from before and after an intervention/transformation should be coherent.
+We need to keep track, from an historical viewpoint, through the use of a version history, the evolution of our representation of an epidemiological model. By keeping the changes to a minimum (not renaming things for example) the equations and graphs from before and after an intervention/transformation should be coherent.
 
 The suggested approach is to represent model compositions as a sequential list of actions, a version would be a checkpoint in that list, the latest version would simply be the product of applying every single action. An "undo" would be considered an action like any other so you could have a list like:
 
