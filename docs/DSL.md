@@ -59,7 +59,7 @@ The cartesian box product is an implicit functionality for our project, we suppo
 
 ### As for submodel uploading
 
-uploading just means replacin
+by "uploading", we mean replacing part of a graph with another, most use cases would be to expand a compartment into a more detailed version by importing that more detailed version from a model defined outside of the current file.
 
 Let's explore replacing graph `({I}, {})` with graph `({I1, I2}, {(I1->I2)})` named `InfectiousModel`:
 
