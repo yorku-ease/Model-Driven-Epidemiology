@@ -49,7 +49,7 @@ At this point I'm not even sure this document was necessary, but we can see abou
 - We are not trying to generate Code*
 - The DSDF models data to be loaded by our programs, not programs
 
-* not to be confused with the actual code generation step we talked about to generate python code to train models
+\* not to be confused with the actual code generation step we talked about to generate python code to train models
 
 ## As for transformations
 
