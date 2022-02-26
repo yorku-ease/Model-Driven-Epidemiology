@@ -36,8 +36,7 @@
 
 [Introducing the COVID-19 Multi-model Comparison Collaboration](https://www.cgdev.org/blog/introducing-covid-19-multi-model-comparison-collaboration)
 
-[Transparency, Reproducibility, and Validation of COVID-19 Projection Models](https://publichealth.jhu.edu/2020/transparency-reproducibility-and-validation-of-covid-19-
-projection-models)
+[Transparency, Reproducibility, and Validation of COVID-19 Projection Models](https://publichealth.jhu.edu/2020/transparency-reproducibility-and-validation-of-covid-19-projection-models)
 
 [Codecheck confirms reproducibility of COVID-19 model results](https://www.imperial.ac.uk/news/197875/codecheck-confirms-reproducibility-covid-19-model-results/)
 
