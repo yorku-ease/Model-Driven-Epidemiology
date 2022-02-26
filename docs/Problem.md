@@ -1,4 +1,4 @@
-# Articles Simon recommends to get more insight into the problems faced by epidemiologists
+# Articles Simon recommended to get more insight into the problems faced by epidemiologists
 
 [Modeling Epidemics - Why Are Models Wrong?](https://www.frontiersin.org/articles/10.3389/fpubh.2021.754746/full)
 
