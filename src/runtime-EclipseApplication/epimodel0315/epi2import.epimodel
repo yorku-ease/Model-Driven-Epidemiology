@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ASCII"?>
+<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:epimodel="http://www.example.org/epimodel" name="Test" id="Test">
+  <dimension>
+    <flow xsi:type="epimodel:MetaRate" from="platform:/resource/epimodel0315/MyEpimodel.epimodel#//@dimension.0/@compartment.0"
+        to="platform:/resource/epimodel0315/MyEpimodel.epimodel#//@dimension.0/@compartment.1"/>
+  </dimension>
+  <dimension name="Disease" id="Disease">
+    <compartment name="S" id="S"/>
+    <compartment name="E" id="I"/>
+    <compartment name="I1" id="I1"/>
+    <compartment name="I2" id="I2"/>
+    <compartment name="I3" id="I3"/>
+    <compartment name="R" id="R"/>
+    <flow xsi:type="epimodel:MetaContact" name="S+I1->E" id="S+I1->E" from="#//@dimension.1/@compartment.0"
+        to="#//@dimension.1/@compartment.1" contact="#//@dimension.1/@compartment.2"/>
+    <flow xsi:type="epimodel:MetaContact" name="S+I2->E" id="S+I2->E" from="#//@dimension.1/@compartment.0"
+        to="#//@dimension.1/@compartment.1" contact="#//@dimension.1/@compartment.3"/>
+    <flow xsi:type="epimodel:MetaContact" name="S+I3->E" id="S+I3->E" from="#//@dimension.1/@compartment.0"
+        to="#//@dimension.1/@compartment.1" contact="#//@dimension.1/@compartment.4"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression E->I1" id="Progression E->I1"
+        from="#//@dimension.1/@compartment.1" to="#//@dimension.1/@compartment.2"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression I1->I2" id="Progression I1->I2"
+        from="#//@dimension.1/@compartment.2" to="#//@dimension.1/@compartment.3"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression  I2->I3" id="Progression  I2->I3"
+        from="#//@dimension.1/@compartment.3" to="#//@dimension.1/@compartment.4"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression I3->R" id="Progression I3->R"
+        from="#//@dimension.1/@compartment.4" to="#//@dimension.1/@compartment.5"/>
+  </dimension>
+  <dimension name="Disease" id="Disease">
+    <compartment name="S" id="S"/>
+    <compartment name="E" id="I"/>
+    <compartment name="I1" id="I1"/>
+    <compartment name="I2" id="I2"/>
+    <compartment name="I3" id="I3"/>
+    <compartment name="R" id="R"/>
+    <flow xsi:type="epimodel:MetaContact" name="S+I1->E" id="S+I1->E" from="#//@dimension.2/@compartment.0"
+        to="#//@dimension.2/@compartment.1" contact="#//@dimension.2/@compartment.2"/>
+    <flow xsi:type="epimodel:MetaContact" name="S+I2->E" id="S+I2->E" from="#//@dimension.2/@compartment.0"
+        to="#//@dimension.2/@compartment.1" contact="#//@dimension.2/@compartment.3"/>
+    <flow xsi:type="epimodel:MetaContact" name="S+I3->E" id="S+I3->E" from="#//@dimension.2/@compartment.0"
+        to="#//@dimension.2/@compartment.1" contact="#//@dimension.2/@compartment.4"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression E->I1" id="Progression E->I1"
+        from="#//@dimension.2/@compartment.1" to="#//@dimension.2/@compartment.2"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression I1->I2" id="Progression I1->I2"
+        from="#//@dimension.2/@compartment.2" to="#//@dimension.2/@compartment.3"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression  I2->I3" id="Progression  I2->I3"
+        from="#//@dimension.2/@compartment.3" to="#//@dimension.2/@compartment.4"/>
+    <flow xsi:type="epimodel:MetaRate" name="Progression I3->R" id="Progression I3->R"
+        from="#//@dimension.2/@compartment.4" to="#//@dimension.2/@compartment.5"/>
+  </dimension>
+</epimodel:Epidemic>
