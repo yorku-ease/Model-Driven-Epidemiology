@@ -1,10 +1,10 @@
 # Base Metamodel
 
-This base model lets us easily define orthogonal dimensions (compartment graphs) and there is already developped Java code to generate the full graph using a cartesian box product for creating all the different physical compartment and flows.
+This base metamodel lets us easily define orthogonal dimensions (compartment graphs) and there is already developped Java code to generate the full graph using a cartesian box product for creating all the different physical compartment and flows.
 
 ![image](https://user-images.githubusercontent.com/43907476/160959830-58de8527-f7d1-476a-90af-b2b15a249806.png)
 
-This metamodel is close to being enough for what we need, it could be but it wouldn't be very user friendly. Let's modify it a little.
+This metamodel is close to being enough for what we need, it could be, but it wouldn't be very user friendly. Let's modify it a little.
 
 # First layer model
 
