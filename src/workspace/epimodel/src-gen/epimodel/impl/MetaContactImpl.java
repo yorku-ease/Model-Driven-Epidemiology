@@ -3,7 +3,7 @@
 package epimodel.impl;
 
 import epimodel.EpimodelPackage;
-import epimodel.IDimension;
+import epimodel.MetaCompartment;
 import epimodel.MetaContact;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -35,7 +35,7 @@ public class MetaContactImpl extends MetaFlowImpl implements MetaContact {
 	 * @generated
 	 * @ordered
 	 */
-	protected IDimension contact;
+	protected MetaCompartment contact;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -62,10 +62,10 @@ public class MetaContactImpl extends MetaFlowImpl implements MetaContact {
 	 * @generated
 	 */
 	@Override
-	public IDimension getContact() {
+	public MetaCompartment getContact() {
 		if (contact != null && contact.eIsProxy()) {
 			InternalEObject oldContact = (InternalEObject) contact;
-			contact = (IDimension) eResolveProxy(oldContact);
+			contact = (MetaCompartment) eResolveProxy(oldContact);
 			if (contact != oldContact) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EpimodelPackage.META_CONTACT__CONTACT,
@@ -80,7 +80,7 @@ public class MetaContactImpl extends MetaFlowImpl implements MetaContact {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IDimension basicGetContact() {
+	public MetaCompartment basicGetContact() {
 		return contact;
 	}
 
@@ -90,8 +90,8 @@ public class MetaContactImpl extends MetaFlowImpl implements MetaContact {
 	 * @generated
 	 */
 	@Override
-	public void setContact(IDimension newContact) {
-		IDimension oldContact = contact;
+	public void setContact(MetaCompartment newContact) {
+		MetaCompartment oldContact = contact;
 		contact = newContact;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EpimodelPackage.META_CONTACT__CONTACT, oldContact,
@@ -123,7 +123,7 @@ public class MetaContactImpl extends MetaFlowImpl implements MetaContact {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 		case EpimodelPackage.META_CONTACT__CONTACT:
-			setContact((IDimension) newValue);
+			setContact((MetaCompartment) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -138,7 +138,7 @@ public class MetaContactImpl extends MetaFlowImpl implements MetaContact {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 		case EpimodelPackage.META_CONTACT__CONTACT:
-			setContact((IDimension) null);
+			setContact((MetaCompartment) null);
 			return;
 		}
 		super.eUnset(featureID);

@@ -67,22 +67,22 @@ public interface EpimodelPackage extends EPackage {
 	int EPIDEMIC = 0;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC__ID = 0;
-
-	/**
 	 * The feature id for the '<em><b>Dimension</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EPIDEMIC__DIMENSION = 1;
+	int EPIDEMIC__DIMENSION = 0;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EPIDEMIC__ID = 1;
 
 	/**
 	 * The number of structural features of the '<em>Epidemic</em>' class.
@@ -103,34 +103,6 @@ public interface EpimodelPackage extends EPackage {
 	int EPIDEMIC_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link epimodel.impl.IDimensionImpl <em>IDimension</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see epimodel.impl.IDimensionImpl
-	 * @see epimodel.impl.EpimodelPackageImpl#getIDimension()
-	 * @generated
-	 */
-	int IDIMENSION = 7;
-
-	/**
-	 * The number of structural features of the '<em>IDimension</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int IDIMENSION_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>IDimension</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int IDIMENSION_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link epimodel.impl.DimensionImpl <em>Dimension</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -141,22 +113,13 @@ public interface EpimodelPackage extends EPackage {
 	int DIMENSION = 1;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DIMENSION__ID = IDIMENSION_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Compartment</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION__COMPARTMENT = IDIMENSION_FEATURE_COUNT + 1;
+	int DIMENSION__COMPARTMENT = 0;
 
 	/**
 	 * The feature id for the '<em><b>Flow</b></em>' containment reference list.
@@ -165,7 +128,16 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION__FLOW = IDIMENSION_FEATURE_COUNT + 2;
+	int DIMENSION__FLOW = 1;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIMENSION__ID = 2;
 
 	/**
 	 * The number of structural features of the '<em>Dimension</em>' class.
@@ -174,7 +146,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION_FEATURE_COUNT = IDIMENSION_FEATURE_COUNT + 3;
+	int DIMENSION_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Dimension</em>' class.
@@ -183,7 +155,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION_OPERATION_COUNT = IDIMENSION_OPERATION_COUNT + 0;
+	int DIMENSION_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link epimodel.impl.MetaCompartmentImpl <em>Meta Compartment</em>}' class.
@@ -202,7 +174,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int META_COMPARTMENT__ID = IDIMENSION_FEATURE_COUNT + 0;
+	int META_COMPARTMENT__ID = 0;
 
 	/**
 	 * The number of structural features of the '<em>Meta Compartment</em>' class.
@@ -211,7 +183,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int META_COMPARTMENT_FEATURE_COUNT = IDIMENSION_FEATURE_COUNT + 1;
+	int META_COMPARTMENT_FEATURE_COUNT = 1;
 
 	/**
 	 * The number of operations of the '<em>Meta Compartment</em>' class.
@@ -220,7 +192,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int META_COMPARTMENT_OPERATION_COUNT = IDIMENSION_OPERATION_COUNT + 0;
+	int META_COMPARTMENT_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link epimodel.impl.MetaFlowImpl <em>Meta Flow</em>}' class.
@@ -233,22 +205,13 @@ public interface EpimodelPackage extends EPackage {
 	int META_FLOW = 3;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int META_FLOW__ID = 0;
-
-	/**
 	 * The feature id for the '<em><b>From</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int META_FLOW__FROM = 1;
+	int META_FLOW__FROM = 0;
 
 	/**
 	 * The feature id for the '<em><b>To</b></em>' reference.
@@ -257,7 +220,16 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int META_FLOW__TO = 2;
+	int META_FLOW__TO = 1;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int META_FLOW__ID = 2;
 
 	/**
 	 * The number of structural features of the '<em>Meta Flow</em>' class.
@@ -288,15 +260,6 @@ public interface EpimodelPackage extends EPackage {
 	int META_CONTACT = 4;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int META_CONTACT__ID = META_FLOW__ID;
-
-	/**
 	 * The feature id for the '<em><b>From</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -313,6 +276,15 @@ public interface EpimodelPackage extends EPackage {
 	 * @ordered
 	 */
 	int META_CONTACT__TO = META_FLOW__TO;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int META_CONTACT__ID = META_FLOW__ID;
 
 	/**
 	 * The feature id for the '<em><b>Contact</b></em>' reference.
@@ -352,15 +324,6 @@ public interface EpimodelPackage extends EPackage {
 	int META_RATE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int META_RATE__ID = META_FLOW__ID;
-
-	/**
 	 * The feature id for the '<em><b>From</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -377,6 +340,15 @@ public interface EpimodelPackage extends EPackage {
 	 * @ordered
 	 */
 	int META_RATE__TO = META_FLOW__TO;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int META_RATE__ID = META_FLOW__ID;
 
 	/**
 	 * The number of structural features of the '<em>Meta Rate</em>' class.
@@ -407,15 +379,6 @@ public interface EpimodelPackage extends EPackage {
 	int META_BATCH = 6;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int META_BATCH__ID = META_FLOW__ID;
-
-	/**
 	 * The feature id for the '<em><b>From</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -434,6 +397,15 @@ public interface EpimodelPackage extends EPackage {
 	int META_BATCH__TO = META_FLOW__TO;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int META_BATCH__ID = META_FLOW__ID;
+
+	/**
 	 * The number of structural features of the '<em>Meta Batch</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -450,43 +422,6 @@ public interface EpimodelPackage extends EPackage {
 	 * @ordered
 	 */
 	int META_BATCH_OPERATION_COUNT = META_FLOW_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link epimodel.impl.DimensionRefImpl <em>Dimension Ref</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see epimodel.impl.DimensionRefImpl
-	 * @see epimodel.impl.EpimodelPackageImpl#getDimensionRef()
-	 * @generated
-	 */
-	int DIMENSION_REF = 8;
-
-	/**
-	 * The feature id for the '<em><b>Dimension</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DIMENSION_REF__DIMENSION = IDIMENSION_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Dimension Ref</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DIMENSION_REF_FEATURE_COUNT = IDIMENSION_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Dimension Ref</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DIMENSION_REF_OPERATION_COUNT = IDIMENSION_OPERATION_COUNT + 0;
 
 	/**
 	 * Returns the meta object for class '{@link epimodel.Epidemic <em>Epidemic</em>}'.
@@ -531,17 +466,6 @@ public interface EpimodelPackage extends EPackage {
 	EClass getDimension();
 
 	/**
-	 * Returns the meta object for the attribute '{@link epimodel.Dimension#getId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see epimodel.Dimension#getId()
-	 * @see #getDimension()
-	 * @generated
-	 */
-	EAttribute getDimension_Id();
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link epimodel.Dimension#getCompartment <em>Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -562,6 +486,17 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getDimension_Flow();
+
+	/**
+	 * Returns the meta object for the attribute '{@link epimodel.Dimension#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see epimodel.Dimension#getId()
+	 * @see #getDimension()
+	 * @generated
+	 */
+	EAttribute getDimension_Id();
 
 	/**
 	 * Returns the meta object for class '{@link epimodel.MetaCompartment <em>Meta Compartment</em>}'.
@@ -595,17 +530,6 @@ public interface EpimodelPackage extends EPackage {
 	EClass getMetaFlow();
 
 	/**
-	 * Returns the meta object for the attribute '{@link epimodel.MetaFlow#getId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see epimodel.MetaFlow#getId()
-	 * @see #getMetaFlow()
-	 * @generated
-	 */
-	EAttribute getMetaFlow_Id();
-
-	/**
 	 * Returns the meta object for the reference '{@link epimodel.MetaFlow#getFrom <em>From</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -626,6 +550,17 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getMetaFlow_To();
+
+	/**
+	 * Returns the meta object for the attribute '{@link epimodel.MetaFlow#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see epimodel.MetaFlow#getId()
+	 * @see #getMetaFlow()
+	 * @generated
+	 */
+	EAttribute getMetaFlow_Id();
 
 	/**
 	 * Returns the meta object for class '{@link epimodel.MetaContact <em>Meta Contact</em>}'.
@@ -667,37 +602,6 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getMetaBatch();
-
-	/**
-	 * Returns the meta object for class '{@link epimodel.IDimension <em>IDimension</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>IDimension</em>'.
-	 * @see epimodel.IDimension
-	 * @generated
-	 */
-	EClass getIDimension();
-
-	/**
-	 * Returns the meta object for class '{@link epimodel.DimensionRef <em>Dimension Ref</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Dimension Ref</em>'.
-	 * @see epimodel.DimensionRef
-	 * @generated
-	 */
-	EClass getDimensionRef();
-
-	/**
-	 * Returns the meta object for the reference '{@link epimodel.DimensionRef#getDimension <em>Dimension</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Dimension</em>'.
-	 * @see epimodel.DimensionRef#getDimension()
-	 * @see #getDimensionRef()
-	 * @generated
-	 */
-	EReference getDimensionRef_Dimension();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -759,14 +663,6 @@ public interface EpimodelPackage extends EPackage {
 		EClass DIMENSION = eINSTANCE.getDimension();
 
 		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DIMENSION__ID = eINSTANCE.getDimension_Id();
-
-		/**
 		 * The meta object literal for the '<em><b>Compartment</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -781,6 +677,14 @@ public interface EpimodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference DIMENSION__FLOW = eINSTANCE.getDimension_Flow();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DIMENSION__ID = eINSTANCE.getDimension_Id();
 
 		/**
 		 * The meta object literal for the '{@link epimodel.impl.MetaCompartmentImpl <em>Meta Compartment</em>}' class.
@@ -811,14 +715,6 @@ public interface EpimodelPackage extends EPackage {
 		EClass META_FLOW = eINSTANCE.getMetaFlow();
 
 		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute META_FLOW__ID = eINSTANCE.getMetaFlow_Id();
-
-		/**
 		 * The meta object literal for the '<em><b>From</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -833,6 +729,14 @@ public interface EpimodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference META_FLOW__TO = eINSTANCE.getMetaFlow_To();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute META_FLOW__ID = eINSTANCE.getMetaFlow_Id();
 
 		/**
 		 * The meta object literal for the '{@link epimodel.impl.MetaContactImpl <em>Meta Contact</em>}' class.
@@ -871,34 +775,6 @@ public interface EpimodelPackage extends EPackage {
 		 * @generated
 		 */
 		EClass META_BATCH = eINSTANCE.getMetaBatch();
-
-		/**
-		 * The meta object literal for the '{@link epimodel.impl.IDimensionImpl <em>IDimension</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see epimodel.impl.IDimensionImpl
-		 * @see epimodel.impl.EpimodelPackageImpl#getIDimension()
-		 * @generated
-		 */
-		EClass IDIMENSION = eINSTANCE.getIDimension();
-
-		/**
-		 * The meta object literal for the '{@link epimodel.impl.DimensionRefImpl <em>Dimension Ref</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see epimodel.impl.DimensionRefImpl
-		 * @see epimodel.impl.EpimodelPackageImpl#getDimensionRef()
-		 * @generated
-		 */
-		EClass DIMENSION_REF = eINSTANCE.getDimensionRef();
-
-		/**
-		 * The meta object literal for the '<em><b>Dimension</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference DIMENSION_REF__DIMENSION = eINSTANCE.getDimensionRef_Dimension();
 
 	}
 

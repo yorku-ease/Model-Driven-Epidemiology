@@ -53,26 +53,11 @@ public class MetaFlowItemProvider extends ItemProviderAdapter implements IEditin
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addIdPropertyDescriptor(object);
 			addFromPropertyDescriptor(object);
 			addToPropertyDescriptor(object);
+			addIdPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Id feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addIdPropertyDescriptor(Object object) {
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_MetaFlow_id_feature"),
-						getString("_UI_PropertyDescriptor_description", "_UI_MetaFlow_id_feature", "_UI_MetaFlow_type"),
-						EpimodelPackage.Literals.META_FLOW__ID, true, false, false,
-						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -102,6 +87,21 @@ public class MetaFlowItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_MetaFlow_to_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_MetaFlow_to_feature", "_UI_MetaFlow_type"),
 						EpimodelPackage.Literals.META_FLOW__TO, true, false, true, null, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Id feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addIdPropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_MetaFlow_id_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_MetaFlow_id_feature", "_UI_MetaFlow_type"),
+						EpimodelPackage.Literals.META_FLOW__ID, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**

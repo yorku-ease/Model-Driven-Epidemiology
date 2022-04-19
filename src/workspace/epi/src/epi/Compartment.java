@@ -18,29 +18,29 @@ import epimodel.MetaRate;
 
 public class Compartment {
 	protected final List<MetaCompartment> metaCompartments;
-	protected final String name;
+	protected final String id;
 	public final JSONArray jsonArrayStateNames;
 	protected List<CompartmentTransition> transitionsTo = new ArrayList<>();
 	protected List<CompartmentTransition> transitionsFrom = new ArrayList<>();
 	
 	Compartment(List<MetaCompartment> metaCompartments) {
 		this.metaCompartments = metaCompartments;
-		name = doGetCompositeStateName();
+		id = doGetCompositeStateName();
 		this.jsonArrayStateNames = new JSONArray();
 		for (MetaCompartment s : metaCompartments)
-			jsonArrayStateNames.put(s.getName());
+			jsonArrayStateNames.put(s.getId());
 	}
 	
 	private String doGetCompositeStateName() {
 		return metaCompartments
 				.stream()
-				.map(MetaCompartment::getName)
+				.map(MetaCompartment::getId)
 				.collect(Collectors.toList())
 				.toString();
 	}
 	
 	public String getCompositeStateName() {
-		return name;
+		return id;
 	}
 	
 	void addIN(CompartmentTransition t) {
@@ -53,7 +53,7 @@ public class Compartment {
 	
 	public JSONObject getEquation() throws JSONException {
 		JSONObject json = new JSONObject();
-		json.put("name", jsonArrayStateNames);
+		json.put("id", jsonArrayStateNames);
 		json.put("+", asJson(transitionsTo));
 		json.put("-", asJson(transitionsFrom));
 		return json;
@@ -76,7 +76,7 @@ public class Compartment {
 		public static CompartmentTransition of(MetaBatch b, Compartment from, Flow flow) throws JSONException {
 			JSONObject json = new JSONObject();
 			json.put("type", "Batch");
-			json.put("name", flow.id + "[" + flow.n + "]");
+			json.put("id", flow.id + "[" + flow.n + "]");
 			json.put("from", from.jsonArrayStateNames);
 			return new CompartmentTransition(json);
 		}
@@ -84,7 +84,7 @@ public class Compartment {
 		public static CompartmentTransition of(MetaRate r, Compartment from, Flow flow) throws JSONException {
 			JSONObject json = new JSONObject();
 			json.put("type", "Rate");
-			json.put("name", flow.id + "[" + flow.n + "]");
+			json.put("id", flow.id + "[" + flow.n + "]");
 			json.put("from", from.jsonArrayStateNames);
 			return new CompartmentTransition(json);
 		}
@@ -92,7 +92,7 @@ public class Compartment {
 		public static CompartmentTransition of(MetaContact m, Compartment susceptible, Compartment infectious, Flow flow) throws JSONException {
 			JSONObject json = new JSONObject();
 			json.put("type", "Mix");
-			json.put("name", flow.id + "[" + flow.n + "]");
+			json.put("id", flow.id + "[" + flow.n + "]");
 			json.put("susceptible", susceptible.jsonArrayStateNames);
 			json.put("infectious", infectious.jsonArrayStateNames);
 			return new CompartmentTransition(json);

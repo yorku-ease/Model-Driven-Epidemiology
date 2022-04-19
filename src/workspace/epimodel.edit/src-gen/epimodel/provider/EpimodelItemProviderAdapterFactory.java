@@ -211,29 +211,6 @@ public class EpimodelItemProviderAdapterFactory extends EpimodelAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link epimodel.DimensionRef} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected DimensionRefItemProvider dimensionRefItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link epimodel.DimensionRef}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createDimensionRefAdapter() {
-		if (dimensionRefItemProvider == null) {
-			dimensionRefItemProvider = new DimensionRefItemProvider(this);
-		}
-
-		return dimensionRefItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -350,8 +327,6 @@ public class EpimodelItemProviderAdapterFactory extends EpimodelAdapterFactory
 			metaRateItemProvider.dispose();
 		if (metaBatchItemProvider != null)
 			metaBatchItemProvider.dispose();
-		if (dimensionRefItemProvider != null)
-			dimensionRefItemProvider.dispose();
 	}
 
 }

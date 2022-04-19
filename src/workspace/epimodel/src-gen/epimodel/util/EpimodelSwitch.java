@@ -77,16 +77,12 @@ public class EpimodelSwitch<T> extends Switch<T> {
 			Dimension dimension = (Dimension) theEObject;
 			T result = caseDimension(dimension);
 			if (result == null)
-				result = caseIDimension(dimension);
-			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
 		case EpimodelPackage.META_COMPARTMENT: {
 			MetaCompartment metaCompartment = (MetaCompartment) theEObject;
 			T result = caseMetaCompartment(metaCompartment);
-			if (result == null)
-				result = caseIDimension(metaCompartment);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -121,22 +117,6 @@ public class EpimodelSwitch<T> extends Switch<T> {
 			T result = caseMetaBatch(metaBatch);
 			if (result == null)
 				result = caseMetaFlow(metaBatch);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case EpimodelPackage.IDIMENSION: {
-			IDimension iDimension = (IDimension) theEObject;
-			T result = caseIDimension(iDimension);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case EpimodelPackage.DIMENSION_REF: {
-			DimensionRef dimensionRef = (DimensionRef) theEObject;
-			T result = caseDimensionRef(dimensionRef);
-			if (result == null)
-				result = caseIDimension(dimensionRef);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -248,36 +228,6 @@ public class EpimodelSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMetaBatch(MetaBatch object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>IDimension</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>IDimension</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseIDimension(IDimension object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Dimension Ref</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Dimension Ref</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseDimensionRef(DimensionRef object) {
 		return null;
 	}
 

@@ -2,6 +2,8 @@
  */
 package epimodel;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Meta Compartment</b></em>'.
@@ -18,7 +20,7 @@ package epimodel;
  * @model
  * @generated
  */
-public interface MetaCompartment extends IDimension {
+public interface MetaCompartment extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -24,12 +24,12 @@ public interface MetaContact extends MetaFlow {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Contact</em>' reference.
-	 * @see #setContact(IDimension)
+	 * @see #setContact(MetaCompartment)
 	 * @see epimodel.EpimodelPackage#getMetaContact_Contact()
 	 * @model
 	 * @generated
 	 */
-	IDimension getContact();
+	MetaCompartment getContact();
 
 	/**
 	 * Sets the value of the '{@link epimodel.MetaContact#getContact <em>Contact</em>}' reference.
@@ -39,6 +39,6 @@ public interface MetaContact extends MetaFlow {
 	 * @see #getContact()
 	 * @generated
 	 */
-	void setContact(IDimension value);
+	void setContact(MetaCompartment value);
 
 } // MetaContact
