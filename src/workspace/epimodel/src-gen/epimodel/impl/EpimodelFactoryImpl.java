@@ -68,8 +68,6 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 			return createMetaRate();
 		case EpimodelPackage.META_BATCH:
 			return createMetaBatch();
-		case EpimodelPackage.DIMENSION_REF:
-			return createDimensionRef();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -139,17 +137,6 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 	public MetaBatch createMetaBatch() {
 		MetaBatchImpl metaBatch = new MetaBatchImpl();
 		return metaBatch;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public DimensionRef createDimensionRef() {
-		DimensionRefImpl dimensionRef = new DimensionRefImpl();
-		return dimensionRef;
 	}
 
 	/**

@@ -4,7 +4,7 @@ package epimodel.impl;
 
 import epimodel.Dimension;
 import epimodel.EpimodelPackage;
-import epimodel.IDimension;
+import epimodel.MetaCompartment;
 import epimodel.MetaFlow;
 
 import java.util.Collection;
@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -29,14 +31,34 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link epimodel.impl.DimensionImpl#getId <em>Id</em>}</li>
  *   <li>{@link epimodel.impl.DimensionImpl#getCompartment <em>Compartment</em>}</li>
  *   <li>{@link epimodel.impl.DimensionImpl#getFlow <em>Flow</em>}</li>
+ *   <li>{@link epimodel.impl.DimensionImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class DimensionImpl extends IDimensionImpl implements Dimension {
+public class DimensionImpl extends MinimalEObjectImpl.Container implements Dimension {
+	/**
+	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCompartment()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<MetaCompartment> compartment;
+
+	/**
+	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFlow()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<MetaFlow> flow;
+
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -58,26 +80,6 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	protected String id = ID_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCompartment()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<IDimension> compartment;
-
-	/**
-	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFlow()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<MetaFlow> flow;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -94,6 +96,33 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	@Override
 	protected EClass eStaticClass() {
 		return EpimodelPackage.Literals.DIMENSION;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<MetaCompartment> getCompartment() {
+		if (compartment == null) {
+			compartment = new EObjectContainmentEList<MetaCompartment>(MetaCompartment.class, this,
+					EpimodelPackage.DIMENSION__COMPARTMENT);
+		}
+		return compartment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<MetaFlow> getFlow() {
+		if (flow == null) {
+			flow = new EObjectContainmentEList<MetaFlow>(MetaFlow.class, this, EpimodelPackage.DIMENSION__FLOW);
+		}
+		return flow;
 	}
 
 	/**
@@ -125,34 +154,6 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	 * @generated
 	 */
 	@Override
-	public EList<IDimension> getCompartment() {
-		if (compartment == null) {
-			compartment = new EObjectContainmentEList.Resolving<IDimension>(IDimension.class, this,
-					EpimodelPackage.DIMENSION__COMPARTMENT);
-		}
-		return compartment;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EList<MetaFlow> getFlow() {
-		if (flow == null) {
-			flow = new EObjectContainmentEList.Resolving<MetaFlow>(MetaFlow.class, this,
-					EpimodelPackage.DIMENSION__FLOW);
-		}
-		return flow;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case EpimodelPackage.DIMENSION__COMPARTMENT:
@@ -171,12 +172,12 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case EpimodelPackage.DIMENSION__ID:
-			return getId();
 		case EpimodelPackage.DIMENSION__COMPARTMENT:
 			return getCompartment();
 		case EpimodelPackage.DIMENSION__FLOW:
 			return getFlow();
+		case EpimodelPackage.DIMENSION__ID:
+			return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -190,16 +191,16 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case EpimodelPackage.DIMENSION__ID:
-			setId((String) newValue);
-			return;
 		case EpimodelPackage.DIMENSION__COMPARTMENT:
 			getCompartment().clear();
-			getCompartment().addAll((Collection<? extends IDimension>) newValue);
+			getCompartment().addAll((Collection<? extends MetaCompartment>) newValue);
 			return;
 		case EpimodelPackage.DIMENSION__FLOW:
 			getFlow().clear();
 			getFlow().addAll((Collection<? extends MetaFlow>) newValue);
+			return;
+		case EpimodelPackage.DIMENSION__ID:
+			setId((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -213,14 +214,14 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case EpimodelPackage.DIMENSION__ID:
-			setId(ID_EDEFAULT);
-			return;
 		case EpimodelPackage.DIMENSION__COMPARTMENT:
 			getCompartment().clear();
 			return;
 		case EpimodelPackage.DIMENSION__FLOW:
 			getFlow().clear();
+			return;
+		case EpimodelPackage.DIMENSION__ID:
+			setId(ID_EDEFAULT);
 			return;
 		}
 		super.eUnset(featureID);
@@ -234,12 +235,12 @@ public class DimensionImpl extends IDimensionImpl implements Dimension {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case EpimodelPackage.DIMENSION__ID:
-			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		case EpimodelPackage.DIMENSION__COMPARTMENT:
 			return compartment != null && !compartment.isEmpty();
 		case EpimodelPackage.DIMENSION__FLOW:
 			return flow != null && !flow.isEmpty();
+		case EpimodelPackage.DIMENSION__ID:
+			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
 	}

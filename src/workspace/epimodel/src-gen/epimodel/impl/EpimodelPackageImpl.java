@@ -3,11 +3,9 @@
 package epimodel.impl;
 
 import epimodel.Dimension;
-import epimodel.DimensionRef;
 import epimodel.Epidemic;
 import epimodel.EpimodelFactory;
 import epimodel.EpimodelPackage;
-import epimodel.IDimension;
 import epimodel.MetaBatch;
 import epimodel.MetaCompartment;
 import epimodel.MetaContact;
@@ -76,20 +74,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	private EClass metaBatchEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass iDimensionEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass dimensionRefEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -172,7 +156,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 */
 	@Override
 	public EReference getEpidemic_Dimension() {
-		return (EReference) epidemicEClass.getEStructuralFeatures().get(1);
+		return (EReference) epidemicEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -182,7 +166,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 */
 	@Override
 	public EAttribute getEpidemic_Id() {
-		return (EAttribute) epidemicEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) epidemicEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -201,18 +185,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDimension_Id() {
-		return (EAttribute) dimensionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EReference getDimension_Compartment() {
-		return (EReference) dimensionEClass.getEStructuralFeatures().get(1);
+		return (EReference) dimensionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -222,7 +196,17 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 */
 	@Override
 	public EReference getDimension_Flow() {
-		return (EReference) dimensionEClass.getEStructuralFeatures().get(2);
+		return (EReference) dimensionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDimension_Id() {
+		return (EAttribute) dimensionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -261,18 +245,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getMetaFlow_Id() {
-		return (EAttribute) metaFlowEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EReference getMetaFlow_From() {
-		return (EReference) metaFlowEClass.getEStructuralFeatures().get(1);
+		return (EReference) metaFlowEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -282,7 +256,17 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 */
 	@Override
 	public EReference getMetaFlow_To() {
-		return (EReference) metaFlowEClass.getEStructuralFeatures().get(2);
+		return (EReference) metaFlowEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getMetaFlow_Id() {
+		return (EAttribute) metaFlowEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -331,36 +315,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getIDimension() {
-		return iDimensionEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getDimensionRef() {
-		return dimensionRefEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getDimensionRef_Dimension() {
-		return (EReference) dimensionRefEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EpimodelFactory getEpimodelFactory() {
 		return (EpimodelFactory) getEFactoryInstance();
 	}
@@ -386,21 +340,21 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		// Create classes and their features
 		epidemicEClass = createEClass(EPIDEMIC);
-		createEAttribute(epidemicEClass, EPIDEMIC__ID);
 		createEReference(epidemicEClass, EPIDEMIC__DIMENSION);
+		createEAttribute(epidemicEClass, EPIDEMIC__ID);
 
 		dimensionEClass = createEClass(DIMENSION);
-		createEAttribute(dimensionEClass, DIMENSION__ID);
 		createEReference(dimensionEClass, DIMENSION__COMPARTMENT);
 		createEReference(dimensionEClass, DIMENSION__FLOW);
+		createEAttribute(dimensionEClass, DIMENSION__ID);
 
 		metaCompartmentEClass = createEClass(META_COMPARTMENT);
 		createEAttribute(metaCompartmentEClass, META_COMPARTMENT__ID);
 
 		metaFlowEClass = createEClass(META_FLOW);
-		createEAttribute(metaFlowEClass, META_FLOW__ID);
 		createEReference(metaFlowEClass, META_FLOW__FROM);
 		createEReference(metaFlowEClass, META_FLOW__TO);
+		createEAttribute(metaFlowEClass, META_FLOW__ID);
 
 		metaContactEClass = createEClass(META_CONTACT);
 		createEReference(metaContactEClass, META_CONTACT__CONTACT);
@@ -408,11 +362,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		metaRateEClass = createEClass(META_RATE);
 
 		metaBatchEClass = createEClass(META_BATCH);
-
-		iDimensionEClass = createEClass(IDIMENSION);
-
-		dimensionRefEClass = createEClass(DIMENSION_REF);
-		createEReference(dimensionRefEClass, DIMENSION_REF__DIMENSION);
 	}
 
 	/**
@@ -444,32 +393,29 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		dimensionEClass.getESuperTypes().add(this.getIDimension());
-		metaCompartmentEClass.getESuperTypes().add(this.getIDimension());
 		metaContactEClass.getESuperTypes().add(this.getMetaFlow());
 		metaRateEClass.getESuperTypes().add(this.getMetaFlow());
 		metaBatchEClass.getESuperTypes().add(this.getMetaFlow());
-		dimensionRefEClass.getESuperTypes().add(this.getIDimension());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(epidemicEClass, Epidemic.class, "Epidemic", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEpidemic_Dimension(), this.getDimension(), null, "dimension", null, 0, -1, Epidemic.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getEpidemic_Id(), ecorePackage.getEString(), "id", null, 0, 1, Epidemic.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEpidemic_Dimension(), this.getIDimension(), null, "dimension", null, 0, -1, Epidemic.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-				!IS_DERIVED, IS_ORDERED);
 
 		initEClass(dimensionEClass, Dimension.class, "Dimension", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDimension_Id(), ecorePackage.getEString(), "id", null, 0, 1, Dimension.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDimension_Compartment(), this.getIDimension(), null, "compartment", null, 0, -1,
-				Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES,
+		initEReference(getDimension_Compartment(), this.getMetaCompartment(), null, "compartment", null, 0, -1,
+				Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDimension_Flow(), this.getMetaFlow(), null, "flow", null, 0, -1, Dimension.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-				!IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDimension_Id(), ecorePackage.getEString(), "id", null, 0, 1, Dimension.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metaCompartmentEClass, MetaCompartment.class, "MetaCompartment", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -477,35 +423,26 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metaFlowEClass, MetaFlow.class, "MetaFlow", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getMetaFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, MetaFlow.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMetaFlow_From(), this.getIDimension(), null, "from", null, 0, 1, MetaFlow.class,
+		initEReference(getMetaFlow_From(), this.getMetaCompartment(), null, "from", null, 0, 1, MetaFlow.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMetaFlow_To(), this.getIDimension(), null, "to", null, 0, 1, MetaFlow.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
+		initEReference(getMetaFlow_To(), this.getMetaCompartment(), null, "to", null, 0, 1, MetaFlow.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMetaFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, MetaFlow.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metaContactEClass, MetaContact.class, "MetaContact", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMetaContact_Contact(), this.getIDimension(), null, "contact", null, 0, 1, MetaContact.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMetaContact_Contact(), this.getMetaCompartment(), null, "contact", null, 0, 1,
+				MetaContact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metaRateEClass, MetaRate.class, "MetaRate", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(metaBatchEClass, MetaBatch.class, "MetaBatch", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(iDimensionEClass, IDimension.class, "IDimension", IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(dimensionRefEClass, DimensionRef.class, "DimensionRef", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDimensionRef_Dimension(), this.getDimension(), null, "dimension", null, 0, 1,
-				DimensionRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

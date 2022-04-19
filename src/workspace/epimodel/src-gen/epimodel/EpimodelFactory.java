@@ -76,15 +76,6 @@ public interface EpimodelFactory extends EFactory {
 	MetaBatch createMetaBatch();
 
 	/**
-	 * Returns a new object of class '<em>Dimension Ref</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Dimension Ref</em>'.
-	 * @generated
-	 */
-	DimensionRef createDimensionRef();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

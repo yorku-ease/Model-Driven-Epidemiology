@@ -2,10 +2,10 @@
  */
 package epimodel.impl;
 
+import epimodel.Dimension;
 import epimodel.Epidemic;
 import epimodel.EpimodelPackage;
 
-import epimodel.IDimension;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -30,13 +30,23 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link epimodel.impl.EpidemicImpl#getId <em>Id</em>}</li>
  *   <li>{@link epimodel.impl.EpidemicImpl#getDimension <em>Dimension</em>}</li>
+ *   <li>{@link epimodel.impl.EpidemicImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidemic {
+	/**
+	 * The cached value of the '{@link #getDimension() <em>Dimension</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDimension()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Dimension> dimension;
+
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -56,16 +66,6 @@ public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidem
 	 * @ordered
 	 */
 	protected String id = ID_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getDimension() <em>Dimension</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDimension()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<IDimension> dimension;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -92,9 +92,9 @@ public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidem
 	 * @generated
 	 */
 	@Override
-	public EList<IDimension> getDimension() {
+	public EList<Dimension> getDimension() {
 		if (dimension == null) {
-			dimension = new EObjectContainmentEList.Resolving<IDimension>(IDimension.class, this,
+			dimension = new EObjectContainmentEList<Dimension>(Dimension.class, this,
 					EpimodelPackage.EPIDEMIC__DIMENSION);
 		}
 		return dimension;
@@ -145,10 +145,10 @@ public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidem
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case EpimodelPackage.EPIDEMIC__ID:
-			return getId();
 		case EpimodelPackage.EPIDEMIC__DIMENSION:
 			return getDimension();
+		case EpimodelPackage.EPIDEMIC__ID:
+			return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -162,12 +162,12 @@ public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidem
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case EpimodelPackage.EPIDEMIC__ID:
-			setId((String) newValue);
-			return;
 		case EpimodelPackage.EPIDEMIC__DIMENSION:
 			getDimension().clear();
-			getDimension().addAll((Collection<? extends IDimension>) newValue);
+			getDimension().addAll((Collection<? extends Dimension>) newValue);
+			return;
+		case EpimodelPackage.EPIDEMIC__ID:
+			setId((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -181,11 +181,11 @@ public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidem
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case EpimodelPackage.EPIDEMIC__ID:
-			setId(ID_EDEFAULT);
-			return;
 		case EpimodelPackage.EPIDEMIC__DIMENSION:
 			getDimension().clear();
+			return;
+		case EpimodelPackage.EPIDEMIC__ID:
+			setId(ID_EDEFAULT);
 			return;
 		}
 		super.eUnset(featureID);
@@ -199,10 +199,10 @@ public class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidem
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case EpimodelPackage.EPIDEMIC__ID:
-			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		case EpimodelPackage.EPIDEMIC__DIMENSION:
 			return dimension != null && !dimension.isEmpty();
+		case EpimodelPackage.EPIDEMIC__ID:
+			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
 	}

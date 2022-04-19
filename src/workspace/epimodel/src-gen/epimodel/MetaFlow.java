@@ -13,9 +13,9 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link epimodel.MetaFlow#getId <em>Id</em>}</li>
  *   <li>{@link epimodel.MetaFlow#getFrom <em>From</em>}</li>
  *   <li>{@link epimodel.MetaFlow#getTo <em>To</em>}</li>
+ *   <li>{@link epimodel.MetaFlow#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see epimodel.EpimodelPackage#getMetaFlow()
@@ -23,6 +23,50 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface MetaFlow extends EObject {
+	/**
+	 * Returns the value of the '<em><b>From</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>From</em>' reference.
+	 * @see #setFrom(MetaCompartment)
+	 * @see epimodel.EpimodelPackage#getMetaFlow_From()
+	 * @model
+	 * @generated
+	 */
+	MetaCompartment getFrom();
+
+	/**
+	 * Sets the value of the '{@link epimodel.MetaFlow#getFrom <em>From</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>From</em>' reference.
+	 * @see #getFrom()
+	 * @generated
+	 */
+	void setFrom(MetaCompartment value);
+
+	/**
+	 * Returns the value of the '<em><b>To</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>To</em>' reference.
+	 * @see #setTo(MetaCompartment)
+	 * @see epimodel.EpimodelPackage#getMetaFlow_To()
+	 * @model
+	 * @generated
+	 */
+	MetaCompartment getTo();
+
+	/**
+	 * Sets the value of the '{@link epimodel.MetaFlow#getTo <em>To</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>To</em>' reference.
+	 * @see #getTo()
+	 * @generated
+	 */
+	void setTo(MetaCompartment value);
+
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -44,49 +88,5 @@ public interface MetaFlow extends EObject {
 	 * @generated
 	 */
 	void setId(String value);
-
-	/**
-	 * Returns the value of the '<em><b>From</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>From</em>' reference.
-	 * @see #setFrom(IDimension)
-	 * @see epimodel.EpimodelPackage#getMetaFlow_From()
-	 * @model
-	 * @generated
-	 */
-	IDimension getFrom();
-
-	/**
-	 * Sets the value of the '{@link epimodel.MetaFlow#getFrom <em>From</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>From</em>' reference.
-	 * @see #getFrom()
-	 * @generated
-	 */
-	void setFrom(IDimension value);
-
-	/**
-	 * Returns the value of the '<em><b>To</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>To</em>' reference.
-	 * @see #setTo(IDimension)
-	 * @see epimodel.EpimodelPackage#getMetaFlow_To()
-	 * @model
-	 * @generated
-	 */
-	IDimension getTo();
-
-	/**
-	 * Sets the value of the '{@link epimodel.MetaFlow#getTo <em>To</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>To</em>' reference.
-	 * @see #getTo()
-	 * @generated
-	 */
-	void setTo(IDimension value);
 
 } // MetaFlow

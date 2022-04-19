@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="epidimensionsbase" nsURI="http://www.example.org/epidimensionsbase"
+    nsPrefix="epidimensionsbase">
+  <eClassifiers xsi:type="ecore:EClass" name="Compartment" instanceClassName="epibase.Compartment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dimension" eSuperTypes="#//Compartment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="compartment" upperBound="-1"
+        eType="#//Compartment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flow" upperBound="-1" eType="#//SimpleFlow"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleFlow" eSuperTypes="#//Flow">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//Compartment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="#//Compartment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Batch" eSuperTypes="#//SimpleFlow"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Rate" eSuperTypes="#//SimpleFlow"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Contact" eSuperTypes="#//SimpleFlow">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contact" eType="#//Compartment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Flow" instanceClassName="epibase.Flow">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionRef" eSuperTypes="#//Compartment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimension" eType="#//Dimension"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Epidemic" eSuperTypes="epibase.ecore#//Epidemic">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flows" upperBound="-1"
+        eType="#//Flow" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="compartments" upperBound="-1"
+        eType="#//Compartment" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

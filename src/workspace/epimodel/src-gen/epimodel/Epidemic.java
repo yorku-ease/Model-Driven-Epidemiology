@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link epimodel.Epidemic#getId <em>Id</em>}</li>
  *   <li>{@link epimodel.Epidemic#getDimension <em>Dimension</em>}</li>
+ *   <li>{@link epimodel.Epidemic#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see epimodel.EpimodelPackage#getEpidemic()
@@ -26,15 +26,15 @@ import org.eclipse.emf.ecore.EObject;
 public interface Epidemic extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Dimension</b></em>' containment reference list.
-	 * The list contents are of type {@link epimodel.IDimension}.
+	 * The list contents are of type {@link epimodel.Dimension}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Dimension</em>' containment reference list.
 	 * @see epimodel.EpimodelPackage#getEpidemic_Dimension()
-	 * @model containment="true" resolveProxies="true"
+	 * @model containment="true"
 	 * @generated
 	 */
-	EList<IDimension> getDimension();
+	EList<Dimension> getDimension();
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

@@ -175,12 +175,6 @@ public class EpidemicItemProvider extends ItemProviderAdapter implements IEditin
 
 		newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.EPIDEMIC__DIMENSION,
 				EpimodelFactory.eINSTANCE.createDimension()));
-
-		newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.EPIDEMIC__DIMENSION,
-				EpimodelFactory.eINSTANCE.createMetaCompartment()));
-
-		newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.EPIDEMIC__DIMENSION,
-				EpimodelFactory.eINSTANCE.createDimensionRef()));
 	}
 
 	/**
