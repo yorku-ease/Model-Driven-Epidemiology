@@ -159,6 +159,7 @@ import epidemicDimension.provider.EpidemicDimensionItemProviderAdapterFactory;
 import epimodel.provider.EpimodelItemProviderAdapterFactory;
 
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import transformedEpidemic.provider.TransformedEpidemicItemProviderAdapterFactory;
 
 /**
  * This is an example of a BatchRateContactFlows model editor.
@@ -689,6 +690,7 @@ public class BatchRateContactFlowsEditor extends MultiPageEditorPart
 
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new BatchRateContactFlowsItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new TransformedEpidemicItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new EpidemicDimensionItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new EpimodelItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());

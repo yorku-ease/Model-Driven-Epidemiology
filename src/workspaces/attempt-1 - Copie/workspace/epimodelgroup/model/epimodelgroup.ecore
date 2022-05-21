@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="epimodelgroup" nsURI="http://www.example.org/epimodelgroup"
+    nsPrefix="epimodelgroup">
+  <eClassifiers xsi:type="ecore:EClass" name="Epidemic">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimension" upperBound="-1"
+        eType="#//IDimension" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dimension" eSuperTypes="#//IDimension">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="compartment" upperBound="-1"
+        eType="#//Compartment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flow" upperBound="-1" eType="#//Flow"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Compartment"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Flow" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//Compartment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="#//Compartment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Contact" eSuperTypes="#//Flow">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contact" eType="#//Compartment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Rate" eSuperTypes="#//Flow"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Batch" eSuperTypes="#//Flow"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionLink" eSuperTypes="#//IDimension">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idimension" eType="#//IDimension"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IDimension" abstract="true"/>
+</ecore:EPackage>
