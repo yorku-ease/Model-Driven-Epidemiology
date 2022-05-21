@@ -8,6 +8,7 @@ import epimodel.provider.EpimodelEditPlugin;
 import org.eclipse.emf.common.EMFPlugin;
 
 import org.eclipse.emf.common.util.ResourceLocator;
+import transformedEpidemic.provider.TransformedEpidemicEditPlugin;
 
 /**
  * This is the central singleton for the BatchRateContactFlows edit plugin.
@@ -39,7 +40,8 @@ public final class BatchRateContactFlowsEditPlugin extends EMFPlugin {
 	 * @generated
 	 */
 	public BatchRateContactFlowsEditPlugin() {
-		super(new ResourceLocator[] { EpidemicDimensionEditPlugin.INSTANCE, EpimodelEditPlugin.INSTANCE, });
+		super(new ResourceLocator[] { TransformedEpidemicEditPlugin.INSTANCE, EpidemicDimensionEditPlugin.INSTANCE,
+				EpimodelEditPlugin.INSTANCE, });
 	}
 
 	/**

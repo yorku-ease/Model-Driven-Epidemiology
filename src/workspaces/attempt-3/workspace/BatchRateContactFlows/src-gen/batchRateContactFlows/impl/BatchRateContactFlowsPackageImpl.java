@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import transformedEpidemic.TransformedEpidemicPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -105,6 +106,7 @@ public class BatchRateContactFlowsPackageImpl extends EPackageImpl implements Ba
 		isInited = true;
 
 		// Initialize simple dependencies
+		TransformedEpidemicPackage.eINSTANCE.eClass();
 		EpidemicDimensionPackage.eINSTANCE.eClass();
 		EpimodelPackage.eINSTANCE.eClass();
 
