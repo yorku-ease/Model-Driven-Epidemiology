@@ -12,9 +12,7 @@ The following document presents the Requirements for the epidemiological modelin
 
 ### Project Objective
 
-The objective is to provide the client with a framework to develop, view, compare, modify and test epidemiological models. This will be done using either the Domain Specific Language we will develop, or the graphical editor/viewer.
-
-The training of models has to do with other software using machine learning which will not be part of this project, but a certain integration between the developped software and the training software has to be made available to minimize complexity during that transfer step from our representation of a model to a trainable representation. Visualizing predictions (curves, time series) will be part of the solution, but not training.
+The objective is to provide the client with a framework to develop, view, compare, modify and test epidemiological models. This will be done using either a Domain Specific Language or a graphical editor/viewer.
 
 ### Context
 
@@ -24,21 +22,32 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 ### 1.1 Modeling
 
-1.1.1 The model must contain `Population` objects
+1.1.1 The model must contain `Compartment` objects
 
 1.1.2 The model must contain `Flow` objects
 
-1.1.3 The `Population` objects must support connections to other `Population` objects through `Flow` objects
+1.1.3 `Flow` objects can be of kind `Batch`, `Rate` or `Mix`
 
-1.1.4 `Flow` objects can be of kind `Batch`, `Rate` or `Mix`
+1.1.4 `Batches` are `Flows` from population 1 to population 2 with constant value
 
-1.1.5 `Batches` are `Flows` from population 1 to population 2 with constant value
+1.1.5 `Rates` are `Flows` from population 1 to population 2 with value directly proportional to the size of population 1
 
-1.1.6 `Rates` are `Flows` from population 1 to population 2 with value directly proportional to the size of population 1
+1.1.6 `Mixes` are `Flows` from population 1 to population 2 with value proportional to the product of the size of population 1 and the size of the `Mixed` population 3
 
-1.1.7 `Mixes` are `Flows` from population 1 to population 2 with value proportional to the product of the size of population 1 and the size of the `Mixed` population 3
+1.1.7 The metamodel supports extensions
 
-### 1.2 Domain Specific Language & Compiler
+1.1.8 Extensions are made available by placing them in the metamodel folder
+
+1.1.9 Extensions are marked as used or unused for each model
+
+1.1.10 The extended metamodel is generated when opening a graphical editor view of a model
+
+1.1.11 The extended metamodel is generated when opening a DSL editor view of a model
+
+1.1.12 The extended metamodel is generated when generating artifacts for a model
+
+
+### 1.2 Domain Specific Language
 
 1.2.1. The DSL must support creating model objects
 
@@ -56,7 +65,7 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.2.8 The DSL must support comments after the character `#` is found outside a string literal on a line
 
-1.2.9 The DSL must use a reserved keyword `Population` to refer to a Population
+1.2.9 The DSL must use a reserved keyword `Compartment` to refer to a Compartment
 
 1.2.10 The DSL must use a reserved keyword `Batch` to refer to a Batch
 
@@ -78,6 +87,7 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.2.19 The DSL must only support definitions of `Mixes` referencing 3 populations where the first mixes with the third and flows into the second
 
+
 ### 1.3 Graphical Editor
 
 1.3.1 The graphical editor must support to creating model objects
@@ -94,6 +104,7 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.3.7 The grapical editor must provide undo-redo stacks of at least 50 actions
 
+
 ### 1.4 Model Views
 
 1.4.1 A mathematical equations view is available using a text editor
@@ -108,34 +119,20 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.4.6 *An expanded graphical view is available using **?*** TBD during a meeting if it is useful
 
+
 ## 2 Nonfunctional Requirements
 
-### 2.1 Performance
 
-2.1.1 Generating a model using the DSL file definition must take at most 1 second
+### 2.1 Development Tools
 
-2.1.2 Opening a model with the graphical editor must take at most 10 seconds
+#### 2.1.1 The Metamodel must be developped using [EMF](https://www.eclipse.org/modeling/emf/)
 
-2.1.3 Saving a model with the graphical editor must take at most 1 second
+#### 2.1.2 The Domain Specific Language must be developped using [XText](https://www.eclipse.org/Xtext/index.html)
 
-2.1.4 Applying a property edition in the graphical editor must take at most 1 second
+#### 2.1.3 The Graphical Interface must be developped using [Sirius](https://www.eclipse.org/sirius/overview.html)
 
-2.1.5 Applying a model object creation in the graphical editor must take at most 1 second
 
-2.1.6 Applying a model object deletion in the graphical editor must take at most 1 second
+### 2.2 Developper Documentation
 
-2.1.7 Applying a model object connection in the graphical editor must take at most 1 second
 
-### 2.2 Development Tools
-
-#### 2.2.1 The Metamodel must be developped using [EMF](https://www.eclipse.org/modeling/emf/)
-
-#### 2.2.2 The Domain Specific Language must be developped using [XText](https://www.eclipse.org/Xtext/index.html)
-
-#### 2.2.3 The Graphical Interface must be developped using [Sirius](https://www.eclipse.org/sirius/overview.html)
-
-### 2.3 Tests
-
-### 2.4 Developper Documentation
-
-### 2.5 User Documentation
+### 2.3 User Documentation
