@@ -1,10 +1,9 @@
 package use_epi;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -14,39 +13,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Main {
-	public static void main(String[] args) throws JSONException, IOException, ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		
 		List<String> jars = Arrays.asList(
 			"C:/users/bruno/desktop/dims.jar",
 			"C:/users/bruno/desktop/flows.jar"
 		);
-		List<Class<?>> classes = jars.stream().map(jar -> {
-			try {
-				return Main.loadClassesFromJar(jar);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new RuntimeException("ClassNotFoundException");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new RuntimeException("IOException");
-			}
-		}).flatMap(List::stream).collect(Collectors.toList());
 		
 		String fn = "../../runtime-EclipseApplication/modeling/covid.epimodel";
+        List<String> methodNames = Arrays.asList("getEpidemic", "compile");
 		
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
         Map<String, Object> m = reg.getExtensionToFactoryMap();
@@ -54,26 +37,28 @@ public class Main {
 
         ResourceSet resSet = new ResourceSetImpl();
         resSet.getPackageRegistry().put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-        
-        for (Class<?> c : classes) {
-        	if (c.getName().endsWith("Package")) {
 
-        		Field f_eNS_URI = c.getField("eNS_URI");
-        		f_eNS_URI.setAccessible(true);
-        		String eNS_URI = (String) f_eNS_URI.get(new Object()); // eNS_URI is static so it works on new Object()
-
-        		Field f_eINSTANCE = c.getField("eINSTANCE");
-        		f_eINSTANCE.setAccessible(true);
-        		Object eINSTANCE = f_eINSTANCE.get(new Object()); // eINSTANCE is static so it works on new Object()
-
-                resSet.getPackageRegistry().put(eNS_URI, eINSTANCE);
-        	}
-        }
+        for (String jar : jars)
+            for (Class<?> c : loadClassesFromJar(jar))
+            	if (c.getName().endsWith("Package"))
+                    resSet.getPackageRegistry().put(
+                		(String) getStaticFieldByName(c, "eNS_URI"),
+                		getStaticFieldByName(c, "eINSTANCE")
+                	);
         
         URI uri = URI.createFileURI(fn);
         Resource resource = resSet.getResource(uri, true);
         
-        epimodel.Epidemic myEpi = ((epimodel.EpidemicWrapper) resource.getContents().get(0)).getEpidemic();
+        Object obj = resource.getContents().get(0);
+        
+        // epimodel.Epidemic myEpi = ((epimodel.EpidemicWrapper) resource.getContents().get(0)).getEpidemic();
+        
+        for (String methodName : methodNames) {
+            Class<?> objclass = obj.getClass();
+            Method getEpidemic = getMethodByName(objclass, methodName);
+            obj = getEpidemic.invoke(obj);
+        }
+
         return;
 
 //		URIConverter converter = new ExtensibleURIConverterImpl();
@@ -159,20 +144,20 @@ public class Main {
 //        }
 //        System.out.println(solution);
 	}
-	
-	protected static void writeJsonFile(JSONObject o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
-	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
-	    writer.print(o.toString(4));
-	    writer.println();
-	    writer.close();
-	}
-	
-	protected static void writeJsonFile(JSONArray o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
-	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
-	    writer.print(o.toString(4));
-	    writer.println();
-	    writer.close();
-	}
+//	
+//	protected static void writeJsonFile(JSONObject o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
+//	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
+//	    writer.print(o.toString(4));
+//	    writer.println();
+//	    writer.close();
+//	}
+//	
+//	protected static void writeJsonFile(JSONArray o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
+//	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
+//	    writer.print(o.toString(4));
+//	    writer.println();
+//	    writer.close();
+//	}
 	
 	protected static List<Class<?>> loadClassesFromJar(String pathToJar) throws IOException, ClassNotFoundException {
 		JarFile jarFile = new JarFile(pathToJar);
@@ -192,5 +177,15 @@ public class Main {
 		}
 		jarFile.close();
 		return classes;
+	}
+	
+	protected static Object getStaticFieldByName(Class<?> c, String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		Field field = c.getField(fieldName);
+		field.setAccessible(true);
+		return field.get(new Object());
+	}
+	
+	protected static Method getMethodByName(Class<?> c, String methodName) throws NoSuchMethodException {
+		return c.getMethod(methodName);
 	}
 }
