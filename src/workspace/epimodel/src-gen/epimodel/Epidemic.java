@@ -2,7 +2,11 @@
  */
 package epimodel;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
+
+import epimodel.util.PhysicalCompartment;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,6 +25,12 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Epidemic extends EObject {
+	
+	List<PhysicalCompartment> getPhysicalFor(Compartment c);
+	
+	List<PhysicalCompartment> getPhysicalHeadsFor(Compartment c);
+	
+	List<PhysicalCompartment> getPhysicalSinksFor(Compartment c);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

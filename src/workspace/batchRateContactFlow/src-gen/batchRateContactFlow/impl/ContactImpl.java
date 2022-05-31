@@ -6,6 +6,11 @@ import batchRateContactFlow.BatchRateContactFlowPackage;
 import batchRateContactFlow.Contact;
 
 import epimodel.Compartment;
+import epimodel.Epidemic;
+import epimodel.util.PhysicalCompartment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -13,6 +18,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,6 +35,23 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class ContactImpl extends FromToFlowImpl implements Contact {
+	
+	public List<Object> getEquations(Epidemic epidemic) {
+		List<PhysicalCompartment> froms = epidemic.getPhysicalSinksFor(getFrom());
+		List<PhysicalCompartment> tos = epidemic.getPhysicalHeadsFor(getTo());
+		List<PhysicalCompartment> contacts = epidemic.getPhysicalFor(getContact());
+		List<Object> equations = new ArrayList<>();
+		for (PhysicalCompartment f : froms)
+			for (PhysicalCompartment t : tos)
+				for (PhysicalCompartment c : contacts)
+					try {
+						equations.add(new JSONObject("{\"type\":\"Contact\", \"from\": \"" + f + "\", \"to\": " + t + "\", \"contact\": " + c + "\"}"));
+					} catch (JSONException e) {
+						throw new NullPointerException(e.toString());
+					}
+		return equations;
+	}
+	
 	/**
 	 * The cached value of the '{@link #getContact() <em>Contact</em>}' reference.
 	 * <!-- begin-user-doc -->
