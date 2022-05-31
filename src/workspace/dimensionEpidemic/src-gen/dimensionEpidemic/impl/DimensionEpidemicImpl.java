@@ -2,13 +2,25 @@
  */
 package dimensionEpidemic.impl;
 
+import dimensionEpidemic.Dimension;
 import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicPackage;
 import dimensionEpidemic.DimensionWrapper;
-
+import dimensionEpidemic.util.CartesianProduct;
+import dimensionEpidemic.util.DimensionPhysicalCompartment;
+import epimodel.Compartment;
+import epimodel.CompartmentWrapper;
+import epimodel.Flow;
+import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
+import epimodel.util.PhysicalCompartment;
 
+import java.lang.reflect.Method;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -19,6 +31,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,6 +49,85 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpidemic {
+	
+	List<DimensionPhysicalCompartment> physicalCompartments;
+	List<Dimension> dims;
+	
+	public List<JSONObject> compile() throws JSONException {
+		List<JSONObject> files = new ArrayList<>();
+		dims = getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList());
+		{
+			List<List<Compartment>> compartmentsForProduct = dims.stream().map(Dimension::getCompartment).map(l ->l.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList())).collect(Collectors.toList());
+			List<List<Compartment>> cartesianProductOfGraphs = CartesianProduct.cartesianProduct(compartmentsForProduct);
+			physicalCompartments = cartesianProductOfGraphs.stream().map(l -> new DimensionPhysicalCompartment(l, "")).collect(Collectors.toList());
+			JSONObject compartments = new JSONObject();
+			compartments.put("filename", "compartments.json");
+			compartments.put("compartments", new JSONArray(physicalCompartments.stream().map(c -> c.id).collect(Collectors.toList())));
+			files.add(compartments);
+		}
+		{
+			List<List<Flow>> flowsByDimension = dims.stream().map(Dimension::getFlow).map(l ->l.stream().map(FlowWrapper::getFlow).collect(Collectors.toList())).collect(Collectors.toList());
+			List<Flow> allFlows = flowsByDimension.stream().flatMap(List::stream).collect(Collectors.toList());
+			List<List<Object>> equations = allFlows.stream().map(f -> f.getEquations(this)).collect(Collectors.toList());
+			
+			JSONObject flows = new JSONObject();
+			flows.put("filename", "equations.json");
+			flows.put("equations", new JSONArray(equations.stream().map(Object::toString).collect(Collectors.toList())));
+			files.add(flows);
+		}
+		return files;
+	}
+	
+	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
+		return physicalCompartments.stream().filter(pc -> pc.originalLabels.contains(c)).collect(Collectors.toList());
+	}
+	
+	public List<PhysicalCompartment> getPhysicalHeadsFor(Compartment compartment) {
+		for (Dimension dim : dims) {
+			// todo compartment.physicalHeads???
+			List<Compartment> dimcompartments = dim.getCompartment().stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
+			if (dimcompartments.contains(compartment)) {
+				List<Flow> dimflows = dim.getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
+				
+				for (Flow f : dimflows) {
+					try {
+						Method toMethod = f.getClass().getMethod("getTo");
+						Compartment to = (Compartment) toMethod.invoke(f);
+						dimcompartments = dimcompartments.stream().filter(c -> c != to).collect(Collectors.toList());
+					} catch (Exception e) {
+						// pass
+					}
+				}
+				
+				return dimcompartments.stream().map(c -> getPhysicalFor(c)).flatMap(List::stream).collect(Collectors.toList());
+			}
+		}
+		throw new InvalidParameterException();
+	}
+
+	public List<PhysicalCompartment> getPhysicalSinksFor(Compartment compartment) {
+		for (Dimension dim : dims) {
+			// todo compartment.physicalHeads???
+			List<Compartment> dimcompartments = dim.getCompartment().stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
+			if (dimcompartments.contains(compartment)) {
+				List<Flow> dimflows = dim.getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
+				
+				for (Flow f : dimflows) {
+					try {
+						Method toMethod = f.getClass().getMethod("getFrom");
+						Compartment from = (Compartment) toMethod.invoke(f);
+						dimcompartments = dimcompartments.stream().filter(c -> c != from).collect(Collectors.toList());
+					} catch (Exception e) {
+						// pass
+					}
+				}
+				
+				return dimcompartments.stream().map(c -> getPhysicalFor(c)).flatMap(List::stream).collect(Collectors.toList());
+			}
+		}
+		throw new InvalidParameterException();
+	}
+	
 	/**
 	 * The cached value of the '{@link #getDimension() <em>Dimension</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

@@ -4,7 +4,11 @@ package dimensionEpidemic;
 
 import epimodel.Epidemic;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,6 +27,9 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface DimensionEpidemic extends Epidemic {
+	
+	List<JSONObject> compile() throws JSONException;
+	
 	/**
 	 * Returns the value of the '<em><b>Dimension</b></em>' containment reference list.
 	 * The list contents are of type {@link dimensionEpidemic.DimensionWrapper}.
