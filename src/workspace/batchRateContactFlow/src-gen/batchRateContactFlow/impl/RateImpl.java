@@ -30,7 +30,8 @@ public class RateImpl extends FromToFlowImpl implements Rate {
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
 				try {
-					equations.add(new JSONObject("{\"type\":\"Rate\", \"from\": \"" + f + "\", \"to\": " + t+ "\"}"));
+					String s = "{\"type\":\"Rate\", \"from\": \"" + f.id + "\", \"to\": \"" + t.id + "\", \"id\": \"" + getId() + "\"}";
+					equations.add(new JSONObject(s));
 				} catch (JSONException e) {
 					throw new NullPointerException(e.toString());
 				}
