@@ -30,7 +30,8 @@ public class BatchImpl extends FromToFlowImpl implements Batch {
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
 				try {
-					equations.add(new JSONObject("{\"type\":\"Batch\", \"from\": \"" + f + "\", \"to\": " + t+ "\"}"));
+					String s = "{\"type\":\"Batch\", \"from\": \"" + f.id + "\", \"to\": \"" + t.id + "\", \"id\": \"" + getId() + "\"}";
+					equations.add(new JSONObject(s));
 				} catch (JSONException e) {
 					throw new NullPointerException(e.toString());
 				}
