@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ASCII"?>
+<epimodel:EpidemicWrapper xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmentGroup="http://www.example.org/compartmentGroup" xmlns:dimensionEpidemic="http://www.example.org/dimensionEpidemic" xmlns:epimodel="http://www.example.org/epimodel">
+  <epidemic xsi:type="dimensionEpidemic:DimensionEpidemic">
+    <dimension>
+      <dimension id="Age">
+        <coreCompartment>
+          <compartment xsi:type="compartmentGroup:Group" id="Age">
+            <compartment>
+              <compartment id="&lt;40"/>
+            </compartment>
+            <compartment>
+              <compartment id=">=40"/>
+            </compartment>
+          </compartment>
+        </coreCompartment>
+      </dimension>
+    </dimension>
+    <coreCompartment>
+      <compartment xsi:type="compartmentGroup:Group" id="Disease">
+        <compartment>
+          <compartment xsi:type="compartmentGroup:Group" id="SEIR">
+            <compartment>
+              <compartment id="S"/>
+            </compartment>
+            <compartment>
+              <compartment xsi:type="compartmentGroup:Group" id="EIR-Variants">
+                <compartment>
+                  <compartment id="E"/>
+                </compartment>
+                <compartment>
+                  <compartment xsi:type="compartmentGroup:Group" id="I">
+                    <compartment>
+                      <compartment id="I0"/>
+                    </compartment>
+                    <compartment>
+                      <compartment id="I1"/>
+                    </compartment>
+                    <compartment>
+                      <compartment id="Ialt"/>
+                    </compartment>
+                  </compartment>
+                </compartment>
+                <compartment>
+                  <compartment id="R"/>
+                </compartment>
+                <compartment>
+                  <compartment xsi:type="dimensionEpidemic:Dimension" id="Variants">
+                    <coreCompartment>
+                      <compartment xsi:type="compartmentGroup:Group" id="Variants">
+                        <compartment>
+                          <compartment id="A"/>
+                        </compartment>
+                        <compartment>
+                          <compartment id="B"/>
+                        </compartment>
+                      </compartment>
+                    </coreCompartment>
+                  </compartment>
+                </compartment>
+              </compartment>
+            </compartment>
+          </compartment>
+        </compartment>
+      </compartment>
+    </coreCompartment>
+  </epidemic>
+</epimodel:EpidemicWrapper>

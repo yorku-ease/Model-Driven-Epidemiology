@@ -20,7 +20,7 @@ import dimensionEpidemic.DimensionEpidemic;
 public class Test {
 	public static void main(String[] args) throws Exception {
 		
-		String fn = "../../runtime-EclipseApplication/modeling/MyEpimodel.epimodel";
+		String fn = "../../runtime-EclipseApplication/modeling/model1.epimodel";
 		String outfolder = "C:/Users/Bruno/Desktop/";
 		
 		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
@@ -31,17 +31,18 @@ public class Test {
         resSet.getPackageRegistry().put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
         resSet.getPackageRegistry().put(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI, dimensionEpidemic.DimensionEpidemicPackage.eINSTANCE);
         resSet.getPackageRegistry().put(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI, batchRateContactFlow.BatchRateContactFlowPackage.eINSTANCE);
+        resSet.getPackageRegistry().put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
 
         URI uri = URI.createFileURI(fn);
         Resource resource = resSet.getResource(uri, true);
         
         DimensionEpidemic myEpi = (DimensionEpidemic) ((epimodel.EpidemicWrapper) resource.getContents().get(0)).getEpidemic();
         
-        @SuppressWarnings("unused")
 		List<JSONObject> res = myEpi.compile();
         
         for (JSONObject obj : res) {
         	Object content = obj.get(obj.getString("filename"));
+        	// java things...
         	if (content instanceof JSONObject)
         		writeJsonFile((JSONObject) content, outfolder + obj.getString("filename") + ".json");
         	else if (content instanceof JSONArray)
@@ -49,11 +50,11 @@ public class Test {
         	else
         		throw new Exception();
         }
-        	
-
+        
         return;
 	}
-	
+
+	// java things...
 	protected static void writeJsonFile(JSONObject o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
 	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
 	    writer.print(o.toString(4));

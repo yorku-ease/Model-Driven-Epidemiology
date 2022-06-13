@@ -5,6 +5,9 @@ package epimodel.impl;
 import epimodel.Compartment;
 import epimodel.EpimodelPackage;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
@@ -25,6 +28,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
+	
+	@Override
+	public List<List<String>> extend(List<List<String>> current) {
+		current.add(this.getDeclaredLabels());
+		return current;
+	}
+	
+	@Override
+	public List<String> getDeclaredLabels() {
+		return Arrays.asList(getId());
+	}
+	
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->

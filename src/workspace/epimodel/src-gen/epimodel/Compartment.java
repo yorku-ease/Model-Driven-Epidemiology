@@ -2,6 +2,8 @@
  */
 package epimodel;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -21,6 +23,9 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Compartment extends EObject {
+	
+	List<String> getDeclaredLabels();
+	List<List<String>> extend(List<List<String>> current);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
