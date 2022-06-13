@@ -86,13 +86,22 @@ public interface DimensionEpidemicPackage extends EPackage {
 	int DIMENSION_EPIDEMIC__DIMENSION = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Core Compartment</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIMENSION_EPIDEMIC__CORE_COMPARTMENT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Dimension Epidemic</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION_EPIDEMIC_FEATURE_COUNT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 1;
+	int DIMENSION_EPIDEMIC_FEATURE_COUNT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Dimension Epidemic</em>' class.
@@ -132,13 +141,22 @@ public interface DimensionEpidemicPackage extends EPackage {
 	int DIMENSION__FLOW = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Compartment</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Core Compartment</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION__COMPARTMENT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 1;
+	int DIMENSION__CORE_COMPARTMENT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Dimension</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIMENSION__DIMENSION = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Dimension</em>' class.
@@ -147,7 +165,7 @@ public interface DimensionEpidemicPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION_FEATURE_COUNT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 2;
+	int DIMENSION_FEATURE_COUNT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Dimension</em>' class.
@@ -217,6 +235,17 @@ public interface DimensionEpidemicPackage extends EPackage {
 	EReference getDimensionEpidemic_Dimension();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link dimensionEpidemic.DimensionEpidemic#getCoreCompartment <em>Core Compartment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Core Compartment</em>'.
+	 * @see dimensionEpidemic.DimensionEpidemic#getCoreCompartment()
+	 * @see #getDimensionEpidemic()
+	 * @generated
+	 */
+	EReference getDimensionEpidemic_CoreCompartment();
+
+	/**
 	 * Returns the meta object for class '{@link dimensionEpidemic.Dimension <em>Dimension</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -238,15 +267,26 @@ public interface DimensionEpidemicPackage extends EPackage {
 	EReference getDimension_Flow();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link dimensionEpidemic.Dimension#getCompartment <em>Compartment</em>}'.
+	 * Returns the meta object for the containment reference '{@link dimensionEpidemic.Dimension#getCoreCompartment <em>Core Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Compartment</em>'.
-	 * @see dimensionEpidemic.Dimension#getCompartment()
+	 * @return the meta object for the containment reference '<em>Core Compartment</em>'.
+	 * @see dimensionEpidemic.Dimension#getCoreCompartment()
 	 * @see #getDimension()
 	 * @generated
 	 */
-	EReference getDimension_Compartment();
+	EReference getDimension_CoreCompartment();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link dimensionEpidemic.Dimension#getDimension <em>Dimension</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Dimension</em>'.
+	 * @see dimensionEpidemic.Dimension#getDimension()
+	 * @see #getDimension()
+	 * @generated
+	 */
+	EReference getDimension_Dimension();
 
 	/**
 	 * Returns the meta object for class '{@link dimensionEpidemic.DimensionWrapper <em>Dimension Wrapper</em>}'.
@@ -311,6 +351,14 @@ public interface DimensionEpidemicPackage extends EPackage {
 		EReference DIMENSION_EPIDEMIC__DIMENSION = eINSTANCE.getDimensionEpidemic_Dimension();
 
 		/**
+		 * The meta object literal for the '<em><b>Core Compartment</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DIMENSION_EPIDEMIC__CORE_COMPARTMENT = eINSTANCE.getDimensionEpidemic_CoreCompartment();
+
+		/**
 		 * The meta object literal for the '{@link dimensionEpidemic.impl.DimensionImpl <em>Dimension</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -329,12 +377,20 @@ public interface DimensionEpidemicPackage extends EPackage {
 		EReference DIMENSION__FLOW = eINSTANCE.getDimension_Flow();
 
 		/**
-		 * The meta object literal for the '<em><b>Compartment</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Core Compartment</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DIMENSION__COMPARTMENT = eINSTANCE.getDimension_Compartment();
+		EReference DIMENSION__CORE_COMPARTMENT = eINSTANCE.getDimension_CoreCompartment();
+
+		/**
+		 * The meta object literal for the '<em><b>Dimension</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DIMENSION__DIMENSION = eINSTANCE.getDimension_Dimension();
 
 		/**
 		 * The meta object literal for the '{@link dimensionEpidemic.impl.DimensionWrapperImpl <em>Dimension Wrapper</em>}' class.

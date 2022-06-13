@@ -6,6 +6,7 @@ import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicFactory;
 import dimensionEpidemic.DimensionEpidemicPackage;
 
+import epimodel.EpimodelFactory;
 import epimodel.provider.EpidemicItemProvider;
 
 import java.util.Collection;
@@ -64,6 +65,7 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__DIMENSION);
+			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__CORE_COMPARTMENT);
 		}
 		return childrenFeatures;
 	}
@@ -128,6 +130,7 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 
 		switch (notification.getFeatureID(DimensionEpidemic.class)) {
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -147,6 +150,10 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 
 		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__DIMENSION,
 				DimensionEpidemicFactory.eINSTANCE.createDimensionWrapper()));
+
+		newChildDescriptors
+				.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__CORE_COMPARTMENT,
+						EpimodelFactory.eINSTANCE.createCompartmentWrapper()));
 	}
 
 }

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -28,6 +29,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.json.JSONArray;
@@ -43,87 +45,120 @@ import org.json.JSONObject;
  * </p>
  * <ul>
  *   <li>{@link dimensionEpidemic.impl.DimensionEpidemicImpl#getDimension <em>Dimension</em>}</li>
+ *   <li>{@link dimensionEpidemic.impl.DimensionEpidemicImpl#getCoreCompartment <em>Core Compartment</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpidemic {
-	
+
 	List<DimensionPhysicalCompartment> physicalCompartments;
 	List<Dimension> dims;
-	
-	public List<JSONObject> compile() throws JSONException {
-		dims = getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList());
-		
-		List<List<Compartment>> compartmentsForProduct = dims.stream().map(Dimension::getCompartment).map(l ->l.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList())).collect(Collectors.toList());
-		List<List<Compartment>> cartesianProductOfGraphs = CartesianProduct.cartesianProduct(compartmentsForProduct);
-		physicalCompartments = cartesianProductOfGraphs.stream().map(l -> new DimensionPhysicalCompartment(l)).collect(Collectors.toList());
 
-		List<List<Flow>> flowsByDimension = dims.stream().map(Dimension::getFlow).map(l ->l.stream().map(FlowWrapper::getFlow).collect(Collectors.toList())).collect(Collectors.toList());
-		List<List<List<Object>>> physicalFlowsByDimension = 
-				flowsByDimension.stream().map(
-						lf -> lf.stream().map(f -> f.getEquations(this)).collect(Collectors.toList())
-				).collect(Collectors.toList());
+	public List<JSONObject> compile() throws JSONException {
+
+		List<List<String>> extended = this.getCoreCompartment().getCompartment().extend(new ArrayList<>());
+		// List<List<String>> extended = new ArrayList<>();
+		/*getDimension().stream().reduce(
+														(List<List<String>>) new ArrayList<List<String>>(),
+														(l, cmpt) -> cmpt.getDimension().extend(l),
+														(l, what) -> {
+														System.out.println(l);
+														System.out.println(what);
+														return l;
+														}
+														);*/
+
+		for (Dimension d : getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList()))
+			extended = d.extend(extended);
+		
+//		for (List<String> l : extended)
+//			System.out.println(l);
+
+		dims = getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList());
+
+		List<List<Compartment>> compartmentsForProduct = null;/*dims.stream().map(Dimension::getCompartment)
+																.map(l -> l.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList()))
+																.collect(Collectors.toList());*/
+		List<List<Compartment>> cartesianProductOfGraphs = CartesianProduct.cartesianProduct(compartmentsForProduct);
+		physicalCompartments = new ArrayList<>();
+		for (List<Compartment> arrangement : cartesianProductOfGraphs) {
+			List<List<String>> physicalArrangementsNotExpanded = arrangement.stream()
+					.map(Compartment::getDeclaredLabels).collect(Collectors.toList());
+			List<List<String>> physicalArrangementsExpanded = CartesianProduct
+					.cartesianProduct(physicalArrangementsNotExpanded);
+			for (List<String> physicalArrangement : physicalArrangementsExpanded) {
+				physicalCompartments.add(new DimensionPhysicalCompartment(physicalArrangement));
+			}
+		}
+
+		List<List<Flow>> flowsByDimension = dims.stream().map(Dimension::getFlow)
+				.map(l -> l.stream().map(FlowWrapper::getFlow).collect(Collectors.toList()))
+				.collect(Collectors.toList());
+		List<List<List<Object>>> physicalFlowsByDimension = flowsByDimension.stream()
+				.map(lf -> lf.stream().map(f -> f.getEquations(this)).collect(Collectors.toList()))
+				.collect(Collectors.toList());
 
 		List<JSONObject> files = new ArrayList<>();
-		
+
 		{
 			JSONObject flows = new JSONObject();
 			flows.put("filename", "flows");
 			JSONArray flowsByDimById = new JSONArray();
 			for (int i = 0; i < dims.size(); ++i) {
 				JSONArray flowsOfDimById = new JSONArray();
-	        	List<Flow> flowsOfDim = flowsByDimension.get(i);
-	        	List<List<Object>> physicalFlowsOfDim = physicalFlowsByDimension.get(i);
-	        	for (int j = 0; j < flowsOfDim.size(); ++j) {
-	    			Flow flow = flowsOfDim.get(j);
-	    			JSONObject flowjson = new JSONObject();
-	    			flowjson.put("id", flow.getId());
-	    			flowjson.put("flows", physicalFlowsOfDim.get(j));
-	    			flowsOfDimById.put(flowjson);
-	        	}
-	        	flowsByDimById.put(flowsOfDimById);
-	        }
+				List<Flow> flowsOfDim = flowsByDimension.get(i);
+				List<List<Object>> physicalFlowsOfDim = physicalFlowsByDimension.get(i);
+				for (int j = 0; j < flowsOfDim.size(); ++j) {
+					Flow flow = flowsOfDim.get(j);
+					JSONObject flowjson = new JSONObject();
+					flowjson.put("id", flow.getId());
+					flowjson.put("flows", physicalFlowsOfDim.get(j));
+					flowsOfDimById.put(flowjson);
+				}
+				flowsByDimById.put(flowsOfDimById);
+			}
 			flows.put("flows", flowsByDimById);
 			files.add(flows);
 		}
 		{
 			JSONObject compartments = new JSONObject();
 			compartments.put("filename", "compartments");
-			compartments.put("compartments", new JSONArray(physicalCompartments.stream().map(c -> c.id).collect(Collectors.toList())));
+			compartments.put("compartments",
+					new JSONArray(physicalCompartments.stream().map(c -> c.id).collect(Collectors.toList())));
 			files.add(compartments);
 		}
 		{
-	    	JSONObject flowParameters = new JSONObject();
-	    	JSONObject initialConditions = new JSONObject();
-	        JSONObject susceptibility = new JSONObject();
-	        JSONObject contagiousness = new JSONObject();
-	        
-	        for (PhysicalCompartment c : physicalCompartments) {
-	        	susceptibility.put(c.id, 0.1);
-	        	contagiousness.put(c.id, 0.1);
-	    		initialConditions.put(c.id, 1);
-	        }
-	        
-	        for (int i = 0; i < dims.size(); ++i) {
-	        	List<Flow> flowsOfDim = flowsByDimension.get(i);
-	        	List<List<Object>> physicalFlowsOfDim = physicalFlowsByDimension.get(i);
-	        	for (int j = 0; j < flowsOfDim.size(); ++j) {
-	    			Flow flow = flowsOfDim.get(j);
-	    			JSONArray valuesForFlow = new JSONArray();
-	    			int m = physicalFlowsOfDim.get(j).size();
-	        		for (int k = 0; k < m; ++k)
-	        			valuesForFlow.put(0.1);
-	        		flowParameters.put(flow.getId(), valuesForFlow);
-	        	}
-	        }
-	        
-	    	JSONObject parameters = new JSONObject();
-	    	parameters.put("flows", flowParameters);
-	    	parameters.put("initial_conditions", initialConditions);
-	    	parameters.put("susceptibility", susceptibility);
-	    	parameters.put("contagiousness", contagiousness);
-	    	
+			JSONObject flowParameters = new JSONObject();
+			JSONObject initialConditions = new JSONObject();
+			JSONObject susceptibility = new JSONObject();
+			JSONObject contagiousness = new JSONObject();
+
+			for (PhysicalCompartment c : physicalCompartments) {
+				susceptibility.put(c.id, 0.1);
+				contagiousness.put(c.id, 0.1);
+				initialConditions.put(c.id, 1);
+			}
+
+			for (int i = 0; i < dims.size(); ++i) {
+				List<Flow> flowsOfDim = flowsByDimension.get(i);
+				List<List<Object>> physicalFlowsOfDim = physicalFlowsByDimension.get(i);
+				for (int j = 0; j < flowsOfDim.size(); ++j) {
+					Flow flow = flowsOfDim.get(j);
+					JSONArray valuesForFlow = new JSONArray();
+					int m = physicalFlowsOfDim.get(j).size();
+					for (int k = 0; k < m; ++k)
+						valuesForFlow.put(0.1);
+					flowParameters.put(flow.getId(), valuesForFlow);
+				}
+			}
+
+			JSONObject parameters = new JSONObject();
+			parameters.put("flows", flowParameters);
+			parameters.put("initial_conditions", initialConditions);
+			parameters.put("susceptibility", susceptibility);
+			parameters.put("contagiousness", contagiousness);
+
 			JSONObject parameterswrap = new JSONObject();
 			parameterswrap.put("filename", "parameters");
 			parameterswrap.put("parameters", parameters);
@@ -136,8 +171,10 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 				try {
 					JSONObject dimensionMetadata = new JSONObject();
 					dimensionMetadata.put("id", d.getId());
-					dimensionMetadata.put("size", d.getCompartment().size());
-					dimensionMetadata.put("labels", new JSONArray(d.getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getId).collect(Collectors.toList())));
+					dimensionMetadata.put("labels", new JSONArray((Object) null/*d.getCompartment().stream().map(CompartmentWrapper::getCompartment)
+																				.map(Compartment::getDeclaredLabels).flatMap(List::stream)
+																				.collect(Collectors.toList())*/));
+					dimensionMetadata.put("size", dimensionMetadata.getJSONArray("labels").length());
 					return dimensionMetadata;
 				} catch (JSONException e) {
 					throw new NullPointerException(e.toString());
@@ -147,17 +184,23 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		}
 		return files;
 	}
-	
+
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		return physicalCompartments.stream().filter(pc -> pc.originalLabels.contains(c)).collect(Collectors.toList());
+		return physicalCompartments.stream().filter(pc -> {
+			for (String label : c.getDeclaredLabels())
+				if (pc.originalLabels.contains(label))
+					return true;
+			return false;
+		}).collect(Collectors.toList());
 	}
-	
+
 	public List<PhysicalCompartment> getPhysicalHeadsFor(Compartment compartment) {
 		if (compartment instanceof Dimension) {
 			Dimension dim = (Dimension) compartment;
-			List<Compartment> dimcompartments = dim.getCompartment().stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
+			List<Compartment> dimcompartments = null;/*dim.getCompartment().stream().map(CompartmentWrapper::getCompartment)
+														.collect(Collectors.toList());*/
 			List<Flow> dimflows = dim.getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
-			
+
 			for (Flow f : dimflows)
 				try {
 					Method toMethod = f.getClass().getMethod("getTo");
@@ -166,8 +209,9 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 				} catch (Exception e) {
 					// pass
 				}
-			
-			return dimcompartments.stream().map(c -> getPhysicalFor(c)).flatMap(List::stream).collect(Collectors.toList());
+
+			return dimcompartments.stream().map(c -> getPhysicalFor(c)).flatMap(List::stream)
+					.collect(Collectors.toList());
 		}
 		return getPhysicalFor(compartment);
 	}
@@ -175,9 +219,10 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	public List<PhysicalCompartment> getPhysicalSinksFor(Compartment compartment) {
 		if (compartment instanceof Dimension) {
 			Dimension dim = (Dimension) compartment;
-			List<Compartment> dimcompartments = dim.getCompartment().stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
+			List<Compartment> dimcompartments = null;/*dim.getCompartment().stream().map(CompartmentWrapper::getCompartment)
+														.collect(Collectors.toList());*/
 			List<Flow> dimflows = dim.getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
-			
+
 			for (Flow f : dimflows)
 				try {
 					Method fromMethod = f.getClass().getMethod("getFrom");
@@ -186,12 +231,13 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 				} catch (Exception e) {
 					// pass
 				}
-			
-			return dimcompartments.stream().map(c -> getPhysicalFor(c)).flatMap(List::stream).collect(Collectors.toList());
+
+			return dimcompartments.stream().map(c -> getPhysicalFor(c)).flatMap(List::stream)
+					.collect(Collectors.toList());
 		}
 		return getPhysicalFor(compartment);
 	}
-	
+
 	/**
 	 * The cached value of the '{@link #getDimension() <em>Dimension</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -201,6 +247,16 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	 * @ordered
 	 */
 	protected EList<DimensionWrapper> dimension;
+
+	/**
+	 * The cached value of the '{@link #getCoreCompartment() <em>Core Compartment</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCoreCompartment()
+	 * @generated
+	 * @ordered
+	 */
+	protected CompartmentWrapper coreCompartment;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -241,10 +297,68 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	 * @generated
 	 */
 	@Override
+	public CompartmentWrapper getCoreCompartment() {
+		return coreCompartment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCoreCompartment(CompartmentWrapper newCoreCompartment, NotificationChain msgs) {
+		CompartmentWrapper oldCoreCompartment = coreCompartment;
+		coreCompartment = newCoreCompartment;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT, oldCoreCompartment,
+					newCoreCompartment);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setCoreCompartment(CompartmentWrapper newCoreCompartment) {
+		if (newCoreCompartment != coreCompartment) {
+			NotificationChain msgs = null;
+			if (coreCompartment != null)
+				msgs = ((InternalEObject) coreCompartment).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT, null,
+						msgs);
+			if (newCoreCompartment != null)
+				msgs = ((InternalEObject) newCoreCompartment).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT, null,
+						msgs);
+			msgs = basicSetCoreCompartment(newCoreCompartment, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT, newCoreCompartment,
+					newCoreCompartment));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			return ((InternalEList<?>) getDimension()).basicRemove(otherEnd, msgs);
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT:
+			return basicSetCoreCompartment(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -259,6 +373,8 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		switch (featureID) {
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			return getDimension();
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT:
+			return getCoreCompartment();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -276,6 +392,9 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 			getDimension().clear();
 			getDimension().addAll((Collection<? extends DimensionWrapper>) newValue);
 			return;
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT:
+			setCoreCompartment((CompartmentWrapper) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -291,6 +410,9 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			getDimension().clear();
 			return;
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT:
+			setCoreCompartment((CompartmentWrapper) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -305,6 +427,8 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		switch (featureID) {
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			return dimension != null && !dimension.isEmpty();
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__CORE_COMPARTMENT:
+			return coreCompartment != null;
 		}
 		return super.eIsSet(featureID);
 	}
