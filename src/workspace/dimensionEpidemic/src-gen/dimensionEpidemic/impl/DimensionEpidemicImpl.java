@@ -57,23 +57,11 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 
 	public List<JSONObject> compile() throws JSONException {
 
-		List<List<String>> extended = this.getCoreCompartment().getCompartment().extend(new ArrayList<>());
-		// List<List<String>> extended = new ArrayList<>();
-		/*getDimension().stream().reduce(
-														(List<List<String>>) new ArrayList<List<String>>(),
-														(l, cmpt) -> cmpt.getDimension().extend(l),
-														(l, what) -> {
-														System.out.println(l);
-														System.out.println(what);
-														return l;
-														}
-														);*/
-
-		for (Dimension d : getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList()))
-			extended = d.extend(extended);
-		
-//		for (List<String> l : extended)
-//			System.out.println(l);
+		final List<List<String>> extended = getDimension().stream().reduce(
+				this.getCoreCompartment().getCompartment().extend(new ArrayList<>()),
+				(l, cmpt) -> cmpt.getDimension().extend(l),
+				(l1, l2) -> l1
+			);
 
 		dims = getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList());
 
@@ -82,14 +70,14 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 																.collect(Collectors.toList());*/
 		List<List<Compartment>> cartesianProductOfGraphs = CartesianProduct.cartesianProduct(compartmentsForProduct);
 		physicalCompartments = new ArrayList<>();
+		
 		for (List<Compartment> arrangement : cartesianProductOfGraphs) {
 			List<List<String>> physicalArrangementsNotExpanded = arrangement.stream()
 					.map(Compartment::getDeclaredLabels).collect(Collectors.toList());
 			List<List<String>> physicalArrangementsExpanded = CartesianProduct
 					.cartesianProduct(physicalArrangementsNotExpanded);
-			for (List<String> physicalArrangement : physicalArrangementsExpanded) {
+			for (List<String> physicalArrangement : physicalArrangementsExpanded)
 				physicalCompartments.add(new DimensionPhysicalCompartment(physicalArrangement));
-			}
 		}
 
 		List<List<Flow>> flowsByDimension = dims.stream().map(Dimension::getFlow)

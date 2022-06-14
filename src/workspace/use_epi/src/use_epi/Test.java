@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -23,16 +25,28 @@ public class Test {
 		String fn = "../../runtime-EclipseApplication/modeling/model1.epimodel";
 		String outfolder = "C:/Users/Bruno/Desktop/";
 		
-		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-        Map<String, Object> m = reg.getExtensionToFactoryMap();
-        m.put("*", new EcoreResourceFactoryImpl());
-
+		{
+			Resource.Factory.Registry factoryRegistry = Resource.Factory.Registry.INSTANCE;
+	        Map<String, Object> m = factoryRegistry.getExtensionToFactoryMap();
+	        m.put("*", new EcoreResourceFactoryImpl());
+		}
+		
         ResourceSet resSet = new ResourceSetImpl();
-        resSet.getPackageRegistry().put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-        resSet.getPackageRegistry().put(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI, dimensionEpidemic.DimensionEpidemicPackage.eINSTANCE);
-        resSet.getPackageRegistry().put(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI, batchRateContactFlow.BatchRateContactFlowPackage.eINSTANCE);
-        resSet.getPackageRegistry().put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
-
+        EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
+        resSet.setPackageRegistry(pkgRegistry);
+        
+		{
+	        pkgRegistry.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
+	        pkgRegistry.put(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI, dimensionEpidemic.DimensionEpidemicPackage.eINSTANCE);
+	        pkgRegistry.put(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI, batchRateContactFlow.BatchRateContactFlowPackage.eINSTANCE);
+	        pkgRegistry.put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
+	        
+//	        pkgRegistry.remove(epimodel.EpimodelPackage.eNS_URI);
+//	        pkgRegistry.remove(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI);
+//	        pkgRegistry.remove(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI);
+//	        pkgRegistry.remove(compartmentGroup.CompartmentGroupPackage.eNS_URI);
+		}
+        
         URI uri = URI.createFileURI(fn);
         Resource resource = resSet.getResource(uri, true);
         
