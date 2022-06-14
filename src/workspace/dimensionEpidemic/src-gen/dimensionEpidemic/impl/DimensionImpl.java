@@ -14,7 +14,6 @@ import epimodel.util.ListForwardDecorator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -53,30 +52,18 @@ public class DimensionImpl extends CompartmentImpl implements Dimension {
 
 	@Override
 	public List<List<String>> extend(List<List<String>> current) {
-		
-		List<List<String>> core = this.getCoreCompartment().getCompartment().extend(new ArrayList<>());
 
-//		final List<List<String>> myCompartments = getDimension().stream().reduce(
-//				core,
-//				(l, dim) -> dim.getDimension().extend(l), (l, what) -> {
-//					System.out.println(l);
-//					System.out.println(what);
-//					return l;
-//				});
-
-		List<List<String>> extended = core;
-		final List<List<String>> extended2 = extended;
-
-		for (Dimension d : getDimension().stream().map(DimensionWrapper::getDimension).collect(Collectors.toList()))
-			extended = d.extend(extended);
-
-		String extstr = extended.toString();
+		final List<List<String>> extended = getDimension().stream().reduce(
+				this.getCoreCompartment().getCompartment().extend(new ArrayList<>()),
+				(l, cmpt) -> cmpt.getDimension().extend(l),
+				(l1, l2) -> l1
+			);
 
 		List<List<String>> next = new ListForwardDecorator<List<String>>(new ArrayList<>()) {
 			@Override
 			public boolean add(List<String> e) {
 				boolean res = true;
-				for (List<String> labels : extended2) {
+				for (List<String> labels : extended) {
 					List<String> modified = new ArrayList<>(e);
 					modified.addAll(labels);
 					res &= super.add(modified);
@@ -86,9 +73,6 @@ public class DimensionImpl extends CompartmentImpl implements Dimension {
 		};
 
 		next.addAll(current);
-
-		System.out.println(String.format("Dimension %s Extend: current: %s, myCompartments: %s, next: %s", getId(),
-				current, extstr, next));
 
 		return next;
 	}
