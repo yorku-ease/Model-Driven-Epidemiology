@@ -74,6 +74,26 @@ public class CompartmentGroupAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseGroupSources(GroupSources object) {
+			return createGroupSourcesAdapter();
+		}
+
+		@Override
+		public Adapter caseGroupSinks(GroupSinks object) {
+			return createGroupSinksAdapter();
+		}
+
+		@Override
+		public Adapter caseEnd(End object) {
+			return createEndAdapter();
+		}
+
+		@Override
+		public Adapter caseLink(Link object) {
+			return createLinkAdapter();
+		}
+
+		@Override
 		public Adapter caseCompartment(Compartment object) {
 			return createCompartmentAdapter();
 		}
@@ -108,6 +128,62 @@ public class CompartmentGroupAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGroupAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link compartmentGroup.GroupSources <em>Group Sources</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see compartmentGroup.GroupSources
+	 * @generated
+	 */
+	public Adapter createGroupSourcesAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link compartmentGroup.GroupSinks <em>Group Sinks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see compartmentGroup.GroupSinks
+	 * @generated
+	 */
+	public Adapter createGroupSinksAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link compartmentGroup.End <em>End</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see compartmentGroup.End
+	 * @generated
+	 */
+	public Adapter createEndAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link compartmentGroup.Link <em>Link</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see compartmentGroup.Link
+	 * @generated
+	 */
+	public Adapter createLinkAdapter() {
 		return null;
 	}
 

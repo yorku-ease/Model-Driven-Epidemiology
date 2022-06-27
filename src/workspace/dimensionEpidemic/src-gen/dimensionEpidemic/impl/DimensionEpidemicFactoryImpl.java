@@ -58,10 +58,8 @@ public class DimensionEpidemicFactoryImpl extends EFactoryImpl implements Dimens
 		switch (eClass.getClassifierID()) {
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC:
 			return createDimensionEpidemic();
-		case DimensionEpidemicPackage.DIMENSION:
-			return createDimension();
-		case DimensionEpidemicPackage.DIMENSION_WRAPPER:
-			return createDimensionWrapper();
+		case DimensionEpidemicPackage.PRODUCT:
+			return createProduct();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -84,20 +82,9 @@ public class DimensionEpidemicFactoryImpl extends EFactoryImpl implements Dimens
 	 * @generated
 	 */
 	@Override
-	public Dimension createDimension() {
-		DimensionImpl dimension = new DimensionImpl();
-		return dimension;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public DimensionWrapper createDimensionWrapper() {
-		DimensionWrapperImpl dimensionWrapper = new DimensionWrapperImpl();
-		return dimensionWrapper;
+	public Product createProduct() {
+		ProductImpl product = new ProductImpl();
+		return product;
 	}
 
 	/**

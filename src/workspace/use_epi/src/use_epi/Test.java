@@ -22,7 +22,7 @@ import dimensionEpidemic.DimensionEpidemic;
 public class Test {
 	public static void main(String[] args) throws Exception {
 		
-		String fn = "../../runtime-EclipseApplication/modeling/model1.epimodel";
+		String model_fn = "../../runtime-EclipseApplication/modeling/model2.epimodel";
 		String outfolder = "C:/Users/Bruno/Desktop/";
 		
 		{
@@ -47,7 +47,7 @@ public class Test {
 //	        pkgRegistry.remove(compartmentGroup.CompartmentGroupPackage.eNS_URI);
 		}
         
-        URI uri = URI.createFileURI(fn);
+        URI uri = URI.createFileURI(model_fn);
         Resource resource = resSet.getResource(uri, true);
         
         DimensionEpidemic myEpi = (DimensionEpidemic) ((epimodel.EpidemicWrapper) resource.getContents().get(0)).getEpidemic();
@@ -55,12 +55,13 @@ public class Test {
 		List<JSONObject> res = myEpi.compile();
         
         for (JSONObject obj : res) {
-        	Object content = obj.get(obj.getString("filename"));
+        	String fn = obj.getString("filename");
+        	Object content = obj.get(obj.getString("key"));
         	// java things...
         	if (content instanceof JSONObject)
-        		writeJsonFile((JSONObject) content, outfolder + obj.getString("filename") + ".json");
+        		writeJsonFile((JSONObject) content, outfolder + fn + ".json");
         	else if (content instanceof JSONArray)
-        		writeJsonFile((JSONArray) content, outfolder + obj.getString("filename") + ".json");
+        		writeJsonFile((JSONArray) content, outfolder + fn + ".json");
         	else
         		throw new Exception();
         }

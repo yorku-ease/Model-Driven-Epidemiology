@@ -2,12 +2,10 @@
  */
 package dimensionEpidemic.impl;
 
-import dimensionEpidemic.Dimension;
 import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicFactory;
 import dimensionEpidemic.DimensionEpidemicPackage;
-import dimensionEpidemic.DimensionWrapper;
-
+import dimensionEpidemic.Product;
 import epimodel.EpimodelPackage;
 
 import org.eclipse.emf.ecore.EClass;
@@ -35,14 +33,7 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass dimensionEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass dimensionWrapperEClass = null;
+	private EClass productEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -137,8 +128,8 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * @generated
 	 */
 	@Override
-	public EReference getDimensionEpidemic_CoreCompartment() {
-		return (EReference) dimensionEpidemicEClass.getEStructuralFeatures().get(1);
+	public EClass getProduct() {
+		return productEClass;
 	}
 
 	/**
@@ -147,8 +138,8 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * @generated
 	 */
 	@Override
-	public EClass getDimension() {
-		return dimensionEClass;
+	public EReference getProduct_Flow() {
+		return (EReference) productEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -157,48 +148,8 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * @generated
 	 */
 	@Override
-	public EReference getDimension_Flow() {
-		return (EReference) dimensionEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getDimension_CoreCompartment() {
-		return (EReference) dimensionEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getDimension_Dimension() {
-		return (EReference) dimensionEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getDimensionWrapper() {
-		return dimensionWrapperEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getDimensionWrapper_Dimension() {
-		return (EReference) dimensionWrapperEClass.getEStructuralFeatures().get(0);
+	public EReference getProduct_Dimensions() {
+		return (EReference) productEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -233,15 +184,10 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 		// Create classes and their features
 		dimensionEpidemicEClass = createEClass(DIMENSION_EPIDEMIC);
 		createEReference(dimensionEpidemicEClass, DIMENSION_EPIDEMIC__DIMENSION);
-		createEReference(dimensionEpidemicEClass, DIMENSION_EPIDEMIC__CORE_COMPARTMENT);
 
-		dimensionEClass = createEClass(DIMENSION);
-		createEReference(dimensionEClass, DIMENSION__FLOW);
-		createEReference(dimensionEClass, DIMENSION__CORE_COMPARTMENT);
-		createEReference(dimensionEClass, DIMENSION__DIMENSION);
-
-		dimensionWrapperEClass = createEClass(DIMENSION_WRAPPER);
-		createEReference(dimensionWrapperEClass, DIMENSION_WRAPPER__DIMENSION);
+		productEClass = createEClass(PRODUCT);
+		createEReference(productEClass, PRODUCT__FLOW);
+		createEReference(productEClass, PRODUCT__DIMENSIONS);
 	}
 
 	/**
@@ -278,34 +224,21 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 
 		// Add supertypes to classes
 		dimensionEpidemicEClass.getESuperTypes().add(theEpimodelPackage.getEpidemic());
-		dimensionEClass.getESuperTypes().add(theEpimodelPackage.getCompartment());
+		productEClass.getESuperTypes().add(theEpimodelPackage.getCompartment());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(dimensionEpidemicEClass, DimensionEpidemic.class, "DimensionEpidemic", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDimensionEpidemic_Dimension(), this.getDimensionWrapper(), null, "dimension", null, 0, -1,
-				DimensionEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDimensionEpidemic_CoreCompartment(), theEpimodelPackage.getCompartmentWrapper(), null,
-				"coreCompartment", null, 0, 1, DimensionEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDimensionEpidemic_Dimension(), theEpimodelPackage.getCompartmentWrapper(), null, "dimension",
+				null, 0, -1, DimensionEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(dimensionEClass, Dimension.class, "Dimension", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDimension_Flow(), theEpimodelPackage.getFlowWrapper(), null, "flow", null, 0, -1,
-				Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDimension_CoreCompartment(), theEpimodelPackage.getCompartmentWrapper(), null,
-				"coreCompartment", null, 0, 1, Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDimension_Dimension(), this.getDimensionWrapper(), null, "dimension", null, 0, -1,
-				Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(dimensionWrapperEClass, DimensionWrapper.class, "DimensionWrapper", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDimensionWrapper_Dimension(), this.getDimension(), null, "dimension", null, 0, 1,
-				DimensionWrapper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+		initEClass(productEClass, Product.class, "Product", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getProduct_Flow(), theEpimodelPackage.getFlowWrapper(), null, "flow", null, 0, -1, Product.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProduct_Dimensions(), theEpimodelPackage.getCompartmentWrapper(), null, "dimensions", null, 0,
+				-1, Product.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource

@@ -11,7 +11,6 @@ import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
 import epimodel.util.PhysicalCompartment;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,19 +40,19 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class CompartmentFlowEpidemicImpl extends EpidemicImpl implements CompartmentFlowEpidemic {
 	
+	@Override
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		// todo return compartment.physical???
-		return Arrays.asList(new PhysicalCompartment(c.getId()));
+		throw new NullPointerException("getPhysicalFor Not Implemented for CompartmentFlowEpidemicImpl");
 	}
 
-	public List<PhysicalCompartment> getPhysicalHeadsFor(Compartment c) {
-		// todo return compartment.physicalHeads???
-		return getPhysicalFor(c);
+	@Override
+	public List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c) {
+		throw new NullPointerException("getPhysicalSourcesFor Not Implemented for CompartmentFlowEpidemicImpl");
 	}
 
+	@Override
 	public List<PhysicalCompartment> getPhysicalSinksFor(Compartment c) {
-		// todo return compartment.physicalSinks???
-		return getPhysicalFor(c);
+		throw new NullPointerException("getPhysicalSinksFor Not Implemented for CompartmentFlowEpidemicImpl");
 	}
 	
 	/**

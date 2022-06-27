@@ -1,10 +1,10 @@
 /**
  */
-package dimensionEpidemic.provider;
+package compartmentGroup.provider;
 
-import dimensionEpidemic.DimensionEpidemicFactory;
-import dimensionEpidemic.DimensionEpidemicPackage;
-import dimensionEpidemic.DimensionWrapper;
+import compartmentGroup.CompartmentGroupFactory;
+import compartmentGroup.CompartmentGroupPackage;
+import compartmentGroup.End;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,12 +27,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link dimensionEpidemic.DimensionWrapper} object.
+ * This is the item provider adapter for a {@link compartmentGroup.End} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class DimensionWrapperItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+public class EndItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
 		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -40,7 +40,7 @@ public class DimensionWrapperItemProvider extends ItemProviderAdapter implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DimensionWrapperItemProvider(AdapterFactory adapterFactory) {
+	public EndItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -71,7 +71,7 @@ public class DimensionWrapperItemProvider extends ItemProviderAdapter implements
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION_WRAPPER__DIMENSION);
+			childrenFeatures.add(CompartmentGroupPackage.Literals.END__LINK);
 		}
 		return childrenFeatures;
 	}
@@ -90,14 +90,14 @@ public class DimensionWrapperItemProvider extends ItemProviderAdapter implements
 	}
 
 	/**
-	 * This returns DimensionWrapper.gif.
+	 * This returns End.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/DimensionWrapper"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/End"));
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class DimensionWrapperItemProvider extends ItemProviderAdapter implements
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_DimensionWrapper_type");
+		return getString("_UI_End_type");
 	}
 
 	/**
@@ -132,8 +132,8 @@ public class DimensionWrapperItemProvider extends ItemProviderAdapter implements
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(DimensionWrapper.class)) {
-		case DimensionEpidemicPackage.DIMENSION_WRAPPER__DIMENSION:
+		switch (notification.getFeatureID(End.class)) {
+		case CompartmentGroupPackage.END__LINK:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -151,8 +151,8 @@ public class DimensionWrapperItemProvider extends ItemProviderAdapter implements
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION_WRAPPER__DIMENSION,
-				DimensionEpidemicFactory.eINSTANCE.createDimension()));
+		newChildDescriptors.add(createChildParameter(CompartmentGroupPackage.Literals.END__LINK,
+				CompartmentGroupFactory.eINSTANCE.createLink()));
 	}
 
 	/**

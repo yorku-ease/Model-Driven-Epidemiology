@@ -7,7 +7,7 @@ import java.util.List;
 public class CartesianProduct {
 	// https://codereview.stackexchange.com/a/67922
 	public static <T> List<List<T>> cartesianProduct(List<List<T>> lists) {
-	    List<List<T>> combinations = Arrays.asList(Arrays.asList());
+	    List<List<T>> combinations = new ArrayList<>(Arrays.asList(new ArrayList<>(Arrays.asList())));
 	    for (List<T> list : lists) {
 	        List<List<T>> extraColumnCombinations = new ArrayList<>();
 	        for (List<T> combination : combinations)

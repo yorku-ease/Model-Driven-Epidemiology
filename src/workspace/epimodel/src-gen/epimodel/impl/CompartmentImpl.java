@@ -4,7 +4,10 @@ package epimodel.impl;
 
 import epimodel.Compartment;
 import epimodel.EpimodelPackage;
+import epimodel.Flow;
+import epimodel.util.PhysicalCompartment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,16 +31,31 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
-	
+
 	@Override
-	public List<List<String>> extend(List<List<String>> current) {
-		current.add(this.getDeclaredLabels());
-		return current;
+	public List<PhysicalCompartment> getPhysicalCompartments() {
+		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(new ArrayList<>(Arrays.asList(getId())))));
 	}
+
+	@Override
+	public List<PhysicalCompartment> getSources() {
+		return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinks() {
+		return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<Flow> getFlows() {
+		return new ArrayList<>();
+	}
+
 	
 	@Override
 	public List<String> getDeclaredLabels() {
-		return Arrays.asList(getId());
+		return new ArrayList<>(Arrays.asList(getId()));
 	}
 	
 	/**
@@ -175,5 +193,4 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		result.append(')');
 		return result.toString();
 	}
-
 } //CompartmentImpl

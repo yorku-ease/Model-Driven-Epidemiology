@@ -38,14 +38,14 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	
 	public List<Object> getEquations(Epidemic epidemic) {
 		List<PhysicalCompartment> froms = epidemic.getPhysicalSinksFor(getFrom());
-		List<PhysicalCompartment> tos = epidemic.getPhysicalHeadsFor(getTo());
+		List<PhysicalCompartment> tos = epidemic.getPhysicalSourcesFor(getTo());
 		List<PhysicalCompartment> contacts = epidemic.getPhysicalFor(getContact());
 		List<Object> equations = new ArrayList<>();
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
 				for (PhysicalCompartment c : contacts)
 					try {
-						String s = "{\"type\":\"Contact\", \"from\": \"" + f.id + "\", \"to\": \"" + t.id + "\", \"contact\": \"" + c.id + "\", \"id\": \"" + getId() + "\"}";
+						String s = "{\"type\":\"Contact\", \"from\": \"" + f.labels + "\", \"to\": \"" + t.labels + "\", \"contact\": \"" + c.labels + "\", \"id\": \"" + getId() + "\"}";
 						equations.add(new JSONObject(s));
 					} catch (JSONException e) {
 						throw new NullPointerException(e.toString());

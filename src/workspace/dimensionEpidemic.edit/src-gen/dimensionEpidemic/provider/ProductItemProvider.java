@@ -2,9 +2,8 @@
  */
 package dimensionEpidemic.provider;
 
-import dimensionEpidemic.Dimension;
-import dimensionEpidemic.DimensionEpidemicFactory;
 import dimensionEpidemic.DimensionEpidemicPackage;
+import dimensionEpidemic.Product;
 
 import epimodel.EpimodelFactory;
 
@@ -22,19 +21,19 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link dimensionEpidemic.Dimension} object.
+ * This is the item provider adapter for a {@link dimensionEpidemic.Product} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class DimensionItemProvider extends CompartmentItemProvider {
+public class ProductItemProvider extends CompartmentItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DimensionItemProvider(AdapterFactory adapterFactory) {
+	public ProductItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -65,9 +64,8 @@ public class DimensionItemProvider extends CompartmentItemProvider {
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION__FLOW);
-			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION__CORE_COMPARTMENT);
-			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION__DIMENSION);
+			childrenFeatures.add(DimensionEpidemicPackage.Literals.PRODUCT__FLOW);
+			childrenFeatures.add(DimensionEpidemicPackage.Literals.PRODUCT__DIMENSIONS);
 		}
 		return childrenFeatures;
 	}
@@ -86,14 +84,14 @@ public class DimensionItemProvider extends CompartmentItemProvider {
 	}
 
 	/**
-	 * This returns Dimension.gif.
+	 * This returns Product.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Dimension"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Product"));
 	}
 
 	/**
@@ -114,9 +112,9 @@ public class DimensionItemProvider extends CompartmentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Dimension) object).getId();
-		return label == null || label.length() == 0 ? getString("_UI_Dimension_type")
-				: getString("_UI_Dimension_type") + " " + label;
+		String label = ((Product) object).getId();
+		return label == null || label.length() == 0 ? getString("_UI_Product_type")
+				: getString("_UI_Product_type") + " " + label;
 	}
 
 	/**
@@ -130,10 +128,9 @@ public class DimensionItemProvider extends CompartmentItemProvider {
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Dimension.class)) {
-		case DimensionEpidemicPackage.DIMENSION__FLOW:
-		case DimensionEpidemicPackage.DIMENSION__CORE_COMPARTMENT:
-		case DimensionEpidemicPackage.DIMENSION__DIMENSION:
+		switch (notification.getFeatureID(Product.class)) {
+		case DimensionEpidemicPackage.PRODUCT__FLOW:
+		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -151,14 +148,11 @@ public class DimensionItemProvider extends CompartmentItemProvider {
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION__FLOW,
+		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.PRODUCT__FLOW,
 				EpimodelFactory.eINSTANCE.createFlowWrapper()));
 
-		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION__CORE_COMPARTMENT,
+		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.PRODUCT__DIMENSIONS,
 				EpimodelFactory.eINSTANCE.createCompartmentWrapper()));
-
-		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION__DIMENSION,
-				DimensionEpidemicFactory.eINSTANCE.createDimensionWrapper()));
 	}
 
 }

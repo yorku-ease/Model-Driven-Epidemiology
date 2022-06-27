@@ -31,22 +31,13 @@ public interface DimensionEpidemicFactory extends EFactory {
 	DimensionEpidemic createDimensionEpidemic();
 
 	/**
-	 * Returns a new object of class '<em>Dimension</em>'.
+	 * Returns a new object of class '<em>Product</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Dimension</em>'.
+	 * @return a new object of class '<em>Product</em>'.
 	 * @generated
 	 */
-	Dimension createDimension();
-
-	/**
-	 * Returns a new object of class '<em>Dimension Wrapper</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Dimension Wrapper</em>'.
-	 * @generated
-	 */
-	DimensionWrapper createDimensionWrapper();
+	Product createProduct();
 
 	/**
 	 * Returns the package supported by this factory.
