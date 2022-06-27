@@ -25,12 +25,12 @@ public class RateImpl extends FromToFlowImpl implements Rate {
 	
 	public List<Object> getEquations(Epidemic epidemic) {
 		List<PhysicalCompartment> froms = epidemic.getPhysicalSinksFor(getFrom());
-		List<PhysicalCompartment> tos = epidemic.getPhysicalHeadsFor(getTo());
+		List<PhysicalCompartment> tos = epidemic.getPhysicalSourcesFor(getTo());
 		List<Object> equations = new ArrayList<>();
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
 				try {
-					String s = "{\"type\":\"Rate\", \"from\": \"" + f.id + "\", \"to\": \"" + t.id + "\", \"id\": \"" + getId() + "\"}";
+					String s = "{\"type\":\"Rate\", \"from\": \"" + f.labels + "\", \"to\": \"" + t.labels + "\", \"id\": \"" + getId() + "\"}";
 					equations.add(new JSONObject(s));
 				} catch (JSONException e) {
 					throw new NullPointerException(e.toString());

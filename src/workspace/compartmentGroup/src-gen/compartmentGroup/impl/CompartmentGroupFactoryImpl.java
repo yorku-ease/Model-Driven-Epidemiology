@@ -58,6 +58,14 @@ public class CompartmentGroupFactoryImpl extends EFactoryImpl implements Compart
 		switch (eClass.getClassifierID()) {
 		case CompartmentGroupPackage.GROUP:
 			return createGroup();
+		case CompartmentGroupPackage.GROUP_SOURCES:
+			return createGroupSources();
+		case CompartmentGroupPackage.GROUP_SINKS:
+			return createGroupSinks();
+		case CompartmentGroupPackage.END:
+			return createEnd();
+		case CompartmentGroupPackage.LINK:
+			return createLink();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -72,6 +80,50 @@ public class CompartmentGroupFactoryImpl extends EFactoryImpl implements Compart
 	public Group createGroup() {
 		GroupImpl group = new GroupImpl();
 		return group;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public GroupSources createGroupSources() {
+		GroupSourcesImpl groupSources = new GroupSourcesImpl();
+		return groupSources;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public GroupSinks createGroupSinks() {
+		GroupSinksImpl groupSinks = new GroupSinksImpl();
+		return groupSinks;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public End createEnd() {
+		EndImpl end = new EndImpl();
+		return end;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Link createLink() {
+		LinkImpl link = new LinkImpl();
+		return link;
 	}
 
 	/**

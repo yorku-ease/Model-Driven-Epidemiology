@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
+import epimodel.util.PhysicalCompartment;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Compartment</b></em>'.
@@ -25,7 +27,10 @@ import org.eclipse.emf.ecore.EObject;
 public interface Compartment extends EObject {
 	
 	List<String> getDeclaredLabels();
-	List<List<String>> extend(List<List<String>> current);
+	List<PhysicalCompartment> getPhysicalCompartments();
+	List<PhysicalCompartment> getSources();
+	List<PhysicalCompartment> getSinks();
+	List<Flow> getFlows();
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

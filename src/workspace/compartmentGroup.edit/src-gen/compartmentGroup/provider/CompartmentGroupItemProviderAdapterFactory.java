@@ -124,6 +124,98 @@ public class CompartmentGroupItemProviderAdapterFactory extends CompartmentGroup
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link compartmentGroup.GroupSources} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GroupSourcesItemProvider groupSourcesItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link compartmentGroup.GroupSources}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGroupSourcesAdapter() {
+		if (groupSourcesItemProvider == null) {
+			groupSourcesItemProvider = new GroupSourcesItemProvider(this);
+		}
+
+		return groupSourcesItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link compartmentGroup.GroupSinks} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GroupSinksItemProvider groupSinksItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link compartmentGroup.GroupSinks}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGroupSinksAdapter() {
+		if (groupSinksItemProvider == null) {
+			groupSinksItemProvider = new GroupSinksItemProvider(this);
+		}
+
+		return groupSinksItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link compartmentGroup.End} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected EndItemProvider endItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link compartmentGroup.End}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createEndAdapter() {
+		if (endItemProvider == null) {
+			endItemProvider = new EndItemProvider(this);
+		}
+
+		return endItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link compartmentGroup.Link} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected LinkItemProvider linkItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link compartmentGroup.Link}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createLinkAdapter() {
+		if (linkItemProvider == null) {
+			linkItemProvider = new LinkItemProvider(this);
+		}
+
+		return linkItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -257,6 +349,14 @@ public class CompartmentGroupItemProviderAdapterFactory extends CompartmentGroup
 	public void dispose() {
 		if (groupItemProvider != null)
 			groupItemProvider.dispose();
+		if (groupSourcesItemProvider != null)
+			groupSourcesItemProvider.dispose();
+		if (groupSinksItemProvider != null)
+			groupSinksItemProvider.dispose();
+		if (endItemProvider != null)
+			endItemProvider.dispose();
+		if (linkItemProvider != null)
+			linkItemProvider.dispose();
 	}
 
 	/**

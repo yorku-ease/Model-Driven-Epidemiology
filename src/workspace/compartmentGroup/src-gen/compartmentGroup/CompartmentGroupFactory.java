@@ -31,6 +31,42 @@ public interface CompartmentGroupFactory extends EFactory {
 	Group createGroup();
 
 	/**
+	 * Returns a new object of class '<em>Group Sources</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Group Sources</em>'.
+	 * @generated
+	 */
+	GroupSources createGroupSources();
+
+	/**
+	 * Returns a new object of class '<em>Group Sinks</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Group Sinks</em>'.
+	 * @generated
+	 */
+	GroupSinks createGroupSinks();
+
+	/**
+	 * Returns a new object of class '<em>End</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>End</em>'.
+	 * @generated
+	 */
+	End createEnd();
+
+	/**
+	 * Returns a new object of class '<em>Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Link</em>'.
+	 * @generated
+	 */
+	Link createLink();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

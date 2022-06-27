@@ -2,6 +2,7 @@
  */
 package compartmentGroup.provider;
 
+import compartmentGroup.CompartmentGroupFactory;
 import compartmentGroup.CompartmentGroupPackage;
 import compartmentGroup.Group;
 
@@ -66,6 +67,8 @@ public class GroupItemProvider extends CompartmentItemProvider {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(CompartmentGroupPackage.Literals.GROUP__COMPARTMENT);
 			childrenFeatures.add(CompartmentGroupPackage.Literals.GROUP__FLOW);
+			childrenFeatures.add(CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
+			childrenFeatures.add(CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES);
 		}
 		return childrenFeatures;
 	}
@@ -131,6 +134,8 @@ public class GroupItemProvider extends CompartmentItemProvider {
 		switch (notification.getFeatureID(Group.class)) {
 		case CompartmentGroupPackage.GROUP__COMPARTMENT:
 		case CompartmentGroupPackage.GROUP__FLOW:
+		case CompartmentGroupPackage.GROUP__GROUP_SINKS:
+		case CompartmentGroupPackage.GROUP__GROUP_SOURCES:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -153,6 +158,12 @@ public class GroupItemProvider extends CompartmentItemProvider {
 
 		newChildDescriptors.add(createChildParameter(CompartmentGroupPackage.Literals.GROUP__FLOW,
 				EpimodelFactory.eINSTANCE.createFlowWrapper()));
+
+		newChildDescriptors.add(createChildParameter(CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS,
+				CompartmentGroupFactory.eINSTANCE.createGroupSinks()));
+
+		newChildDescriptors.add(createChildParameter(CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES,
+				CompartmentGroupFactory.eINSTANCE.createGroupSources()));
 	}
 
 }

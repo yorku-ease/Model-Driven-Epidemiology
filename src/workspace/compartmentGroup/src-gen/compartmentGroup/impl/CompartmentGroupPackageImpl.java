@@ -4,8 +4,12 @@ package compartmentGroup.impl;
 
 import compartmentGroup.CompartmentGroupFactory;
 import compartmentGroup.CompartmentGroupPackage;
+import compartmentGroup.End;
 import compartmentGroup.Group;
 
+import compartmentGroup.GroupSinks;
+import compartmentGroup.GroupSources;
+import compartmentGroup.Link;
 import epimodel.EpimodelPackage;
 
 import org.eclipse.emf.ecore.EClass;
@@ -27,6 +31,33 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 	 * @generated
 	 */
 	private EClass groupEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass groupSourcesEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass groupSinksEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass endEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass linkEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -131,6 +162,86 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 	 * @generated
 	 */
 	@Override
+	public EReference getGroup_GroupSinks() {
+		return (EReference) groupEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getGroup_GroupSources() {
+		return (EReference) groupEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getGroupSources() {
+		return groupSourcesEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getGroupSinks() {
+		return groupSinksEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getEnd() {
+		return endEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getEnd_Link() {
+		return (EReference) endEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getLink() {
+		return linkEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getLink_Compartment() {
+		return (EReference) linkEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CompartmentGroupFactory getCompartmentGroupFactory() {
 		return (CompartmentGroupFactory) getEFactoryInstance();
 	}
@@ -158,6 +269,18 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 		groupEClass = createEClass(GROUP);
 		createEReference(groupEClass, GROUP__COMPARTMENT);
 		createEReference(groupEClass, GROUP__FLOW);
+		createEReference(groupEClass, GROUP__GROUP_SINKS);
+		createEReference(groupEClass, GROUP__GROUP_SOURCES);
+
+		groupSourcesEClass = createEClass(GROUP_SOURCES);
+
+		groupSinksEClass = createEClass(GROUP_SINKS);
+
+		endEClass = createEClass(END);
+		createEReference(endEClass, END__LINK);
+
+		linkEClass = createEClass(LINK);
+		createEReference(linkEClass, LINK__COMPARTMENT);
 	}
 
 	/**
@@ -194,6 +317,8 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 
 		// Add supertypes to classes
 		groupEClass.getESuperTypes().add(theEpimodelPackage.getCompartment());
+		groupSourcesEClass.getESuperTypes().add(this.getEnd());
+		groupSinksEClass.getESuperTypes().add(this.getEnd());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(groupEClass, Group.class, "Group", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -203,6 +328,27 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 		initEReference(getGroup_Flow(), theEpimodelPackage.getFlowWrapper(), null, "flow", null, 0, -1, Group.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGroup_GroupSinks(), this.getGroupSinks(), null, "groupSinks", null, 0, 1, Group.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGroup_GroupSources(), this.getGroupSources(), null, "groupSources", null, 0, 1, Group.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(groupSourcesEClass, GroupSources.class, "GroupSources", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(groupSinksEClass, GroupSinks.class, "GroupSinks", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(endEClass, End.class, "End", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEnd_Link(), this.getLink(), null, "link", null, 0, -1, End.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getLink_Compartment(), theEpimodelPackage.getCompartment(), null, "compartment", null, 0, 1,
+				Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

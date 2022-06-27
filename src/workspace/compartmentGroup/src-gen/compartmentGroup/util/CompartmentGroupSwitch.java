@@ -77,6 +77,38 @@ public class CompartmentGroupSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case CompartmentGroupPackage.GROUP_SOURCES: {
+			GroupSources groupSources = (GroupSources) theEObject;
+			T result = caseGroupSources(groupSources);
+			if (result == null)
+				result = caseEnd(groupSources);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case CompartmentGroupPackage.GROUP_SINKS: {
+			GroupSinks groupSinks = (GroupSinks) theEObject;
+			T result = caseGroupSinks(groupSinks);
+			if (result == null)
+				result = caseEnd(groupSinks);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case CompartmentGroupPackage.END: {
+			End end = (End) theEObject;
+			T result = caseEnd(end);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case CompartmentGroupPackage.LINK: {
+			Link link = (Link) theEObject;
+			T result = caseLink(link);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		default:
 			return defaultCase(theEObject);
 		}
@@ -94,6 +126,66 @@ public class CompartmentGroupSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGroup(Group object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Group Sources</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Group Sources</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGroupSources(GroupSources object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Group Sinks</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Group Sinks</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGroupSinks(GroupSinks object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>End</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>End</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEnd(End object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Link</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseLink(Link object) {
 		return null;
 	}
 

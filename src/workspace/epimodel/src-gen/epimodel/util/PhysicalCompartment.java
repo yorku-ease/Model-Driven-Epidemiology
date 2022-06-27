@@ -1,9 +1,11 @@
 package epimodel.util;
 
-public class PhysicalCompartment {
-	public final String id;
+import java.util.List;
 
-	public PhysicalCompartment(String id) {
-		this.id = id;
+public class PhysicalCompartment {
+	public final List<String> labels;
+
+	public PhysicalCompartment(List<String> labels) {
+		this.labels = labels;
 	}
 }

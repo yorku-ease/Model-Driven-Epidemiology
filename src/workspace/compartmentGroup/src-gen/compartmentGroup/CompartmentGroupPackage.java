@@ -95,13 +95,31 @@ public interface CompartmentGroupPackage extends EPackage {
 	int GROUP__FLOW = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Group Sinks</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP__GROUP_SINKS = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Group Sources</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP__GROUP_SOURCES = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Group</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GROUP_FEATURE_COUNT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 2;
+	int GROUP_FEATURE_COUNT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Group</em>' class.
@@ -111,6 +129,154 @@ public interface CompartmentGroupPackage extends EPackage {
 	 * @ordered
 	 */
 	int GROUP_OPERATION_COUNT = EpimodelPackage.COMPARTMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link compartmentGroup.impl.EndImpl <em>End</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentGroup.impl.EndImpl
+	 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getEnd()
+	 * @generated
+	 */
+	int END = 3;
+
+	/**
+	 * The feature id for the '<em><b>Link</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int END__LINK = 0;
+
+	/**
+	 * The number of structural features of the '<em>End</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int END_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>End</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int END_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link compartmentGroup.impl.GroupSourcesImpl <em>Group Sources</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentGroup.impl.GroupSourcesImpl
+	 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getGroupSources()
+	 * @generated
+	 */
+	int GROUP_SOURCES = 1;
+
+	/**
+	 * The feature id for the '<em><b>Link</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_SOURCES__LINK = END__LINK;
+
+	/**
+	 * The number of structural features of the '<em>Group Sources</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_SOURCES_FEATURE_COUNT = END_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Group Sources</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_SOURCES_OPERATION_COUNT = END_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link compartmentGroup.impl.GroupSinksImpl <em>Group Sinks</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentGroup.impl.GroupSinksImpl
+	 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getGroupSinks()
+	 * @generated
+	 */
+	int GROUP_SINKS = 2;
+
+	/**
+	 * The feature id for the '<em><b>Link</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_SINKS__LINK = END__LINK;
+
+	/**
+	 * The number of structural features of the '<em>Group Sinks</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_SINKS_FEATURE_COUNT = END_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Group Sinks</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_SINKS_OPERATION_COUNT = END_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link compartmentGroup.impl.LinkImpl <em>Link</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentGroup.impl.LinkImpl
+	 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getLink()
+	 * @generated
+	 */
+	int LINK = 4;
+
+	/**
+	 * The feature id for the '<em><b>Compartment</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__COMPARTMENT = 0;
+
+	/**
+	 * The number of structural features of the '<em>Link</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Link</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK_OPERATION_COUNT = 0;
 
 	/**
 	 * Returns the meta object for class '{@link compartmentGroup.Group <em>Group</em>}'.
@@ -143,6 +309,90 @@ public interface CompartmentGroupPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getGroup_Flow();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link compartmentGroup.Group#getGroupSinks <em>Group Sinks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Group Sinks</em>'.
+	 * @see compartmentGroup.Group#getGroupSinks()
+	 * @see #getGroup()
+	 * @generated
+	 */
+	EReference getGroup_GroupSinks();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link compartmentGroup.Group#getGroupSources <em>Group Sources</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Group Sources</em>'.
+	 * @see compartmentGroup.Group#getGroupSources()
+	 * @see #getGroup()
+	 * @generated
+	 */
+	EReference getGroup_GroupSources();
+
+	/**
+	 * Returns the meta object for class '{@link compartmentGroup.GroupSources <em>Group Sources</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Group Sources</em>'.
+	 * @see compartmentGroup.GroupSources
+	 * @generated
+	 */
+	EClass getGroupSources();
+
+	/**
+	 * Returns the meta object for class '{@link compartmentGroup.GroupSinks <em>Group Sinks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Group Sinks</em>'.
+	 * @see compartmentGroup.GroupSinks
+	 * @generated
+	 */
+	EClass getGroupSinks();
+
+	/**
+	 * Returns the meta object for class '{@link compartmentGroup.End <em>End</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>End</em>'.
+	 * @see compartmentGroup.End
+	 * @generated
+	 */
+	EClass getEnd();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link compartmentGroup.End#getLink <em>Link</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Link</em>'.
+	 * @see compartmentGroup.End#getLink()
+	 * @see #getEnd()
+	 * @generated
+	 */
+	EReference getEnd_Link();
+
+	/**
+	 * Returns the meta object for class '{@link compartmentGroup.Link <em>Link</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Link</em>'.
+	 * @see compartmentGroup.Link
+	 * @generated
+	 */
+	EClass getLink();
+
+	/**
+	 * Returns the meta object for the reference '{@link compartmentGroup.Link#getCompartment <em>Compartment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Compartment</em>'.
+	 * @see compartmentGroup.Link#getCompartment()
+	 * @see #getLink()
+	 * @generated
+	 */
+	EReference getLink_Compartment();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -192,6 +442,78 @@ public interface CompartmentGroupPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GROUP__FLOW = eINSTANCE.getGroup_Flow();
+
+		/**
+		 * The meta object literal for the '<em><b>Group Sinks</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GROUP__GROUP_SINKS = eINSTANCE.getGroup_GroupSinks();
+
+		/**
+		 * The meta object literal for the '<em><b>Group Sources</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GROUP__GROUP_SOURCES = eINSTANCE.getGroup_GroupSources();
+
+		/**
+		 * The meta object literal for the '{@link compartmentGroup.impl.GroupSourcesImpl <em>Group Sources</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentGroup.impl.GroupSourcesImpl
+		 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getGroupSources()
+		 * @generated
+		 */
+		EClass GROUP_SOURCES = eINSTANCE.getGroupSources();
+
+		/**
+		 * The meta object literal for the '{@link compartmentGroup.impl.GroupSinksImpl <em>Group Sinks</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentGroup.impl.GroupSinksImpl
+		 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getGroupSinks()
+		 * @generated
+		 */
+		EClass GROUP_SINKS = eINSTANCE.getGroupSinks();
+
+		/**
+		 * The meta object literal for the '{@link compartmentGroup.impl.EndImpl <em>End</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentGroup.impl.EndImpl
+		 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getEnd()
+		 * @generated
+		 */
+		EClass END = eINSTANCE.getEnd();
+
+		/**
+		 * The meta object literal for the '<em><b>Link</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference END__LINK = eINSTANCE.getEnd_Link();
+
+		/**
+		 * The meta object literal for the '{@link compartmentGroup.impl.LinkImpl <em>Link</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentGroup.impl.LinkImpl
+		 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getLink()
+		 * @generated
+		 */
+		EClass LINK = eINSTANCE.getLink();
+
+		/**
+		 * The meta object literal for the '<em><b>Compartment</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LINK__COMPARTMENT = eINSTANCE.getLink_Compartment();
 
 	}
 

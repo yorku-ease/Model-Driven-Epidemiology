@@ -78,18 +78,11 @@ public class DimensionEpidemicSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case DimensionEpidemicPackage.DIMENSION: {
-			Dimension dimension = (Dimension) theEObject;
-			T result = caseDimension(dimension);
+		case DimensionEpidemicPackage.PRODUCT: {
+			Product product = (Product) theEObject;
+			T result = caseProduct(product);
 			if (result == null)
-				result = caseCompartment(dimension);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case DimensionEpidemicPackage.DIMENSION_WRAPPER: {
-			DimensionWrapper dimensionWrapper = (DimensionWrapper) theEObject;
-			T result = caseDimensionWrapper(dimensionWrapper);
+				result = caseCompartment(product);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -115,32 +108,17 @@ public class DimensionEpidemicSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Dimension</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Product</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Dimension</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Product</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseDimension(Dimension object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Dimension Wrapper</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Dimension Wrapper</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseDimensionWrapper(DimensionWrapper object) {
+	public T caseProduct(Product object) {
 		return null;
 	}
 
