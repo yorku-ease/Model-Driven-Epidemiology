@@ -85,6 +85,7 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 				Flow flow = flows.get(i);
 				JSONObject flowjson = new JSONObject();
 				flowjson.put("id", flow.getId());
+				flowjson.put("type", flow.getClass().getName());
 				flowjson.put("flows", physicalFlows.get(i));
 				flowsById.put(flowjson);
 			}
