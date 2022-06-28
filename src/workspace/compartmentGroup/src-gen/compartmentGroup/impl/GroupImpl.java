@@ -14,8 +14,6 @@ import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.util.PhysicalCompartment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,7 +69,12 @@ public class GroupImpl extends CompartmentImpl implements Group {
 					.flatMap(List::stream)
 					.collect(Collectors.toList());
 		else
-			return new ArrayList<PhysicalCompartment>(Arrays.asList(new PhysicalCompartment(Arrays.asList(getId()))));
+			return getCompartment()
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getSources)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
 	}
 
 	@Override
@@ -90,7 +93,12 @@ public class GroupImpl extends CompartmentImpl implements Group {
 					.flatMap(List::stream)
 					.collect(Collectors.toList());
 		else
-			return new ArrayList<PhysicalCompartment>(Arrays.asList(new PhysicalCompartment(Arrays.asList(getId()))));
+			return getCompartment()
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getSinks)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
 	}
 
 	@Override

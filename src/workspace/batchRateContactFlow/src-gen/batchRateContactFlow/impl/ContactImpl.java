@@ -45,8 +45,11 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 			for (PhysicalCompartment t : tos)
 				for (PhysicalCompartment c : contacts)
 					try {
-						String s = "{\"type\":\"Contact\", \"from\": \"" + f.labels + "\", \"to\": \"" + t.labels + "\", \"contact\": \"" + c.labels + "\", \"id\": \"" + getId() + "\"}";
-						equations.add(new JSONObject(s));
+						JSONObject res = new JSONObject();
+						res.put("from", f.labels);
+						res.put("to", t.labels);
+						res.put("contact", c.labels);
+						equations.add(res);
 					} catch (JSONException e) {
 						throw new NullPointerException(e.toString());
 					}
