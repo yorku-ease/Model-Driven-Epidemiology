@@ -2,6 +2,8 @@
  */
 package epimodel;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -21,6 +23,8 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Flow extends EObject {
+	
+	List<Object> getEquations(Epidemic epidemic);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

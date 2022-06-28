@@ -4,6 +4,12 @@ package epimodel.impl;
 
 import epimodel.Compartment;
 import epimodel.EpimodelPackage;
+import epimodel.Flow;
+import epimodel.util.PhysicalCompartment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -25,6 +31,33 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
+
+	@Override
+	public List<PhysicalCompartment> getPhysicalCompartments() {
+		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(new ArrayList<>(Arrays.asList(getId())))));
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSources() {
+		return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinks() {
+		return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<Flow> getFlows() {
+		return new ArrayList<>();
+	}
+
+	
+	@Override
+	public List<String> getDeclaredLabels() {
+		return new ArrayList<>(Arrays.asList(getId()));
+	}
+	
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -160,5 +193,4 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		result.append(')');
 		return result.toString();
 	}
-
 } //CompartmentImpl

@@ -125,49 +125,26 @@ public class DimensionEpidemicItemProviderAdapterFactory extends DimensionEpidem
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link dimensionEpidemic.Dimension} instances.
+	 * This keeps track of the one adapter used for all {@link dimensionEpidemic.Product} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected DimensionItemProvider dimensionItemProvider;
+	protected ProductItemProvider productItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link dimensionEpidemic.Dimension}.
+	 * This creates an adapter for a {@link dimensionEpidemic.Product}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createDimensionAdapter() {
-		if (dimensionItemProvider == null) {
-			dimensionItemProvider = new DimensionItemProvider(this);
+	public Adapter createProductAdapter() {
+		if (productItemProvider == null) {
+			productItemProvider = new ProductItemProvider(this);
 		}
 
-		return dimensionItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link dimensionEpidemic.DimensionWrapper} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected DimensionWrapperItemProvider dimensionWrapperItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link dimensionEpidemic.DimensionWrapper}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createDimensionWrapperAdapter() {
-		if (dimensionWrapperItemProvider == null) {
-			dimensionWrapperItemProvider = new DimensionWrapperItemProvider(this);
-		}
-
-		return dimensionWrapperItemProvider;
+		return productItemProvider;
 	}
 
 	/**
@@ -304,10 +281,8 @@ public class DimensionEpidemicItemProviderAdapterFactory extends DimensionEpidem
 	public void dispose() {
 		if (dimensionEpidemicItemProvider != null)
 			dimensionEpidemicItemProvider.dispose();
-		if (dimensionItemProvider != null)
-			dimensionItemProvider.dispose();
-		if (dimensionWrapperItemProvider != null)
-			dimensionWrapperItemProvider.dispose();
+		if (productItemProvider != null)
+			productItemProvider.dispose();
 	}
 
 	/**
@@ -372,7 +347,7 @@ public class DimensionEpidemicItemProviderAdapterFactory extends DimensionEpidem
 			@Override
 			public Object caseCompartmentWrapper(CompartmentWrapper object) {
 				newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.COMPARTMENT_WRAPPER__COMPARTMENT,
-						DimensionEpidemicFactory.eINSTANCE.createDimension()));
+						DimensionEpidemicFactory.eINSTANCE.createProduct()));
 
 				return null;
 			}
