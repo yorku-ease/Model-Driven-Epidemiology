@@ -18,7 +18,8 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link dimensionEpidemic.Dimension#getFlow <em>Flow</em>}</li>
- *   <li>{@link dimensionEpidemic.Dimension#getCompartment <em>Compartment</em>}</li>
+ *   <li>{@link dimensionEpidemic.Dimension#getCoreCompartment <em>Core Compartment</em>}</li>
+ *   <li>{@link dimensionEpidemic.Dimension#getDimension <em>Dimension</em>}</li>
  * </ul>
  *
  * @see dimensionEpidemic.DimensionEpidemicPackage#getDimension()
@@ -39,15 +40,37 @@ public interface Dimension extends Compartment {
 	EList<FlowWrapper> getFlow();
 
 	/**
-	 * Returns the value of the '<em><b>Compartment</b></em>' containment reference list.
-	 * The list contents are of type {@link epimodel.CompartmentWrapper}.
+	 * Returns the value of the '<em><b>Core Compartment</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Compartment</em>' containment reference list.
-	 * @see dimensionEpidemic.DimensionEpidemicPackage#getDimension_Compartment()
+	 * @return the value of the '<em>Core Compartment</em>' containment reference.
+	 * @see #setCoreCompartment(CompartmentWrapper)
+	 * @see dimensionEpidemic.DimensionEpidemicPackage#getDimension_CoreCompartment()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<CompartmentWrapper> getCompartment();
+	CompartmentWrapper getCoreCompartment();
+
+	/**
+	 * Sets the value of the '{@link dimensionEpidemic.Dimension#getCoreCompartment <em>Core Compartment</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Core Compartment</em>' containment reference.
+	 * @see #getCoreCompartment()
+	 * @generated
+	 */
+	void setCoreCompartment(CompartmentWrapper value);
+
+	/**
+	 * Returns the value of the '<em><b>Dimension</b></em>' containment reference list.
+	 * The list contents are of type {@link dimensionEpidemic.DimensionWrapper}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Dimension</em>' containment reference list.
+	 * @see dimensionEpidemic.DimensionEpidemicPackage#getDimension_Dimension()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<DimensionWrapper> getDimension();
 
 } // Dimension

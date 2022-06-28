@@ -4,13 +4,15 @@ package compartmentFlowEpidemic.impl;
 
 import compartmentFlowEpidemic.CompartmentFlowEpidemic;
 import compartmentFlowEpidemic.CompartmentFlowEpidemicPackage;
-
+import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.EpidemicImpl;
+import epimodel.util.PhysicalCompartment;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -37,6 +39,22 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class CompartmentFlowEpidemicImpl extends EpidemicImpl implements CompartmentFlowEpidemic {
+	
+	@Override
+	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
+		throw new NullPointerException("getPhysicalFor Not Implemented for CompartmentFlowEpidemicImpl");
+	}
+
+	@Override
+	public List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c) {
+		throw new NullPointerException("getPhysicalSourcesFor Not Implemented for CompartmentFlowEpidemicImpl");
+	}
+
+	@Override
+	public List<PhysicalCompartment> getPhysicalSinksFor(Compartment c) {
+		throw new NullPointerException("getPhysicalSinksFor Not Implemented for CompartmentFlowEpidemicImpl");
+	}
+	
 	/**
 	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

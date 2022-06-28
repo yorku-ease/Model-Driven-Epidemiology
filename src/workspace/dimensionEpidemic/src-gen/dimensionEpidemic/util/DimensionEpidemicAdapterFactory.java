@@ -75,13 +75,8 @@ public class DimensionEpidemicAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseDimension(Dimension object) {
-			return createDimensionAdapter();
-		}
-
-		@Override
-		public Adapter caseDimensionWrapper(DimensionWrapper object) {
-			return createDimensionWrapperAdapter();
+		public Adapter caseProduct(Product object) {
+			return createProductAdapter();
 		}
 
 		@Override
@@ -128,30 +123,16 @@ public class DimensionEpidemicAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link dimensionEpidemic.Dimension <em>Dimension</em>}'.
+	 * Creates a new adapter for an object of class '{@link dimensionEpidemic.Product <em>Product</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see dimensionEpidemic.Dimension
+	 * @see dimensionEpidemic.Product
 	 * @generated
 	 */
-	public Adapter createDimensionAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link dimensionEpidemic.DimensionWrapper <em>Dimension Wrapper</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see dimensionEpidemic.DimensionWrapper
-	 * @generated
-	 */
-	public Adapter createDimensionWrapperAdapter() {
+	public Adapter createProductAdapter() {
 		return null;
 	}
 

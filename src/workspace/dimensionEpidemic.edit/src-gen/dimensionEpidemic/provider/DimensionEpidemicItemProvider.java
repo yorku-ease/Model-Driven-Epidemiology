@@ -3,8 +3,9 @@
 package dimensionEpidemic.provider;
 
 import dimensionEpidemic.DimensionEpidemic;
-import dimensionEpidemic.DimensionEpidemicFactory;
 import dimensionEpidemic.DimensionEpidemicPackage;
+
+import epimodel.EpimodelFactory;
 
 import epimodel.provider.EpidemicItemProvider;
 
@@ -146,7 +147,7 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
 		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__DIMENSION,
-				DimensionEpidemicFactory.eINSTANCE.createDimensionWrapper()));
+				EpimodelFactory.eINSTANCE.createCompartmentWrapper()));
 	}
 
 }
