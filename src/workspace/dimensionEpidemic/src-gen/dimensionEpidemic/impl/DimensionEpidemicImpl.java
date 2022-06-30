@@ -49,36 +49,25 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 
 		dims = getDimension().stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
 
-		List<List<PhysicalCompartment>> compartmentsForProduct = dims.stream().map(Compartment::getPhysicalCompartments).collect(Collectors.toList());
-		List<List<PhysicalCompartment>> cartesianProductOfGraphs = CartesianProduct.cartesianProduct(compartmentsForProduct);
+		List<List<PhysicalCompartment>> compartmentsForProduct = dims.stream().map(Compartment::getPhysicalCompartments)
+				.collect(Collectors.toList());
+		List<List<PhysicalCompartment>> cartesianProductOfGraphs = CartesianProduct
+				.cartesianProduct(compartmentsForProduct);
 		physicalCompartments = cartesianProductOfGraphs.stream().flatMap(List::stream).collect(Collectors.toList());
 
-		List<Flow> flows = dims
-				.stream()
-				.map(Compartment::getFlows)
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
-		
+		List<Flow> flows = dims.stream().map(Compartment::getFlows).flatMap(List::stream).collect(Collectors.toList());
+
 		List<List<Object>> physicalFlows = flows.stream().map(f -> f.getEquations(this)).collect(Collectors.toList());
 
 		List<JSONObject> files = new ArrayList<>();
-		
+
 		{
 			JSONObject structure = new JSONObject();
 			structure.put("filename", getId() + " model");
 			structure.put("key", "model");
 			structure.put("model", new JSONObject());
-			structure
-				.getJSONObject("model")
-				.put(
-					"compartments",
-					new JSONArray(
-							physicalCompartments
-						.stream()
-						.map(c -> c.labels)
-						.collect(Collectors.toList())
-					)
-				);
+			structure.getJSONObject("model").put("compartments",
+					new JSONArray(physicalCompartments.stream().map(c -> c.labels).collect(Collectors.toList())));
 
 			JSONArray flowsById = new JSONArray();
 			for (int i = 0; i < flows.size(); ++i) {
@@ -125,7 +114,7 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 					valuesForFlow.put(0.1);
 				flowParameters.put(flow.getId(), valuesForFlow);
 			}
-			
+
 			JSONObject parameters = new JSONObject();
 			parameters.put("flows", flowParameters);
 			parameters.put("compartments", compartmentParameters);
@@ -140,36 +129,27 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	}
 
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		return physicalCompartments
-				.stream()
-				.filter(pc -> pc.labels.contains(c.getId()))
-				.collect(Collectors.toList());
+		return physicalCompartments.stream().filter(pc -> pc.labels.contains(c.getId())).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c) {
-		return physicalCompartments
-				.stream()
-				.filter(pc -> {
-					for (PhysicalCompartment filter : c.getSources())
-						if (pc.labels.containsAll(filter.labels))
-							return true;
-					return false;
-				})
-				.collect(Collectors.toList());
+		return physicalCompartments.stream().filter(pc -> {
+			for (PhysicalCompartment filter : c.getSources())
+				if (pc.labels.containsAll(filter.labels))
+					return true;
+			return false;
+		}).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalSinksFor(Compartment c) {
-		return physicalCompartments
-				.stream()
-				.filter(pc -> {
-					for (PhysicalCompartment filter : c.getSinks())
-						if (pc.labels.containsAll(filter.labels))
-							return true;
-					return false;
-				})
-				.collect(Collectors.toList());
+		return physicalCompartments.stream().filter(pc -> {
+			for (PhysicalCompartment filter : c.getSinks())
+				if (pc.labels.containsAll(filter.labels))
+					return true;
+			return false;
+		}).collect(Collectors.toList());
 	}
 
 	/**

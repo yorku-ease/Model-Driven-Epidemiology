@@ -280,7 +280,7 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 
 		initEClass(rateEClass, Rate.class, "Rate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(fromToFlowEClass, FromToFlow.class, "FromToFlow", !IS_ABSTRACT, !IS_INTERFACE,
+		initEClass(fromToFlowEClass, FromToFlow.class, "FromToFlow", IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getFromToFlow_From(), theEpimodelPackage.getCompartment(), null, "from", null, 0, 1,
 				FromToFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,

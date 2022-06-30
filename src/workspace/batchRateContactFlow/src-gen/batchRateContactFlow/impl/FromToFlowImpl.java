@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class FromToFlowImpl extends FlowImpl implements FromToFlow {
+public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 	/**
 	 * The cached value of the '{@link #getFrom() <em>From</em>}' reference.
 	 * <!-- begin-user-doc -->

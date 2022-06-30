@@ -6,8 +6,10 @@ import couplingFlow.CouplingFlow;
 import couplingFlow.CouplingFlowPackage;
 
 import epimodel.CompartmentWrapper;
-
+import epimodel.Epidemic;
 import epimodel.impl.FlowImpl;
+
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -33,6 +35,18 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
+	
+	@Override
+	public String getEquationType() {
+		return "Coupling";
+	}
+
+	@Override
+	public List<Object> getEquations(Epidemic epidemic) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/**
 	 * The cached value of the '{@link #getFirstFrom() <em>First From</em>}' reference.
 	 * <!-- begin-user-doc -->

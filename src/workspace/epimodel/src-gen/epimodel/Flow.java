@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
+import epimodel.util.PhysicalCompartment;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Flow</b></em>'.
@@ -19,12 +21,20 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see epimodel.EpimodelPackage#getFlow()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Flow extends EObject {
-	
+
 	List<Object> getEquations(Epidemic epidemic);
+	String getEquationType();
+
+	// essentially template methods
+	List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c);
+
+	List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c);
+
+	List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

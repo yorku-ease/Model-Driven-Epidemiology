@@ -25,11 +25,15 @@ import epimodel.util.PhysicalCompartment;
  * @generated
  */
 public interface Compartment extends EObject {
-	
+
 	List<String> getDeclaredLabels();
+
 	List<PhysicalCompartment> getPhysicalCompartments();
+
 	List<PhysicalCompartment> getSources();
+
 	List<PhysicalCompartment> getSinks();
+
 	List<Flow> getFlows();
 
 	/**

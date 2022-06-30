@@ -14,6 +14,7 @@ import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.util.PhysicalCompartment;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,16 +80,12 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
-		if (getGroupSinks() != null && getGroupSinks().getLink().size() > 0)
-			return getCompartment()
+		GroupSinks sinks = getGroupSinks();
+		if (sinks != null && sinks.getLink().size() > 0)
+			return sinks
+					.getLink()
 					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.filter(c -> getGroupSinks()
-									.getLink()
-									.stream()
-									.map(Link::getCompartment)
-									.collect(Collectors.toList())
-									.contains(c))
+					.map(Link::getCompartment)
 					.map(Compartment::getSinks)
 					.flatMap(List::stream)
 					.collect(Collectors.toList());
@@ -103,7 +100,15 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public List<Flow> getFlows() {
-		return getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
+		List<Flow> res = new ArrayList<>();
+		res.addAll(getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList()));
+		res.addAll(getCompartment()
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getFlows)
+					.flatMap(List::stream)
+					.collect(Collectors.toList()));
+		return res;
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
