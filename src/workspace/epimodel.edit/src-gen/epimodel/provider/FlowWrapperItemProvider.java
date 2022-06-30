@@ -2,7 +2,6 @@
  */
 package epimodel.provider;
 
-import epimodel.EpimodelFactory;
 import epimodel.EpimodelPackage;
 import epimodel.FlowWrapper;
 
@@ -150,9 +149,6 @@ public class FlowWrapperItemProvider extends ItemProviderAdapter implements IEdi
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.FLOW_WRAPPER__FLOW,
-				EpimodelFactory.eINSTANCE.createFlow()));
 	}
 
 	/**

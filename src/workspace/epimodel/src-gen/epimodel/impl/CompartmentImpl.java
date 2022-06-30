@@ -52,12 +52,11 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		return new ArrayList<>();
 	}
 
-	
 	@Override
 	public List<String> getDeclaredLabels() {
 		return new ArrayList<>(Arrays.asList(getId()));
 	}
-	
+
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->

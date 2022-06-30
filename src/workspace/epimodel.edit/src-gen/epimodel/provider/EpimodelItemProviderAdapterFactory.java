@@ -183,29 +183,6 @@ public class EpimodelItemProviderAdapterFactory extends EpimodelAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link epimodel.Flow} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected FlowItemProvider flowItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link epimodel.Flow}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createFlowAdapter() {
-		if (flowItemProvider == null) {
-			flowItemProvider = new FlowItemProvider(this);
-		}
-
-		return flowItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -345,8 +322,6 @@ public class EpimodelItemProviderAdapterFactory extends EpimodelAdapterFactory
 			compartmentItemProvider.dispose();
 		if (flowWrapperItemProvider != null)
 			flowWrapperItemProvider.dispose();
-		if (flowItemProvider != null)
-			flowItemProvider.dispose();
 	}
 
 }

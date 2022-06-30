@@ -170,29 +170,6 @@ public class BatchRateContactFlowItemProviderAdapterFactory extends BatchRateCon
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link batchRateContactFlow.FromToFlow} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected FromToFlowItemProvider fromToFlowItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link batchRateContactFlow.FromToFlow}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createFromToFlowAdapter() {
-		if (fromToFlowItemProvider == null) {
-			fromToFlowItemProvider = new FromToFlowItemProvider(this);
-		}
-
-		return fromToFlowItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -330,8 +307,6 @@ public class BatchRateContactFlowItemProviderAdapterFactory extends BatchRateCon
 			batchItemProvider.dispose();
 		if (rateItemProvider != null)
 			rateItemProvider.dispose();
-		if (fromToFlowItemProvider != null)
-			fromToFlowItemProvider.dispose();
 	}
 
 	/**
@@ -382,9 +357,6 @@ public class BatchRateContactFlowItemProviderAdapterFactory extends BatchRateCon
 			 */
 			@Override
 			public Object caseFlowWrapper(FlowWrapper object) {
-				newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.FLOW_WRAPPER__FLOW,
-						BatchRateContactFlowFactory.eINSTANCE.createFromToFlow()));
-
 				newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.FLOW_WRAPPER__FLOW,
 						BatchRateContactFlowFactory.eINSTANCE.createContact()));
 

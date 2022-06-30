@@ -19,7 +19,7 @@ import epimodel.Flow;
  * </ul>
  *
  * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface FromToFlow extends Flow {

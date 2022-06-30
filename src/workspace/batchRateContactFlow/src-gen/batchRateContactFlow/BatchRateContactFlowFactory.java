@@ -49,15 +49,6 @@ public interface BatchRateContactFlowFactory extends EFactory {
 	Rate createRate();
 
 	/**
-	 * Returns a new object of class '<em>From To Flow</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>From To Flow</em>'.
-	 * @generated
-	 */
-	FromToFlow createFromToFlow();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

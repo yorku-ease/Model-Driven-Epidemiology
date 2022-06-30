@@ -64,8 +64,6 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 			return createCompartment();
 		case EpimodelPackage.FLOW_WRAPPER:
 			return createFlowWrapper();
-		case EpimodelPackage.FLOW:
-			return createFlow();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -113,17 +111,6 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 	public FlowWrapper createFlowWrapper() {
 		FlowWrapperImpl flowWrapper = new FlowWrapperImpl();
 		return flowWrapper;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Flow createFlow() {
-		FlowImpl flow = new FlowImpl();
-		return flow;
 	}
 
 	/**

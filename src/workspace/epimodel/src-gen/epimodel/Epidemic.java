@@ -27,7 +27,9 @@ import epimodel.util.PhysicalCompartment;
 public interface Epidemic extends EObject {
 
 	List<PhysicalCompartment> getPhysicalFor(Compartment c);
+
 	List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c);
+
 	List<PhysicalCompartment> getPhysicalSinksFor(Compartment c);
 
 	/**

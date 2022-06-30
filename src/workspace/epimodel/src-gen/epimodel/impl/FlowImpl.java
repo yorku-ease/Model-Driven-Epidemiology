@@ -2,9 +2,11 @@
  */
 package epimodel.impl;
 
+import epimodel.Compartment;
 import epimodel.Epidemic;
 import epimodel.EpimodelPackage;
 import epimodel.Flow;
+import epimodel.util.PhysicalCompartment;
 
 import java.util.List;
 
@@ -27,12 +29,23 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
-	
-	public List<Object> getEquations(Epidemic epidemic) {
-		return null;
+public abstract class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
+
+	@Override
+	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {
+		return epidemic.getPhysicalFor(c);
 	}
-	
+
+	@Override
+	public List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c) {
+		return epidemic.getPhysicalSourcesFor(c);
+	}
+
+	@Override
+	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
+		return epidemic.getPhysicalSinksFor(c);
+	}
+
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -23,9 +23,16 @@ import org.json.JSONObject;
  */
 public class RateImpl extends FromToFlowImpl implements Rate {
 	
+	@Override
+	public String getEquationType() {
+		return "Rate";
+	}
+
+	@Override
 	public List<Object> getEquations(Epidemic epidemic) {
-		List<PhysicalCompartment> froms = epidemic.getPhysicalSinksFor(getFrom());
-		List<PhysicalCompartment> tos = epidemic.getPhysicalSourcesFor(getTo());
+		System.out.println("this: " + this + ", " + this.getClass() + ", type: " +getEquationType() + ", id: " + getId());
+		List<PhysicalCompartment> froms = getPhysicalSinksFor(epidemic, getFrom());
+		List<PhysicalCompartment> tos = getPhysicalSourcesFor(epidemic, getTo());
 		List<Object> equations = new ArrayList<>();
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
@@ -39,7 +46,7 @@ public class RateImpl extends FromToFlowImpl implements Rate {
 				}
 		return equations;
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

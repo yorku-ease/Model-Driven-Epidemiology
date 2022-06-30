@@ -36,10 +36,16 @@ import org.json.JSONObject;
  */
 public class ContactImpl extends FromToFlowImpl implements Contact {
 	
+	@Override
+	public String getEquationType() {
+		return "Contact";
+	}
+
 	public List<Object> getEquations(Epidemic epidemic) {
-		List<PhysicalCompartment> froms = epidemic.getPhysicalSinksFor(getFrom());
-		List<PhysicalCompartment> tos = epidemic.getPhysicalSourcesFor(getTo());
-		List<PhysicalCompartment> contacts = epidemic.getPhysicalFor(getContact());
+		System.out.println("this: " + this + ", " + this.getClass() + ", type: " +getEquationType() + ", id: " + getId());
+		List<PhysicalCompartment> froms = getPhysicalSinksFor(epidemic, getFrom());
+		List<PhysicalCompartment> tos = getPhysicalSourcesFor(epidemic, getTo());
+		List<PhysicalCompartment> contacts = getPhysicalFor(epidemic, getContact());
 		List<Object> equations = new ArrayList<>();
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
@@ -55,7 +61,7 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 					}
 		return equations;
 	}
-	
+
 	/**
 	 * The cached value of the '{@link #getContact() <em>Contact</em>}' reference.
 	 * <!-- begin-user-doc -->

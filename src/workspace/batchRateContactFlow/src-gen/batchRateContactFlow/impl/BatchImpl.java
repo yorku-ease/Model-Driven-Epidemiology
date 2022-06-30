@@ -23,9 +23,14 @@ import org.json.JSONObject;
  */
 public class BatchImpl extends FromToFlowImpl implements Batch {
 	
+	@Override
+	public String getEquationType() {
+		return "Batch";
+	}
+
 	public List<Object> getEquations(Epidemic epidemic) {
-		List<PhysicalCompartment> froms = epidemic.getPhysicalSinksFor(getFrom());
-		List<PhysicalCompartment> tos = epidemic.getPhysicalSourcesFor(getTo());
+		List<PhysicalCompartment> froms = getPhysicalSinksFor(epidemic, getFrom());
+		List<PhysicalCompartment> tos = getPhysicalSourcesFor(epidemic, getTo());
 		List<Object> equations = new ArrayList<>();
 		for (PhysicalCompartment f : froms)
 			for (PhysicalCompartment t : tos)
@@ -39,7 +44,7 @@ public class BatchImpl extends FromToFlowImpl implements Batch {
 				}
 		return equations;
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

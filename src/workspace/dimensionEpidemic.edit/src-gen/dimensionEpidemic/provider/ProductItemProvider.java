@@ -64,7 +64,6 @@ public class ProductItemProvider extends CompartmentItemProvider {
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(DimensionEpidemicPackage.Literals.PRODUCT__FLOW);
 			childrenFeatures.add(DimensionEpidemicPackage.Literals.PRODUCT__DIMENSIONS);
 		}
 		return childrenFeatures;
@@ -129,7 +128,6 @@ public class ProductItemProvider extends CompartmentItemProvider {
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Product.class)) {
-		case DimensionEpidemicPackage.PRODUCT__FLOW:
 		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
@@ -147,9 +145,6 @@ public class ProductItemProvider extends CompartmentItemProvider {
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.PRODUCT__FLOW,
-				EpimodelFactory.eINSTANCE.createFlowWrapper()));
 
 		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.PRODUCT__DIMENSIONS,
 				EpimodelFactory.eINSTANCE.createCompartmentWrapper()));
