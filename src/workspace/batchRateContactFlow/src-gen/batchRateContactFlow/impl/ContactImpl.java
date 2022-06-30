@@ -42,7 +42,6 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	}
 
 	public List<Object> getEquations(Epidemic epidemic) {
-		System.out.println("this: " + this + ", " + this.getClass() + ", type: " +getEquationType() + ", id: " + getId());
 		List<PhysicalCompartment> froms = getPhysicalSinksFor(epidemic, getFrom());
 		List<PhysicalCompartment> tos = getPhysicalSourcesFor(epidemic, getTo());
 		List<PhysicalCompartment> contacts = getPhysicalFor(epidemic, getContact());

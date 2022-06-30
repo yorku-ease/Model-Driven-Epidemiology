@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ASCII"?>
+<epimodel:EpidemicWrapper xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:compartmentGroup="http://www.example.org/compartmentGroup" xmlns:dimensionEpidemic="http://www.example.org/dimensionEpidemic" xmlns:epimodel="http://www.example.org/epimodel">
+  <epidemic xsi:type="dimensionEpidemic:DimensionEpidemic" id="model3">
+    <dimension>
+      <compartment xsi:type="compartmentGroup:Group" id="SEIR">
+        <compartment>
+          <compartment id="S"/>
+        </compartment>
+        <compartment>
+          <compartment id="E"/>
+        </compartment>
+        <compartment>
+          <compartment xsi:type="dimensionEpidemic:Product" id="InfectiousVariantsTest">
+            <dimensions>
+              <compartment xsi:type="compartmentGroup:Group" id="Infectious">
+                <compartment>
+                  <compartment id="asymptomatic"/>
+                </compartment>
+                <compartment>
+                  <compartment id="symptomatic"/>
+                </compartment>
+                <flow>
+                  <flow xsi:type="batchRateContactFlow:Rate" id="Symptoms" from="//@epidemic/@dimension.0/@compartment/@compartment.2/@compartment/@dimensions.0/@compartment/@compartment.0/@compartment" to="//@epidemic/@dimension.0/@compartment/@compartment.2/@compartment/@dimensions.0/@compartment/@compartment.1/@compartment"/>
+                </flow>
+                <groupSources>
+                  <link compartment="//@epidemic/@dimension.0/@compartment/@compartment.2/@compartment/@dimensions.0/@compartment/@compartment.0/@compartment"/>
+                </groupSources>
+              </compartment>
+            </dimensions>
+            <dimensions>
+              <compartment xsi:type="compartmentGroup:Group" id="Variants">
+                <compartment>
+                  <compartment id="Delta"/>
+                </compartment>
+                <compartment>
+                  <compartment id="Omicron"/>
+                </compartment>
+              </compartment>
+            </dimensions>
+            <dimensions>
+              <compartment xsi:type="compartmentGroup:Group" id="Test">
+                <compartment>
+                  <compartment id="A"/>
+                </compartment>
+                <compartment>
+                  <compartment id="B"/>
+                </compartment>
+              </compartment>
+            </dimensions>
+          </compartment>
+        </compartment>
+        <compartment>
+          <compartment id="R"/>
+        </compartment>
+        <flow>
+          <flow xsi:type="batchRateContactFlow:Contact" id="exposure" from="//@epidemic/@dimension.0/@compartment/@compartment.0/@compartment" to="//@epidemic/@dimension.0/@compartment/@compartment.1/@compartment" contact="//@epidemic/@dimension.0/@compartment/@compartment.2/@compartment"/>
+        </flow>
+        <flow>
+          <flow xsi:type="batchRateContactFlow:Rate" id="Infection" from="//@epidemic/@dimension.0/@compartment/@compartment.1/@compartment" to="//@epidemic/@dimension.0/@compartment/@compartment.2/@compartment"/>
+        </flow>
+        <flow>
+          <flow xsi:type="batchRateContactFlow:Rate" id="Recovery" from="//@epidemic/@dimension.0/@compartment/@compartment.2/@compartment" to="//@epidemic/@dimension.0/@compartment/@compartment.3/@compartment"/>
+        </flow>
+      </compartment>
+    </dimension>
+  </epidemic>
+</epimodel:EpidemicWrapper>

@@ -148,7 +148,10 @@ public class ProductImpl extends CompartmentImpl implements Product {
 						
 						@Override
 						public String getId() {
-							return f.getId();
+							String res = f.getId();
+							for (int j = 0; j < ids.size(); ++j)
+								res += specifications.get(j).labels;
+							return res;
 						}
 					});
 				}	

@@ -30,7 +30,6 @@ public class RateImpl extends FromToFlowImpl implements Rate {
 
 	@Override
 	public List<Object> getEquations(Epidemic epidemic) {
-		System.out.println("this: " + this + ", " + this.getClass() + ", type: " +getEquationType() + ", id: " + getId());
 		List<PhysicalCompartment> froms = getPhysicalSinksFor(epidemic, getFrom());
 		List<PhysicalCompartment> tos = getPhysicalSourcesFor(epidemic, getTo());
 		List<Object> equations = new ArrayList<>();

@@ -22,7 +22,7 @@ import dimensionEpidemic.DimensionEpidemic;
 public class Test {
 	public static void main(String[] args) throws Exception {
 		
-		String model_fn = "../../runtime-EclipseApplication/modeling/model2.epimodel";
+		String model_fn = "../../runtime-EclipseApplication/modeling/model4.epimodel";
 		String outfolder = "C:/Users/Bruno/Desktop/";
 		
 		{
