@@ -18,7 +18,7 @@
   - an `Epidemic` concept
   - a `Compartment` concept
   - a `Flow` concept
-  - `Batch`, `Rate` & `Mix` concepts as described [here](https://github.com/polytechnique-ease/Model-Driven-Epidemiology/blob/main/docs/SRS.md#11-modeling)
+  - `Batch`, `Rate` & `Contact` flows as described [here](https://github.com/polytechnique-ease/Model-Driven-Epidemiology/blob/main/docs/SRS.md#11-modeling)
   - Additional types of flows
   - Additional types of Compartments
 
