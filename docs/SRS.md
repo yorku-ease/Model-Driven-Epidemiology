@@ -12,11 +12,11 @@ The following document presents the Requirements for the epidemiological modelin
 
 ### Project Objective
 
-The objective is to provide the client with a framework to develop, view, compare, modify and test epidemiological models. This will be done using either a Domain Specific Language or a graphical editor/viewer.
+The objective product is a framework to develop, view, compare, modify, train and test epidemiological models. This will be done using either a Domain Specific Language or a graphical editor/viewer, aswell as a model training environment.
 
 ### Context
 
-This is a masters project at Polytechnique Montreal, currently undertaken by a single student for a single "client", an epidemiologist, professor at the University of Montreal. There are no business collaborators. The project revolves mostly about implementing the required features, but partially about researching how to best do so following Model Driven practices.
+This is a masters project at Polytechnique Montreal, currently undertaken by a single student for a single "client", an epidemiologist, professor at the University of Montreal. There are no business collaborators. The project revolves mostly about implementing the required features aswell as how to best do so following Model Driven practices.
 
 ## 1 Functional Requirements
 
@@ -26,66 +26,54 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.1.2 The model must contain `Flow` objects
 
-1.1.3 `Flow` objects can be of kind `Batch`, `Rate` or `Mix`
+1.1.3 `Flow` objects can be of kind `Batch`, `Rate` or `Contact`
 
 1.1.4 `Batches` are `Flows` from population 1 to population 2 with constant value
 
 1.1.5 `Rates` are `Flows` from population 1 to population 2 with value directly proportional to the size of population 1
 
-1.1.6 `Mixes` are `Flows` from population 1 to population 2 with value proportional to the product of the size of population 1 and the size of the `Mixed` population 3
+1.1.6 `Contacts` are `Flows` from population 1 to population 2 with value proportional to the product of the size of population 1 and the size of the `Mixed` population 3
 
 1.1.7 The metamodel supports extensions
 
-1.1.8 Extensions are made available by placing them in the metamodel folder
+1.1.8 Extensions refer to polymorphic alternatives to existing objects in higher level metamodels (concretisations)
 
-1.1.9 Extensions are marked as used or unused for each model
+1.1.9 It is possible to create new types of flows and they behave as expected with composed compartments
 
-1.1.10 The extended metamodel is generated when opening a graphical editor view of a model
+1.1.10 It is possible to create new types of compartments and they behave as expected with regards to composability
 
-1.1.11 The extended metamodel is generated when opening a DSL editor view of a model
+#### 1.1.1 extension usage
 
-1.1.12 The extended metamodel is generated when generating artifacts for a model
+1.1.1.1 Extensions are made available by placing them in the metamodel extensions folder
+
+1.1.1.2 Extensions are marked as used or unused for each model
+
+1.1.1.3 The extended metamodel is generated when opening a graphical editor view of a model
+
+1.1.1.4 The extended metamodel is generated when opening a DSL editor view of a model
+
+1.1.1.5 The extended metamodel is generated when generating artifacts for a model
 
 
 ### 1.2 Domain Specific Language
 
 1.2.1. The DSL must support creating model objects
 
-1.2.2 The DSL must support defining model object properties
+1.2.2 The DSL must support defining model object properties (attributes, references)
 
-1.2.3 The DSL must support removing model objects
+1.2.3 A valid DSL file must correspond to a model definition
 
-1.2.4 The DSL must support defining model object connections
+1.2.4 A valid model must be serializable as a DSL file
 
-1.2.5 A valid DSL file must correspond to a model definition
+1.2.5 The DSL compiler must provide explanations for invalid DSL files
 
-1.2.6 A valid model must be serializable as a DSL file
+1.2.6 The DSL must support comments after the character `#` is found outside a string literal on a line
 
-1.2.7 The DSL compiler must have an explanation for the invalidity of a DSL file
+1.2.7 The DSL must use a reserved keyword `Compartment` to refer to a Compartment (base type)
 
-1.2.8 The DSL must support comments after the character `#` is found outside a string literal on a line
+1.2.8 the DSL must use reserved keywords to refer to any concrete type defined by extensions, for example: `Batch`, `Rate`, `Contact`, etc.
 
-1.2.9 The DSL must use a reserved keyword `Compartment` to refer to a Compartment
-
-1.2.10 The DSL must use a reserved keyword `Batch` to refer to a Batch
-
-1.2.11 The DSL must use a reserved keyword `Rate` to refer to a Rate
-
-1.2.12 The DSL must use a reserved keyword `Mix` to refer to a Mix
-
-1.2.13 The DSL must support labeling each object with string literals
-
-1.2.14 The DSL must only support variable names matching the regular expression `[a-zA-Z_][a-zA-Z0-9_]*` (letter or underscore followed with any combination of letter, number or underscore)
-
-1.2.15 The DSL must support only named instances of `Populations` using the word found after the `Population` keyword (C-Style definitions)
-
-1.2.16 The DSL must support named and unnamed instances of `Flows` using an optional word found after the keywords `Batch`, `Rate` or `Mix`
-
-1.2.17 The DSL must only support definitions of `Batches` referencing 2 populations where the first flows into the second
-
-1.2.18 The DSL must only support definitions of `Rates` referencing 2 populations where the first flows into the second
-
-1.2.19 The DSL must only support definitions of `Mixes` referencing 3 populations where the first mixes with the third and flows into the second
+1.2.9 The DSL must support labeling each object with variable names matching the regular expression `[a-zA-Z_][a-zA-Z0-9_]*` (letter or underscore followed with any combination of letter, number or underscore)
 
 
 ### 1.3 Graphical Editor
@@ -96,13 +84,15 @@ This is a masters project at Polytechnique Montreal, currently undertaken by a s
 
 1.3.3 The graphical editor must support to connecting model objects
 
-1.3.4 The graphical editor must support to editing model object properties
+1.3.4 The graphical editor must support to editing model object properties (attributes and references)
 
 1.3.5 The graphical editor must support persistence of each change after a save, including item positioning
 
-1.3.6 The graphical editor must provide an organized default view for models generated with the DSL
+1.3.6 The graphical editor must provide an organized default view for models created without the graphical editor
 
-1.3.7 The grapical editor must provide undo-redo stacks of at least 50 actions
+1.3.7 The grapical editor must provide persistent undo-redo stacks of at least 50 actions
+
+1.3.8 The graphical editor must provide a compare view accompanied with an automatically generated textual log of changes
 
 
 ### 1.4 Model Views
