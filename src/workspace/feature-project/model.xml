@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendposition" value="59,22"/>
+		<graphics key="legendautolayout" value="false"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="EpidemicMetamodelLine">
+			<graphics key="collapsed" value="false"/>
+			<and mandatory="true" name="EpidemicMetamodel">
+				<graphics key="collapsed" value="false"/>
+				<and abstract="true" name="Plugins">
+					<feature name="GroupCompartment"/>
+					<feature name="ProductCompartment"/>
+					<feature name="VaccinationCompartment"/>
+					<feature name="LinkCompartment"/>
+				</and>
+				<feature abstract="true" name="Vaccination"/>
+				<feature name="Referencing Compartments"/>
+			</and>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<description>To Implement Vaccination, we require VaccinationCompartment and ProductCompartment to instantiate products with a Vaccination Dimension</description>
+			<imp>
+				<var>Vaccination</var>
+				<conj>
+					<var>VaccinationCompartment</var>
+					<var>ProductCompartment</var>
+				</conj>
+			</imp>
+		</rule>
+		<rule>
+			<description>To reference existing Compartments, use the LinkCompartment Feature to create link objects</description>
+			<imp>
+				<var>Referencing Compartments</var>
+				<var>LinkCompartment</var>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>
