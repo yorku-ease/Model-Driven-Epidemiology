@@ -8,6 +8,9 @@ https://www.eclipse.org/emf/compare/documentation/latest/developer/developer-gui
 **Sources (repo git) EMFCompare**
 https://git.eclipse.org/c/emfcompare/org.eclipse.emf.compare.git/tree/plugins/org.eclipse.emf.compare
 
+**MatchOfValue**
+https://stackoverflow.com/questions/62171658/retrieving-the-match-of-value-in-an-add-diff-computed-by-emf-compare
+
 **Infos sur la comparaison**
 
 Le Match et le diff se déroule lors de l'executions de diffEngine.diff(comparison, subMonitor) dans le fichier EMFCompare.java;
