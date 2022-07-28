@@ -4,12 +4,17 @@ package couplingFlow.impl;
 
 import couplingFlow.CouplingFlow;
 import couplingFlow.CouplingFlowPackage;
-
+import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.Epidemic;
 import epimodel.impl.FlowImpl;
+import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
+import epimodel.util.PhysicalFlowEquation;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -35,16 +40,36 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
-	
-	@Override
-	public String getEquationType() {
-		return "Coupling";
-	}
 
 	@Override
-	public List<Object> getEquations(Epidemic epidemic) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
+		List<PhysicalCompartment> equationCompartments = 
+				Arrays.asList(firstFrom, secondFrom)
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getPhysicalCompartments)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
+		List<PhysicalCompartment> affectedCompartments = 
+				Arrays.asList(firstFrom, secondFrom, firstTo, secondTo)
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getPhysicalCompartments)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
+		List<Float> coefficients = Arrays.asList(-1f, -1f, 1f, 1f);
+		String equation = "(* $0 $1)";
+		List<String> requiredOperators = Arrays.asList("*");
+		return Arrays.asList(
+				new PhysicalFlow(
+						Arrays.asList(
+								new PhysicalFlowEquation(
+									equationCompartments,
+									affectedCompartments,
+									coefficients,
+									equation,
+									requiredOperators
+							))));
 	}
 	
 	/**

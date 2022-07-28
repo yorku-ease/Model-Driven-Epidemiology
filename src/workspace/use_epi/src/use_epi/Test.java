@@ -5,35 +5,37 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import dimensionEpidemic.DimensionEpidemic;
+import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
+import epimodel.util.PhysicalFlowEquation;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
 		
 		String model_fn = "../../runtime-EclipseApplication/modeling/model4.epimodel";
-		String outfolder = "C:/Users/Bruno/Desktop/";
 		
-		{
-			Resource.Factory.Registry factoryRegistry = Resource.Factory.Registry.INSTANCE;
-	        Map<String, Object> m = factoryRegistry.getExtensionToFactoryMap();
-	        m.put("*", new EcoreResourceFactoryImpl());
-		}
+		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
+        Map<String, Object> m = factoryRegistry.getExtensionToFactoryMap();
+        m.put("*", new EcoreResourceFactoryImpl());
 		
         ResourceSet resSet = new ResourceSetImpl();
         EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
         resSet.setPackageRegistry(pkgRegistry);
+        resSet.setResourceFactoryRegistry(factoryRegistry);
         
 		{
 	        pkgRegistry.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
@@ -50,22 +52,34 @@ public class Test {
         URI uri = URI.createFileURI(model_fn);
         Resource resource = resSet.getResource(uri, true);
         
-        DimensionEpidemic myEpi = (DimensionEpidemic) ((epimodel.EpidemicWrapper) resource.getContents().get(0)).getEpidemic();
-        
-		List<JSONObject> res = myEpi.compile();
-        
-        for (JSONObject obj : res) {
-        	String fn = obj.getString("filename");
-        	Object content = obj.get(obj.getString("key"));
-        	// java things...
-        	if (content instanceof JSONObject)
-        		writeJsonFile((JSONObject) content, outfolder + fn + ".json");
-        	else if (content instanceof JSONArray)
-        		writeJsonFile((JSONArray) content, outfolder + fn + ".json");
-        	else
-        		throw new Exception();
-        }
-        
+        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) resource.getContents().get(0);
+
+        List<PhysicalCompartment> cs = myEpi.getEpidemic().getPhysicalCompartments();
+        List<PhysicalFlow> fs = myEpi.getEpidemic().getPhysicalFlows();
+
+		String outfolder = "C:/Users/Bruno/Desktop/";
+
+		{
+			PrintWriter writer = new PrintWriter(outfolder + myEpi.getEpidemic().getId() + ".compartments.txt", "UTF-8");
+			for (PhysicalCompartment pc : cs)
+				writer.println(pc.labels);
+		    writer.close();
+		}
+		{
+			PrintWriter writer = new PrintWriter(outfolder + myEpi.getEpidemic().getId() + ".equations.txt", "UTF-8");
+			for (PhysicalFlow pf : fs) {
+				for (PhysicalFlowEquation  pfe : pf.equations) {
+					writer.println(pfe.equation);
+					writer.println(pfe.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
+					writer.println(pfe.coefficients);
+					writer.println(pfe.affectedCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
+					writer.println(pfe.requiredOperators);
+				    writer.println();
+				}
+			}
+		    writer.close();
+		}
+
         return;
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 
 import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,15 +27,14 @@ import epimodel.util.PhysicalCompartment;
  */
 public interface Flow extends EObject {
 
-	List<Object> getEquations(Epidemic epidemic);
-	String getEquationType();
+	List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic);
 
-	// essentially template methods
 	List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c);
 
 	List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c);
 
 	List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c);
+	
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
