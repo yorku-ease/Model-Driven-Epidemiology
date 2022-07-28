@@ -6,13 +6,14 @@ import batchRateContactFlow.Batch;
 import batchRateContactFlow.BatchRateContactFlowPackage;
 import epimodel.Epidemic;
 import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
+import epimodel.util.PhysicalFlowEquation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,25 +25,30 @@ import org.json.JSONObject;
 public class BatchImpl extends FromToFlowImpl implements Batch {
 	
 	@Override
-	public String getEquationType() {
-		return "Batch";
-	}
+	public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
+		List<PhysicalFlow> res = new ArrayList<>();
 
-	public List<Object> getEquations(Epidemic epidemic) {
-		List<PhysicalCompartment> froms = getPhysicalSinksFor(epidemic, getFrom());
-		List<PhysicalCompartment> tos = getPhysicalSourcesFor(epidemic, getTo());
-		List<Object> equations = new ArrayList<>();
-		for (PhysicalCompartment f : froms)
-			for (PhysicalCompartment t : tos)
-				try {
-					JSONObject res = new JSONObject();
-					res.put("from", f.labels);
-					res.put("to", t.labels);
-					equations.add(res);
-				} catch (JSONException e) {
-					throw new NullPointerException(e.toString());
-				}
-		return equations;
+		int index = 0;
+		for (PhysicalCompartment from : epidemic.getPhysicalSinksFor(from))
+			for (PhysicalCompartment to : epidemic.getPhysicalSourcesFor(to)) {
+				
+				List<PhysicalCompartment> equationCompartments = new ArrayList<>();
+				List<PhysicalCompartment> affectedCompartments = Arrays.asList(from, to);
+				List<Float> coefficients = Arrays.asList(-1f, 1f);
+				String equation = "(get " + getId() + " " + index++ +")";
+				List<String> requiredOperators = Arrays.asList("get");
+				
+				res.add(new PhysicalFlow(
+						Arrays.asList(
+								new PhysicalFlowEquation(
+									equationCompartments,
+									affectedCompartments,
+									coefficients,
+									equation,
+									requiredOperators
+							))));
+			}
+		return res;
 	}
 
 	/**
