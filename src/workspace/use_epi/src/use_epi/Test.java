@@ -1,8 +1,6 @@
 package use_epi;
 
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,9 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
@@ -82,20 +77,4 @@ public class Test {
 
         return;
 	}
-
-	// java things...
-	protected static void writeJsonFile(JSONObject o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
-	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
-	    writer.print(o.toString(4));
-	    writer.println();
-	    writer.close();
-	}
-	
-	protected static void writeJsonFile(JSONArray o, String filename) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
-	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
-	    writer.print(o.toString(4));
-	    writer.println();
-	    writer.close();
-	}
-		
 }
