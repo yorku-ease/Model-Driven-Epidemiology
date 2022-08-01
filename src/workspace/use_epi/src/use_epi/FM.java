@@ -17,7 +17,7 @@ public class FM {
 	public static void main(String[] args) throws Exception {
 		
 		LibraryManager.registerLibrary(FMCoreLibrary.getInstance());
-		IFeatureModel fm = FeatureModelManager.load(Paths.get("C:/Users/Bruno/Desktop/feature-model.xml"));
+		IFeatureModel fm = FeatureModelManager.load(Paths.get("C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/src/feature-model.xml"));
 		FeatureModelFormula fmf = new FeatureModelFormula(fm);
 		Configuration conf = new Configuration(fmf);
 		ConfigurationAnalyzer ca = new ConfigurationAnalyzer(fmf, conf);
