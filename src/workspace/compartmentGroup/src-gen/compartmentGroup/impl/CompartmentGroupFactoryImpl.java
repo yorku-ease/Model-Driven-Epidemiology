@@ -66,6 +66,8 @@ public class CompartmentGroupFactoryImpl extends EFactoryImpl implements Compart
 			return createEnd();
 		case CompartmentGroupPackage.LINK:
 			return createLink();
+		case CompartmentGroupPackage.GROUP_EPIDEMIC:
+			return createGroupEpidemic();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -124,6 +126,17 @@ public class CompartmentGroupFactoryImpl extends EFactoryImpl implements Compart
 	public Link createLink() {
 		LinkImpl link = new LinkImpl();
 		return link;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public GroupEpidemic createGroupEpidemic() {
+		GroupEpidemicImpl groupEpidemic = new GroupEpidemicImpl();
+		return groupEpidemic;
 	}
 
 	/**

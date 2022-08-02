@@ -114,13 +114,13 @@ public interface DimensionEpidemicPackage extends EPackage {
 	int PRODUCT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Label</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PRODUCT__ID = EpimodelPackage.COMPARTMENT__ID;
+	int PRODUCT__LABEL = EpimodelPackage.COMPARTMENT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Dimensions</b></em>' containment reference list.

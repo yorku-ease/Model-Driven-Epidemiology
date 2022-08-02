@@ -67,6 +67,15 @@ public interface CompartmentGroupFactory extends EFactory {
 	Link createLink();
 
 	/**
+	 * Returns a new object of class '<em>Group Epidemic</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Group Epidemic</em>'.
+	 * @generated
+	 */
+	GroupEpidemic createGroupEpidemic();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

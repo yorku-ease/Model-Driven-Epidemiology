@@ -34,7 +34,6 @@ public interface Flow extends EObject {
 	List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c);
 
 	List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c);
-	
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

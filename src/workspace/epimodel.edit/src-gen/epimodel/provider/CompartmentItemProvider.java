@@ -53,24 +53,24 @@ public class CompartmentItemProvider extends ItemProviderAdapter implements IEdi
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addIdPropertyDescriptor(object);
+			addLabelPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Id feature.
+	 * This adds a property descriptor for the Label feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addIdPropertyDescriptor(Object object) {
+	protected void addLabelPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
 				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						getResourceLocator(), getString("_UI_Compartment_id_feature"),
-						getString("_UI_PropertyDescriptor_description", "_UI_Compartment_id_feature",
+						getResourceLocator(), getString("_UI_Compartment_label_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Compartment_label_feature",
 								"_UI_Compartment_type"),
-						EpimodelPackage.Literals.COMPARTMENT__ID, true, false, false,
+						EpimodelPackage.Literals.COMPARTMENT__LABEL, true, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -103,9 +103,7 @@ public class CompartmentItemProvider extends ItemProviderAdapter implements IEdi
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Compartment) object).getId();
-		return label == null || label.length() == 0 ? getString("_UI_Compartment_type")
-				: getString("_UI_Compartment_type") + " " + label;
+		return getString("_UI_Compartment_type");
 	}
 
 	/**
@@ -120,7 +118,7 @@ public class CompartmentItemProvider extends ItemProviderAdapter implements IEdi
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Compartment.class)) {
-		case EpimodelPackage.COMPARTMENT__ID:
+		case EpimodelPackage.COMPARTMENT__LABEL:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}

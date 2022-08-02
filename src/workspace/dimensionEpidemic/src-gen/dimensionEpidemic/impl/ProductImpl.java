@@ -46,21 +46,15 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return CartesianProduct.cartesianProduct(
-				getDimensions()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getPhysicalCompartments)
-					.collect(Collectors.toList())
-				)
-				.stream()
-				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
-				.map(p -> prependSelf(p))
+		return CartesianProduct
+				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getPhysicalCompartments).collect(Collectors.toList()))
+				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-		p.labels.add(0, this.getId());
+		p.labels.addAll(0, getLabel());
 		return p;
 	}
 
@@ -89,20 +83,18 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	@Override
 	public List<Flow> getFlows() {
-		List<Compartment> dims = getDimensions().stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
+		List<Compartment> dims = getDimensions().stream().map(CompartmentWrapper::getCompartment)
+				.collect(Collectors.toList());
 		List<List<Flow>> flowsByDim = dims.stream().map(Compartment::getFlows).collect(Collectors.toList());
 		List<Flow> res = new ArrayList<>();
-		
+
 		for (int i = 0; i < dims.size(); ++i) {
 			Compartment dimension = dims.get(i);
 			List<Flow> flowsOfDim = flowsByDim.get(i);
 			List<Compartment> otherDimensions = getDimensionsExceptOne(dimension);
-			List<String> ids = otherDimensions.stream().map(d -> d.getId()).collect(Collectors.toList());
+			List<String> ids = otherDimensions.stream().map(d -> d.getLabel()).flatMap(List::stream).collect(Collectors.toList());
 			List<List<PhysicalCompartment>> whatFlowsWillSee = CartesianProduct.cartesianProduct(
-					otherDimensions
-						.stream()
-						.map(d -> d.getPhysicalCompartments())
-						.collect(Collectors.toList()));
+					otherDimensions.stream().map(d -> d.getPhysicalCompartments()).collect(Collectors.toList()));
 
 			for (Flow f : flowsOfDim) {
 				for (List<PhysicalCompartment> specifications : whatFlowsWillSee) {
@@ -110,48 +102,52 @@ public class ProductImpl extends CompartmentImpl implements Product {
 						@Override
 						public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
 							return f.getPhysicalFlows((Epidemic) new EpidemicImpl() {
-								
+
 								@Override
 								public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
 									return matchingSpecification(epidemic.getPhysicalFor(c));
 								}
+
 								@Override
 								public List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c) {
 									return matchingSpecification(epidemic.getPhysicalSourcesFor(c));
 								}
+
 								@Override
 								public List<PhysicalCompartment> getPhysicalSinksFor(Compartment c) {
 									return matchingSpecification(epidemic.getPhysicalSinksFor(c));
 								}
-								
+
 								List<PhysicalCompartment> matchingSpecification(List<PhysicalCompartment> l) {
 									return l.stream().filter(pc -> {
 										for (int j = 0; j < ids.size(); ++j)
 											// if you match a specification        you need all of its labels
-											if (pc.labels.contains(ids.get(j)) && !pc.labels.containsAll(specifications.get(j).labels))
+											if (pc.labels.contains(ids.get(j))
+													&& !pc.labels.containsAll(specifications.get(j).labels))
 												return false;
 										// no incorrect specifications
 										return true;
 									}).collect(Collectors.toList());
 								}
 
-								@Override public List<PhysicalCompartment> getPhysicalCompartments() {return null;}
-								@Override public List<PhysicalFlow> getPhysicalFlows() {return null;}
+								@Override
+								public List<PhysicalCompartment> getPhysicalCompartments() {
+									return null;
+								}
+
+								@Override
+								public List<PhysicalFlow> getPhysicalFlows() {
+									return null;
+								}
 							}).stream()
-								.map(p -> new PhysicalFlow(
-									p.equations
-										.stream()
-										.map(e -> new PhysicalFlowEquation(
-											e.equationCompartments,
-											e.affectedCompartments,
-											e.coefficients,
-											e.equation.replaceAll(f.getId(), getId()),
-											e.requiredOperators))
-										.collect(Collectors.toList())
-								))
-								.collect(Collectors.toList());
+									.map(p -> new PhysicalFlow(p.equations.stream()
+											.map(e -> new PhysicalFlowEquation(e.equationCompartments,
+													e.affectedCompartments, e.coefficients,
+													e.equation.replaceAll(f.getId(), getId()), e.requiredOperators))
+											.collect(Collectors.toList())))
+									.collect(Collectors.toList());
 						}
-						
+
 						@Override
 						public String getId() {
 							String res = f.getId();
@@ -161,33 +157,22 @@ public class ProductImpl extends CompartmentImpl implements Product {
 							return res;
 						}
 					});
-				}	
+				}
 			}
 		}
-		
+
 		return res;
 	}
-	
+
 	PhysicalCompartment uniqueLabels(PhysicalCompartment p) {
 		return new PhysicalCompartment(p.labels.stream().distinct().collect(Collectors.toList()));
 	}
-	
+
 	protected List<Compartment> getDimensionsExceptOne(Compartment dimensionToIgnore) {
-		return getDimensions()
-				.stream()
-				.map(CompartmentWrapper::getCompartment)
-				.filter(c -> c != dimensionToIgnore)
+		return getDimensions().stream().map(CompartmentWrapper::getCompartment).filter(c -> c != dimensionToIgnore)
 				.collect(Collectors.toList());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * The cached value of the '{@link #getDimensions() <em>Dimensions</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

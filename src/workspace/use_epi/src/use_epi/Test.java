@@ -1,8 +1,6 @@
 package use_epi;
 
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
@@ -20,12 +18,8 @@ import epimodel.util.PhysicalFlowEquation;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
-		
-		String model_fn = "../../runtime-EclipseApplication/modeling/model4.epimodel";
-		
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
-        Map<String, Object> m = factoryRegistry.getExtensionToFactoryMap();
-        m.put("*", new EcoreResourceFactoryImpl());
+        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
 		
         ResourceSet resSet = new ResourceSetImpl();
         EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
@@ -37,32 +31,31 @@ public class Test {
 	        pkgRegistry.put(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI, dimensionEpidemic.DimensionEpidemicPackage.eINSTANCE);
 	        pkgRegistry.put(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI, batchRateContactFlow.BatchRateContactFlowPackage.eINSTANCE);
 	        pkgRegistry.put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
-	        
-//	        pkgRegistry.remove(epimodel.EpimodelPackage.eNS_URI);
-//	        pkgRegistry.remove(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI);
-//	        pkgRegistry.remove(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI);
-//	        pkgRegistry.remove(compartmentGroup.CompartmentGroupPackage.eNS_URI);
 		}
+
+		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel");
+		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel");
+		compile(resSet, "../../runtime-EclipseApplication/modeling/DEG_SI_S_I.epimodel");
+	}
+	
+	static void compile(ResourceSet resSet, String model_fn) throws Exception {
         
         URI uri = URI.createFileURI(model_fn);
         Resource resource = resSet.getResource(uri, true);
         
         epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) resource.getContents().get(0);
 
-        List<PhysicalCompartment> cs = myEpi.getEpidemic().getPhysicalCompartments();
-        List<PhysicalFlow> fs = myEpi.getEpidemic().getPhysicalFlows();
-
 		String outfolder = "C:/Users/Bruno/Desktop/";
 
 		{
 			PrintWriter writer = new PrintWriter(outfolder + myEpi.getEpidemic().getId() + ".compartments.txt", "UTF-8");
-			for (PhysicalCompartment pc : cs)
+			for (PhysicalCompartment pc : myEpi.getEpidemic().getPhysicalCompartments())
 				writer.println(pc.labels);
 		    writer.close();
 		}
 		{
 			PrintWriter writer = new PrintWriter(outfolder + myEpi.getEpidemic().getId() + ".equations.txt", "UTF-8");
-			for (PhysicalFlow pf : fs) {
+			for (PhysicalFlow pf : myEpi.getEpidemic().getPhysicalFlows()) {
 				for (PhysicalFlowEquation  pfe : pf.equations) {
 					writer.println(pfe.equation);
 					writer.println(pfe.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
@@ -74,7 +67,5 @@ public class Test {
 			}
 		    writer.close();
 		}
-
-        return;
 	}
 }

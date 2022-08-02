@@ -32,9 +32,9 @@ public interface Epidemic extends EObject {
 	List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c);
 
 	List<PhysicalCompartment> getPhysicalSinksFor(Compartment c);
-	
+
 	List<PhysicalCompartment> getPhysicalCompartments();
-	
+
 	List<PhysicalFlow> getPhysicalFlows();
 
 	/**
