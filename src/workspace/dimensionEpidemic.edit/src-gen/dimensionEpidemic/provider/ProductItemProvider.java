@@ -111,9 +111,7 @@ public class ProductItemProvider extends CompartmentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Product) object).getId();
-		return label == null || label.length() == 0 ? getString("_UI_Product_type")
-				: getString("_UI_Product_type") + " " + label;
+		return getString("_UI_Product_type");
 	}
 
 	/**

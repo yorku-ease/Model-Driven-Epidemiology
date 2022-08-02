@@ -68,13 +68,13 @@ public interface CompartmentLinkPackage extends EPackage {
 	int COMPARTMENT_LINK = 0;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Label</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_LINK__ID = EpimodelPackage.COMPARTMENT__ID;
+	int COMPARTMENT_LINK__LABEL = EpimodelPackage.COMPARTMENT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Compartment</b></em>' reference.

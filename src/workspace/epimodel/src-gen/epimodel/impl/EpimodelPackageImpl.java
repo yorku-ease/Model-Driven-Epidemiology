@@ -207,7 +207,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getCompartment_Id() {
+	public EAttribute getCompartment_Label() {
 		return (EAttribute) compartmentEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -291,7 +291,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		createEReference(compartmentWrapperEClass, COMPARTMENT_WRAPPER__COMPARTMENT);
 
 		compartmentEClass = createEClass(COMPARTMENT);
-		createEAttribute(compartmentEClass, COMPARTMENT__ID);
+		createEAttribute(compartmentEClass, COMPARTMENT__LABEL);
 
 		flowWrapperEClass = createEClass(FLOW_WRAPPER);
 		createEReference(flowWrapperEClass, FLOW_WRAPPER__FLOW);
@@ -349,7 +349,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		initEClass(compartmentEClass, Compartment.class, "Compartment", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCompartment_Id(), ecorePackage.getEString(), "id", null, 0, 1, Compartment.class,
+		initEAttribute(getCompartment_Label(), ecorePackage.getEString(), "label", null, 0, -1, Compartment.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(flowWrapperEClass, FlowWrapper.class, "FlowWrapper", !IS_ABSTRACT, !IS_INTERFACE,

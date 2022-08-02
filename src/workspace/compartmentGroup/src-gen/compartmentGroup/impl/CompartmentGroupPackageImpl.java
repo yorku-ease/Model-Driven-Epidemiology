@@ -7,6 +7,7 @@ import compartmentGroup.CompartmentGroupPackage;
 import compartmentGroup.End;
 import compartmentGroup.Group;
 
+import compartmentGroup.GroupEpidemic;
 import compartmentGroup.GroupSinks;
 import compartmentGroup.GroupSources;
 import compartmentGroup.Link;
@@ -58,6 +59,13 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 	 * @generated
 	 */
 	private EClass linkEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass groupEpidemicEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -242,6 +250,56 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 	 * @generated
 	 */
 	@Override
+	public EClass getGroupEpidemic() {
+		return groupEpidemicEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getGroupEpidemic_GroupSinks() {
+		return (EReference) groupEpidemicEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getGroupEpidemic_GroupSources() {
+		return (EReference) groupEpidemicEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getGroupEpidemic_Flow() {
+		return (EReference) groupEpidemicEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getGroupEpidemic_Compartment() {
+		return (EReference) groupEpidemicEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CompartmentGroupFactory getCompartmentGroupFactory() {
 		return (CompartmentGroupFactory) getEFactoryInstance();
 	}
@@ -281,6 +339,12 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 
 		linkEClass = createEClass(LINK);
 		createEReference(linkEClass, LINK__COMPARTMENT);
+
+		groupEpidemicEClass = createEClass(GROUP_EPIDEMIC);
+		createEReference(groupEpidemicEClass, GROUP_EPIDEMIC__GROUP_SINKS);
+		createEReference(groupEpidemicEClass, GROUP_EPIDEMIC__GROUP_SOURCES);
+		createEReference(groupEpidemicEClass, GROUP_EPIDEMIC__FLOW);
+		createEReference(groupEpidemicEClass, GROUP_EPIDEMIC__COMPARTMENT);
 	}
 
 	/**
@@ -319,6 +383,7 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 		groupEClass.getESuperTypes().add(theEpimodelPackage.getCompartment());
 		groupSourcesEClass.getESuperTypes().add(this.getEnd());
 		groupSinksEClass.getESuperTypes().add(this.getEnd());
+		groupEpidemicEClass.getESuperTypes().add(theEpimodelPackage.getEpidemic());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(groupEClass, Group.class, "Group", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -349,6 +414,21 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 		initEReference(getLink_Compartment(), theEpimodelPackage.getCompartment(), null, "compartment", null, 0, 1,
 				Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(groupEpidemicEClass, GroupEpidemic.class, "GroupEpidemic", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGroupEpidemic_GroupSinks(), this.getGroupSinks(), null, "groupSinks", null, 0, 1,
+				GroupEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGroupEpidemic_GroupSources(), this.getGroupSources(), null, "groupSources", null, 0, 1,
+				GroupEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGroupEpidemic_Flow(), theEpimodelPackage.getFlowWrapper(), null, "flow", null, 0, -1,
+				GroupEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getGroupEpidemic_Compartment(), theEpimodelPackage.getCompartmentWrapper(), null, "compartment",
+				null, 0, -1, GroupEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

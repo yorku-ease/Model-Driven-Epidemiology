@@ -8,6 +8,7 @@ import compartmentGroup.CompartmentGroupPackage;
 import compartmentGroup.util.CompartmentGroupAdapterFactory;
 
 import epimodel.CompartmentWrapper;
+import epimodel.EpidemicWrapper;
 import epimodel.EpimodelPackage;
 
 import epimodel.util.EpimodelSwitch;
@@ -216,6 +217,29 @@ public class CompartmentGroupItemProviderAdapterFactory extends CompartmentGroup
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link compartmentGroup.GroupEpidemic} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GroupEpidemicItemProvider groupEpidemicItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link compartmentGroup.GroupEpidemic}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGroupEpidemicAdapter() {
+		if (groupEpidemicItemProvider == null) {
+			groupEpidemicItemProvider = new GroupEpidemicItemProvider(this);
+		}
+
+		return groupEpidemicItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -357,6 +381,8 @@ public class CompartmentGroupItemProviderAdapterFactory extends CompartmentGroup
 			endItemProvider.dispose();
 		if (linkItemProvider != null)
 			linkItemProvider.dispose();
+		if (groupEpidemicItemProvider != null)
+			groupEpidemicItemProvider.dispose();
 	}
 
 	/**
@@ -398,6 +424,19 @@ public class CompartmentGroupItemProviderAdapterFactory extends CompartmentGroup
 			CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) {
 				this.newChildDescriptors = newChildDescriptors;
 				this.editingDomain = editingDomain;
+			}
+
+			/**
+			 * <!-- begin-user-doc -->
+			 * <!-- end-user-doc -->
+			 * @generated
+			 */
+			@Override
+			public Object caseEpidemicWrapper(EpidemicWrapper object) {
+				newChildDescriptors.add(createChildParameter(EpimodelPackage.Literals.EPIDEMIC_WRAPPER__EPIDEMIC,
+						CompartmentGroupFactory.eINSTANCE.createGroupEpidemic()));
+
+				return null;
 			}
 
 			/**

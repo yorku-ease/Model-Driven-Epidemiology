@@ -57,62 +57,37 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		if (getGroupSources() != null && getGroupSources().getLink().size() > 0)
-			return getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.filter(c -> getGroupSources()
-									.getLink()
-									.stream()
-									.map(Link::getCompartment)
-									.collect(Collectors.toList())
-									.contains(c))
-					.map(Compartment::getSources)
-					.flatMap(List::stream)
-					.collect(Collectors.toList());
+			return getCompartment().stream().map(CompartmentWrapper::getCompartment)
+					.filter(c -> getGroupSources().getLink().stream().map(Link::getCompartment)
+							.collect(Collectors.toList()).contains(c))
+					.map(Compartment::getSources).flatMap(List::stream).collect(Collectors.toList());
 		else
-			return getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getSources)
-					.flatMap(List::stream)
-					.collect(Collectors.toList());
+			return getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getSources)
+					.flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
 		GroupSinks sinks = getGroupSinks();
 		if (sinks != null && sinks.getLink().size() > 0)
-			return sinks
-					.getLink()
-					.stream()
-					.map(Link::getCompartment)
-					.map(Compartment::getSinks)
-					.flatMap(List::stream)
+			return sinks.getLink().stream().map(Link::getCompartment).map(Compartment::getSinks).flatMap(List::stream)
 					.collect(Collectors.toList());
 		else
-			return getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getSinks)
-					.flatMap(List::stream)
-					.collect(Collectors.toList());
+			return getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getSinks)
+					.flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Flow> getFlows() {
 		List<Flow> res = new ArrayList<>();
 		res.addAll(getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList()));
-		res.addAll(getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getFlows)
-					.flatMap(List::stream)
-					.collect(Collectors.toList()));
+		res.addAll(getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getFlows)
+				.flatMap(List::stream).collect(Collectors.toList()));
 		return res;
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-		p.labels.add(0, this.getId());
+		p.labels.addAll(0, getLabel());
 		return p;
 	}
 

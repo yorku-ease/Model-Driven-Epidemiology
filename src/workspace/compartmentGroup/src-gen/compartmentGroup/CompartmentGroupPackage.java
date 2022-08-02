@@ -68,13 +68,13 @@ public interface CompartmentGroupPackage extends EPackage {
 	int GROUP = 0;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Label</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GROUP__ID = EpimodelPackage.COMPARTMENT__ID;
+	int GROUP__LABEL = EpimodelPackage.COMPARTMENT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Compartment</b></em>' containment reference list.
@@ -279,6 +279,79 @@ public interface CompartmentGroupPackage extends EPackage {
 	int LINK_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link compartmentGroup.impl.GroupEpidemicImpl <em>Group Epidemic</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentGroup.impl.GroupEpidemicImpl
+	 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getGroupEpidemic()
+	 * @generated
+	 */
+	int GROUP_EPIDEMIC = 5;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC__ID = EpimodelPackage.EPIDEMIC__ID;
+
+	/**
+	 * The feature id for the '<em><b>Group Sinks</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC__GROUP_SINKS = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Group Sources</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC__GROUP_SOURCES = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Flow</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC__FLOW = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Compartment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC__COMPARTMENT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of structural features of the '<em>Group Epidemic</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC_FEATURE_COUNT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 4;
+
+	/**
+	 * The number of operations of the '<em>Group Epidemic</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP_EPIDEMIC_OPERATION_COUNT = EpimodelPackage.EPIDEMIC_OPERATION_COUNT + 0;
+
+	/**
 	 * Returns the meta object for class '{@link compartmentGroup.Group <em>Group</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -393,6 +466,60 @@ public interface CompartmentGroupPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getLink_Compartment();
+
+	/**
+	 * Returns the meta object for class '{@link compartmentGroup.GroupEpidemic <em>Group Epidemic</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Group Epidemic</em>'.
+	 * @see compartmentGroup.GroupEpidemic
+	 * @generated
+	 */
+	EClass getGroupEpidemic();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link compartmentGroup.GroupEpidemic#getGroupSinks <em>Group Sinks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Group Sinks</em>'.
+	 * @see compartmentGroup.GroupEpidemic#getGroupSinks()
+	 * @see #getGroupEpidemic()
+	 * @generated
+	 */
+	EReference getGroupEpidemic_GroupSinks();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link compartmentGroup.GroupEpidemic#getGroupSources <em>Group Sources</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Group Sources</em>'.
+	 * @see compartmentGroup.GroupEpidemic#getGroupSources()
+	 * @see #getGroupEpidemic()
+	 * @generated
+	 */
+	EReference getGroupEpidemic_GroupSources();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link compartmentGroup.GroupEpidemic#getFlow <em>Flow</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Flow</em>'.
+	 * @see compartmentGroup.GroupEpidemic#getFlow()
+	 * @see #getGroupEpidemic()
+	 * @generated
+	 */
+	EReference getGroupEpidemic_Flow();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link compartmentGroup.GroupEpidemic#getCompartment <em>Compartment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Compartment</em>'.
+	 * @see compartmentGroup.GroupEpidemic#getCompartment()
+	 * @see #getGroupEpidemic()
+	 * @generated
+	 */
+	EReference getGroupEpidemic_Compartment();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -514,6 +641,48 @@ public interface CompartmentGroupPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LINK__COMPARTMENT = eINSTANCE.getLink_Compartment();
+
+		/**
+		 * The meta object literal for the '{@link compartmentGroup.impl.GroupEpidemicImpl <em>Group Epidemic</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentGroup.impl.GroupEpidemicImpl
+		 * @see compartmentGroup.impl.CompartmentGroupPackageImpl#getGroupEpidemic()
+		 * @generated
+		 */
+		EClass GROUP_EPIDEMIC = eINSTANCE.getGroupEpidemic();
+
+		/**
+		 * The meta object literal for the '<em><b>Group Sinks</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GROUP_EPIDEMIC__GROUP_SINKS = eINSTANCE.getGroupEpidemic_GroupSinks();
+
+		/**
+		 * The meta object literal for the '<em><b>Group Sources</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GROUP_EPIDEMIC__GROUP_SOURCES = eINSTANCE.getGroupEpidemic_GroupSources();
+
+		/**
+		 * The meta object literal for the '<em><b>Flow</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GROUP_EPIDEMIC__FLOW = eINSTANCE.getGroupEpidemic_Flow();
+
+		/**
+		 * The meta object literal for the '<em><b>Compartment</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GROUP_EPIDEMIC__COMPARTMENT = eINSTANCE.getGroupEpidemic_Compartment();
 
 	}
 

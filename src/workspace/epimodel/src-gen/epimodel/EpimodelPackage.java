@@ -178,13 +178,13 @@ public interface EpimodelPackage extends EPackage {
 	int COMPARTMENT = 3;
 
 	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * The feature id for the '<em><b>Label</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT__ID = 0;
+	int COMPARTMENT__LABEL = 0;
 
 	/**
 	 * The number of structural features of the '<em>Compartment</em>' class.
@@ -352,15 +352,15 @@ public interface EpimodelPackage extends EPackage {
 	EClass getCompartment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link epimodel.Compartment#getId <em>Id</em>}'.
+	 * Returns the meta object for the attribute list '{@link epimodel.Compartment#getLabel <em>Label</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see epimodel.Compartment#getId()
+	 * @return the meta object for the attribute list '<em>Label</em>'.
+	 * @see epimodel.Compartment#getLabel()
 	 * @see #getCompartment()
 	 * @generated
 	 */
-	EAttribute getCompartment_Id();
+	EAttribute getCompartment_Label();
 
 	/**
 	 * Returns the meta object for class '{@link epimodel.FlowWrapper <em>Flow Wrapper</em>}'.
@@ -492,12 +492,12 @@ public interface EpimodelPackage extends EPackage {
 		EClass COMPARTMENT = eINSTANCE.getCompartment();
 
 		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute COMPARTMENT__ID = eINSTANCE.getCompartment_Id();
+		EAttribute COMPARTMENT__LABEL = eINSTANCE.getCompartment_Label();
 
 		/**
 		 * The meta object literal for the '{@link epimodel.impl.FlowWrapperImpl <em>Flow Wrapper</em>}' class.

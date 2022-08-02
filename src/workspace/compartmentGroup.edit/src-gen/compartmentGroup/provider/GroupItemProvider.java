@@ -115,9 +115,7 @@ public class GroupItemProvider extends CompartmentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Group) object).getId();
-		return label == null || label.length() == 0 ? getString("_UI_Group_type")
-				: getString("_UI_Group_type") + " " + label;
+		return getString("_UI_Group_type");
 	}
 
 	/**

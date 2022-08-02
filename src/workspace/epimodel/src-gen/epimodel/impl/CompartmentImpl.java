@@ -9,13 +9,13 @@ import epimodel.util.PhysicalCompartment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,16 +25,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link epimodel.impl.CompartmentImpl#getId <em>Id</em>}</li>
+ *   <li>{@link epimodel.impl.CompartmentImpl#getLabel <em>Label</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
 
+	/**
+	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> label;
+
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(new ArrayList<>(Arrays.asList(getId())))));
+		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(getLabel())));
 	}
 
 	@Override
@@ -51,30 +61,6 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	public List<Flow> getFlows() {
 		return new ArrayList<>();
 	}
-
-	@Override
-	public List<String> getDeclaredLabels() {
-		return new ArrayList<>(Arrays.asList(getId()));
-	}
-
-	/**
-	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String ID_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getId()
-	 * @generated
-	 * @ordered
-	 */
-	protected String id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -101,21 +87,11 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 */
 	@Override
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setId(String newId) {
-		String oldId = id;
-		id = newId;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EpimodelPackage.COMPARTMENT__ID, oldId, id));
+	public EList<String> getLabel() {
+		if (label == null) {
+			label = new EDataTypeUniqueEList<String>(String.class, this, EpimodelPackage.COMPARTMENT__LABEL);
+		}
+		return label;
 	}
 
 	/**
@@ -126,8 +102,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case EpimodelPackage.COMPARTMENT__ID:
-			return getId();
+		case EpimodelPackage.COMPARTMENT__LABEL:
+			return getLabel();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -137,11 +113,13 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case EpimodelPackage.COMPARTMENT__ID:
-			setId((String) newValue);
+		case EpimodelPackage.COMPARTMENT__LABEL:
+			getLabel().clear();
+			getLabel().addAll((Collection<? extends String>) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -155,8 +133,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case EpimodelPackage.COMPARTMENT__ID:
-			setId(ID_EDEFAULT);
+		case EpimodelPackage.COMPARTMENT__LABEL:
+			getLabel().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -170,8 +148,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case EpimodelPackage.COMPARTMENT__ID:
-			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+		case EpimodelPackage.COMPARTMENT__LABEL:
+			return label != null && !label.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -187,8 +165,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (id: ");
-		result.append(id);
+		result.append(" (label: ");
+		result.append(label);
 		result.append(')');
 		return result.toString();
 	}

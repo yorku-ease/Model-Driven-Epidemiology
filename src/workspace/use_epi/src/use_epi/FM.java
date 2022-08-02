@@ -14,6 +14,7 @@ import de.ovgu.featureide.fm.core.init.LibraryManager;
 import de.ovgu.featureide.fm.core.io.manager.FeatureModelManager;
 
 public class FM {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		
 		LibraryManager.registerLibrary(FMCoreLibrary.getInstance());

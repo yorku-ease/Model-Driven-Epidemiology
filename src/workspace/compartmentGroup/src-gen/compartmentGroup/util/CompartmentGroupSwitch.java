@@ -6,6 +6,7 @@ import compartmentGroup.*;
 
 import epimodel.Compartment;
 
+import epimodel.Epidemic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -109,6 +110,15 @@ public class CompartmentGroupSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case CompartmentGroupPackage.GROUP_EPIDEMIC: {
+			GroupEpidemic groupEpidemic = (GroupEpidemic) theEObject;
+			T result = caseGroupEpidemic(groupEpidemic);
+			if (result == null)
+				result = caseEpidemic(groupEpidemic);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		default:
 			return defaultCase(theEObject);
 		}
@@ -190,6 +200,21 @@ public class CompartmentGroupSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Group Epidemic</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Group Epidemic</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGroupEpidemic(GroupEpidemic object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Compartment</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -201,6 +226,21 @@ public class CompartmentGroupSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseCompartment(Compartment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Epidemic</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Epidemic</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEpidemic(Epidemic object) {
 		return null;
 	}
 

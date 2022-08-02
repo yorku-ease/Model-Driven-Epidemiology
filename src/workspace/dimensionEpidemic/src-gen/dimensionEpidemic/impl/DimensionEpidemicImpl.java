@@ -42,13 +42,20 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		
+
 		if (physicalCompartments == null)
 			physicalCompartments = new ProductImpl() {
-				@Override public EList<CompartmentWrapper> getDimensions() { return getDimension(); }
-				@Override protected PhysicalCompartment prependSelf(PhysicalCompartment p) { return p; }
+				@Override
+				public EList<CompartmentWrapper> getDimensions() {
+					return getDimension();
+				}
+
+				@Override
+				protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
+					return p;
+				}
 			}.getPhysicalCompartments();
-		
+
 		return physicalCompartments;
 	}
 
@@ -61,76 +68,14 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 				public EList<CompartmentWrapper> getDimensions() {
 					return getDimension();
 				}
-			}.getFlows()
-					.stream()
-					.map(f -> f.getPhysicalFlows(this))
-					.flatMap(List::stream)
-					.collect(Collectors.toList());
+			}.getFlows().stream().map(f -> f.getPhysicalFlows(this)).flatMap(List::stream).collect(Collectors.toList());
 		}
-		
+
 		return physicalFlows;
 	}
 
-//	public List<JSONObject> compile() throws JSONException {
-//		List<JSONObject> files = new ArrayList<>();
-//
-//		{
-//			JSONObject structure = new JSONObject();
-//			structure.put("filename", getId() + " model");
-//			structure.put("key", "model");
-//			structure.put("model", new JSONObject());
-//			structure.getJSONObject("model").put("compartments",
-//					new JSONArray(physicalCompartments.stream().map(c -> c.labels).collect(Collectors.toList())));
-//
-//			JSONArray flowsById = new JSONArray();
-//			for (int i = 0; i < flows.size(); ++i) {
-//				Flow flow = flows.get(i);
-//				JSONObject flowjson = new JSONObject();
-//				flowjson.put("id", flow.getId());
-//				flowjson.put("type", flow.getEquationType());
-//				flowjson.put("flows", physicalFlows.get(i));
-//				flowsById.put(flowjson);
-//			}
-//			structure.getJSONObject("model").put("flows", flowsById);
-//			files.add(structure);
-//		}
-//		{
-//			JSONObject flowParameters = new JSONObject();
-//			JSONArray compartmentParameters = new JSONArray();
-//
-//			for (PhysicalCompartment c : physicalCompartments) {
-//				JSONObject vals = new JSONObject();
-//				vals.put("labels", c.labels);
-//				vals.put("susceptibility", 1);
-//				vals.put("contagiousness", 1);
-//				vals.put("initialConditions", 1);
-//				compartmentParameters.put(vals);
-//			}
-//
-//			for (int j = 0; j < flows.size(); ++j) {
-//				Flow flow = flows.get(j);
-//				JSONArray valuesForFlow = new JSONArray();
-//				int m = physicalFlows.get(j).size();
-//				for (int k = 0; k < m; ++k)
-//					valuesForFlow.put(0.1);
-//				flowParameters.put(flow.getId(), valuesForFlow);
-//			}
-//
-//			JSONObject parameters = new JSONObject();
-//			parameters.put("flows", flowParameters);
-//			parameters.put("compartments", compartmentParameters);
-//
-//			JSONObject parameterswrap = new JSONObject();
-//			parameterswrap.put("filename", getId() + " parameters");
-//			parameterswrap.put("key", "parameters");
-//			parameterswrap.put("parameters", parameters);
-//			files.add(parameterswrap);
-//		}
-//		return files;
-//	}
-
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		return physicalCompartments.stream().filter(pc -> pc.labels.contains(c.getId())).collect(Collectors.toList());
+		return physicalCompartments.stream().filter(pc -> pc.labels.containsAll(c.getLabel())).collect(Collectors.toList());
 	}
 
 	@Override

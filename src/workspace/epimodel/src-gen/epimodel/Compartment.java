@@ -4,6 +4,7 @@ package epimodel;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import epimodel.util.PhysicalCompartment;
@@ -17,7 +18,7 @@ import epimodel.util.PhysicalCompartment;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link epimodel.Compartment#getId <em>Id</em>}</li>
+ *   <li>{@link epimodel.Compartment#getLabel <em>Label</em>}</li>
  * </ul>
  *
  * @see epimodel.EpimodelPackage#getCompartment()
@@ -26,7 +27,17 @@ import epimodel.util.PhysicalCompartment;
  */
 public interface Compartment extends EObject {
 
-	List<String> getDeclaredLabels();
+	/**
+	 * Returns the value of the '<em><b>Label</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Label</em>' attribute list.
+	 * @see epimodel.EpimodelPackage#getCompartment_Label()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getLabel();
 
 	List<PhysicalCompartment> getPhysicalCompartments();
 
@@ -35,26 +46,4 @@ public interface Compartment extends EObject {
 	List<PhysicalCompartment> getSinks();
 
 	List<Flow> getFlows();
-
-	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Id</em>' attribute.
-	 * @see #setId(String)
-	 * @see epimodel.EpimodelPackage#getCompartment_Id()
-	 * @model
-	 * @generated
-	 */
-	String getId();
-
-	/**
-	 * Sets the value of the '{@link epimodel.Compartment#getId <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
-	 * @see #getId()
-	 * @generated
-	 */
-	void setId(String value);
 } // Compartment
