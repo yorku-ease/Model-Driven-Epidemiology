@@ -40,7 +40,7 @@ public class make_models {
 	        pkgRegistry.put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
 		}
 		
-		{ // DE{Compartment,Compartment}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
@@ -56,7 +56,7 @@ public class make_models {
 	        resource.getContents().add(w);
 	        resource.save(null);
 		}
-		{ // DE{Compartment,Compartment}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
@@ -72,7 +72,7 @@ public class make_models {
 	        resource.getContents().add(w);
 	        resource.save(null);
 		}
-		{ //DE{Product{Compartment}}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/DEG_SI_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
