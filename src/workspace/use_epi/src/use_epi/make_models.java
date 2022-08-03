@@ -50,26 +50,14 @@ public class make_models {
 	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
 	        {
 	        	DimensionEpidemic d = createDE("origin");
-	        	Product p =  createProduct("I");
-	        	
-	        	Group gi = createGroup("Group Infectious");
-	        	Group gv = createGroup("Group Variants");
 	        	
 	        	Group e = createGroup("SEIR");
 	        
 	        	e.getCompartment().add(wrapc(createCompartment("S")));
 	        	e.getCompartment().add(wrapc(createCompartment("E")));
-	        	e.getCompartment().add(wrapc(p));
+	          	e.getCompartment().add(wrapc(createCompartment("I")));
 	        	e.getCompartment().add(wrapc(createCompartment("R")));
-	        	
-	        	p.getDimensions().add(wrapc(gv)); 
-	        	p.getDimensions().add(wrapc(gi)); 
-	        	
-	        	gv.getCompartment().add(wrapc(createCompartment("DELTA")));
-	        	gv.getCompartment().add(wrapc(createCompartment("OMICRON")));
-	        	
-	        	gi.getCompartment().add(wrapc(createCompartment("Symptomatic")));
-	        	gi.getCompartment().add(wrapc(createCompartment("Asymptomatic")));
+	        
 	        	
 	        	d.getDimension().add(wrapc(e));
 	        	
@@ -86,37 +74,82 @@ public class make_models {
 	        Resource resource = resSet.createResource(uri);
 	        
 	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        
+	        DimensionEpidemic d = createDE("covid");
+	        Group e = createGroup("SEIR");
+	        
+	        e.getCompartment().add(wrapc(createCompartment("S")));
+        	e.getCompartment().add(wrapc(createCompartment("E")));
 	        {
-	        	DimensionEpidemic d = createDE("covid");
+	        	
 	        	Product p =  createProduct("I");
 	        	
-	        	Group gi = createGroup("Group Infectious");
 	        	Group gv = createGroup("Group Variants");
-	        	
-	        	Group e = createGroup("SEIR");
-	        
-	        	e.getCompartment().add(wrapc(createCompartment("S")));
-	        	e.getCompartment().add(wrapc(createCompartment("E")));
-	        	e.getCompartment().add(wrapc(p));
-	        	e.getCompartment().add(wrapc(createCompartment("R")));
-	        	
-	        	p.getDimensions().add(wrapc(gv)); 
-	        	p.getDimensions().add(wrapc(gi)); 
-	        	
 	        	gv.getCompartment().add(wrapc(createCompartment("DELTA")));
 	        	gv.getCompartment().add(wrapc(createCompartment("OMICRON")));
 	        	
+	        	p.getDimensions().add(wrapc(gv));
+	        	
+	        	Group gi = createGroup("Group Infectious");
 	        	gi.getCompartment().add(wrapc(createCompartment("Symptomatic")));
 	        	gi.getCompartment().add(wrapc(createCompartment("Asymptomatic")));
 	        	
-	        	d.getDimension().add(wrapc(e));
+	        	p.getDimensions().add(wrapc(gi));
 	        	
-	        	w.setEpidemic(d);
+	        	e.getCompartment().add(wrapc(p));
 	        }
+	    	e.getCompartment().add(wrapc(createCompartment("R")));
+	 	   
+        	d.getDimension().add(wrapc(e));
+        	
+        	w.setEpidemic(d);
 	        
 	        resource.getContents().add(w);
 	        resource.save(null);
 		}
+
+		{
+			String model_fn = "../../runtime-EclipseApplication/modeling/model3.epimodel";
+	        URI uri = URI.createFileURI(model_fn);
+	        Resource resource = resSet.createResource(uri);
+	        
+	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        
+	        DimensionEpidemic d = createDE("model3");
+	        
+	        Group g = createGroup("group");
+	   
+	        g.getCompartment().add(wrapc(createCompartment("S")));
+	        
+	        Product p =  createProduct("Product");
+	        {
+	        	
+	        	Group e = createGroup("EIR");
+	        	e.getCompartment().add(wrapc(createCompartment("E")));
+	           	e.getCompartment().add(wrapc(createCompartment("I")));
+	           	e.getCompartment().add(wrapc(createCompartment("R")));
+	           	
+	           	p.getDimensions().add(wrapc(e));
+	        }
+	        {
+	        	Group gv = createGroup("Group Variants");
+	        	
+	        	gv.getCompartment().add(wrapc(createCompartment("DELTA")));
+	        	gv.getCompartment().add(wrapc(createCompartment("OMICRON")));
+	        	
+	        	p.getDimensions().add(wrapc(gv));
+	        }
+	        
+	       
+	        g.getCompartment().add(wrapc(p));
+	       
+	        d.getDimension().add(wrapc(g));
+        	w.setEpidemic(d);
+	        
+	        resource.getContents().add(w);
+	        resource.save(null);
+		}
+	
 		
 		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel";
