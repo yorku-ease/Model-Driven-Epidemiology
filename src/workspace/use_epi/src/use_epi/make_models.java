@@ -40,6 +40,84 @@ public class make_models {
 	        pkgRegistry.put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
 		}
 		
+		
+		
+		{
+			String model_fn = "../../runtime-EclipseApplication/modeling/model1.epimodel";
+	        URI uri = URI.createFileURI(model_fn);
+	        Resource resource = resSet.createResource(uri);
+	        
+	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        {
+	        	DimensionEpidemic d = createDE("origin");
+	        	Product p =  createProduct("I");
+	        	
+	        	Group gi = createGroup("Group Infectious");
+	        	Group gv = createGroup("Group Variants");
+	        	
+	        	Group e = createGroup("SEIR");
+	        
+	        	e.getCompartment().add(wrapc(createCompartment("S")));
+	        	e.getCompartment().add(wrapc(createCompartment("E")));
+	        	e.getCompartment().add(wrapc(p));
+	        	e.getCompartment().add(wrapc(createCompartment("R")));
+	        	
+	        	p.getDimensions().add(wrapc(gv)); 
+	        	p.getDimensions().add(wrapc(gi)); 
+	        	
+	        	gv.getCompartment().add(wrapc(createCompartment("DELTA")));
+	        	gv.getCompartment().add(wrapc(createCompartment("OMICRON")));
+	        	
+	        	gi.getCompartment().add(wrapc(createCompartment("Symptomatic")));
+	        	gi.getCompartment().add(wrapc(createCompartment("Asymptomatic")));
+	        	
+	        	d.getDimension().add(wrapc(e));
+	        	
+	        	w.setEpidemic(d);
+	        }
+	        
+	        resource.getContents().add(w);
+	        resource.save(null);
+		}
+		
+		{
+			String model_fn = "../../runtime-EclipseApplication/modeling/model2.epimodel";
+	        URI uri = URI.createFileURI(model_fn);
+	        Resource resource = resSet.createResource(uri);
+	        
+	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        {
+	        	DimensionEpidemic d = createDE("covid");
+	        	Product p =  createProduct("I");
+	        	
+	        	Group gi = createGroup("Group Infectious");
+	        	Group gv = createGroup("Group Variants");
+	        	
+	        	Group e = createGroup("SEIR");
+	        
+	        	e.getCompartment().add(wrapc(createCompartment("S")));
+	        	e.getCompartment().add(wrapc(createCompartment("E")));
+	        	e.getCompartment().add(wrapc(p));
+	        	e.getCompartment().add(wrapc(createCompartment("R")));
+	        	
+	        	p.getDimensions().add(wrapc(gv)); 
+	        	p.getDimensions().add(wrapc(gi)); 
+	        	
+	        	gv.getCompartment().add(wrapc(createCompartment("DELTA")));
+	        	gv.getCompartment().add(wrapc(createCompartment("OMICRON")));
+	        	
+	        	gi.getCompartment().add(wrapc(createCompartment("Symptomatic")));
+	        	gi.getCompartment().add(wrapc(createCompartment("Asymptomatic")));
+	        	
+	        	d.getDimension().add(wrapc(e));
+	        	
+	        	w.setEpidemic(d);
+	        }
+	        
+	        resource.getContents().add(w);
+	        resource.save(null);
+		}
+		
 		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
@@ -129,7 +207,7 @@ public class make_models {
 		epimodel.CompartmentWrapper w = EpimodelFactoryImpl.eINSTANCE.createCompartmentWrapper();
 		w.setCompartment(c);
 		return w;
-	}
+	}	
 	
 	static FlowWrapper wrapf(Flow f) {
 		epimodel.FlowWrapper w = EpimodelFactoryImpl.eINSTANCE.createFlowWrapper();
