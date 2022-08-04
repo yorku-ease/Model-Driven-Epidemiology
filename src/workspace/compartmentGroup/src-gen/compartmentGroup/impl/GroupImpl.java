@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -49,40 +51,64 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return getCompartment().stream().map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getPhysicalCompartments).flatMap(List::stream).map(p -> prependSelf(p))
+		return getCompartment()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getPhysicalCompartments)
+				.flatMap(List::stream)
+				.map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
-		if (getGroupSources() != null && getGroupSources().getLink().size() > 0)
-			return getCompartment().stream().map(CompartmentWrapper::getCompartment)
-					.filter(c -> getGroupSources().getLink().stream().map(Link::getCompartment)
-							.collect(Collectors.toList()).contains(c))
-					.map(Compartment::getSources).flatMap(List::stream).collect(Collectors.toList());
-		else
-			return getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getSources)
-					.flatMap(List::stream).collect(Collectors.toList());
+		GroupSinks sources = getGroupSinks();
+		Stream<Compartment> l = (sources != null && sources.getLink().size() > 0) ?
+				sources
+					.getLink()
+					.stream()
+					.map(Link::getCompartment) :
+				getCompartment()
+					.stream()
+					.map(CompartmentWrapper::getCompartment);
+
+		return l.map(Compartment::getSinks)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
 		GroupSinks sinks = getGroupSinks();
-		if (sinks != null && sinks.getLink().size() > 0)
-			return sinks.getLink().stream().map(Link::getCompartment).map(Compartment::getSinks).flatMap(List::stream)
-					.collect(Collectors.toList());
-		else
-			return getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getSinks)
-					.flatMap(List::stream).collect(Collectors.toList());
+		Stream<Compartment> l = (sinks != null && sinks.getLink().size() > 0) ? 
+				sinks
+					.getLink()
+					.stream()
+					.map(Link::getCompartment) :
+				getCompartment()
+					.stream()
+					.map(CompartmentWrapper::getCompartment);
+
+		return l.map(Compartment::getSinks)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Flow> getFlows() {
 		List<Flow> res = new ArrayList<>();
-		res.addAll(getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList()));
-		res.addAll(getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getFlows)
-				.flatMap(List::stream).collect(Collectors.toList()));
+		res.addAll(
+				getFlow()
+					.stream()
+					.map(FlowWrapper::getFlow)
+					.collect(Collectors.toList()));
+		res.addAll(
+				getCompartment()
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getFlows)
+					.flatMap(List::stream)
+					.collect(Collectors.toList()));
 		return res;
 	}
 

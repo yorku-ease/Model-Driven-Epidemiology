@@ -1,5 +1,6 @@
 package use_epi;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -9,13 +10,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
@@ -52,38 +57,15 @@ public class FM_MM {
 		System.out.println("Invalid configuration, here are the unrespected sets of constraints:");
 		for (List<IConstraint> err : Solver.getErrors(fm, conf, 2)) {
 			Solver.FeatureModelConfigurationError fmce = new Solver.FeatureModelConfigurationError(err);
-//				System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
+			System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
 			System.out.println(fmce.getDetailed());
 		}
 		
-		List<String> jars = Arrays.asList(
-			"C:/users/bruno/desktop/dims.jar",
-			"C:/users/bruno/desktop/flows.jar"
-		);
+		List<String> jars = listFilesOfDir("../../../metamodel-jars/");
 		
-		String fn = "../../runtime-EclipseApplication/modeling/model4.epimodel";
+		String fn = "../../runtime-EclipseApplication/modeling/DECC_S_I.epimodel";
 		
-		Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-        Map<String, Object> m = reg.getExtensionToFactoryMap();
-        m.put(epimodel.EpimodelPackage.eNAME, new EcoreResourceFactoryImpl());
-
-        ResourceSet resSet = new ResourceSetImpl();
-        resSet.getPackageRegistry().put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-
-        for (String jar : jars)
-            for (Class<?> c : loadClassesFromJar(jar))
-            	if (c.getName().endsWith("Package"))
-                    resSet.getPackageRegistry().put(
-                		(String) getStaticFieldByName(c, "eNS_URI"),
-                		getStaticFieldByName(c, "eINSTANCE")
-                	);
-        
-        URI uri = URI.createFileURI(fn);
-        Resource resource = resSet.getResource(uri, true);
-        
-        Object obj = resource.getContents().get(0);
-        
-        resource.getContents().get(0);
+		EObject m1 = loadModelFromMetamodels(jars, fn);
 	}
 	
 	protected static List<Class<?>> loadClassesFromJar(String pathToJar) throws IOException, ClassNotFoundException {
@@ -110,5 +92,33 @@ public class FM_MM {
 		Field field = c.getField(fieldName);
 		field.setAccessible(true);
 		return field.get(new Object());
+	}
+	
+	public static List<String> listFilesOfDir(String dirname) {
+	    File dir = new File(dirname);
+	    return Arrays.stream(dir.list()).map(s->dirname+s).collect(Collectors.toList());
+	}
+	
+	static EObject loadModelFromMetamodels(List<String> metamodel_jars, String model_fn) throws Exception {
+		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
+        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
+		
+        ResourceSet resSet = new ResourceSetImpl();
+        EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
+        resSet.setPackageRegistry(pkgRegistry);
+        resSet.setResourceFactoryRegistry(factoryRegistry);
+        
+        for (String jar : metamodel_jars)
+            for (Class<?> c : loadClassesFromJar(jar))
+            	if (c.getName().endsWith("Package"))
+                    resSet.getPackageRegistry().put(
+                		(String) getStaticFieldByName(c, "eNS_URI"),
+                		getStaticFieldByName(c, "eINSTANCE")
+                	);
+        
+        URI uri = URI.createFileURI(model_fn);
+        Resource resource = resSet.getResource(uri, true);
+        
+        return resource.getContents().get(0);
 	}
 }

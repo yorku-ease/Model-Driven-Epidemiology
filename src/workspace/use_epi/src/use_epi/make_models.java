@@ -40,7 +40,7 @@ public class make_models {
 	        pkgRegistry.put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
 		}
 		
-		{ // DE{Compartment,Compartment}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
@@ -56,7 +56,7 @@ public class make_models {
 	        resource.getContents().add(w);
 	        resource.save(null);
 		}
-		{ // DE{Compartment,Compartment}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
@@ -72,7 +72,7 @@ public class make_models {
 	        resource.getContents().add(w);
 	        resource.save(null);
 		}
-		{ //DE{Product{Compartment}}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/DEG_SI_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
@@ -84,6 +84,43 @@ public class make_models {
 	        	g.getCompartment().add(wrapc(createCompartment("S")));
 	        	g.getCompartment().add(wrapc(createCompartment("I")));
 	        	d.getDimension().add(wrapc(g));
+	        	w.setEpidemic(d);
+	        }
+	        
+	        resource.getContents().add(w);
+	        resource.save(null);
+		}
+
+		{
+			String model_fn = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel";
+	        URI uri = URI.createFileURI(model_fn);
+	        Resource resource = resSet.createResource(uri);
+	        
+	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        {
+	        	DimensionEpidemic d = createDE("DEPGG_COVID_INF_VAR_SEIR");
+	        	
+	        	Group e = createGroup("SEIR");
+	        
+	        	e.getCompartment().add(wrapc(createCompartment("S")));
+	        	e.getCompartment().add(wrapc(createCompartment("E")));
+	        	{
+
+		        	Product p =  createProduct("I");
+		        	Group gv = createGroup("Variants");
+		        	gv.getCompartment().add(wrapc(createCompartment("DELTA")));
+		        	gv.getCompartment().add(wrapc(createCompartment("OMICRON")));
+		        	p.getDimensions().add(wrapc(gv)); 
+
+		        	Group gi = createGroup("Infectious");
+		        	gi.getCompartment().add(wrapc(createCompartment("Symptomatic")));
+		        	gi.getCompartment().add(wrapc(createCompartment("Asymptomatic")));
+		        	p.getDimensions().add(wrapc(gi)); 
+		        	e.getCompartment().add(wrapc(p));
+	        	}
+	        	e.getCompartment().add(wrapc(createCompartment("R")));
+	        	d.getDimension().add(wrapc(e));
+	        	
 	        	w.setEpidemic(d);
 	        }
 	        
