@@ -27,8 +27,24 @@ public class Match {
 		String model1 = "../../runtime-EclipseApplication/modeling/model1.epimodel";
 
 		String model2 = "../../runtime-EclipseApplication/modeling/model2.epimodel";
-
 		
+		epimodel.EpidemicWrapper myEpi1 = loadEpimodel(model1);
+		epimodel.EpidemicWrapper myEpi2 = loadEpimodel(model2);
+		
+
+
+        List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
+        List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
+        
+       matchTwoEpimodels(cs1, cs2);
+       
+        System.out.println(" FIN ");
+       
+	} 
+	
+	private static epimodel.EpidemicWrapper loadEpimodel(String path) {
+		
+
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
         factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
 		
@@ -45,60 +61,63 @@ public class Match {
 		}
 		
 
-        URI uri1 = URI.createFileURI(model1);
-        Resource resource1 = resSet.getResource(uri1, true);
-        epimodel.EpidemicWrapper myEpi1 = (epimodel.EpidemicWrapper) resource1.getContents().get(0);
+        URI uri = URI.createFileURI(path);
+        Resource resource1 = resSet.getResource(uri, true);
+        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) resource1.getContents().get(0);
 
+        return myEpi;
+	}
+	
+	private static void matchTwoEpimodels(List<PhysicalCompartment> cs1 , List<PhysicalCompartment> cs2) {
+		
+		 Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = new HashMap<>();
+	        
+	        for (PhysicalCompartment pc1 : cs1 ){
+	        	ArrayList<PhysicalCompartment> tmp = new ArrayList<>();
+	        	for (PhysicalCompartment pc2 : cs2) {
+	        		//TOO isoler les cas
+	        		//ExactMatching
+	        		if(pc1.equals(pc2)) {
+	        			PhysicalCompartment key = pc1;
+	        			tmp.add(pc2);
+	        			resultmatch.put(key,tmp);
+	        		}
+	        		//Specification
+	        		else if (containsAll(pc2, pc1)) {
+	        			PhysicalCompartment key = pc1;
+	        			tmp.add(pc2);
+	        			resultmatch.put(key,tmp);
+	        			
+	        		}
+	        		//Regroupement
+	        		else if (contains(pc2, pc1)) {
+	        			PhysicalCompartment key = pc1;
+	        			tmp.add(pc2);
+	        			resultmatch.put(key,tmp);
+	        		}
+	        	}
+	        }
+	        
+	        System.out.println("LISTE PhysicalCompartment1  : \n");
+	        for (int i = 0; i < cs1.size(); i++ )  
+	        	 System.out.println(cs1.get(i).labels);
 
-        URI uri2 = URI.createFileURI(model2);
-        
-        Resource resource2 = resSet.getResource(uri2, true);
-        epimodel.EpidemicWrapper myEpi2 = (epimodel.EpidemicWrapper) resource2.getContents().get(0);
-        
-        List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
-        List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
-      
-        
-        Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = new HashMap<>();
-        
-        for (PhysicalCompartment pc1 : cs1 ){
-        	ArrayList<PhysicalCompartment> tmp = new ArrayList<>();
-        	for (PhysicalCompartment pc2 : cs2) {
-        		if(pc1.equals(pc2)) {
-        			PhysicalCompartment key = pc1;
-        			tmp.add(pc2);
-        			resultmatch.put(key,tmp);
-        		}
-        		
-        		else if (contains(pc1, pc2)) {
-        			PhysicalCompartment key = pc1;
-        			tmp.add(pc2);
-        			resultmatch.put(key,tmp);
-        			
-        		}
-        	}
-        }
-        System.out.println("LISTE PhysicalCompartment1  : \n");
-        for (int i = 0; i < cs1.size(); i++ )  
-        	 System.out.println(cs1.get(i).labels);
+	        System.out.println(" \n LISTE PhysicalCompartment2  : \n");
+	        for (int i = 0; i < cs2.size(); i++ )  
+	        	 System.out.println(cs2.get(i).labels);
 
-        System.out.println(" \n LISTE PhysicalCompartment2  : \n");
-        for (int i = 0; i < cs2.size(); i++ )  
-        	 System.out.println(cs2.get(i).labels);
-
-        System.out.println("\n");
-        for (PhysicalCompartment key : resultmatch.keySet()) {
-        	 for (int i = 0; i < resultmatch.get(key).size(); i++ )  {
-	        	System.out.println("MATCH  :" + key.labels +"   ---->      "+ resultmatch.get(key).get(i).labels);
-        	 }
-        }
-        System.out.println("     ");
-       
-	} 
+	        System.out.println("\n");
+	        for (PhysicalCompartment key : resultmatch.keySet()) {
+	        	 for (int i = 0; i < resultmatch.get(key).size(); i++ )  {
+		        	System.out.println("MATCH  :" + key.labels +"   ---->      "+ resultmatch.get(key).get(i).labels);
+	        	 }
+	        }
+		
+	}
+	
 	private static int size(PhysicalCompartment pc) {
 		
 		int size = 0;
-		
 		for (String labels : pc.labels) {
 			
 			size ++;
@@ -107,7 +126,7 @@ public class Match {
 		return size;
 	}
 	
-	private static boolean contains(PhysicalCompartment pc1, PhysicalCompartment pc2) {
+	private static boolean containsAll(PhysicalCompartment pc2, PhysicalCompartment pc1) {
 		
 		int check = 0;
 		
@@ -119,11 +138,22 @@ public class Match {
 				}
 			}
 		}
-		if (check == size(pc1))
-			return true;
 		
-		return false;
+		return check == size(pc1);
 	}
 	
-	
+	private static boolean contains(PhysicalCompartment pc2, PhysicalCompartment pc1) {
+		
+		int check = 0;
+		
+		for (String labels1 : pc1.labels) {
+			for (String labels2 : pc2.labels) {
+				
+				if (labels1.equals(labels2)) {
+					check ++;
+				}
+			}
+		}
+		return check != 0;
+	}
 }
