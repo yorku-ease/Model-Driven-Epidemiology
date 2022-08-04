@@ -36,7 +36,7 @@ public class Match {
         List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
         List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
         
-       matchTwoEpimodels(cs1, cs2);
+        Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
        
         System.out.println(" FIN ");
        
@@ -64,41 +64,27 @@ public class Match {
         URI uri = URI.createFileURI(path);
         Resource resource1 = resSet.getResource(uri, true);
         epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) resource1.getContents().get(0);
-
+        
         return myEpi;
 	}
 	
-	private static void matchTwoEpimodels(List<PhysicalCompartment> cs1 , List<PhysicalCompartment> cs2) {
+	private static Map<PhysicalCompartment, List<PhysicalCompartment>> matchTwoEpimodels(List<PhysicalCompartment> cs1 , List<PhysicalCompartment> cs2) {
 		
 		 Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = new HashMap<>();
-	        
-	        for (PhysicalCompartment pc1 : cs1 ){
+		 
+		        for (PhysicalCompartment pc1 : cs1 ){
 	        	ArrayList<PhysicalCompartment> tmp = new ArrayList<>();
-	        	for (PhysicalCompartment pc2 : cs2) {
-	        		//TOO isoler les cas
-	        		//ExactMatching
-	        		if(pc1.equals(pc2)) {
-	        			PhysicalCompartment key = pc1;
-	        			tmp.add(pc2);
-	        			resultmatch.put(key,tmp);
-	        		}
-	        		//Specification
-	        		else if (containsAll(pc2, pc1)) {
-	        			PhysicalCompartment key = pc1;
-	        			tmp.add(pc2);
-	        			resultmatch.put(key,tmp);
-	        			
-	        		}
-	        		//Regroupement
-	        		else if (contains(pc2, pc1)) {
-	        			PhysicalCompartment key = pc1;
-	        			tmp.add(pc2);
-	        			resultmatch.put(key,tmp);
-	        		}
-	        	}
-	        }
+		        	for (PhysicalCompartment pc2 : cs2) {
+		        		if (pc1.labels.containsAll(pc2.labels) || pc2.labels.containsAll(pc1.labels) ) {
+		        			PhysicalCompartment key = pc1;
+		        			tmp.add(pc2);
+		        			resultmatch.put(key,tmp);
+		        		}
+		        	}
+		        }
 	        
 	        System.out.println("LISTE PhysicalCompartment1  : \n");
+	      
 	        for (int i = 0; i < cs1.size(); i++ )  
 	        	 System.out.println(cs1.get(i).labels);
 
@@ -107,53 +93,28 @@ public class Match {
 	        	 System.out.println(cs2.get(i).labels);
 
 	        System.out.println("\n");
-	        for (PhysicalCompartment key : resultmatch.keySet()) {
-	        	 for (int i = 0; i < resultmatch.get(key).size(); i++ )  {
-		        	System.out.println("MATCH  :" + key.labels +"   ---->      "+ resultmatch.get(key).get(i).labels);
-	        	 }
-	        }
-		
+	        
+	        printResultMatch(resultmatch);
+	        return resultmatch;
 	}
+		
 	
-	private static int size(PhysicalCompartment pc) {
-		
-		int size = 0;
-		for (String labels : pc.labels) {
-			
-			size ++;
-		}
-		
-		return size;
-	}
 	
-	private static boolean containsAll(PhysicalCompartment pc2, PhysicalCompartment pc1) {
+	private static void printResultMatch (Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch) {
 		
-		int check = 0;
-		
-		for (String labels1 : pc1.labels) {
-			for (String labels2 : pc2.labels) {
-				
-				if (labels1.equals(labels2)) {
-					check ++;
+		for (PhysicalCompartment key : resultmatch.keySet()) {
+			System.out.print("MATCH  : " + key.labels + "   ---->      " +  "[ ");
+			for (int i = 0; i < resultmatch.get(key).size(); i++ )  {
+				System.out.print(resultmatch.get(key).get(i).labels);
+				try {
+					if(resultmatch.get(key).get(i+1) != null)
+						System.out.print(" , ");
+				} catch (Exception e) {
+
 				}
-			}
-		}
-		
-		return check == size(pc1);
-	}
-	
-	private static boolean contains(PhysicalCompartment pc2, PhysicalCompartment pc1) {
-		
-		int check = 0;
-		
-		for (String labels1 : pc1.labels) {
-			for (String labels2 : pc2.labels) {
 				
-				if (labels1.equals(labels2)) {
-					check ++;
-				}
 			}
+			System.out.print(" ] \n");
 		}
-		return check != 0;
 	}
 }
