@@ -36,6 +36,7 @@ public class Test {
 		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel");
 		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel");
 		compile(resSet, "../../runtime-EclipseApplication/modeling/DEG_SI_S_I.epimodel");
+		compile(resSet, "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel");
 	}
 	
 	static void compile(ResourceSet resSet, String model_fn) throws Exception {
