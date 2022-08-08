@@ -10,7 +10,11 @@ import epimodel.util.PhysicalCompartment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -60,8 +64,15 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public List<Flow> getFlows() {
 		return new ArrayList<>();
+	}	
+	
+	@Override
+	public Map<String, List<Compartment>> getAllBranches(){
+		
+		 return getAllBranches();
 	}
-
+	
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

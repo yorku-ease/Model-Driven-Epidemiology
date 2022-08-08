@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
+import epimodel.Compartment;
+import epimodel.Epidemic;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
@@ -35,14 +37,17 @@ public class Match {
 
         List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
         List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
+       
+        Map<String, List<Compartment>> branches = myEpi1.getEpidemic().getAllBranches();
         
-        Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
+        System.out.println(branches.size());
+        //Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
        
         System.out.println(" FIN ");
        
 	} 
 	
-	private static epimodel.EpidemicWrapper loadEpimodel(String path) {
+	protected static epimodel.EpidemicWrapper loadEpimodel(String path) {
 		
 
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
@@ -105,7 +110,7 @@ public class Match {
 		for (PhysicalCompartment key : resultmatch.keySet()) {
 			System.out.print("MATCH  : " + key.labels + "   ---->      " +  "[ ");
 			for (int i = 0; i < resultmatch.get(key).size(); i++ )  {
-				System.out.print(resultmatch.get(key).get(i).labels);
+				System.out.print(resultmatch.get(key).get(i));
 				try {
 					if(resultmatch.get(key).get(i+1) != null)
 						System.out.print(" , ");

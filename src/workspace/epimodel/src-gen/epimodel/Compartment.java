@@ -3,6 +3,7 @@
 package epimodel;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -38,7 +39,7 @@ public interface Compartment extends EObject {
 	 * @generated
 	 */
 	EList<String> getLabel();
-
+	
 	List<PhysicalCompartment> getPhysicalCompartments();
 
 	List<PhysicalCompartment> getSources();
@@ -46,4 +47,7 @@ public interface Compartment extends EObject {
 	List<PhysicalCompartment> getSinks();
 
 	List<Flow> getFlows();
+	
+	Map<String, List<Compartment>> getAllBranches();
+	
 } // Compartment

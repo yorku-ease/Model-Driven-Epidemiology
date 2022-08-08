@@ -6,18 +6,23 @@ import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicPackage;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Epidemic;
 import epimodel.impl.EpidemicImpl;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -40,6 +45,25 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	List<PhysicalCompartment> physicalCompartments = null;
 	List<PhysicalFlow> physicalFlows = null;
 
+	
+	@Override
+	public Map<String, List<Compartment>> getAllBranches(){
+		
+	//	System.out.println(this.dimension.get(0).getCompartment().eContents().get(1));
+		
+		Compartment c = this.dimension.get(0).getCompartment();
+		Map<String , List<Compartment>> br = new HashMap<>();
+		ArrayList<Compartment> cp = new ArrayList<>();
+	
+		cp.add(c);
+		
+		br.put(c.getLabel().get(0),cp);
+	
+		return br;		
+		//return null;
+		
+	
+	}
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 
@@ -215,4 +239,5 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		return super.eIsSet(featureID);
 	}
 
+	
 } //DimensionEpidemicImpl
