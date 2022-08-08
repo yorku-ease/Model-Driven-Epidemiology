@@ -16,7 +16,9 @@ import epimodel.util.PhysicalCompartment;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -53,7 +55,16 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(Compartment::getPhysicalCompartments).flatMap(List::stream).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
-
+	
+	public Map<String, List<Compartment>> getAllBranches(){
+		
+		Map<String , List<Compartment>> br = new HashMap<>();
+		ArrayList<Compartment> cp = new ArrayList<>();
+		cp.add(this);
+		br.put(this.label.get(0),cp);
+		return br;
+		
+	}
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		if (getGroupSources() != null && getGroupSources().getLink().size() > 0)
