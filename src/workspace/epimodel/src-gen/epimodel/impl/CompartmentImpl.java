@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import java.util.Map;
 
 /**
  * <!-- begin-user-doc -->
@@ -69,7 +70,13 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public Map<String, List<Compartment>> getAllBranches(){
 		
-		 return getAllBranches();
+		HashMap<String, List<Compartment>> br = new HashMap<>();
+		ArrayList<Compartment> cp = new ArrayList<>();
+		cp.add(this);
+		br.put(this.label.get(0),cp);
+		
+		
+		return br;
 	}
 	
 	

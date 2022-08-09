@@ -59,7 +59,7 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		
 		br.put(c.getLabel().get(0),cp);
 	
-		return br;		
+		return c.getAllBranches();		
 		//return null;
 		
 	

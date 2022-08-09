@@ -16,6 +16,7 @@ import epimodel.util.PhysicalFlow;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -395,6 +396,12 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 			return compartment != null && !compartment.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	@Override
+	public Map<String, List<Compartment>> getAllBranches() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 } //GroupEpidemicImpl

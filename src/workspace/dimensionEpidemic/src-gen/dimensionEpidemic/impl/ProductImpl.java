@@ -19,6 +19,7 @@ import epimodel.util.PhysicalFlowEquation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -137,6 +138,12 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 								@Override
 								public List<PhysicalFlow> getPhysicalFlows() {
+									return null;
+								}
+
+								@Override
+								public Map<String, List<Compartment>> getAllBranches() {
+									// TODO Auto-generated method stub
 									return null;
 								}
 							}).stream()

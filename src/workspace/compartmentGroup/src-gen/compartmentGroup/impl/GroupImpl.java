@@ -56,14 +56,24 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.collect(Collectors.toList());
 	}
 	
+	@Override
 	public Map<String, List<Compartment>> getAllBranches(){
 		
-		Map<String , List<Compartment>> br = new HashMap<>();
-		ArrayList<Compartment> cp = new ArrayList<>();
-		cp.add(this);
-		br.put(this.label.get(0),cp);
-		return br;
+		System.out.println(this.getCompartment() + "\n" + this.getCompartment().size());
 		
+		Map<String , List<Compartment>> br = new HashMap<>();
+		ArrayList<Compartment> 	cp = new ArrayList<>();
+		cp.add(this);
+		br.put(this.getLabel().get(0),cp);
+		
+		for(int i = 0; i < this.getCompartment().size(); i++) {
+			
+			Compartment tmp = (Compartment) this.getCompartment().get(i).eContents().get(0);
+			//System.out.println(this.getCompartment().get(i).eContents().get(0));
+			return tmp.getAllBranches();
+			
+		}
+		return br;	
 	}
 	@Override
 	public List<PhysicalCompartment> getSources() {

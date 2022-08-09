@@ -40,7 +40,7 @@ public class Match {
        
         Map<String, List<Compartment>> branches = myEpi1.getEpidemic().getAllBranches();
         
-        System.out.println(branches.size());
+        System.out.println(branches);
         //Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
        
         System.out.println(" FIN ");
