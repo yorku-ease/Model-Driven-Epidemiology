@@ -66,19 +66,19 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	public List<Flow> getFlows() {
 		return new ArrayList<>();
 	}	
-	
+	/*
 	@Override
 	public Map<String, List<Compartment>> getAllBranches(){
 		
 		HashMap<String, List<Compartment>> br = new HashMap<>();
 		ArrayList<Compartment> cp = new ArrayList<>();
 		cp.add(this);
-		br.put(this.label.get(0),cp);
-		
+		br.put(this.label.get(1	),cp);
+			
 		
 		return br;
 	}
-	
+	*/
 	
 	/**
 	 * <!-- begin-user-doc -->

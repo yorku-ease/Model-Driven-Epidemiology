@@ -47,7 +47,7 @@ public interface Compartment extends EObject {
 	List<PhysicalCompartment> getSinks();
 
 	List<Flow> getFlows();
-	
+	/*
 	Map<String, List<Compartment>> getAllBranches();
-	
+	*/
 } // Compartment

@@ -45,7 +45,7 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	List<PhysicalCompartment> physicalCompartments = null;
 	List<PhysicalFlow> physicalFlows = null;
 
-	
+	/*
 	@Override
 	public Map<String, List<Compartment>> getAllBranches(){
 		
@@ -58,12 +58,15 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		cp.add(c);
 		
 		br.put(c.getLabel().get(0),cp);
-	
+		EObject a;
+		
+		a.ea
 		return c.getAllBranches();		
 		//return null;
 		
 	
 	}
+	*/
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 

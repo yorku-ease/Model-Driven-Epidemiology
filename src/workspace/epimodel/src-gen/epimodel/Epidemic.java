@@ -3,11 +3,14 @@
 package epimodel;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
+
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +24,7 @@ import epimodel.util.PhysicalFlow;
  *   <li>{@link epimodel.Epidemic#getId <em>Id</em>}</li>
  * </ul>
  *
- * @see epimodel.EpimodelPackage#getEpidemic()
+ * @see epimodel.EpimodelPaStringckage#getEpidemic()
  * @model abstract="true"
  * @generated
  */
@@ -37,6 +40,8 @@ public interface Epidemic extends EObject {
 
 	List<PhysicalFlow> getPhysicalFlows();
 
+	Map<String, List<Compartment>> getAllBranches();
+	
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->

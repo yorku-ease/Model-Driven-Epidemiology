@@ -2,12 +2,23 @@
  */
 package epimodel.impl;
 
+import epimodel.Compartment;
 import epimodel.Epidemic;
 import epimodel.EpimodelPackage;
+import epimodel.util.PhysicalCompartment;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
-
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -52,6 +63,63 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 	protected EpidemicImpl() {
 		super();
 	}
+
+	public Map<String, List<Compartment>> getAllBranches(){
+		
+		HashMap<String, List<Compartment>> br = new HashMap<>();
+		ArrayList<Compartment> epi = new ArrayList<>();
+		ArrayList<Compartment> total = new ArrayList<>();
+		
+		TreeIterator<EObject> allContents = this.eAllContents();
+		Compartment tmp = null;
+		while (allContents.hasNext()) {
+			EObject object = allContents.next();
+			if (object instanceof Compartment) {
+				Compartment comp = (Compartment)object;
+				total.add(comp);
+				if (tmp == null) {
+					//System.out.println("\nC'EST LE DEBUT  on ajoute : " + comp);
+					epi.add(comp);
+				}	
+				else if (comp.getLabel().containsAll(tmp.getLabel())) {
+					//System.out.println("\nCONTINUITE DE LA BRANCHE : " + "AVEC nouveaux = "+ comp + "et ancien = "+ tmp);
+					ArrayList<Compartment> epi_tmp = new ArrayList(epi);
+					epi = new ArrayList<>(epi_tmp);
+					epi.add(comp);
+				}
+				else if (!comp.getLabel().containsAll(tmp.getLabel())) {
+				//	System.out.println("\nNOUVELLE SOUS BRANCHE QUI FINIT PAR   "+ comp );
+					epi = new ArrayList<>();
+					for (Compartment c : total) {
+					//	System.out.println("\nREALIMENTATION DE LA SOUS BRANCHE AVEC : ");
+						if (comp.getLabel().containsAll(c.getLabel()) && !comp.equals(c)) {
+						//	System.out.println("\nCOMP " + c );
+							epi.add(c);
+						}
+					}
+					epi.add(comp);
+				}
+				else 
+					epi.add(comp);
+			
+			
+				String key = null;
+			
+				for(int i = 0; i < comp.getLabel().size(); i++) {
+					
+					key = comp.getLabel().get(i);
+				}
+			 	br.put(key, epi);	
+			 	tmp = comp;
+			}
+
+		    
+		   
+		}
+		
+		return br;
+	}
+	
 
 	/**
 	 * <!-- begin-user-doc -->

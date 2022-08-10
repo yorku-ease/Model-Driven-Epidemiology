@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.lang.*;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -37,10 +39,15 @@ public class Match {
 
         List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
         List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
-       
+        
         Map<String, List<Compartment>> branches = myEpi1.getEpidemic().getAllBranches();
         
         System.out.println(branches);
+        
+        for (String key : branches.keySet()) {
+        	System.out.println("\nKEY  :" + key + "---->" + branches.get(key));
+	     }
+        
         //Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
        
         System.out.println(" FIN ");

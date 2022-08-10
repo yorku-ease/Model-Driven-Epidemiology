@@ -8,6 +8,7 @@ import compartmentGroup.GroupSinks;
 import compartmentGroup.GroupSources;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Epidemic;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.EpidemicImpl;
@@ -397,11 +398,17 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 		}
 		return super.eIsSet(featureID);
 	}
+/*
+	@Override
+	public Map<String, List<Compartment>> getAllBranches() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+*/
 
 	@Override
 	public Map<String, List<Compartment>> getAllBranches() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 } //GroupEpidemicImpl
