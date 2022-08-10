@@ -55,7 +55,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(Compartment::getPhysicalCompartments).flatMap(List::stream).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
-	
+	/*
 	@Override
 	public Map<String, List<Compartment>> getAllBranches(){
 		
@@ -73,8 +73,9 @@ public class GroupImpl extends CompartmentImpl implements Group {
 			return tmp.getAllBranches();
 			
 		}
-		return br;	
+		return this.getAllBranches();	
 	}
+*/
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		if (getGroupSources() != null && getGroupSources().getLink().size() > 0)
