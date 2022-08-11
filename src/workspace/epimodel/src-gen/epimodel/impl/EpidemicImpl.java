@@ -67,26 +67,30 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	
+	/*
+	 Display and returns an associative array of all the Compartment of the differents branchs of a given epimodel.
+	 The key is every Compartment node of the model and returs a list of the node's branch without the node's children
+	 */
 	public Map<String, List<Compartment>>  getAllCompartmentBranches(){
 		
 		
 		Map<String, List<Compartment>> br = new HashMap<>();
 		
-		for(List<EObject> branche : allBranchs()) {
+		for(List<EObject> branche : getAllBranches()) {
 			for (EObject node : branche) {
 				
 				if(node instanceof Compartment) {
 					Compartment actualComp =(Compartment) node;
 					List<Compartment> lcmp= new ArrayList<>();
-					for(int i =0; i<= branche.indexOf(node); i++) {
+					for(int i =0; i<= branche.indexOf(node); i++) { //Getting back all the upper hierarchy of the node
 						if(branche.get(i) instanceof Compartment) {
 							Compartment comp = (Compartment) branche.get(i);
 							lcmp.add(comp);
 						}
 					}
 					
-					if(!br.containsKey(getSimpleLabel(actualComp))) {
-						br.put(getSimpleLabel(actualComp), lcmp);
+					if(!br.containsKey(getSimpleCompartmentLabel(actualComp))) { //Keeping unicity of a key
+						br.put(getSimpleCompartmentLabel(actualComp), lcmp);
 					}
 				}
 			}
@@ -96,14 +100,23 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		return br;
 	}
 	
-	public String getSimpleLabel(Compartment comp) {
+	/*
+	 Gives the label of the actual compartment
+	 Example : [SEIR, I, Group a] -> Group a.
+	 */
+	public String getSimpleCompartmentLabel(Compartment comp) {
 		
 		return comp.getLabel().get(comp.getLabel().size()-1);
 	}
 	
+	/*
+	 Displays all the Compartment of an epimodel Branches with right indentation. 
+	 
+	 */
+	
 	public void printAllCompartmentBranches() {
 		String space = "";
-		for(List<EObject> branche : allBranchs()) {
+		for(List<EObject> branche : getAllBranches()) {
 			System.out.println("\n BRANCHE   :   ");
 			space = "";
 			for (EObject node : branche) {
@@ -116,10 +129,15 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 			}
 		}
 	}
+	
+	/*
+	 Displays all Branches with right indentation. 
+	 
+	 */
 	public void printAllBranches() {
 		
 		String space = "";
-		for(List<EObject> branche : allBranchs()) {
+		for(List<EObject> branche : getAllBranches()) {
 			System.out.println("\n BRANCHE   :   ");
 			space = "";
 			for (EObject node : branche) {
@@ -128,24 +146,34 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 			}
 		}
 	}
-	public List <List <EObject>> allBranchs(){
+	
+	
+	/*
+	 Regroups all branches of the epi_model.
+	 Returns a List of Lists representing branches
+	 */
+	public List <List<EObject>>  getAllBranches(){
 		EObject object = null;
 		TreeIterator<EObject> allContents = this.eAllContents();
-		List <List<EObject>> allbranchs = new ArrayList<>();
+		List <List<EObject>> allBranches = new ArrayList<>();
 		while (allContents.hasNext()) {
 			object = allContents.next();
 			
-			if(object.eContents().isEmpty()) {
-				//System.out.println("DEBUG    " + object);
-				allbranchs.add(getOneBranch(object));
+			if(object.eContents().isEmpty()) { //Looking for the leaves
+				allBranches.add(getOneBranch(object)); 
 			}
 		}
 		
 		
-		return allbranchs;
+		return allBranches;
 		
 		
 	}
+	/*
+	 Gets the branch associated to a given Leaf.
+	returns a list of EObjects 
+	  */
+	 
 	public List <EObject> getOneBranch(EObject Leaf){
 		
 		List <EObject> oneBranch = new ArrayList<>();
@@ -154,7 +182,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 			Leaf = Leaf.eContainer();
 		}while (Leaf != null);
 		
-		Collections.reverse(oneBranch);
+		Collections.reverse(oneBranch); // reversing the list elements to match the actual branch
 		
 		return oneBranch;
 		
