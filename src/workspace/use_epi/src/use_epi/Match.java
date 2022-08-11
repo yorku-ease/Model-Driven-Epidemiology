@@ -40,8 +40,7 @@ public class Match {
         List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
         List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
         
-        Map<String, List<Compartment>> branches = myEpi1.getEpidemic().getAllBranches();
-        
+        Map<String, List<Compartment>> branches = myEpi2.getEpidemic().getAllCompartmentBranches();
         System.out.println(branches);
         
         for (String key : branches.keySet()) {

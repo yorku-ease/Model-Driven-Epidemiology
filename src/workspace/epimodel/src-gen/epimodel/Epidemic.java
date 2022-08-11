@@ -40,7 +40,8 @@ public interface Epidemic extends EObject {
 
 	List<PhysicalFlow> getPhysicalFlows();
 
-	Map<String, List<Compartment>> getAllBranches();
+	Map<String, List<Compartment>>  getAllCompartmentBranches();
+	Map<String, List<EObject>> getAllBranches();
 	
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

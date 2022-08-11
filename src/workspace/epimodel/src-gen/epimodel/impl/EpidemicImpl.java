@@ -9,6 +9,8 @@ import epimodel.util.PhysicalCompartment;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,63 +66,99 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		super();
 	}
 
-	public Map<String, List<Compartment>> getAllBranches(){
+	
+	public Map<String, List<Compartment>>  getAllCompartmentBranches(){
 		
-		HashMap<String, List<Compartment>> br = new HashMap<>();
-		ArrayList<Compartment> epi = new ArrayList<>();
-		ArrayList<Compartment> total = new ArrayList<>();
 		
-		TreeIterator<EObject> allContents = this.eAllContents();
-		Compartment tmp = null;
-		while (allContents.hasNext()) {
-			EObject object = allContents.next();
-			if (object instanceof Compartment) {
-				Compartment comp = (Compartment)object;
-				total.add(comp);
-				if (tmp == null) {
-					//System.out.println("\nC'EST LE DEBUT  on ajoute : " + comp);
-					epi.add(comp);
-				}	
-				else if (comp.getLabel().containsAll(tmp.getLabel())) {
-					//System.out.println("\nCONTINUITE DE LA BRANCHE : " + "AVEC nouveaux = "+ comp + "et ancien = "+ tmp);
-					ArrayList<Compartment> epi_tmp = new ArrayList(epi);
-					epi = new ArrayList<>(epi_tmp);
-					epi.add(comp);
-				}
-				else if (!comp.getLabel().containsAll(tmp.getLabel())) {
-				//	System.out.println("\nNOUVELLE SOUS BRANCHE QUI FINIT PAR   "+ comp );
-					epi = new ArrayList<>();
-					for (Compartment c : total) {
-					//	System.out.println("\nREALIMENTATION DE LA SOUS BRANCHE AVEC : ");
-						if (comp.getLabel().containsAll(c.getLabel()) && !comp.equals(c)) {
-						//	System.out.println("\nCOMP " + c );
-							epi.add(c);
+		Map<String, List<Compartment>> br = new HashMap<>();
+		
+		for(List<EObject> branche : allBranchs()) {
+			for (EObject node : branche) {
+				
+				if(node instanceof Compartment) {
+					Compartment actualComp =(Compartment) node;
+					List<Compartment> lcmp= new ArrayList<>();
+					for(int i =0; i<= branche.indexOf(node); i++) {
+						if(branche.get(i) instanceof Compartment) {
+							Compartment comp = (Compartment) branche.get(i);
+							lcmp.add(comp);
 						}
 					}
-					epi.add(comp);
-				}
-				else 
-					epi.add(comp);
-			
-			
-				String key = null;
-			
-				for(int i = 0; i < comp.getLabel().size(); i++) {
 					
-					key = comp.getLabel().get(i);
+					if(!br.containsKey(getSimpleLabel(actualComp))) {
+						br.put(getSimpleLabel(actualComp), lcmp);
+					}
 				}
-			 	br.put(key, epi);	
-			 	tmp = comp;
 			}
-
-		    
-		   
 		}
-		
+	
+		printAllCompartmentBranches();
 		return br;
 	}
 	
-
+	public String getSimpleLabel(Compartment comp) {
+		
+		return comp.getLabel().get(comp.getLabel().size()-1);
+	}
+	
+	public void printAllCompartmentBranches() {
+		String space = "";
+		for(List<EObject> branche : allBranchs()) {
+			System.out.println("\n BRANCHE   :   ");
+			space = "";
+			for (EObject node : branche) {
+				
+				if(node instanceof Compartment) {
+					Compartment comp = (Compartment) node;
+					System.out.println(space+ comp.getLabel());
+					space += "     ";
+				}
+			}
+		}
+	}
+	public void printAllBranches() {
+		
+		String space = "";
+		for(List<EObject> branche : allBranchs()) {
+			System.out.println("\n BRANCHE   :   ");
+			space = "";
+			for (EObject node : branche) {
+				System.out.println(space+ node);
+				space += "     ";
+			}
+		}
+	}
+	public List <List <EObject>> allBranchs(){
+		EObject object = null;
+		TreeIterator<EObject> allContents = this.eAllContents();
+		List <List<EObject>> allbranchs = new ArrayList<>();
+		while (allContents.hasNext()) {
+			object = allContents.next();
+			
+			if(object.eContents().isEmpty()) {
+				//System.out.println("DEBUG    " + object);
+				allbranchs.add(getOneBranch(object));
+			}
+		}
+		
+		
+		return allbranchs;
+		
+		
+	}
+	public List <EObject> getOneBranch(EObject Leaf){
+		
+		List <EObject> oneBranch = new ArrayList<>();
+		do {
+			oneBranch.add(Leaf);
+			Leaf = Leaf.eContainer();
+		}while (Leaf != null);
+		
+		Collections.reverse(oneBranch);
+		
+		return oneBranch;
+		
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
