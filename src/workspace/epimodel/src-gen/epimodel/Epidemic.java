@@ -42,6 +42,9 @@ public interface Epidemic extends EObject {
 
 	Map<String, List<Compartment>>  getAllCompartmentBranches();
 
+	Map<String, Compartment>  getModelTree();
+	
+	void printModelTree();
 	
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

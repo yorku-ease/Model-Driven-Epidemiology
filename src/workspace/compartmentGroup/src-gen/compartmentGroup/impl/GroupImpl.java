@@ -49,33 +49,21 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class GroupImpl extends CompartmentImpl implements Group {
 
+	
+	@Override
+	public String getSimpleCompartmentLabel() {
+		
+		return this.getLabel().get(this.getLabel().size()-1);
+	}
+	
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 		return getCompartment().stream().map(CompartmentWrapper::getCompartment)
 				.map(Compartment::getPhysicalCompartments).flatMap(List::stream).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
-	/*
-	@Override
-	public Map<String, List<Compartment>> getAllBranches(){
-		
-		System.out.println(this.getCompartment() + "\n" + this.getCompartment().size());
-		
-		Map<String , List<Compartment>> br = new HashMap<>();
-		ArrayList<Compartment> 	cp = new ArrayList<>();
-		cp.add(this);
-		br.put(this.getLabel().get(0),cp);
-		
-		for(int i = 0; i < this.getCompartment().size(); i++) {
-			
-			Compartment tmp = (Compartment) this.getCompartment().get(i).eContents().get(0);
-			//System.out.println(this.getCompartment().get(i).eContents().get(0));
-			return tmp.getAllBranches();
-			
-		}
-		return this.getAllBranches();	
-	}
-*/
+
+
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		if (getGroupSources() != null && getGroupSources().getLink().size() > 0)

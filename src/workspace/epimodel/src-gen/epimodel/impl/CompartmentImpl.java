@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import java.util.Map;
@@ -47,6 +48,58 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 */
 	protected EList<String> label;
 
+	
+	public boolean isDivided() {
+		
+		Compartment comp = this;
+		while (comp.getChildrens().size()!=0) {
+	
+			if (comp.eContents().size() > 1)
+				return true;
+			else if (comp.eContents().size() == 1) {
+			
+				comp = comp.getChildrens().get(0);
+			
+			}
+			else 
+				return false;
+		}
+		return false;
+	}
+	
+	public Compartment getParent() {
+		if(this.eContainer.eContainer() instanceof Compartment)
+			return (Compartment)this.eContainer.eContainer();
+		else 
+			return null;
+	}
+	/*
+	 Gives the label of the actual compartment
+	 Example : [SEIR, I, Group a] -> Group a.
+	 */
+	public String getSimpleCompartmentLabel() {
+		
+		return this.getLabel().get(this.getLabel().size()-1);
+	}
+	
+	public List<Compartment> getChildrens(){
+		List <Compartment> lcomp = new ArrayList<>();
+	//	System.out.println(this.eContents());
+		if(!this.eContents().isEmpty()){
+			for (EObject wrap : this.eContents()) {
+				for (EObject object : wrap.eContents()) {
+					if (object instanceof Compartment) {
+						Compartment comp = (Compartment) object;
+						lcomp.add(comp);
+					}
+				}
+			}
+			//System.out.println("LISTE FAITE  " + lcomp);
+			//System.out.println("ATTENDU  " + this.eContents().get(0).eContents());
+		}
+	
+		return lcomp;
+	}
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(getLabel())));

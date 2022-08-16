@@ -67,6 +67,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 	}
 
 	
+	
 	/*
 	 Display and returns an associative array of all the Compartment of the differents branchs of a given epimodel.
 	 The key is every Compartment node of the model and returs a list of the node's branch without the node's children
@@ -89,25 +90,74 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 						}
 					}
 					
-					if(!br.containsKey(getSimpleCompartmentLabel(actualComp))) { //Keeping unicity of a key
-						br.put(getSimpleCompartmentLabel(actualComp), lcmp);
+					if(!br.containsKey(actualComp.getSimpleCompartmentLabel())) { //Keeping unicity of a key
+						br.put(actualComp.getSimpleCompartmentLabel(), lcmp);
 					}
 				}
 			}
 		}
 	
-		printAllCompartmentBranches();
+		return br;
+	}
+	
+	public Map<String, Compartment>  getModelTree(){
+		
+		
+		Map<String, Compartment> br = new HashMap<>();
+		EObject object = null;
+		TreeIterator<EObject> allContents = this.eAllContents();
+	
+		
+		while (allContents.hasNext()) {
+			
+			object = allContents.next();
+		
+			if(object instanceof Compartment) {
+				Compartment comp = (Compartment) object;
+				if(!br.containsKey(comp.getSimpleCompartmentLabel())) {
+					br.put(comp.getSimpleCompartmentLabel(), comp);
+
+				}
+				
+			}
+			
+		}
 		return br;
 	}
 	
 	/*
-	 Gives the label of the actual compartment
-	 Example : [SEIR, I, Group a] -> Group a.
+	 Displays a tree vision of a give model.
 	 */
-	public String getSimpleCompartmentLabel(Compartment comp) {
-		
-		return comp.getLabel().get(comp.getLabel().size()-1);
+	public void printModelTree() {
+		System.out.println("DEBUT");
+		EObject object = null;
+		Compartment tmp = null;
+		TreeIterator<EObject> allContents = this.eAllContents();
+		String space = "   ";
+	
+
+		List <Compartment> pastComp = new ArrayList<>();
+		Epidemic root = (Epidemic) allContents.next().eContainer();
+		System.out.println(root.getId());
+		while (allContents.hasNext()) {
+			
+			object = allContents.next();
+			
+			if(object instanceof Compartment) {
+				Compartment comp = (Compartment) object;
+				if(!pastComp.contains(comp)) {
+					pastComp.add(comp);
+
+					System.out.println(space.repeat(getOneBranch(object).size()) + comp.getLabel() );
+				}
+				
+			}
+			
+		}
+		System.out.println("FIN PRINT");
 	}
+	
+	
 	
 	/*
 	 Displays all the Compartment of an epimodel Branches with right indentation. 
@@ -146,6 +196,8 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 			}
 		}
 	}
+	
+	
 	
 	
 	/*
@@ -187,6 +239,8 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		return oneBranch;
 		
 	}
+	 
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

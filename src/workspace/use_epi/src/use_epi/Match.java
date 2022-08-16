@@ -40,14 +40,35 @@ public class Match {
         List<PhysicalCompartment> cs1 = myEpi1.getEpidemic().getPhysicalCompartments();
         List<PhysicalCompartment> cs2 = myEpi2.getEpidemic().getPhysicalCompartments();
         
-        Map<String, List<Compartment>> branches = myEpi2.getEpidemic().getAllCompartmentBranches();
-        System.out.println(branches);
+        Map<String, List<Compartment>> branches1 = myEpi1.getEpidemic().getAllCompartmentBranches();
+        Map<String, List<Compartment>> branches2 = myEpi2.getEpidemic().getAllCompartmentBranches();
         
-        for (String key : branches.keySet()) {
-        	System.out.println("\nKEY  :" + key + "---->" + branches.get(key));
+        //System.out.println(branches);
+        
+        Map<String, Compartment> branchesbis1 = myEpi2.getEpidemic().getModelTree();
+        Map<String, Compartment> branchesbis2 = myEpi2.getEpidemic().getModelTree();
+        
+        
+        System.out.println("BRANCHES MODELE 1 ");
+        for (String key : branches1.keySet()) {
+        	System.out.println("\nKEY  :" + key + "---->" + branches1.get(key));
 	     }
         
-        //Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
+        
+
+        System.out.println("BRANCHES MODELE 2 ");
+        for (String key : branches2.keySet()) {
+        	System.out.println("\nKEY  :" + key + "---->" + branches2.get(key));
+	     }
+        
+        
+        System.out.println("BRANCHES BIS MODELE 2 ");
+        for (String key : branchesbis2.keySet()) {
+        	System.out.println("\nKEY  :" + key + "---->" + branchesbis2.get(key));
+	     }
+        
+        
+        Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
        
         System.out.println(" FIN ");
        
@@ -116,7 +137,7 @@ public class Match {
 		for (PhysicalCompartment key : resultmatch.keySet()) {
 			System.out.print("MATCH  : " + key.labels + "   ---->      " +  "[ ");
 			for (int i = 0; i < resultmatch.get(key).size(); i++ )  {
-				System.out.print(resultmatch.get(key).get(i));
+				System.out.print(resultmatch.get(key).get(i).labels);
 				try {
 					if(resultmatch.get(key).get(i+1) != null)
 						System.out.print(" , ");
