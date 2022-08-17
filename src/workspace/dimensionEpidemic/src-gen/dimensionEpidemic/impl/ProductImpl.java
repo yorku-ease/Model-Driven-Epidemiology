@@ -25,6 +25,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -155,6 +156,16 @@ public class ProductImpl extends CompartmentImpl implements Product {
 								res += specifications.get(j).labels;
 							res = res.replace("][", ", ");
 							return res;
+						}
+
+						@Override
+						public List<EObject> getTargetObjects() {
+							return null;
+						}
+						
+						@Override
+						public List<String> getTargetLabels() {
+							return null;
 						}
 					});
 				}

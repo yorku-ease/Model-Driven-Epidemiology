@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -44,6 +44,11 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalSinksFor(c);
+	}
+	
+	@Override
+	public final String getTargetRelation(EObject target) {
+		return getTargetLabels().get(getTargetObjects().indexOf(target));
 	}
 
 	/**

@@ -12,11 +12,12 @@ import org.eclipse.ui.part.ViewPart;
 public class ProjectCreationView extends ViewPart {
 
 	public ProjectCreationView() {
-		// TODO Auto-generated constructor stub
+		System.out.println("ProjectCreationView");
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
+		System.out.println("createPartControl");
 		Button button = new Button(parent, SWT.PUSH);
 		button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
 		button.setText("BTN");
@@ -26,13 +27,10 @@ public class ProjectCreationView extends ViewPart {
 				MessageDialog.openInformation(parent.getShell(), "TITLE", "CONTENT");
 			}
 		});
-		
 	}
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
+		System.out.println("View Set Focus");
 	}
-
 }

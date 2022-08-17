@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -64,6 +65,16 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 							))));
 			}
 		return res;
+	}
+
+	@Override
+	public List<EObject> getTargetObjects() {
+		return Arrays.asList(getFrom(), getTo(), getContact());
+	}
+	
+	@Override
+	public List<String> getTargetLabels() {
+		return Arrays.asList("from", "to", "contact");
 	}
 
 	/**

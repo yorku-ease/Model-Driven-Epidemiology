@@ -11,9 +11,11 @@ import epimodel.util.PhysicalFlowEquation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -69,5 +71,4 @@ public class BatchImpl extends FromToFlowImpl implements Batch {
 	protected EClass eStaticClass() {
 		return BatchRateContactFlowPackage.Literals.BATCH;
 	}
-
 } //BatchImpl
