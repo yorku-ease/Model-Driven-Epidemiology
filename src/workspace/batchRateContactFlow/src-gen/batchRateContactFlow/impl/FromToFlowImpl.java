@@ -9,9 +9,13 @@ import epimodel.Compartment;
 
 import epimodel.impl.FlowImpl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -31,6 +35,17 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
+
+	@Override
+	public List<EObject> getTargetObjects() {
+		return Arrays.asList(getFrom(), getTo());
+	}
+	
+	@Override
+	public List<String> getTargetLabels() {
+		return Arrays.asList("from", "to");
+	}
+	
 	/**
 	 * The cached value of the '{@link #getFrom() <em>From</em>}' reference.
 	 * <!-- begin-user-doc -->

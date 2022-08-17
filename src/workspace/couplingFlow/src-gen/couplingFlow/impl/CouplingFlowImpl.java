@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -50,6 +51,7 @@ public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
 					.map(Compartment::getPhysicalCompartments)
 					.flatMap(List::stream)
 					.collect(Collectors.toList());
+		
 		List<PhysicalCompartment> affectedCompartments = 
 				Arrays.asList(firstFrom, secondFrom, firstTo, secondTo)
 					.stream()
@@ -57,9 +59,11 @@ public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
 					.map(Compartment::getPhysicalCompartments)
 					.flatMap(List::stream)
 					.collect(Collectors.toList());
+		
 		List<Float> coefficients = Arrays.asList(-1f, -1f, 1f, 1f);
 		String equation = "(* $0 $1)";
 		List<String> requiredOperators = Arrays.asList("*");
+		
 		return Arrays.asList(
 				new PhysicalFlow(
 						Arrays.asList(
@@ -70,6 +74,16 @@ public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
 									equation,
 									requiredOperators
 							))));
+	}
+
+	@Override
+	public List<EObject> getTargetObjects() {
+		return Arrays.asList(getFirstFrom(), getFirstTo(), getSecondFrom(), getSecondTo());
+	}
+	
+	@Override
+	public List<String> getTargetLabels() {
+		return Arrays.asList("firstFrom", "firstTo", "secondFrom", "secondTo");
 	}
 	
 	/**
@@ -394,5 +408,4 @@ public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
 		}
 		return super.eIsSet(featureID);
 	}
-
 } //CouplingFlowImpl
