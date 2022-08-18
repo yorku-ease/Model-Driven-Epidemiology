@@ -52,7 +52,7 @@ public interface Compartment extends EObject {
 	
 	Compartment getParent();
 	
-	List<Compartment> getChildrens();
+	List<Compartment> getChildren();
 	
 	boolean isDivided();
 	/*

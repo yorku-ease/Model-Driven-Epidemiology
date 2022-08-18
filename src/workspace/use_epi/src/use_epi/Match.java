@@ -70,6 +70,9 @@ public class Match {
         
         Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = matchTwoEpimodels(cs1, cs2);
        
+        System.out.println("PHYSICAL ");
+        printResultMatch(resultmatch);        
+        
         System.out.println(" FIN ");
        
 	} 

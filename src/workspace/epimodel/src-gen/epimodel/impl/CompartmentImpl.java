@@ -52,13 +52,13 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	public boolean isDivided() {
 		
 		Compartment comp = this;
-		while (comp.getChildrens().size()!=0) {
+		while (comp.getChildren().size()!=0) {
 	
 			if (comp.eContents().size() > 1)
 				return true;
 			else if (comp.eContents().size() == 1) {
 			
-				comp = comp.getChildrens().get(0);
+				comp = comp.getChildren().get(0);
 			
 			}
 			else 
@@ -82,7 +82,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		return this.getLabel().get(this.getLabel().size()-1);
 	}
 	
-	public List<Compartment> getChildrens(){
+	public List<Compartment> getChildren(){
 		List <Compartment> lcomp = new ArrayList<>();
 	//	System.out.println(this.eContents());
 		if(!this.eContents().isEmpty()){
