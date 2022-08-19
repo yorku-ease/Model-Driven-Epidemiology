@@ -1,21 +1,9 @@
 package org.epimodel;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-
-import org.eclipse.core.commands.Command;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -34,13 +22,13 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.swt.SWT;
 import org.epimodel.natures.EpimodelProjectNature;
 import org.eclipse.sirius.business.api.session.Session;
+//import org.eclipse.sirius.business.internal.resource.AirDResourceImpl;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
 import org.eclipse.sirius.ui.tools.api.project.ModelingProjectManager;
 
 import epimodel.impl.EpimodelFactoryImpl;
 
 public class CustomProjectSupport {
-    
     public static IProject createProject(
 		String projectName,
 		java.net.URI location,
@@ -53,43 +41,26 @@ public class CustomProjectSupport {
         try {
             addNature(project, "org.eclipse.sirius.nature.modelingproject");
             addNature(project, EpimodelProjectNature.NATURE_ID);
-
-//            List<String> folder_paths = Arrays.asList("modeling");
-//            List<String> file_paths = Arrays.asList("modeling/model.epimodel", "extensions.txt");
-            List<String> folder_paths = Arrays.asList();
-            List<String> file_paths = Arrays.asList("extensions.txt");
-            List<IFile> files = addToProjectStructure(project, folder_paths, file_paths);
-
+            
+            IFile extensionsTxt = createFile(project, "extensions.txt");
 			for (int i = 0; i < availableExtensions.size(); ++i)
-				files.get(file_paths.indexOf("extensions.txt")).appendContents(
+				extensionsTxt.appendContents(
 						new ByteArrayInputStream((availableExtensions.get(i) + ": " + extensionTruthValues.get(i) + "\n").getBytes()),
 						SWT.NONE,
-						null);
+						new NullProgressMonitor());
 			
 			String model_fn = projectName + ".epimodel";
 			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6);
 			
 			createEpimodel(model_fn_path);
 			
-			Session newSession = ModelingProjectManager.INSTANCE.createLocalRepresentationsFile(project, new NullProgressMonitor());
-			AddSemanticResourceCommand addSemCommand = new AddSemanticResourceCommand(newSession, URI.createFileURI(model_fn_path), new NullProgressMonitor());
-			newSession.getTransactionalEditingDomain().getCommandStack().execute(addSemCommand);
+			Session aird = ModelingProjectManager.INSTANCE.createLocalRepresentationsFile(project, new NullProgressMonitor());
+			AddSemanticResourceCommand addSemCommand = new AddSemanticResourceCommand(aird, URI.createFileURI(model_fn_path), new NullProgressMonitor());
+			aird.getTransactionalEditingDomain().getCommandStack().execute(addSemCommand);
+//			AirDResourceImpl test = (AirDResourceImpl) aird.getAllSessionResources().iterator().next();
+//			Object test2 = test.getAllContents();
 			
-//			new AddSemanticResourceCommand(newSession, null, null);
-//			Set<ISessionFileLoadingListener> sessionFileLoadingListeners = SiriusEditPlugin.getPlugin().getSessionFileLoadingListeners();
-//            for (ISessionFileLoadingListener sessionFileLoadingListener : sessionFileLoadingListeners) {
-//                sessionFileLoadingListener.notifySessionLoadedFromModelingProject(newSession);
-//            }
-//			files.get(file_paths.indexOf("representations.aird")).appendContents(new ByteArrayInputStream("".getBytes()), SWT.NONE, null);
-
-			
-            try {
-    			PrintWriter writer = new PrintWriter("extensions.txt", "UTF-8");
-    			writer.close();
-    		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-    			e.printStackTrace();
-                project = null;
-    		}
+			project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
             
         } catch (CoreException | IOException | IllegalArgumentException | SecurityException e) {
             e.printStackTrace();
@@ -117,28 +88,22 @@ public class CustomProjectSupport {
         } catch (CoreException e) {
             e.printStackTrace();
         }
+        
         return newProject;
     }
  
-    private static List<IFile> addToProjectStructure(IProject newProject, List<String> folders, List<String> files) throws CoreException {
-        for (String path : folders)
-            createFolder(newProject.getFolder(path));
-        
-        List<IFile> l = new ArrayList<>(files.size());
-        for (String path : files) {
-        	IFile f = newProject.getFile(path);
-        	createFile(f);
-        	l.add(f);
-        }
-        return l;
-    }
- 
-    private static void createFolder(IFolder folder) throws CoreException {
-        IContainer parent = folder.getParent();
-        if (parent instanceof IFolder)
-            createFolder((IFolder) parent);
-        if (!folder.exists())
-            folder.create(false, true, null);
+//    private static void createFolder(IFolder folder) throws CoreException {
+//        IContainer parent = folder.getParent();
+//        if (parent instanceof IFolder)
+//            createFolder((IFolder) parent);
+//        if (!folder.exists())
+//            folder.create(false, true, new NullProgressMonitor());
+//    }
+    
+    private static IFile createFile(IProject project, String fileName) throws CoreException {
+    	IFile f = project.getFile(fileName);
+    	createFile(f);
+    	return f;
     }
     
     private static void createFile(IFile file) throws CoreException {
@@ -160,21 +125,8 @@ public class CustomProjectSupport {
             newNatures[prevNatures.length] = nature;
             description.setNatureIds(newNatures);
         }
-        project.setDescription(description, null);
+        project.setDescription(description, new NullProgressMonitor());
     }
-	
-//	private static void printNatures(String projectName) {
-//        IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-//        if (newProject.exists()) {
-//        	try {
-//        		for (String nature : newProject.getDescription().getNatureIds())
-//        			System.out.println(nature);
-//			} catch (CoreException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//        }
-//	}
 	
 	private static void createEpimodel(String model_fn) throws IOException {
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl(); {
@@ -195,7 +147,6 @@ public class CustomProjectSupport {
 	        Resource resource = resSet.createResource(uri);
 	        resource.getContents().add(EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper());
 	        resource.save(null);
-			System.out.println(uri.toFileString());
 		}
 	}
 }

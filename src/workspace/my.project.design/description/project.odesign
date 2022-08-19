@@ -3,16 +3,16 @@
   <ownedViewpoints name="MyViewpoint">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="epidemicRepresentation" domainClass="epimodel::EpidemicWrapper" enablePopupBars="true">
       <defaultLayer name="Default">
-        <edgeMappings>
+        <edgeMappings sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='epidemicRepresentation']/@defaultLayer/@containerMappings[name='Compartment']/@subNodeMappings[name='Flow']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='epidemicRepresentation']/@defaultLayer/@containerMappings[name='Compartment']" targetFinderExpression="service:flowTargets">
           <style sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
-            <centerLabelStyleDescription labelSize="12" labelExpression="service:flowLabel(view)">
+            <centerLabelStyleDescription labelSize="12" labelExpression="aql:self.flowLabel2(view.targetNode.target)">
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <containerMappings semanticCandidatesExpression="service:childrenOfChildrenAndChildrenOfChildrenOfChildren()" domainClass="epimodel::Compartment" reusedContainerMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='epidemicRepresentation']/@defaultLayer/@containerMappings[name='']">
-          <subNodeMappings semanticCandidatesExpression="[self.eContents().eContents()/]" domainClass="epimodel::Flow">
+        <containerMappings name="Compartment" semanticCandidatesExpression="service:childrenOfChildrenAndChildrenOfChildrenOfChildren()" domainClass="epimodel::Compartment" reusedContainerMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='epidemicRepresentation']/@defaultLayer/@containerMappings[name='Compartment']">
+          <subNodeMappings name="Flow" semanticCandidatesExpression="[self.eContents().eContents()/]" domainClass="epimodel::Flow">
             <style xsi:type="style:LozengeNodeDescription" labelSize="12" labelExpression="feature:id" labelPosition="node" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
