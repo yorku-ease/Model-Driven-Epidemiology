@@ -2,7 +2,7 @@ package use_epi;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -103,9 +103,9 @@ public class Match {
         return myEpi;
 	}
 	
-	private static Map<PhysicalCompartment, List<PhysicalCompartment>> matchTwoEpimodels(List<PhysicalCompartment> cs1 , List<PhysicalCompartment> cs2) {
+	protected static Map<PhysicalCompartment, List<PhysicalCompartment>> matchTwoEpimodels(List<PhysicalCompartment> cs1 , List<PhysicalCompartment> cs2) {
 		
-		 Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = new HashMap<>();
+		 Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = new LinkedHashMap<>();
 		 
 		        for (PhysicalCompartment pc1 : cs1 ){
 	        	ArrayList<PhysicalCompartment> tmp = new ArrayList<>();

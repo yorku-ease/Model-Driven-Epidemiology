@@ -168,6 +168,36 @@ public class make_models {
 	        resource.save(null);
 		}
 		{
+			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_S_1.epimodel";
+	        URI uri = URI.createFileURI(model_fn);
+	        Resource resource = resSet.createResource(uri);
+	        
+	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        {
+	        	GroupEpidemic e = createGE("GECC_S_1");
+	        	e.getCompartment().add(wrapc(createCompartment("S", "1")));
+	        	w.setEpidemic(e);
+	        }
+	        
+	        resource.getContents().add(w);
+	        resource.save(null);
+		}
+		{
+			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_S_2.epimodel";
+	        URI uri = URI.createFileURI(model_fn);
+	        Resource resource = resSet.createResource(uri);
+	        
+	        epimodel.EpidemicWrapper w = EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper();
+	        {
+	        	GroupEpidemic e = createGE("GECC_S_2");
+	        	e.getCompartment().add(wrapc(createCompartment("S", "2")));
+	        	w.setEpidemic(e);
+	        }
+	        
+	        resource.getContents().add(w);
+	        resource.save(null);
+		}
+		{
 			String model_fn = "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel";
 	        URI uri = URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);

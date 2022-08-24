@@ -11,7 +11,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +75,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 	public Map<String, List<Compartment>>  getAllCompartmentBranches(){
 		
 		
-		Map<String, List<Compartment>> br = new HashMap<>();
+		Map<String, List<Compartment>> br = new LinkedHashMap<>();
 		
 		for(List<EObject> branche : getAllBranches()) {
 			for (EObject node : branche) {
@@ -103,7 +103,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 	public Map<String, Compartment>  getModelTree(){
 		
 		
-		Map<String, Compartment> br = new HashMap<>();
+		Map<String, Compartment> br = new LinkedHashMap<>();
 		EObject object = null;
 		TreeIterator<EObject> allContents = this.eAllContents();
 	
@@ -114,6 +114,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		
 			if(object instanceof Compartment) {
 				Compartment comp = (Compartment) object;
+				System.out.println("NOM DU COMPARTIMENT " +comp.getLabel());
 				if(!br.containsKey(comp.getSimpleCompartmentLabel())) {
 					br.put(comp.getSimpleCompartmentLabel(), comp);
 
