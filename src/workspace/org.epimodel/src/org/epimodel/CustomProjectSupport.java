@@ -45,9 +45,10 @@ public class CustomProjectSupport {
             IFile extensionsTxt = createFile(project, "extensions.txt");
 			for (int i = 0; i < availableExtensions.size(); ++i)
 				extensionsTxt.appendContents(
-						new ByteArrayInputStream((availableExtensions.get(i) + ": " + extensionTruthValues.get(i) + "\n").getBytes()),
-						SWT.NONE,
-						new NullProgressMonitor());
+					new ByteArrayInputStream(
+						(availableExtensions.get(i) + ": " + extensionTruthValues.get(i) + "\n").getBytes()),
+					SWT.NONE,
+					new NullProgressMonitor());
 			
 			String model_fn = projectName + ".epimodel";
 			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6);
@@ -55,10 +56,11 @@ public class CustomProjectSupport {
 			createEpimodel(model_fn_path);
 			
 			Session aird = ModelingProjectManager.INSTANCE.createLocalRepresentationsFile(project, new NullProgressMonitor());
-			AddSemanticResourceCommand addSemCommand = new AddSemanticResourceCommand(aird, URI.createFileURI(model_fn_path), new NullProgressMonitor());
+			AddSemanticResourceCommand addSemCommand = new AddSemanticResourceCommand(
+				aird,
+				URI.createFileURI(model_fn_path),
+				new NullProgressMonitor());
 			aird.getTransactionalEditingDomain().getCommandStack().execute(addSemCommand);
-//			AirDResourceImpl test = (AirDResourceImpl) aird.getAllSessionResources().iterator().next();
-//			Object test2 = test.getAllContents();
 			
 			project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
             

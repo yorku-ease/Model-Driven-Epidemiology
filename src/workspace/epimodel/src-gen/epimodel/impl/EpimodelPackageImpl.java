@@ -11,6 +11,18 @@ import epimodel.EpimodelPackage;
 
 import epimodel.Flow;
 import epimodel.FlowWrapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -128,7 +140,80 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(EpimodelPackage.eNS_URI, theEpimodelPackage);
+		
+		try {
+			loadExtensions();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return theEpimodelPackage;
+	}
+	
+	public static void loadExtensions() throws Exception {
+		String folder_path = System.getenv("epimodelExtensionsFolder");
+		if (folder_path.endsWith("/") || folder_path.endsWith("\\"))
+			folder_path = folder_path.substring(0, folder_path.length() - 1);
+		System.out.println("LOADING METAMODELS FROM " + folder_path);
+		
+
+		try {
+			Object c1  = Class.forName("org.eclipse.emf.ecore.EObject");
+			Object c2  = Class.forName("epimodel.Flow");
+			System.out.println(c1);
+			System.out.println(c2);
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		File folder = new File(folder_path);
+		File[] listOfFiles = folder.listFiles();
+		
+		for (File jar : listOfFiles)
+			addEPackageToRegistry(folder_path + "/" + jar.getName());
+	}
+	
+	static void addEPackageToRegistry(String jar) throws Exception {
+        for (Class<?> c : loadClassesFromJar(jar))
+        	if (c.getName().endsWith("Package"))
+        		EPackage.Registry.INSTANCE.put(
+            		(String) getStaticFieldByName(c, "eNS_URI"),
+            		getStaticFieldByName(c, "eINSTANCE")
+            	);
+	}
+	
+	protected static List<Class<?>> loadClassesFromJar(String pathToJar) throws IOException, ClassNotFoundException {
+		JarFile jarFile = new JarFile(pathToJar);
+		Enumeration<JarEntry> entry = jarFile.entries();
+		List<Class<?>> classes = new ArrayList<>();
+
+		URL[] urls = { new URL("jar:file:" + pathToJar+"!/") };
+		
+		URLClassLoader cl = URLClassLoader.newInstance(urls, EpimodelPackageImpl.class.getClassLoader());
+
+		while (entry.hasMoreElements()) {
+		    JarEntry je = entry.nextElement();
+		    if (je.isDirectory() || !je.getName().endsWith(".class"))
+		        continue;
+		    String className = je.getName().substring(0, je.getName().indexOf(".class")).replace('/', '.');
+		    System.out.println("LOADING CLASS " + className);
+		    try {
+			    Class<?> c = cl.loadClass(className);
+			    classes.add(c);
+		    }
+		    catch (Exception e) {
+		    	
+		    }
+		}
+		jarFile.close();
+		return classes;
+	}
+	
+	protected static Object getStaticFieldByName(Class<?> c, String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		Field field = c.getField(fieldName);
+		field.setAccessible(true);
+		return field.get(new Object());
 	}
 
 	/**

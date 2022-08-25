@@ -104,7 +104,7 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 		isInited = true;
 
 		// Initialize simple dependencies
-		EpimodelPackage.eINSTANCE.eClass();
+//		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theBatchRateContactFlowPackage.createPackageContents();

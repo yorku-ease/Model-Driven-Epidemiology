@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
@@ -33,6 +32,7 @@ import de.ovgu.featureide.fm.core.configuration.Selection;
 import de.ovgu.featureide.fm.core.init.FMCoreLibrary;
 import de.ovgu.featureide.fm.core.init.LibraryManager;
 import de.ovgu.featureide.fm.core.io.manager.FeatureModelManager;
+import epimodel.Compartment;
 
 public class FM_MM {
 	@SuppressWarnings("unused")
@@ -60,61 +60,28 @@ public class FM_MM {
 			System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
 			System.out.println(fmce.getDetailed());
 		}
-		
-		List<String> jars = listFilesOfDir("../../../metamodel-jars/");
-		
-		String fn = "../../runtime-EclipseApplication/modeling/DECC_S_I.epimodel";
-		
-		EObject m1 = loadModelFromMetamodels(jars, fn);
-	}
-	
-	protected static List<Class<?>> loadClassesFromJar(String pathToJar) throws IOException, ClassNotFoundException {
-		JarFile jarFile = new JarFile(pathToJar);
-		Enumeration<JarEntry> e = jarFile.entries();
-		List<Class<?>> classes = new ArrayList<>();
 
-		URL[] urls = { new URL("jar:file:" + pathToJar+"!/") };
-		URLClassLoader cl = URLClassLoader.newInstance(urls);
-
-		while (e.hasMoreElements()) {
-		    JarEntry je = e.nextElement();
-		    if (je.isDirectory() || !je.getName().endsWith(".class"))
-		        continue;
-		    String className = je.getName().substring(0, je.getName().indexOf(".class")).replace('/', '.');
-		    Class<?> c = cl.loadClass(className);
-		    classes.add(c);
-		}
-		jarFile.close();
-		return classes;
+		EObject m1 = loadModelFromMetamodels("../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel");
+		
+		m1.eAllContents().forEachRemaining(e -> {
+			if (!(e instanceof Compartment))
+				return;
+			System.out.print(e);
+			System.out.print(": ");
+			System.out.println(((Compartment) e).getLabel());
+		});
 	}
 	
-	protected static Object getStaticFieldByName(Class<?> c, String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		Field field = c.getField(fieldName);
-		field.setAccessible(true);
-		return field.get(new Object());
-	}
 	
-	public static List<String> listFilesOfDir(String dirname) {
-	    File dir = new File(dirname);
-	    return Arrays.stream(dir.list()).map(s->dirname+s).collect(Collectors.toList());
-	}
-	
-	static EObject loadModelFromMetamodels(List<String> metamodel_jars, String model_fn) throws Exception {
+	static EObject loadModelFromMetamodels(String model_fn) throws Exception {
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
         factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
 		
         ResourceSet resSet = new ResourceSetImpl();
-        EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
-        resSet.setPackageRegistry(pkgRegistry);
+        resSet.setPackageRegistry(EPackage.Registry.INSTANCE);
         resSet.setResourceFactoryRegistry(factoryRegistry);
         
-        for (String jar : metamodel_jars)
-            for (Class<?> c : loadClassesFromJar(jar))
-            	if (c.getName().endsWith("Package"))
-                    resSet.getPackageRegistry().put(
-                		(String) getStaticFieldByName(c, "eNS_URI"),
-                		getStaticFieldByName(c, "eINSTANCE")
-                	);
+        EPackage.Registry.INSTANCE.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
         
         URI uri = URI.createFileURI(model_fn);
         Resource resource = resSet.getResource(uri, true);
