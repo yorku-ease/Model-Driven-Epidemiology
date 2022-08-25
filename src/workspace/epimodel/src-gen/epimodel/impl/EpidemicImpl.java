@@ -100,10 +100,10 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		return br;
 	}
 	
-	public Map<String, Compartment>  getModelTree(){
+	public Map<List<String>, Compartment>  getModelTree(){
 		
 		
-		Map<String, Compartment> br = new LinkedHashMap<>();
+		Map<List<String>, Compartment> br = new LinkedHashMap<>();
 		EObject object = null;
 		TreeIterator<EObject> allContents = this.eAllContents();
 	
@@ -114,9 +114,8 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		
 			if(object instanceof Compartment) {
 				Compartment comp = (Compartment) object;
-				System.out.println("NOM DU COMPARTIMENT " +comp.getLabel());
-				if(!br.containsKey(comp.getSimpleCompartmentLabel())) {
-					br.put(comp.getSimpleCompartmentLabel(), comp);
+				if(!br.containsKey(comp.getLabel())) {
+					br.put(comp.getLabel(), comp);
 
 				}
 				
@@ -130,7 +129,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 	 Displays a tree vision of a give model.
 	 */
 	public void printModelTree() {
-		System.out.println("DEBUT");
+		System.out.println("MODEL SCHEME ");
 		EObject object = null;
 		Compartment tmp = null;
 		TreeIterator<EObject> allContents = this.eAllContents();
@@ -155,7 +154,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 			}
 			
 		}
-		System.out.println("FIN PRINT");
+		System.out.println("END OF MODEL\n");
 	}
 	
 	

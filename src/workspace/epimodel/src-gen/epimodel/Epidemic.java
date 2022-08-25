@@ -42,7 +42,7 @@ public interface Epidemic extends EObject {
 
 	Map<String, List<Compartment>>  getAllCompartmentBranches();
 
-	Map<String, Compartment>  getModelTree();
+	Map<List<String>, Compartment>  getModelTree();
 	
 	void printModelTree();
 	

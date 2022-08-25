@@ -3,6 +3,7 @@ package use_epi;
 import java.io.PrintWriter;
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,38 +48,39 @@ public class Diff {
 		String model10 = "../../runtime-EclipseApplication/modeling/GECC_S_2.epimodel";
 		
 		epimodel.EpidemicWrapper myEpi1 = Match.loadEpimodel(model1);
-		epimodel.EpidemicWrapper myEpi2 = Match.loadEpimodel(model10);
+		epimodel.EpidemicWrapper myEpi2 = Match.loadEpimodel(model9);
 		
 
-		System.out.println(myEpi1.getEpidemic().getPhysicalCompartments().get(0).labels);
+		//System.out.println(myEpi1.getEpidemic().getPhysicalCompartments().get(0).labels);
 		
-	    List<PhysicalCompartment> pc1 = myEpi1.getEpidemic().getPhysicalCompartments();
-        List<PhysicalCompartment> pc2 = myEpi2.getEpidemic().getPhysicalCompartments();
-       
-        Map<String, List<Compartment>> branches1 = myEpi1.getEpidemic().getAllCompartmentBranches();
-        Map<String, List<Compartment>> branches2 = myEpi2.getEpidemic().getAllCompartmentBranches();
+	    
+       // Map<String, List<Compartment>> branches1 = myEpi1.getEpidemic().getAllCompartmentBranches();
+       // Map<String, List<Compartment>> branches2 = myEpi2.getEpidemic().getAllCompartmentBranches();
         
-        Map<String, Compartment> branchesbis1 = myEpi1.getEpidemic().getModelTree();
-      //  Map<String, Compartment> branchesbis2 = myEpi2.getEpidemic().getModelTree();
+        Map<List<String>, Compartment> branchesbis1 = myEpi1.getEpidemic().getModelTree();
+        Map<List<String>, Compartment> branchesbis2 = myEpi2.getEpidemic().getModelTree();
        
         List<String> Test = new ArrayList<>(); 
         List<String> Test2 = new ArrayList<>(); 
         
 
-        
+        List<PhysicalCompartment> pc1 = myEpi1.getEpidemic().getPhysicalCompartments();
+        List<PhysicalCompartment> pc2 = myEpi2.getEpidemic().getPhysicalCompartments();
+       
         Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch = Match.matchTwoEpimodels(pc1, pc2);
-     //   myEpi1.getEpidemic().printModelTree();
+        myEpi1.getEpidemic().printModelTree();
           
-      //  myEpi2.getEpidemic().printModelTree();
+        myEpi2.getEpidemic().printModelTree();
         
-       // displayDiff(branchesbis1, branchesbis2, resultmatch);
-        System.out.println(" FIN ");
+        System.out.println("BEGINING OF DIFF");	
+        displayDiff(branchesbis1, branchesbis2);
+        System.out.println(" END");
 		
 		
 	}
 	
 	
-	public static void displayDiff( Map<String, Compartment> branchesbis1,  Map<String, Compartment> branchesbis2, Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch) {
+	public static void displayDiff( Map<List<String>, Compartment> branchesbis1,  Map<List<String>, Compartment> branchesbis2) {
 		
 	/*	 
 
@@ -93,29 +95,40 @@ public class Diff {
 		 }
 		*/ 
 		 //ORDERED KEYSET
-		 
-		 for (String key1 : branchesbis1.keySet()) {
-			 System.out.println(key1);
-			 if( branchesbis2.containsKey(key1) ) {  //OBJECT WITH THE SAME ID
 
+		 Map<List<String>, Compartment> toBeAdd = new LinkedHashMap<>();
+		 List<String> group = new ArrayList<>();
+		 group.add("group");
+		 toBeAdd.putAll(branchesbis2);
+		 for (List<String> key1 : branchesbis1.keySet()) {
+			
+			 if(key1.contains("SEIR") && branchesbis2.containsKey(group)) {
+				 branchesbis2.replace(group, branchesbis1.get(key1));
+				 branchesbis2.put(key1, branchesbis2.remove(group));
+			 }
+			 if( branchesbis2.containsKey(key1)){  //OBJECT WITH THE SAME ID
+				 toBeAdd.remove(key1);
 				 Compartment right = branchesbis1.get(key1);
-				 String key2 = branchesbis2.get(key1).getSimpleCompartmentLabel();
+				 List<String> key2 = branchesbis2.get(key1).getLabel();
 				 Compartment left =  branchesbis2.get(key2);
-				 
+				
 				//SAME TYPE
-				 //TODO boolean havesame..
+				 
+				 boolean haveSameParent = haveSameParent(right, left);
+				 boolean haveSameChildren = haveSameChildren(right, left);
+				 
 				 if(isSameType(right, left)) { 
 					 
-					 if(haveSameParent(right, left) && haveSameChildren(right, left) & isMap(right.getPhysicalCompartments(), left.getPhysicalCompartments(), resultmatch)) //  SAME PARENT & SAME CHILDREN
+					 if (right.eContainer().eContainer() instanceof Epidemic &&  left.eContainer().eContainer() instanceof Epidemic) // CASE THE PARENT ARE THE EPIDEMIC OBJECT
+						 	System.out.println(" MATCH " + key1 + " --> " + key2 );
+					 else if(haveSameParent && haveSameChildren && isMap(right.getPhysicalCompartments(), left.getPhysicalCompartments(), toBeAdd)) //  SAME PARENT & SAME CHILDREN
 							 System.out.println("EXACT MATCH " + key1 + " --> " + key2 );
 					//TODO CHECK LABEL
-					 else if(haveSameParent(right, left) && !haveSameChildren(right, left)) //SAME PARENT & DIFFERENT CHILDREN 
-						 	displaysPCAnalysis(right.getPhysicalCompartments(), left.getPhysicalCompartments(), resultmatch);
+					 else if(haveSameParent && !haveSameChildren) //SAME PARENT & DIFFERENT CHILDREN 
+						 	displaysPCAnalysis(right.getPhysicalCompartments(), left.getPhysicalCompartments(), toBeAdd);
 						 
-					 else if(!haveSameParent(right, left) && haveSameChildren(right, left)) //DIFFERENT PARENT & SAME CHILDREN
+					 else if(!haveSameParent && haveSameChildren) //DIFFERENT PARENT & SAME CHILDREN
 						 	System.out.println("MOVE MATCH " + key1 + " --> " + key2 );
-					 else if (right.eContainer().eContainer() instanceof Epidemic &&  left.eContainer().eContainer() instanceof Epidemic) // CASE THE PARENT ARE THE EPIDEMIC OBJECT
-						 	System.out.println(" MATCH " + key1 + " --> " + key2 );
 					 else {															//		DIFFERENT PARENT & DIFFERENT CHILDREN
 						 	System.out.println("ADD/DELETE MATCH " + key1 + " --> " + key2 );
 					 }
@@ -124,38 +137,88 @@ public class Diff {
 				//DIFFERENT TYPE
 				 
 				 else{							
-					 if(haveSameParent(right, left) && haveSameChildren(right, left)) //  SAME PARENT & SAME CHILDREN
+					 if(haveSameParent && haveSameChildren) //  SAME PARENT & SAME CHILDREN
 						 System.out.println("RETYPE MATCH " + key1 +" Of type  : " + right.getClass() + " --> " + key2 + " Of type : " + left.getClass());
 					 
-					 else if(haveSameParent(right, left) && !haveSameChildren(right, left)) //SAME PARENT & DIFFERENT CHILDREN 
-						 displaysPCAnalysis(right.getPhysicalCompartments(), left.getPhysicalCompartments(), resultmatch);
+					 else if(haveSameParent && !haveSameChildren) //SAME PARENT & DIFFERENT CHILDREN 
+						 displaysPCAnalysis(right.getPhysicalCompartments(), left.getPhysicalCompartments(), toBeAdd);
 					 
-					 else if(!haveSameParent(right, left) && haveSameChildren(right, left)) //DIFFERENT PARENT match& SAME CHILDREN
+					 else if(!haveSameParent && haveSameChildren) //DIFFERENT PARENT match& SAME CHILDREN
 						 System.out.println("RETYPE/MOVE MATCH " + key1 +" Of type  : " + right.getClass() + " --> " + key2 + " Of type : " + left.getClass());
 					 
 					 																		
-					 else if(!haveSameParent(right, left) && !haveSameChildren(right, left)) {//DIFFERENT PARENT & DIFFERENT CHILDREN
+					 else if(!haveSameParent && !haveSameChildren) {//DIFFERENT PARENT & DIFFERENT CHILDREN
 						 //System.out.println("RIGHT " + right.getParent() + "LEFT " + left.getParent() + "RIGHT " + right.getChildren() + "LEFT " + left.getChildren());
 						 System.out.println("ADD/DELETE MATCH " + key1 + " --> " + key2 );
 					 }
 				 } 
 			 }
 			 
+			 else if(!containsMap(branchesbis2,key1).isEmpty()) {
+				 	List<List<String>> resultMap = containsMap(branchesbis2,key1);
+				 	Compartment right = branchesbis1.get(key1);
+					System.out.println("MAP MATCH  : " + resultMap.get(0) + " ---> " + resultMap.get(1));
+					toBeAdd.remove(resultMap.get(0));
+					toBeAdd.remove(resultMap.get(1));
+			 }
 			// NO OBJECT WITH THE SAME ID
+			 
 			 else if(!branchesbis2.containsKey(key1)){
 				 System.out.println("DELETE  " + key1 );
 			 }
- 		}	
+ 		}
+		for(List<String> key : toBeAdd.keySet()) {
+			System.out.println("ADD  " + toBeAdd.get(key).getLabel());
+		}
 	 }	
 
+	
+	private static List<List<String>> containsMap (Map<List<String>, Compartment> branch2, List<String> key1) {
+		List<List<String>> result = new ArrayList<>();
+		for(List<String> key2 : branch2.keySet()) {
+			
+			for(String label2 : key2) {
+				for(String label1 : key1) {
+					if(label2.equals(label1)) {
+						result.add(key1);
+						result.add(key2);
+					}
+				}
+			}
+		}
+		return result;
 		
+	}
 		
-	private static List<PhysicalCompartment> getInterList(List<PhysicalCompartment> a, List<PhysicalCompartment> b){
+	private static List<String> getInterList(List<PhysicalCompartment> a, List<PhysicalCompartment> b){
 		
+		List<String> e = new ArrayList<>();
+		for (int i = 0; i < a.size(); ++i ){  
+			 for (int j = 0; j < b.size(); j++ ){
+				 for(String s : getInterPC(a.get(i), b.get(j))) {
+					 if(!e.contains(s))
+						 e.add(s);
+				 }
+					
+			 }	
+			 
 		
-		List<PhysicalCompartment> c = a;
-		c.retainAll(b);
-		return c;
+	 	}
+
+		return e;
+		
+	}
+	private static List<String> getInterPC(PhysicalCompartment a, PhysicalCompartment b){
+		
+		List<String> c = new ArrayList<>();
+
+		for(String label_a : a.labels) {
+			for (String label_b : b.labels) {
+				if (label_a.equals(label_b) && !c.contains(label_a))
+					c.add(label_a);
+			}
+		}
+		return c; 
 		
 	}
 
@@ -176,56 +239,95 @@ public class Diff {
 	}
 	
 	
-	private static boolean isSpecification (List <PhysicalCompartment> right, List<PhysicalCompartment> left, Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch) {
+	private static boolean isSpecification (List <PhysicalCompartment> right, List<PhysicalCompartment> left, Map<List<String>, Compartment> toBeAdd) {
 		
-		List<PhysicalCompartment> intersection = getInterList(right, left);
-		List<PhysicalCompartment> match = resultmatch.get(intersection);
-		
+		 
+		 
+		List<String> intersection = getInterList(right, left);
+		//System.out.println(intersection);
+		if(intersection.isEmpty())
+			return false;
+		List<PhysicalCompartment> match = contains(left, intersection.get(0));
+	
 		return right.size()<match.size();
 	
 	}
 	
-	private static boolean isGeneralization(List <PhysicalCompartment> right, List<PhysicalCompartment> left,  Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch ) {
+	private static boolean isGeneralization(List <PhysicalCompartment> right, List<PhysicalCompartment> left,  Map<List<String>, Compartment> toBeAdd ) {
 		// checker l'intersection entre les deux compt -> checker le nb  de pc qui contiennent l'intersection des deux pc 
 		
-		List<PhysicalCompartment> intersection = getInterList(right, left);
-		List<PhysicalCompartment> match = resultmatch.get(intersection);
+		List<String> intersection = getInterList(right, left);
+		if(intersection.isEmpty())
+			return false;
+		List<PhysicalCompartment> match = contains(left, intersection.get(0));
 		
 		return right.size()>match.size();
 	
 	}
-	private static boolean isMap (List <PhysicalCompartment> right, List<PhysicalCompartment> left,  Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch ) {
+	private static boolean isMap (List <PhysicalCompartment> right, List<PhysicalCompartment> left,  Map<List<String>, Compartment> toBeAdd ) {
 		// checker l'intersection entre les deux compt -> checker le nb  de pc qui contiennent l'intersection des deux pc 
 		
-		List<PhysicalCompartment> intersection = getInterList(right, left);
-		List<PhysicalCompartment> match = resultmatch.get(intersection);
+		List<String> intersection = getInterList(right, left);
+		if(intersection.isEmpty())
+			return false;
+		List<PhysicalCompartment> match = contains(left, intersection.get(0));
 		
 		return right.size()==match.size();
 	
 	}
-	private static void displaysPCAnalysis(List <PhysicalCompartment> right, List<PhysicalCompartment> left,  Map<PhysicalCompartment, List<PhysicalCompartment>> resultmatch ) {
+	private static void displaysPCAnalysis(List <PhysicalCompartment> right, List<PhysicalCompartment> left,  Map<List<String>, Compartment> toBeAdd ) {
 		
-		if(isSpecification(right, left, resultmatch)) {
+		if(isSpecification(right, left, toBeAdd)) {
 			System.out.print("SPECIFICATION MATCH  : ");
-			displayListPC(right); 
+			displayListPC(right,toBeAdd); 
 			System.out.print( " ---> ");
-			displayListPC(left);
+			displayListPC(left, toBeAdd);
 		}
-		else if(isGeneralization(right, left, resultmatch))
+		else if(isGeneralization(right, left, toBeAdd))
 			System.out.println("GENERALIZATION MATCH  : " + right + " ---> " + left);
 	
-		else if(isMap(right, left, resultmatch))
+		else if(isMap(right, left, toBeAdd))
 			System.out.println("MAP MATCH  : " + right + " ---> " + left);
 	}
-	
-	private static void displayListPC(List <PhysicalCompartment> pc) {
+
+	private static List<PhysicalCompartment> contains (List<PhysicalCompartment> pcs, String label){
 		
+		List<PhysicalCompartment> result = new ArrayList<>();
+		for(PhysicalCompartment pc : pcs) {
+			for(String label_pc : pc.labels) {
+				
+				if(label_pc.equals(label) && !containsDuplicatedPc(result, pc)) {
+					result.add(pc);
+				}
+			}
+
+		}
+		return result;
+	}
+	private static boolean containsDuplicatedPc(List<PhysicalCompartment> pcs, PhysicalCompartment p) {
+		for(PhysicalCompartment pc : pcs) {
+				if(pc.labels.equals(p.labels))
+					return true;
+		}
+		
+		return false;
+	}
+	private static void displayListPC(List <PhysicalCompartment> pc, Map<List<String>, Compartment> toBeAdd) {
+		List<String> tmp = new ArrayList<>();
 		for (PhysicalCompartment pci : pc) {
 			
-			System.out.print(pci.labels);
+			System.out.print( pci.labels);
+			for(String label_pc : pci.labels) {
+				tmp.clear();
+				tmp.add(label_pc);
+				toBeAdd.remove(tmp);
+			}
+		
+		
+			
 			
 		}
-		System.out.println("\n");
+		System.out.print("\n");
 		
 	}
 	

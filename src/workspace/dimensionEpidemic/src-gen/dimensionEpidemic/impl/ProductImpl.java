@@ -26,6 +26,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -55,8 +56,9 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-		p.labels.addAll(0, getLabel());
-		return p;
+	    PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
+		p2.labels.addAll(0, getLabel());
+		return p2;
 	}
 
 	protected PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
@@ -142,7 +144,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 								}
 
 								@Override
-								public Map<String, List<Compartment>> getAllBranches() {
+								public List<List<EObject>> getAllBranches() {
 									// TODO Auto-generated method stub
 									return null;
 								}
