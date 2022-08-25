@@ -118,7 +118,7 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 		isInited = true;
 
 		// Initialize simple dependencies
-		EpimodelPackage.eINSTANCE.eClass();
+		// EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCompartmentGroupPackage.createPackageContents();

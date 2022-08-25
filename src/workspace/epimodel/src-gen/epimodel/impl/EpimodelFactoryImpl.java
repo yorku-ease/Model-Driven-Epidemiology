@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -37,7 +36,7 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 		}
 		return new EpimodelFactoryImpl();
 	}
-
+	
 	/**
 	 * Creates an instance of the factory.
 	 * <!-- begin-user-doc -->

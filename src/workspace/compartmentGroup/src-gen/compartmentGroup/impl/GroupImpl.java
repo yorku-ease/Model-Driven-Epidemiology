@@ -113,8 +113,9 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-		p.labels.addAll(0, getLabel());
-		return p;
+        PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
+		p2.labels.addAll(0, getLabel());
+		return p2;
 	}
 
 	/**
