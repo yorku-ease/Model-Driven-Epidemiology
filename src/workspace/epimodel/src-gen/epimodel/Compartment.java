@@ -48,13 +48,10 @@ public interface Compartment extends EObject {
 
 	List<Flow> getFlows();
 	
-	String getSimpleCompartmentLabel();
-	
 	Compartment getParent();
 	
 	List<Compartment> getChildren();
-	
-	boolean isDivided();
+
 	/*
 	Map<String, List<Compartment>> getAllBranches();
 	*/

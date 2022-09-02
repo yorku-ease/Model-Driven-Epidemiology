@@ -50,11 +50,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class GroupImpl extends CompartmentImpl implements Group {
 
 	
-	@Override
-	public String getSimpleCompartmentLabel() {
-		
-		return this.getLabel().get(this.getLabel().size()-1);
-	}
 	
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {

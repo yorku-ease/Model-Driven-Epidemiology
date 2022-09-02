@@ -90,8 +90,8 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 						}
 					}
 					
-					if(!br.containsKey(actualComp.getSimpleCompartmentLabel())) { //Keeping unicity of a key
-						br.put(actualComp.getSimpleCompartmentLabel(), lcmp);
+					if(!br.containsKey(actualComp.getLabel().get(0))) { //Keeping unicity of a key
+						br.put(actualComp.getLabel().get(0), lcmp);
 					}
 				}
 			}

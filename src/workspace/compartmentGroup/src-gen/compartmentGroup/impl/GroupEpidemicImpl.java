@@ -406,9 +406,5 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 	}
 */
 
-	@Override
-	public Map<String, List<Compartment>> getAllBranches() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 } //GroupEpidemicImpl
