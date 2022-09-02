@@ -11,7 +11,13 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.commands.IParameter;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbench;
@@ -26,6 +32,8 @@ import org.eclipse.sirius.diagram.ui.tools.internal.graphical.edit.part.DDiagram
 //import org.eclipse.sirius.diagram.ui.tools.internal.actions.refresh.RefreshDiagramAction;
 
 import com.google.common.collect.Iterables;
+
+import epimodel.impl.EpimodelPackageImpl;
 
 public class CreateEpidemicCommandHandler implements IHandler {
 
@@ -59,15 +67,47 @@ public class CreateEpidemicCommandHandler implements IHandler {
         DSemanticDiagramSpec d = (DSemanticDiagramSpec) diagram;
         EObject model = (EObject) d.getTarget();
         
-        String T = (String) event.getParameters().get("org.epimodel.commandParameter3");
-        System.out.println("org.epimodel.commandParameter3: " + T);
+        String key = (String) event.getParameters().get("org.epimodel.commandParameter3");
+        System.out.println("org.epimodel.commandParameter3: " + key);
+//        model.eAllContents().forEachRemaining(e -> {
+//        	if (e.toString() == key)
+//        		System.out.println(e);
+//        });
+		
+	    List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
+	    
+	    for (EPackage pkg : epimodelPackages) {
+	    	System.out.println(pkg.getName());
+	    	EList<EClassifier> eclassifiers = pkg.getEClassifiers();
+	    	for (EClassifier classifier : eclassifiers) {
+	    		if (!(classifier instanceof EClass)) {
+		    		System.out.println("\tnon class " + classifier.getName() + "type = " + classifier.getClass());
+		    		continue;
+	    		}
+    			EClass cl = (EClass) classifier;
+    			if (cl.isAbstract())
+    				if (cl.isInterface())
+    					System.out.println("\tinterface " + classifier.getName());
+    				else
+    					System.out.println("\tabstract class " + classifier.getName());
+    			else
+		    		System.out.println("\tclass " + classifier.getName());
+    			
+    			for (EAttribute a : cl.getEAllAttributes())
+    				System.out.println("\t\tattribute " + a.getName());
+    			for (EReference c : cl.getEAllContainments())
+    				System.out.println("\t\tcontainement " + c.getName());
+    			for (EReference r : cl.getEAllReferences())
+    				System.out.println("\t\treference " + r.getName());
+	    	}
+	    }
         
-        try {
-            Class<?> c = Class.forName("epimodel.impl.EpidemicWrapperImpl");
-            System.out.println(c);
-         } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-        }
+//        try {
+//            Class<?> c = Class.forName("epimodel.impl.EpidemicWrapperImpl");
+//            System.out.println(c);
+//         } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//        }
 //      IEvaluationContext context = (IEvaluationContext) event.getApplicationContext();
 //	    IWorkbench workbench = (IWorkbench) context.getVariable(IWorkbench.class.getName());
 //	    Object a = workbench.getActiveWorkbenchWindow();

@@ -1,18 +1,7 @@
 package use_epi;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -71,7 +60,6 @@ public class FM_MM {
 			System.out.println(((Compartment) e).getLabel());
 		});
 	}
-	
 	
 	static EObject loadModelFromMetamodels(String model_fn) throws Exception {
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();

@@ -14,6 +14,7 @@ import epimodel.FlowWrapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,6 +23,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -37,6 +39,64 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
+    static public List<EPackage> getEpimodelPackages() {
+	    final EPackage.Registry reg = EPackage.Registry.INSTANCE;
+	    List<EPackage> allPackages = reg
+	    		.values()
+	    		.stream()
+	    		.filter(pkg -> pkg instanceof EPackage)
+	    		.map(pkg -> (EPackage) pkg)
+	    		.collect(Collectors.toList());
+	    List<EPackage> epimodelPackages = new ArrayList<>();
+	    
+	    do {
+	    	int size = epimodelPackages.size();
+		    for (int i = allPackages.size() - 1; i  >= 0; --i) {
+		    	EPackage pkg = allPackages.get(i);
+		    	if (EPkgRefersToAtLeastOnePkgOrEpimodel(pkg, epimodelPackages)) {
+		    		epimodelPackages.add(pkg);
+		    		allPackages.remove(i);
+		    	}
+		    }
+		    if (epimodelPackages.size() == size)
+		    	break;
+	    } while (true);
+		return epimodelPackages;
+    }
+	
+    static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
+    	OutputStream output = new OutputStream() {
+    	    StringBuilder sb = new StringBuilder();
+
+    	    @Override
+    	    public void write(int b) throws IOException {
+    	        sb.append((char) b);
+    	    }
+
+    	    @Override
+    	    public String toString() {
+    	        return sb.toString();
+    	    }
+    	};
+    	try {
+			pkg.eResource().save(output, null); // pkg.ecore as string
+		} catch (Exception e) { }
+    	
+    	List<String> pkgsStrToFindInXMI = pkgs
+    			.stream()
+    			.map(p -> p.getName() + "#")
+    			.collect(Collectors.toList());
+    	
+    	String ecoreStr = output.toString();
+    	return ecoreStr
+    			.contains("http://www.example.org/epimodel") 
+    			|| pkgsStrToFindInXMI
+    				.stream()
+    				.filter(uri -> ecoreStr.contains(uri))
+    				.findFirst()
+    				.isPresent();
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -112,10 +172,11 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @throws Exception 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
-	 * @generated
+	 * @generated NOT
 	 */
 	public static EpimodelPackage init() {
 		if (isInited)
@@ -141,6 +202,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(EpimodelPackage.eNS_URI, theEpimodelPackage);
 		
+		// Added Manually
 		try {
 			loadExtensions();
 		} catch (Exception e) {
@@ -151,23 +213,24 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	}
 	
 	public static void loadExtensions() throws Exception {
-		String folder_path = System.getenv("epimodelExtensionsFolder");
+		String env = "epimodelExtensionsFolder";
+		String folder_path = System.getenv(env);
+		
+		if (folder_path == null)
+			throw new Exception(
+				"Required Environment Variable '" + env +
+				"' not found, set the variable and restart the program");
+		
 		if (folder_path.endsWith("/") || folder_path.endsWith("\\"))
 			folder_path = folder_path.substring(0, folder_path.length() - 1);
-		System.out.println("LOADING METAMODELS FROM " + folder_path);
-		
 
-		try {
-			Object c1  = Class.forName("org.eclipse.emf.ecore.EObject");
-			Object c2  = Class.forName("epimodel.Flow");
-			System.out.println(c1);
-			System.out.println(c2);
-		}
-		catch (Exception e) {
-			System.out.println(e);
-		}
-		
 		File folder = new File(folder_path);
+		
+		if (!folder.exists() || folder.isFile())
+			throw new Exception(
+				"Environment Variable '" + env +
+				"' does not point to an existing folder, update the variable and restart the program");
+			
 		File[] listOfFiles = folder.listFiles();
 		
 		for (File jar : listOfFiles)
@@ -197,14 +260,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		    if (je.isDirectory() || !je.getName().endsWith(".class"))
 		        continue;
 		    String className = je.getName().substring(0, je.getName().indexOf(".class")).replace('/', '.');
-		    System.out.println("LOADING CLASS " + className);
-		    try {
-			    Class<?> c = cl.loadClass(className);
-			    classes.add(c);
-		    }
-		    catch (Exception e) {
-		    	
-		    }
+		    Class<?> c = cl.loadClass(className);
+		    classes.add(c);
 		}
 		jarFile.close();
 		return classes;
