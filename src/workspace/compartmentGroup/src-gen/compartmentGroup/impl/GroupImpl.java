@@ -2,6 +2,22 @@
  */
 package compartmentGroup.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import compartmentGroup.CompartmentGroupPackage;
 import compartmentGroup.Group;
 import compartmentGroup.GroupSinks;
@@ -13,23 +29,6 @@ import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.util.PhysicalCompartment;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,6 +47,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class GroupImpl extends CompartmentImpl implements Group {
+	
+	public void edit(Shell shell, List<Control> controls) {
+		epimodel.util.Edit.addText(shell, controls, "test");
+		epimodel.util.Edit.addBtn(shell, controls, "test", () -> System.out.println("btn"));
+	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {

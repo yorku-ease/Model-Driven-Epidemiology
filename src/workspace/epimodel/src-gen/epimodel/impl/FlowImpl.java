@@ -15,6 +15,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,6 +51,10 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public final String getTargetRelation(EObject target) {
 		return getTargetLabels().get(getTargetObjects().indexOf(target));
+	}
+	
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
 	}
 
 	/**

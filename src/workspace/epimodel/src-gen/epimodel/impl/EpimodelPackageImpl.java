@@ -25,8 +25,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -39,6 +41,12 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
+	
+	static List<EClass> eclasses = null;
+	static EClass compartment = null;
+	static EClass flow = null;
+	static EClass epidemic = null;
+	
     static public List<EPackage> getEpimodelPackages() {
 	    final EPackage.Registry reg = EPackage.Registry.INSTANCE;
 	    List<EPackage> allPackages = reg
@@ -64,6 +72,51 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		return epimodelPackages;
     }
 	
+    public static List<EClass> collectEClasses() {
+    	if (eclasses != null)
+    		return eclasses;
+    	
+		eclasses = new ArrayList<>();
+	    List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
+	    
+	    for (EPackage pkg : epimodelPackages) {
+	    	System.out.println(pkg.getName());
+	    	EList<EClassifier> eclassifiers = pkg.getEClassifiers();
+	    	for (EClassifier classifier : eclassifiers) {
+	    		if (!(classifier instanceof EClass)) {
+		    		System.out.println("\tnon class " + classifier.getName() + "type = " + classifier.getClass());
+		    		continue;
+	    		}
+    			EClass cl = (EClass) classifier;
+    			eclasses.add(cl);
+    			if (cl.isAbstract())
+    				if (cl.isInterface())
+    					System.out.println("\tinterface " + classifier.getName());
+    				else
+    					System.out.println("\tabstract class " + classifier.getName());
+    			else
+		    		System.out.println("\tclass " + classifier.getName());
+    			
+    			for (EAttribute a : cl.getEAllAttributes())
+    				System.out.println("\t\tattribute " + a.getName());
+    			for (EReference c : cl.getEAllContainments())
+    				System.out.println("\t\tcontainement " + c.getName());
+    			for (EReference r : cl.getEAllReferences())
+    				System.out.println("\t\treference " + r.getName());
+	    	}
+	    }
+		return eclasses;
+	}
+    
+    public static boolean isModelType(EClass T) {
+    	if (compartment == null) {
+    		compartment = (EClass) EpimodelPackageImpl.eINSTANCE.getEClassifier("Compartment");
+    		flow = (EClass) EpimodelPackageImpl.eINSTANCE.getEClassifier("Flow");
+    		epidemic = (EClass) EpimodelPackageImpl.eINSTANCE.getEClassifier("Epidemic");
+    	}
+    	return compartment.isSuperTypeOf(T) || flow.isSuperTypeOf(T) || epidemic.isSuperTypeOf(T);
+    }
+    
     static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
     	OutputStream output = new OutputStream() {
     	    StringBuilder sb = new StringBuilder();

@@ -30,6 +30,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,7 +50,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
-
+	
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
+	}
 
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
 		return getPhysicalCompartments().stream().filter(pc -> pc.labels.containsAll(c.getLabel())).collect(Collectors.toList());

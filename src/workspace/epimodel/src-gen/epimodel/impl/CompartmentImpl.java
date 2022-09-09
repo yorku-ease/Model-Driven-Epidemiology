@@ -16,6 +16,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,6 +33,10 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * @generated
  */
 public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
+	
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
+	}
 
 	/**
 	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute list.

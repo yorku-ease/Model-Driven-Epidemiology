@@ -2,7 +2,11 @@
  */
 package epimodel;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -42,5 +46,7 @@ public interface FlowWrapper extends EObject {
 	 * @generated
 	 */
 	void setFlow(Flow value);
+	
+	void edit(Shell shell, List<Control> controls);
 
 } // FlowWrapper

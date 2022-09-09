@@ -5,6 +5,8 @@ package epimodel;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
@@ -38,6 +40,8 @@ public interface Flow extends EObject {
 	List<EObject> getTargetObjects();
 	
 	List<String> getTargetLabels();
+	
+	void edit(Shell shell, List<Control> controls);
 
 	String getTargetRelation(EObject target);
 	/**

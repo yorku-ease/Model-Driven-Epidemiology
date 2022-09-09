@@ -6,6 +6,8 @@ import epimodel.Epidemic;
 import epimodel.EpidemicWrapper;
 import epimodel.EpimodelPackage;
 
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -14,6 +16,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,6 +33,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class EpidemicWrapperImpl extends MinimalEObjectImpl.Container implements EpidemicWrapper {
+	
+	public void edit(Shell shell, List<Control> controls) {
+		//TODO show add epi options
+	}
+	
 	/**
 	 * The cached value of the '{@link #getEpidemic() <em>Epidemic</em>}' containment reference.
 	 * <!-- begin-user-doc -->

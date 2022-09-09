@@ -9,12 +9,16 @@ import epimodel.CompartmentWrapper;
 
 import epimodel.impl.CompartmentImpl;
 
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,6 +34,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class CompartmentLinkImpl extends CompartmentImpl implements CompartmentLink {
+	
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
+	}
 	/**
 	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' reference.
 	 * <!-- begin-user-doc -->
