@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -96,6 +98,10 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 					return true;
 			return false;
 		}).collect(Collectors.toList());
+	}
+	
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
 	}
 
 	/**

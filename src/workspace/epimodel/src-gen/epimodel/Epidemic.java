@@ -5,6 +5,8 @@ package epimodel;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
@@ -36,6 +38,8 @@ public interface Epidemic extends EObject {
 	List<PhysicalCompartment> getPhysicalCompartments();
 
 	List<PhysicalFlow> getPhysicalFlows();
+	
+	void edit(Shell shell, List<Control> controls);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

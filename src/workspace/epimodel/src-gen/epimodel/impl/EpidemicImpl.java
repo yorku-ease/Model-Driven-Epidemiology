@@ -5,11 +5,15 @@ package epimodel.impl;
 import epimodel.Epidemic;
 import epimodel.EpimodelPackage;
 
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,6 +29,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidemic {
+	
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
+	}
+	
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->

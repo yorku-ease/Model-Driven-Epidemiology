@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 import epimodel.util.PhysicalCompartment;
 
@@ -46,4 +48,6 @@ public interface Compartment extends EObject {
 	List<PhysicalCompartment> getSinks();
 
 	List<Flow> getFlows();
+	
+	void edit(Shell shell, List<Control> controls);
 } // Compartment
