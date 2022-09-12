@@ -10,7 +10,7 @@ import org.eclipse.sirius.tools.api.ui.IExternalJavaAction;
 
 import epimodel.impl.EpimodelPackageImpl;
 
-public class ExternalJavaActionCreateFlow implements IExternalJavaAction {
+public class ExternalJavaActionEditFlow implements IExternalJavaAction {
 
 	@Override
 	public boolean canExecute(Collection<? extends EObject> selections) {
@@ -25,10 +25,8 @@ public class ExternalJavaActionCreateFlow implements IExternalJavaAction {
 		if (source == null || target == null)
 			return;
 		
-		@SuppressWarnings("unused")
 		List<EClass> eclasses = EpimodelPackageImpl.collectEClasses();
 		System.out.println(selections);
 		System.out.println(parameters);
-
 	}
 }

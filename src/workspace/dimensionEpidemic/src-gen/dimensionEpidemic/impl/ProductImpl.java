@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -44,6 +46,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ProductImpl extends CompartmentImpl implements Product {
+	
+	@Override
+	public void edit(Shell shell, List<Control> controls) {
+		throw new RuntimeException();
+	}
+	
+	@Override
+	public void create(EObject dom, Shell shell, List<Control> controls) {
+		throw new RuntimeException();
+	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
