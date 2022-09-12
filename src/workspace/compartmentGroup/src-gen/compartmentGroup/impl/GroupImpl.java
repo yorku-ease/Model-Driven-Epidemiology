@@ -12,12 +12,18 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+
 import compartmentGroup.CompartmentGroupPackage;
 import compartmentGroup.Group;
 import compartmentGroup.GroupSinks;
@@ -49,8 +55,90 @@ import epimodel.util.PhysicalCompartment;
 public class GroupImpl extends CompartmentImpl implements Group {
 	
 	public void edit(Shell shell, List<Control> controls) {
-		epimodel.util.Edit.addText(shell, controls, "test");
-		epimodel.util.Edit.addBtn(shell, controls, "test", () -> System.out.println("btn"));
+		shell.setText("Add Children To group " + getLabel());
+        shell.setLayout(new GridLayout(1, false));
+		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
+			editCompartments(shell, controls);
+		});
+		epimodel.util.Edit.addBtn(shell, controls, "Modify flows", () -> {
+			editFlows(shell, controls);
+		});
+	}
+	
+	void editCompartments(Shell shell, List<Control> controls) {
+		controls.forEach(c -> c.dispose());
+		controls.clear();
+        shell.setLayout(new GridLayout(2, false));
+        List<Compartment> l = getCompartment()
+			.stream()
+			.map(CompartmentWrapper::getCompartment)
+			.collect(Collectors.toList());
+        for (Compartment e : l) {
+        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e, () -> {
+    			epimodel.util.Edit.transact(this, () -> {
+    				getCompartment().remove(e.eContainer());
+    				shell.close();
+    			});
+    		});
+        }
+    	epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
+			epimodel.util.Edit.addCompartmentWindow(this, shell, controls, (w) -> {
+				epimodel.util.Edit.transact(this, () -> getCompartment().add(w));
+				if (!shell.isDisposed())
+					shell.close();
+			});
+		});
+		shell.pack(true);
+	}
+	
+	void editFlows(Shell shell, List<Control> controls) {
+		controls.forEach(c -> c.dispose());
+		controls.clear();
+        shell.setLayout(new GridLayout(2, false));
+        List<Flow> l = getFlow()
+			.stream()
+			.map(FlowWrapper::getFlow)
+			.collect(Collectors.toList());
+        for (Flow e : l) {
+        	epimodel.util.Edit.addText(shell, controls, e.getId());
+    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e, () -> {
+    			epimodel.util.Edit.transact(this, () -> {
+    				getFlow().remove(e.eContainer());
+    				shell.close();
+    			});
+    		});
+        }
+    	epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
+			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> {
+				epimodel.util.Edit.transact(this, () -> getFlow().add(w));
+				shell.close();
+			});
+		});
+		shell.pack(true);
+	}
+	
+	@Override
+	public void create(EObject dom, Shell shell, List<Control> controls) {
+		shell.setText("Create Group");
+        shell.setLayout(new GridLayout(2, false));
+        epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
+        Text t = new Text(shell, SWT.NONE);
+		t.setText("");
+		t.setLayoutData(new GridData(300, 50));
+		controls.add(t);
+        epimodel.util.Edit.addText(shell, controls, "");
+        epimodel.util.Edit.addBtn(shell, controls, "Create", () -> {
+        	epimodel.util.Edit.transact(dom, () -> {
+        		String labelsCSV = t.getText();
+        		for (String label: labelsCSV.split(",")) {
+        			getLabel().add(label.trim());
+        		}
+        	});
+        	shell.close();
+        });
 	}
 
 	@Override

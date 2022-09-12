@@ -42,6 +42,7 @@ public interface Flow extends EObject {
 	List<String> getTargetLabels();
 	
 	void edit(Shell shell, List<Control> controls);
+	void create(EObject dom, Shell shell, List<Control> controls);
 
 	String getTargetRelation(EObject target);
 	/**

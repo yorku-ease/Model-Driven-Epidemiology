@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.swt.widgets.Control;
@@ -34,8 +35,16 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
 	
+	@Override
 	public void edit(Shell shell, List<Control> controls) {
-		throw new RuntimeException();
+		if (getClass() != CompartmentImpl.class)
+			throw new RuntimeException();
+	}
+	
+	@Override
+	public void create(EObject dom, Shell shell, List<Control> controls) {
+		if (getClass() != CompartmentImpl.class)
+			throw new RuntimeException();
 	}
 
 	/**

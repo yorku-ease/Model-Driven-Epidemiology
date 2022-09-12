@@ -32,6 +32,18 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public abstract class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
+	
+	@Override
+	public void edit(Shell shell, List<Control> controls) {
+		if (getClass() != FlowImpl.class)
+			throw new RuntimeException();
+	}
+	
+	@Override
+	public void create(EObject dom, Shell shell, List<Control> controls) {
+		if (getClass() != FlowImpl.class)
+			throw new RuntimeException();
+	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {
@@ -51,10 +63,6 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public final String getTargetRelation(EObject target) {
 		return getTargetLabels().get(getTargetObjects().indexOf(target));
-	}
-	
-	public void edit(Shell shell, List<Control> controls) {
-		throw new RuntimeException();
 	}
 
 	/**

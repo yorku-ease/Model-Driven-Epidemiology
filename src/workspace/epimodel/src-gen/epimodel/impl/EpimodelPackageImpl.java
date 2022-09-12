@@ -16,11 +16,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -29,10 +32,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -42,10 +47,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
 	
-	static List<EClass> eclasses = null;
-	static EClass compartment = null;
-	static EClass flow = null;
-	static EClass epidemic = null;
+	public static List<EClass> eclasses = null;
 	
     static public List<EPackage> getEpimodelPackages() {
 	    final EPackage.Registry reg = EPackage.Registry.INSTANCE;
@@ -109,12 +111,9 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	}
     
     public static boolean isModelType(EClass T) {
-    	if (compartment == null) {
-    		compartment = (EClass) EpimodelPackageImpl.eINSTANCE.getEClassifier("Compartment");
-    		flow = (EClass) EpimodelPackageImpl.eINSTANCE.getEClassifier("Flow");
-    		epidemic = (EClass) EpimodelPackageImpl.eINSTANCE.getEClassifier("Epidemic");
-    	}
-    	return compartment.isSuperTypeOf(T) || flow.isSuperTypeOf(T) || epidemic.isSuperTypeOf(T);
+    	return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T)
+    			|| EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
+    			|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
     }
     
     static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
