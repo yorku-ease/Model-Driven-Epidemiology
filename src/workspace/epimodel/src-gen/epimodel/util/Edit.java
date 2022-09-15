@@ -60,31 +60,16 @@ public class Edit {
         shell.setLayout(new GridLayout(1, false));
         for (EClass ec : getNonAbstractEClassesOfType(EpimodelPackage.Literals.COMPARTMENT)) {
         	addBtn(shell, controls, ec.getName(), () -> {
-        		shell.close();
+    			controls.forEach(c -> c.dispose());
+    			controls.clear();
                 CompartmentWrapper w = EpimodelFactory.eINSTANCE.createCompartmentWrapper();
-                Compartment c = (Compartment) EcoreUtil.create(ec);
-                w.setCompartment(c);
-            	final Shell shell2 = new Shell(PlatformUI.getWorkbench().getDisplay(), SWT.TITLE | SWT.MIN | SWT.CLOSE);
-                List<Control> controls2 = new ArrayList<>();
-                
-                Class<?> modelClass = c.getClass();
-                Method createMethod;
-        		try {
-        			createMethod = modelClass.getMethod("create", EObject.class, Shell.class, List.class);
-        	        try {
-        	        	createMethod.invoke(c, dom, shell2, controls2);
-        			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        				e.printStackTrace();
-        			}
-        		} catch (NoSuchMethodException | SecurityException e1) {
-        			e1.printStackTrace();
-        		}
-                
-                shell2.pack(true);
-                shell2.open();
-    			shell2.addListener(SWT.Close, (e) -> {
+                Compartment compartment = (Compartment) EcoreUtil.create(ec);
+                w.setCompartment(compartment);
+    			shell.addListener(SWT.Close, (e) -> {
                     callback.accept(w);
     			});
+	        	compartment.create(dom, shell, controls);
+    			shell.pack(true);
         	});
         }
 		shell.pack(true);

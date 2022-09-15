@@ -17,8 +17,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * <!-- begin-user-doc -->
@@ -43,8 +47,22 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	
 	@Override
 	public void create(EObject dom, Shell shell, List<Control> controls) {
-		if (getClass() != CompartmentImpl.class)
-			throw new RuntimeException();
+		shell.setText("Create Compartment " + getClass().toString());
+        shell.setLayout(new GridLayout(2, false));
+        epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
+        Text t = new Text(shell, SWT.NONE);
+		t.setText("");
+		t.setLayoutData(new GridData(300, 50));
+		controls.add(t);
+        epimodel.util.Edit.addText(shell, controls, "");
+        epimodel.util.Edit.addBtn(shell, controls, "Create", () -> {
+        	epimodel.util.Edit.transact(dom, () -> {
+        		String labelsCSV = t.getText();
+        		for (String label: labelsCSV.split(","))
+        			getLabel().add(label.trim());
+        	});
+        	shell.close();
+        });
 	}
 
 	/**
