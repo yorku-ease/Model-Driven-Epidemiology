@@ -265,6 +265,14 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	}
 	
 	public static void loadExtensions() throws Exception {
+		
+		{
+			String env = "epimodelJars";
+			String value = System.getenv(env);
+			if (value == null || value.toLowerCase().equals("false"))
+				return;
+		}
+		
 		String env = "epimodelExtensionsFolder";
 		String folder_path = System.getenv(env);
 		

@@ -12,11 +12,18 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -51,8 +58,14 @@ import epimodel.util.PhysicalCompartment;
 public class GroupImpl extends CompartmentImpl implements Group {
 	
 	public void edit(Shell shell, List<Control> controls) {
-		shell.setText("Add Children To group " + getLabel());
+		shell.setText("Edit Group " + getLabel());
         shell.setLayout(new GridLayout(1, false));
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
+			controls.forEach(c -> c.dispose());
+			controls.clear();
+			super.edit(shell, controls); // labels window
+			shell.pack(true);
+		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
 			editCompartments(shell, controls);
 		});
@@ -64,20 +77,28 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	void editCompartments(Shell shell, List<Control> controls) {
 		controls.forEach(c -> c.dispose());
 		controls.clear();
-        shell.setLayout(new GridLayout(2, false));
+        shell.setLayout(new GridLayout(4, false));
         List<Compartment> l = getCompartment()
 			.stream()
 			.map(CompartmentWrapper::getCompartment)
 			.collect(Collectors.toList());
+
+        epimodel.util.Edit.addText(shell, controls, "Compartment");
+        epimodel.util.Edit.addText(shell, controls, "Is Source");
+        epimodel.util.Edit.addText(shell, controls, "Is Sink");
+        epimodel.util.Edit.addText(shell, controls, "Delete");
+        
         for (Compartment e : l) {
         	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+        	addSourceSinkCheckbox(shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES);
+        	addSourceSinkCheckbox(shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
     		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
     			epimodel.util.Edit.transact(this, () -> {
     				controls.forEach(c -> c.dispose());
     				controls.clear();
     		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
     				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-        				getCompartment().remove(e.eContainer());
+    					epimodel.util.Edit.transact(this,  ()-> getCompartment().remove(e.eContainer()));
         				shell.close();
     				});
     				shell.pack(true);
@@ -93,6 +114,50 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		shell.pack(true);
 	}
 	
+	void addSourceSinkCheckbox(Shell shell, List<Control> controls, Compartment target, EReference sourceOrSinkRef) {
+		final Button checkbox = new Button(shell, SWT.CHECK);
+		EObject l = (EObject) eGet(sourceOrSinkRef);
+		final EList<Link> links = l == null ? null : l instanceof GroupSources ?
+				((GroupSources) l).getLink() :
+				((GroupSinks) l).getLink();
+		
+		if (l != null && links != null)
+			for (Link link : links)
+				if (link.getCompartment().equals(target)) {
+					checkbox.setSelection(true);
+					break;
+				}
+		
+		EObject dom = this;
+		checkbox.addSelectionListener(new SelectionAdapter() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		    	epimodel.util.Edit.transact(dom, () -> {
+		    		if (checkbox.getSelection())
+		    			epimodel.util.Edit.transact(dom, () -> {
+		    				if (l == null)
+		    					eSet(sourceOrSinkRef, EcoreUtil.create(sourceOrSinkRef.getEReferenceType()));
+		    				Link l = (Link) EcoreUtil.create(CompartmentGroupPackage.Literals.LINK);
+		    				l.setCompartment(target);
+		    				((EList<Link>) ((EObject) eGet(sourceOrSinkRef)).eGet(
+		    						CompartmentGroupPackage.Literals.END__LINK)).add(l);
+		    			});
+		    		else {
+		    			EList<Link> links = (EList<Link>) ((EObject) eGet(sourceOrSinkRef)).eGet(
+	    						CompartmentGroupPackage.Literals.END__LINK);
+		    			for (Link link : links)
+		    				if (link.getCompartment().equals(target)) {
+				    			epimodel.util.Edit.transact(dom, () -> {
+				    				links.remove(link);
+				    			});
+		    					break;
+		    				}
+		    		}
+		    	});
+		    }
+	    });
+	}
+	
 	void editFlows(Shell shell, List<Control> controls) {
 		controls.forEach(c -> c.dispose());
 		controls.clear();
@@ -100,7 +165,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
         List<Flow> l = getFlow()
 			.stream()
 			.map(FlowWrapper::getFlow)
-			.filter(null)
+			.filter(f -> f != null)
 			.collect(Collectors.toList());
         for (Flow e : l) {
         	epimodel.util.Edit.addText(shell, controls, e.getId());
