@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -41,8 +42,23 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	
 	@Override
 	public void edit(Shell shell, List<Control> controls) {
-		if (getClass() != CompartmentImpl.class)
-			throw new RuntimeException();
+		shell.setText("Edit Compartment " + getLabel());
+        shell.setLayout(new GridLayout(2, false));
+        epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
+        // field you can type in
+        Text t = new Text(shell, SWT.NONE);
+		t.setText(getLabel().stream().collect(Collectors.joining(",")));
+		t.setLayoutData(new GridData(300, 50));
+		controls.add(t);
+        epimodel.util.Edit.addText(shell, controls, "");
+        epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+        	epimodel.util.Edit.transact(this, () -> {
+        		String labelsCSV = t.getText();
+        		for (String label: labelsCSV.split(","))
+        			getLabel().add(label.trim());
+        	});
+        	shell.close();
+        });
 	}
 	
 	@Override
@@ -50,6 +66,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		shell.setText("Create Compartment " + getClass().toString());
         shell.setLayout(new GridLayout(2, false));
         epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
+        // field you can type in
         Text t = new Text(shell, SWT.NONE);
 		t.setText("");
 		t.setLayoutData(new GridData(300, 50));

@@ -1,7 +1,5 @@
 package org.epimodel;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +11,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+
+import epimodel.Compartment;
+import epimodel.Epidemic;
+import epimodel.EpidemicWrapper;
 
 public class ExternalJavaActionEditCompartment implements IExternalJavaAction {
 
@@ -35,18 +37,12 @@ public class ExternalJavaActionEditCompartment implements IExternalJavaAction {
 		Shell shell = new Shell(PlatformUI.getWorkbench().getDisplay(), SWT.TITLE | SWT.MIN | SWT.CLOSE);
         List<Control> controls = new ArrayList<>();
         
-        Class<?> modelClass = clicked.getClass();
-        Method editMethod;
-		try {
-			editMethod = modelClass.getMethod("edit", Shell.class, List.class);
-	        try {
-				editMethod.invoke(clicked, shell, controls);
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		} catch (NoSuchMethodException | SecurityException e1) {
-			e1.printStackTrace();
-		}
+        if (clicked instanceof Compartment)
+        	((Compartment) clicked).edit(shell, controls);
+        else if (clicked instanceof Epidemic)
+        	((Epidemic) clicked).edit(shell, controls);
+        else if (clicked instanceof EpidemicWrapper)
+        	((EpidemicWrapper) clicked).edit(shell, controls);
         
         shell.pack(true);
         shell.open();
