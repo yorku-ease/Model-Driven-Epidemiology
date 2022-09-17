@@ -12,8 +12,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,15 +35,22 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidemic {
 	
 	@Override
-	public void edit(Shell shell, List<Control> controls) {
-		if (getClass() != EpidemicImpl.class)
-			throw new RuntimeException();
-	}
-	
-	@Override
-	public void create(EObject dom, Shell shell, List<Control> controls) {
-		if (getClass() != EpidemicImpl.class)
-			throw new RuntimeException();
+	public void edit(EObject dom, Shell shell, List<Control> controls) {
+        shell.setLayout(new GridLayout(3, false));
+		shell.setText("Set ID");
+		epimodel.util.Edit.addText(shell, controls, "Epidemic ID:");
+        // field you can type in
+        Text t = new Text(shell, SWT.NONE);
+		t.setText("");
+		t.setLayoutData(new GridData(300, 50));
+		controls.add(t);
+		epimodel.util.Edit.addBtn(shell, controls, "Confim", () -> {
+			epimodel.util.Edit.transact(dom, () -> {
+				setId(t.getText());
+				if (getClass() == EpidemicImpl.class)
+					shell.close();
+			});
+		});
 	}
 	
 	/**

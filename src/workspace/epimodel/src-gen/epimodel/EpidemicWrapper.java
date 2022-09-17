@@ -47,6 +47,6 @@ public interface EpidemicWrapper extends EObject {
 	 */
 	void setEpidemic(Epidemic value);
 	
-	void edit(Shell shell, List<Control> controls);
+	void edit(EObject dom, Shell shell, List<Control> controls);
 
 } // EpidemicWrapper

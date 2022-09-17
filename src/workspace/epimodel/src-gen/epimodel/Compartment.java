@@ -49,6 +49,5 @@ public interface Compartment extends EObject {
 
 	List<Flow> getFlows();
 	
-	void edit(Shell shell, List<Control> controls);
-	void create(EObject dom, Shell shell, List<Control> controls);
+	void edit(EObject dom, Shell shell, List<Control> controls);
 } // Compartment

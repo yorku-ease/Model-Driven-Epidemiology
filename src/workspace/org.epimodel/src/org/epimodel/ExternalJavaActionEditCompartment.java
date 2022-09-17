@@ -38,11 +38,11 @@ public class ExternalJavaActionEditCompartment implements IExternalJavaAction {
         List<Control> controls = new ArrayList<>();
         
         if (clicked instanceof Compartment)
-        	((Compartment) clicked).edit(shell, controls);
+        	((Compartment) clicked).edit(clicked, shell, controls);
         else if (clicked instanceof Epidemic)
-        	((Epidemic) clicked).edit(shell, controls);
+        	((Epidemic) clicked).edit(clicked, shell, controls);
         else if (clicked instanceof EpidemicWrapper)
-        	((EpidemicWrapper) clicked).edit(shell, controls);
+        	((EpidemicWrapper) clicked).edit(clicked, shell, controls);
         
         shell.pack(true);
         shell.open();
