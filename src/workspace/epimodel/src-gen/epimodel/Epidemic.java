@@ -39,8 +39,7 @@ public interface Epidemic extends EObject {
 
 	List<PhysicalFlow> getPhysicalFlows();
 	
-	void edit(Shell shell, List<Control> controls);
-	void create(EObject dom, Shell shell, List<Control> controls);
+	void edit(EObject dom, Shell shell, List<Control> controls);
 
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.

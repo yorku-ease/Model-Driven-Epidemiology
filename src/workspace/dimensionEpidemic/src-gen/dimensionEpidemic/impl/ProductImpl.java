@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -48,21 +49,65 @@ import org.eclipse.swt.widgets.Shell;
 public class ProductImpl extends CompartmentImpl implements Product {
 	
 	@Override
-	public void edit(Shell shell, List<Control> controls) {
-		throw new RuntimeException();
+	public void edit(EObject dom, Shell shell, List<Control> controls) {
+		shell.setText("Edit Product " + getLabel());
+        shell.setLayout(new GridLayout(1, false));
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
+			controls.forEach(c -> c.dispose());
+			controls.clear();
+			super.edit(dom, shell, controls); // labels window
+			shell.pack(true);
+		});
+		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
+			editCompartments(dom, shell, controls);
+		});
 	}
 	
-	@Override
-	public void create(EObject dom, Shell shell, List<Control> controls) {
-		throw new RuntimeException();
+	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
+		controls.forEach(c -> c.dispose());
+		controls.clear();
+        shell.setLayout(new GridLayout(2, false));
+        List<Compartment> l = getDimensions()
+			.stream()
+			.map(CompartmentWrapper::getCompartment)
+			.collect(Collectors.toList());
+        
+        for (Compartment e : l) {
+        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
+    			epimodel.util.Edit.transact(dom, () -> {
+    				controls.forEach(c -> c.dispose());
+    				controls.clear();
+    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
+    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+    					epimodel.util.Edit.transact(dom,  ()-> getDimensions().remove(e.eContainer()));
+        				shell.close();
+    				});
+    				shell.pack(true);
+    			});
+    		});
+        }
+    	epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> {
+			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
+				epimodel.util.Edit.transact(dom, () -> getDimensions().add(w));
+			});
+		});
+		shell.pack(true);
 	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 		return CartesianProduct
-				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getPhysicalCompartments).collect(Collectors.toList()))
-				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
+				.cartesianProduct(
+						getDimensions()
+						.stream()
+						.map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getPhysicalCompartments)
+						.collect(Collectors.toList()))
+				.stream()
+				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
+				.map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
@@ -74,32 +119,53 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	protected PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
 		return new PhysicalCompartment(
-				toCombine.stream().map(p -> p.labels).flatMap(List::stream).collect(Collectors.toList()));
+				toCombine
+					.stream()
+					.map(p -> p.labels)
+					.flatMap(List::stream)
+					.collect(Collectors.toList()));
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		return CartesianProduct
-				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getSources).collect(Collectors.toList()))
-				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
+				.cartesianProduct(
+						getDimensions()
+						.stream()
+						.map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getSources)
+						.collect(Collectors.toList()))
+				.stream()
+				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
+				.map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
 		return CartesianProduct
-				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getSinks).collect(Collectors.toList()))
-				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
+				.cartesianProduct(
+						getDimensions()
+						.stream()
+						.map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getSinks)
+						.collect(Collectors.toList()))
+				.stream()
+				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
+				.map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Flow> getFlows() {
-		List<Compartment> dims = getDimensions().stream().map(CompartmentWrapper::getCompartment)
+		List<Compartment> dims = getDimensions()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
 				.collect(Collectors.toList());
-		List<List<Flow>> flowsByDim = dims.stream().map(Compartment::getFlows).collect(Collectors.toList());
+		List<List<Flow>> flowsByDim = dims
+				.stream()
+				.map(Compartment::getFlows)
+				.collect(Collectors.toList());
 		List<Flow> res = new ArrayList<>();
 
 		for (int i = 0; i < dims.size(); ++i) {

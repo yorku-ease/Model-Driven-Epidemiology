@@ -1,8 +1,5 @@
 package epimodel.util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -22,7 +19,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
@@ -68,7 +64,7 @@ public class Edit {
     			shell.addListener(SWT.Close, (e) -> {
                     callback.accept(w);
     			});
-	        	compartment.create(dom, shell, controls);
+	        	compartment.edit(dom, shell, controls);
     			shell.pack(true);
         	});
         }
@@ -82,29 +78,10 @@ public class Edit {
         for (EClass ec : getNonAbstractEClassesOfType(EpimodelPackage.Literals.FLOW)) {
         	addBtn(shell, controls, ec.getName(), () -> {
                 FlowWrapper w = EpimodelFactory.eINSTANCE.createFlowWrapper();
-                Flow f = (Flow) EcoreUtil.create(ec);
-                w.setFlow(f);
+                Flow flow = (Flow) EcoreUtil.create(ec);
+                w.setFlow(flow);
                 callback.accept(w);
-                {
-                	final Shell shell2 = new Shell(PlatformUI.getWorkbench().getDisplay(), SWT.TITLE | SWT.MIN | SWT.CLOSE);
-                    List<Control> controls2 = new ArrayList<>();
-                    
-                    Class<?> modelClass = f.getClass();
-                    Method createMethod;
-            		try {
-            			createMethod = modelClass.getMethod("create", Shell.class, List.class);
-            	        try {
-            	        	createMethod.invoke(f, shell2, controls2);
-            			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            				e.printStackTrace();
-            			}
-            		} catch (NoSuchMethodException | SecurityException e1) {
-            			e1.printStackTrace();
-            		}
-                    
-                    shell.pack(true);
-                    shell.open();
-                }
+                shell.close();
         	});
         }
 		shell.pack(true);

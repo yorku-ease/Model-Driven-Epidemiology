@@ -18,11 +18,14 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Control;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,7 +41,55 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpidemic {
-
+	
+	@Override
+	public void edit(EObject dom, Shell shell, List<Control> controls) {
+		shell.setText("Edit Dimension Epidemic " + getId());
+        shell.setLayout(new GridLayout(1, false));
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
+			controls.forEach(c -> c.dispose());
+			controls.clear();
+			super.edit(dom, shell, controls); // labels window
+			shell.pack(true);
+		});
+		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
+			editCompartments(dom, shell, controls);
+		});
+	}
+	
+	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
+		controls.forEach(c -> c.dispose());
+		controls.clear();
+        shell.setLayout(new GridLayout(2, false));
+        List<Compartment> l = getDimension()
+			.stream()
+			.map(CompartmentWrapper::getCompartment)
+			.collect(Collectors.toList());
+        
+        for (Compartment e : l) {
+        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
+    			epimodel.util.Edit.transact(dom, () -> {
+    				controls.forEach(c -> c.dispose());
+    				controls.clear();
+    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
+    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+    					epimodel.util.Edit.transact(dom,  ()-> getDimension().remove(e.eContainer()));
+        				shell.close();
+    				});
+    				shell.pack(true);
+    			});
+    		});
+        }
+    	epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> {
+			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
+				epimodel.util.Edit.transact(dom, () -> getDimension().add(w));
+			});
+		});
+		shell.pack(true);
+	}
+	
 	List<PhysicalCompartment> physicalCompartments = null;
 	List<PhysicalFlow> physicalFlows = null;
 
@@ -98,10 +149,6 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 					return true;
 			return false;
 		}).collect(Collectors.toList());
-	}
-	
-	public void edit(Shell shell, List<Control> controls) {
-		throw new RuntimeException();
 	}
 
 	/**
