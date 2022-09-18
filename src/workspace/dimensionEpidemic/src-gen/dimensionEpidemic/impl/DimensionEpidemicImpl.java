@@ -44,50 +44,27 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
-		shell.setText("Edit Dimension Epidemic " + getId());
+		
+		DimensionEpidemicImpl that = this;
+		
+		ProductImpl p = new ProductImpl() {
+			@Override
+			public EList<CompartmentWrapper> getDimensions() {
+				return that.getDimension();
+			}
+		};
+		
+		shell.setText("Edit Group " + getId());
         shell.setLayout(new GridLayout(1, false));
-		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
 			controls.forEach(c -> c.dispose());
 			controls.clear();
-			super.edit(dom, shell, controls); // labels window
+			super.edit(dom, shell, controls); // Id window
 			shell.pack(true);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
-			editCompartments(dom, shell, controls);
+			p.editCompartments(dom, shell, controls);
 		});
-	}
-	
-	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
-		controls.clear();
-        shell.setLayout(new GridLayout(2, false));
-        List<Compartment> l = getDimension()
-			.stream()
-			.map(CompartmentWrapper::getCompartment)
-			.collect(Collectors.toList());
-        
-        for (Compartment e : l) {
-        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
-    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
-    			epimodel.util.Edit.transact(dom, () -> {
-    				controls.forEach(c -> c.dispose());
-    				controls.clear();
-    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
-    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-    					epimodel.util.Edit.transact(dom,  ()-> getDimension().remove(e.eContainer()));
-        				shell.close();
-    				});
-    				shell.pack(true);
-    			});
-    		});
-        }
-    	epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> {
-			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
-				epimodel.util.Edit.transact(dom, () -> getDimension().add(w));
-			});
-		});
-		shell.pack(true);
 	}
 	
 	List<PhysicalCompartment> physicalCompartments = null;
