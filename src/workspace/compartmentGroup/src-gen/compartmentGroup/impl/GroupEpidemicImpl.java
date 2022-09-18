@@ -6,10 +6,8 @@ import compartmentGroup.CompartmentGroupPackage;
 import compartmentGroup.GroupEpidemic;
 import compartmentGroup.GroupSinks;
 import compartmentGroup.GroupSources;
-import compartmentGroup.Link;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
-import epimodel.Flow;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.EpidemicImpl;
@@ -27,19 +25,13 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -62,136 +54,35 @@ import org.eclipse.swt.widgets.Shell;
 public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
+		
+		GroupEpidemicImpl that = this;
+		
+		GroupImpl g = new GroupImpl() {
+			@Override
+			public EList<FlowWrapper> getFlow() {
+				return that.getFlow();
+			}
+			
+			@Override
+			public EList<CompartmentWrapper> getCompartment() {
+				return that.getCompartment();
+			}
+		};
+		
 		shell.setText("Edit Group " + getId());
         shell.setLayout(new GridLayout(1, false));
-		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
 			controls.forEach(c -> c.dispose());
 			controls.clear();
-			super.edit(dom, shell, controls); // labels window
+			super.edit(dom, shell, controls); // Id window
 			shell.pack(true);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
-			editCompartments(dom, shell, controls);
+			g.editCompartments(dom, shell, controls);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify flows", () -> {
-			editFlows(dom, shell, controls);
+			g.editFlows(dom, shell, controls);
 		});
-	}
-	
-	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
-		controls.clear();
-        shell.setLayout(new GridLayout(4, false));
-        List<Compartment> l = getCompartment()
-			.stream()
-			.map(CompartmentWrapper::getCompartment)
-			.collect(Collectors.toList());
-
-        epimodel.util.Edit.addText(shell, controls, "Compartment");
-        epimodel.util.Edit.addText(shell, controls, "Is Source");
-        epimodel.util.Edit.addText(shell, controls, "Is Sink");
-        epimodel.util.Edit.addText(shell, controls, "Delete");
-        
-        for (Compartment e : l) {
-        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
-        	addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES);
-        	addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
-    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
-    			epimodel.util.Edit.transact(dom, () -> {
-    				controls.forEach(c -> c.dispose());
-    				controls.clear();
-    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
-    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-    					epimodel.util.Edit.transact(dom,  ()-> getCompartment().remove(e.eContainer()));
-        				shell.close();
-    				});
-    				shell.pack(true);
-    			});
-    		});
-        }
-    	epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
-			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
-				epimodel.util.Edit.transact(dom, () -> getCompartment().add(w));
-			});
-		});
-		shell.pack(true);
-	}
-	
-	void addSourceSinkCheckbox(EObject dom, Shell shell, List<Control> controls, Compartment target, EReference sourceOrSinkRef) {
-		final Button checkbox = new Button(shell, SWT.CHECK);
-		EObject l = (EObject) eGet(sourceOrSinkRef);
-		final EList<Link> links = l == null ? null : l instanceof GroupSources ?
-				((GroupSources) l).getLink() :
-				((GroupSinks) l).getLink();
-		
-		if (l != null && links != null)
-			for (Link link : links)
-				if (link.getCompartment().equals(target)) {
-					checkbox.setSelection(true);
-					break;
-				}
-		
-		checkbox.addSelectionListener(new SelectionAdapter() {
-		    @SuppressWarnings("unchecked")
-			@Override
-		    public void widgetSelected(SelectionEvent e) {
-				if (l == null)
-					eSet(sourceOrSinkRef, EcoreUtil.create(sourceOrSinkRef.getEReferenceType()));
-    			EList<Link> links = (EList<Link>) ((EObject) eGet(sourceOrSinkRef)).eGet(
-						CompartmentGroupPackage.Literals.END__LINK);
-	    		if (checkbox.getSelection()) {
-    				Link l = (Link) EcoreUtil.create(CompartmentGroupPackage.Literals.LINK);
-    				l.setCompartment(target);
-	    			epimodel.util.Edit.transact(dom, () -> {
-	    				links.add(l);
-	    			});
-	    		}
-	    		else {
-	    			for (Link link : links)
-	    				if (link.getCompartment().equals(target)) {
-			    			epimodel.util.Edit.transact(dom, () -> {
-			    				links.remove(link);
-			    			});
-	    					break;
-	    				}
-	    		}
-		    }
-	    });
-	}
-	
-	void editFlows(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
-		controls.clear();
-        shell.setLayout(new GridLayout(2, false));
-        List<Flow> l = getFlow()
-			.stream()
-			.map(FlowWrapper::getFlow)
-			.filter(f -> f != null)
-			.collect(Collectors.toList());
-        for (Flow e : l) {
-        	epimodel.util.Edit.addText(shell, controls, e.getId());
-    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
-    			epimodel.util.Edit.transact(dom, () -> {
-    				controls.forEach(c -> c.dispose());
-    				controls.clear();
-    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
-    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-        				getFlow().remove(e.eContainer());
-        				shell.close();
-    				});
-    				shell.pack(true);
-    			});
-    		});
-        }
-    	epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
-			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> {
-				epimodel.util.Edit.transact(dom, () -> getFlow().add(w));
-				shell.close();
-			});
-		});
-		shell.pack(true);
 	}
 
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {

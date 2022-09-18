@@ -77,7 +77,8 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
 		controls.forEach(c -> c.dispose());
 		controls.clear();
-        shell.setLayout(new GridLayout(4, false));
+		int nCol = 4;
+        shell.setLayout(new GridLayout(nCol, false));
         List<Compartment> l = getCompartment()
 			.stream()
 			.map(CompartmentWrapper::getCompartment)
@@ -105,7 +106,8 @@ public class GroupImpl extends CompartmentImpl implements Group {
     			});
     		});
         }
-    	epimodel.util.Edit.addText(shell, controls, "");
+        for  (int i = 0; i < nCol - 1; ++i)
+        	epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
 			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
 				epimodel.util.Edit.transact(dom, () -> getCompartment().add(w));

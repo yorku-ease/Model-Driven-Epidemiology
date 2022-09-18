@@ -100,11 +100,12 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 		return CartesianProduct
 				.cartesianProduct(
-						getDimensions()
+					getDimensions()
 						.stream()
 						.map(CompartmentWrapper::getCompartment)
 						.map(Compartment::getPhysicalCompartments)
-						.collect(Collectors.toList()))
+						.collect(Collectors.toList())
+				)
 				.stream()
 				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
 				.map(p -> prependSelf(p))
