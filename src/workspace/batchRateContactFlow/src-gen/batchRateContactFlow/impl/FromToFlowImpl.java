@@ -35,16 +35,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
-
-	@Override
-	public List<EObject> getTargetObjects() {
-		return Arrays.asList(getFrom(), getTo());
-	}
-	
-	@Override
-	public List<String> getTargetLabels() {
-		return Arrays.asList("from", "to");
-	}
 	
 	/**
 	 * The cached value of the '{@link #getFrom() <em>From</em>}' reference.

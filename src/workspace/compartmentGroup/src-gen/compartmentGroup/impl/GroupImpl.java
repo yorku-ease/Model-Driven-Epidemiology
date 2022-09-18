@@ -156,6 +156,8 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	    		}
 		    }
 	    });
+		
+		controls.add(checkbox);
 	}
 	
 	void editFlows(EObject dom, Shell shell, List<Control> controls) {
@@ -186,7 +188,6 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
 			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> {
 				epimodel.util.Edit.transact(dom, () -> getFlow().add(w));
-				shell.close();
 			});
 		});
 		shell.pack(true);

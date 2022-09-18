@@ -75,16 +75,6 @@ public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
 									requiredOperators
 							))));
 	}
-
-	@Override
-	public List<EObject> getTargetObjects() {
-		return Arrays.asList(getFirstFrom(), getFirstTo(), getSecondFrom(), getSecondTo());
-	}
-	
-	@Override
-	public List<String> getTargetLabels() {
-		return Arrays.asList("firstFrom", "firstTo", "secondFrom", "secondTo");
-	}
 	
 	/**
 	 * The cached value of the '{@link #getFirstFrom() <em>First From</em>}' reference.

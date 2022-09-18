@@ -9,6 +9,7 @@ import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.Epidemic;
 import epimodel.Flow;
+import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.impl.EpidemicImpl;
 import epimodel.impl.FlowImpl;
@@ -41,17 +42,28 @@ import org.eclipse.swt.widgets.Shell;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link dimensionEpidemic.impl.ProductImpl#getFlow <em>Flow</em>}</li>
  *   <li>{@link dimensionEpidemic.impl.ProductImpl#getDimensions <em>Dimensions</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ProductImpl extends CompartmentImpl implements Product {
-	
+
+	/**
+	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFlow()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<FlowWrapper> flow;
+
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Edit Product " + getLabel());
-        shell.setLayout(new GridLayout(1, false));
+		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
 			controls.forEach(c -> c.dispose());
 			controls.clear();
@@ -61,38 +73,70 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
 			editCompartments(dom, shell, controls);
 		});
+		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
+			editFlows(dom, shell, controls);
+		});
 	}
-	
+
 	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
 		controls.forEach(c -> c.dispose());
 		controls.clear();
-        shell.setLayout(new GridLayout(2, false));
-        List<Compartment> l = getDimensions()
-			.stream()
-			.map(CompartmentWrapper::getCompartment)
-			.collect(Collectors.toList());
-        
-        for (Compartment e : l) {
-        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
-    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
-    			epimodel.util.Edit.transact(dom, () -> {
-    				controls.forEach(c -> c.dispose());
-    				controls.clear();
-    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
-    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-    					epimodel.util.Edit.transact(dom,  ()-> getDimensions().remove(e.eContainer()));
-        				shell.close();
-    				});
-    				shell.pack(true);
-    			});
-    		});
-        }
-    	epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> {
-			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
-				epimodel.util.Edit.transact(dom, () -> getDimensions().add(w));
+		shell.setLayout(new GridLayout(2, false));
+		List<Compartment> l = getDimensions().stream().map(CompartmentWrapper::getCompartment)
+				.collect(Collectors.toList());
+
+		for (Compartment e : l) {
+			epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
+				epimodel.util.Edit.transact(dom, () -> {
+					controls.forEach(c -> c.dispose());
+					controls.clear();
+					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
+					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+						epimodel.util.Edit.transact(dom, () -> getDimensions().remove(e.eContainer()));
+						shell.close();
+					});
+					shell.pack(true);
+				});
 			});
-		});
+		}
+		epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> 
+			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> 
+				epimodel.util.Edit.transact(dom, () -> getDimensions().add(w))
+			)
+		);
+		shell.pack(true);
+	}
+
+	void editFlows(EObject dom, Shell shell, List<Control> controls) {
+		controls.forEach(c -> c.dispose());
+		controls.clear();
+		shell.setLayout(new GridLayout(2, false));
+		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
+
+		for (Flow e : l) {
+			epimodel.util.Edit.addText(shell, controls, e.getId().toString());
+			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
+				epimodel.util.Edit.transact(dom, () -> {
+					controls.forEach(c -> c.dispose());
+					controls.clear();
+					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
+					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+						epimodel.util.Edit.transact(dom, () -> getDimensions().remove(e.eContainer()));
+						shell.close();
+					});
+					shell.pack(true);
+				});
+			});
+		}
+		
+		epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Add Flow", () -> 
+			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> 
+				epimodel.util.Edit.transact(dom, () -> getFlow().add(w))
+			)
+		);
 		shell.pack(true);
 	}
 
@@ -101,11 +145,10 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return CartesianProduct
 				.cartesianProduct(
 					getDimensions()
-						.stream()
-						.map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getPhysicalCompartments)
-						.collect(Collectors.toList())
-				)
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getPhysicalCompartments)
+					.collect(Collectors.toList()))
 				.stream()
 				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
 				.map(p -> prependSelf(p))
@@ -113,7 +156,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-        PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
+		PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
 		p2.labels.addAll(0, getLabel());
 		return p2;
 	}
@@ -131,7 +174,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public List<PhysicalCompartment> getSources() {
 		return CartesianProduct
 				.cartesianProduct(
-						getDimensions()
+					getDimensions()
 						.stream()
 						.map(CompartmentWrapper::getCompartment)
 						.map(Compartment::getSources)
@@ -146,7 +189,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public List<PhysicalCompartment> getSinks() {
 		return CartesianProduct
 				.cartesianProduct(
-						getDimensions()
+					getDimensions()
 						.stream()
 						.map(CompartmentWrapper::getCompartment)
 						.map(Compartment::getSinks)
@@ -159,29 +202,59 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	@Override
 	public List<Flow> getFlows() {
+		
+		/*
+		 * This terrible piece of code is in charge of hiding parts of the epidemic
+		 * to flows based on the dimension they are in (so flows dont take from one hyperplane
+		 * to another when they shouldn't) essentially flows see the hyperplane they are in
+		 * and there exists copies of the flow for each existing hyperplane, unaware of eachother
+		 * 
+		 * EXAMPLE:
+		 * notation: compartment -> [{compartments},{flows}]
+		 * 
+		 * product of group S,I and group A,B
+		 * 	[{S,I}, {S*I->I}]*[{A,B}, {}]
+		 * 	produces:
+		 * 	    SA*IA->IA
+		 * 	    SB*IB->IB
+		 * 	    
+		 * which is different from if the flow was outside the group S,I
+		 * (in this case in the product containing the groups)
+		 * 	[{[{S,I}, {}]*[{A,B}, {}]}, {S*I->I}]
+		 * 	produces:
+		 * 	    SA*IA->IA
+		 * 	    SA*IB->IA
+		 * 	    SB*IA->IB
+		 * 	    SB*IB->IB
+		 */
+		
 		List<Compartment> dims = getDimensions()
 				.stream()
 				.map(CompartmentWrapper::getCompartment)
-				.collect(Collectors.toList());
-		List<List<Flow>> flowsByDim = dims
-				.stream()
-				.map(Compartment::getFlows)
 				.collect(Collectors.toList());
 		List<Flow> res = new ArrayList<>();
 
 		for (int i = 0; i < dims.size(); ++i) {
 			Compartment dimension = dims.get(i);
-			List<Flow> flowsOfDim = flowsByDim.get(i);
+			List<Flow> flowsOfDim = dimension.getFlows();
 			List<Compartment> otherDimensions = getDimensionsExceptOne(dimension);
-			List<String> ids = otherDimensions.stream().map(d -> d.getLabel()).flatMap(List::stream).collect(Collectors.toList());
+			List<String> ids = otherDimensions
+					.stream()
+					.map(d -> d.getLabel())
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
 			List<List<PhysicalCompartment>> whatFlowsWillSee = CartesianProduct.cartesianProduct(
-					otherDimensions.stream().map(d -> d.getPhysicalCompartments()).collect(Collectors.toList()));
+					otherDimensions
+						.stream()
+						.map(d -> d.getPhysicalCompartments())
+						.collect(Collectors.toList()));
 
 			for (Flow f : flowsOfDim) {
 				for (List<PhysicalCompartment> specifications : whatFlowsWillSee) {
 					res.add(new FlowImpl() {
 						@Override
 						public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
+							// this is where it gets complicated
 							return f.getPhysicalFlows((Epidemic) new EpidemicImpl() {
 
 								@Override
@@ -199,6 +272,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 									return matchingSpecification(epidemic.getPhysicalSinksFor(c));
 								}
 
+								// this is where the hyperplane is selected
 								List<PhysicalCompartment> matchingSpecification(List<PhysicalCompartment> l) {
 									return l.stream().filter(pc -> {
 										for (int j = 0; j < ids.size(); ++j)
@@ -221,10 +295,11 @@ public class ProductImpl extends CompartmentImpl implements Product {
 									return null;
 								}
 							}).stream()
-									.map(p -> new PhysicalFlow(p.equations.stream()
+									.map(p -> new PhysicalFlow(
+										p.equations.stream()
 											.map(e -> new PhysicalFlowEquation(e.equationCompartments,
 													e.affectedCompartments, e.coefficients,
-													e.equation.replaceAll(f.getId(), getId()), e.requiredOperators))
+													e.equation.replace(f.getId(), getId()), e.requiredOperators))
 											.collect(Collectors.toList())))
 									.collect(Collectors.toList());
 						}
@@ -237,26 +312,13 @@ public class ProductImpl extends CompartmentImpl implements Product {
 							res = res.replace("][", ", ");
 							return res;
 						}
-
-						@Override
-						public List<EObject> getTargetObjects() {
-							return null;
-						}
-						
-						@Override
-						public List<String> getTargetLabels() {
-							return null;
-						}
 					});
 				}
 			}
 		}
 
+		res.addAll(getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList()));
 		return res;
-	}
-
-	PhysicalCompartment uniqueLabels(PhysicalCompartment p) {
-		return new PhysicalCompartment(p.labels.stream().distinct().collect(Collectors.toList()));
 	}
 
 	protected List<Compartment> getDimensionsExceptOne(Compartment dimensionToIgnore) {
@@ -299,6 +361,20 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	 * @generated
 	 */
 	@Override
+	public EList<FlowWrapper> getFlow() {
+		if (flow == null) {
+			flow = new EObjectContainmentEList<FlowWrapper>(FlowWrapper.class, this,
+					DimensionEpidemicPackage.PRODUCT__FLOW);
+		}
+		return flow;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EList<CompartmentWrapper> getDimensions() {
 		if (dimensions == null) {
 			dimensions = new EObjectContainmentEList<CompartmentWrapper>(CompartmentWrapper.class, this,
@@ -315,6 +391,8 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.PRODUCT__FLOW:
+			return ((InternalEList<?>) getFlow()).basicRemove(otherEnd, msgs);
 		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			return ((InternalEList<?>) getDimensions()).basicRemove(otherEnd, msgs);
 		}
@@ -329,6 +407,8 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.PRODUCT__FLOW:
+			return getFlow();
 		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			return getDimensions();
 		}
@@ -344,6 +424,10 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.PRODUCT__FLOW:
+			getFlow().clear();
+			getFlow().addAll((Collection<? extends FlowWrapper>) newValue);
+			return;
 		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			getDimensions().clear();
 			getDimensions().addAll((Collection<? extends CompartmentWrapper>) newValue);
@@ -360,6 +444,9 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.PRODUCT__FLOW:
+			getFlow().clear();
+			return;
 		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			getDimensions().clear();
 			return;
@@ -375,6 +462,8 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.PRODUCT__FLOW:
+			return flow != null && !flow.isEmpty();
 		case DimensionEpidemicPackage.PRODUCT__DIMENSIONS:
 			return dimensions != null && !dimensions.isEmpty();
 		}

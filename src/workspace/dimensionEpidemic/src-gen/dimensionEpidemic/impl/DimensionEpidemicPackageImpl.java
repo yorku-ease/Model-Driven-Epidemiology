@@ -86,7 +86,7 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 		isInited = true;
 
 		// Initialize simple dependencies
-		// EpimodelPackage.eINSTANCE.eClass();
+		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theDimensionEpidemicPackage.createPackageContents();
@@ -118,8 +118,18 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * @generated
 	 */
 	@Override
-	public EReference getDimensionEpidemic_Dimension() {
+	public EReference getDimensionEpidemic_Flow() {
 		return (EReference) dimensionEpidemicEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getDimensionEpidemic_Dimension() {
+		return (EReference) dimensionEpidemicEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -138,8 +148,18 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * @generated
 	 */
 	@Override
-	public EReference getProduct_Dimensions() {
+	public EReference getProduct_Flow() {
 		return (EReference) productEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getProduct_Dimensions() {
+		return (EReference) productEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -173,9 +193,11 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 
 		// Create classes and their features
 		dimensionEpidemicEClass = createEClass(DIMENSION_EPIDEMIC);
+		createEReference(dimensionEpidemicEClass, DIMENSION_EPIDEMIC__FLOW);
 		createEReference(dimensionEpidemicEClass, DIMENSION_EPIDEMIC__DIMENSION);
 
 		productEClass = createEClass(PRODUCT);
+		createEReference(productEClass, PRODUCT__FLOW);
 		createEReference(productEClass, PRODUCT__DIMENSIONS);
 	}
 
@@ -218,11 +240,17 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 		// Initialize classes, features, and operations; add parameters
 		initEClass(dimensionEpidemicEClass, DimensionEpidemic.class, "DimensionEpidemic", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDimensionEpidemic_Flow(), theEpimodelPackage.getFlowWrapper(), null, "flow", null, 0, -1,
+				DimensionEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDimensionEpidemic_Dimension(), theEpimodelPackage.getCompartmentWrapper(), null, "dimension",
 				null, 0, -1, DimensionEpidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(productEClass, Product.class, "Product", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getProduct_Flow(), theEpimodelPackage.getFlowWrapper(), null, "flow", null, 0, -1, Product.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getProduct_Dimensions(), theEpimodelPackage.getCompartmentWrapper(), null, "dimensions", null, 0,
 				-1, Product.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

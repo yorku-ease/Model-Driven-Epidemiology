@@ -77,13 +77,22 @@ public interface DimensionEpidemicPackage extends EPackage {
 	int DIMENSION_EPIDEMIC__ID = EpimodelPackage.EPIDEMIC__ID;
 
 	/**
+	 * The feature id for the '<em><b>Flow</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DIMENSION_EPIDEMIC__FLOW = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Dimension</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION_EPIDEMIC__DIMENSION = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 0;
+	int DIMENSION_EPIDEMIC__DIMENSION = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Dimension Epidemic</em>' class.
@@ -92,7 +101,7 @@ public interface DimensionEpidemicPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DIMENSION_EPIDEMIC_FEATURE_COUNT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 1;
+	int DIMENSION_EPIDEMIC_FEATURE_COUNT = EpimodelPackage.EPIDEMIC_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Dimension Epidemic</em>' class.
@@ -123,13 +132,22 @@ public interface DimensionEpidemicPackage extends EPackage {
 	int PRODUCT__LABEL = EpimodelPackage.COMPARTMENT__LABEL;
 
 	/**
+	 * The feature id for the '<em><b>Flow</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRODUCT__FLOW = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The feature id for the '<em><b>Dimensions</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PRODUCT__DIMENSIONS = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 0;
+	int PRODUCT__DIMENSIONS = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Product</em>' class.
@@ -138,7 +156,7 @@ public interface DimensionEpidemicPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PRODUCT_FEATURE_COUNT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 1;
+	int PRODUCT_FEATURE_COUNT = EpimodelPackage.COMPARTMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Product</em>' class.
@@ -160,6 +178,17 @@ public interface DimensionEpidemicPackage extends EPackage {
 	EClass getDimensionEpidemic();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link dimensionEpidemic.DimensionEpidemic#getFlow <em>Flow</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Flow</em>'.
+	 * @see dimensionEpidemic.DimensionEpidemic#getFlow()
+	 * @see #getDimensionEpidemic()
+	 * @generated
+	 */
+	EReference getDimensionEpidemic_Flow();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link dimensionEpidemic.DimensionEpidemic#getDimension <em>Dimension</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -179,6 +208,17 @@ public interface DimensionEpidemicPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getProduct();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link dimensionEpidemic.Product#getFlow <em>Flow</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Flow</em>'.
+	 * @see dimensionEpidemic.Product#getFlow()
+	 * @see #getProduct()
+	 * @generated
+	 */
+	EReference getProduct_Flow();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link dimensionEpidemic.Product#getDimensions <em>Dimensions</em>}'.
@@ -225,6 +265,14 @@ public interface DimensionEpidemicPackage extends EPackage {
 		EClass DIMENSION_EPIDEMIC = eINSTANCE.getDimensionEpidemic();
 
 		/**
+		 * The meta object literal for the '<em><b>Flow</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DIMENSION_EPIDEMIC__FLOW = eINSTANCE.getDimensionEpidemic_Flow();
+
+		/**
 		 * The meta object literal for the '<em><b>Dimension</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -241,6 +289,14 @@ public interface DimensionEpidemicPackage extends EPackage {
 		 * @generated
 		 */
 		EClass PRODUCT = eINSTANCE.getProduct();
+
+		/**
+		 * The meta object literal for the '<em><b>Flow</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PRODUCT__FLOW = eINSTANCE.getProduct_Flow();
 
 		/**
 		 * The meta object literal for the '<em><b>Dimensions</b></em>' containment reference list feature.

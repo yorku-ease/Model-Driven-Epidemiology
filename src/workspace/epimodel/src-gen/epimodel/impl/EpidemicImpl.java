@@ -41,7 +41,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 		epimodel.util.Edit.addText(shell, controls, "Epidemic ID:");
         // field you can type in
         Text t = new Text(shell, SWT.NONE);
-		t.setText("");
+		t.setText(getId() == null ? "" : getId());
 		t.setLayoutData(new GridData(300, 50));
 		controls.add(t);
 		epimodel.util.Edit.addBtn(shell, controls, "Confim", () -> {

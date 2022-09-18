@@ -6,6 +6,7 @@ import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicPackage;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
@@ -35,38 +36,56 @@ import org.eclipse.swt.widgets.Control;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link dimensionEpidemic.impl.DimensionEpidemicImpl#getFlow <em>Flow</em>}</li>
  *   <li>{@link dimensionEpidemic.impl.DimensionEpidemicImpl#getDimension <em>Dimension</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpidemic {
-	
+
+	/**
+	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFlow()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<FlowWrapper> flow;
+
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
-		
+
 		DimensionEpidemicImpl that = this;
-		
+
 		ProductImpl p = new ProductImpl() {
 			@Override
 			public EList<CompartmentWrapper> getDimensions() {
 				return that.getDimension();
 			}
+			@Override
+			public EList<FlowWrapper> getFlow() {
+				return that.getFlow();
+			}
 		};
-		
+
 		shell.setText("Edit Group " + getId());
-        shell.setLayout(new GridLayout(1, false));
+		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
 			controls.forEach(c -> c.dispose());
 			controls.clear();
 			super.edit(dom, shell, controls); // Id window
 			shell.pack(true);
 		});
-		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Compartments", () -> {
 			p.editCompartments(dom, shell, controls);
 		});
+		epimodel.util.Edit.addBtn(shell, controls, "Modify Flows", () -> {
+			p.editFlows(dom, shell, controls);
+		});
 	}
-	
+
 	List<PhysicalCompartment> physicalCompartments = null;
 	List<PhysicalFlow> physicalFlows = null;
 
@@ -92,20 +111,32 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows() {
 
+		DimensionEpidemicImpl de = this;
+		
 		if (physicalFlows == null) {
 			physicalFlows = new ProductImpl() {
 				@Override
 				public EList<CompartmentWrapper> getDimensions() {
-					return getDimension();
+					return de.getDimension();
 				}
-			}.getFlows().stream().map(f -> f.getPhysicalFlows(this)).flatMap(List::stream).collect(Collectors.toList());
+				@Override
+				public EList<FlowWrapper> getFlow() {
+					return de.getFlow();
+				}
+			}
+			.getFlows()
+				.stream()
+				.map(f -> f.getPhysicalFlows(this))
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
 		}
 
 		return physicalFlows;
 	}
 
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		return physicalCompartments.stream().filter(pc -> pc.labels.containsAll(c.getLabel())).collect(Collectors.toList());
+		return physicalCompartments.stream().filter(pc -> pc.labels.containsAll(c.getLabel()))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -163,6 +194,20 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	 * @generated
 	 */
 	@Override
+	public EList<FlowWrapper> getFlow() {
+		if (flow == null) {
+			flow = new EObjectContainmentEList<FlowWrapper>(FlowWrapper.class, this,
+					DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW);
+		}
+		return flow;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EList<CompartmentWrapper> getDimension() {
 		if (dimension == null) {
 			dimension = new EObjectContainmentEList<CompartmentWrapper>(CompartmentWrapper.class, this,
@@ -179,6 +224,8 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW:
+			return ((InternalEList<?>) getFlow()).basicRemove(otherEnd, msgs);
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			return ((InternalEList<?>) getDimension()).basicRemove(otherEnd, msgs);
 		}
@@ -193,6 +240,8 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW:
+			return getFlow();
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			return getDimension();
 		}
@@ -208,6 +257,10 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW:
+			getFlow().clear();
+			getFlow().addAll((Collection<? extends FlowWrapper>) newValue);
+			return;
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			getDimension().clear();
 			getDimension().addAll((Collection<? extends CompartmentWrapper>) newValue);
@@ -224,6 +277,9 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW:
+			getFlow().clear();
+			return;
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			getDimension().clear();
 			return;
@@ -239,6 +295,8 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW:
+			return flow != null && !flow.isEmpty();
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			return dimension != null && !dimension.isEmpty();
 		}

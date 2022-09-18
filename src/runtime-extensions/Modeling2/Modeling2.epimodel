@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <epimodel:EpidemicWrapper xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:compartmentGroup="http://www.example.org/compartmentGroup" xmlns:dimensionEpidemic="http://www.example.org/dimensionEpidemic" xmlns:epimodel="http://www.example.org/epimodel">
-  <epidemic xsi:type="dimensionEpidemic:DimensionEpidemic" id="withFlowInGroup">
+  <epidemic xsi:type="dimensionEpidemic:DimensionEpidemic" id="withFlowInProduct">
+    <flow>
+      <flow xsi:type="batchRateContactFlow:Contact" from="//@epidemic/@dimension.0/@compartment/@compartment.0/@compartment" to="//@epidemic/@dimension.0/@compartment/@compartment.1/@compartment" contact="//@epidemic/@dimension.0/@compartment/@compartment.1/@compartment"/>
+    </flow>
     <dimension>
       <compartment xsi:type="compartmentGroup:Group">
         <label>seir</label>
@@ -14,9 +17,6 @@
             <label>I</label>
           </compartment>
         </compartment>
-        <flow>
-          <flow xsi:type="batchRateContactFlow:Contact" from="//@epidemic/@dimension.0/@compartment/@compartment.0/@compartment" to="//@epidemic/@dimension.0/@compartment/@compartment.1/@compartment" contact="//@epidemic/@dimension.0/@compartment/@compartment.1/@compartment"/>
-        </flow>
       </compartment>
     </dimension>
     <dimension>
