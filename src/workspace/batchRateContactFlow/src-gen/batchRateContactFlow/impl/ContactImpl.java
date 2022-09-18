@@ -67,16 +67,6 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		return res;
 	}
 
-	@Override
-	public List<EObject> getTargetObjects() {
-		return Arrays.asList(getFrom(), getTo(), getContact());
-	}
-	
-	@Override
-	public List<String> getTargetLabels() {
-		return Arrays.asList("from", "to", "contact");
-	}
-
 	/**
 	 * The cached value of the '{@link #getContact() <em>Contact</em>}' reference.
 	 * <!-- begin-user-doc -->

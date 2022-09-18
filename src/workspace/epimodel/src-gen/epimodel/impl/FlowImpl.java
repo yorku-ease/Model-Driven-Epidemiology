@@ -8,13 +8,17 @@ import epimodel.EpimodelPackage;
 import epimodel.Flow;
 import epimodel.util.PhysicalCompartment;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -35,7 +39,23 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	
 	@Override
 	public void edit(Shell shell, List<Control> controls, Compartment target) {
-		throw new RuntimeException();
+		shell.setText("Edit Flow " + getId() + " for compartment " + target.getLabel());
+        shell.setLayout(new GridLayout(2, false));
+		for (EReference ref : flowRefs()) {
+			epimodel.util.Edit.addText(shell, controls, ref.getName());
+			epimodel.util.Edit.addBtn(shell, controls, "Set to " + target.getLabel(), () -> {
+				epimodel.util.Edit.transact(this, () -> eSet(ref, target));
+				shell.close();
+			});
+		}
+	}
+	
+	List<EReference> flowRefs() {
+		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());
+		eclasses.add(eClass());
+		return eclasses.stream().map(c -> c.getEReferences().stream().filter(ref -> {
+			return ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT);
+		}).collect(Collectors.toList())).flatMap(List::stream).collect(Collectors.toList());
 	}
 	
 	@Override
@@ -51,6 +71,16 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	@Override
 	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalSinksFor(c);
+	}
+	
+	@Override
+	public List<String> getTargetLabels() {
+		return flowRefs().stream().map(ref -> ref.getName()).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<EObject> getTargetObjects() {
+		return flowRefs().stream().map(ref -> (EObject) eGet(ref)).collect(Collectors.toList());
 	}
 	
 	@Override

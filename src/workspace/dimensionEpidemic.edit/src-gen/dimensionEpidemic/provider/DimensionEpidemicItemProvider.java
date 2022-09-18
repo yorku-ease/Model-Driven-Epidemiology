@@ -64,6 +64,7 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
+			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__FLOW);
 			childrenFeatures.add(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__DIMENSION);
 		}
 		return childrenFeatures;
@@ -128,6 +129,7 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(DimensionEpidemic.class)) {
+		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__FLOW:
 		case DimensionEpidemicPackage.DIMENSION_EPIDEMIC__DIMENSION:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
@@ -145,6 +147,9 @@ public class DimensionEpidemicItemProvider extends EpidemicItemProvider {
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__FLOW,
+				EpimodelFactory.eINSTANCE.createFlowWrapper()));
 
 		newChildDescriptors.add(createChildParameter(DimensionEpidemicPackage.Literals.DIMENSION_EPIDEMIC__DIMENSION,
 				EpimodelFactory.eINSTANCE.createCompartmentWrapper()));
