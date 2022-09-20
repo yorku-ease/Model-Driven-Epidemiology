@@ -71,7 +71,7 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
-	 * @generated
+	 * @generated NOT
 	 */
 	public static DimensionEpidemicPackage init() {
 		if (isInited)
@@ -86,7 +86,7 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 		isInited = true;
 
 		// Initialize simple dependencies
-		EpimodelPackage.eINSTANCE.eClass();
+//		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theDimensionEpidemicPackage.createPackageContents();

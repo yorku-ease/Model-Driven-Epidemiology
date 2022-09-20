@@ -264,7 +264,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		{
 			String env = "epimodelJars";
 			String value = System.getenv(env);
-			if (value == null || value.toLowerCase().equals("false"))
+			if (value != null && value.toLowerCase().equals("false"))
 				return;
 		}
 		

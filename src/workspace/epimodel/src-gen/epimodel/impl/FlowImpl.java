@@ -72,11 +72,6 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalSinksFor(c);
 	}
-	
-	@Override
-	public List<String> getTargetLabels() {
-		return flowRefs().stream().map(ref -> ref.getName()).collect(Collectors.toList());
-	}
 
 	@Override
 	public List<EObject> getTargetObjects() {
@@ -85,7 +80,11 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	
 	@Override
 	public final String getTargetRelation(EObject target) {
-		return getTargetLabels().get(getTargetObjects().indexOf(target));
+		return "label";
+//		System.out.println(target);
+//		System.out.println(flowRefs());
+//		System.out.println(flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName()).findFirst().get());
+//		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName()).findFirst().get();
 	}
 
 	/**
