@@ -50,14 +50,6 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 		}
 	}
 	
-	List<EReference> flowRefs() {
-		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());
-		eclasses.add(eClass());
-		return eclasses.stream().map(c -> c.getEReferences().stream().filter(ref -> {
-			return ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT);
-		}).collect(Collectors.toList())).flatMap(List::stream).collect(Collectors.toList());
-	}
-	
 	@Override
 	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalFor(c);
@@ -72,19 +64,23 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalSinksFor(c);
 	}
+	
+	final List<EReference> flowRefs() {
+		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());
+		eclasses.add(eClass());
+		return eclasses.stream().map(c -> c.getEReferences().stream().filter(ref -> {
+			return ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT);
+		}).collect(Collectors.toList())).flatMap(List::stream).collect(Collectors.toList());
+	}
 
 	@Override
-	public List<EObject> getTargetObjects() {
+	public final List<EObject> getTargetObjects() {
 		return flowRefs().stream().map(ref -> (EObject) eGet(ref)).collect(Collectors.toList());
 	}
 	
 	@Override
 	public final String getTargetRelation(EObject target) {
-		return "label";
-//		System.out.println(target);
-//		System.out.println(flowRefs());
-//		System.out.println(flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName()).findFirst().get());
-//		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName()).findFirst().get();
+		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName()).collect(Collectors.joining(", "));
 	}
 
 	/**

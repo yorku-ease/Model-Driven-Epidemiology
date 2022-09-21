@@ -9,13 +9,9 @@ import epimodel.Compartment;
 
 import epimodel.impl.FlowImpl;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
