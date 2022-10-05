@@ -43,7 +43,7 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
         shell.setLayout(new GridLayout(2, false));
 		for (EReference ref : flowRefs()) {
 			epimodel.util.Edit.addText(shell, controls, ref.getName());
-			epimodel.util.Edit.addBtn(shell, controls, "Set to " + target.getLabel(), () -> {
+			epimodel.util.Edit.addBtn(shell, controls, "Set '" + ref.getName() + "' to " + target.getLabel(), () -> {
 				epimodel.util.Edit.transact(this, () -> eSet(ref, target));
 				shell.close();
 			});
@@ -68,9 +68,16 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	final List<EReference> flowRefs() {
 		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());
 		eclasses.add(eClass());
-		return eclasses.stream().map(c -> c.getEReferences().stream().filter(ref -> {
-			return ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT);
-		}).collect(Collectors.toList())).flatMap(List::stream).collect(Collectors.toList());
+		
+		return eclasses
+				.stream()
+				.map(c ->
+						c.getEReferences()
+							.stream()
+							.filter(ref ->  ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT))
+				.collect(Collectors.toList()))
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
 	}
 
 	@Override
