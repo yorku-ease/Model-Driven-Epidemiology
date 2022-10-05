@@ -42,7 +42,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
 	
-	public static List<EClass> eclasses = null;
+	static List<String> packages = null;
+	static List<List<EClass>> eclassesByPackage = null;
 	
     static public List<EPackage> getEpimodelPackages() {
 	    final EPackage.Registry reg = EPackage.Registry.INSTANCE;
@@ -68,13 +69,11 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	    } while (true);
 		return epimodelPackages;
     }
-	
-    public static List<EClass> collectEClasses() {
-    	if (eclasses != null)
-    		return eclasses;
-    	
-		eclasses = new ArrayList<>();
+    
+    public static void doCollectEClasses() {
 	    List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
+	    packages = epimodelPackages.stream().map(p->p.getName()).collect(Collectors.toList());
+    	eclassesByPackage = new ArrayList<>(packages.size());
 	    
 	    for (EPackage pkg : epimodelPackages) {
 	    	System.out.println(pkg.getName());
@@ -85,7 +84,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		    		continue;
 	    		}
     			EClass cl = (EClass) classifier;
-    			eclasses.add(cl);
+    			eclassesByPackage.get(packages.indexOf(pkg.getName())).add(cl);
     			if (cl.isAbstract())
     				if (cl.isInterface())
     					System.out.println("\tinterface " + classifier.getName());
@@ -102,13 +101,22 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
     				System.out.println("\t\treference " + r.getName());
 	    	}
 	    }
-		return eclasses;
+    }
+	
+    public static List<EClass> collectEClasses(List<String> enabledPackages) {
+    	if (packages == null || eclassesByPackage == null)
+    		doCollectEClasses();
+    	List<EClass> eclasses = new ArrayList<>();
+    	for (int i = 0; i < packages.size(); ++i)
+    		if (enabledPackages.contains(packages.get(i)))
+    			eclasses.addAll(eclassesByPackage.get(i));
+    	return eclasses;
 	}
     
     public static boolean isModelType(EClass T) {
     	return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T)
-    			|| EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
-    			|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
+			|| EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
+			|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
     }
     
     static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
@@ -126,7 +134,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
     	    }
     	};
     	try {
-			pkg.eResource().save(output, null); // pkg.ecore as string
+			pkg.eResource().save(output, null); // pkg.ecore file as string
 		} catch (Exception e) { }
     	
     	List<String> pkgsStrToFindInXMI = pkgs
