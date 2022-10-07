@@ -12,12 +12,10 @@ import org.eclipse.ui.part.ViewPart;
 public class ProjectCreationView extends ViewPart {
 
 	public ProjectCreationView() {
-		System.out.println("ProjectCreationView");
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		System.out.println("createPartControl");
 		Button button = new Button(parent, SWT.PUSH);
 		button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
 		button.setText("BTN");
@@ -31,6 +29,5 @@ public class ProjectCreationView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		System.out.println("View Set Focus");
 	}
 }

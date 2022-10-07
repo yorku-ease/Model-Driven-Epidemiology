@@ -24,8 +24,6 @@ public class Solver {
 		
 		fm.setConstraints(saved);
 		
-//		System.out.println(res + constraints.toString());
-		
 		return res;
 	}
 	

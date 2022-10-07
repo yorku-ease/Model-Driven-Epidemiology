@@ -2,7 +2,7 @@ package org.epimodel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -19,16 +19,16 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-import org.eclipse.swt.SWT;
 import org.epimodel.natures.EpimodelProjectNature;
 
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
+import de.ovgu.featureide.fm.core.base.IFeatureStructure;
 import de.ovgu.featureide.fm.core.configuration.Configuration;
 
 import org.eclipse.sirius.business.api.session.Session;
-//import org.eclipse.sirius.business.internal.resource.AirDResourceImpl;
 import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
 import org.eclipse.sirius.ui.tools.api.project.ModelingProjectManager;
+import org.eclipse.swt.SWT;
 
 import epimodel.impl.EpimodelFactoryImpl;
 
@@ -47,12 +47,13 @@ public class CustomProjectSupport {
             addNature(project, EpimodelProjectNature.NATURE_ID);
             
             IFile extensionsTxt = createFile(project, "extensions.txt");
-//			for (int i = 0; i < availableExtensions.size(); ++i)
-//				extensionsTxt.appendContents(
-//					new ByteArrayInputStream(
-//						(availableExtensions.get(i) + ": " + extensionTruthValues.get(i) + "\n").getBytes()),
-//					SWT.NONE,
-//					new NullProgressMonitor());
+            StringBuilder sb = new StringBuilder();
+    		IFeatureStructure root = fm.getFeature("EpidemicMetamodelLine").getStructure();
+            tree(root, conf, sb);
+			extensionsTxt.appendContents(
+				new ByteArrayInputStream(sb.toString().getBytes()),
+				SWT.NONE,
+				new NullProgressMonitor());
 			
 			String model_fn = projectName + ".epimodel";
 			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6);
@@ -76,6 +77,16 @@ public class CustomProjectSupport {
         return project;
     }
  
+    private static void tree(IFeatureStructure feature, Configuration conf, StringBuilder sb) {
+		for (IFeatureStructure child : feature.getChildren()) {
+			if (child.getFeature().getName().equals("Plugins"))
+				for (IFeatureStructure plugin : child.getChildren())
+					sb.append(plugin.getFeature().getName() + ": " + conf.getSelectedFeatures().contains(plugin.getFeature()) + "\n");
+			else
+				tree(child, conf, sb);
+		}
+    }
+    
     private static IProject createBaseProject(String projectName, java.net.URI location) {
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
         if (newProject.exists())

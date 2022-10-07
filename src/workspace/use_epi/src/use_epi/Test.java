@@ -4,8 +4,8 @@ import java.io.PrintWriter;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
@@ -18,36 +18,19 @@ import epimodel.util.PhysicalFlowEquation;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
-		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
-        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
-		
-        ResourceSet resSet = new ResourceSetImpl();
-        EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
-        resSet.setPackageRegistry(pkgRegistry);
-        resSet.setResourceFactoryRegistry(factoryRegistry);
-        
-		{
-	        pkgRegistry.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-	        pkgRegistry.put(dimensionEpidemic.DimensionEpidemicPackage.eNS_URI, dimensionEpidemic.DimensionEpidemicPackage.eINSTANCE);
-	        pkgRegistry.put(batchRateContactFlow.BatchRateContactFlowPackage.eNS_URI, batchRateContactFlow.BatchRateContactFlowPackage.eINSTANCE);
-	        pkgRegistry.put(compartmentGroup.CompartmentGroupPackage.eNS_URI, compartmentGroup.CompartmentGroupPackage.eINSTANCE);
-		}
 
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel");
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel");
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/DEG_SI_S_I.epimodel");
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel");
-		compile(resSet, "../../runtime-EclipseApplication/modeling/model1.epimodel");
+		compile("../../runtime-plugin/modeling/MyEpimodel.epimodel");
 //		compile(resSet, "../../runtime-plugin/modeling/model2.epimodel");
 //		compile(resSet, "../../runtime-plugin/modeling/model3.epimodel");
 	}
 	
-	static void compile(ResourceSet resSet, String model_fn) throws Exception {
+	static void compile(String model_fn) throws Exception {
         
-        URI uri = URI.createFileURI(model_fn);
-        Resource resource = resSet.getResource(uri, true);
-        
-        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) resource.getContents().get(0);
+        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) loadModel(model_fn);
 
 		String outfolder = "C:/Users/Bruno/Desktop/";
 
@@ -71,5 +54,21 @@ public class Test {
 			}
 		    writer.close();
 		}
+	}
+	
+	static EObject loadModel(String model_fn) throws Exception {
+		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
+        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
+		
+        ResourceSet resSet = new ResourceSetImpl();
+        resSet.setPackageRegistry(EPackage.Registry.INSTANCE);
+        resSet.setResourceFactoryRegistry(factoryRegistry);
+        
+        EPackage.Registry.INSTANCE.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
+        
+        URI uri = URI.createFileURI(model_fn);
+        Resource resource = resSet.getResource(uri, true);
+        
+        return resource.getContents().get(0);
 	}
 }
