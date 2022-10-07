@@ -74,31 +74,18 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	    List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
 	    packages = epimodelPackages.stream().map(p->p.getName()).collect(Collectors.toList());
     	eclassesByPackage = new ArrayList<>(packages.size());
-	    
+    	for (int i = 0; i < packages.size(); ++i)
+    		eclassesByPackage.add(new ArrayList<>());
+	    System.out.println(epimodelPackages);
+	    System.out.println(packages);
+	    System.out.println(eclassesByPackage);
 	    for (EPackage pkg : epimodelPackages) {
-	    	System.out.println(pkg.getName());
 	    	EList<EClassifier> eclassifiers = pkg.getEClassifiers();
 	    	for (EClassifier classifier : eclassifiers) {
-	    		if (!(classifier instanceof EClass)) {
-		    		System.out.println("\tnon class " + classifier.getName() + "type = " + classifier.getClass());
+	    		if (!(classifier instanceof EClass))
 		    		continue;
-	    		}
     			EClass cl = (EClass) classifier;
     			eclassesByPackage.get(packages.indexOf(pkg.getName())).add(cl);
-    			if (cl.isAbstract())
-    				if (cl.isInterface())
-    					System.out.println("\tinterface " + classifier.getName());
-    				else
-    					System.out.println("\tabstract class " + classifier.getName());
-    			else
-		    		System.out.println("\tclass " + classifier.getName());
-    			
-    			for (EAttribute a : cl.getEAllAttributes())
-    				System.out.println("\t\tattribute " + a.getName());
-    			for (EReference c : cl.getEAllContainments())
-    				System.out.println("\t\tcontainement " + c.getName());
-    			for (EReference r : cl.getEAllReferences())
-    				System.out.println("\t\treference " + r.getName());
 	    	}
 	    }
     }

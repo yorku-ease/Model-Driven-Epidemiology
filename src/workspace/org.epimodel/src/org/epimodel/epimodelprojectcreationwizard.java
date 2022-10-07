@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
@@ -20,7 +19,6 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -63,12 +61,6 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		fm = FeatureModelIO.getInstance().loadFromSource(modelXML, path);
 		fmf = new FeatureModelFormula(fm);
 		conf = new Configuration(fmf);
-		/*
-		 * 
-		IFeatureStructure root = fm.getFeature("EpidemicMetamodelLine").getStructure();
-		// maybe do something else here for now there is only EpidemicMetamodel
-		IFeatureStructure epidemicMetamodel = root.getFirstChild();
-		 */
 	}
 	
 	String readFile(URL url) throws IOException {
@@ -83,34 +75,57 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		System.out.println("init");
 	}
 
 	@Override
 	public boolean performFinish() {
-		System.out.println("performFinish");
-		CustomProjectSupport.createProject(
-			creationPage.getProjectName(),
-			ResourcesPlugin.getWorkspace().getRoot().getLocationURI(),
-			fm,
-			conf);
+		if (markPlugins()) {
+			CustomProjectSupport.createProject(
+					creationPage.getProjectName(),
+					ResourcesPlugin.getWorkspace().getRoot().getLocationURI(),
+					fm,
+					conf);
+			return true;
+		} else {
+			List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 3);
+			if (errs.size() > 0)
+				System.out.println("Invalid configuration, here are the unrespected sets of constraints:");
+	//		for (int i = 0; i < availableExtensions.size(); ++i) {
+	//			conf.setManual(availableExtensions.get(i), creationPage.getTruthValues().get(i) ? Selection.SELECTED : Selection.UNSELECTED);
+	//		}
+			for (List<IConstraint> err : errs) {
+				Solver.FeatureModelConfigurationError fmce = new Solver.FeatureModelConfigurationError(err);
+				System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
+				System.out.println(fmce.getDetailed());
+			}
+			return false;
+		}
+	}
+	
+	boolean markPlugins() {
+		List<IFeatureStructure> pluginFeatures = fm.getFeature("Plugins").getStructure().getChildren();
 		
-		System.out.println("Invalid configuration, here are the unrespected sets of constraints:");
-//		for (int i = 0; i < availableExtensions.size(); ++i) {
-//			conf.setManual(availableExtensions.get(i), creationPage.getTruthValues().get(i) ? Selection.SELECTED : Selection.UNSELECTED);
-//		}
-		for (List<IConstraint> err : Solver.getErrors(fm, conf, 2)) {
-			Solver.FeatureModelConfigurationError fmce = new Solver.FeatureModelConfigurationError(err);
-			System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
-			System.out.println(fmce.getDetailed());
+		{			
+			for (IFeatureStructure feature : pluginFeatures)
+				conf.setManual(feature.getFeature().getName(), Selection.SELECTED);
+			List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 1);
+			if (errs.size() > 0)
+				return false;	
 		}
 		
-		return true;
+		for (IFeatureStructure feature : pluginFeatures) {
+			conf.setManual(feature.getFeature().getName(), Selection.UNSELECTED);
+			List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 1);
+			if (errs.size() > 0)
+				conf.setManual(feature.getFeature().getName(), Selection.SELECTED);
+		}
+
+		List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 1);
+		return errs.size() == 0;
 	}
 	
 	@Override
     public void addPages() {
-		System.out.println("addPages");
 		super.addPages();
 		creationPage = new WizardNewProjectCreationPage(fm, conf);
 		addPage(creationPage);
@@ -176,7 +191,6 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 			
 			Button b = new Button(container, SWT.CHECK);
 			boolean enabled = enabled(feature.getFeature());
-			System.out.println(feature.getFeature().getName() + ": " + enabled);
 			b.setSelection(enabled);
 	        Label label = new Label(container, SWT.NONE);
 	        controls.add(b);
