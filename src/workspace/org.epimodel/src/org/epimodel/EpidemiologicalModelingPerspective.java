@@ -8,8 +8,6 @@ public class EpidemiologicalModelingPerspective implements IPerspectiveFactory {
 
 	@Override
 	public void createInitialLayout(IPageLayout layout) {
-		System.out.println("createInitialLayout");
-		
         String editorArea = layout.getEditorArea();
         
         IFolderLayout topLeft = layout.createFolder("topLeft", IPageLayout.LEFT, 0.25f, editorArea);
