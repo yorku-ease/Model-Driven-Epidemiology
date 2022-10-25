@@ -50,7 +50,7 @@ public class FM_MM {
 			System.out.println(fmce.getDetailed());
 		}
 
-		EObject m1 = loadModelFromMetamodels("../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel");
+		EObject m1 = loadModel("../../runtime-plugin/modeling/MyEpimodel.epimodel");
 		
 		m1.eAllContents().forEachRemaining(e -> {
 			if (!(e instanceof Compartment))
@@ -61,7 +61,7 @@ public class FM_MM {
 		});
 	}
 	
-	static EObject loadModelFromMetamodels(String model_fn) throws Exception {
+	static EObject loadModel(String model_fn) throws Exception {
 		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
         factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
 		

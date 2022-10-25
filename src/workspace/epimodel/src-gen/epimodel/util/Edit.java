@@ -1,9 +1,17 @@
 package epimodel.util;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -19,6 +27,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
@@ -98,10 +111,48 @@ public class Edit {
 	}
 	
 	public static List<EClass> getNonAbstractEClassesOfType(EClass supertype) {
+		
 		return EpimodelPackageImpl
-				.collectEClasses()
+				.collectEClasses(getCurrentPlugins())
 				.stream()
 				.filter(ec -> !ec.isAbstract() && !ec.isInterface() && supertype.isSuperTypeOf(ec))
 				.collect(Collectors.toList());
+	}
+	
+	static List<String> getCurrentPlugins() {
+		IProject project = getCurrentProject();
+		IFile extensions = project.getFile("extensions.txt");
+		try {
+			String filecontent = new String(extensions.getContents().readAllBytes(), StandardCharsets.UTF_8);
+			return Arrays.asList(filecontent.split("\n")).stream().map(s -> s.trim()).collect(Collectors.toList());
+		} catch (IOException | CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	// https://stackoverflow.com/questions/44149420/universal-way-to-get-the-current-project-in-eclipse-plugin
+	static IProject getCurrentProject() {
+	    IWorkbenchWindow window = PlatformUI.getWorkbench()
+	            .getActiveWorkbenchWindow();
+		
+		IWorkbenchPage activePage = window.getActivePage();
+
+		IEditorPart activeEditor = activePage.getActiveEditor();
+		IProject project = null;
+		
+		if (activeEditor != null) {
+		   IEditorInput input = activeEditor.getEditorInput();
+
+		   project = input.getAdapter(IProject.class);
+		   if (project == null) {
+		      IResource resource = input.getAdapter(IResource.class);
+		      if (resource != null) {
+		         project = resource.getProject();
+		      }
+		   }
+		}
+		return project;
 	}
 }

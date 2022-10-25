@@ -42,7 +42,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
 	
-	public static List<EClass> eclasses = null;
+	static List<String> packages = null;
+	static List<List<EClass>> eclassesByPackage = null;
 	
     static public List<EPackage> getEpimodelPackages() {
 	    final EPackage.Registry reg = EPackage.Registry.INSTANCE;
@@ -68,47 +69,41 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	    } while (true);
 		return epimodelPackages;
     }
-	
-    public static List<EClass> collectEClasses() {
-    	if (eclasses != null)
-    		return eclasses;
-    	
-		eclasses = new ArrayList<>();
+    
+    public static void doCollectEClasses() {
 	    List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
-	    
+	    packages = epimodelPackages.stream().map(p->p.getName()).collect(Collectors.toList());
+    	eclassesByPackage = new ArrayList<>(packages.size());
+    	for (int i = 0; i < packages.size(); ++i)
+    		eclassesByPackage.add(new ArrayList<>());
+	    System.out.println(epimodelPackages);
+	    System.out.println(packages);
+	    System.out.println(eclassesByPackage);
 	    for (EPackage pkg : epimodelPackages) {
-	    	System.out.println(pkg.getName());
 	    	EList<EClassifier> eclassifiers = pkg.getEClassifiers();
 	    	for (EClassifier classifier : eclassifiers) {
-	    		if (!(classifier instanceof EClass)) {
-		    		System.out.println("\tnon class " + classifier.getName() + "type = " + classifier.getClass());
+	    		if (!(classifier instanceof EClass))
 		    		continue;
-	    		}
     			EClass cl = (EClass) classifier;
-    			eclasses.add(cl);
-    			if (cl.isAbstract())
-    				if (cl.isInterface())
-    					System.out.println("\tinterface " + classifier.getName());
-    				else
-    					System.out.println("\tabstract class " + classifier.getName());
-    			else
-		    		System.out.println("\tclass " + classifier.getName());
-    			
-    			for (EAttribute a : cl.getEAllAttributes())
-    				System.out.println("\t\tattribute " + a.getName());
-    			for (EReference c : cl.getEAllContainments())
-    				System.out.println("\t\tcontainement " + c.getName());
-    			for (EReference r : cl.getEAllReferences())
-    				System.out.println("\t\treference " + r.getName());
+    			eclassesByPackage.get(packages.indexOf(pkg.getName())).add(cl);
 	    	}
 	    }
-		return eclasses;
+    }
+	
+    public static List<EClass> collectEClasses(List<String> enabledPackages) {
+    	if (packages == null || eclassesByPackage == null)
+    		doCollectEClasses();
+    	List<EClass> eclasses = new ArrayList<>();
+    	for (int i = 0; i < packages.size(); ++i)
+    		if (enabledPackages.contains(packages.get(i)))
+    			eclasses.addAll(eclassesByPackage.get(i));
+    	return eclasses;
 	}
     
     public static boolean isModelType(EClass T) {
     	return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T)
-    			|| EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
-    			|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
+			|| EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
+			|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
     }
     
     static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
@@ -126,7 +121,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
     	    }
     	};
     	try {
-			pkg.eResource().save(output, null); // pkg.ecore as string
+			pkg.eResource().save(output, null); // pkg.ecore file as string
 		} catch (Exception e) { }
     	
     	List<String> pkgsStrToFindInXMI = pkgs
