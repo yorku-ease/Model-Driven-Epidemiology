@@ -1,7 +1,10 @@
 package org.epimodel;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -10,8 +13,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -20,15 +23,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.epimodel.natures.EpimodelProjectNature;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureStructure;
 import de.ovgu.featureide.fm.core.configuration.Configuration;
-
-import org.eclipse.sirius.business.api.session.Session;
-import org.eclipse.sirius.tools.api.command.semantic.AddSemanticResourceCommand;
-import org.eclipse.sirius.ui.tools.api.project.ModelingProjectManager;
-import org.eclipse.swt.SWT;
 
 import epimodel.impl.EpimodelFactoryImpl;
 
@@ -46,27 +46,30 @@ public class CustomProjectSupport {
             addNature(project, "org.eclipse.sirius.nature.modelingproject");
             addNature(project, EpimodelProjectNature.NATURE_ID);
             
-            IFile extensionsTxt = createFile(project, "extensions.txt");
-            StringBuilder sb = new StringBuilder();
-    		IFeatureStructure root = fm.getFeature("EpidemicMetamodelLine").getStructure();
-            tree(root, conf, sb);
-			extensionsTxt.appendContents(
-				new ByteArrayInputStream(sb.toString().getBytes()),
-				SWT.NONE,
-				new NullProgressMonitor());
-			
-			String model_fn = projectName + ".epimodel";
-			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6);
-			
-			createEpimodel(model_fn_path);
-			
-			Session aird = ModelingProjectManager.INSTANCE.createLocalRepresentationsFile(project, new NullProgressMonitor());
-			AddSemanticResourceCommand addCommand = new AddSemanticResourceCommand(
-				aird,
-				URI.createFileURI(model_fn_path),
-				new NullProgressMonitor());
-			aird.getTransactionalEditingDomain().getCommandStack().execute(addCommand);
-			
+            {
+                StringBuilder extensions = new StringBuilder();
+                extensions.append("epimodel\n"); // this isn't a 'plugin' so we add it manually as it won't be added by the FM
+                tree(fm.getFeature("EpidemicMetamodelLine").getStructure(), conf, extensions);
+                createFile(project, "extensions.txt", extensions.toString());
+            }
+            {
+    			String model_fn = projectName + ".epimodel";
+    			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6); // TODO why 6? maybe 'file:/'
+    			
+    			createEpimodel(model_fn_path);
+//    			Session aird = ModelingProjectManager.INSTANCE.createLocalRepresentationsFile(project, new NullProgressMonitor());
+//    			AddSemanticResourceCommand addCommand = new AddSemanticResourceCommand(
+//    				aird,
+//    				URI.createFileURI(model_fn_path),
+//    				new NullProgressMonitor());
+//    			aird.getTransactionalEditingDomain().getCommandStack().execute(addCommand);
+            }
+            {
+                Bundle bundle = FrameworkUtil.getBundle(CustomProjectSupport.class);
+        		URL url = FileLocator.find(bundle, new org.eclipse.core.runtime.Path("representations_template.aird"));
+        		String representationsTemplate = readFile(url);
+        		createFile(project, "representations.aird", representationsTemplate.replace("REPLACE_HERE", projectName));
+            }
 			project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
             
         } catch (CoreException | IOException | IllegalArgumentException | SecurityException e) {
@@ -76,12 +79,27 @@ public class CustomProjectSupport {
  
         return project;
     }
+
+	private static String readFile(URL url) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		BufferedReader read = new BufferedReader(new InputStreamReader(url.openStream()));
+	    String i;
+		while ((i = read.readLine()) != null)
+			sb.append(i);
+		read.close();
+	    return sb.toString();
+	}
  
     private static void tree(IFeatureStructure feature, Configuration conf, StringBuilder sb) {
+		// maybe TODO here write in the file the features selected even though we don't need them
+		// as we only care about the plugins but if we want to show the user why the plugins are enabled
+		// we need to show it in terms of features
 		for (IFeatureStructure child : feature.getChildren()) {
-			if (child.getFeature().getName().equals("Plugins"))
+			if (child.getFeature().getName().equals("Plugins")) {
 				for (IFeatureStructure plugin : child.getChildren())
-					sb.append(plugin.getFeature().getName() + ": " + conf.getSelectedFeatures().contains(plugin.getFeature()) + "\n");
+					if (conf.getSelectedFeatures().contains(plugin.getFeature()))
+						sb.append(plugin.getFeature().getName()+ "\n");
+			}
 			else
 				tree(child, conf, sb);
 		}
@@ -117,15 +135,15 @@ public class CustomProjectSupport {
 //            folder.create(false, true, new NullProgressMonitor());
 //    }
     
-    private static IFile createFile(IProject project, String fileName) throws CoreException {
+    private static IFile createFile(IProject project, String fileName, String content) throws CoreException {
     	IFile f = project.getFile(fileName);
-    	createFile(f);
+    	createFile(f, content);
     	return f;
     }
     
-    private static void createFile(IFile file) throws CoreException {
+    private static void createFile(IFile file, String content) throws CoreException {
     	file.create(
-    		new ByteArrayInputStream("".getBytes()),
+    		new ByteArrayInputStream(content.getBytes()),
     		IResource.ALLOW_MISSING_LOCAL | IResource.FILE,
     		null);
     }
