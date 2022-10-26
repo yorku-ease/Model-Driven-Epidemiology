@@ -37,7 +37,6 @@ import de.ovgu.featureide.fm.core.base.IFeature;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureStructure;
 import de.ovgu.featureide.fm.core.configuration.Configuration;
-import de.ovgu.featureide.fm.core.configuration.SelectableFeature;
 import de.ovgu.featureide.fm.core.configuration.Selection;
 import de.ovgu.featureide.fm.core.init.FMCoreLibrary;
 import de.ovgu.featureide.fm.core.init.LibraryManager;
@@ -224,7 +223,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		void unselectChildren(IFeatureStructure feature) {
 				for (IFeatureStructure child : feature.getChildren())
 					if (enabled(child.getFeature())) {
-						conf.setManual((SelectableFeature) child, Selection.UNSELECTED);
+						conf.setManual(child.getFeature().getName(), Selection.UNSELECTED);
 						unselectChildren(child);
 				}
 		}

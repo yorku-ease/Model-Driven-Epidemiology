@@ -1,6 +1,9 @@
 package epimodel.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +114,6 @@ public class Edit {
 	}
 	
 	public static List<EClass> getNonAbstractEClassesOfType(EClass supertype) {
-		
 		return EpimodelPackageImpl
 				.collectEClasses(getCurrentPlugins())
 				.stream()
@@ -123,7 +125,16 @@ public class Edit {
 		IProject project = getCurrentProject();
 		IFile extensions = project.getFile("extensions.txt");
 		try {
-			String filecontent = new String(extensions.getContents().readAllBytes(), StandardCharsets.UTF_8);
+			StringBuilder textBuilder = new StringBuilder();
+		    Reader reader = new BufferedReader(new InputStreamReader(
+	    		extensions.getContents(),
+	    		StandardCharsets.UTF_8)
+	    	);
+	        int c = 0;
+	        while ((c = reader.read()) != -1)
+	            textBuilder.append((char) c);
+	        reader.close();
+			String filecontent = textBuilder.toString();
 			return Arrays.asList(filecontent.split("\n")).stream().map(s -> s.trim()).collect(Collectors.toList());
 		} catch (IOException | CoreException e) {
 			// TODO Auto-generated catch block
