@@ -17,12 +17,12 @@
 				<graphics key="collapsed" value="false"/>
 				<or abstract="true" name="Plugins">
 					<graphics key="collapsed" value="false"/>
-					<feature name="compartmentGroup"/>
-					<feature name="dimensionEpidemic"/>
-					<feature name="VaccinationCompartment"/>
-					<feature name="compartmentLink"/>
+					<feature hidden="true" name="compartmentGroup"/>
+					<feature hidden="true" name="dimensionEpidemic"/>
+					<feature hidden="true" name="VaccinationCompartment"/>
+					<feature hidden="true" name="compartmentLink"/>
 				</or>
-				<or name="Vaccination">
+				<or abstract="true" hidden="true" name="Vaccination">
 					<feature name="VaccinationUsingProduct"/>
 					<feature name="VaccinationUsingProductAndVaccinationCompartment"/>
 				</or>
@@ -61,6 +61,10 @@
 				<var>CartesianProduct</var>
 				<var>dimensionEpidemic</var>
 			</imp>
+		</rule>
+		<rule>
+			<description>The ability to compose groups is required for an Epidemic to be created (this constraint can be lifted if other types of composability tools are offered instead but for now is required)</description>
+			<var>compartmentGroup</var>
 		</rule>
 	</constraints>
 </featureModel>
