@@ -46,7 +46,7 @@ public interface CompartmentWrapper extends EObject {
 	 * @generated
 	 */
 	void setCompartment(Compartment value);
-	
+
 	void edit(Shell shell, List<Control> controls);
 
 } // CompartmentWrapper

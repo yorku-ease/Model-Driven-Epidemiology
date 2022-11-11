@@ -36,11 +36,11 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public abstract class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
-	
+
 	@Override
 	public void edit(Shell shell, List<Control> controls, Compartment target) {
 		shell.setText("Edit Flow " + getId() + " for compartment " + target.getLabel());
-        shell.setLayout(new GridLayout(2, false));
+		shell.setLayout(new GridLayout(2, false));
 		for (EReference ref : flowRefs()) {
 			epimodel.util.Edit.addText(shell, controls, ref.getName());
 			epimodel.util.Edit.addBtn(shell, controls, "Set '" + ref.getName() + "' to " + target.getLabel(), () -> {
@@ -49,7 +49,7 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 			});
 		}
 	}
-	
+
 	@Override
 	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalFor(c);
@@ -64,30 +64,27 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
 		return epidemic.getPhysicalSinksFor(c);
 	}
-	
+
 	final List<EReference> flowRefs() {
 		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());
 		eclasses.add(eClass());
-		
-		return eclasses
-				.stream()
-				.map(c ->
-						c.getEReferences()
-							.stream()
-							.filter(ref ->  ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT))
-				.collect(Collectors.toList()))
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
+
+		return eclasses.stream()
+				.map(c -> c.getEReferences().stream()
+						.filter(ref -> ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT))
+						.collect(Collectors.toList()))
+				.flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public final List<EObject> getTargetObjects() {
 		return flowRefs().stream().map(ref -> (EObject) eGet(ref)).collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public final String getTargetRelation(EObject target) {
-		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName()).collect(Collectors.joining(", "));
+		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName())
+				.collect(Collectors.joining(", "));
 	}
 
 	/**

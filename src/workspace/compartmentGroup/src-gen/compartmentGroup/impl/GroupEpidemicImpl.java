@@ -8,9 +8,12 @@ import compartmentGroup.GroupSinks;
 import compartmentGroup.GroupSources;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Composable;
+import epimodel.Flow;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.EpidemicImpl;
+import epimodel.util.Difference;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
@@ -53,24 +56,42 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 
+	@Override
+	public List<PhysicalCompartment> getSources() {
+		return asGroup().getSources();
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinks() {
+		return asGroup().getSinks();
+	}
+
+	@Override
+	public List<Flow> getFlows() {
+		return asGroup().getFlows();
+	}
+
+	@Override
+	public Difference compareWithSameClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithDifferentClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithBaseClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
-		
-		GroupEpidemicImpl that = this;
-		
-		GroupImpl g = new GroupImpl() {
-			@Override
-			public EList<FlowWrapper> getFlow() {
-				return that.getFlow();
-			}
-			
-			@Override
-			public EList<CompartmentWrapper> getCompartment() {
-				return that.getCompartment();
-			}
-		};
-		
 		shell.setText("Edit Group " + getId());
-        shell.setLayout(new GridLayout(1, false));
+		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
 			controls.forEach(c -> c.dispose());
 			controls.clear();
@@ -78,15 +99,16 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 			shell.pack(true);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
-			g.editCompartments(dom, shell, controls);
+			asGroup().editCompartments(dom, shell, controls);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify flows", () -> {
-			g.editFlows(dom, shell, controls);
+			asGroup().editFlows(dom, shell, controls);
 		});
 	}
 
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		return getPhysicalCompartments().stream().filter(pc -> pc.labels.containsAll(c.getLabel())).collect(Collectors.toList());
+		return getPhysicalCompartments().stream().filter(pc -> pc.labels.containsAll(c.getLabel()))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -111,25 +133,30 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		final EList<CompartmentWrapper> l = getCompartment();
-		return new GroupImpl() {
-			@Override
-			public EList<CompartmentWrapper> getCompartment() {
-				return l;
-			}
-		}.getPhysicalCompartments();
+		return asGroup().getPhysicalCompartments();
 	}
 
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows() {
-		final EList<CompartmentWrapper> l = getCompartment();
+		return asGroup().getFlows().stream().map(f -> f.getPhysicalFlows(this)).flatMap(List::stream).collect(Collectors.toList());
+	}
+
+    GroupImpl asGroup() {
+        GroupEpidemicImpl that = this;
+
 		return new GroupImpl() {
 			@Override
-			public EList<CompartmentWrapper> getCompartment() {
-				return l;
+			public EList<FlowWrapper> getFlow() {
+				return that.getFlow();
 			}
-		}.getFlows().stream().map(f -> f.getPhysicalFlows(this)).flatMap(List::stream).collect(Collectors.toList());
-	}
+
+			@Override
+			public EList<CompartmentWrapper> getCompartment() {
+				return that.getCompartment();
+			}
+		};
+    }
+
 	/**
 	 * The cached value of the '{@link #getGroupSinks() <em>Group Sinks</em>}' containment reference.
 	 * <!-- begin-user-doc -->

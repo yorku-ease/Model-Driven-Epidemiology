@@ -94,6 +94,34 @@ public interface EpimodelPackage extends EPackage {
 	int EPIDEMIC_WRAPPER_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link epimodel.impl.ComposableImpl <em>Composable</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see epimodel.impl.ComposableImpl
+	 * @see epimodel.impl.EpimodelPackageImpl#getComposable()
+	 * @generated
+	 */
+	int COMPOSABLE = 6;
+
+	/**
+	 * The number of structural features of the '<em>Composable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSABLE_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>Composable</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSABLE_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link epimodel.impl.EpidemicImpl <em>Epidemic</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -110,7 +138,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EPIDEMIC__ID = 0;
+	int EPIDEMIC__ID = COMPOSABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Epidemic</em>' class.
@@ -119,7 +147,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EPIDEMIC_FEATURE_COUNT = 1;
+	int EPIDEMIC_FEATURE_COUNT = COMPOSABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Epidemic</em>' class.
@@ -128,7 +156,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EPIDEMIC_OPERATION_COUNT = 0;
+	int EPIDEMIC_OPERATION_COUNT = COMPOSABLE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link epimodel.impl.CompartmentWrapperImpl <em>Compartment Wrapper</em>}' class.
@@ -184,7 +212,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT__LABEL = 0;
+	int COMPARTMENT__LABEL = COMPOSABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Compartment</em>' class.
@@ -193,7 +221,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_FEATURE_COUNT = 1;
+	int COMPARTMENT_FEATURE_COUNT = COMPOSABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Compartment</em>' class.
@@ -202,7 +230,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_OPERATION_COUNT = 0;
+	int COMPARTMENT_OPERATION_COUNT = COMPOSABLE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link epimodel.impl.FlowWrapperImpl <em>Flow Wrapper</em>}' class.
@@ -405,6 +433,16 @@ public interface EpimodelPackage extends EPackage {
 	EAttribute getFlow_Id();
 
 	/**
+	 * Returns the meta object for class '{@link epimodel.Composable <em>Composable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Composable</em>'.
+	 * @see epimodel.Composable
+	 * @generated
+	 */
+	EClass getComposable();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -534,6 +572,16 @@ public interface EpimodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FLOW__ID = eINSTANCE.getFlow_Id();
+
+		/**
+		 * The meta object literal for the '{@link epimodel.impl.ComposableImpl <em>Composable</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see epimodel.impl.ComposableImpl
+		 * @see epimodel.impl.EpimodelPackageImpl#getComposable()
+		 * @generated
+		 */
+		EClass COMPOSABLE = eINSTANCE.getComposable();
 
 	}
 

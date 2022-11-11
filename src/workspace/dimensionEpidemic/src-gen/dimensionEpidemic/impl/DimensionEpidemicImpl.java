@@ -6,8 +6,11 @@ import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicPackage;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Composable;
+import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
+import epimodel.util.Difference;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
@@ -44,6 +47,39 @@ import org.eclipse.swt.widgets.Control;
  */
 public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpidemic {
 
+	@Override
+	public List<PhysicalCompartment> getSources() {
+		return asProduct().getSources();
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinks() {
+		return asProduct().getSinks();
+	}
+
+	@Override
+	public List<Flow> getFlows() {
+		return asProduct().getFlows();
+	}
+
+	@Override
+	public Difference compareWithSameClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithDifferentClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithBaseClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
 	/**
 	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -57,19 +93,6 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 
-		DimensionEpidemicImpl that = this;
-
-		ProductImpl p = new ProductImpl() {
-			@Override
-			public EList<CompartmentWrapper> getDimensions() {
-				return that.getDimension();
-			}
-			@Override
-			public EList<FlowWrapper> getFlow() {
-				return that.getFlow();
-			}
-		};
-
 		shell.setText("Edit Group " + getId());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
@@ -79,10 +102,10 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 			shell.pack(true);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Compartments", () -> {
-			p.editCompartments(dom, shell, controls);
+			asProduct().editCompartments(dom, shell, controls);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Flows", () -> {
-			p.editFlows(dom, shell, controls);
+			asProduct().editFlows(dom, shell, controls);
 		});
 	}
 
@@ -93,17 +116,7 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 
 		if (physicalCompartments == null)
-			physicalCompartments = new ProductImpl() {
-				@Override
-				public EList<CompartmentWrapper> getDimensions() {
-					return getDimension();
-				}
-
-				@Override
-				protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-					return p;
-				}
-			}.getPhysicalCompartments();
+			physicalCompartments = asProduct().getPhysicalCompartments();
 
 		return physicalCompartments;
 	}
@@ -111,24 +124,21 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows() {
 
-		DimensionEpidemicImpl de = this;
-		
 		if (physicalFlows == null) {
+
+		    DimensionEpidemicImpl de = this;
+
 			physicalFlows = new ProductImpl() {
 				@Override
 				public EList<CompartmentWrapper> getDimensions() {
 					return de.getDimension();
 				}
+
 				@Override
 				public EList<FlowWrapper> getFlow() {
 					return de.getFlow();
 				}
-			}
-			.getFlows()
-				.stream()
-				.map(f -> f.getPhysicalFlows(this))
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
+			}.getFlows().stream().map(f -> f.getPhysicalFlows(this)).flatMap(List::stream).collect(Collectors.toList());
 		}
 
 		return physicalFlows;
@@ -158,6 +168,22 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 			return false;
 		}).collect(Collectors.toList());
 	}
+
+    ProductImpl asProduct() {
+        DimensionEpidemicImpl de = this;
+
+		return new ProductImpl() {
+            @Override
+            public EList<CompartmentWrapper> getDimensions() {
+                return de.getDimension();
+            }
+
+            @Override
+            public EList<FlowWrapper> getFlow() {
+                return de.getFlow();
+            }
+        };
+    }
 
 	/**
 	 * The cached value of the '{@link #getDimension() <em>Dimension</em>}' containment reference list.
@@ -302,5 +328,4 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		}
 		return super.eIsSet(featureID);
 	}
-
 } //DimensionEpidemicImpl

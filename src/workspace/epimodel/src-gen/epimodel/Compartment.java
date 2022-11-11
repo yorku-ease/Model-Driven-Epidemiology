@@ -27,7 +27,7 @@ import epimodel.util.PhysicalCompartment;
  * @model
  * @generated
  */
-public interface Compartment extends EObject {
+public interface Compartment extends Composable {
 
 	/**
 	 * Returns the value of the '<em><b>Label</b></em>' attribute list.
@@ -41,13 +41,5 @@ public interface Compartment extends EObject {
 	 */
 	EList<String> getLabel();
 
-	List<PhysicalCompartment> getPhysicalCompartments();
-
-	List<PhysicalCompartment> getSources();
-
-	List<PhysicalCompartment> getSinks();
-
-	List<Flow> getFlows();
-	
 	void edit(EObject dom, Shell shell, List<Control> controls);
 } // Compartment

@@ -5,13 +5,13 @@ package epimodel.impl;
 import epimodel.Epidemic;
 import epimodel.EpimodelPackage;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,15 +32,20 @@ import org.eclipse.swt.widgets.Text;
  *
  * @generated
  */
-public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implements Epidemic {
-	
+public abstract class EpidemicImpl extends ComposableImpl implements Epidemic {
+
+	@Override
+	public List<String> getLabels() {
+		return Arrays.asList(getId());
+	}
+
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
-        shell.setLayout(new GridLayout(3, false));
+		shell.setLayout(new GridLayout(3, false));
 		shell.setText("Set ID");
 		epimodel.util.Edit.addText(shell, controls, "Epidemic ID:");
-        // field you can type in
-        Text t = new Text(shell, SWT.NONE);
+		// field you can type in
+		Text t = new Text(shell, SWT.NONE);
 		t.setText(getId() == null ? "" : getId());
 		t.setLayoutData(new GridData(300, 50));
 		controls.add(t);
@@ -52,7 +57,7 @@ public abstract class EpidemicImpl extends MinimalEObjectImpl.Container implemen
 			});
 		});
 	}
-	
+
 	/**
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->

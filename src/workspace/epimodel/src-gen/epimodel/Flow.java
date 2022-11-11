@@ -38,10 +38,11 @@ public interface Flow extends EObject {
 	List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c);
 
 	List<EObject> getTargetObjects();
-	
+
 	void edit(Shell shell, List<Control> controls, Compartment target);
 
 	String getTargetRelation(EObject target);
+
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->

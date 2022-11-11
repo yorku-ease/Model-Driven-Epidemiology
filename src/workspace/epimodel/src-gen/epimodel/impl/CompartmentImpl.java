@@ -3,9 +3,12 @@
 package epimodel.impl;
 
 import epimodel.Compartment;
+import epimodel.Composable;
 import epimodel.EpimodelPackage;
 import epimodel.Flow;
+import epimodel.util.Difference;
 import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +19,6 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,30 +40,60 @@ import org.eclipse.swt.widgets.Text;
  *
  * @generated
  */
-public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
-	
+public class CompartmentImpl extends ComposableImpl implements Compartment {
+
+	@Override
+	public List<PhysicalFlow> getPhysicalFlows() {
+		return new ArrayList<>();
+	}
+
+	@Override
+	public List<String> getLabels() {
+		List<String> result = new ArrayList<>();
+		result.addAll(getLabel());
+		return result;
+	}
+
+	@Override
+	public Difference compareWithSameClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithDifferentClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithBaseClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Edit Compartment " + getLabel());
-        shell.setLayout(new GridLayout(2, false));
-        epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
-        // field you can type in
-        Text t = new Text(shell, SWT.NONE);
+		shell.setLayout(new GridLayout(2, false));
+		epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
+		// field you can type in
+		Text t = new Text(shell, SWT.NONE);
 		t.setText(getLabel().stream().collect(Collectors.joining(",")));
 		t.setLayoutData(new GridData(300, 50));
 		controls.add(t);
-        epimodel.util.Edit.addText(shell, controls, "");
-        epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-        	epimodel.util.Edit.transact(dom, () -> {
-        		getLabel().clear();
-        		String labelsCSV = t.getText();
-        		for (String label: labelsCSV.split(","))
-        			if (label.length() > 0)
-        				getLabel().add(label.trim());
+		epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+			epimodel.util.Edit.transact(dom, () -> {
+				getLabel().clear();
+				String labelsCSV = t.getText();
+				for (String label : labelsCSV.split(","))
+					if (label.length() > 0)
+						getLabel().add(label.trim());
 				shell.close();
-        	});
-    		shell.close();
-        });
+			});
+			shell.close();
+		});
 	}
 
 	/**

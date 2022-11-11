@@ -36,33 +36,26 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @generated
  */
 public class ContactImpl extends FromToFlowImpl implements Contact {
-	
+
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
 		List<PhysicalFlow> res = new ArrayList<>();
-		
+
 		int index = 0;
 		for (PhysicalCompartment from : epidemic.getPhysicalSinksFor(from))
 			for (PhysicalCompartment to : epidemic.getPhysicalSourcesFor(to))
 				for (PhysicalCompartment contact : epidemic.getPhysicalFor(contact)) {
-				
-				List<PhysicalCompartment> equationCompartments = Arrays.asList(from, contact);
-				List<PhysicalCompartment> affectedCompartments = Arrays.asList(from, to);
-				List<Float> coefficients = Arrays.asList(-1f, 1f);
-				String flowParameter = "(get " + getId() + " " + index++ +")";
-				String equation = "(* " + flowParameter + " $0 $1)";
-				List<String> requiredOperators = Arrays.asList("*", "get");
-				
-				res.add(new PhysicalFlow(
-						Arrays.asList(
-								new PhysicalFlowEquation(
-									equationCompartments,
-									affectedCompartments,
-									coefficients,
-									equation,
-									requiredOperators
-							))));
-			}
+
+					List<PhysicalCompartment> equationCompartments = Arrays.asList(from, contact);
+					List<PhysicalCompartment> affectedCompartments = Arrays.asList(from, to);
+					List<Float> coefficients = Arrays.asList(-1f, 1f);
+					String flowParameter = "(get " + getId() + " " + index++ + ")";
+					String equation = "(* " + flowParameter + " $0 $1)";
+					List<String> requiredOperators = Arrays.asList("*", "get");
+
+					res.add(new PhysicalFlow(Arrays.asList(new PhysicalFlowEquation(equationCompartments,
+							affectedCompartments, coefficients, equation, requiredOperators))));
+				}
 		return res;
 	}
 

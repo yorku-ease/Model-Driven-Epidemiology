@@ -27,7 +27,7 @@ import epimodel.util.PhysicalFlow;
  * @model abstract="true"
  * @generated
  */
-public interface Epidemic extends EObject {
+public interface Epidemic extends Composable {
 
 	List<PhysicalCompartment> getPhysicalFor(Compartment c);
 
@@ -35,10 +35,6 @@ public interface Epidemic extends EObject {
 
 	List<PhysicalCompartment> getPhysicalSinksFor(Compartment c);
 
-	List<PhysicalCompartment> getPhysicalCompartments();
-
-	List<PhysicalFlow> getPhysicalFlows();
-	
 	void edit(EObject dom, Shell shell, List<Control> controls);
 
 	/**

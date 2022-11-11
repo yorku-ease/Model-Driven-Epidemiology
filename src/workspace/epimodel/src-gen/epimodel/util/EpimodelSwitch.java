@@ -77,6 +77,8 @@ public class EpimodelSwitch<T> extends Switch<T> {
 			Epidemic epidemic = (Epidemic) theEObject;
 			T result = caseEpidemic(epidemic);
 			if (result == null)
+				result = caseComposable(epidemic);
+			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
@@ -91,6 +93,8 @@ public class EpimodelSwitch<T> extends Switch<T> {
 			Compartment compartment = (Compartment) theEObject;
 			T result = caseCompartment(compartment);
 			if (result == null)
+				result = caseComposable(compartment);
+			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
@@ -104,6 +108,13 @@ public class EpimodelSwitch<T> extends Switch<T> {
 		case EpimodelPackage.FLOW: {
 			Flow flow = (Flow) theEObject;
 			T result = caseFlow(flow);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case EpimodelPackage.COMPOSABLE: {
+			Composable composable = (Composable) theEObject;
+			T result = caseComposable(composable);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -200,6 +211,21 @@ public class EpimodelSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseFlow(Flow object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Composable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Composable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseComposable(Composable object) {
 		return null;
 	}
 

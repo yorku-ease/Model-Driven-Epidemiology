@@ -33,11 +33,11 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class CompartmentWrapperImpl extends MinimalEObjectImpl.Container implements CompartmentWrapper {
-	
+
 	public void edit(Shell shell, List<Control> controls) {
 		throw new RuntimeException();
 	}
-	
+
 	/**
 	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' containment reference.
 	 * <!-- begin-user-doc -->

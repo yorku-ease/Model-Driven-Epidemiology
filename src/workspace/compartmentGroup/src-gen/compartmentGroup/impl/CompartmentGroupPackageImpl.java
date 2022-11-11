@@ -103,7 +103,7 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
-	 * @generated
+	 * @generated NOT
 	 */
 	public static CompartmentGroupPackage init() {
 		if (isInited)
@@ -118,7 +118,8 @@ public class CompartmentGroupPackageImpl extends EPackageImpl implements Compart
 		isInited = true;
 
 		// Initialize simple dependencies
-		// EpimodelPackage.eINSTANCE.eClass();
+//		Manually removed
+//		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCompartmentGroupPackage.createPackageContents();

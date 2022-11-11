@@ -4,6 +4,7 @@ package epimodel.impl;
 
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Composable;
 import epimodel.Epidemic;
 import epimodel.EpidemicWrapper;
 import epimodel.EpimodelFactory;
@@ -26,13 +27,20 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,104 +49,108 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
-	
+
 	static List<String> packages = null;
 	static List<List<EClass>> eclassesByPackage = null;
-	
-    static public List<EPackage> getEpimodelPackages() {
-	    final EPackage.Registry reg = EPackage.Registry.INSTANCE;
-	    List<EPackage> allPackages = reg
-	    		.values()
-	    		.stream()
-	    		.filter(pkg -> pkg instanceof EPackage)
-	    		.map(pkg -> (EPackage) pkg)
-	    		.collect(Collectors.toList());
-	    List<EPackage> epimodelPackages = new ArrayList<>();
-	    
-	    do {
-	    	int size = epimodelPackages.size();
-		    for (int i = allPackages.size() - 1; i  >= 0; --i) {
-		    	EPackage pkg = allPackages.get(i);
-		    	if (EPkgRefersToAtLeastOnePkgOrEpimodel(pkg, epimodelPackages)) {
-		    		epimodelPackages.add(pkg);
-		    		allPackages.remove(i);
-		    	}
-		    }
-		    if (epimodelPackages.size() == size)
-		    	break;
-	    } while (true);
+
+	static public List<EPackage> getEpimodelPackages() {
+		final EPackage.Registry reg = EPackage.Registry.INSTANCE;
+		List<EPackage> allPackages = reg.values().stream().filter(pkg -> pkg instanceof EPackage)
+				.map(pkg -> (EPackage) pkg).collect(Collectors.toList());
+		List<EPackage> epimodelPackages = new ArrayList<>();
+
+		do {
+			int size = epimodelPackages.size();
+			for (int i = allPackages.size() - 1; i >= 0; --i) {
+				EPackage pkg = allPackages.get(i);
+				if (EPkgRefersToAtLeastOnePkgOrEpimodel(pkg, epimodelPackages)) {
+					epimodelPackages.add(pkg);
+					allPackages.remove(i);
+				}
+			}
+			if (epimodelPackages.size() == size)
+				break;
+		} while (true);
 		return epimodelPackages;
-    }
-    
-    public static void doCollectEClasses() {
-	    List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
-	    packages = epimodelPackages.stream().map(p->p.getName()).collect(Collectors.toList());
-    	eclassesByPackage = new ArrayList<>(packages.size());
-    	for (int i = 0; i < packages.size(); ++i)
-    		eclassesByPackage.add(new ArrayList<>());
-	    System.out.println(epimodelPackages);
-	    System.out.println(packages);
-	    System.out.println(eclassesByPackage);
-	    for (EPackage pkg : epimodelPackages) {
-	    	EList<EClassifier> eclassifiers = pkg.getEClassifiers();
-	    	for (EClassifier classifier : eclassifiers) {
-	    		if (!(classifier instanceof EClass))
-		    		continue;
-    			EClass cl = (EClass) classifier;
-    			eclassesByPackage.get(packages.indexOf(pkg.getName())).add(cl);
-	    	}
-	    }
-    }
-	
-    public static List<EClass> collectEClasses(List<String> enabledPackages) {
-    	if (packages == null || eclassesByPackage == null)
-    		doCollectEClasses();
-    	List<EClass> eclasses = new ArrayList<>();
-    	for (int i = 0; i < packages.size(); ++i)
-    		if (enabledPackages.contains(packages.get(i)))
-    			eclasses.addAll(eclassesByPackage.get(i));
-    	return eclasses;
 	}
-    
-    public static boolean isModelType(EClass T) {
-    	return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T)
-			|| EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
-			|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
-    }
-    
-    static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
-    	OutputStream output = new OutputStream() {
-    	    StringBuilder sb = new StringBuilder();
 
-    	    @Override
-    	    public void write(int b) throws IOException {
-    	        sb.append((char) b);
-    	    }
+	public static void doCollectEClasses() {
+		List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
+		packages = epimodelPackages.stream().map(p -> p.getName()).collect(Collectors.toList());
+		eclassesByPackage = new ArrayList<>(packages.size());
+		for (int i = 0; i < packages.size(); ++i)
+			eclassesByPackage.add(new ArrayList<>());
+		System.out.println(epimodelPackages);
+		System.out.println(packages);
+		System.out.println(eclassesByPackage);
+		for (EPackage pkg : epimodelPackages) {
+			EList<EClassifier> eclassifiers = pkg.getEClassifiers();
+			for (EClassifier classifier : eclassifiers) {
+				if (!(classifier instanceof EClass))
+					continue;
+				EClass cl = (EClass) classifier;
+				eclassesByPackage.get(packages.indexOf(pkg.getName())).add(cl);
+			}
+		}
+	}
 
-    	    @Override
-    	    public String toString() {
-    	        return sb.toString();
-    	    }
-    	};
-    	try {
+	public static List<EClass> collectEClasses(List<String> enabledPackages) {
+		if (packages == null || eclassesByPackage == null)
+			doCollectEClasses();
+		List<EClass> eclasses = new ArrayList<>();
+		for (int i = 0; i < packages.size(); ++i)
+			if (enabledPackages.contains(packages.get(i)))
+				eclasses.addAll(eclassesByPackage.get(i));
+		return eclasses;
+	}
+
+	public static boolean isModelType(EClass T) {
+		return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T) || EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
+				|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
+	}
+
+	static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
+		OutputStream output = new OutputStream() {
+			StringBuilder sb = new StringBuilder();
+
+			@Override
+			public void write(int b) throws IOException {
+				sb.append((char) b);
+			}
+
+			@Override
+			public String toString() {
+				return sb.toString();
+			}
+		};
+		try {
 			pkg.eResource().save(output, null); // pkg.ecore file as string
-		} catch (Exception e) { }
-    	
-    	List<String> pkgsStrToFindInXMI = pkgs
-    			.stream()
-    			.map(p -> p.getName() + "#")
-    			.collect(Collectors.toList());
-    	
-    	String ecoreStr = output.toString();
-    	return ecoreStr
-    			.contains("http://www.example.org/epimodel") 
-    			|| pkgsStrToFindInXMI
-    				.stream()
-    				.filter(uri -> ecoreStr.contains(uri))
-    				.findFirst()
-    				.isPresent();
+		} catch (Exception e) {
+		}
+
+		List<String> pkgsStrToFindInXMI = pkgs.stream().map(p -> p.getName() + "#").collect(Collectors.toList());
+
+		String ecoreStr = output.toString();
+		return ecoreStr.contains("http://www.example.org/epimodel")
+				|| pkgsStrToFindInXMI.stream().filter(uri -> ecoreStr.contains(uri)).findFirst().isPresent();
 	}
-	
+
+	public static EObject loadModel(String model_fn) {
+		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
+		factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
+
+		ResourceSet resSet = new ResourceSetImpl();
+		resSet.setPackageRegistry(EPackage.Registry.INSTANCE);
+		resSet.setResourceFactoryRegistry(factoryRegistry);
+
+		EPackage.Registry.INSTANCE.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
+
+		URI uri = URI.createFileURI(model_fn);
+		Resource resource = resSet.getResource(uri, true);
+
+		return resource.getContents().get(0);
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -180,6 +192,13 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	private EClass flowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass composableEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -243,81 +262,78 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(EpimodelPackage.eNS_URI, theEpimodelPackage);
-		
+
 		// Added Manually
 		try {
 			loadExtensions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return theEpimodelPackage;
 	}
-	
+
 	public static void loadExtensions() throws Exception {
-		
+
 		{
 			String env = "epimodelJars";
 			String value = System.getenv(env);
 			if (value != null && value.toLowerCase().equals("false"))
 				return;
 		}
-		
+
 		String env = "epimodelExtensionsFolder";
 		String folder_path = System.getenv(env);
-		
+
 		if (folder_path == null)
 			throw new Exception(
-				"Required Environment Variable '" + env +
-				"' not found, set the variable and restart the program");
-		
+					"Required Environment Variable '" + env + "' not found, set the variable and restart the program");
+
 		if (folder_path.endsWith("/") || folder_path.endsWith("\\"))
 			folder_path = folder_path.substring(0, folder_path.length() - 1);
 
 		File folder = new File(folder_path);
-		
+
 		if (!folder.exists() || folder.isFile())
-			throw new Exception(
-				"Environment Variable '" + env +
-				"' does not point to an existing folder, update the variable and restart the program");
-			
+			throw new Exception("Environment Variable '" + env
+					+ "' does not point to an existing folder, update the variable and restart the program");
+
 		File[] listOfFiles = folder.listFiles();
-		
+
 		for (File jar : listOfFiles)
 			addEPackageToRegistry(folder_path + "/" + jar.getName());
 	}
-	
+
 	static void addEPackageToRegistry(String jar) throws Exception {
-        for (Class<?> c : loadClassesFromJar(jar))
-        	if (c.getName().endsWith("Package"))
-        		EPackage.Registry.INSTANCE.put(
-            		(String) getStaticFieldByName(c, "eNS_URI"),
-            		getStaticFieldByName(c, "eINSTANCE")
-            	);
+		for (Class<?> c : loadClassesFromJar(jar))
+			if (c.getName().endsWith("Package"))
+				EPackage.Registry.INSTANCE.put((String) getStaticFieldByName(c, "eNS_URI"),
+						getStaticFieldByName(c, "eINSTANCE"));
 	}
-	
+
 	protected static List<Class<?>> loadClassesFromJar(String pathToJar) throws IOException, ClassNotFoundException {
 		JarFile jarFile = new JarFile(pathToJar);
 		Enumeration<JarEntry> entry = jarFile.entries();
 		List<Class<?>> classes = new ArrayList<>();
 
-		URL[] urls = { new URL("jar:file:" + pathToJar+"!/") };
-		
+		URL[] urls = { new URL("jar:file:" + pathToJar + "!/") };
+
 		URLClassLoader cl = URLClassLoader.newInstance(urls, EpimodelPackageImpl.class.getClassLoader());
 
 		while (entry.hasMoreElements()) {
-		    JarEntry je = entry.nextElement();
-		    if (je.isDirectory() || !je.getName().endsWith(".class"))
-		        continue;
-		    String className = je.getName().substring(0, je.getName().indexOf(".class")).replace('/', '.');
-		    Class<?> c = cl.loadClass(className);
-		    classes.add(c);
+			JarEntry je = entry.nextElement();
+			if (je.isDirectory() || !je.getName().endsWith(".class"))
+				continue;
+			String className = je.getName().substring(0, je.getName().indexOf(".class")).replace('/', '.');
+			Class<?> c = cl.loadClass(className);
+			classes.add(c);
 		}
 		jarFile.close();
 		return classes;
 	}
-	
-	protected static Object getStaticFieldByName(Class<?> c, String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+
+	protected static Object getStaticFieldByName(Class<?> c, String fieldName)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		Field field = c.getField(fieldName);
 		field.setAccessible(true);
 		return field.get(new Object());
@@ -449,6 +465,16 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
+	public EClass getComposable() {
+		return composableEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EpimodelFactory getEpimodelFactory() {
 		return (EpimodelFactory) getEFactoryInstance();
 	}
@@ -490,6 +516,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		flowEClass = createEClass(FLOW);
 		createEAttribute(flowEClass, FLOW__ID);
+
+		composableEClass = createEClass(COMPOSABLE);
 	}
 
 	/**
@@ -521,6 +549,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		epidemicEClass.getESuperTypes().add(this.getComposable());
+		compartmentEClass.getESuperTypes().add(this.getComposable());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(epidemicWrapperEClass, EpidemicWrapper.class, "EpidemicWrapper", !IS_ABSTRACT, !IS_INTERFACE,
@@ -553,6 +583,9 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		initEClass(flowEClass, Flow.class, "Flow", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, Flow.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(composableEClass, Composable.class, "Composable", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

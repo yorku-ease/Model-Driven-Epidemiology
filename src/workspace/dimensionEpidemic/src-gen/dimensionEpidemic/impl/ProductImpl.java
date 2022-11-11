@@ -7,12 +7,14 @@ import dimensionEpidemic.Product;
 import dimensionEpidemic.util.CartesianProduct;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Composable;
 import epimodel.Epidemic;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.impl.EpidemicImpl;
 import epimodel.impl.FlowImpl;
+import epimodel.util.Difference;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
@@ -49,6 +51,24 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class ProductImpl extends CompartmentImpl implements Product {
+
+	@Override
+	public Difference compareWithSameClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithDifferentClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
+
+	@Override
+	public Difference compareWithBaseClass(Composable other) {
+		Difference difference = new Difference();
+		return difference;
+	}
 
 	/**
 	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.
@@ -101,11 +121,8 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			});
 		}
 		epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> 
-			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> 
-				epimodel.util.Edit.transact(dom, () -> getDimensions().add(w))
-			)
-		);
+		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> epimodel.util.Edit.addCompartmentWindow(dom,
+				shell, controls, (w) -> epimodel.util.Edit.transact(dom, () -> getDimensions().add(w))));
 		shell.pack(true);
 	}
 
@@ -130,28 +147,19 @@ public class ProductImpl extends CompartmentImpl implements Product {
 				});
 			});
 		}
-		
+
 		epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Flow", () -> 
-			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> 
-				epimodel.util.Edit.transact(dom, () -> getFlow().add(w))
-			)
-		);
+		epimodel.util.Edit.addBtn(shell, controls, "Add Flow", () -> epimodel.util.Edit.addFlowWindow(shell, controls,
+				(w) -> epimodel.util.Edit.transact(dom, () -> getFlow().add(w))));
 		shell.pack(true);
 	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 		return CartesianProduct
-				.cartesianProduct(
-					getDimensions()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getPhysicalCompartments)
-					.collect(Collectors.toList()))
-				.stream()
-				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
-				.map(p -> prependSelf(p))
+				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getPhysicalCompartments).collect(Collectors.toList()))
+				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
@@ -163,46 +171,30 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	protected PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
 		return new PhysicalCompartment(
-				toCombine
-					.stream()
-					.map(p -> p.labels)
-					.flatMap(List::stream)
-					.collect(Collectors.toList()));
+				toCombine.stream().map(p -> p.labels).flatMap(List::stream).collect(Collectors.toList()));
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		return CartesianProduct
-				.cartesianProduct(
-					getDimensions()
-						.stream()
-						.map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getSources)
-						.collect(Collectors.toList()))
-				.stream()
-				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
-				.map(p -> prependSelf(p))
+				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getSources).collect(Collectors.toList()))
+				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
 		return CartesianProduct
-				.cartesianProduct(
-					getDimensions()
-						.stream()
-						.map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getSinks)
-						.collect(Collectors.toList()))
-				.stream()
-				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
-				.map(p -> prependSelf(p))
+				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getSinks).collect(Collectors.toList()))
+				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Flow> getFlows() {
-		
+
 		/*
 		 * This terrible piece of code is in charge of hiding parts of the epidemic
 		 * to flows based on the dimension they are in (so flows dont take from one hyperplane
@@ -227,10 +219,8 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		 * 	    SB*IA->IB
 		 * 	    SB*IB->IB
 		 */
-		
-		List<Compartment> dims = getDimensions()
-				.stream()
-				.map(CompartmentWrapper::getCompartment)
+
+		List<Compartment> dims = getDimensions().stream().map(CompartmentWrapper::getCompartment)
 				.collect(Collectors.toList());
 		List<Flow> res = new ArrayList<>();
 
@@ -238,16 +228,10 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			Compartment dimension = dims.get(i);
 			List<Flow> flowsOfDim = dimension.getFlows();
 			List<Compartment> otherDimensions = getDimensionsExceptOne(dimension);
-			List<String> ids = otherDimensions
-					.stream()
-					.map(d -> d.getLabel())
-					.flatMap(List::stream)
+			List<String> ids = otherDimensions.stream().map(d -> d.getLabel()).flatMap(List::stream)
 					.collect(Collectors.toList());
 			List<List<PhysicalCompartment>> whatFlowsWillSee = CartesianProduct.cartesianProduct(
-					otherDimensions
-						.stream()
-						.map(d -> d.getPhysicalCompartments())
-						.collect(Collectors.toList()));
+					otherDimensions.stream().map(d -> d.getPhysicalCompartments()).collect(Collectors.toList()));
 
 			for (Flow f : flowsOfDim) {
 				for (List<PhysicalCompartment> specifications : whatFlowsWillSee) {
@@ -284,19 +268,54 @@ public class ProductImpl extends CompartmentImpl implements Product {
 										return true;
 									}).collect(Collectors.toList());
 								}
-
+								
+								// methods to override to instantiate EpidemicImpl, they won't be called
 								@Override
 								public List<PhysicalCompartment> getPhysicalCompartments() {
-									return null;
+									throw new NullPointerException();
 								}
 
 								@Override
 								public List<PhysicalFlow> getPhysicalFlows() {
-									return null;
+									throw new NullPointerException();
+								}
+
+								@Override
+								public Difference compareWithSameClass(Composable other) {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public Difference compareWithDifferentClass(Composable other) {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public Difference compareWithBaseClass(Composable other) {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public List<String> getLabels() {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public List<PhysicalCompartment> getSources() {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public List<PhysicalCompartment> getSinks() {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public List<Flow> getFlows() {
+									throw new NullPointerException();
 								}
 							}).stream()
-									.map(p -> new PhysicalFlow(
-										p.equations.stream()
+									.map(p -> new PhysicalFlow(p.equations.stream()
 											.map(e -> new PhysicalFlowEquation(e.equationCompartments,
 													e.affectedCompartments, e.coefficients,
 													e.equation.replace(f.getId(), getId()), e.requiredOperators))
