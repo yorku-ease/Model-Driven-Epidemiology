@@ -46,7 +46,7 @@ public interface FlowWrapper extends EObject {
 	 * @generated
 	 */
 	void setFlow(Flow value);
-	
+
 	void edit(Shell shell, List<Control> controls);
 
 } // FlowWrapper

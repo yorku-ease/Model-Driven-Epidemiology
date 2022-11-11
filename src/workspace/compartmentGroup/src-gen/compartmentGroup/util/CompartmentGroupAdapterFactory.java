@@ -6,6 +6,7 @@ import compartmentGroup.*;
 
 import epimodel.Compartment;
 
+import epimodel.Composable;
 import epimodel.Epidemic;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -97,6 +98,11 @@ public class CompartmentGroupAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseGroupEpidemic(GroupEpidemic object) {
 			return createGroupEpidemicAdapter();
+		}
+
+		@Override
+		public Adapter caseComposable(Composable object) {
+			return createComposableAdapter();
 		}
 
 		@Override
@@ -209,6 +215,20 @@ public class CompartmentGroupAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGroupEpidemicAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link epimodel.Composable <em>Composable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see epimodel.Composable
+	 * @generated
+	 */
+	public Adapter createComposableAdapter() {
 		return null;
 	}
 

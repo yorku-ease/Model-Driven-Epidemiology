@@ -5,6 +5,7 @@ package dimensionEpidemic.util;
 import dimensionEpidemic.*;
 
 import epimodel.Compartment;
+import epimodel.Composable;
 import epimodel.Epidemic;
 
 import org.eclipse.emf.ecore.EObject;
@@ -75,6 +76,8 @@ public class DimensionEpidemicSwitch<T> extends Switch<T> {
 			if (result == null)
 				result = caseEpidemic(dimensionEpidemic);
 			if (result == null)
+				result = caseComposable(dimensionEpidemic);
+			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
 		}
@@ -83,6 +86,8 @@ public class DimensionEpidemicSwitch<T> extends Switch<T> {
 			T result = caseProduct(product);
 			if (result == null)
 				result = caseCompartment(product);
+			if (result == null)
+				result = caseComposable(product);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -119,6 +124,21 @@ public class DimensionEpidemicSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseProduct(Product object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Composable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Composable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseComposable(Composable object) {
 		return null;
 	}
 

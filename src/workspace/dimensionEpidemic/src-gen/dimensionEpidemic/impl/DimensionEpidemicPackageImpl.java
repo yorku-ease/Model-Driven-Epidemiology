@@ -86,6 +86,7 @@ public class DimensionEpidemicPackageImpl extends EPackageImpl implements Dimens
 		isInited = true;
 
 		// Initialize simple dependencies
+//		Manually removed
 //		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects

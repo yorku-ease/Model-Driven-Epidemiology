@@ -56,10 +56,10 @@ import epimodel.util.PhysicalCompartment;
  * @generated
  */
 public class GroupImpl extends CompartmentImpl implements Group {
-	
+
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Edit Group Epidemic " + getLabel());
-        shell.setLayout(new GridLayout(1, false));
+		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
 			controls.forEach(c -> c.dispose());
 			controls.clear();
@@ -73,41 +73,39 @@ public class GroupImpl extends CompartmentImpl implements Group {
 			editFlows(dom, shell, controls);
 		});
 	}
-	
+
 	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
 		controls.forEach(c -> c.dispose());
 		controls.clear();
 		int nCol = 4;
-        shell.setLayout(new GridLayout(nCol, false));
-        List<Compartment> l = getCompartment()
-			.stream()
-			.map(CompartmentWrapper::getCompartment)
-			.collect(Collectors.toList());
+		shell.setLayout(new GridLayout(nCol, false));
+		List<Compartment> l = getCompartment().stream().map(CompartmentWrapper::getCompartment)
+				.collect(Collectors.toList());
 
-        epimodel.util.Edit.addText(shell, controls, "Compartment");
-        epimodel.util.Edit.addText(shell, controls, "Is Source");
-        epimodel.util.Edit.addText(shell, controls, "Is Sink");
-        epimodel.util.Edit.addText(shell, controls, "Delete");
-        
-        for (Compartment e : l) {
-        	epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
-        	addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES);
-        	addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
-    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
-    			epimodel.util.Edit.transact(dom, () -> {
-    				controls.forEach(c -> c.dispose());
-    				controls.clear();
-    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
-    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-    					epimodel.util.Edit.transact(dom,  ()-> getCompartment().remove(e.eContainer()));
-        				shell.close();
-    				});
-    				shell.pack(true);
-    			});
-    		});
-        }
-        for  (int i = 0; i < nCol - 1; ++i)
-        	epimodel.util.Edit.addText(shell, controls, "");
+		epimodel.util.Edit.addText(shell, controls, "Compartment");
+		epimodel.util.Edit.addText(shell, controls, "Is Source");
+		epimodel.util.Edit.addText(shell, controls, "Is Sink");
+		epimodel.util.Edit.addText(shell, controls, "Delete");
+
+		for (Compartment e : l) {
+			epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+			addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES);
+			addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
+			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
+				epimodel.util.Edit.transact(dom, () -> {
+					controls.forEach(c -> c.dispose());
+					controls.clear();
+					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
+					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+						epimodel.util.Edit.transact(dom, () -> getCompartment().remove(e.eContainer()));
+						shell.close();
+					});
+					shell.pack(true);
+				});
+			});
+		}
+		for (int i = 0; i < nCol - 1; ++i)
+			epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
 			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
 				epimodel.util.Edit.transact(dom, () -> getCompartment().add(w));
@@ -115,76 +113,71 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		});
 		shell.pack(true);
 	}
-	
-	void addSourceSinkCheckbox(EObject dom, Shell shell, List<Control> controls, Compartment target, EReference sourceOrSinkRef) {
+
+	void addSourceSinkCheckbox(EObject dom, Shell shell, List<Control> controls, Compartment target,
+			EReference sourceOrSinkRef) {
 		final Button checkbox = new Button(shell, SWT.CHECK);
 		EObject l = (EObject) eGet(sourceOrSinkRef);
-		final EList<Link> links = l == null ? null : l instanceof GroupSources ?
-				((GroupSources) l).getLink() :
-				((GroupSinks) l).getLink();
-		
+		final EList<Link> links = l == null ? null
+				: l instanceof GroupSources ? ((GroupSources) l).getLink() : ((GroupSinks) l).getLink();
+
 		if (l != null && links != null)
 			for (Link link : links)
 				if (link.getCompartment().equals(target)) {
 					checkbox.setSelection(true);
 					break;
 				}
-		
+
 		checkbox.addSelectionListener(new SelectionAdapter() {
-		    @SuppressWarnings("unchecked")
+			@SuppressWarnings("unchecked")
 			@Override
-		    public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				if (l == null)
 					eSet(sourceOrSinkRef, EcoreUtil.create(sourceOrSinkRef.getEReferenceType()));
-    			EList<Link> links = (EList<Link>) ((EObject) eGet(sourceOrSinkRef)).eGet(
-						CompartmentGroupPackage.Literals.END__LINK);
-	    		if (checkbox.getSelection()) {
-    				Link l = (Link) EcoreUtil.create(CompartmentGroupPackage.Literals.LINK);
-    				l.setCompartment(target);
-	    			epimodel.util.Edit.transact(dom, () -> {
-	    				links.add(l);
-	    			});
-	    		}
-	    		else {
-	    			for (Link link : links)
-	    				if (link.getCompartment().equals(target)) {
-			    			epimodel.util.Edit.transact(dom, () -> {
-			    				links.remove(link);
-			    			});
-	    					break;
-	    				}
-	    		}
-		    }
-	    });
-		
+				EList<Link> links = (EList<Link>) ((EObject) eGet(sourceOrSinkRef))
+						.eGet(CompartmentGroupPackage.Literals.END__LINK);
+				if (checkbox.getSelection()) {
+					Link l = (Link) EcoreUtil.create(CompartmentGroupPackage.Literals.LINK);
+					l.setCompartment(target);
+					epimodel.util.Edit.transact(dom, () -> {
+						links.add(l);
+					});
+				} else {
+					for (Link link : links)
+						if (link.getCompartment().equals(target)) {
+							epimodel.util.Edit.transact(dom, () -> {
+								links.remove(link);
+							});
+							break;
+						}
+				}
+			}
+		});
+
 		controls.add(checkbox);
 	}
-	
+
 	void editFlows(EObject dom, Shell shell, List<Control> controls) {
 		controls.forEach(c -> c.dispose());
 		controls.clear();
-        shell.setLayout(new GridLayout(2, false));
-        List<Flow> l = getFlow()
-			.stream()
-			.map(FlowWrapper::getFlow)
-			.filter(f -> f != null)
-			.collect(Collectors.toList());
-        for (Flow e : l) {
-        	epimodel.util.Edit.addText(shell, controls, e.getId());
-    		epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
-    			epimodel.util.Edit.transact(dom, () -> {
-    				controls.forEach(c -> c.dispose());
-    				controls.clear();
-    		    	epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
-    				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-        				getFlow().remove(e.eContainer());
-        				shell.close();
-    				});
-    				shell.pack(true);
-    			});
-    		});
-        }
-    	epimodel.util.Edit.addText(shell, controls, "");
+		shell.setLayout(new GridLayout(2, false));
+		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).filter(f -> f != null).collect(Collectors.toList());
+		for (Flow e : l) {
+			epimodel.util.Edit.addText(shell, controls, e.getId());
+			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
+				epimodel.util.Edit.transact(dom, () -> {
+					controls.forEach(c -> c.dispose());
+					controls.clear();
+					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
+					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+						getFlow().remove(e.eContainer());
+						shell.close();
+					});
+					shell.pack(true);
+				});
+			});
+		}
+		epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
 			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> {
 				epimodel.util.Edit.transact(dom, () -> getFlow().add(w));
@@ -195,69 +188,42 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return getCompartment()
-				.stream()
-				.map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getPhysicalCompartments)
-				.flatMap(List::stream)
-				.map(p -> prependSelf(p))
+		return getCompartment().stream().map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getPhysicalCompartments).flatMap(List::stream).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
 		GroupSinks sources = getGroupSinks();
-		Stream<Compartment> l = (sources != null && sources.getLink().size() > 0) ?
-				sources
-					.getLink()
-					.stream()
-					.map(Link::getCompartment) :
-				getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment);
+		Stream<Compartment> l = (sources != null && sources.getLink().size() > 0)
+				? sources.getLink().stream().map(Link::getCompartment)
+				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
 
-		return l.map(Compartment::getSinks)
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
+		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
 		GroupSinks sinks = getGroupSinks();
-		Stream<Compartment> l = (sinks != null && sinks.getLink().size() > 0) ? 
-				sinks
-					.getLink()
-					.stream()
-					.map(Link::getCompartment) :
-				getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment);
+		Stream<Compartment> l = (sinks != null && sinks.getLink().size() > 0)
+				? sinks.getLink().stream().map(Link::getCompartment)
+				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
 
-		return l.map(Compartment::getSinks)
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
+		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Flow> getFlows() {
 		List<Flow> res = new ArrayList<>();
-		res.addAll(
-				getFlow()
-					.stream()
-					.map(FlowWrapper::getFlow)
-					.collect(Collectors.toList()));
-		res.addAll(
-				getCompartment()
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getFlows)
-					.flatMap(List::stream)
-					.collect(Collectors.toList()));
+		res.addAll(getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList()));
+		res.addAll(getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getFlows)
+				.flatMap(List::stream).collect(Collectors.toList()));
 		return res;
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
-        PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
+		PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
 		p2.labels.addAll(0, getLabel());
 		return p2;
 	}

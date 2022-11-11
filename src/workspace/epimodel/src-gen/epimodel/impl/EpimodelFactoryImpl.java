@@ -36,7 +36,7 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 		}
 		return new EpimodelFactoryImpl();
 	}
-	
+
 	/**
 	 * Creates an instance of the factory.
 	 * <!-- begin-user-doc -->

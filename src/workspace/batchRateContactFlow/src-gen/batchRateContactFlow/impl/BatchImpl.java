@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class BatchImpl extends FromToFlowImpl implements Batch {
-	
+
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
 		List<PhysicalFlow> res = new ArrayList<>();
@@ -31,22 +31,15 @@ public class BatchImpl extends FromToFlowImpl implements Batch {
 		int index = 0;
 		for (PhysicalCompartment from : epidemic.getPhysicalSinksFor(from))
 			for (PhysicalCompartment to : epidemic.getPhysicalSourcesFor(to)) {
-				
+
 				List<PhysicalCompartment> equationCompartments = new ArrayList<>();
 				List<PhysicalCompartment> affectedCompartments = Arrays.asList(from, to);
 				List<Float> coefficients = Arrays.asList(-1f, 1f);
-				String equation = "(get " + getId() + " " + index++ +")";
+				String equation = "(get " + getId() + " " + index++ + ")";
 				List<String> requiredOperators = Arrays.asList("get");
-				
-				res.add(new PhysicalFlow(
-						Arrays.asList(
-								new PhysicalFlowEquation(
-									equationCompartments,
-									affectedCompartments,
-									coefficients,
-									equation,
-									requiredOperators
-							))));
+
+				res.add(new PhysicalFlow(Arrays.asList(new PhysicalFlowEquation(equationCompartments,
+						affectedCompartments, coefficients, equation, requiredOperators))));
 			}
 		return res;
 	}

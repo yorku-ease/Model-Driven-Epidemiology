@@ -36,29 +36,28 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class EpidemicWrapperImpl extends MinimalEObjectImpl.Container implements EpidemicWrapper {
-	
+
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Select Epidemic Type");
-        shell.setLayout(new GridLayout(1, false));
+		shell.setLayout(new GridLayout(1, false));
 		if (getEpidemic() == null) {
-	        List<EClass> epidemics = epimodel.util.Edit.getNonAbstractEClassesOfType(
-	        		EpimodelPackage.Literals.EPIDEMIC);
-	        for (EClass epiClass : epidemics)
-	        	epimodel.util.Edit.addBtn(shell, controls, "Create " + epiClass.getName(), () -> {
-        			controls.forEach(c -> c.dispose());
-        			controls.clear();
-        			epimodel.util.Edit.transact(dom, () -> setEpidemic((Epidemic) EcoreUtil.create(epiClass)));
-        			getEpidemic().edit(dom, shell, controls);
-        			shell.pack(true);
-	        	});
+			List<EClass> epidemics = epimodel.util.Edit.getNonAbstractEClassesOfType(EpimodelPackage.Literals.EPIDEMIC);
+			for (EClass epiClass : epidemics)
+				epimodel.util.Edit.addBtn(shell, controls, "Create " + epiClass.getName(), () -> {
+					controls.forEach(c -> c.dispose());
+					controls.clear();
+					epimodel.util.Edit.transact(dom, () -> setEpidemic((Epidemic) EcoreUtil.create(epiClass)));
+					getEpidemic().edit(dom, shell, controls);
+					shell.pack(true);
+				});
 		} else {
-        	epimodel.util.Edit.addText(shell, controls, "Epidemic Already Exists");
-        	epimodel.util.Edit.addBtn(shell, controls, "Close", () -> {
-        		shell.close();
-    		});
+			epimodel.util.Edit.addText(shell, controls, "Epidemic Already Exists");
+			epimodel.util.Edit.addBtn(shell, controls, "Close", () -> {
+				shell.close();
+			});
 		}
 	}
-	
+
 	/**
 	 * The cached value of the '{@link #getEpidemic() <em>Epidemic</em>}' containment reference.
 	 * <!-- begin-user-doc -->

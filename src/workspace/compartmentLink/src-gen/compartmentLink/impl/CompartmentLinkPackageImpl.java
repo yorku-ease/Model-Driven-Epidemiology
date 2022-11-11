@@ -79,7 +79,8 @@ public class CompartmentLinkPackageImpl extends EPackageImpl implements Compartm
 		isInited = true;
 
 		// Initialize simple dependencies
-		// EpimodelPackage.eINSTANCE.eClass();
+//		Manually removed
+//		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCompartmentLinkPackage.createPackageContents();

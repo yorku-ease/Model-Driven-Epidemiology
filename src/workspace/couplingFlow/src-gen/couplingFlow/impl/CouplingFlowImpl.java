@@ -43,38 +43,22 @@ public class CouplingFlowImpl extends FlowImpl implements CouplingFlow {
 
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
-		List<PhysicalCompartment> equationCompartments = 
-				Arrays.asList(firstFrom, secondFrom)
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getPhysicalCompartments)
-					.flatMap(List::stream)
-					.collect(Collectors.toList());
-		
-		List<PhysicalCompartment> affectedCompartments = 
-				Arrays.asList(firstFrom, secondFrom, firstTo, secondTo)
-					.stream()
-					.map(CompartmentWrapper::getCompartment)
-					.map(Compartment::getPhysicalCompartments)
-					.flatMap(List::stream)
-					.collect(Collectors.toList());
-		
+		List<PhysicalCompartment> equationCompartments = Arrays.asList(firstFrom, secondFrom).stream()
+				.map(CompartmentWrapper::getCompartment).map(Compartment::getPhysicalCompartments).flatMap(List::stream)
+				.collect(Collectors.toList());
+
+		List<PhysicalCompartment> affectedCompartments = Arrays.asList(firstFrom, secondFrom, firstTo, secondTo)
+				.stream().map(CompartmentWrapper::getCompartment).map(Compartment::getPhysicalCompartments)
+				.flatMap(List::stream).collect(Collectors.toList());
+
 		List<Float> coefficients = Arrays.asList(-1f, -1f, 1f, 1f);
 		String equation = "(* $0 $1)";
 		List<String> requiredOperators = Arrays.asList("*");
-		
-		return Arrays.asList(
-				new PhysicalFlow(
-						Arrays.asList(
-								new PhysicalFlowEquation(
-									equationCompartments,
-									affectedCompartments,
-									coefficients,
-									equation,
-									requiredOperators
-							))));
+
+		return Arrays.asList(new PhysicalFlow(Arrays.asList(new PhysicalFlowEquation(equationCompartments,
+				affectedCompartments, coefficients, equation, requiredOperators))));
 	}
-	
+
 	/**
 	 * The cached value of the '{@link #getFirstFrom() <em>First From</em>}' reference.
 	 * <!-- begin-user-doc -->

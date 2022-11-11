@@ -33,11 +33,11 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class FlowWrapperImpl extends MinimalEObjectImpl.Container implements FlowWrapper {
-	
+
 	public void edit(Shell shell, List<Control> controls) {
 		throw new RuntimeException();
 	}
-	
+
 	/**
 	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference.
 	 * <!-- begin-user-doc -->

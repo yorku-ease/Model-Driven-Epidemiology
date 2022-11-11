@@ -79,7 +79,8 @@ public class CouplingFlowPackageImpl extends EPackageImpl implements CouplingFlo
 		isInited = true;
 
 		// Initialize simple dependencies
-		// EpimodelPackage.eINSTANCE.eClass();
+//		Manually removed
+//		EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCouplingFlowPackage.createPackageContents();

@@ -34,10 +34,11 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class CompartmentLinkImpl extends CompartmentImpl implements CompartmentLink {
-	
+
 	public void edit(Shell shell, List<Control> controls) {
 		throw new RuntimeException();
 	}
+
 	/**
 	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' reference.
 	 * <!-- begin-user-doc -->
