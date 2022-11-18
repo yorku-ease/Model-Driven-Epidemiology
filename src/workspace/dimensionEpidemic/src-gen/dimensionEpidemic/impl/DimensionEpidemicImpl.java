@@ -6,11 +6,9 @@ import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicPackage;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
-import epimodel.Composable;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
-import epimodel.util.Difference;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
@@ -60,24 +58,6 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 	@Override
 	public List<Flow> getFlows() {
 		return asProduct().getFlows();
-	}
-
-	@Override
-	public Difference compareWithSameClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithDifferentClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithBaseClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
 	}
 
 	/**

@@ -34,10 +34,14 @@ import compartmentGroup.GroupSources;
 import compartmentGroup.Link;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Composable;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.util.PhysicalCompartment;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.Match;
+import epimodel.util.Comparison.MatchResult;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,6 +60,57 @@ import epimodel.util.PhysicalCompartment;
  * @generated
  */
 public class GroupImpl extends CompartmentImpl implements Group {
+
+	@Override
+	public Difference compareWithSameClass(Composable other, MatchResult matches) {
+		Match match = matches.find(this, other);
+		
+		List<Match> childrenMatches = new ArrayList<>();
+
+		List<Compartment> myCompartments = getCompartment().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> myMatchedCompartments = new ArrayList<>();
+		List<Compartment> myUnMatchedCompartments = new ArrayList<>(myCompartments);
+		
+		List<Compartment> otherCompartments = ((GroupImpl) other).getCompartment().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> otherMatchedCompartments = new ArrayList<>();
+		List<Compartment> otherUnMatchedCompartments = new ArrayList<>(otherCompartments);
+		
+		for (Compartment c : myCompartments) {
+			Match childMatch = matches.find(c);
+			if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
+				childrenMatches.add(childMatch);
+				myMatchedCompartments.add(c);
+				myUnMatchedCompartments.remove(c);
+				otherMatchedCompartments.add((Compartment) childMatch.match.second);
+				otherUnMatchedCompartments.remove(childMatch.match.second);
+			}
+		}
+		
+		List<Match> accountedForMatches = new ArrayList<>(childrenMatches);
+		accountedForMatches.addAll(
+			childrenMatches
+				.stream()
+				.map(m -> m.match.first.compare(m.match.second, matches))
+				.map(diffResult -> diffResult.accountsForMatches)
+				.flatMap(List::stream)
+				.collect(Collectors.toList())
+		);
+		accountedForMatches.add(match);
+		
+		
+		Difference superDiff = super.compareWithSameClass(other, matches);
+		String description = superDiff.getSimpleDescription();
+		
+		return new Difference(accountedForMatches, new ArrayList<>(myUnMatchedCompartments), new ArrayList<>(otherUnMatchedCompartments)) {
+			@Override public String getSimpleDescription() {
+				return description +
+						" Added Children: " + otherUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList()) +
+						", Removed Children: " + myUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList())
+						+ " And potentially unmatched flows (TODO)";
+					// TODO FLOWS
+			}
+		};
+	}
 
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Edit Group Epidemic " + getLabel());

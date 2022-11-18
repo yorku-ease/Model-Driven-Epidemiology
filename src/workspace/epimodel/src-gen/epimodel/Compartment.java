@@ -9,8 +9,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import epimodel.util.PhysicalCompartment;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Compartment</b></em>'.
