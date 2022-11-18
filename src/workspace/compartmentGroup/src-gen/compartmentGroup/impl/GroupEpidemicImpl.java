@@ -2,41 +2,34 @@
  */
 package compartmentGroup.impl;
 
-import compartmentGroup.CompartmentGroupPackage;
-import compartmentGroup.GroupEpidemic;
-import compartmentGroup.GroupSinks;
-import compartmentGroup.GroupSources;
-import epimodel.Compartment;
-import epimodel.CompartmentWrapper;
-import epimodel.Composable;
-import epimodel.Flow;
-import epimodel.FlowWrapper;
-
-import epimodel.impl.EpidemicImpl;
-import epimodel.util.Difference;
-import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import compartmentGroup.CompartmentGroupPackage;
+import compartmentGroup.GroupEpidemic;
+import compartmentGroup.GroupSinks;
+import compartmentGroup.GroupSources;
+import epimodel.Compartment;
+import epimodel.CompartmentWrapper;
+import epimodel.Flow;
+import epimodel.FlowWrapper;
+import epimodel.impl.EpidemicImpl;
+import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -69,24 +62,6 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 	@Override
 	public List<Flow> getFlows() {
 		return asGroup().getFlows();
-	}
-
-	@Override
-	public Difference compareWithSameClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithDifferentClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithBaseClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
 	}
 
 	public void edit(EObject dom, Shell shell, List<Control> controls) {

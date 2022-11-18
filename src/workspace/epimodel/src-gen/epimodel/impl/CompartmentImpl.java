@@ -2,14 +2,6 @@
  */
 package epimodel.impl;
 
-import epimodel.Compartment;
-import epimodel.Composable;
-import epimodel.EpimodelPackage;
-import epimodel.Flow;
-import epimodel.util.Difference;
-import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,6 +18,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import epimodel.Compartment;
+import epimodel.EpimodelPackage;
+import epimodel.Flow;
+import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,27 +47,7 @@ public class CompartmentImpl extends ComposableImpl implements Compartment {
 
 	@Override
 	public List<String> getLabels() {
-		List<String> result = new ArrayList<>();
-		result.addAll(getLabel());
-		return result;
-	}
-
-	@Override
-	public Difference compareWithSameClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithDifferentClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithBaseClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
+		return new ArrayList<>(getLabel());
 	}
 
 	@Override

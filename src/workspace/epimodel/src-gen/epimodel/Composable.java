@@ -6,7 +6,8 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
-import epimodel.util.Difference;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.MatchResult;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
@@ -21,11 +22,9 @@ import epimodel.util.PhysicalFlow;
  * @generated
  */
 public interface Composable extends EObject {
-	Difference diff(Composable other);
-	Class<?> getBaseClass();
-	Difference compareWithSameClass(Composable other);
-	Difference compareWithDifferentClass(Composable other);
-	Difference compareWithBaseClass(Composable other);
+	Difference compare(Composable other, MatchResult matches);
+	Difference compareWithSameClass(Composable other, MatchResult matches);
+	Difference compareWithDifferentClass(Composable other, MatchResult matches);
 	
 	List<String> getLabels();
 

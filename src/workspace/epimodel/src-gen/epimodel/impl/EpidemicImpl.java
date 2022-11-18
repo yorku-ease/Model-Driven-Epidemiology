@@ -2,9 +2,7 @@
  */
 package epimodel.impl;
 
-import epimodel.Epidemic;
-import epimodel.EpimodelPackage;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +16,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import epimodel.Epidemic;
+import epimodel.EpimodelPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,9 +37,9 @@ public abstract class EpidemicImpl extends ComposableImpl implements Epidemic {
 
 	@Override
 	public List<String> getLabels() {
-		return Arrays.asList(getId());
+		return new ArrayList<>(Arrays.asList(getId()));
 	}
-
+	
 	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setLayout(new GridLayout(3, false));

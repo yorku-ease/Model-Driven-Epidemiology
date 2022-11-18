@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->

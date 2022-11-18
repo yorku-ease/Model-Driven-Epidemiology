@@ -1,219 +1,123 @@
 package use_epi;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
-
-import epimodel.util.PhysicalCompartment;
+import epimodel.Composable;
+import epimodel.Epidemic;
+import epimodel.util.Comparison.CompareContext;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.Pair;
+import epimodel.util.Comparison.Match;
+import epimodel.util.Comparison.MatchResult;
 
 public class Compare {
-	public static void main(String[] args) throws Exception {
-		String model1 = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR_copy.epimodel";
-		String model2 = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel";
+	public static void main(String[] args) {
+		String model1fn = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR_copy.epimodel";
+		String model2fn = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel";
+		compare(model1fn, model2fn);
+	}
+	
+	private static void compare(String model1fn, String model2fn) {
+		System.out.println("Comparing " + model1fn + " and " + model2fn);
+		Epidemic model1 = ((epimodel.EpidemicWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model1fn)).getEpidemic();
+		Epidemic model2 = ((epimodel.EpidemicWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model2fn)).getEpidemic();
 		compare(model1, model2);
 	}
 	
-	private static void compare(String model1, String model2) throws Exception {
-		System.out.println("Comparing " + model1 + " and " + model2);
-		compare((epimodel.EpidemicWrapper) loadModel(model1), (epimodel.EpidemicWrapper) loadModel(model2));
-	}
-	
-	private static EObject loadModel(String model_fn) throws Exception {
-		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
-        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
+	private static void compare(Epidemic model1, Epidemic model2) {
+		List<Pair<String, String>> renamings = new ArrayList<>();
+		MatchResult matches = ExactOrContainsLabelMatch(new CompareContext(model1, model2, renamings));
 		
-        ResourceSet resSet = new ResourceSetImpl();
-        resSet.setPackageRegistry(EPackage.Registry.INSTANCE);
-        resSet.setResourceFactoryRegistry(factoryRegistry);
-        
-        EPackage.Registry.INSTANCE.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-        
-        URI uri = URI.createFileURI(model_fn);
-        Resource resource = resSet.getResource(uri, true);
-        
-        return resource.getContents().get(0);
-	}
-	
-	private static void compare(epimodel.EpidemicWrapper model1, epimodel.EpidemicWrapper model2) throws Exception {
-		System.out.println("Comparing Model 1 (Left):");
-		for (PhysicalCompartment pc : model1.getEpidemic().getPhysicalCompartments())
-			System.out.println("\t" + pc.labels);
-		System.out.println("With Model 2 (Right):");
-		for (PhysicalCompartment pc : model2.getEpidemic().getPhysicalCompartments())
-			System.out.println("\t" + pc.labels);
-		physicalMatch(
-			model1
-				.getEpidemic()
-				.getPhysicalCompartments(),
-			model2
-				.getEpidemic()
-				.getPhysicalCompartments());
-	}
-	
-	private static PhysicalMatchResult physicalMatch(List<PhysicalCompartment> left, List<PhysicalCompartment> right) throws Exception {
-		return physicalMatchLists(
-			left.stream()
-				.map(pc -> pc.labels)
-				.collect(Collectors.toList()),
-			right.stream()
-				.map(pc -> pc.labels)
-				.collect(Collectors.toList()));
-	}
-	
-	static PhysicalMatchResult physicalMatchLists(List<List<String>> left, List<List<String>> right) {
-		PhysicalMatchResult res = new PhysicalMatchResult(left, right);
-
-		for (List<String> l : left) {
-			List<List<String>> val = right.stream().filter(u -> u.containsAll(l)).collect(Collectors.toList());
-			if (val.size() != 0)
-				if (val.size() == 1) {
-					res.mappingsLeft.add(l);
-					res.mappingsRight.add(val.get(0));
-				} else
-					res.specializations.put(l, val);
-			else
-				res.substractions.add(l);
+		System.out.println();
+		System.out.println(matches);
+		
+		Match topLevelMatch = matches.find(model1, model2);
+		// if there is no top level match we might have a problem
+		if (topLevelMatch == null) {
+			Match left = matches.find(model1);
+			Match right = matches.find(model2);
+			// if either top level element left or right is matched, but not the other,
+			// we remove the match because we don't want that match.
+			// It is simpler to always assume a match for both top level elements
+			if (left == null && right != null)
+				matches.matches.remove(right);
+			else if (left != null && right == null)
+				matches.matches.remove(left);
+			// else they are both unmatched and that is ok
 		}
 		
-		for (List<String> l : right) {
-			List<List<String>> val = left.stream().filter(u -> u.containsAll(l)).collect(Collectors.toList());
-			if (val.size() != 0)
-				if (val.size() == 1) {
-					boolean duplicate = l.equals(val.get(0));
-					if (duplicate)
-						continue;
-					res.mappingsLeft.add(val.get(0));
-					res.mappingsRight.add(l);
-				} else
-					res.generalizations.put(l, val);
-			else
-				res.additions.add(l);
+		// start diff with top level element always
+		Difference diff = model1.compare(model2, matches);
+		List<Difference> diffs = new ArrayList<>(Arrays.asList(diff));
+		// iterate other matches in case the top level element did not account for all matches
+		// this happens if at some level incompatible type of objects are compared and unable to compare their children
+		for (Match match : matches.matches) {
+			boolean accountedFor = false;
+			for (Difference d : diffs)
+				if (d.accountsForMatches.contains(match)) {
+					accountedFor = true;
+					break;
+				}
+			if (!accountedFor)
+				diffs.add(match.match.first.compare(match.match.second, matches));
 		}
+		System.out.println();
+		for (Difference d : diffs)
+			System.out.println("diff: " + d.getSimpleDescription() + "\n");
+	}
+	
+	public static MatchResult ExactOrContainsLabelMatch(CompareContext context) {
+		MatchResult res = new MatchResult(context);
+		List<Composable> model1compartments = new ArrayList<>();
+		List<Composable> model2compartments = new ArrayList<>();
+		context.model1.eAllContents().forEachRemaining(eobject -> {
+			if (eobject instanceof Composable)
+				model1compartments.add((Composable) eobject);
+		});
+		context.model2.eAllContents().forEachRemaining(eobject -> {
+			if (eobject instanceof Composable)
+				model2compartments.add((Composable) eobject);
+		});
+		System.out.println("Model1:");
+		System.out.println(model1compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
+		System.out.println("Model2:");
+		System.out.println(model2compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
 		
-		for (List<String> m : res.mappingsLeft)
-			res.substractions.remove(m);
+		List<Composable> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
+		List<Composable> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
 		
-		for (List<String> m : res.mappingsRight)
-			res.additions.remove(m);
+		// look for same arrays: ["S", "0"] matches only ["S", "0"]
+		for (Composable c1 : model1compartments)
+			for (Composable c2 : model2compartments)
+				if (c1.getLabels().equals(c2.getLabels())) {
+					res.matches.add(new Match(c1, c2));
+					model1NotExactMatchedCompartments.remove(c1);
+					model2NotExactMatchedCompartments.remove(c2);
+				}
+		
+		List<Composable> model1Not2ContainsAll1MatchedCompartments = new ArrayList<>(model1NotExactMatchedCompartments);
+		List<Composable> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
 
-		for (List<List<String>> ll : res.specializations.values())
-			for (List<String> l : ll)
-				res.additions.remove(l);
+		// look for model1 array contained by model2 array: ["S"] matches [..., "S", ...]
+		// Labels are unique so even though it could happen that there are multiple matches, it shouldn't if the model is correct
+		for (Composable c1 : model1NotExactMatchedCompartments)
+			for (Composable c2 : model2NotExactMatchedCompartments)
+				if (c2.getLabels().containsAll(c1.getLabels())) {
+					res.matches.add(new Match(c1, c2));
+					model1Not2ContainsAll1MatchedCompartments.remove(c1);
+					model2Not2ContainsAll1Compartments.remove(c2);
+				}
 
-		for (List<List<String>> ll : res.generalizations.values())
-			for (List<String> l : ll)
-				res.substractions.remove(l);
-		
-//		System.out.println(res);
+		// look for model2 array contained by model1 array: [..., "S", ...] matches ["S"] 
+		// Labels are unique so even though it could happen that there are multiple matches, it shouldn't if the model is correct
+		for (Composable c1 : model1NotExactMatchedCompartments)
+			for (Composable c2 : model2NotExactMatchedCompartments)
+				if (c1.getLabels().containsAll(c2.getLabels()))
+					res.matches.add(new Match(c1, c2));
 		
 		return res;
-	}
-	
-	static class PhysicalMatchResult {
-		public final List<List<String>> leftModel;
-		public final List<List<String>> rightModel;
-		public final Map<List<String>, List<List<String>>> specializations;
-		public final Map<List<String>, List<List<String>>> generalizations;
-		public final List<List<String>> mappingsLeft;
-		public final List<List<String>> mappingsRight;
-		public final List<List<String>> additions;
-		public final List<List<String>> substractions;
-		
-		public PhysicalMatchResult(
-			List<List<String>> leftModel,
-			List<List<String>> rightModel,
-			Map<List<String>, List<List<String>>> specializations,
-			Map<List<String>, List<List<String>>> generalizations,
-			List<List<String>> mappingsLeft,
-			List<List<String>> mappingsRight,
-			List<List<String>> additions,
-			List<List<String>> substractions
-		) {
-			this.leftModel = leftModel;
-			this.rightModel = rightModel;
-			this.specializations = specializations;
-			this.generalizations = generalizations;
-			this.mappingsLeft = mappingsLeft;
-			this.mappingsRight = mappingsRight;
-			this.additions = additions;
-			this.substractions = substractions;
-		}
-		
-		public PhysicalMatchResult(
-			List<List<String>> leftModel,
-			List<List<String>> rightModel
-		) {
-			this.leftModel = leftModel;
-			this.rightModel = rightModel;
-			this.specializations = new HashMap<>();
-			this.generalizations = new HashMap<>();
-			this.mappingsLeft = new ArrayList<>();
-			this.mappingsRight = new ArrayList<>();
-			this.additions = new ArrayList<>();
-			this.substractions = new ArrayList<>();
-		}
-		
-		boolean isValidResult() {
-			int computedLeftModelSize = specializations.size() +
-					mappingsLeft.size() +
-					generalizations.values().stream().map(List::size).reduce(0, Integer::sum) +
-					substractions.size();
-			int computedRightModelSize = generalizations.size() +
-					mappingsRight.size() +
-					specializations.values().stream().map(List::size).reduce(0, Integer::sum) +
-					additions.size();
-			int ls = leftModel.size();
-			int rs = rightModel.size();
-			return computedLeftModelSize == ls && computedRightModelSize == rs;
-		}
-		
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Additions:\n");
-			for (int i = 0; i < additions.size(); ++i) {
-				sb.append(additions.get(i));
-				sb.append("\n");
-			}
-			sb.append("Substractions:\n");
-			for (int i = 0; i < substractions.size(); ++i) {
-				sb.append(substractions.get(i));
-				sb.append("\n");
-			}
-			sb.append("Mappings:\n");
-			for (int i = 0; i < mappingsLeft.size(); ++i) {
-				sb.append(mappingsLeft.get(i));
-				sb.append(" -> ");
-				sb.append(mappingsRight.get(i));
-				sb.append("\n");
-			}
-			sb.append("Specializations:\n");
-			for (Entry<List<String>, List<List<String>>> x : specializations.entrySet()) {
-				sb.append(x.getKey());
-				sb.append(" -> ");
-				sb.append(x.getValue());
-				sb.append("\n");
-			}
-			sb.append("Generalizations:\n");
-			for (Entry<List<String>, List<List<String>>> x : generalizations.entrySet()) {
-				sb.append(x.getValue());
-				sb.append(" -> ");
-				sb.append(x.getKey());
-				sb.append("\n");
-			}
-			return sb.toString();
-		}
 	}
 }

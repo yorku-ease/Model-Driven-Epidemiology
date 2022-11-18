@@ -33,4 +33,17 @@ public class PhysicalFlowEquation {
 		this.equation = equation;
 		this.requiredOperators = requiredOperators;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return (other instanceof PhysicalFlowEquation && equals((PhysicalFlowEquation) other));
+	}
+	
+	protected boolean equals(PhysicalFlowEquation other) {
+		return equationCompartments.equals(other.equationCompartments) && 
+				affectedCompartments.equals(other.affectedCompartments) && 
+				coefficients.equals(other.coefficients) && 
+				equation.equals(other.equation) && 
+				requiredOperators.equals(other.requiredOperators);
+	}
 }

@@ -14,10 +14,12 @@ import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.impl.EpidemicImpl;
 import epimodel.impl.FlowImpl;
-import epimodel.util.Difference;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.Match;
+import epimodel.util.Comparison.MatchResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,21 +55,56 @@ import org.eclipse.swt.widgets.Shell;
 public class ProductImpl extends CompartmentImpl implements Product {
 
 	@Override
-	public Difference compareWithSameClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
+	public Difference compareWithSameClass(Composable other, MatchResult matches) {
+		Match match = matches.find(this, other);
+		
+		if (match == null)
+			throw new RuntimeException("Trying to diff unmatched composables: " + this + " & " + other);
+		
+		List<Match> childrenMatches = new ArrayList<>();
 
-	@Override
-	public Difference compareWithDifferentClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
-	}
-
-	@Override
-	public Difference compareWithBaseClass(Composable other) {
-		Difference difference = new Difference();
-		return difference;
+		List<Compartment> myCompartments = getDimensions().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> myMatchedCompartments = new ArrayList<>();
+		List<Compartment> myUnMatchedCompartments = new ArrayList<>(myCompartments);
+		
+		List<Compartment> otherCompartments = ((ProductImpl) other).getDimensions().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> otherMatchedCompartments = new ArrayList<>();
+		List<Compartment> otherUnMatchedCompartments = new ArrayList<>(otherCompartments);
+		
+		for (Compartment c : myCompartments) {
+			Match childMatch = matches.find(c);
+			if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
+				childrenMatches.add(childMatch);
+				myMatchedCompartments.add(c);
+				myUnMatchedCompartments.remove(c);
+				otherMatchedCompartments.add((Compartment) childMatch.match.second);
+				otherUnMatchedCompartments.remove(childMatch.match.second);
+			}
+		}
+		
+		List<Match> accountedForMatches = new ArrayList<>(childrenMatches);
+		accountedForMatches.addAll(
+			childrenMatches
+				.stream()
+				.map(m -> m.match.first.compare(m.match.second, matches))
+				.map(diffResult -> diffResult.accountsForMatches)
+				.flatMap(List::stream)
+				.collect(Collectors.toList())
+		);
+		accountedForMatches.add(match);
+		
+		String description = "Product " + getLabels() + " matches Product " + other.getLabels();
+		if (otherUnMatchedCompartments.size() != 0)
+			description += ". Added Children: " + otherUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList());
+		if (myUnMatchedCompartments.size() != 0)
+			description += ". Removed Children: " +  myUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList());
+		
+		final String capture = description; // java things
+		return new Difference(accountedForMatches, new ArrayList<>(myUnMatchedCompartments), new ArrayList<>(otherUnMatchedCompartments)) {
+			@Override public String getSimpleDescription() {
+				return capture;
+			}
+		};
 	}
 
 	/**
@@ -277,26 +314,6 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 								@Override
 								public List<PhysicalFlow> getPhysicalFlows() {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public Difference compareWithSameClass(Composable other) {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public Difference compareWithDifferentClass(Composable other) {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public Difference compareWithBaseClass(Composable other) {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public List<String> getLabels() {
 									throw new NullPointerException();
 								}
 

@@ -8,4 +8,9 @@ public class PhysicalCompartment {
 	public PhysicalCompartment(List<String> labels) {
 		this.labels = labels;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return (other instanceof PhysicalCompartment && ((PhysicalCompartment) other).labels.equals(labels));
+	}
 }
