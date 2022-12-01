@@ -2,8 +2,11 @@
  */
 package epimodel.impl;
 
+import epimodel.Compartment;
+import epimodel.CompartmentWrapper;
 import epimodel.Composable;
 import epimodel.EpimodelPackage;
+import epimodel.util.Comparison.ChildrenDiffResult;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
@@ -16,7 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
-
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.EReferenceImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
@@ -35,6 +39,70 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 				compareWithDifferentClass(other, matches);
 	}
 	
+	@Override
+	public Difference compareWithSameClass(Composable other, MatchResult matches) {
+		EReferenceImpl compartmentsFeature = null;
+		EReferenceImpl flowsFeature = null;
+		for (EStructuralFeature feature : eClass().getEAllStructuralFeatures()) {
+			if (feature instanceof EReferenceImpl) {
+				EReferenceImpl eref = (EReferenceImpl) feature;
+				if (eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.COMPARTMENT_WRAPPER)) {
+					if (compartmentsFeature != null)
+						throw new RuntimeException(
+							"Found two features for compartments in class " + 
+							getClass().getSimpleName() + ": " + 
+							compartmentsFeature.getName() + " & " + eref.getName());
+					else
+						compartmentsFeature = eref;
+				}
+				else if (eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.FLOW_WRAPPER)) {
+					if (flowsFeature != null)
+						throw new RuntimeException(
+							"Found two features for flows in class " + 
+							getClass().getSimpleName() + ": " + 
+							flowsFeature.getName() + " & " + eref.getName());
+					else
+						flowsFeature = eref;
+				}
+			}
+		}
+		
+		return defaultSameClassCompare(other, matches, compartmentsFeature, flowsFeature);
+	}
+	
+	public Difference defaultSameClassCompare(Composable other, MatchResult matches, EReferenceImpl compartmentsFeature, EReferenceImpl flowsFeature) {
+		Match match = matches.find(this, other);
+
+		@SuppressWarnings("unchecked")
+		List<CompartmentWrapper> l1 = (List<CompartmentWrapper>) eGet(compartmentsFeature);
+		@SuppressWarnings("unchecked")
+		List<CompartmentWrapper> l2 = (List<CompartmentWrapper>) other.eGet(compartmentsFeature);
+		
+		// TODO flows
+		
+		List<Compartment> myCompartments = l1.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> otherCompartments = l2.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		
+		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
+		
+		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
+		accountedForMatches.add(match);
+		
+		boolean isSame = childrenDiffs.isSame && getLabels().equals(other.getLabels());
+		
+		String baseDescription = compareWithDifferentClass(other, matches).getSimpleDescription();
+		
+		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
+			@Override public String getSimpleDescription() {
+				StringBuilder sb = new StringBuilder(baseDescription);
+				if (!isSame)
+					sb.append(childrenDiffs.getSimpleDescription());
+				return sb.toString();
+			}
+		};
+	}
+	
+	@Override
 	public Difference compareWithDifferentClass(Composable other, MatchResult matches) {
 		Match match = null;
 		

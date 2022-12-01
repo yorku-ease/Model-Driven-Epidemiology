@@ -78,14 +78,44 @@ public class Compare {
 				diffs.add(match.match.first.compare(match.match.second, matches));
 		}
 		System.out.println();
-		for (Difference d : diffs)
-			System.out.println("diff: " + d.getSimpleDescription() + "\n");
+		
+		for (Difference d : diffs) {
+			// description isnt formatted so just find {...} and add newlines and tab them, and if there are newlines, tab them too
+			String s = d.getSimpleDescription();
+			StringBuilder sb = new StringBuilder();
+			int depth = 0;
+			for (int i = 0; i < s.length(); ++i) {
+				char c = s.charAt(i);
+				if (c == '{') {
+					depth += 1;
+					sb.append("{\n");
+					for (int j = 0; j < depth; ++j)
+						sb.append("\t");
+				}
+				else if (c == '}') {
+					depth -= 1;
+					sb.append("\n");
+					for (int j = 0; j < depth; ++j)
+						sb.append("\t");
+					sb.append("}");
+				}
+				else if (c == '\n') {
+					sb.append("\n");
+					for (int j = 0; j < depth; ++j)
+						sb.append("\t");
+				}
+				else
+					sb.append(c);
+			}
+			System.out.println("diff: " + sb.toString() + "\n");
+			
+		}
 	}
 	
 	public static MatchResult ExactOrContainsLabelMatch(CompareContext context) {
 		MatchResult res = new MatchResult(context);
-		List<Composable> model1compartments = new ArrayList<>();
-		List<Composable> model2compartments = new ArrayList<>();
+		List<Composable> model1compartments = new ArrayList<>(Arrays.asList(context.model1));
+		List<Composable> model2compartments = new ArrayList<>(Arrays.asList(context.model2));
 		context.model1.eAllContents().forEachRemaining(eobject -> {
 			if (eobject instanceof Composable)
 				model1compartments.add((Composable) eobject);

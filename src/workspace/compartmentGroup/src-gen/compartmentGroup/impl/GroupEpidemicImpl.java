@@ -25,14 +25,11 @@ import compartmentGroup.GroupSinks;
 import compartmentGroup.GroupSources;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
-import epimodel.Composable;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
-import epimodel.util.Comparison.Difference;
-import epimodel.util.Comparison.MatchResult;
 
 /**
  * <!-- begin-user-doc -->
@@ -51,12 +48,6 @@ import epimodel.util.Comparison.MatchResult;
  * @generated
  */
 public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
-
-	@Override
-	public Difference compareWithSameClass(Composable other, MatchResult matches) {
-		System.err.println("not implemented GroupEpidemicImpl compareWithSameClass");
-		return compareWithDifferentClass(other, matches);
-	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
