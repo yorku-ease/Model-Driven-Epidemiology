@@ -1,10 +1,12 @@
 package epimodel.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import epimodel.Compartment;
+import epimodel.CompartmentWrapper;
 import epimodel.Composable;
 import epimodel.Epidemic;
 
@@ -167,7 +169,7 @@ public class Comparison {
 				if (requiresComma)
 					sb.append(",");
 				sb.append(" Same Matched Children (no differences): ");
-				for (Pair<Match, Difference> matchDiff : notSameChildrenMatchAndDiffs)
+				for (Pair<Match, Difference> matchDiff : sameChildrenMatchAndDiffs)
 					sb.append(matchDiff.first.match.first.getLabels()).append(", ");
 				requiresComma = false;
 			}
@@ -203,6 +205,42 @@ public class Comparison {
 			sb.append(" potentially unmatched flows (TODO)");
 			return sb.toString();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Difference DEFAULT_SAME_CLASS_DIFF(Composable my, Composable other, MatchResult matches, String compartmentsMethodName, String flowsMethodName) throws RuntimeException {
+	
+		Match match = matches.find(my, other);
+
+		List<CompartmentWrapper> l1;
+		List<CompartmentWrapper> l2;
+		try {
+			l1 = (List<CompartmentWrapper>) my.getClass().getMethod(compartmentsMethodName).invoke(my);
+			l2 = (List<CompartmentWrapper>) other.getClass().getMethod(compartmentsMethodName).invoke(other);
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			throw new RuntimeException(e);
+		}
+		
+		List<Compartment> myCompartments = l1.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> otherCompartments = l2.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		
+		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
+		
+		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
+		accountedForMatches.add(match);
+		
+		boolean isSame = childrenDiffs.isSame && my.getLabels().equals(other.getLabels());
+		
+		String baseDescription = my.compareWithDifferentClass(other, matches).getSimpleDescription();
+		
+		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
+			@Override public String getSimpleDescription() {
+				StringBuilder sb = new StringBuilder(baseDescription);
+				if (!isSame)
+					sb.append(childrenDiffs.getSimpleDescription());
+				return sb.toString();
+			}
+		};
 	}
 
 	public static abstract class Difference {

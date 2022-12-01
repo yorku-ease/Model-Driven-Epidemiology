@@ -14,12 +14,11 @@ import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.impl.EpidemicImpl;
 import epimodel.impl.FlowImpl;
+import epimodel.util.Comparison;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
-import epimodel.util.Comparison.ChildrenDiffResult;
 import epimodel.util.Comparison.Difference;
-import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
 
 import java.util.ArrayList;
@@ -57,28 +56,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	@Override
 	public Difference compareWithSameClass(Composable other, MatchResult matches) {
-		Match match = matches.find(this, other);
-		
-		List<Compartment> myCompartments = getDimensions().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> otherCompartments = ((ProductImpl) other).getDimensions().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		
-		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
-		
-		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
-		accountedForMatches.add(match);
-		
-		boolean isSame = childrenDiffs.isSame && getLabels().equals(other.getLabels());
-		
-		String baseDescription = super.compareWithDifferentClass(other, matches).getSimpleDescription();
-		
-		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
-			@Override public String getSimpleDescription() {
-				StringBuilder sb = new StringBuilder(baseDescription);
-				if (!isSame)
-					sb.append(childrenDiffs.getSimpleDescription());
-				return sb.toString();
-			}
-		};
+		return Comparison.DEFAULT_SAME_CLASS_DIFF(this, other, matches, "getDimensions", "getFlow");
 	}
 
 	/**

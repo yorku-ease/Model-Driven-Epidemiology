@@ -24,6 +24,7 @@ import epimodel.util.PhysicalFlow;
 public interface Composable extends EObject {
 	Difference compare(Composable other, MatchResult matches);
 	Difference compareWithSameClass(Composable other, MatchResult matches);
+	Difference compareWithDifferentClass(Composable other, MatchResult matches);
 	
 	List<String> getLabels();
 
