@@ -20,8 +20,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import epimodel.Compartment;
+import epimodel.Composable;
 import epimodel.EpimodelPackage;
 import epimodel.Flow;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.MatchResult;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
@@ -39,6 +42,16 @@ import epimodel.util.PhysicalFlow;
  * @generated
  */
 public class CompartmentImpl extends ComposableImpl implements Compartment {
+
+	@Override
+	public Difference compareWithSameClass(Composable other, MatchResult matches) {
+		return new Difference(Arrays.asList(matches.find(this, other)), new ArrayList<>(), new ArrayList<>(), getLabels().equals(other.getLabels())) {
+			@Override
+			public String getSimpleDescription() {
+				return "Compartment " + getLabels() + " matches Compartment " + other.getLabels();
+			}
+		};
+	}
 
 	@Override
 	public List<PhysicalFlow> getPhysicalFlows() {

@@ -6,11 +6,14 @@ import dimensionEpidemic.DimensionEpidemic;
 import dimensionEpidemic.DimensionEpidemicPackage;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Composable;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.EpidemicImpl;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.MatchResult;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,6 +47,12 @@ import org.eclipse.swt.widgets.Control;
  * @generated
  */
 public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpidemic {
+
+	@Override
+	public Difference compareWithSameClass(Composable other, MatchResult matches) {
+		System.err.println("not implemented DimensionEpidemicImpl compareWithSameClass");
+		return compareWithDifferentClass(other, matches);
+	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {

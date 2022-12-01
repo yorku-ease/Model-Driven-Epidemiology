@@ -34,15 +34,16 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 				compareWithSameClass(other, matches) :
 				compareWithDifferentClass(other, matches);
 	}
-
-	@Override
-	public Difference compareWithSameClass(Composable other, MatchResult matches) {
-		return compareWithDifferentClass(other, matches);
-	}
-
-	@Override
+	
 	public Difference compareWithDifferentClass(Composable other, MatchResult matches) {
-		Match match = matches.find(this, other);
+		Match match = null;
+		
+		try {
+			match = matches.find(this, other);
+		} catch (Exception e) {
+			// Comparing unmatched objects, result may be slightly innacurate
+			match = new Match(this, other);
+		}
 		
 		boolean sameClass = getClass().equals(other.getClass()); // in case same class was deffered
 		
@@ -71,17 +72,19 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 				sb.append(" does not exactly match ");
 			sb.append(other.getClass().getSimpleName() + " " + other.getLabels());
 			if (!sameCompartments) {
-				sb.append(" original model produces " + l1.size() + " compartments and other model produces " + l2.size() + " compartments");
-				sb.append(", " + addedCompartments + " have been added and " + removedCompartments + " have been removed.");
+				sb.append(" original model produces " + l1.size() + " physical compartments and other model produces " + l2.size());
+				sb.append(": " + (l1.size() - removedCompartments) + " matched, ");
+				sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
 			}
 			if (!sameFlows) {
-				sb.append(" original model produces " + lf1.size() + " flows and other model produces " + lf2.size() + " flows");
-				sb.append(", " + addedFlows + " have been added and " + removedFlows + " have been removed.");
+				sb.append(" original model produces " + lf1.size() + " physical flows and other model produces " + l2.size());
+				sb.append(": " + (lf1.size() - removedFlows) + " matched, ");
+				sb.append(addedCompartments + " added and " + removedFlows + " removed.");
 			}
 		}
 		String description = sb.toString();
 		
-		return new Difference(Arrays.asList(match), new ArrayList<>(), new ArrayList<>()) {
+		return new Difference(Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), false) {
 			@Override public String getSimpleDescription() {
 				return description;
 			}
