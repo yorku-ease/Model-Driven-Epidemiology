@@ -42,6 +42,7 @@ import epimodel.util.PhysicalCompartment;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
+import epimodel.util.Comparison.ChildrenDiffResult;
 
 /**
  * <!-- begin-user-doc -->
@@ -65,49 +66,24 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	public Difference compareWithSameClass(Composable other, MatchResult matches) {
 		Match match = matches.find(this, other);
 		
-		List<Match> childrenMatches = new ArrayList<>();
-
 		List<Compartment> myCompartments = getCompartment().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> myMatchedCompartments = new ArrayList<>();
-		List<Compartment> myUnMatchedCompartments = new ArrayList<>(myCompartments);
-		
 		List<Compartment> otherCompartments = ((GroupImpl) other).getCompartment().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> otherMatchedCompartments = new ArrayList<>();
-		List<Compartment> otherUnMatchedCompartments = new ArrayList<>(otherCompartments);
 		
-		for (Compartment c : myCompartments) {
-			Match childMatch = matches.find(c);
-			if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
-				childrenMatches.add(childMatch);
-				myMatchedCompartments.add(c);
-				myUnMatchedCompartments.remove(c);
-				otherMatchedCompartments.add((Compartment) childMatch.match.second);
-				otherUnMatchedCompartments.remove(childMatch.match.second);
-			}
-		}
+		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		
-		List<Match> accountedForMatches = new ArrayList<>(childrenMatches);
-		accountedForMatches.addAll(
-			childrenMatches
-				.stream()
-				.map(m -> m.match.first.compare(m.match.second, matches))
-				.map(diffResult -> diffResult.accountsForMatches)
-				.flatMap(List::stream)
-				.collect(Collectors.toList())
-		);
+		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
 		accountedForMatches.add(match);
 		
+		boolean isSame = childrenDiffs.isSame && getLabels().equals(other.getLabels());
 		
-		Difference superDiff = super.compareWithSameClass(other, matches);
-		String description = superDiff.getSimpleDescription();
+		String baseDescription = super.compareWithDifferentClass(other, matches).getSimpleDescription();
 		
-		return new Difference(accountedForMatches, new ArrayList<>(myUnMatchedCompartments), new ArrayList<>(otherUnMatchedCompartments)) {
+		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
 			@Override public String getSimpleDescription() {
-				return description +
-						" Added Children: " + otherUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList()) +
-						", Removed Children: " + myUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList())
-						+ " And potentially unmatched flows (TODO)";
-					// TODO FLOWS
+				StringBuilder sb = new StringBuilder(baseDescription);
+				if (!isSame)
+					sb.append(childrenDiffs.getSimpleDescription());
+				return sb.toString();
 			}
 		};
 	}

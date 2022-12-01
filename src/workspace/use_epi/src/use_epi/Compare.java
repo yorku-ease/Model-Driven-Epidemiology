@@ -34,11 +34,24 @@ public class Compare {
 		System.out.println();
 		System.out.println(matches);
 		
-		Match topLevelMatch = matches.find(model1, model2);
+		Match topLevelMatch = null;
+		try {
+			topLevelMatch = matches.find(model1, model2);
+		} catch (Exception e) {}
 		// if there is no top level match we might have a problem
 		if (topLevelMatch == null) {
-			Match left = matches.find(model1);
-			Match right = matches.find(model2);
+			Match left = null;
+			Match right = null;
+			try {
+				left = matches.find(model1);
+			} catch (Exception e) {
+				// left = null
+			}
+			try {
+				right = matches.find(model2);
+			} catch (Exception e) {
+				// right = null
+			}
 			// if either top level element left or right is matched, but not the other,
 			// we remove the match because we don't want that match.
 			// It is simpler to always assume a match for both top level elements
@@ -89,7 +102,7 @@ public class Compare {
 		List<Composable> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
 		List<Composable> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
 		
-		// look for same arrays: ["S", "0"] matches only ["S", "0"]
+		// look for same labels: ["S", "0"] matches only ["S", "0"]
 		for (Composable c1 : model1compartments)
 			for (Composable c2 : model2compartments)
 				if (c1.getLabels().equals(c2.getLabels())) {
@@ -101,8 +114,8 @@ public class Compare {
 		List<Composable> model1Not2ContainsAll1MatchedCompartments = new ArrayList<>(model1NotExactMatchedCompartments);
 		List<Composable> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
 
-		// look for model1 array contained by model2 array: ["S"] matches [..., "S", ...]
-		// Labels are unique so even though it could happen that there are multiple matches, it shouldn't if the model is correct
+		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
+		// Labels are unique so even though it seems like there could be multiple matches, there shouldn't if the model is correct
 		for (Composable c1 : model1NotExactMatchedCompartments)
 			for (Composable c2 : model2NotExactMatchedCompartments)
 				if (c2.getLabels().containsAll(c1.getLabels())) {
@@ -111,8 +124,8 @@ public class Compare {
 					model2Not2ContainsAll1Compartments.remove(c2);
 				}
 
-		// look for model2 array contained by model1 array: [..., "S", ...] matches ["S"] 
-		// Labels are unique so even though it could happen that there are multiple matches, it shouldn't if the model is correct
+		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
+		// Labels are unique so even though it seems like there could be multiple matches, there shouldn't if the model is correct
 		for (Composable c1 : model1NotExactMatchedCompartments)
 			for (Composable c2 : model2NotExactMatchedCompartments)
 				if (c1.getLabels().containsAll(c2.getLabels()))

@@ -2,7 +2,9 @@ package epimodel.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import epimodel.Compartment;
 import epimodel.Composable;
 import epimodel.Epidemic;
 
@@ -26,7 +28,12 @@ public class Comparison {
 			this.match = new Pair<>(first, second);
 		}
 		
-		@Override public String toString() {
+		public Difference compare(MatchResult matches) {
+			return match.first.compare(match.second, matches);
+		}
+		
+		@Override
+		public String toString() {
 			boolean sameId = match.first.getLabels().equals(match.second.getLabels());
 			boolean containedId1inId2 = !sameId && match.second.getLabels().containsAll(match.first.getLabels());
 			boolean containedId2inId1 = !sameId && match.first.getLabels().containsAll(match.second.getLabels());
@@ -68,31 +75,150 @@ public class Comparison {
 			for (Match match : matches)
 				if (match.match.first.equals(c1) && match.match.second.equals(c2))
 					return match;
-			return null;
+			throw new RuntimeException("no match found for " + c1.getLabels() + " <-> " + c2.getLabels());
 		}
 		
 		public Match find(Composable c) {
 			for (Match match : matches)
 				if (match.match.first.equals(c) || match.match.second.equals(c))
 					return match;
-			return null;
+			throw new RuntimeException("no match found for " + c.getLabels());
 		}
 	}
 	
 	public static class DiffResult {
 		public final List<Difference> diffs = new ArrayList<>();
 	}
+	
+	public static class ChildrenDiffResult {
+		public final List<Match> childrenMatches;
+		public final List<Match> accountsForMatches;
+
+		public final List<Compartment> myCompartments;
+		public final List<Compartment> myMatchedCompartments;
+		public final List<Compartment> myUnMatchedCompartments;
+		
+		public final List<Compartment> otherCompartments;
+		public final List<Compartment> otherMatchedCompartments;
+		public final List<Compartment> otherUnMatchedCompartments;
+		
+		public final List<Difference> childrenDiffs;
+		public final List<Pair<Match, Difference>> sameChildrenMatchAndDiffs;
+		public final List<Pair<Match, Difference>> notSameChildrenMatchAndDiffs;
+		
+		public final boolean isSame;
+		
+		public ChildrenDiffResult(List<Compartment> myCompartments, List<Compartment> otherCompartments, MatchResult matches) {
+
+			this.myCompartments = myCompartments;
+			this.otherCompartments = otherCompartments;
+
+			myMatchedCompartments = new ArrayList<>();
+			myUnMatchedCompartments = new ArrayList<>(myCompartments);
+			
+			otherMatchedCompartments = new ArrayList<>();
+			otherUnMatchedCompartments = new ArrayList<>(otherCompartments);
+
+			childrenMatches = new ArrayList<>();
+			
+			for (Compartment c : myCompartments) {
+				Match childMatch = matches.find(c);
+				if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
+					childrenMatches.add(childMatch);
+					myMatchedCompartments.add(c);
+					myUnMatchedCompartments.remove(c);
+					otherMatchedCompartments.add((Compartment) childMatch.match.second);
+					otherUnMatchedCompartments.remove(childMatch.match.second);
+				}
+			}
+			
+			childrenDiffs = childrenMatches.stream().map(m -> m.compare(matches)).collect(Collectors.toList());
+			sameChildrenMatchAndDiffs = new ArrayList<>();
+			notSameChildrenMatchAndDiffs = new ArrayList<>();
+			
+			for (int i = 0; i < childrenDiffs.size(); ++i) {
+				Match m = childrenMatches.get(i);
+				Difference d = childrenDiffs.get(i);
+				Pair<Match, Difference> p = new Pair<>(m, d);
+				
+				if (d.isSame)
+					sameChildrenMatchAndDiffs.add(p);
+				else
+					notSameChildrenMatchAndDiffs.add(p);
+			}
+			
+			accountsForMatches = new ArrayList<>();
+			accountsForMatches.addAll(childrenMatches);
+			accountsForMatches.addAll(
+				childrenDiffs
+				.stream()
+				.map(diffResult -> diffResult.accountsForMatches)
+				.flatMap(List::stream)
+				.collect(Collectors.toList())
+			);
+			
+			this.isSame = notSameChildrenMatchAndDiffs.size() == 0 && myUnMatchedCompartments.size() == 0 && otherUnMatchedCompartments.size() == 0;
+		}
+		
+		public String getSimpleDescription() {
+			StringBuilder sb = new StringBuilder();
+			boolean requiresComma = false;
+			if (!sameChildrenMatchAndDiffs.isEmpty()) {
+				if (requiresComma)
+					sb.append(",");
+				sb.append(" Same Matched Children (no differences): ");
+				for (Pair<Match, Difference> matchDiff : notSameChildrenMatchAndDiffs)
+					sb.append(matchDiff.first.match.first.getLabels()).append(", ");
+				requiresComma = false;
+			}
+			if (!notSameChildrenMatchAndDiffs.isEmpty()) {
+				if (requiresComma)
+					sb.append(",");
+				sb.append(" Not Same Matched Children (found differences): ");
+				for (Pair<Match, Difference> matchDiff : notSameChildrenMatchAndDiffs)
+					sb.append("{").append(matchDiff.second.getSimpleDescription()).append("}, ");
+				requiresComma = false;
+			}
+			if (!otherUnMatchedCompartments.isEmpty()) {
+				if (requiresComma)
+					sb.append(",");
+				sb.append(" Added Children: ");
+				sb.append(
+					otherUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList()).toString()
+				);
+				requiresComma = true;
+			}
+			if (!myUnMatchedCompartments.isEmpty()) {
+				if (requiresComma)
+					sb.append(",");
+				sb.append(" Removed Children: ");
+				sb.append(
+						myUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList()).toString()
+				);
+				requiresComma = true;
+			}
+			// TODO FLOWS
+			if (requiresComma)
+				sb.append(",");
+			sb.append(" potentially unmatched flows (TODO)");
+			return sb.toString();
+		}
+	}
 
 	public static abstract class Difference {
 		public final List<Match> accountsForMatches;
 		public final List<Composable> accountsForAdditions;
 		public final List<Composable> accountsForSubstractions;
-		public Difference(List<Match> accountsForMatches, List<Composable> accountsForAdditions, List<Composable> accountsForSubstractions) {
-			this.accountsForMatches = accountsForMatches;
-			this.accountsForAdditions = accountsForAdditions;
-			this.accountsForSubstractions = accountsForSubstractions;
+		public final boolean isSame;
+		
+		public Difference(List<Match> accountsForMatches, List<Composable> accountsForAdditions, List<Composable> accountsForSubstractions, boolean isSame) {
+			this.accountsForMatches = new ArrayList<>(accountsForMatches);
+			this.accountsForAdditions = new ArrayList<>(accountsForAdditions);
+			this.accountsForSubstractions = new ArrayList<>(accountsForSubstractions);
+			this.isSame = isSame;
 		}
 		
+		// not a data member so we can avoid doing work if it isn't called, also need a more expensive detailedDescription version
 		public abstract String getSimpleDescription();
 	}
 	
@@ -100,7 +226,7 @@ public class Comparison {
 		public final T first;
 		public final U second;
 		
-		Pair(T first, U second) {
+		public Pair(T first, U second) {
 			this.first = first;
 			this.second = second;
 		}

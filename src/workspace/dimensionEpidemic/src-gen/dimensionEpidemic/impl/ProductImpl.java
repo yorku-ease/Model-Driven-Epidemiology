@@ -17,6 +17,7 @@ import epimodel.impl.FlowImpl;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
+import epimodel.util.Comparison.ChildrenDiffResult;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
@@ -58,51 +59,24 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public Difference compareWithSameClass(Composable other, MatchResult matches) {
 		Match match = matches.find(this, other);
 		
-		if (match == null)
-			throw new RuntimeException("Trying to diff unmatched composables: " + this + " & " + other);
-		
-		List<Match> childrenMatches = new ArrayList<>();
-
 		List<Compartment> myCompartments = getDimensions().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> myMatchedCompartments = new ArrayList<>();
-		List<Compartment> myUnMatchedCompartments = new ArrayList<>(myCompartments);
-		
 		List<Compartment> otherCompartments = ((ProductImpl) other).getDimensions().stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> otherMatchedCompartments = new ArrayList<>();
-		List<Compartment> otherUnMatchedCompartments = new ArrayList<>(otherCompartments);
 		
-		for (Compartment c : myCompartments) {
-			Match childMatch = matches.find(c);
-			if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
-				childrenMatches.add(childMatch);
-				myMatchedCompartments.add(c);
-				myUnMatchedCompartments.remove(c);
-				otherMatchedCompartments.add((Compartment) childMatch.match.second);
-				otherUnMatchedCompartments.remove(childMatch.match.second);
-			}
-		}
+		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		
-		List<Match> accountedForMatches = new ArrayList<>(childrenMatches);
-		accountedForMatches.addAll(
-			childrenMatches
-				.stream()
-				.map(m -> m.match.first.compare(m.match.second, matches))
-				.map(diffResult -> diffResult.accountsForMatches)
-				.flatMap(List::stream)
-				.collect(Collectors.toList())
-		);
+		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
 		accountedForMatches.add(match);
 		
-		String description = "Product " + getLabels() + " matches Product " + other.getLabels();
-		if (otherUnMatchedCompartments.size() != 0)
-			description += ". Added Children: " + otherUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList());
-		if (myUnMatchedCompartments.size() != 0)
-			description += ". Removed Children: " +  myUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList());
+		boolean isSame = childrenDiffs.isSame && getLabels().equals(other.getLabels());
 		
-		final String capture = description; // java things
-		return new Difference(accountedForMatches, new ArrayList<>(myUnMatchedCompartments), new ArrayList<>(otherUnMatchedCompartments)) {
+		String baseDescription = super.compareWithDifferentClass(other, matches).getSimpleDescription();
+		
+		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
 			@Override public String getSimpleDescription() {
-				return capture;
+				StringBuilder sb = new StringBuilder(baseDescription);
+				if (!isSame)
+					sb.append(childrenDiffs.getSimpleDescription());
+				return sb.toString();
 			}
 		};
 	}
@@ -329,6 +303,11 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 								@Override
 								public List<Flow> getFlows() {
+									throw new NullPointerException();
+								}
+
+								@Override
+								public Difference compareWithSameClass(Composable other, MatchResult matches) {
 									throw new NullPointerException();
 								}
 							}).stream()
