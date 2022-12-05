@@ -34,14 +34,10 @@ import compartmentGroup.GroupSources;
 import compartmentGroup.Link;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
-import epimodel.Composable;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.Comparison.Difference;
-import epimodel.util.Comparison.MatchResult;
-import epimodel.util.Comparison;
 
 /**
  * <!-- begin-user-doc -->
@@ -60,11 +56,6 @@ import epimodel.util.Comparison;
  * @generated
  */
 public class GroupImpl extends CompartmentImpl implements Group {
-
-	@Override
-	public Difference compareWithSameClass(Composable other, MatchResult matches) {
-		return Comparison.DEFAULT_SAME_CLASS_DIFF(this, other, matches, "getCompartment", "getFlow");
-	}
 
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Edit Group Epidemic " + getLabel());

@@ -15,8 +15,8 @@ import epimodel.util.Comparison.MatchResult;
 
 public class Compare {
 	public static void main(String[] args) {
-		String model1fn = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR_copy.epimodel";
-		String model2fn = "../../runtime-EclipseApplication/modeling/DEPGG_COVID_INF_VAR_SEIR.epimodel";
+		String model1fn = "../../runtime-extensions/Modeling1/Modeling1.epimodel";
+		String model2fn = "../../runtime-extensions/Modeling2/Modeling2.epimodel";
 		compare(model1fn, model2fn);
 	}
 	
@@ -81,7 +81,7 @@ public class Compare {
 		
 		for (Difference d : diffs) {
 			// description isnt formatted so just find {...} and add newlines and tab them, and if there are newlines, tab them too
-			String s = d.getSimpleDescription();
+			String s = d.description;
 			StringBuilder sb = new StringBuilder();
 			int depth = 0;
 			for (int i = 0; i < s.length(); ++i) {
