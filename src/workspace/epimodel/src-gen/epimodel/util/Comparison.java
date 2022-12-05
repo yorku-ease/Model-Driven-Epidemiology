@@ -1,14 +1,13 @@
 package epimodel.util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import epimodel.Compartment;
-import epimodel.CompartmentWrapper;
 import epimodel.Composable;
 import epimodel.Epidemic;
+import epimodel.Flow;
 
 public class Comparison {
 
@@ -149,15 +148,11 @@ public class Comparison {
 					notSameChildrenMatchAndDiffs.add(p);
 			}
 			
-			accountsForMatches = new ArrayList<>();
-			accountsForMatches.addAll(childrenMatches);
-			accountsForMatches.addAll(
-				childrenDiffs
-				.stream()
-				.map(diffResult -> diffResult.accountsForMatches)
-				.flatMap(List::stream)
-				.collect(Collectors.toList())
-			);
+			accountsForMatches = childrenDiffs
+					.stream()
+					.map(diffResult -> diffResult.accountsForMatches)
+					.flatMap(List::stream)
+					.collect(Collectors.toList());
 			
 			this.isSame = notSameChildrenMatchAndDiffs.size() == 0 && myUnMatchedCompartments.size() == 0 && otherUnMatchedCompartments.size() == 0;
 		}
@@ -178,7 +173,7 @@ public class Comparison {
 					sb.append(",");
 				sb.append(" Not Same Matched Children (found differences): ");
 				for (Pair<Match, Difference> matchDiff : notSameChildrenMatchAndDiffs)
-					sb.append("{").append(matchDiff.second.getSimpleDescription()).append("}, ");
+					sb.append("{").append(matchDiff.second.description).append("}, ");
 				requiresComma = false;
 			}
 			if (!otherUnMatchedCompartments.isEmpty()) {
@@ -207,57 +202,63 @@ public class Comparison {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static Difference DEFAULT_SAME_CLASS_DIFF(Composable my, Composable other, MatchResult matches, String compartmentsMethodName, String flowsMethodName) throws RuntimeException {
-	
-		Match match = matches.find(my, other);
-
-		List<CompartmentWrapper> l1;
-		List<CompartmentWrapper> l2;
-		try {
-			l1 = (List<CompartmentWrapper>) my.getClass().getMethod(compartmentsMethodName).invoke(my);
-			l2 = (List<CompartmentWrapper>) other.getClass().getMethod(compartmentsMethodName).invoke(other);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			throw new RuntimeException(e);
-		}
+	public static Difference createDifference(
+		Composable me,
+		Composable other,
+		MatchResult matches,
+		List<Compartment> myCompartments,
+		List<Compartment> otherCompartments,
+		List<Flow> myFlows,
+		List<Flow> otherFlows) {
 		
-		List<Compartment> myCompartments = l1.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> otherCompartments = l2.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		// TODO FLOWS
+	
+		Match match = null;
+		try {
+			match = matches.find(me, other);
+		} catch (Exception e) {
+			// match is null
+		}
 		
 		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		
 		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
-		accountedForMatches.add(match);
+		if (match != null)
+			accountedForMatches.add(match);
 		
-		boolean isSame = childrenDiffs.isSame && my.getLabels().equals(other.getLabels());
+		boolean isSame = childrenDiffs.isSame && me.getLabels().equals(other.getLabels());
 		
-		String baseDescription = my.compareWithDifferentClass(other, matches).getSimpleDescription();
+		String description = isSame ?
+				me.compareWithDifferentClass(other, matches).description :
+				me.compareWithDifferentClass(other, matches).description + childrenDiffs.getSimpleDescription();
 		
-		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
-			@Override public String getSimpleDescription() {
-				StringBuilder sb = new StringBuilder(baseDescription);
-				if (!isSame)
-					sb.append(childrenDiffs.getSimpleDescription());
-				return sb.toString();
-			}
-		};
+		return new Difference(
+				accountedForMatches,
+				new ArrayList<>(childrenDiffs.myUnMatchedCompartments),
+				new ArrayList<>(childrenDiffs.otherUnMatchedCompartments),
+				isSame,
+				description);
 	}
 
-	public static abstract class Difference {
+	public static class Difference {
 		public final List<Match> accountsForMatches;
 		public final List<Composable> accountsForAdditions;
 		public final List<Composable> accountsForSubstractions;
 		public final boolean isSame;
+		public final String description;
 		
-		public Difference(List<Match> accountsForMatches, List<Composable> accountsForAdditions, List<Composable> accountsForSubstractions, boolean isSame) {
+		public Difference(
+				List<Match> accountsForMatches,
+				List<Composable> accountsForAdditions,
+				List<Composable> accountsForSubstractions,
+				boolean isSame,
+				String description) {
 			this.accountsForMatches = new ArrayList<>(accountsForMatches);
 			this.accountsForAdditions = new ArrayList<>(accountsForAdditions);
 			this.accountsForSubstractions = new ArrayList<>(accountsForSubstractions);
 			this.isSame = isSame;
+			this.description = description;
 		}
-		
-		// not a data member so we can avoid doing work if it isn't called, also need a more expensive detailedDescription version
-		public abstract String getSimpleDescription();
 	}
 	
 	public static final class Pair <T, U> {

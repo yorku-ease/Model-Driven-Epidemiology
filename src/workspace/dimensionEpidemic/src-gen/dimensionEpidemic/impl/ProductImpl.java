@@ -14,7 +14,6 @@ import epimodel.FlowWrapper;
 import epimodel.impl.CompartmentImpl;
 import epimodel.impl.EpidemicImpl;
 import epimodel.impl.FlowImpl;
-import epimodel.util.Comparison;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
@@ -53,11 +52,6 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class ProductImpl extends CompartmentImpl implements Product {
-
-	@Override
-	public Difference compareWithSameClass(Composable other, MatchResult matches) {
-		return Comparison.DEFAULT_SAME_CLASS_DIFF(this, other, matches, "getDimensions", "getFlow");
-	}
 
 	/**
 	 * The cached value of the '{@link #getFlow() <em>Flow</em>}' containment reference list.

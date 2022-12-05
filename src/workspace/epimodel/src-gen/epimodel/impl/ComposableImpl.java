@@ -6,7 +6,9 @@ import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.Composable;
 import epimodel.EpimodelPackage;
-import epimodel.util.Comparison.ChildrenDiffResult;
+import epimodel.Flow;
+import epimodel.FlowWrapper;
+import epimodel.util.Comparison;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
@@ -39,10 +41,21 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 				compareWithDifferentClass(other, matches);
 	}
 	
+	
+	/*
+	 * When we know 2 composables are of the same class, we
+	 * can try to find the composability attributes ourselves
+	 * by making use of the metamodel.
+	 * 
+	 * Classes can override this method to call `defaultSameClassCompare(Composable other, MatchResult matches, EReferenceImpl compartmentsFeature, EReferenceImpl flowsFeature)`
+	 * directly with the correct features but if they have a single Compartment feature and one or none Flow feature this method will find them
+	 */
 	@Override
 	public Difference compareWithSameClass(Composable other, MatchResult matches) {
 		EReferenceImpl compartmentsFeature = null;
 		EReferenceImpl flowsFeature = null;
+		
+		// identify the compartment and flow features, making sure there is at most 1 of each
 		for (EStructuralFeature feature : eClass().getEAllStructuralFeatures()) {
 			if (feature instanceof EReferenceImpl) {
 				EReferenceImpl eref = (EReferenceImpl) feature;
@@ -67,39 +80,31 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 			}
 		}
 		
+		// at this point we haven't checked if the features are null but a correct metamodel shouldn't yield null features
+		// the only problem might be that a composability tool offers no support for flows, in which case we can apply
+		// the comparison to the compartments only
 		return defaultSameClassCompare(other, matches, compartmentsFeature, flowsFeature);
 	}
 	
 	public Difference defaultSameClassCompare(Composable other, MatchResult matches, EReferenceImpl compartmentsFeature, EReferenceImpl flowsFeature) {
-		Match match = matches.find(this, other);
-
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l1 = (List<CompartmentWrapper>) eGet(compartmentsFeature);
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l2 = (List<CompartmentWrapper>) other.eGet(compartmentsFeature);
-		
-		// TODO flows
-		
 		List<Compartment> myCompartments = l1.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
 		List<Compartment> otherCompartments = l2.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
 		
-		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
+		if (flowsFeature == null)
+			return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, null, null);
+
+		@SuppressWarnings("unchecked")
+		List<FlowWrapper> lf1 = (List<FlowWrapper>) eGet(flowsFeature);
+		@SuppressWarnings("unchecked")
+		List<FlowWrapper> lf2 = (List<FlowWrapper>) other.eGet(flowsFeature);
+		List<Flow> myFlows = lf1.stream().map(w -> w.getFlow()).collect(Collectors.toList());
+		List<Flow> otherFlows = lf2.stream().map(w -> w.getFlow()).collect(Collectors.toList());
 		
-		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
-		accountedForMatches.add(match);
-		
-		boolean isSame = childrenDiffs.isSame && getLabels().equals(other.getLabels());
-		
-		String baseDescription = compareWithDifferentClass(other, matches).getSimpleDescription();
-		
-		return new Difference(accountedForMatches, new ArrayList<>(childrenDiffs.myUnMatchedCompartments), new ArrayList<>(childrenDiffs.otherUnMatchedCompartments), isSame) {
-			@Override public String getSimpleDescription() {
-				StringBuilder sb = new StringBuilder(baseDescription);
-				if (!isSame)
-					sb.append(childrenDiffs.getSimpleDescription());
-				return sb.toString();
-			}
-		};
+		return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, myFlows, otherFlows);
 	}
 	
 	@Override
@@ -113,22 +118,16 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 			match = new Match(this, other);
 		}
 		
-		boolean sameClass = getClass().equals(other.getClass()); // in case same class was deffered
+		boolean sameClass = getClass().equals(other.getClass()); // in case same class comparison was deferred
 		
 		List<PhysicalCompartment> l1 = getPhysicalCompartments();
 		List<PhysicalCompartment> l2 = other.getPhysicalCompartments();
-		
 		boolean sameCompartments = l1.equals(l2);
-		int addedCompartments = sameCompartments ? 0 : l2.size() - l2.stream().filter(l1::contains).collect(Collectors.toList()).size();
-		int removedCompartments = l1.size() + addedCompartments - l2.size();
 
 		List<PhysicalFlow> lf1 = getPhysicalFlows();
 		List<PhysicalFlow> lf2 = other.getPhysicalFlows();
 		boolean sameFlows = lf1.equals(lf2);
-		int addedFlows = sameFlows ? 0 : lf2.size() - lf2.stream().filter(lf1::contains).collect(Collectors.toList()).size();
-		int removedFlows = lf1.size() + addedFlows - lf2.size();
 		
-		// as you can see we can't get any useful information out of the default implementation
 		StringBuilder sb = new StringBuilder();
 		{
 			sb.append(getClass().getSimpleName() + " " + getLabels());
@@ -139,24 +138,30 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 			else
 				sb.append(" does not exactly match ");
 			sb.append(other.getClass().getSimpleName() + " " + other.getLabels());
-			if (!sameCompartments) {
-				sb.append(" original model produces " + l1.size() + " physical compartments and other model produces " + l2.size());
-				sb.append(": " + (l1.size() - removedCompartments) + " matched, ");
-				sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
-			}
-			if (!sameFlows) {
-				sb.append(" original model produces " + lf1.size() + " physical flows and other model produces " + l2.size());
-				sb.append(": " + (lf1.size() - removedFlows) + " matched, ");
-				sb.append(addedCompartments + " added and " + removedFlows + " removed.");
-			}
+			if (!sameCompartments)
+				diffCompartments(sb, l1, l2);
+			if (!sameFlows)
+				diffFlows(sb, lf1, lf2);
 		}
 		String description = sb.toString();
 		
-		return new Difference(Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), false) {
-			@Override public String getSimpleDescription() {
-				return description;
-			}
-		};
+		return new Difference(Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), false, description);
+	}
+	
+	void diffCompartments(StringBuilder sb, List<PhysicalCompartment> l1, List<PhysicalCompartment> l2) {
+		int addedCompartments = l2.size() - l2.stream().filter(l1::contains).collect(Collectors.toList()).size();
+		int removedCompartments = l1.size() + addedCompartments - l2.size();
+		sb.append(" original model produces " + l1.size() + " physical compartments and other model produces " + l2.size());
+		sb.append(": " + (l1.size() - removedCompartments) + " matched, ");
+		sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
+	}
+	
+	void diffFlows(StringBuilder sb, List<PhysicalFlow> l1, List<PhysicalFlow> l2) {
+		int addedFlows = l2.size() - l2.stream().filter(l1::contains).collect(Collectors.toList()).size();
+		int removedFlows = l1.size() + addedFlows - l2.size();
+		sb.append(" original model produces " + l1.size() + " physical flows and other model produces " + l2.size());
+		sb.append(": " + (l1.size() - removedFlows) + " matched, ");
+		sb.append(addedFlows + " added and " + removedFlows + " removed.");
 	}
 	
 	/**
