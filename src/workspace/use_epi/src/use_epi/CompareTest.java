@@ -1,33 +1,31 @@
 package use_epi;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//import java.util.List;
-//import java.util.Arrays;
-//
-//import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+import epimodel.util.Comparison.ComparisonResult;
 
 class CompareTest {
-//	@Test
-//	void test1() {
-//		List<List<String>> leftPhysicalCompartments = Arrays.asList(
-//			Arrays.asList("S", "1")
-//		);
-//		List<List<String>> rightPhysicalCompartments = Arrays.asList(
-//			Arrays.asList("S", "1")
-//		);
-//		Compare.PhysicalMatchResult res = Compare.physicalMatchLists(leftPhysicalCompartments, rightPhysicalCompartments);
-//		assertTrue(res.isValidResult());
-//		
-//		assertTrue(res.generalizations.size() == 0);
-//		assertTrue(res.specializations.size() == 0);
-//		assertTrue(res.mappingsLeft.size() == 1);
-//		assertTrue(res.mappingsRight.size() == 1);
-//		assertTrue(res.additions.size() == 0);
-//		assertTrue(res.substractions.size() == 0);
-//		assertTrue(res.mappingsLeft.equals(res.mappingsRight));
-//	}
-//	
+	@Test
+	void test1() {
+		String model1fn = "../../runtime-extensions/Modeling1/Modeling1.epimodel";
+		String model2fn = "../../runtime-extensions/Modeling2/Modeling2.epimodel";
+		ComparisonResult res = Compare.compare(model1fn, model2fn);
+
+		assertTrue(res.context.model1.getLabels().get(0).equals("withFlowInGroup"));
+		assertTrue(res.context.model2.getLabels().get(0).equals("withFlowInProduct"));
+
+		int number_of_compartments_with_identical_names_in_both_models = 6;
+		int number_of_composable_objects_in_total_per_model = 1 + number_of_compartments_with_identical_names_in_both_models;
+		
+		assertTrue(res.context.model1compartments.size() == number_of_composable_objects_in_total_per_model);
+		assertTrue(res.context.model2compartments.size() == number_of_composable_objects_in_total_per_model);
+		assertTrue(res.matches.matches.size() == number_of_compartments_with_identical_names_in_both_models);
+		assertTrue(res.diffs.size() == 1);
+		assertTrue(res.diffs.get(0).accountsForMatches.size() == number_of_compartments_with_identical_names_in_both_models);
+	}
+	
 //	@Test
 //	void test2() {
 //		List<List<String>> leftPhysicalCompartments = Arrays.asList(
