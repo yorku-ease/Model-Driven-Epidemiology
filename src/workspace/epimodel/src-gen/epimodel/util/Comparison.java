@@ -1,6 +1,7 @@
 package epimodel.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,11 +16,23 @@ public class Comparison {
 		final List<Pair<String, String>> renamings;
 		public final Epidemic model1;
 		public final Epidemic model2;
+		public final List<Composable> model1compartments;
+		public final List<Composable> model2compartments;
 		
 		public CompareContext(Epidemic model1, Epidemic model2, List<Pair<String, String>> renamings) {
 			this.model1 = model1;
 			this.model2 = model2;
 			this.renamings = renamings;
+			model1compartments = new ArrayList<>(Arrays.asList(model1));
+			model2compartments = new ArrayList<>(Arrays.asList(model2));
+			model1.eAllContents().forEachRemaining(eobject -> {
+				if (eobject instanceof Composable)
+					model1compartments.add((Composable) eobject);
+			});
+			model2.eAllContents().forEachRemaining(eobject -> {
+				if (eobject instanceof Composable)
+					model2compartments.add((Composable) eobject);
+			});
 		}
 	}
 	
@@ -269,5 +282,69 @@ public class Comparison {
 			this.first = first;
 			this.second = second;
 		}
+	}
+	
+	public static class ComparisonResult {
+		public final CompareContext context;
+		public final MatchResult matches;
+		public final List<Difference> diffs;
+		
+		public ComparisonResult(CompareContext context, MatchResult matches, List<Difference> diffs) {
+			this.context = context;
+			this.matches = matches;
+			this.diffs = diffs;
+		}
+	}
+	
+	public static MatchResult ExactOrContainsLabelMatch(CompareContext context) {
+		MatchResult res = new MatchResult(context);
+		List<Composable> model1compartments = new ArrayList<>(Arrays.asList(context.model1));
+		List<Composable> model2compartments = new ArrayList<>(Arrays.asList(context.model2));
+		context.model1.eAllContents().forEachRemaining(eobject -> {
+			if (eobject instanceof Composable)
+				model1compartments.add((Composable) eobject);
+		});
+		context.model2.eAllContents().forEachRemaining(eobject -> {
+			if (eobject instanceof Composable)
+				model2compartments.add((Composable) eobject);
+		});
+		System.out.println("Model1:");
+		System.out.println(model1compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
+		System.out.println("Model2:");
+		System.out.println(model2compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
+		
+		List<Composable> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
+		List<Composable> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
+		
+		// look for same labels: ["S", "0"] matches only ["S", "0"]
+		for (Composable c1 : model1compartments)
+			for (Composable c2 : model2compartments)
+				if (c1.getLabels().equals(c2.getLabels())) {
+					res.matches.add(new Match(c1, c2));
+					model1NotExactMatchedCompartments.remove(c1);
+					model2NotExactMatchedCompartments.remove(c2);
+				}
+		
+		List<Composable> model1Not2ContainsAll1MatchedCompartments = new ArrayList<>(model1NotExactMatchedCompartments);
+		List<Composable> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
+
+		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
+		// Labels are unique so even though it seems like there could be multiple matches, there shouldn't if the model is correct
+		for (Composable c1 : model1NotExactMatchedCompartments)
+			for (Composable c2 : model2NotExactMatchedCompartments)
+				if (c2.getLabels().containsAll(c1.getLabels())) {
+					res.matches.add(new Match(c1, c2));
+					model1Not2ContainsAll1MatchedCompartments.remove(c1);
+					model2Not2ContainsAll1Compartments.remove(c2);
+				}
+
+		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
+		// Labels are unique so even though it seems like there could be multiple matches, there shouldn't if the model is correct
+		for (Composable c1 : model1NotExactMatchedCompartments)
+			for (Composable c2 : model2NotExactMatchedCompartments)
+				if (c1.getLabels().containsAll(c2.getLabels()))
+					res.matches.add(new Match(c1, c2));
+		
+		return res;
 	}
 }
