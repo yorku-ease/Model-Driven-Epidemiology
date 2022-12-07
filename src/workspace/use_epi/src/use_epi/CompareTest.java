@@ -25,6 +25,12 @@ class CompareTest {
 		assertTrue(res.diffs.size() == 1);
 		assertTrue(res.diffs.get(0).accountsForMatches.size() == number_of_compartments_with_identical_names_in_both_models);
 	}
+	@Test
+	void test2() {
+		String model1fn = "../../test-models/GECC_SI_S_I.epimodel";
+		String model2fn = "../../test-models/DEG_SI_S_I.epimodel";
+		ComparisonResult res = Compare.compare(model1fn, model2fn);
+	}
 	
 //	@Test
 //	void test2() {
