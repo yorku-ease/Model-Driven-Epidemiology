@@ -134,9 +134,9 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 			if (!sameClass)
 				sb.append(" was retyped and ");
 			if (sameCompartments)
-				sb.append(" exactly matches ");
+				sb.append("exactly matches ");
 			else
-				sb.append(" does not exactly match ");
+				sb.append("does not exactly match ");
 			sb.append(other.getClass().getSimpleName() + " " + other.getLabels());
 			if (!sameCompartments)
 				diffCompartments(sb, l1, l2);
