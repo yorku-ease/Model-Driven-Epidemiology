@@ -6,7 +6,7 @@ import java.util.List;
 
 import epimodel.Epidemic;
 import epimodel.util.Comparison;
-import epimodel.util.Comparison.CompareContext;
+import epimodel.util.Comparison.ComparisonContext;
 import epimodel.util.Comparison.ComparisonResult;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Pair;
@@ -29,7 +29,7 @@ public class Compare {
 	
 	public static ComparisonResult compare(Epidemic model1, Epidemic model2) {
 		List<Pair<String, String>> renamings = new ArrayList<>();
-		CompareContext context = new CompareContext(model1, model2, renamings);
+		ComparisonContext context = new ComparisonContext(model1, model2, renamings);
 		MatchResult matches = Comparison.ExactOrContainsLabelMatch(context);
 		
 		System.out.println();

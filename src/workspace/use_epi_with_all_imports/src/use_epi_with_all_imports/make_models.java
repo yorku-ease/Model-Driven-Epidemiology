@@ -26,38 +26,23 @@ import epimodel.FlowWrapper;
 import epimodel.impl.EpimodelFactoryImpl;
 
 public class make_models {
-	public static ResourceSet resSet = new ResourceSetImpl();
-	
-	public static void make(Epidemic e) throws IOException {
-        URI uri = URI.createFileURI("../../test-models/" + e.getId() + ".epimodel");
-        Resource resource = resSet.createResource(uri);
-        resource.getContents().add(wrap(e));
-        resource.save(null);
-	}
+	public static ResourceSet resSet = null;
 	
 	public static void main(String[] args) throws Exception {
-		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
-        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
-		
-        resSet = new ResourceSetImpl();
-        EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
-        resSet.setPackageRegistry(pkgRegistry);
-        resSet.setResourceFactoryRegistry(factoryRegistry);
-
-		make(groupEpi("GECC_S_I",
+		create_model_file(groupEpi("GECC_S_I",
 				compartment("S"),
 				compartment("I")));
 		
-		make(groupEpi("GECC_SI_S_I",
+		create_model_file(groupEpi("GECC_SI_S_I",
 				compartment("SI", "S"),
 				compartment("SI", "I")));
 		
-		make(productEpi("DEG_SI_S_I",
+		create_model_file(productEpi("DEG_SI_S_I",
 				group("SI",
 						compartment("S"),
 						compartment("I"))));
 		
-		make(productEpi("DEPGG_COVID_INF_VAR_SEIR",
+		create_model_file(productEpi("DEPGG_COVID_INF_VAR_SEIR",
 				group("SEIR",
 						compartment("S"),
 						compartment("E"),
@@ -69,6 +54,23 @@ public class make_models {
 										compartment("Asymptomatic"),
 										compartment("Symptomatic"))),
 						compartment("R"))));
+	}
+	
+	public static void create_model_file(Epidemic e) throws IOException {
+		if (resSet == null) {
+			resSet = new ResourceSetImpl();
+			Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
+	        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
+			
+	        resSet = new ResourceSetImpl();
+	        EPackage.Registry pkgRegistry = new EPackageRegistryImpl();
+	        resSet.setPackageRegistry(pkgRegistry);
+	        resSet.setResourceFactoryRegistry(factoryRegistry);
+		}
+        URI uri = URI.createFileURI("../../test-models/" + e.getId() + ".epimodel");
+        Resource resource = resSet.createResource(uri);
+        resource.getContents().add(wrap(e));
+        resource.save(null);
 	}
 	
 	static DimensionEpidemic productEpi(String id, Compartment... compartments) {

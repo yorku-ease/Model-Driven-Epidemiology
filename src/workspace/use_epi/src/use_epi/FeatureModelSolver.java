@@ -12,7 +12,7 @@ import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.configuration.Configuration;
 import de.ovgu.featureide.fm.core.configuration.ConfigurationAnalyzer;
 
-public class Solver {
+public class FeatureModelSolver {
 	public static boolean canBeValid(IFeatureModel fm, Configuration conf, List<IConstraint> constraints) {
 		List<IConstraint> saved = new ArrayList<>(fm.getConstraints());
 		

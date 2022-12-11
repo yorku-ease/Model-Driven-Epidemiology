@@ -2,7 +2,9 @@ package epimodel.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import epimodel.Compartment;
@@ -11,28 +13,50 @@ import epimodel.Epidemic;
 import epimodel.Flow;
 
 public class Comparison {
-
-	public static class CompareContext {
-		final List<Pair<String, String>> renamings;
-		public final Epidemic model1;
-		public final Epidemic model2;
-		public final List<Composable> model1compartments;
-		public final List<Composable> model2compartments;
+	
+	public static class ModelContext {
+		public final Epidemic model;
+		public final List<Composable> composables;
+		public final Set<String> uniqueLabels;
+		public final Set<String> duplicateLabels;
 		
-		public CompareContext(Epidemic model1, Epidemic model2, List<Pair<String, String>> renamings) {
-			this.model1 = model1;
-			this.model2 = model2;
+		public ModelContext(Epidemic model) {
+			this.model = model;
+			composables = new ArrayList<>(Arrays.asList(model));
+			
+			uniqueLabels = new HashSet<>();
+			duplicateLabels = new HashSet<>();
+			
+			model.eAllContents().forEachRemaining(eobject -> {
+				if (!(eobject instanceof Composable))
+					return;
+				Composable composable = (Composable) eobject;
+				composables.add(composable);
+				duplicateLabels.addAll(
+					composable
+						.getLabels()
+						.stream()
+						.filter(label -> uniqueLabels.contains(label) && !duplicateLabels.contains(label))
+						.collect(Collectors.toList()));
+				uniqueLabels.addAll(composable.getLabels());
+			});
+			uniqueLabels.removeAll(duplicateLabels);
+		}
+	}
+
+	public static class ComparisonContext {
+		final List<Pair<String, String>> renamings;
+		public final ModelContext modelctx1;
+		public final ModelContext modelctx2;
+		
+		public ComparisonContext(
+			Epidemic model1,
+			Epidemic model2,
+			List<Pair<String, String>> renamings
+		) {
+			this.modelctx1 = new ModelContext(model1);
+			this.modelctx2 = new ModelContext(model2);
 			this.renamings = renamings;
-			model1compartments = new ArrayList<>(Arrays.asList(model1));
-			model2compartments = new ArrayList<>(Arrays.asList(model2));
-			model1.eAllContents().forEachRemaining(eobject -> {
-				if (eobject instanceof Composable)
-					model1compartments.add((Composable) eobject);
-			});
-			model2.eAllContents().forEachRemaining(eobject -> {
-				if (eobject instanceof Composable)
-					model2compartments.add((Composable) eobject);
-			});
 		}
 	}
 	
@@ -70,10 +94,10 @@ public class Comparison {
 	}
 	
 	public static class MatchResult {
-		public final CompareContext context;
+		public final ComparisonContext context;
 		public final List<Match> matches = new ArrayList<>();
 		
-		public MatchResult(CompareContext context) {
+		public MatchResult(ComparisonContext context) {
 			this.context = context;
 		}
 		
@@ -285,33 +309,23 @@ public class Comparison {
 	}
 	
 	public static class ComparisonResult {
-		public final CompareContext context;
+		public final ComparisonContext context;
 		public final MatchResult matches;
 		public final List<Difference> diffs;
 		
-		public ComparisonResult(CompareContext context, MatchResult matches, List<Difference> diffs) {
+		public ComparisonResult(ComparisonContext context, MatchResult matches, List<Difference> diffs) {
 			this.context = context;
 			this.matches = matches;
 			this.diffs = diffs;
 		}
 	}
 	
-	public static MatchResult ExactOrContainsLabelMatch(CompareContext context) {
+	public static MatchResult ExactOrContainsLabelMatch(ComparisonContext context) {
 		MatchResult res = new MatchResult(context);
-		List<Composable> model1compartments = new ArrayList<>(Arrays.asList(context.model1));
-		List<Composable> model2compartments = new ArrayList<>(Arrays.asList(context.model2));
-		context.model1.eAllContents().forEachRemaining(eobject -> {
-			if (eobject instanceof Composable)
-				model1compartments.add((Composable) eobject);
-		});
-		context.model2.eAllContents().forEachRemaining(eobject -> {
-			if (eobject instanceof Composable)
-				model2compartments.add((Composable) eobject);
-		});
-		System.out.println("Model1:");
-		System.out.println(model1compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
-		System.out.println("Model2:");
-		System.out.println(model2compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
+		List<Composable> model1compartments = new ArrayList<>(context.modelctx1.composables);
+		List<Composable> model2compartments = new ArrayList<>(context.modelctx2.composables);
+		System.out.println("Model1:\n" + model1compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
+		System.out.println("Model2:\n" + model2compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
 		
 		List<Composable> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
 		List<Composable> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
@@ -329,21 +343,38 @@ public class Comparison {
 		List<Composable> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
 
 		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
-		// Labels are unique so even though it seems like there could be multiple matches, there shouldn't if the model is correct
+		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be uneligible but S and I are fine
 		for (Composable c1 : model1NotExactMatchedCompartments)
 			for (Composable c2 : model2NotExactMatchedCompartments)
 				if (c2.getLabels().containsAll(c1.getLabels())) {
+					boolean hasMatchedUnique = false;
+					for (String label : c1.getLabels())
+						if (context.modelctx1.uniqueLabels.contains(label) && context.modelctx2.uniqueLabels.contains(label)) {
+							hasMatchedUnique = true;
+							break;
+						}
+					if (!hasMatchedUnique)
+						continue;
 					res.matches.add(new Match(c1, c2));
 					model1Not2ContainsAll1MatchedCompartments.remove(c1);
 					model2Not2ContainsAll1Compartments.remove(c2);
 				}
 
 		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
-		// Labels are unique so even though it seems like there could be multiple matches, there shouldn't if the model is correct
+		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be uneligible but S and I are fine
 		for (Composable c1 : model1NotExactMatchedCompartments)
 			for (Composable c2 : model2NotExactMatchedCompartments)
-				if (c1.getLabels().containsAll(c2.getLabels()))
+				if (c1.getLabels().containsAll(c2.getLabels())) {
+					boolean hasMatchedUnique = false;
+					for (String label : c2.getLabels())
+						if (context.modelctx1.uniqueLabels.contains(label) && context.modelctx2.uniqueLabels.contains(label)) {
+							hasMatchedUnique = true;
+							break;
+						}
+					if (!hasMatchedUnique)
+						continue;
 					res.matches.add(new Match(c1, c2));
+				}
 		
 		return res;
 	}

@@ -16,7 +16,7 @@ import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
 
-public class Test {
+public class CompileModel {
 	public static void main(String[] args) throws Exception {
 
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel");
