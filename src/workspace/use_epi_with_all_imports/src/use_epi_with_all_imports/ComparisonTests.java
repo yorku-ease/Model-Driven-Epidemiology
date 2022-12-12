@@ -5,30 +5,72 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import epimodel.Epidemic;
+import epimodel.impl.EpimodelPackageImpl;
 import epimodel.util.Comparison.ComparisonResult;
 
 class ComparisonTests {
+	
+	@BeforeAll
+	static void init_metamodel() throws Exception {
+		// load things in right order & make sure model creation is fine
+		make_models.main(null);
+	}
+	
 	@Test
 	void test1() {
-		String model1fn = "../../runtime-extensions/Modeling1/Modeling1.epimodel";
-		String model2fn = "../../runtime-extensions/Modeling2/Modeling2.epimodel";
-		ComparisonResult res = use_epi.Compare.compare(model1fn, model2fn);
-
-		assertTrue(res.context.modelctx1.model.getLabels().get(0).equals("withFlowInGroup"));
-		assertTrue(res.context.modelctx2.model.getLabels().get(0).equals("withFlowInProduct"));
-
-		int number_of_compartments_with_identical_names_in_both_models = 6;
-		int number_of_composable_objects_in_total_per_model = 1 + number_of_compartments_with_identical_names_in_both_models;
+		Epidemic withFlowInGroup = make_models.productEpi("withFlowInGroup",
+				make_models.group("SEIR",
+						make_models.compartment("S"),
+						make_models.compartment("E"),
+						make_models.product("I",
+								make_models.group("Variants",
+										make_models.compartment("DELTA"),
+										make_models.compartment("OMICRON")),
+								make_models.addRate(
+										make_models.group("Infectious",
+												make_models.compartment("Asymptomatic"),
+												make_models.compartment("Symptomatic")),
+										"Symptoms",
+										Arrays.asList("Asymptomatic"),
+										Arrays.asList("Symptomatic"))),
+						make_models.compartment("R")));
 		
-		assertTrue(res.context.modelctx1.composables.size() == number_of_composable_objects_in_total_per_model);
-		assertTrue(res.context.modelctx2.composables.size() == number_of_composable_objects_in_total_per_model);
-		assertTrue(res.matches.matches.size() == number_of_compartments_with_identical_names_in_both_models);
+		Epidemic withFlowInProduct = make_models.productEpi("withFlowInProduct",
+				make_models.group("SEIR",
+						make_models.compartment("S"),
+						make_models.compartment("E"),
+						make_models.addRate(
+							make_models.product("I",
+									make_models.group("Variants",
+											make_models.compartment("DELTA"),
+											make_models.compartment("OMICRON")),
+									make_models.group("Infectious",
+											make_models.compartment("Asymptomatic"),
+											make_models.compartment("Symptomatic"))),
+							"Symptoms",
+							Arrays.asList("Asymptomatic"),
+							Arrays.asList("Symptomatic")),
+						make_models.compartment("R")));
+		
+		ComparisonResult res = use_epi.Compare.compare(withFlowInGroup, withFlowInProduct);
+
+		int number_of_composables_that_have_the_same_names_in_both_models = 11;
+		int number_of_composables_in_both_models = 1 + number_of_composables_that_have_the_same_names_in_both_models;
+		
+		assertTrue(res.context.modelctx1.composables.size() == number_of_composables_in_both_models);
+		assertTrue(res.context.modelctx2.composables.size() == number_of_composables_in_both_models);
+		assertTrue(res.matches.matches.size() == number_of_composables_that_have_the_same_names_in_both_models);
 		assertTrue(res.diffs.size() == 1);
-		assertTrue(res.diffs.get(0).accountsForMatches.size() == number_of_compartments_with_identical_names_in_both_models);
+		assertTrue(res.diffs.get(0).accountsForMatches.size() == number_of_composables_that_have_the_same_names_in_both_models);
 	}
+	
+	
 	@Test
 	void test2() {
 		// test two models producing same physical compartments except the epidemic label
