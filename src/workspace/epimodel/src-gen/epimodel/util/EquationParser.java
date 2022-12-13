@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EquationParser {
-	public static Expression Parse(String eq) throws Exception {
+	public static Expression Parse(String eq) {
 		StringCursor sc = new StringCursor(eq);
 		Expression res = _Parse(sc);
 		if (sc.cursor != sc.s.length())
-			throw new Exception("Bad Equation, couldn't fully parse, finished at index " + sc.cursor + " out of " + sc.s.length());
+			throw new RuntimeException("Bad Equation, couldn't fully parse, finished at index " + sc.cursor + " out of " + sc.s.length());
 		return res;
 	}
 	

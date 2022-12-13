@@ -6,8 +6,6 @@ import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.EpimodelPackage;
 
-import java.util.List;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -16,8 +14,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +29,6 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public class CompartmentWrapperImpl extends MinimalEObjectImpl.Container implements CompartmentWrapper {
-
-	public void edit(Shell shell, List<Control> controls) {
-		throw new RuntimeException();
-	}
 
 	/**
 	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' containment reference.

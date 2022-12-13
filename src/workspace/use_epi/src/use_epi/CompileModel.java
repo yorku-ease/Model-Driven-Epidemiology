@@ -1,23 +1,16 @@
 package use_epi;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.stream.Collectors;
-
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
 
 public class CompileModel {
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_S_I.epimodel");
 //		compile(resSet, "../../runtime-EclipseApplication/modeling/GECC_SI_S_I.epimodel");
@@ -28,9 +21,9 @@ public class CompileModel {
 //		compile(resSet, "../../runtime-plugin/modeling/model3.epimodel");
 	}
 	
-	static void compile(String model_fn) throws Exception {
+	static void compile(String model_fn) throws FileNotFoundException, UnsupportedEncodingException {
         
-        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) loadModel(model_fn);
+        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model_fn);
 
 		String outfolder = "C:/Users/Bruno/Desktop/";
 
@@ -54,21 +47,5 @@ public class CompileModel {
 			}
 		    writer.close();
 		}
-	}
-	
-	static EObject loadModel(String model_fn) throws Exception {
-		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
-        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
-		
-        ResourceSet resSet = new ResourceSetImpl();
-        resSet.setPackageRegistry(EPackage.Registry.INSTANCE);
-        resSet.setResourceFactoryRegistry(factoryRegistry);
-        
-        EPackage.Registry.INSTANCE.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-        
-        URI uri = URI.createFileURI(model_fn);
-        Resource resource = resSet.getResource(uri, true);
-        
-        return resource.getContents().get(0);
 	}
 }

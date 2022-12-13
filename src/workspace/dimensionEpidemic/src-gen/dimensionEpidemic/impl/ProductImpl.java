@@ -185,22 +185,25 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		 * and there exists copies of the flow for each existing hyperplane, unaware of eachother
 		 * 
 		 * EXAMPLE:
-		 * notation: compartment -> [{compartments},{flows}]
+		 * notation: composable -> [{compartments},{flows}]
 		 * 
 		 * product of group S,I and group A,B
 		 * 	[{S,I}, {S*I->I}]*[{A,B}, {}]
-		 * 	produces:
+		 * 	produces physical flows:
 		 * 	    SA*IA->IA
 		 * 	    SB*IB->IB
 		 * 	    
 		 * which is different from if the flow was outside the group S,I
 		 * (in this case in the product containing the groups)
 		 * 	[{[{S,I}, {}]*[{A,B}, {}]}, {S*I->I}]
-		 * 	produces:
+		 * 	produces physical flows:
 		 * 	    SA*IA->IA
 		 * 	    SA*IB->IA
 		 * 	    SB*IA->IB
 		 * 	    SB*IB->IB
+		 * 
+		 * so essentially, if we naively do the product of each flow for all dimensions we end up with bad results
+		 * each flow has to stay in its own axis
 		 */
 
 		List<Compartment> dims = getDimensions().stream().map(CompartmentWrapper::getCompartment)
@@ -253,35 +256,15 @@ public class ProductImpl extends CompartmentImpl implements Product {
 								}
 								
 								// methods to override to instantiate EpidemicImpl, they won't be called
-								@Override
-								public List<PhysicalCompartment> getPhysicalCompartments() {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public List<PhysicalFlow> getPhysicalFlows() {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public List<PhysicalCompartment> getSources() {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public List<PhysicalCompartment> getSinks() {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public List<Flow> getFlows() {
-									throw new NullPointerException();
-								}
-
-								@Override
-								public Difference compareWithSameClass(Composable other, MatchResult matches) {
-									throw new NullPointerException();
-								}
+								// in case someone really messes up and *somehow* calls the method at least it will throw
+								// this can't happen in an intentional use case as this partial epidemic
+								// is just used for flows to generate equations
+								@Override public List<PhysicalCompartment> getPhysicalCompartments() { throw new RuntimeException(); }
+								@Override public List<PhysicalFlow> getPhysicalFlows()  { throw new RuntimeException(); }
+								@Override public List<PhysicalCompartment> getSources()  { throw new RuntimeException(); }
+								@Override public List<PhysicalCompartment> getSinks()  { throw new RuntimeException(); }
+								@Override public List<Flow> getFlows()  { throw new RuntimeException(); }
+								@Override public Difference compareWithSameClass(Composable other, MatchResult matches) { throw new RuntimeException(); }
 							}).stream()
 									// IF YOU GET A WEIRD ERROR
 									// AND THROW DURING THIS

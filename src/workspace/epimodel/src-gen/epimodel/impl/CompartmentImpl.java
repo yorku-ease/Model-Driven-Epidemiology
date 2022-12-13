@@ -45,14 +45,15 @@ public class CompartmentImpl extends ComposableImpl implements Compartment {
 
 	@Override
 	public Difference compareWithSameClass(Composable other, MatchResult matches) {
-		if (getClass().equals(CompartmentImpl.class))
+		if (getClass().equals(CompartmentImpl.class)) {
 			return new Difference(
-				Arrays.asList(matches.find(this, other)),
+				Arrays.asList(matches.find(this, other).orElse(null)),
 				new ArrayList<>(),
 				new ArrayList<>(),
 				getLabels().equals(other.getLabels()),
 				"Compartment " + getLabels() + " matches Compartment " + other.getLabels()
 			);
+		}
 		else
 			return super.compareWithSameClass(other, matches);
 	}

@@ -110,11 +110,11 @@ public class Comparison {
 			return sb.toString();
 		}
 		
-		public Match find(Composable c1, Composable c2) {
+		public Optional<Match> find(Composable c1, Composable c2) {
 			for (Match match : matches)
 				if (match.match.first.equals(c1) && match.match.second.equals(c2))
-					return match;
-			throw new RuntimeException("no match found for " + c1.getLabels() + " <-> " + c2.getLabels());
+					return Optional.of(match);
+			return Optional.empty();
 		}
 		
 		public Optional<Match> find(Composable c) {
@@ -163,8 +163,7 @@ public class Comparison {
 			childrenMatches = new ArrayList<>();
 			
 			for (Compartment c : myCompartments) {
-				Optional<Match> o = matches.find(c);
-				Match childMatch = o.isPresent() ? o.get() : null;
+				Match childMatch = matches.find(c).orElse(null);
 				if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
 					childrenMatches.add(childMatch);
 					myMatchedCompartments.add(c);
@@ -263,12 +262,7 @@ public class Comparison {
 		List<Flow> otherFlows) {
 		// TODO FLOWS
 	
-		Match match = null;
-		try {
-			match = matches.find(me, other);
-		} catch (Exception e) {
-			// match is null
-		}
+		Match match = matches.find(me, other).orElse(null);
 		
 		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		

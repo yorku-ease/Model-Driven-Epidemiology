@@ -3,14 +3,7 @@ package use_epi;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 import de.ovgu.featureide.fm.core.analysis.cnf.formula.FeatureModelFormula;
 import de.ovgu.featureide.fm.core.base.IConstraint;
@@ -25,7 +18,7 @@ import epimodel.Compartment;
 
 public class FeatureModelDemo {
 	@SuppressWarnings("unused")
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		
 		LibraryManager.registerLibrary(FMCoreLibrary.getInstance());
 		IFeatureModel fm = FeatureModelManager.load(Paths.get("C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/src/feature-model.xml"));
@@ -50,7 +43,7 @@ public class FeatureModelDemo {
 			System.out.println(fmce.getDetailed());
 		}
 
-		EObject m1 = loadModel("../../runtime-plugin/modeling/MyEpimodel.epimodel");
+		EObject m1 = epimodel.impl.EpimodelPackageImpl.loadModel("../../runtime-plugin/modeling/MyEpimodel.epimodel");
 		
 		m1.eAllContents().forEachRemaining(e -> {
 			if (!(e instanceof Compartment))
@@ -59,21 +52,5 @@ public class FeatureModelDemo {
 			System.out.print(": ");
 			System.out.println(((Compartment) e).getLabel());
 		});
-	}
-	
-	static EObject loadModel(String model_fn) throws Exception {
-		Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
-        factoryRegistry.getExtensionToFactoryMap().put("*", new EcoreResourceFactoryImpl());
-		
-        ResourceSet resSet = new ResourceSetImpl();
-        resSet.setPackageRegistry(EPackage.Registry.INSTANCE);
-        resSet.setResourceFactoryRegistry(factoryRegistry);
-        
-        EPackage.Registry.INSTANCE.put(epimodel.EpimodelPackage.eNS_URI, epimodel.EpimodelPackage.eINSTANCE);
-        
-        URI uri = URI.createFileURI(model_fn);
-        Resource resource = resSet.getResource(uri, true);
-        
-        return resource.getContents().get(0);
 	}
 }

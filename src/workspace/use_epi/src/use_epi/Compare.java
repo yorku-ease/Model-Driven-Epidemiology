@@ -3,7 +3,6 @@ package use_epi;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import epimodel.Epidemic;
 import epimodel.util.Comparison;
@@ -36,16 +35,11 @@ public class Compare {
 		System.out.println();
 		System.out.println(matches);
 		
-		Match topLevelMatch = null;
-		try {
-			topLevelMatch = matches.find(model1, model2);
-		} catch (Exception e) {}
+		Match topLevelMatch = matches.find(model1, model2).orElse(null);
 		// if there is no top level match we might have a problem
 		if (topLevelMatch == null) {
-			Optional<Match> o1 = matches.find(model1);
-			Optional<Match> o2 = matches.find(model2);
-			Match left = o1.isPresent() ? o1.get() : null;
-			Match right = o2.isPresent() ? o2.get() : null;
+			Match left = matches.find(model1).orElse(null);
+			Match right = matches.find(model2).orElse(null);
 			// if either top level element left or right is matched, but not the other,
 			// we remove the match because we don't want that match.
 			// It is simpler to always assume a match for both top level elements
