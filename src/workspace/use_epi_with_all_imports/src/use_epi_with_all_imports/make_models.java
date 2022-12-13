@@ -120,6 +120,8 @@ public class make_models {
 				res.add((Compartment) obj);
 		});
 		
+		// throw here because this is prototyping code for making models for tests for
+		// example so it doesn't make sense to not find the compartment
 		if (res.size() == 0)
 			throw new RuntimeException("Could not find compartment '" + labels + "'");
 		else if (res.size() > 1)

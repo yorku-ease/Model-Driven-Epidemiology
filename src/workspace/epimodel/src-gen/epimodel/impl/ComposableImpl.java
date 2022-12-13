@@ -61,6 +61,7 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 				EReferenceImpl eref = (EReferenceImpl) feature;
 				if (eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.COMPARTMENT_WRAPPER)) {
 					if (compartmentsFeature != null)
+						// developper error, if there are 2 features for compartments, the dev has to provide an implementation for same class compare
 						throw new RuntimeException(
 							"Found two features for compartments in class " + 
 							getClass().getSimpleName() + ": " + 
@@ -70,6 +71,7 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 				}
 				else if (eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.FLOW_WRAPPER)) {
 					if (flowsFeature != null)
+						// developper error, if there are 2 features for flows, the dev has to provide an implementation for same class compare
 						throw new RuntimeException(
 							"Found two features for flows in class " + 
 							getClass().getSimpleName() + ": " + 
@@ -81,8 +83,8 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 		}
 		
 		// at this point we haven't checked if the features are null but a correct metamodel shouldn't yield null features
-		// the only problem might be that a composability tool offers no support for flows, in which case we can apply
-		// the comparison to the compartments only
+		// the following implementation assumes for sure that the compartmentsFeature is NOT null
+		// flows can be null as it might not make sense for each metamodel class to own flows, such as a compartment link for example
 		return defaultSameClassCompare(other, matches, compartmentsFeature, flowsFeature);
 	}
 	
@@ -109,14 +111,7 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 	
 	@Override
 	public Difference compareWithDifferentClass(Composable other, MatchResult matches) {
-		Match match = null;
-		
-		try {
-			match = matches.find(this, other);
-		} catch (Exception e) {
-			// Comparing unmatched objects, result may be slightly innacurate
-			match = new Match(this, other);
-		}
+		Match match = matches.find(this, other).orElse(new Match(this, other));
 		
 		boolean sameClass = getClass().equals(other.getClass()); // in case same class comparison was deferred
 		
