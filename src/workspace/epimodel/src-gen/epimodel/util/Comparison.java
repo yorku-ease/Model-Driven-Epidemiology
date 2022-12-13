@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -116,11 +117,11 @@ public class Comparison {
 			throw new RuntimeException("no match found for " + c1.getLabels() + " <-> " + c2.getLabels());
 		}
 		
-		public Match find(Composable c) {
+		public Optional<Match> find(Composable c) {
 			for (Match match : matches)
 				if (match.match.first.equals(c) || match.match.second.equals(c))
-					return match;
-			throw new RuntimeException("no match found for " + c.getLabels());
+					return Optional.of(match);
+			return Optional.empty();
 		}
 	}
 	
@@ -129,6 +130,7 @@ public class Comparison {
 	}
 	
 	public static class ChildrenDiffResult {
+		public final MatchResult matches;
 		public final List<Match> childrenMatches;
 		public final List<Match> accountsForMatches;
 
@@ -148,6 +150,7 @@ public class Comparison {
 		
 		public ChildrenDiffResult(List<Compartment> myCompartments, List<Compartment> otherCompartments, MatchResult matches) {
 
+			this.matches = matches;
 			this.myCompartments = myCompartments;
 			this.otherCompartments = otherCompartments;
 
@@ -160,7 +163,8 @@ public class Comparison {
 			childrenMatches = new ArrayList<>();
 			
 			for (Compartment c : myCompartments) {
-				Match childMatch = matches.find(c);
+				Optional<Match> o = matches.find(c);
+				Match childMatch = o.isPresent() ? o.get() : null;
 				if (childMatch != null && otherCompartments.contains(childMatch.match.second)) {
 					childrenMatches.add(childMatch);
 					myMatchedCompartments.add(c);
@@ -218,7 +222,12 @@ public class Comparison {
 					sb.append(",");
 				sb.append(" Added Children: ");
 				sb.append(
-					otherUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList()).toString()
+					otherUnMatchedCompartments
+						.stream()
+						.map(c -> {
+							Optional<Match> o = matches.find(c);
+							return o.isPresent() ? c.getLabels() + "(Move detected)" : c.getLabels();
+						}).collect(Collectors.toList()).toString()
 				);
 				requiresComma = true;
 			}
@@ -227,7 +236,12 @@ public class Comparison {
 					sb.append(",");
 				sb.append(" Removed Children: ");
 				sb.append(
-						myUnMatchedCompartments.stream().map(Composable::getLabels).collect(Collectors.toList()).toString()
+						myUnMatchedCompartments
+						.stream()
+						.map(c -> {
+							Optional<Match> o = matches.find(c);
+							return o.isPresent() ? c.getLabels() + "(Move detected)" : c.getLabels();
+						}).collect(Collectors.toList()).toString()
 				);
 				requiresComma = true;
 			}
@@ -247,7 +261,6 @@ public class Comparison {
 		List<Compartment> otherCompartments,
 		List<Flow> myFlows,
 		List<Flow> otherFlows) {
-		
 		// TODO FLOWS
 	
 		Match match = null;
@@ -259,20 +272,41 @@ public class Comparison {
 		
 		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		
-		List<Match> accountedForMatches = new ArrayList<>(childrenDiffs.accountsForMatches);
+		List<Match> accountedForMatches = new ArrayList<>();
 		if (match != null)
 			accountedForMatches.add(match);
+		accountedForMatches.addAll(childrenDiffs.accountsForMatches);
 		
 		boolean isSame = childrenDiffs.isSame && me.getLabels().equals(other.getLabels());
 		
 		String description = isSame ?
-				me.compareWithDifferentClass(other, matches).description :
-				me.compareWithDifferentClass(other, matches).description + childrenDiffs.getSimpleDescription();
+			me.compareWithDifferentClass(other, matches).description :
+			me.compareWithDifferentClass(other, matches).description + childrenDiffs.getSimpleDescription();
+		
+		
 		
 		return new Difference(
 				accountedForMatches,
-				new ArrayList<>(childrenDiffs.myUnMatchedCompartments),
-				new ArrayList<>(childrenDiffs.otherUnMatchedCompartments),
+				childrenDiffs.otherUnMatchedCompartments
+					.stream().map(c -> {
+						List<Composable> res = new ArrayList<Composable>();
+						res.add(c);
+						c.eAllContents().forEachRemaining(o -> {
+							if (o instanceof Composable)
+								res.add((Composable) o);
+						});
+						return res;
+					}).flatMap(List::stream).collect(Collectors.toList()),
+				childrenDiffs.myUnMatchedCompartments
+					.stream().map(c -> {
+						List<Composable> res = new ArrayList<Composable>();
+						res.add(c);
+						c.eAllContents().forEachRemaining(o -> {
+							if (o instanceof Composable)
+								res.add((Composable) o);
+						});
+						return res;
+					}).flatMap(List::stream).collect(Collectors.toList()),
 				isSame,
 				description);
 	}

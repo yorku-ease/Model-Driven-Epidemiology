@@ -283,6 +283,9 @@ public class ProductImpl extends CompartmentImpl implements Product {
 									throw new NullPointerException();
 								}
 							}).stream()
+									// IF YOU GET A WEIRD ERROR
+									// AND THROW DURING THIS
+									// THE FLOW ID WAS PROBABLY NULL!
 									.map(p -> new PhysicalFlow(p.equations.stream()
 											.map(e -> new PhysicalFlowEquation(e.equationCompartments,
 													e.affectedCompartments, e.coefficients,
