@@ -63,6 +63,8 @@ public class Comparison {
 	
 	public static class Match {
 		public final Pair<Composable, Composable> match;
+		public boolean isMove = false;
+		
 		public Match(Composable first, Composable second) {
 			this.match = new Pair<>(first, second);
 		}
@@ -342,6 +344,11 @@ public class Comparison {
 			this.context = context;
 			this.matches = matches;
 			this.diffs = diffs;
+		}
+		
+		public boolean isMove(Composable c) {
+			Optional<Match> opt = matches.find(c);
+			return opt.isPresent() ? opt.get().isMove : false;
 		}
 	}
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import epimodel.Composable;
 import epimodel.Epidemic;
 import epimodel.util.Comparison;
 import epimodel.util.Comparison.ComparisonContext;
@@ -64,10 +65,18 @@ public class Compare {
 			if (!accountedFor)
 				diffs.add(match.match.first.compare(match.match.second, matches));
 		}
-		System.out.println();
 		
 		for (Difference d : diffs) {
-			// description isnt formatted so just find {...} and add newlines and tab them, and if there are newlines, tab them too
+			for (Composable c : d.accountsForAdditions)
+				matches.find(c).ifPresent(m -> m.isMove = true);
+			for (Composable c : d.accountsForSubstractions)
+				matches.find(c).ifPresent(m -> m.isMove = true);
+		}
+					
+		
+		System.out.println();
+		for (Difference d : diffs) {
+			// description isnt formatted so just find `{` and `}`, add newlines and indent them, and if there are newlines, tab them too
 			String s = d.description;
 			StringBuilder sb = new StringBuilder();
 			int depth = 0;

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import epimodel.Epidemic;
 import epimodel.util.Comparison.ComparisonResult;
+import epimodel.util.Comparison.Difference;
 
 class ComparisonTests {
 	
@@ -327,8 +328,25 @@ class ComparisonTests {
 		// expect 3 diffs: one for top level, 1 for S, 1 for I
 		// the top level diff will have 1 add "conflict" and 1 remove "whatever"
 		assertEquals(3, res.diffs.size());
-		assertEquals(1, res.diffs.get(0).accountsForMatches.size());
-		assertEquals(Arrays.asList("conflict"), res.diffs.get(0).accountsForMatches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("ok"), res.diffs.get(0).accountsForMatches.get(0).match.second.getLabels());
+		Difference epidiff = res.diffs.get(0);
+		assertEquals(1, epidiff.accountsForMatches.size());
+		assertEquals(Arrays.asList("conflict"), epidiff.accountsForMatches.get(0).match.first.getLabels());
+		assertEquals(Arrays.asList("ok"), epidiff.accountsForMatches.get(0).match.second.getLabels());
+		// expect to find that the top level diff thinks there are 3 deleted and 3 added elements, being whatever:conflict, S:S, I:I
+		assertEquals(3, epidiff.accountsForAdditions.size());
+		assertEquals(3, epidiff.accountsForSubstractions.size());
+		assertEquals(Arrays.asList("whatever"), epidiff.accountsForSubstractions.get(0).getLabels());
+		assertEquals(Arrays.asList("S"), epidiff.accountsForSubstractions.get(1).getLabels());
+		assertEquals(Arrays.asList("I"), epidiff.accountsForSubstractions.get(2).getLabels());
+		assertEquals(Arrays.asList("conflict"), epidiff.accountsForAdditions.get(0).getLabels());
+		assertEquals(Arrays.asList("S"), epidiff.accountsForAdditions.get(1).getLabels());
+		assertEquals(Arrays.asList("I"), epidiff.accountsForAdditions.get(2).getLabels());
+		// but also expect to see that S and I are actually moves but not whatever and conflict
+		assertFalse(res.isMove(epidiff.accountsForSubstractions.get(0)));
+		assertTrue(res.isMove(epidiff.accountsForSubstractions.get(1)));
+		assertTrue(res.isMove(epidiff.accountsForSubstractions.get(2)));
+		assertFalse(res.isMove(epidiff.accountsForAdditions.get(0)));
+		assertTrue(res.isMove(epidiff.accountsForAdditions.get(1)));
+		assertTrue(res.isMove(epidiff.accountsForAdditions.get(2)));
 	}
 }
