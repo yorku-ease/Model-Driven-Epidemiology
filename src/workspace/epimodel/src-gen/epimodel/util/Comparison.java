@@ -261,14 +261,11 @@ public class Comparison {
 		List<Flow> myFlows,
 		List<Flow> otherFlows) {
 		// TODO FLOWS
-	
-		Match match = matches.find(me, other).orElse(null);
 		
 		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		
 		List<Match> accountedForMatches = new ArrayList<>();
-		if (match != null)
-			accountedForMatches.add(match);
+		accountedForMatches.add(matches.find(me, other).orElse(new Match(me, other)));
 		accountedForMatches.addAll(childrenDiffs.accountsForMatches);
 		
 		boolean isSame = childrenDiffs.isSame && me.getLabels().equals(other.getLabels());
