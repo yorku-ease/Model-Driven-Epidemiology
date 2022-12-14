@@ -51,8 +51,7 @@ public class Compare {
 		}
 		
 		// start diff with top level element always
-		Difference diff = model1.compare(model2, matches);
-		List<Difference> diffs = new ArrayList<>(Arrays.asList(diff));
+		List<Difference> diffs = new ArrayList<>(Arrays.asList(model1.compare(model2, matches)));
 		// iterate other matches in case the top level element did not account for all matches
 		// this happens if at some level incompatible type of objects are compared and unable to compare their children
 		for (Match match : matches.matches) {
