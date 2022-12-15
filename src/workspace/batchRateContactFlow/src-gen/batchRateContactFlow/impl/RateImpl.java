@@ -4,7 +4,6 @@ package batchRateContactFlow.impl;
 
 import batchRateContactFlow.BatchRateContactFlowPackage;
 import batchRateContactFlow.Rate;
-import epimodel.Epidemic;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalFlowEquation;
@@ -25,24 +24,13 @@ import org.eclipse.emf.ecore.EClass;
 public class RateImpl extends FromToFlowImpl implements Rate {
 
 	@Override
-	public List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic) {
-		List<PhysicalFlow> res = new ArrayList<>();
-
-		int index = 0;
-		for (PhysicalCompartment from : epidemic.getPhysicalSinksFor(from))
-			for (PhysicalCompartment to : epidemic.getPhysicalSourcesFor(to)) {
-
-				List<PhysicalCompartment> equationCompartments = Arrays.asList(from);
-				List<PhysicalCompartment> affectedCompartments = Arrays.asList(from, to);
-				List<Float> coefficients = Arrays.asList(-1f, 1f);
-				String flowParameter = "(get " + getId() + " " + index++ + ")";
-				String equation = "(* " + flowParameter + " $0)";
-				List<String> requiredOperators = Arrays.asList("*", "get");
-
-				res.add(new PhysicalFlow(Arrays.asList(new PhysicalFlowEquation(equationCompartments,
-						affectedCompartments, coefficients, equation, requiredOperators))));
-			}
-		return res;
+	public PhysicalFlow getPhysicalFlowTemplate() {
+		List<PhysicalCompartment> equationCompartments = new ArrayList<>();
+		List<PhysicalCompartment> affectedCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()));
+		List<Float> coefficients = Arrays.asList(-1f, 1f);
+		String equation = "(get " + getId() + " 0)";
+		List<String> requiredOperators = Arrays.asList("get");
+		return new PhysicalFlow(Arrays.asList(new PhysicalFlowEquation(equationCompartments, affectedCompartments, coefficients, equation, requiredOperators)));
 	}
 
 	/**

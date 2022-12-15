@@ -9,37 +9,35 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import epimodel.Compartment;
-import epimodel.Composable;
-import epimodel.Epidemic;
 import epimodel.Flow;
 
 public class Comparison {
 	
 	public static class ModelContext {
-		public final Epidemic model;
-		public final List<Composable> composables;
+		public final Compartment model;
+		public final List<Compartment> compartments;
 		public final Set<String> uniqueLabels;
 		public final Set<String> duplicateLabels;
 		
-		public ModelContext(Epidemic model) {
+		public ModelContext(Compartment model) {
 			this.model = model;
-			composables = new ArrayList<>(Arrays.asList(model));
+			compartments = new ArrayList<>(Arrays.asList(model));
 			
 			uniqueLabels = new HashSet<>();
 			duplicateLabels = new HashSet<>();
 			
 			model.eAllContents().forEachRemaining(eobject -> {
-				if (!(eobject instanceof Composable))
+				if (!(eobject instanceof Compartment))
 					return;
-				Composable composable = (Composable) eobject;
-				composables.add(composable);
+				Compartment compartment = (Compartment) eobject;
+				compartments.add(compartment);
 				duplicateLabels.addAll(
-					composable
+						compartment
 						.getLabels()
 						.stream()
 						.filter(label -> uniqueLabels.contains(label) && !duplicateLabels.contains(label))
 						.collect(Collectors.toList()));
-				uniqueLabels.addAll(composable.getLabels());
+				uniqueLabels.addAll(compartment.getLabels());
 			});
 			uniqueLabels.removeAll(duplicateLabels);
 		}
@@ -51,8 +49,8 @@ public class Comparison {
 		public final ModelContext modelctx2;
 		
 		public ComparisonContext(
-			Epidemic model1,
-			Epidemic model2,
+			Compartment model1,
+			Compartment model2,
 			List<Pair<String, String>> renamings
 		) {
 			this.modelctx1 = new ModelContext(model1);
@@ -62,35 +60,35 @@ public class Comparison {
 	}
 	
 	public static class Match {
-		public final Pair<Composable, Composable> matchedComposablePair;
+		public final Pair<Compartment, Compartment> matchedCompartmentPair;
 		public boolean isMove = false;
 		
-		public Match(Composable first, Composable second) {
-			this.matchedComposablePair = new Pair<>(first, second);
+		public Match(Compartment first, Compartment second) {
+			this.matchedCompartmentPair = new Pair<>(first, second);
 		}
 		
 		public Difference compare(MatchResult matches) {
-			return matchedComposablePair.first.compare(matchedComposablePair.second, matches);
+			return matchedCompartmentPair.first.compare(matchedCompartmentPair.second, matches);
 		}
 		
 		@Override
 		public String toString() {
-			boolean sameId = matchedComposablePair.first.getLabels().equals(matchedComposablePair.second.getLabels());
-			boolean containedId1inId2 = !sameId && matchedComposablePair.second.getLabels().containsAll(matchedComposablePair.first.getLabels());
-			boolean containedId2inId1 = !sameId && matchedComposablePair.first.getLabels().containsAll(matchedComposablePair.second.getLabels());
-			boolean sameClass = matchedComposablePair.first.getClass().equals(matchedComposablePair.second.getClass());
+			boolean sameId = matchedCompartmentPair.first.getLabels().equals(matchedCompartmentPair.second.getLabels());
+			boolean containedId1inId2 = !sameId && matchedCompartmentPair.second.getLabels().containsAll(matchedCompartmentPair.first.getLabels());
+			boolean containedId2inId1 = !sameId && matchedCompartmentPair.first.getLabels().containsAll(matchedCompartmentPair.second.getLabels());
+			boolean sameClass = matchedCompartmentPair.first.getClass().equals(matchedCompartmentPair.second.getClass());
 			
 			String retypePrefix = sameClass ? "" : "Retype of ";
 			String labelMatchType = sameId ? "Exact " : containedId1inId2 ? "Specialized " : containedId2inId1 ? "Generalized " : "";
 			final String matchPresentation;
 			
 			if (sameClass && sameId)
-				matchPresentation = matchedComposablePair.first.getClass().getSimpleName() + ": " + matchedComposablePair.first.getLabels();
+				matchPresentation = matchedCompartmentPair.first.getClass().getSimpleName() + ": " + matchedCompartmentPair.first.getLabels();
 			else if (sameClass)
-				matchPresentation = matchedComposablePair.first.getClass().getSimpleName() + ": " + matchedComposablePair.first.getLabels() + " -> " + matchedComposablePair.second.getLabels();
+				matchPresentation = matchedCompartmentPair.first.getClass().getSimpleName() + ": " + matchedCompartmentPair.first.getLabels() + " -> " + matchedCompartmentPair.second.getLabels();
 			else
-				matchPresentation = matchedComposablePair.first .getClass().getSimpleName() + matchedComposablePair.first .getLabels() + " -> " + 
-									matchedComposablePair.second.getClass().getSimpleName() + matchedComposablePair.second.getLabels();
+				matchPresentation = matchedCompartmentPair.first .getClass().getSimpleName() + matchedCompartmentPair.first .getLabels() + " -> " + 
+						matchedCompartmentPair.second.getClass().getSimpleName() + matchedCompartmentPair.second.getLabels();
 			
 			return retypePrefix + labelMatchType + "Label Match " + matchPresentation;
 		}
@@ -112,16 +110,16 @@ public class Comparison {
 			return sb.toString();
 		}
 		
-		public Optional<Match> find(Composable c1, Composable c2) {
+		public Optional<Match> find(Compartment c1, Compartment c2) {
 			for (Match match : matches)
-				if (match.matchedComposablePair.first.equals(c1) && match.matchedComposablePair.second.equals(c2))
+				if (match.matchedCompartmentPair.first.equals(c1) && match.matchedCompartmentPair.second.equals(c2))
 					return Optional.of(match);
 			return Optional.empty();
 		}
 		
-		public Optional<Match> find(Composable c) {
+		public Optional<Match> find(Compartment c) {
 			for (Match match : matches)
-				if (match.matchedComposablePair.first.equals(c) || match.matchedComposablePair.second.equals(c))
+				if (match.matchedCompartmentPair.first.equals(c) || match.matchedCompartmentPair.second.equals(c))
 					return Optional.of(match);
 			return Optional.empty();
 		}
@@ -167,12 +165,12 @@ public class Comparison {
 			
 			for (Compartment c : myCompartments) {
 				Match childMatch = matches.find(c).orElse(null);
-				if (childMatch != null && otherCompartments.contains(childMatch.matchedComposablePair.second)) {
+				if (childMatch != null && otherCompartments.contains(childMatch.matchedCompartmentPair.second)) {
 					childrenMatches.add(childMatch);
 					myMatchedCompartments.add(c);
 					myUnMatchedCompartments.remove(c);
-					otherMatchedCompartments.add((Compartment) childMatch.matchedComposablePair.second);
-					otherUnMatchedCompartments.remove(childMatch.matchedComposablePair.second);
+					otherMatchedCompartments.add((Compartment) childMatch.matchedCompartmentPair.second);
+					otherUnMatchedCompartments.remove(childMatch.matchedCompartmentPair.second);
 				}
 			}
 			
@@ -208,7 +206,7 @@ public class Comparison {
 					sb.append(",");
 				sb.append(" Same Matched Children (no differences): ");
 				for (Pair<Match, Difference> matchDiff : sameChildrenMatchAndDiffs)
-					sb.append(matchDiff.first.matchedComposablePair.first.getLabels()).append(", ");
+					sb.append(matchDiff.first.matchedCompartmentPair.first.getLabels()).append(", ");
 				requiresComma = false;
 			}
 			if (!notSameChildrenMatchAndDiffs.isEmpty()) {
@@ -256,8 +254,8 @@ public class Comparison {
 	}
 	
 	public static Difference createDifference(
-		Composable me,
-		Composable other,
+		Compartment me,
+		Compartment other,
 		MatchResult matches,
 		List<Compartment> myCompartments,
 		List<Compartment> otherCompartments,
@@ -283,22 +281,22 @@ public class Comparison {
 			childrenDiffs.otherUnMatchedCompartments
 				.stream()
 				.map(c -> {
-					List<Composable> res = new ArrayList<Composable>();
+					List<Compartment> res = new ArrayList<>();
 					res.add(c);
 					c.eAllContents().forEachRemaining(o -> {
-						if (o instanceof Composable)
-							res.add((Composable) o);
+						if (o instanceof Compartment)
+							res.add((Compartment) o);
 					});
 					return res;
 				}).flatMap(List::stream).collect(Collectors.toList()),
 			childrenDiffs.myUnMatchedCompartments
 				.stream()
 				.map(c -> {
-					List<Composable> res = new ArrayList<Composable>();
+					List<Compartment> res = new ArrayList<>();
 					res.add(c);
 					c.eAllContents().forEachRemaining(o -> {
-						if (o instanceof Composable)
-							res.add((Composable) o);
+						if (o instanceof Compartment)
+							res.add((Compartment) o);
 					});
 					return res;
 				}).flatMap(List::stream).collect(Collectors.toList()),
@@ -311,16 +309,16 @@ public class Comparison {
 		public final Match match;
 		public final List<Match> accountsForMatches;
 		public final Optional<ChildrenDiffResult> childrenDiffResult;
-		public final List<Composable> accountsForAdditions;
-		public final List<Composable> accountsForSubstractions;
+		public final List<Compartment> accountsForAdditions;
+		public final List<Compartment> accountsForSubstractions;
 		public final boolean isSame;
 		public final String description;
 		
 		public Difference(
 				Match match,
 				List<Match> accountsForMatches,
-				List<Composable> accountsForAdditions,
-				List<Composable> accountsForSubstractions,
+				List<Compartment> accountsForAdditions,
+				List<Compartment> accountsForSubstractions,
 				Optional<ChildrenDiffResult> childrenDiffResult,
 				boolean isSame,
 				String description) {
@@ -355,7 +353,7 @@ public class Comparison {
 			this.diffs = diffs;
 		}
 		
-		public boolean isMove(Composable c) {
+		public boolean isMove(Compartment c) {
 			Optional<Match> opt = matches.find(c);
 			return opt.isPresent() ? opt.get().isMove : false;
 		}
@@ -367,32 +365,32 @@ public class Comparison {
 	
 	public static MatchResult exactOrContainsLabelMatch(ComparisonContext context, boolean doPrint) {
 		MatchResult res = new MatchResult(context);
-		List<Composable> model1compartments = new ArrayList<>(context.modelctx1.composables);
-		List<Composable> model2compartments = new ArrayList<>(context.modelctx2.composables);
+		List<Compartment> model1compartments = new ArrayList<>(context.modelctx1.compartments);
+		List<Compartment> model2compartments = new ArrayList<>(context.modelctx2.compartments);
 		if (doPrint) {
-			System.out.println("Model1:\n" + model1compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
-			System.out.println("Model2:\n" + model2compartments.stream().map(Composable::getLabels).collect(Collectors.toList()));
+			System.out.println("Model1:\n" + model1compartments.stream().map(Compartment::getLabels).collect(Collectors.toList()));
+			System.out.println("Model2:\n" + model2compartments.stream().map(Compartment::getLabels).collect(Collectors.toList()));
 		}
 		
-		List<Composable> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
-		List<Composable> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
+		List<Compartment> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
+		List<Compartment> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
 		
 		// look for same labels: ["S", "0"] matches only ["S", "0"]
-		for (Composable c1 : model1compartments)
-			for (Composable c2 : model2compartments)
+		for (Compartment c1 : model1compartments)
+			for (Compartment c2 : model2compartments)
 				if (c1.getLabels().equals(c2.getLabels())) {
 					res.matches.add(new Match(c1, c2));
 					model1NotExactMatchedCompartments.remove(c1);
 					model2NotExactMatchedCompartments.remove(c2);
 				}
 		
-		List<Composable> model1Not2ContainsAll1MatchedCompartments = new ArrayList<>(model1NotExactMatchedCompartments);
-		List<Composable> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
+		List<Compartment> model1Not2ContainsAll1MatchedCompartments = new ArrayList<>(model1NotExactMatchedCompartments);
+		List<Compartment> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
 
 		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
 		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be uneligible but S and I are fine
-		for (Composable c1 : model1NotExactMatchedCompartments)
-			for (Composable c2 : model2NotExactMatchedCompartments)
+		for (Compartment c1 : model1NotExactMatchedCompartments)
+			for (Compartment c2 : model2NotExactMatchedCompartments)
 				if (c2.getLabels().containsAll(c1.getLabels())) {
 					boolean hasMatchedUnique = false;
 					for (String label : c1.getLabels())
@@ -409,8 +407,8 @@ public class Comparison {
 
 		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
 		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be uneligible but S and I are fine
-		for (Composable c1 : model1NotExactMatchedCompartments)
-			for (Composable c2 : model2NotExactMatchedCompartments)
+		for (Compartment c1 : model1NotExactMatchedCompartments)
+			for (Compartment c2 : model2NotExactMatchedCompartments)
 				if (c1.getLabels().containsAll(c2.getLabels())) {
 					boolean hasMatchedUnique = false;
 					for (String label : c2.getLabels())
@@ -427,8 +425,8 @@ public class Comparison {
 		// necessarily make sense for 2 models to be named the same for their top 
 		// level element, so we just look for the first epidemic of each model and
 		// if they are not matched we match and push them in front (logical order)
-		Epidemic epi1 = (Epidemic) model1compartments.stream().filter(c -> c instanceof Epidemic).findFirst().get();
-		Epidemic epi2 = (Epidemic) model2compartments.stream().filter(c -> c instanceof Epidemic).findFirst().get();
+		Compartment epi1 = (Compartment) model1compartments.stream().filter(c -> c instanceof Compartment).findFirst().get();
+		Compartment epi2 = (Compartment) model2compartments.stream().filter(c -> c instanceof Compartment).findFirst().get();
 		
 		// happy path
 		if (res.find(epi1, epi2).isPresent())

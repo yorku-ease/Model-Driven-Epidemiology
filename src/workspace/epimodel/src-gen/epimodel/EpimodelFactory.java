@@ -22,15 +22,6 @@ public interface EpimodelFactory extends EFactory {
 	EpimodelFactory eINSTANCE = epimodel.impl.EpimodelFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Epidemic Wrapper</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Epidemic Wrapper</em>'.
-	 * @generated
-	 */
-	EpidemicWrapper createEpidemicWrapper();
-
-	/**
 	 * Returns a new object of class '<em>Compartment Wrapper</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

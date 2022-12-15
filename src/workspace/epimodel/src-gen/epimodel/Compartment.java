@@ -9,6 +9,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import epimodel.util.PhysicalCompartment;
+import epimodel.util.PhysicalFlow;
+import epimodel.util.Comparison.Difference;
+import epimodel.util.Comparison.MatchResult;
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Compartment</b></em>'.
@@ -25,7 +30,7 @@ import org.eclipse.swt.widgets.Shell;
  * @model
  * @generated
  */
-public interface Compartment extends Composable {
+public interface Compartment extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Label</b></em>' attribute list.
@@ -38,6 +43,15 @@ public interface Compartment extends Composable {
 	 * @generated
 	 */
 	EList<String> getLabel();
+	List<String> getLabels();
+	List<PhysicalCompartment> getPhysicalCompartments();
+	List<PhysicalFlow> getPhysicalFlows();
+	List<PhysicalCompartment> getSources();
+	List<PhysicalCompartment> getSinks();
+	
+	Difference compare(Compartment other, MatchResult matches);
+	Difference compareWithSameClass(Compartment other, MatchResult matches);
+	Difference compareWithDifferentClass(Compartment other, MatchResult matches);
 
 	void edit(EObject dom, Shell shell, List<Control> controls);
 } // Compartment

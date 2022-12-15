@@ -57,108 +57,6 @@ public interface EpimodelPackage extends EPackage {
 	EpimodelPackage eINSTANCE = epimodel.impl.EpimodelPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link epimodel.impl.EpidemicWrapperImpl <em>Epidemic Wrapper</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see epimodel.impl.EpidemicWrapperImpl
-	 * @see epimodel.impl.EpimodelPackageImpl#getEpidemicWrapper()
-	 * @generated
-	 */
-	int EPIDEMIC_WRAPPER = 0;
-
-	/**
-	 * The feature id for the '<em><b>Epidemic</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC_WRAPPER__EPIDEMIC = 0;
-
-	/**
-	 * The number of structural features of the '<em>Epidemic Wrapper</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC_WRAPPER_FEATURE_COUNT = 1;
-
-	/**
-	 * The number of operations of the '<em>Epidemic Wrapper</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC_WRAPPER_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link epimodel.impl.ComposableImpl <em>Composable</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see epimodel.impl.ComposableImpl
-	 * @see epimodel.impl.EpimodelPackageImpl#getComposable()
-	 * @generated
-	 */
-	int COMPOSABLE = 6;
-
-	/**
-	 * The number of structural features of the '<em>Composable</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOSABLE_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>Composable</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int COMPOSABLE_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link epimodel.impl.EpidemicImpl <em>Epidemic</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see epimodel.impl.EpidemicImpl
-	 * @see epimodel.impl.EpimodelPackageImpl#getEpidemic()
-	 * @generated
-	 */
-	int EPIDEMIC = 1;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC__ID = COMPOSABLE_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Epidemic</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC_FEATURE_COUNT = COMPOSABLE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Epidemic</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EPIDEMIC_OPERATION_COUNT = COMPOSABLE_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link epimodel.impl.CompartmentWrapperImpl <em>Compartment Wrapper</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -166,7 +64,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @see epimodel.impl.EpimodelPackageImpl#getCompartmentWrapper()
 	 * @generated
 	 */
-	int COMPARTMENT_WRAPPER = 2;
+	int COMPARTMENT_WRAPPER = 0;
 
 	/**
 	 * The feature id for the '<em><b>Compartment</b></em>' containment reference.
@@ -203,7 +101,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @see epimodel.impl.EpimodelPackageImpl#getCompartment()
 	 * @generated
 	 */
-	int COMPARTMENT = 3;
+	int COMPARTMENT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute list.
@@ -212,7 +110,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT__LABEL = COMPOSABLE_FEATURE_COUNT + 0;
+	int COMPARTMENT__LABEL = 0;
 
 	/**
 	 * The number of structural features of the '<em>Compartment</em>' class.
@@ -221,7 +119,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_FEATURE_COUNT = COMPOSABLE_FEATURE_COUNT + 1;
+	int COMPARTMENT_FEATURE_COUNT = 1;
 
 	/**
 	 * The number of operations of the '<em>Compartment</em>' class.
@@ -230,7 +128,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_OPERATION_COUNT = COMPOSABLE_OPERATION_COUNT + 0;
+	int COMPARTMENT_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link epimodel.impl.FlowWrapperImpl <em>Flow Wrapper</em>}' class.
@@ -240,7 +138,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @see epimodel.impl.EpimodelPackageImpl#getFlowWrapper()
 	 * @generated
 	 */
-	int FLOW_WRAPPER = 4;
+	int FLOW_WRAPPER = 2;
 
 	/**
 	 * The feature id for the '<em><b>Flow</b></em>' containment reference.
@@ -277,7 +175,7 @@ public interface EpimodelPackage extends EPackage {
 	 * @see epimodel.impl.EpimodelPackageImpl#getFlow()
 	 * @generated
 	 */
-	int FLOW = 5;
+	int FLOW = 3;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -305,48 +203,6 @@ public interface EpimodelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FLOW_OPERATION_COUNT = 0;
-
-	/**
-	 * Returns the meta object for class '{@link epimodel.EpidemicWrapper <em>Epidemic Wrapper</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Epidemic Wrapper</em>'.
-	 * @see epimodel.EpidemicWrapper
-	 * @generated
-	 */
-	EClass getEpidemicWrapper();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link epimodel.EpidemicWrapper#getEpidemic <em>Epidemic</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Epidemic</em>'.
-	 * @see epimodel.EpidemicWrapper#getEpidemic()
-	 * @see #getEpidemicWrapper()
-	 * @generated
-	 */
-	EReference getEpidemicWrapper_Epidemic();
-
-	/**
-	 * Returns the meta object for class '{@link epimodel.Epidemic <em>Epidemic</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Epidemic</em>'.
-	 * @see epimodel.Epidemic
-	 * @generated
-	 */
-	EClass getEpidemic();
-
-	/**
-	 * Returns the meta object for the attribute '{@link epimodel.Epidemic#getId <em>Id</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see epimodel.Epidemic#getId()
-	 * @see #getEpidemic()
-	 * @generated
-	 */
-	EAttribute getEpidemic_Id();
 
 	/**
 	 * Returns the meta object for class '{@link epimodel.CompartmentWrapper <em>Compartment Wrapper</em>}'.
@@ -433,16 +289,6 @@ public interface EpimodelPackage extends EPackage {
 	EAttribute getFlow_Id();
 
 	/**
-	 * Returns the meta object for class '{@link epimodel.Composable <em>Composable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Composable</em>'.
-	 * @see epimodel.Composable
-	 * @generated
-	 */
-	EClass getComposable();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -465,42 +311,6 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 */
 	interface Literals {
-		/**
-		 * The meta object literal for the '{@link epimodel.impl.EpidemicWrapperImpl <em>Epidemic Wrapper</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see epimodel.impl.EpidemicWrapperImpl
-		 * @see epimodel.impl.EpimodelPackageImpl#getEpidemicWrapper()
-		 * @generated
-		 */
-		EClass EPIDEMIC_WRAPPER = eINSTANCE.getEpidemicWrapper();
-
-		/**
-		 * The meta object literal for the '<em><b>Epidemic</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference EPIDEMIC_WRAPPER__EPIDEMIC = eINSTANCE.getEpidemicWrapper_Epidemic();
-
-		/**
-		 * The meta object literal for the '{@link epimodel.impl.EpidemicImpl <em>Epidemic</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see epimodel.impl.EpidemicImpl
-		 * @see epimodel.impl.EpimodelPackageImpl#getEpidemic()
-		 * @generated
-		 */
-		EClass EPIDEMIC = eINSTANCE.getEpidemic();
-
-		/**
-		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute EPIDEMIC__ID = eINSTANCE.getEpidemic_Id();
-
 		/**
 		 * The meta object literal for the '{@link epimodel.impl.CompartmentWrapperImpl <em>Compartment Wrapper</em>}' class.
 		 * <!-- begin-user-doc -->
@@ -572,16 +382,6 @@ public interface EpimodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FLOW__ID = eINSTANCE.getFlow_Id();
-
-		/**
-		 * The meta object literal for the '{@link epimodel.impl.ComposableImpl <em>Composable</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see epimodel.impl.ComposableImpl
-		 * @see epimodel.impl.EpimodelPackageImpl#getComposable()
-		 * @generated
-		 */
-		EClass COMPOSABLE = eINSTANCE.getComposable();
 
 	}
 

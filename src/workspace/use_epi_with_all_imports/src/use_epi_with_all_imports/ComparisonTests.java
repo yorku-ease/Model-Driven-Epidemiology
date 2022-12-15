@@ -8,7 +8,7 @@ import java.util.HashSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import epimodel.Epidemic;
+import epimodel.Compartment;
 import epimodel.util.Comparison.ComparisonResult;
 import epimodel.util.Comparison.Difference;
 
@@ -30,7 +30,7 @@ class ComparisonTests {
 		
 		// just a basic test, same composables, just 1 different flow (in product vs in a dimension of the product)
 		// we are only looking at counts of matches in this test to make sure all objects are accounted for during matching
-		Epidemic withFlowInGroup = make_models.productEpi("withFlowInGroup",
+		Compartment withFlowInGroup = make_models.product("withFlowInGroup",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -47,7 +47,7 @@ class ComparisonTests {
 										Arrays.asList("Symptomatic"))),
 						make_models.compartment("R")));
 		
-		Epidemic withFlowInProduct = make_models.productEpi("withFlowInProduct",
+		Compartment withFlowInProduct = make_models.product("withFlowInProduct",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -76,8 +76,8 @@ class ComparisonTests {
 		 */
 		int number_of_composables_in_both_models = 12;
 		
-		assertEquals(number_of_composables_in_both_models, res.context.modelctx1.composables.size());
-		assertEquals(number_of_composables_in_both_models, res.context.modelctx2.composables.size());
+		assertEquals(number_of_composables_in_both_models, res.context.modelctx1.compartments.size());
+		assertEquals(number_of_composables_in_both_models, res.context.modelctx2.compartments.size());
 		assertEquals(number_of_composables_in_both_models, res.matches.matches.size());
 		assertEquals(1, res.diffs.size());
 		// expect the first diff to be not same since the flow is in a different spot
@@ -90,11 +90,11 @@ class ComparisonTests {
 		// test two models producing same physical compartments except the epidemic label
 		// one uses a group SI containing S & I and the other just uses a group epidemic with 2 compartments SI.S, SI.I
 		
-		Epidemic model1 = make_models.groupEpi("group",
+		Compartment model1 = make_models.group("group",
 				make_models.compartment("SI", "S"),
 				make_models.compartment("SI", "I"));
 		
-		Epidemic model2 = make_models.productEpi("product",
+		Compartment model2 = make_models.product("product",
 				make_models.group("SI",
 						make_models.compartment("S"),
 						make_models.compartment("I")));
@@ -103,10 +103,10 @@ class ComparisonTests {
 		
 		// expect top level match, SI.S match S && SI.I match I
 		assertEquals(3, res.matches.matches.size());
-		assertEquals(Arrays.asList("SI", "S"), res.matches.matches.get(1).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("S"), res.matches.matches.get(1).matchedComposablePair.second.getLabels());
-		assertEquals(Arrays.asList("SI", "I"), res.matches.matches.get(2).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("I"), res.matches.matches.get(2).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("SI", "S"), res.matches.matches.get(1).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("S"), res.matches.matches.get(1).matchedCompartmentPair.second.getLabels());
+		assertEquals(Arrays.asList("SI", "I"), res.matches.matches.get(2).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("I"), res.matches.matches.get(2).matchedCompartmentPair.second.getLabels());
 
 		// assert same unique labels and only S and I not SI which is duplicate or the label of the top level object which is ignored
 		assertEquals(new HashSet<String>(Arrays.asList("S", "I")), res.context.modelctx1.uniqueLabels);
@@ -122,7 +122,7 @@ class ComparisonTests {
 		// opposite of test 4
 		// compare a product/dimension epidemic with another one that has one more dimension, being Age
 		
-		Epidemic withoutAge = make_models.productEpi("withoutAge",
+		Compartment withoutAge = make_models.product("withoutAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -135,7 +135,7 @@ class ComparisonTests {
 										make_models.compartment("Symptomatic"))),
 						make_models.compartment("R")));
 		
-		Epidemic withAge = make_models.productEpi("withAge",
+		Compartment withAge = make_models.product("withAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -172,7 +172,7 @@ class ComparisonTests {
 		// opposite of test 3
 		// compare a product/dimension epidemic with another one that has one less dimension, being Age
 		
-		Epidemic withoutAge = make_models.productEpi("withoutAge",
+		Compartment withoutAge = make_models.product("withoutAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -185,7 +185,7 @@ class ComparisonTests {
 										make_models.compartment("Symptomatic"))),
 						make_models.compartment("R")));
 		
-		Epidemic withAge = make_models.productEpi("withAge",
+		Compartment withAge = make_models.product("withAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -224,7 +224,7 @@ class ComparisonTests {
 		// but its SEIR.I dimension has one less dimension, being Symptoms
 		// we want to detect the "move" operation for Symptoms
 		
-		Epidemic SymptomsOutside = make_models.productEpi("SymptomsOutside",
+		Compartment SymptomsOutside = make_models.product("SymptomsOutside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -237,7 +237,7 @@ class ComparisonTests {
 						make_models.compartment("Asymptomatic"),
 						make_models.compartment("Symptomatic")));
 		
-		Epidemic SymptomsInside = make_models.productEpi("SymptomsInside",
+		Compartment SymptomsInside = make_models.product("SymptomsInside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -254,16 +254,16 @@ class ComparisonTests {
 		
 		// expect 2 diffs, one for the epidemic and one for group Symptoms
 		assertEquals(2, res.diffs.size());
-		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).matchedCompartmentPair.second.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedCompartmentPair.second.getLabels());
 		
 		// expect diff of epidemic to account for remove and diff of symptoms to account for match
 		assertEquals(3, res.diffs.get(0).accountsForSubstractions.size());
 		assertEquals(3, res.diffs.get(1).accountsForMatches.size());
 		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(0).accountsForSubstractions.get(0).getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
 		
 		// just in case check the other lists expected empty
 		assertEquals(0, res.diffs.get(0).accountsForAdditions.size());
@@ -278,7 +278,7 @@ class ComparisonTests {
 		// but its SEIR.I dimension has one more dimension, being Symptoms
 		// we want to detect the "move" operation for Symptoms
 		
-		Epidemic SymptomsOutside = make_models.productEpi("SymptomsOutside",
+		Compartment SymptomsOutside = make_models.product("SymptomsOutside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -291,7 +291,7 @@ class ComparisonTests {
 						make_models.compartment("Asymptomatic"),
 						make_models.compartment("Symptomatic")));
 		
-		Epidemic SymptomsInside = make_models.productEpi("SymptomsInside",
+		Compartment SymptomsInside = make_models.product("SymptomsInside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -308,16 +308,16 @@ class ComparisonTests {
 
 		// expect 2 diffs, one for the epidemic and one for group Symptoms
 		assertEquals(2, res.diffs.size());
-		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).matchedCompartmentPair.second.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedCompartmentPair.second.getLabels());
 		
 		// expect diff of epidemic to account for remove and diff of symptoms to account for match
 		assertEquals(3, res.diffs.get(0).accountsForAdditions.size());
 		assertEquals(3, res.diffs.get(1).accountsForMatches.size());
 		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(0).accountsForAdditions.get(0).getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
 		
 		// just in case check the other lists expected empty
 		assertEquals(0, res.diffs.get(0).accountsForSubstractions.size());
@@ -329,12 +329,12 @@ class ComparisonTests {
 	void test7() {
 		// test two models with a naming conflict
 		
-		Epidemic model1 = make_models.groupEpi("conflict",
+		Compartment model1 = make_models.group("conflict",
 				make_models.group("whatever",
 						make_models.compartment("S"),
 						make_models.compartment("I")));
 		
-		Epidemic model2 = make_models.groupEpi("ok",
+		Compartment model2 = make_models.group("ok",
 				make_models.group("conflict",
 						make_models.compartment("S"),
 						make_models.compartment("I")));
@@ -346,8 +346,8 @@ class ComparisonTests {
 		assertEquals(3, res.diffs.size());
 		Difference epidiff = res.diffs.get(0);
 		assertEquals(1, epidiff.accountsForMatches.size());
-		assertEquals(Arrays.asList("conflict"), epidiff.accountsForMatches.get(0).matchedComposablePair.first.getLabels());
-		assertEquals(Arrays.asList("ok"), epidiff.accountsForMatches.get(0).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("conflict"), epidiff.accountsForMatches.get(0).matchedCompartmentPair.first.getLabels());
+		assertEquals(Arrays.asList("ok"), epidiff.accountsForMatches.get(0).matchedCompartmentPair.second.getLabels());
 		// expect to find that the top level diff thinks there are 3 deleted and 3 added elements, being whatever:conflict, S:S, I:I
 		assertEquals(3, epidiff.accountsForAdditions.size());
 		assertEquals(3, epidiff.accountsForSubstractions.size());
@@ -374,7 +374,7 @@ class ComparisonTests {
 		// test 8 and the tests are meant to be kind of
 		// in increasing order of complexity
 		
-		Epidemic withFlowInGroup = make_models.productEpi("withFlowInGroup",
+		Compartment withFlowInGroup = make_models.product("withFlowInGroup",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -391,7 +391,7 @@ class ComparisonTests {
 										Arrays.asList("Symptomatic"))),
 						make_models.compartment("R")));
 		
-		Epidemic withFlowInProduct = make_models.productEpi("withFlowInProduct",
+		Compartment withFlowInProduct = make_models.product("withFlowInProduct",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -420,8 +420,8 @@ class ComparisonTests {
 		 */
 		int number_of_composables_in_both_models = 12;
 		
-		assertEquals(number_of_composables_in_both_models, res.context.modelctx1.composables.size());
-		assertEquals(number_of_composables_in_both_models, res.context.modelctx2.composables.size());
+		assertEquals(number_of_composables_in_both_models, res.context.modelctx1.compartments.size());
+		assertEquals(number_of_composables_in_both_models, res.context.modelctx2.compartments.size());
 		assertEquals(number_of_composables_in_both_models, res.matches.matches.size());
 		assertEquals(1, res.diffs.size());
 		Difference topLevelDiff = res.diffs.get(0);
@@ -437,12 +437,12 @@ class ComparisonTests {
 		assertEquals(1, topLevelDiff.childrenDiffResult.get().childrenDiffs.size());
 		// and that diff should be for SEIR
 		Difference seirDiff = topLevelDiff.childrenDiffResult.get().childrenDiffs.get(0);
-		assertEquals(Arrays.asList("SEIR"), seirDiff.match.matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("SEIR"), seirDiff.match.matchedCompartmentPair.first.getLabels());
 		// and seir diff should have 4 diffs for S,E,I and R
 		assertEquals(4, seirDiff.childrenDiffResult.get().childrenDiffs.size());
 		// and the 3rd diff should be for I
 		Difference IDiff = seirDiff.childrenDiffResult.get().childrenDiffs.get(2);
-		assertEquals(Arrays.asList("I"), IDiff.match.matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("I"), IDiff.match.matchedCompartmentPair.first.getLabels());
 		// and that diff should not be same
 		assertFalse(IDiff.isSame);
 	}

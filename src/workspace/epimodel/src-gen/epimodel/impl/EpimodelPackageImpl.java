@@ -4,9 +4,6 @@ package epimodel.impl;
 
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
-import epimodel.Composable;
-import epimodel.Epidemic;
-import epimodel.EpidemicWrapper;
 import epimodel.EpimodelFactory;
 import epimodel.EpimodelPackage;
 
@@ -55,12 +52,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 	static public List<EPackage> getEpimodelPackages() {
 		final EPackage.Registry reg = EPackage.Registry.INSTANCE;
-		List<EPackage> allPackages = reg
-				.values()
-				.stream()
-				.filter(pkg -> pkg instanceof EPackage)
-				.map(pkg -> (EPackage) pkg)
-				.collect(Collectors.toList());
+		List<EPackage> allPackages = reg.values().stream().filter(pkg -> pkg instanceof EPackage)
+				.map(pkg -> (EPackage) pkg).collect(Collectors.toList());
 		List<EPackage> epimodelPackages = new ArrayList<>();
 
 		do {
@@ -109,8 +102,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	}
 
 	public static boolean isModelType(EClass T) {
-		return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T) || EpimodelPackage.Literals.FLOW.isSuperTypeOf(T)
-				|| EpimodelPackage.Literals.EPIDEMIC.isSuperTypeOf(T);
+		return EpimodelPackage.Literals.COMPARTMENT.isSuperTypeOf(T) || EpimodelPackage.Literals.FLOW.isSuperTypeOf(T);
 	}
 
 	static boolean EPkgRefersToAtLeastOnePkgOrEpimodel(EPackage pkg, List<EPackage> pkgs) {
@@ -160,20 +152,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass epidemicWrapperEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass epidemicEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass compartmentWrapperEClass = null;
 
 	/**
@@ -196,13 +174,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	private EClass flowEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass composableEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -349,46 +320,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getEpidemicWrapper() {
-		return epidemicWrapperEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EReference getEpidemicWrapper_Epidemic() {
-		return (EReference) epidemicWrapperEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getEpidemic() {
-		return epidemicEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EAttribute getEpidemic_Id() {
-		return (EAttribute) epidemicEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getCompartmentWrapper() {
 		return compartmentWrapperEClass;
 	}
@@ -469,16 +400,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
-	public EClass getComposable() {
-		return composableEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EpimodelFactory getEpimodelFactory() {
 		return (EpimodelFactory) getEFactoryInstance();
 	}
@@ -503,12 +424,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		isCreated = true;
 
 		// Create classes and their features
-		epidemicWrapperEClass = createEClass(EPIDEMIC_WRAPPER);
-		createEReference(epidemicWrapperEClass, EPIDEMIC_WRAPPER__EPIDEMIC);
-
-		epidemicEClass = createEClass(EPIDEMIC);
-		createEAttribute(epidemicEClass, EPIDEMIC__ID);
-
 		compartmentWrapperEClass = createEClass(COMPARTMENT_WRAPPER);
 		createEReference(compartmentWrapperEClass, COMPARTMENT_WRAPPER__COMPARTMENT);
 
@@ -520,8 +435,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		flowEClass = createEClass(FLOW);
 		createEAttribute(flowEClass, FLOW__ID);
-
-		composableEClass = createEClass(COMPOSABLE);
 	}
 
 	/**
@@ -553,20 +466,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		epidemicEClass.getESuperTypes().add(this.getComposable());
-		compartmentEClass.getESuperTypes().add(this.getComposable());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(epidemicWrapperEClass, EpidemicWrapper.class, "EpidemicWrapper", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEpidemicWrapper_Epidemic(), this.getEpidemic(), null, "epidemic", null, 0, 1,
-				EpidemicWrapper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(epidemicEClass, Epidemic.class, "Epidemic", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEpidemic_Id(), ecorePackage.getEString(), "id", null, 0, 1, Epidemic.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(compartmentWrapperEClass, CompartmentWrapper.class, "CompartmentWrapper", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCompartmentWrapper_Compartment(), this.getCompartment(), null, "compartment", null, 0, 1,
@@ -587,9 +488,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		initEClass(flowEClass, Flow.class, "Flow", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, Flow.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(composableEClass, Composable.class, "Composable", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

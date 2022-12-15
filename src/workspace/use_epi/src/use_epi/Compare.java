@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import epimodel.Composable;
-import epimodel.Epidemic;
+import epimodel.Compartment;
 import epimodel.util.Comparison;
 import epimodel.util.Comparison.ComparisonContext;
 import epimodel.util.Comparison.ComparisonResult;
@@ -23,16 +22,16 @@ public class Compare {
 	
 	public static ComparisonResult compare(String model1fn, String model2fn) {
 		System.out.println("Comparing " + model1fn + " and " + model2fn);
-		Epidemic model1 = ((epimodel.EpidemicWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model1fn)).getEpidemic();
-		Epidemic model2 = ((epimodel.EpidemicWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model2fn)).getEpidemic();
+		Compartment model1 = ((epimodel.CompartmentWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model1fn)).getCompartment();
+		Compartment model2 = ((epimodel.CompartmentWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model2fn)).getCompartment();
 		return compare(model1, model2, true);
 	}
 	
-	public static ComparisonResult compare(Epidemic model1, Epidemic model2) {
+	public static ComparisonResult compare(Compartment model1, Compartment model2) {
 		return compare(model1, model2, false);
 	}
 	
-	public static ComparisonResult compare(Epidemic model1, Epidemic model2, boolean doPrint) {
+	public static ComparisonResult compare(Compartment model1, Compartment model2, boolean doPrint) {
 		List<Pair<String, String>> renamings = new ArrayList<>();
 		ComparisonContext context = new ComparisonContext(model1, model2, renamings);
 		MatchResult matches = Comparison.exactOrContainsLabelMatch(context, doPrint);
@@ -69,13 +68,13 @@ public class Compare {
 					break;
 				}
 			if (!accountedFor)
-				diffs.add(match.matchedComposablePair.first.compare(match.matchedComposablePair.second, matches));
+				diffs.add(match.matchedCompartmentPair.first.compare(match.matchedCompartmentPair.second, matches));
 		}
 		
 		for (Difference d : diffs) {
-			for (Composable c : d.accountsForAdditions)
+			for (Compartment c : d.accountsForAdditions)
 				matches.find(c).ifPresent(m -> m.isMove = true);
-			for (Composable c : d.accountsForSubstractions)
+			for (Compartment c : d.accountsForSubstractions)
 				matches.find(c).ifPresent(m -> m.isMove = true);
 		}
 		
