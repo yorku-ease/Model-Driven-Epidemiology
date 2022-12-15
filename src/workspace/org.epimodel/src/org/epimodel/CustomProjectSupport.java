@@ -180,7 +180,7 @@ public class CustomProjectSupport {
 		{
 			org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
-	        resource.getContents().add(EpimodelFactoryImpl.eINSTANCE.createEpidemicWrapper());
+	        resource.getContents().add(EpimodelFactoryImpl.eINSTANCE.createCompartmentWrapper());
 	        resource.save(null);
 		}
 	}

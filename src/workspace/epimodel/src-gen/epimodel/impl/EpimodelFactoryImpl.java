@@ -55,8 +55,6 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-		case EpimodelPackage.EPIDEMIC_WRAPPER:
-			return createEpidemicWrapper();
 		case EpimodelPackage.COMPARTMENT_WRAPPER:
 			return createCompartmentWrapper();
 		case EpimodelPackage.COMPARTMENT:
@@ -66,17 +64,6 @@ public class EpimodelFactoryImpl extends EFactoryImpl implements EpimodelFactory
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EpidemicWrapper createEpidemicWrapper() {
-		EpidemicWrapperImpl epidemicWrapper = new EpidemicWrapperImpl();
-		return epidemicWrapper;
 	}
 
 	/**

@@ -23,19 +23,19 @@ public class CompileModel {
 	
 	static void compile(String model_fn) throws FileNotFoundException, UnsupportedEncodingException {
         
-        epimodel.EpidemicWrapper myEpi = (epimodel.EpidemicWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model_fn);
+        epimodel.CompartmentWrapper myEpi = (epimodel.CompartmentWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model_fn);
 
 		String outfolder = "C:/Users/Bruno/Desktop/";
 
 		{
-			PrintWriter writer = new PrintWriter(outfolder + myEpi.getEpidemic().getId() + ".compartments.txt", "UTF-8");
-			for (PhysicalCompartment pc : myEpi.getEpidemic().getPhysicalCompartments())
+			PrintWriter writer = new PrintWriter(outfolder + myEpi.getCompartment().getLabels() + ".compartments.txt", "UTF-8");
+			for (PhysicalCompartment pc : myEpi.getCompartment().getPhysicalCompartments())
 				writer.println(pc.labels);
 		    writer.close();
 		}
 		{
-			PrintWriter writer = new PrintWriter(outfolder + myEpi.getEpidemic().getId() + ".equations.txt", "UTF-8");
-			for (PhysicalFlow pf : myEpi.getEpidemic().getPhysicalFlows()) {
+			PrintWriter writer = new PrintWriter(outfolder + myEpi.getCompartment().getLabels() + ".equations.txt", "UTF-8");
+			for (PhysicalFlow pf : myEpi.getCompartment().getPhysicalFlows()) {
 				for (PhysicalFlowEquation  pfe : pf.equations) {
 					writer.println(pfe.equation);
 					writer.println(pfe.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));

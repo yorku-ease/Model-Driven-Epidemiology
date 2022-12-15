@@ -66,22 +66,6 @@ public class EpimodelSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-		case EpimodelPackage.EPIDEMIC_WRAPPER: {
-			EpidemicWrapper epidemicWrapper = (EpidemicWrapper) theEObject;
-			T result = caseEpidemicWrapper(epidemicWrapper);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case EpimodelPackage.EPIDEMIC: {
-			Epidemic epidemic = (Epidemic) theEObject;
-			T result = caseEpidemic(epidemic);
-			if (result == null)
-				result = caseComposable(epidemic);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
 		case EpimodelPackage.COMPARTMENT_WRAPPER: {
 			CompartmentWrapper compartmentWrapper = (CompartmentWrapper) theEObject;
 			T result = caseCompartmentWrapper(compartmentWrapper);
@@ -92,8 +76,6 @@ public class EpimodelSwitch<T> extends Switch<T> {
 		case EpimodelPackage.COMPARTMENT: {
 			Compartment compartment = (Compartment) theEObject;
 			T result = caseCompartment(compartment);
-			if (result == null)
-				result = caseComposable(compartment);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -112,46 +94,9 @@ public class EpimodelSwitch<T> extends Switch<T> {
 				result = defaultCase(theEObject);
 			return result;
 		}
-		case EpimodelPackage.COMPOSABLE: {
-			Composable composable = (Composable) theEObject;
-			T result = caseComposable(composable);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
 		default:
 			return defaultCase(theEObject);
 		}
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Epidemic Wrapper</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Epidemic Wrapper</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseEpidemicWrapper(EpidemicWrapper object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Epidemic</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Epidemic</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseEpidemic(Epidemic object) {
-		return null;
 	}
 
 	/**
@@ -211,21 +156,6 @@ public class EpimodelSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseFlow(Flow object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Composable</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Composable</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseComposable(Composable object) {
 		return null;
 	}
 

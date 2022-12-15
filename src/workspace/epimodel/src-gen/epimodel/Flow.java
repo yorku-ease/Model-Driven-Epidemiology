@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import epimodel.util.PhysicalCompartment;
 import epimodel.util.PhysicalFlow;
 
 /**
@@ -29,13 +28,7 @@ import epimodel.util.PhysicalFlow;
  */
 public interface Flow extends EObject {
 
-	List<PhysicalFlow> getPhysicalFlows(Epidemic epidemic);
-
-	List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c);
-
-	List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c);
-
-	List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c);
+	PhysicalFlow getPhysicalFlowTemplate();
 
 	List<EObject> getTargetObjects();
 
