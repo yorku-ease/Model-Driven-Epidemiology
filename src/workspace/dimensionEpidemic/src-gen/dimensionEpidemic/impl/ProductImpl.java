@@ -68,7 +68,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		shell.setText("Edit Product " + getLabel());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
-			controls.forEach(c -> c.dispose());
+			controls.forEach(Control::dispose);
 			controls.clear();
 			super.edit(dom, shell, controls); // labels window
 			shell.pack(true);
@@ -82,7 +82,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	}
 
 	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
+		controls.forEach(Control::dispose);
 		controls.clear();
 		shell.setLayout(new GridLayout(2, false));
 		List<Compartment> l = getDimensions().stream().map(CompartmentWrapper::getCompartment)
@@ -92,7 +92,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
 				epimodel.util.Edit.transact(dom, () -> {
-					controls.forEach(c -> c.dispose());
+					controls.forEach(Control::dispose);
 					controls.clear();
 					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
 					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
@@ -105,12 +105,12 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		}
 		epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> epimodel.util.Edit.addCompartmentWindow(dom,
-				shell, controls, (w) -> epimodel.util.Edit.transact(dom, () -> getDimensions().add(w))));
+				shell, controls, w -> epimodel.util.Edit.transact(dom, () -> getDimensions().add(w))));
 		shell.pack(true);
 	}
 
 	void editFlows(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
+		controls.forEach(Control::dispose);
 		controls.clear();
 		shell.setLayout(new GridLayout(2, false));
 		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
@@ -119,7 +119,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			epimodel.util.Edit.addText(shell, controls, e.getId().toString());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
 				epimodel.util.Edit.transact(dom, () -> {
-					controls.forEach(c -> c.dispose());
+					controls.forEach(Control::dispose);
 					controls.clear();
 					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
 					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
@@ -133,7 +133,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 		epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Flow", () -> epimodel.util.Edit.addFlowWindow(shell, controls,
-				(w) -> epimodel.util.Edit.transact(dom, () -> getFlow().add(w))));
+				w -> epimodel.util.Edit.transact(dom, () -> getFlow().add(w))));
 		shell.pack(true);
 	}
 
@@ -152,7 +152,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return p2;
 	}
 
-	protected PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
+	protected static PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
 		return new PhysicalCompartment(
 				toCombine.stream().map(p -> p.labels).flatMap(List::stream).collect(Collectors.toList()));
 	}
@@ -162,7 +162,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return CartesianProduct
 				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
 						.map(Compartment::getSources).collect(Collectors.toList()))
-				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
+				.stream().map(ProductImpl::combinePhysicalCompartmentsIntoOne).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
@@ -171,7 +171,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return CartesianProduct
 				.cartesianProduct(getDimensions().stream().map(CompartmentWrapper::getCompartment)
 						.map(Compartment::getSinks).collect(Collectors.toList()))
-				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
+				.stream().map(ProductImpl::combinePhysicalCompartmentsIntoOne).map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
@@ -214,10 +214,14 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			Compartment dimension = dims.get(i);
 			List<Flow> flowsOfDim = dimension.getFlows();
 			List<Compartment> otherDimensions = getDimensionsExceptOne(dimension);
-			List<String> ids = otherDimensions.stream().map(d -> d.getLabel()).flatMap(List::stream)
+			List<String> ids = otherDimensions
+					.stream()
+					.map(Compartment::getLabel)
+					.flatMap(List::stream)
 					.collect(Collectors.toList());
 			List<List<PhysicalCompartment>> whatFlowsWillSee = CartesianProduct.cartesianProduct(
-					otherDimensions.stream().map(d -> d.getPhysicalCompartments()).collect(Collectors.toList()));
+				otherDimensions.stream().map(Compartment::getPhysicalCompartments).collect(Collectors.toList())
+			);
 
 			for (Flow f : flowsOfDim) {
 				for (List<PhysicalCompartment> specifications : whatFlowsWillSee) {

@@ -68,7 +68,7 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 		shell.setText("Edit Group " + getId());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
-			controls.forEach(c -> c.dispose());
+			controls.forEach(Control::dispose);
 			controls.clear();
 			super.edit(dom, shell, controls); // Id window
 			shell.pack(true);
@@ -82,28 +82,32 @@ public class GroupEpidemicImpl extends EpidemicImpl implements GroupEpidemic {
 	}
 
 	public List<PhysicalCompartment> getPhysicalFor(Compartment c) {
-		return getPhysicalCompartments().stream().filter(pc -> pc.labels.containsAll(c.getLabel()))
+		return getPhysicalCompartments()
+				.stream()
+				.filter(pc -> pc.labels.containsAll(c.getLabel()))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalSourcesFor(Compartment c) {
-		return getPhysicalCompartments().stream().filter(pc -> {
-			for (PhysicalCompartment filter : c.getSources())
-				if (pc.labels.containsAll(filter.labels))
-					return true;
-			return false;
-		}).collect(Collectors.toList());
+		return getPhysicalCompartments().stream().filter(pc ->
+			c.getSources()
+				.stream()
+				.filter(filter -> pc.labels.containsAll(filter.labels))
+				.findFirst()
+				.isPresent()
+		).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalSinksFor(Compartment c) {
-		return getPhysicalCompartments().stream().filter(pc -> {
-			for (PhysicalCompartment filter : c.getSinks())
-				if (pc.labels.containsAll(filter.labels))
-					return true;
-			return false;
-		}).collect(Collectors.toList());
+		return getPhysicalCompartments().stream().filter(pc ->
+			c.getSinks()
+				.stream()
+				.filter(filter -> pc.labels.containsAll(filter.labels))
+				.findFirst()
+				.isPresent()
+		).collect(Collectors.toList());
 	}
 
 	@Override

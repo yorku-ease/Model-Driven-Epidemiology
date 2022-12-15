@@ -76,7 +76,7 @@ public class DimensionEpidemicImpl extends EpidemicImpl implements DimensionEpid
 		shell.setText("Edit Group " + getId());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Id", () -> {
-			controls.forEach(c -> c.dispose());
+			controls.forEach(Control::dispose);
 			controls.clear();
 			super.edit(dom, shell, controls); // Id window
 			shell.pack(true);

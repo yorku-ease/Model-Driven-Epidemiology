@@ -44,7 +44,7 @@ public class EpidemicWrapperImpl extends MinimalEObjectImpl.Container implements
 			List<EClass> epidemics = epimodel.util.Edit.getNonAbstractEClassesOfType(EpimodelPackage.Literals.EPIDEMIC);
 			for (EClass epiClass : epidemics)
 				epimodel.util.Edit.addBtn(shell, controls, "Create " + epiClass.getName(), () -> {
-					controls.forEach(c -> c.dispose());
+					controls.forEach(Control::dispose);
 					controls.clear();
 					epimodel.util.Edit.transact(dom, () -> setEpidemic((Epidemic) EcoreUtil.create(epiClass)));
 					getEpidemic().edit(dom, shell, controls);

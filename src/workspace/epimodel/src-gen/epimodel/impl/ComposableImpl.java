@@ -18,6 +18,7 @@ import epimodel.util.PhysicalFlow;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
@@ -88,13 +89,18 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 		return defaultSameClassCompare(other, matches, compartmentsFeature, flowsFeature);
 	}
 	
-	public Difference defaultSameClassCompare(Composable other, MatchResult matches, EReferenceImpl compartmentsFeature, EReferenceImpl flowsFeature) {
+	public Difference defaultSameClassCompare(
+			Composable other,
+			MatchResult matches,
+			EReferenceImpl compartmentsFeature,
+			EReferenceImpl flowsFeature
+	) {
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l1 = (List<CompartmentWrapper>) eGet(compartmentsFeature);
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l2 = (List<CompartmentWrapper>) other.eGet(compartmentsFeature);
-		List<Compartment> myCompartments = l1.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
-		List<Compartment> otherCompartments = l2.stream().map(w -> w.getCompartment()).collect(Collectors.toList());
+		List<Compartment> myCompartments = l1.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
+		List<Compartment> otherCompartments = l2.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
 		
 		if (flowsFeature == null)
 			return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, null, null);
@@ -103,8 +109,8 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 		List<FlowWrapper> lf1 = (List<FlowWrapper>) eGet(flowsFeature);
 		@SuppressWarnings("unchecked")
 		List<FlowWrapper> lf2 = (List<FlowWrapper>) other.eGet(flowsFeature);
-		List<Flow> myFlows = lf1.stream().map(w -> w.getFlow()).collect(Collectors.toList());
-		List<Flow> otherFlows = lf2.stream().map(w -> w.getFlow()).collect(Collectors.toList());
+		List<Flow> myFlows = lf1.stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
+		List<Flow> otherFlows = lf2.stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
 		
 		return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, myFlows, otherFlows);
 	}
@@ -140,7 +146,7 @@ public abstract class ComposableImpl extends MinimalEObjectImpl.Container implem
 		}
 		String description = sb.toString();
 		
-		return new Difference(Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), false, description);
+		return new Difference(match, Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), Optional.empty(), false, description);
 	}
 	
 	void diffCompartments(StringBuilder sb, List<PhysicalCompartment> l1, List<PhysicalCompartment> l2) {

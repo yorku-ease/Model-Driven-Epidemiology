@@ -55,8 +55,12 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 	static public List<EPackage> getEpimodelPackages() {
 		final EPackage.Registry reg = EPackage.Registry.INSTANCE;
-		List<EPackage> allPackages = reg.values().stream().filter(pkg -> pkg instanceof EPackage)
-				.map(pkg -> (EPackage) pkg).collect(Collectors.toList());
+		List<EPackage> allPackages = reg
+				.values()
+				.stream()
+				.filter(pkg -> pkg instanceof EPackage)
+				.map(pkg -> (EPackage) pkg)
+				.collect(Collectors.toList());
 		List<EPackage> epimodelPackages = new ArrayList<>();
 
 		do {
@@ -76,7 +80,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 	public static void doCollectEClasses() {
 		List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
-		packages = epimodelPackages.stream().map(p -> p.getName()).collect(Collectors.toList());
+		packages = epimodelPackages.stream().map(EPackage::getName).collect(Collectors.toList());
 		eclassesByPackage = new ArrayList<>(packages.size());
 		for (int i = 0; i < packages.size(); ++i)
 			eclassesByPackage.add(new ArrayList<>());
@@ -132,7 +136,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		String ecoreStr = output.toString();
 		return ecoreStr.contains("http://www.example.org/epimodel")
-				|| pkgsStrToFindInXMI.stream().filter(uri -> ecoreStr.contains(uri)).findFirst().isPresent();
+				|| pkgsStrToFindInXMI.stream().filter(ecoreStr::contains).findFirst().isPresent();
 	}
 
 	public static EObject loadModel(String model_fn) {
