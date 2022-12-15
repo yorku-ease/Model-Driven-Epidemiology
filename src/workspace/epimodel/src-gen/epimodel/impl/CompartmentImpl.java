@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
@@ -47,9 +48,11 @@ public class CompartmentImpl extends ComposableImpl implements Compartment {
 	public Difference compareWithSameClass(Composable other, MatchResult matches) {
 		if (getClass().equals(CompartmentImpl.class)) {
 			return new Difference(
-				Arrays.asList(matches.find(this, other).orElse(null)),
+				matches.find(this, other).get(),
+				Arrays.asList(matches.find(this, other).get()),
 				new ArrayList<>(),
 				new ArrayList<>(),
+				Optional.empty(),
 				getLabels().equals(other.getLabels()),
 				"Compartment " + getLabels() + " matches Compartment " + other.getLabels()
 			);

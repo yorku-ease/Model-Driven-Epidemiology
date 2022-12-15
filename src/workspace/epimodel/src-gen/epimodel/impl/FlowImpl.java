@@ -83,7 +83,10 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 
 	@Override
 	public final String getTargetRelation(EObject target) {
-		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(ref -> ref.getName())
+		return flowRefs()
+				.stream()
+				.filter(ref -> eGet(ref).equals(target))
+				.map(EReference::getName)
 				.collect(Collectors.joining(", "));
 	}
 

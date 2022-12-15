@@ -61,7 +61,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		shell.setText("Edit Group Epidemic " + getLabel());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
-			controls.forEach(c -> c.dispose());
+			controls.forEach(Control::dispose);
 			controls.clear();
 			super.edit(dom, shell, controls); // labels window
 			shell.pack(true);
@@ -75,7 +75,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	}
 
 	void editCompartments(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
+		controls.forEach(Control::dispose);
 		controls.clear();
 		int nCol = 4;
 		shell.setLayout(new GridLayout(nCol, false));
@@ -93,7 +93,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 			addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
 				epimodel.util.Edit.transact(dom, () -> {
-					controls.forEach(c -> c.dispose());
+					controls.forEach(Control::dispose);
 					controls.clear();
 					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
 					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
@@ -107,7 +107,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		for (int i = 0; i < nCol - 1; ++i)
 			epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
-			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, (w) -> {
+			epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, w -> {
 				epimodel.util.Edit.transact(dom, () -> getCompartment().add(w));
 			});
 		});
@@ -158,7 +158,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	}
 
 	void editFlows(EObject dom, Shell shell, List<Control> controls) {
-		controls.forEach(c -> c.dispose());
+		controls.forEach(Control::dispose);
 		controls.clear();
 		shell.setLayout(new GridLayout(2, false));
 		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).filter(f -> f != null).collect(Collectors.toList());
@@ -166,7 +166,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 			epimodel.util.Edit.addText(shell, controls, e.getId());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
 				epimodel.util.Edit.transact(dom, () -> {
-					controls.forEach(c -> c.dispose());
+					controls.forEach(Control::dispose);
 					controls.clear();
 					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
 					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
@@ -179,7 +179,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		}
 		epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Add Child", () -> {
-			epimodel.util.Edit.addFlowWindow(shell, controls, (w) -> {
+			epimodel.util.Edit.addFlowWindow(shell, controls, w -> {
 				epimodel.util.Edit.transact(dom, () -> getFlow().add(w));
 			});
 		});

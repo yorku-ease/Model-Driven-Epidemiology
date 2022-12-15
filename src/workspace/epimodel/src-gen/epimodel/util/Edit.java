@@ -67,19 +67,17 @@ public class Edit {
 	}
 	
 	public static void addCompartmentWindow(EObject dom, Shell shell, List<Control> controls, Consumer<CompartmentWrapper> callback) {
-		controls.forEach(c -> c.dispose());
+		controls.forEach(Control::dispose);
 		controls.clear();
         shell.setLayout(new GridLayout(1, false));
         for (EClass ec : getNonAbstractEClassesOfType(EpimodelPackage.Literals.COMPARTMENT)) {
         	addBtn(shell, controls, ec.getName(), () -> {
-    			controls.forEach(c -> c.dispose());
+    			controls.forEach(Control::dispose);
     			controls.clear();
                 CompartmentWrapper w = EpimodelFactory.eINSTANCE.createCompartmentWrapper();
                 Compartment compartment = (Compartment) EcoreUtil.create(ec);
                 w.setCompartment(compartment);
-    			shell.addListener(SWT.Close, (e) -> {
-                    callback.accept(w);
-    			});
+    			shell.addListener(SWT.Close, e -> callback.accept(w));
 	        	compartment.edit(dom, shell, controls);
     			shell.pack(true);
         	});
@@ -88,7 +86,7 @@ public class Edit {
 	}
 	
 	public static void addFlowWindow(Shell shell, List<Control> controls, Consumer<FlowWrapper> callback) {
-		controls.forEach(c -> c.dispose());
+		controls.forEach(Control::dispose);
 		controls.clear();
         shell.setLayout(new GridLayout(1, false));
         for (EClass ec : getNonAbstractEClassesOfType(EpimodelPackage.Literals.FLOW)) {
@@ -135,7 +133,7 @@ public class Edit {
 	            textBuilder.append((char) c);
 	        reader.close();
 			String filecontent = textBuilder.toString();
-			return Arrays.asList(filecontent.split("\n")).stream().map(s -> s.trim()).collect(Collectors.toList());
+			return Arrays.asList(filecontent.split("\n")).stream().map(String::trim).collect(Collectors.toList());
 		} catch (IOException | CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

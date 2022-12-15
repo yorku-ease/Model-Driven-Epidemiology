@@ -16,12 +16,20 @@ class ComparisonTests {
 	
 	@BeforeAll
 	static void init_metamodel() throws Exception {
-		// load things in right order & make sure model creation is fine
+		// load metamodel things in right order & make sure model creation is fine
 		make_models.main(null);
 	}
 	
 	@Test
 	void test1() {
+		// same models as test 8
+		// please do not merge test 1 and 8 as test 1 is a way simpler regression test
+		// in the event all tests fail its simpler to understand only test 1 than
+		// test 8 and the tests are meant to be kind of
+		// in increasing order of complexity
+		
+		// just a basic test, same composables, just 1 different flow (in product vs in a dimension of the product)
+		// we are only looking at counts of matches in this test to make sure all objects are accounted for during matching
 		Epidemic withFlowInGroup = make_models.productEpi("withFlowInGroup",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
@@ -58,13 +66,22 @@ class ComparisonTests {
 		
 		ComparisonResult res = use_epi.Compare.compare(withFlowInGroup, withFlowInProduct);
 
-		int number_of_composables_that_have_the_same_names_in_both_models = 11;
-		int number_of_composables_in_both_models = 1 + number_of_composables_that_have_the_same_names_in_both_models;
+		/* expect 12 matches:
+		 * 	1 for epidemic
+		 * 		1 for group
+		 * 			3 for compartments
+		 * 			1 for product
+		 * 				2 for groups
+		 * 					4 for compartments
+		 */
+		int number_of_composables_in_both_models = 12;
 		
 		assertEquals(number_of_composables_in_both_models, res.context.modelctx1.composables.size());
 		assertEquals(number_of_composables_in_both_models, res.context.modelctx2.composables.size());
-		assertEquals(number_of_composables_that_have_the_same_names_in_both_models, res.matches.matches.size());
+		assertEquals(number_of_composables_in_both_models, res.matches.matches.size());
 		assertEquals(1, res.diffs.size());
+		// expect the first diff to be not same since the flow is in a different spot
+		assertFalse(res.diffs.get(0).isSame);
 		assertEquals(number_of_composables_in_both_models, res.diffs.get(0).accountsForMatches.size());
 	}
 	
@@ -84,13 +101,12 @@ class ComparisonTests {
 		
 		ComparisonResult res = use_epi.Compare.compare(model1, model2);
 		
-		// expect SI.S match S && SI.I match I
-		// expect no match for top level as no common unique labels even though the diff output says they "match"
-		assertEquals(2, res.matches.matches.size());
-		assertEquals(Arrays.asList("SI", "S"), res.matches.matches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("S"), res.matches.matches.get(0).match.second.getLabels());
-		assertEquals(Arrays.asList("SI", "I"), res.matches.matches.get(1).match.first.getLabels());
-		assertEquals(Arrays.asList("I"), res.matches.matches.get(1).match.second.getLabels());
+		// expect top level match, SI.S match S && SI.I match I
+		assertEquals(3, res.matches.matches.size());
+		assertEquals(Arrays.asList("SI", "S"), res.matches.matches.get(1).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("S"), res.matches.matches.get(1).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("SI", "I"), res.matches.matches.get(2).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("I"), res.matches.matches.get(2).matchedComposablePair.second.getLabels());
 
 		// assert same unique labels and only S and I not SI which is duplicate or the label of the top level object which is ignored
 		assertEquals(new HashSet<String>(Arrays.asList("S", "I")), res.context.modelctx1.uniqueLabels);
@@ -238,16 +254,16 @@ class ComparisonTests {
 		
 		// expect 2 diffs, one for the epidemic and one for group Symptoms
 		assertEquals(2, res.diffs.size());
-		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).match.second.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).match.second.getLabels());
+		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
 		
 		// expect diff of epidemic to account for remove and diff of symptoms to account for match
 		assertEquals(3, res.diffs.get(0).accountsForSubstractions.size());
 		assertEquals(3, res.diffs.get(1).accountsForMatches.size());
 		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(0).accountsForSubstractions.get(0).getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).match.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
 		
 		// just in case check the other lists expected empty
 		assertEquals(0, res.diffs.get(0).accountsForAdditions.size());
@@ -292,16 +308,16 @@ class ComparisonTests {
 
 		// expect 2 diffs, one for the epidemic and one for group Symptoms
 		assertEquals(2, res.diffs.size());
-		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).match.second.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).match.second.getLabels());
+		assertEquals(Arrays.asList("SymptomsInside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("SymptomsOutside"), res.diffs.get(0).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.second.getLabels());
 		
 		// expect diff of epidemic to account for remove and diff of symptoms to account for match
 		assertEquals(3, res.diffs.get(0).accountsForAdditions.size());
 		assertEquals(3, res.diffs.get(1).accountsForMatches.size());
 		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(0).accountsForAdditions.get(0).getLabels());
-		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).match.first.getLabels());
+		assertEquals(Arrays.asList("Symptoms"), res.diffs.get(1).accountsForMatches.get(0).matchedComposablePair.first.getLabels());
 		
 		// just in case check the other lists expected empty
 		assertEquals(0, res.diffs.get(0).accountsForSubstractions.size());
@@ -330,8 +346,8 @@ class ComparisonTests {
 		assertEquals(3, res.diffs.size());
 		Difference epidiff = res.diffs.get(0);
 		assertEquals(1, epidiff.accountsForMatches.size());
-		assertEquals(Arrays.asList("conflict"), epidiff.accountsForMatches.get(0).match.first.getLabels());
-		assertEquals(Arrays.asList("ok"), epidiff.accountsForMatches.get(0).match.second.getLabels());
+		assertEquals(Arrays.asList("conflict"), epidiff.accountsForMatches.get(0).matchedComposablePair.first.getLabels());
+		assertEquals(Arrays.asList("ok"), epidiff.accountsForMatches.get(0).matchedComposablePair.second.getLabels());
 		// expect to find that the top level diff thinks there are 3 deleted and 3 added elements, being whatever:conflict, S:S, I:I
 		assertEquals(3, epidiff.accountsForAdditions.size());
 		assertEquals(3, epidiff.accountsForSubstractions.size());
@@ -348,5 +364,86 @@ class ComparisonTests {
 		assertFalse(res.isMove(epidiff.accountsForAdditions.get(0)));
 		assertTrue(res.isMove(epidiff.accountsForAdditions.get(1)));
 		assertTrue(res.isMove(epidiff.accountsForAdditions.get(2)));
+	}
+	
+	@Test
+	void test8() {
+		// same model as test 1
+		// please do not merge test 1 and 8 as test 1 is a way simpler regression test
+		// in the event all tests fail its simpler to understand only test 1 than
+		// test 8 and the tests are meant to be kind of
+		// in increasing order of complexity
+		
+		Epidemic withFlowInGroup = make_models.productEpi("withFlowInGroup",
+				make_models.group("SEIR",
+						make_models.compartment("S"),
+						make_models.compartment("E"),
+						make_models.product("I",
+								make_models.group("Variants",
+										make_models.compartment("DELTA"),
+										make_models.compartment("OMICRON")),
+								make_models.addRate(
+										make_models.group("Infectious",
+												make_models.compartment("Asymptomatic"),
+												make_models.compartment("Symptomatic")),
+										"Symptoms",
+										Arrays.asList("Asymptomatic"),
+										Arrays.asList("Symptomatic"))),
+						make_models.compartment("R")));
+		
+		Epidemic withFlowInProduct = make_models.productEpi("withFlowInProduct",
+				make_models.group("SEIR",
+						make_models.compartment("S"),
+						make_models.compartment("E"),
+						make_models.addRate(
+							make_models.product("I",
+									make_models.group("Variants",
+											make_models.compartment("DELTA"),
+											make_models.compartment("OMICRON")),
+									make_models.group("Infectious",
+											make_models.compartment("Asymptomatic"),
+											make_models.compartment("Symptomatic"))),
+							"Symptoms",
+							Arrays.asList("Asymptomatic"),
+							Arrays.asList("Symptomatic")),
+						make_models.compartment("R")));
+		
+		ComparisonResult res = use_epi.Compare.compare(withFlowInGroup, withFlowInProduct);
+
+		/* expect 12 matches:
+		 * 	1 for epidemic
+		 * 		1 for group
+		 * 			3 for compartments
+		 * 			1 for product
+		 * 				2 for groups
+		 * 					4 for compartments
+		 */
+		int number_of_composables_in_both_models = 12;
+		
+		assertEquals(number_of_composables_in_both_models, res.context.modelctx1.composables.size());
+		assertEquals(number_of_composables_in_both_models, res.context.modelctx2.composables.size());
+		assertEquals(number_of_composables_in_both_models, res.matches.matches.size());
+		assertEquals(1, res.diffs.size());
+		Difference topLevelDiff = res.diffs.get(0);
+		// expect the first diff to be not same since the flow is in a different spot
+		assertFalse(topLevelDiff.isSame);
+		assertEquals(number_of_composables_in_both_models, topLevelDiff.accountsForMatches.size());
+		
+		// expect that we can find the match of product I and the match for group Infectious and both are considered different
+		// childrenDiffs of epidemic should:
+		// be there:
+		assertTrue(topLevelDiff.childrenDiffResult.isPresent());
+		// have a diff:
+		assertEquals(1, topLevelDiff.childrenDiffResult.get().childrenDiffs.size());
+		// and that diff should be for SEIR
+		Difference seirDiff = topLevelDiff.childrenDiffResult.get().childrenDiffs.get(0);
+		assertEquals(Arrays.asList("SEIR"), seirDiff.match.matchedComposablePair.first.getLabels());
+		// and seir diff should have 4 diffs for S,E,I and R
+		assertEquals(4, seirDiff.childrenDiffResult.get().childrenDiffs.size());
+		// and the 3rd diff should be for I
+		Difference IDiff = seirDiff.childrenDiffResult.get().childrenDiffs.get(2);
+		assertEquals(Arrays.asList("I"), IDiff.match.matchedComposablePair.first.getLabels());
+		// and that diff should not be same
+		assertFalse(IDiff.isSame);
 	}
 }
