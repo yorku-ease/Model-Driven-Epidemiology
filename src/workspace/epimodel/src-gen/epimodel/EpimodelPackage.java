@@ -205,6 +205,43 @@ public interface EpimodelPackage extends EPackage {
 	int FLOW_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link epimodel.impl.EpidemicImpl <em>Epidemic</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see epimodel.impl.EpidemicImpl
+	 * @see epimodel.impl.EpimodelPackageImpl#getEpidemic()
+	 * @generated
+	 */
+	int EPIDEMIC = 4;
+
+	/**
+	 * The feature id for the '<em><b>Compartmentwrapper</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EPIDEMIC__COMPARTMENTWRAPPER = 0;
+
+	/**
+	 * The number of structural features of the '<em>Epidemic</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EPIDEMIC_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Epidemic</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EPIDEMIC_OPERATION_COUNT = 0;
+
+	/**
 	 * Returns the meta object for class '{@link epimodel.CompartmentWrapper <em>Compartment Wrapper</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -287,6 +324,27 @@ public interface EpimodelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getFlow_Id();
+
+	/**
+	 * Returns the meta object for class '{@link epimodel.Epidemic <em>Epidemic</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Epidemic</em>'.
+	 * @see epimodel.Epidemic
+	 * @generated
+	 */
+	EClass getEpidemic();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link epimodel.Epidemic#getCompartmentwrapper <em>Compartmentwrapper</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Compartmentwrapper</em>'.
+	 * @see epimodel.Epidemic#getCompartmentwrapper()
+	 * @see #getEpidemic()
+	 * @generated
+	 */
+	EReference getEpidemic_Compartmentwrapper();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -382,6 +440,24 @@ public interface EpimodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FLOW__ID = eINSTANCE.getFlow_Id();
+
+		/**
+		 * The meta object literal for the '{@link epimodel.impl.EpidemicImpl <em>Epidemic</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see epimodel.impl.EpidemicImpl
+		 * @see epimodel.impl.EpimodelPackageImpl#getEpidemic()
+		 * @generated
+		 */
+		EClass EPIDEMIC = eINSTANCE.getEpidemic();
+
+		/**
+		 * The meta object literal for the '<em><b>Compartmentwrapper</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EPIDEMIC__COMPARTMENTWRAPPER = eINSTANCE.getEpidemic_Compartmentwrapper();
 
 	}
 

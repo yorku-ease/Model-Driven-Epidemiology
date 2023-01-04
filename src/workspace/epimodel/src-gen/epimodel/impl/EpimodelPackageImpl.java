@@ -4,6 +4,7 @@ package epimodel.impl;
 
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Epidemic;
 import epimodel.EpimodelFactory;
 import epimodel.EpimodelPackage;
 
@@ -174,6 +175,13 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	private EClass flowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass epidemicEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -400,6 +408,26 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	 * @generated
 	 */
 	@Override
+	public EClass getEpidemic() {
+		return epidemicEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getEpidemic_Compartmentwrapper() {
+		return (EReference) epidemicEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EpimodelFactory getEpimodelFactory() {
 		return (EpimodelFactory) getEFactoryInstance();
 	}
@@ -435,6 +463,9 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		flowEClass = createEClass(FLOW);
 		createEAttribute(flowEClass, FLOW__ID);
+
+		epidemicEClass = createEClass(EPIDEMIC);
+		createEReference(epidemicEClass, EPIDEMIC__COMPARTMENTWRAPPER);
 	}
 
 	/**
@@ -488,6 +519,12 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		initEClass(flowEClass, Flow.class, "Flow", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, Flow.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(epidemicEClass, Epidemic.class, "Epidemic", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEpidemic_Compartmentwrapper(), this.getCompartmentWrapper(), null, "compartmentwrapper", null,
+				1, 1, Epidemic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

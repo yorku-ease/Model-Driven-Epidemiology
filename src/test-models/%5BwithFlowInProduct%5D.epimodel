@@ -1,68 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<epimodel:CompartmentWrapper xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow"
-    xmlns:epimodel="http://www.example.org/epimodel" xmlns:group="http://www.example.org/group"
-    xmlns:product="http://www.example.org/product">
-  <compartment xsi:type="product:Product">
-    <label>withFlowInProduct</label>
-    <compartment>
-      <compartment xsi:type="group:Group">
-        <label>SEIR</label>
-        <compartment>
+<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:epimodel="http://www.example.org/epimodel"
+    xmlns:group="http://www.example.org/group" xmlns:product="http://www.example.org/product">
+  <compartmentwrapper>
+    <compartment xsi:type="product:Product">
+      <label>withFlowInProduct</label>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>SEIR</label>
           <compartment>
-            <label>S</label>
-          </compartment>
-        </compartment>
-        <compartment>
-          <compartment>
-            <label>E</label>
-          </compartment>
-        </compartment>
-        <compartment>
-          <compartment xsi:type="product:Product">
-            <label>I</label>
             <compartment>
-              <compartment xsi:type="group:Group">
-                <label>Variants</label>
-                <compartment>
+              <label>S</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>E</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment xsi:type="product:Product">
+              <label>I</label>
+              <compartment>
+                <compartment xsi:type="group:Group">
+                  <label>Variants</label>
                   <compartment>
-                    <label>DELTA</label>
+                    <compartment>
+                      <label>DELTA</label>
+                    </compartment>
                   </compartment>
-                </compartment>
-                <compartment>
                   <compartment>
-                    <label>OMICRON</label>
+                    <compartment>
+                      <label>OMICRON</label>
+                    </compartment>
                   </compartment>
                 </compartment>
               </compartment>
-            </compartment>
-            <compartment>
-              <compartment xsi:type="group:Group">
-                <label>Infectious</label>
-                <compartment>
+              <compartment>
+                <compartment xsi:type="group:Group">
+                  <label>Infectious</label>
                   <compartment>
-                    <label>Asymptomatic</label>
+                    <compartment>
+                      <label>Asymptomatic</label>
+                    </compartment>
                   </compartment>
-                </compartment>
-                <compartment>
                   <compartment>
-                    <label>Symptomatic</label>
+                    <compartment>
+                      <label>Symptomatic</label>
+                    </compartment>
                   </compartment>
                 </compartment>
               </compartment>
+              <flow>
+                <flow xsi:type="batchRateContactFlow:Rate" id="Symptoms" from="../../test-models/%5BwithFlowInProduct%5D.epimodel#//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment/@compartment.1/@compartment/@compartment.0/@compartment"
+                    to="../../test-models/%5BwithFlowInProduct%5D.epimodel#//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment/@compartment.1/@compartment/@compartment.1/@compartment"/>
+              </flow>
             </compartment>
-            <flow>
-              <flow xsi:type="batchRateContactFlow:Rate" id="Symptoms" from="../../test-models/%5BwithFlowInProduct%5D.epimodel#//@compartment/@compartment.0/@compartment/@compartment.2/@compartment/@compartment.1/@compartment/@compartment.0/@compartment"
-                  to="../../test-models/%5BwithFlowInProduct%5D.epimodel#//@compartment/@compartment.0/@compartment/@compartment.2/@compartment/@compartment.1/@compartment/@compartment.1/@compartment"/>
-            </flow>
           </compartment>
-        </compartment>
-        <compartment>
           <compartment>
-            <label>R</label>
+            <compartment>
+              <label>R</label>
+            </compartment>
           </compartment>
         </compartment>
       </compartment>
     </compartment>
-  </compartment>
-</epimodel:CompartmentWrapper>
+  </compartmentwrapper>
+</epimodel:Epidemic>

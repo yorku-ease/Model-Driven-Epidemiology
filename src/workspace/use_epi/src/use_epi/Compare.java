@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import epimodel.Compartment;
+import epimodel.Epidemic;
 import epimodel.util.Comparison;
 import epimodel.util.Comparison.ComparisonContext;
 import epimodel.util.Comparison.ComparisonResult;
@@ -22,16 +23,16 @@ public class Compare {
 	
 	public static ComparisonResult compare(String model1fn, String model2fn) {
 		System.out.println("Comparing " + model1fn + " and " + model2fn);
-		Compartment model1 = ((epimodel.CompartmentWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model1fn)).getCompartment();
-		Compartment model2 = ((epimodel.CompartmentWrapper) epimodel.impl.EpimodelPackageImpl.loadModel(model2fn)).getCompartment();
+		Epidemic model1 = (Epidemic) epimodel.impl.EpimodelPackageImpl.loadModel(model1fn);
+		Epidemic model2 = (Epidemic) epimodel.impl.EpimodelPackageImpl.loadModel(model2fn);
 		return compare(model1, model2, true);
 	}
 	
-	public static ComparisonResult compare(Compartment model1, Compartment model2) {
+	public static ComparisonResult compare(Epidemic model1, Epidemic model2) {
 		return compare(model1, model2, false);
 	}
 	
-	public static ComparisonResult compare(Compartment model1, Compartment model2, boolean doPrint) {
+	public static ComparisonResult compare(Epidemic model1, Epidemic model2, boolean doPrint) {
 		List<Pair<String, String>> renamings = new ArrayList<>();
 		ComparisonContext context = new ComparisonContext(model1, model2, renamings);
 		MatchResult matches = Comparison.exactOrContainsLabelMatch(context, doPrint);
@@ -41,11 +42,14 @@ public class Compare {
 			System.out.println(matches);
 		}
 		
-		Match topLevelMatch = matches.find(model1, model2).orElse(null);
+		Compartment topLevel1 = model1.getCompartmentwrapper().getCompartment();
+		Compartment topLevel2 = model2.getCompartmentwrapper().getCompartment();
+		
+		Match topLevelMatch = matches.find(topLevel1, topLevel2).orElse(null);
 		// if there is no top level match we might have a problem
 		if (topLevelMatch == null) {
-			Match left = matches.find(model1).orElse(null);
-			Match right = matches.find(model2).orElse(null);
+			Match left = matches.find(topLevel1).orElse(null);
+			Match right = matches.find(topLevel2).orElse(null);
 			// if either top level element left or right is matched, but not the other,
 			// we remove the match because we don't want that match.
 			// It is simpler to always assume a match for both top level elements
@@ -57,7 +61,7 @@ public class Compare {
 		}
 		
 		// start diff with top level element always
-		List<Difference> diffs = new ArrayList<>(Arrays.asList(model1.compare(model2, matches)));
+		List<Difference> diffs = new ArrayList<>(Arrays.asList(topLevel1.compare(topLevel2, matches)));
 		// iterate other matches in case the top level element did not account for all matches
 		// this happens if at some level incompatible type of objects are compared and unable to compare their children
 		for (Match match : matches.matches) {

@@ -52,11 +52,10 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 
 	@Override
 	public final Difference compare(Compartment other, MatchResult matches) {
-		return getClass().equals(other.getClass()) ?
-			compareWithSameClass(other, matches) :
-			compareWithDifferentClass(other, matches);
+		return getClass().equals(other.getClass()) ? compareWithSameClass(other, matches)
+				: compareWithDifferentClass(other, matches);
 	}
-	
+
 	@Override
 	public Difference compareWithSameClass(Compartment other, MatchResult matches) {
 		if (getClass().equals(CompartmentImpl.class)) {
@@ -66,7 +65,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		} else
 			return compareWithSameClassNonCompartmentImpl(other, matches);
 	}
-	
+
 	/*
 	 * When we know 2 compartments are of the same class, we
 	 * can try to find the composability attributes ourselves
@@ -78,53 +77,48 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	Difference compareWithSameClassNonCompartmentImpl(Compartment other, MatchResult matches) {
 		EReferenceImpl compartmentsFeature = null;
 		EReferenceImpl flowsFeature = null;
-		
+
 		// identify the compartment and flow features, making sure there is at most 1 of each
 		for (EStructuralFeature feature : eClass().getEAllStructuralFeatures()) {
 			if (feature instanceof EReferenceImpl) {
 				EReferenceImpl eref = (EReferenceImpl) feature;
-				if (eref.isContainment() && eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.COMPARTMENT_WRAPPER)) {
+				if (eref.isContainment()
+						&& eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.COMPARTMENT_WRAPPER)) {
 					if (compartmentsFeature != null)
 						// developper error, if there are 2 features for compartments, the dev has to provide an implementation for same class compare
 						throw new RuntimeException(
-							"Found two features for compartments in class " + 
-							getClass().getSimpleName() + ": " + 
-							compartmentsFeature.getName() + " & " + eref.getName());
+								"Found two features for compartments in class " + getClass().getSimpleName() + ": "
+										+ compartmentsFeature.getName() + " & " + eref.getName());
 					else
 						compartmentsFeature = eref;
-				}
-				else if (eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.FLOW_WRAPPER)) {
+				} else if (eref.getEReferenceType().equals(epimodel.EpimodelPackage.Literals.FLOW_WRAPPER)) {
 					if (flowsFeature != null)
 						// developper error, if there are 2 features for flows, the dev has to provide an implementation for same class compare
-						throw new RuntimeException(
-							"Found two features for flows in class " + 
-							getClass().getSimpleName() + ": " + 
-							flowsFeature.getName() + " & " + eref.getName());
+						throw new RuntimeException("Found two features for flows in class " + getClass().getSimpleName()
+								+ ": " + flowsFeature.getName() + " & " + eref.getName());
 					else
 						flowsFeature = eref;
 				}
 			}
 		}
-		
+
 		// at this point we haven't checked if the features are null but a correct metamodel shouldn't yield null features
 		// the following implementation assumes for sure that the compartmentsFeature is NOT null
 		// flows can be null as it might not make sense for each metamodel class to own flows, such as a compartment link for example
 		return defaultSameClassCompare(other, matches, compartmentsFeature, flowsFeature);
 	}
-	
-	public Difference defaultSameClassCompare(
-			Compartment other,
-			MatchResult matches,
-			EReferenceImpl compartmentsFeature,
-			EReferenceImpl flowsFeature
-	) {
+
+	public Difference defaultSameClassCompare(Compartment other, MatchResult matches,
+			EReferenceImpl compartmentsFeature, EReferenceImpl flowsFeature) {
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l1 = (List<CompartmentWrapper>) eGet(compartmentsFeature);
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l2 = (List<CompartmentWrapper>) other.eGet(compartmentsFeature);
-		List<Compartment> myCompartments = l1.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
-		List<Compartment> otherCompartments = l2.stream().map(CompartmentWrapper::getCompartment).collect(Collectors.toList());
-		
+		List<Compartment> myCompartments = l1.stream().map(CompartmentWrapper::getCompartment)
+				.collect(Collectors.toList());
+		List<Compartment> otherCompartments = l2.stream().map(CompartmentWrapper::getCompartment)
+				.collect(Collectors.toList());
+
 		if (flowsFeature == null)
 			return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, null, null);
 
@@ -134,16 +128,17 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<FlowWrapper> lf2 = (List<FlowWrapper>) other.eGet(flowsFeature);
 		List<Flow> myFlows = lf1.stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
 		List<Flow> otherFlows = lf2.stream().map(FlowWrapper::getFlow).collect(Collectors.toList());
-		
-		return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, myFlows, otherFlows);
+
+		return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, myFlows,
+				otherFlows);
 	}
-	
+
 	@Override
 	public Difference compareWithDifferentClass(Compartment other, MatchResult matches) {
 		Match match = matches.find(this, other).orElse(new Match(this, other));
-		
+
 		boolean sameClass = getClass().equals(other.getClass()); // in case same class comparison was deferred
-		
+
 		List<PhysicalCompartment> l1 = getPhysicalCompartments();
 		List<PhysicalCompartment> l2 = other.getPhysicalCompartments();
 		boolean sameCompartments = l1.equals(l2);
@@ -151,7 +146,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<PhysicalFlow> lf1 = getPhysicalFlows();
 		List<PhysicalFlow> lf2 = other.getPhysicalFlows();
 		boolean sameFlows = lf1.equals(lf2);
-		
+
 		StringBuilder sb = new StringBuilder();
 		{
 			sb.append(getClass().getSimpleName() + " " + getLabels());
@@ -168,18 +163,20 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				diffFlows(sb, lf1, lf2);
 		}
 		String description = sb.toString();
-		
-		return new Difference(match, Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), Optional.empty(), false, description);
+
+		return new Difference(match, Arrays.asList(match), new ArrayList<>(), new ArrayList<>(), Optional.empty(),
+				false, description);
 	}
-	
+
 	void diffCompartments(StringBuilder sb, List<PhysicalCompartment> l1, List<PhysicalCompartment> l2) {
 		int addedCompartments = l2.size() - l2.stream().filter(l1::contains).collect(Collectors.toList()).size();
 		int removedCompartments = l1.size() + addedCompartments - l2.size();
-		sb.append(" original model produces " + l1.size() + " physical compartments and other model produces " + l2.size());
+		sb.append(" original model produces " + l1.size() + " physical compartments and other model produces "
+				+ l2.size());
 		sb.append(": " + (l1.size() - removedCompartments) + " matched, ");
 		sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
 	}
-	
+
 	void diffFlows(StringBuilder sb, List<PhysicalFlow> l1, List<PhysicalFlow> l2) {
 		int addedFlows = l2.size() - l2.stream().filter(l1::contains).collect(Collectors.toList()).size();
 		int removedFlows = l1.size() + addedFlows - l2.size();
@@ -188,10 +185,10 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		sb.append(addedFlows + " added and " + removedFlows + " removed.");
 	}
 
-//	@Override
-//	public List<PhysicalFlow> getPhysicalFlows() {
-//		return new ArrayList<>();
-//	}
+	//	@Override
+	//	public List<PhysicalFlow> getPhysicalFlows() {
+	//		return new ArrayList<>();
+	//	}
 
 	@Override
 	public List<String> getLabels() {

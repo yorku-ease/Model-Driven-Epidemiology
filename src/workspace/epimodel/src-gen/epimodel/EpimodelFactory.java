@@ -49,6 +49,15 @@ public interface EpimodelFactory extends EFactory {
 	FlowWrapper createFlowWrapper();
 
 	/**
+	 * Returns a new object of class '<em>Epidemic</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Epidemic</em>'.
+	 * @generated
+	 */
+	Epidemic createEpidemic();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
