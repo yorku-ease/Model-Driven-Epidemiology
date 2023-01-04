@@ -22,6 +22,7 @@ import group.Group;
 import group.impl.GroupFactoryImpl;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
+import epimodel.Epidemic;
 import epimodel.Flow;
 import epimodel.FlowWrapper;
 import epimodel.impl.EpimodelFactoryImpl;
@@ -31,20 +32,20 @@ public class make_models {
 	
 	public static void main(String[] args) throws Exception {
 		// first model requires NO FLOWS (dependency loading hell)
-		create_model_file(group("GECC_S_I",
+		create_model_file(create_model(group("GECC_S_I",
 				compartment("S"),
-				compartment("I")));
+				compartment("I"))));
 		
-		create_model_file(group("GECC_SI_S_I",
+		create_model_file(create_model(group("GECC_SI_S_I",
 				compartment("SI", "S"),
-				compartment("SI", "I")));
+				compartment("SI", "I"))));
 		
-		create_model_file(product("DEG_SI_S_I",
+		create_model_file(create_model(product("DEG_SI_S_I",
 				group("SI",
 						compartment("S"),
-						compartment("I"))));
+						compartment("I")))));
 		
-		create_model_file(product("DEPGG_COVID_INF_VAR_SEIR",
+		create_model_file(create_model(product("DEPGG_COVID_INF_VAR_SEIR",
 				group("SEIR",
 						compartment("S"),
 						compartment("E"),
@@ -55,9 +56,9 @@ public class make_models {
 								group("Infectious",
 										compartment("Asymptomatic"),
 										compartment("Symptomatic"))),
-						compartment("R"))));
+						compartment("R")))));
 		
-		create_model_file(product("withFlowInGroup",
+		create_model_file(create_model(product("withFlowInGroup",
 				group("SEIR",
 						compartment("S"),
 						compartment("E"),
@@ -72,9 +73,9 @@ public class make_models {
 										"Symptoms",
 										Arrays.asList("Asymptomatic"),
 										Arrays.asList("Symptomatic"))),
-						compartment("R"))));
+						compartment("R")))));
 		
-		create_model_file(product("withFlowInProduct",
+		create_model_file(create_model(product("withFlowInProduct",
 				group("SEIR",
 						compartment("S"),
 						compartment("E"),
@@ -89,10 +90,17 @@ public class make_models {
 							"Symptoms",
 							Arrays.asList("Asymptomatic"),
 							Arrays.asList("Symptomatic")),
-						compartment("R"))));
+						compartment("R")))));
 	}
 	
-	public static void create_model_file(Compartment c) throws IOException {
+	public static Epidemic create_model(Compartment c) {
+		Epidemic e = EpimodelFactoryImpl.eINSTANCE.createEpidemic();
+		e.setCompartmentwrapper(EpimodelFactoryImpl.eINSTANCE.createCompartmentWrapper());
+		e.getCompartmentwrapper().setCompartment(c);
+		return e;
+	}
+	
+	public static void create_model_file(Epidemic e) throws IOException {
 		if (resSet == null) {
 			resSet = new ResourceSetImpl();
 			Resource.Factory.Registry factoryRegistry = new ResourceFactoryRegistryImpl();
@@ -103,9 +111,9 @@ public class make_models {
 	        resSet.setPackageRegistry(pkgRegistry);
 	        resSet.setResourceFactoryRegistry(factoryRegistry);
 		}
-        URI uri = URI.createFileURI("../../test-models/" + c.getLabels() + ".epimodel");
+        URI uri = URI.createFileURI("../../test-models/" + e.getCompartmentwrapper().getCompartment().getLabels() + ".epimodel");
         Resource resource = resSet.createResource(uri);
-        resource.getContents().add(wrap(c));
+        resource.getContents().add(e);
         resource.save(null);
 	}
 	

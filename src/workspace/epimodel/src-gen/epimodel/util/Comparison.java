@@ -1,27 +1,29 @@
 package epimodel.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EObject;
+
 import epimodel.Compartment;
+import epimodel.Epidemic;
 import epimodel.Flow;
 
 public class Comparison {
 	
 	public static class ModelContext {
-		public final Compartment model;
+		public final Epidemic model;
 		public final List<Compartment> compartments;
 		public final Set<String> uniqueLabels;
 		public final Set<String> duplicateLabels;
 		
-		public ModelContext(Compartment model) {
+		public ModelContext(Epidemic model) {
 			this.model = model;
-			compartments = new ArrayList<>(Arrays.asList(model));
+			compartments = new ArrayList<>();
 			
 			uniqueLabels = new HashSet<>();
 			duplicateLabels = new HashSet<>();
@@ -49,8 +51,8 @@ public class Comparison {
 		public final ModelContext modelctx2;
 		
 		public ComparisonContext(
-			Compartment model1,
-			Compartment model2,
+			Epidemic model1,
+			Epidemic model2,
 			List<Pair<String, String>> renamings
 		) {
 			this.modelctx1 = new ModelContext(model1);
@@ -420,6 +422,25 @@ public class Comparison {
 						continue;
 					res.matches.add(new Match(c1, c2));
 				}
+		
+		
+		// for each matched element pair, if parents are not matched but same type, match parents
+		// this isn't a for (Match m : res.matches) as we are modifying matches as we go
+		// and looping through the added elements aswell is required to apply recursively the parent matching
+		for (int i = 0; i < res.matches.size(); ++i) {
+			Match m = res.matches.get(i);
+			EObject leftParent = m.matchedCompartmentPair.first.eContainer().eContainer();
+			EObject rightParent = m.matchedCompartmentPair.second.eContainer().eContainer();
+			if (leftParent instanceof Compartment && rightParent instanceof Compartment) {
+				Compartment leftParentc = (Compartment) leftParent;
+				Compartment rightParentc = (Compartment) rightParent;
+				if (!res.find(leftParentc, rightParentc).isPresent() &&
+					!res.find(leftParentc).isPresent() &&
+					!res.find(rightParentc).isPresent()) {
+					res.matches.add(new Match(leftParentc, rightParentc));
+				}
+			}
+		}
 		
 		// at this point there are most likely unmatched epidemics as it doesn't
 		// necessarily make sense for 2 models to be named the same for their top 

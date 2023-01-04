@@ -43,14 +43,21 @@ public interface Compartment extends EObject {
 	 * @generated
 	 */
 	EList<String> getLabel();
+
 	List<String> getLabels();
+
 	List<PhysicalCompartment> getPhysicalCompartments();
+
 	List<PhysicalFlow> getPhysicalFlows();
+
 	List<PhysicalCompartment> getSources();
+
 	List<PhysicalCompartment> getSinks();
-	
+
 	Difference compare(Compartment other, MatchResult matches);
+
 	Difference compareWithSameClass(Compartment other, MatchResult matches);
+
 	Difference compareWithDifferentClass(Compartment other, MatchResult matches);
 
 	void edit(EObject dom, Shell shell, List<Control> controls);

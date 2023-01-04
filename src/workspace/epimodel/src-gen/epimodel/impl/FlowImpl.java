@@ -48,20 +48,20 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 		}
 	}
 
-//	@Override
-//	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {
-//		return epidemic.getPhysicalFor(c);
-//	}
-//
-//	@Override
-//	public List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c) {
-//		return epidemic.getPhysicalSourcesFor(c);
-//	}
-//
-//	@Override
-//	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
-//		return epidemic.getPhysicalSinksFor(c);
-//	}
+	//	@Override
+	//	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {
+	//		return epidemic.getPhysicalFor(c);
+	//	}
+	//
+	//	@Override
+	//	public List<PhysicalCompartment> getPhysicalSourcesFor(Epidemic epidemic, Compartment c) {
+	//		return epidemic.getPhysicalSourcesFor(c);
+	//	}
+	//
+	//	@Override
+	//	public List<PhysicalCompartment> getPhysicalSinksFor(Epidemic epidemic, Compartment c) {
+	//		return epidemic.getPhysicalSinksFor(c);
+	//	}
 
 	final List<EReference> flowRefs() {
 		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());

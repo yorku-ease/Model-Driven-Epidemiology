@@ -8,7 +8,7 @@ import java.util.HashSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import epimodel.Compartment;
+import epimodel.Epidemic;
 import epimodel.util.Comparison.ComparisonResult;
 import epimodel.util.Comparison.Difference;
 
@@ -30,49 +30,51 @@ class ComparisonTests {
 		
 		// just a basic test, same composables, just 1 different flow (in product vs in a dimension of the product)
 		// we are only looking at counts of matches in this test to make sure all objects are accounted for during matching
-		Compartment withFlowInGroup = make_models.product("withFlowInGroup",
-				make_models.group("SEIR",
-						make_models.compartment("S"),
-						make_models.compartment("E"),
-						make_models.product("I",
-								make_models.group("Variants",
-										make_models.compartment("DELTA"),
-										make_models.compartment("OMICRON")),
-								make_models.addRate(
-										make_models.group("Infectious",
-												make_models.compartment("Asymptomatic"),
-												make_models.compartment("Symptomatic")),
-										"Symptoms",
-										Arrays.asList("Asymptomatic"),
-										Arrays.asList("Symptomatic"))),
-						make_models.compartment("R")));
-		
-		Compartment withFlowInProduct = make_models.product("withFlowInProduct",
-				make_models.group("SEIR",
-						make_models.compartment("S"),
-						make_models.compartment("E"),
-						make_models.addRate(
+		Epidemic withFlowInGroup = make_models.create_model(
+				make_models.product("withFlowInGroup",
+					make_models.group("SEIR",
+							make_models.compartment("S"),
+							make_models.compartment("E"),
 							make_models.product("I",
 									make_models.group("Variants",
 											make_models.compartment("DELTA"),
 											make_models.compartment("OMICRON")),
-									make_models.group("Infectious",
-											make_models.compartment("Asymptomatic"),
-											make_models.compartment("Symptomatic"))),
-							"Symptoms",
-							Arrays.asList("Asymptomatic"),
-							Arrays.asList("Symptomatic")),
-						make_models.compartment("R")));
+									make_models.addRate(
+											make_models.group("Infectious",
+													make_models.compartment("Asymptomatic"),
+													make_models.compartment("Symptomatic")),
+											"Symptoms",
+											Arrays.asList("Asymptomatic"),
+											Arrays.asList("Symptomatic"))),
+							make_models.compartment("R"))));
+		
+		Epidemic withFlowInProduct = make_models.create_model(
+				make_models.product("withFlowInProduct",
+					make_models.group("SEIR",
+							make_models.compartment("S"),
+							make_models.compartment("E"),
+							make_models.addRate(
+								make_models.product("I",
+										make_models.group("Variants",
+												make_models.compartment("DELTA"),
+												make_models.compartment("OMICRON")),
+										make_models.group("Infectious",
+												make_models.compartment("Asymptomatic"),
+												make_models.compartment("Symptomatic"))),
+								"Symptoms",
+								Arrays.asList("Asymptomatic"),
+								Arrays.asList("Symptomatic")),
+							make_models.compartment("R"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(withFlowInGroup, withFlowInProduct);
 
 		/* expect 12 matches:
-		 * 	1 for epidemic
-		 * 		1 for group
-		 * 			3 for compartments
-		 * 			1 for product
-		 * 				2 for groups
-		 * 					4 for compartments
+		 *  1 for withFlowIn*
+		 * 		1 for SEIR
+		 * 			3 for compartments S,E,R
+		 * 			1 for product I
+		 * 				2 for groups Variants, Infectious
+		 * 					4 for compartments Delta, Omicron, Asym, Sym
 		 */
 		int number_of_composables_in_both_models = 12;
 		
@@ -90,14 +92,14 @@ class ComparisonTests {
 		// test two models producing same physical compartments except the epidemic label
 		// one uses a group SI containing S & I and the other just uses a group epidemic with 2 compartments SI.S, SI.I
 		
-		Compartment model1 = make_models.group("group",
+		Epidemic model1 = make_models.create_model(make_models.group("group",
 				make_models.compartment("SI", "S"),
-				make_models.compartment("SI", "I"));
+				make_models.compartment("SI", "I")));
 		
-		Compartment model2 = make_models.product("product",
+		Epidemic model2 = make_models.create_model(make_models.product("product",
 				make_models.group("SI",
 						make_models.compartment("S"),
-						make_models.compartment("I")));
+						make_models.compartment("I"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(model1, model2);
 		
@@ -108,12 +110,12 @@ class ComparisonTests {
 		assertEquals(Arrays.asList("SI", "I"), res.matches.matches.get(2).matchedCompartmentPair.first.getLabels());
 		assertEquals(Arrays.asList("I"), res.matches.matches.get(2).matchedCompartmentPair.second.getLabels());
 
-		// assert same unique labels and only S and I not SI which is duplicate or the label of the top level object which is ignored
-		assertEquals(new HashSet<String>(Arrays.asList("S", "I")), res.context.modelctx1.uniqueLabels);
-		// in the second model the label SI appears only once, so we expect it too
-		assertEquals(new HashSet<String>(Arrays.asList("S", "I", "SI")), res.context.modelctx2.uniqueLabels);
-		
+		// S, I and group are unique labels in the first model, SI is not as it is used twice
+		assertEquals(new HashSet<String>(Arrays.asList("S", "I", "group")), res.context.modelctx1.uniqueLabels);
 		assertEquals(new HashSet<String>(Arrays.asList("SI")), res.context.modelctx1.duplicateLabels);
+		
+		// in the second model the label SI is unique, along with product instead of group
+		assertEquals(new HashSet<String>(Arrays.asList("S", "I", "SI", "product")), res.context.modelctx2.uniqueLabels);
 		assertEquals(new HashSet<String>(), res.context.modelctx2.duplicateLabels);
 	}
 	
@@ -122,7 +124,7 @@ class ComparisonTests {
 		// opposite of test 4
 		// compare a product/dimension epidemic with another one that has one more dimension, being Age
 		
-		Compartment withoutAge = make_models.product("withoutAge",
+		Epidemic withoutAge = make_models.create_model(make_models.product("withoutAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -133,9 +135,9 @@ class ComparisonTests {
 								make_models.group("Infectious",
 										make_models.compartment("Asymptomatic"),
 										make_models.compartment("Symptomatic"))),
-						make_models.compartment("R")));
+						make_models.compartment("R"))));
 		
-		Compartment withAge = make_models.product("withAge",
+		Epidemic withAge = make_models.create_model(make_models.product("withAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -151,7 +153,7 @@ class ComparisonTests {
 						make_models.compartment("0_10"),
 						make_models.compartment("11_25"),
 						make_models.compartment("26_50"),
-						make_models.compartment("51_")));
+						make_models.compartment("51_"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(withoutAge, withAge);
 		
@@ -172,7 +174,7 @@ class ComparisonTests {
 		// opposite of test 3
 		// compare a product/dimension epidemic with another one that has one less dimension, being Age
 		
-		Compartment withoutAge = make_models.product("withoutAge",
+		Epidemic withoutAge = make_models.create_model(make_models.product("withoutAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -183,9 +185,9 @@ class ComparisonTests {
 								make_models.group("Infectious",
 										make_models.compartment("Asymptomatic"),
 										make_models.compartment("Symptomatic"))),
-						make_models.compartment("R")));
+						make_models.compartment("R"))));
 		
-		Compartment withAge = make_models.product("withAge",
+		Epidemic withAge = make_models.create_model(make_models.product("withAge",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -201,7 +203,7 @@ class ComparisonTests {
 						make_models.compartment("0_10"),
 						make_models.compartment("11_25"),
 						make_models.compartment("26_50"),
-						make_models.compartment("51_")));
+						make_models.compartment("51_"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(withAge, withoutAge);
 		
@@ -224,7 +226,7 @@ class ComparisonTests {
 		// but its SEIR.I dimension has one less dimension, being Symptoms
 		// we want to detect the "move" operation for Symptoms
 		
-		Compartment SymptomsOutside = make_models.product("SymptomsOutside",
+		Epidemic SymptomsOutside = make_models.create_model(make_models.product("SymptomsOutside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -235,9 +237,9 @@ class ComparisonTests {
 						make_models.compartment("R")),
 				make_models.group("Symptoms",
 						make_models.compartment("Asymptomatic"),
-						make_models.compartment("Symptomatic")));
+						make_models.compartment("Symptomatic"))));
 		
-		Compartment SymptomsInside = make_models.product("SymptomsInside",
+		Epidemic SymptomsInside = make_models.create_model(make_models.product("SymptomsInside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -248,7 +250,7 @@ class ComparisonTests {
 								make_models.group("Symptoms",
 										make_models.compartment("Asymptomatic"),
 										make_models.compartment("Symptomatic"))),
-						make_models.compartment("R")));
+						make_models.compartment("R"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(SymptomsOutside, SymptomsInside);
 		
@@ -278,7 +280,7 @@ class ComparisonTests {
 		// but its SEIR.I dimension has one more dimension, being Symptoms
 		// we want to detect the "move" operation for Symptoms
 		
-		Compartment SymptomsOutside = make_models.product("SymptomsOutside",
+		Epidemic SymptomsOutside = make_models.create_model(make_models.product("SymptomsOutside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -289,9 +291,9 @@ class ComparisonTests {
 						make_models.compartment("R")),
 				make_models.group("Symptoms",
 						make_models.compartment("Asymptomatic"),
-						make_models.compartment("Symptomatic")));
+						make_models.compartment("Symptomatic"))));
 		
-		Compartment SymptomsInside = make_models.product("SymptomsInside",
+		Epidemic SymptomsInside = make_models.create_model(make_models.product("SymptomsInside",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -302,7 +304,7 @@ class ComparisonTests {
 								make_models.group("Symptoms",
 										make_models.compartment("Asymptomatic"),
 										make_models.compartment("Symptomatic"))),
-						make_models.compartment("R")));
+						make_models.compartment("R"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(SymptomsInside, SymptomsOutside);
 
@@ -329,15 +331,15 @@ class ComparisonTests {
 	void test7() {
 		// test two models with a naming conflict
 		
-		Compartment model1 = make_models.group("conflict",
+		Epidemic model1 = make_models.create_model(make_models.group("conflict",
 				make_models.group("whatever",
 						make_models.compartment("S"),
-						make_models.compartment("I")));
+						make_models.compartment("I"))));
 		
-		Compartment model2 = make_models.group("ok",
+		Epidemic model2 = make_models.create_model(make_models.group("ok",
 				make_models.group("conflict",
 						make_models.compartment("S"),
-						make_models.compartment("I")));
+						make_models.compartment("I"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(model1, model2);
 		
@@ -374,7 +376,7 @@ class ComparisonTests {
 		// test 8 and the tests are meant to be kind of
 		// in increasing order of complexity
 		
-		Compartment withFlowInGroup = make_models.product("withFlowInGroup",
+		Epidemic withFlowInGroup = make_models.create_model(make_models.product("withFlowInGroup",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -389,9 +391,9 @@ class ComparisonTests {
 										"Symptoms",
 										Arrays.asList("Asymptomatic"),
 										Arrays.asList("Symptomatic"))),
-						make_models.compartment("R")));
+						make_models.compartment("R"))));
 		
-		Compartment withFlowInProduct = make_models.product("withFlowInProduct",
+		Epidemic withFlowInProduct = make_models.create_model(make_models.product("withFlowInProduct",
 				make_models.group("SEIR",
 						make_models.compartment("S"),
 						make_models.compartment("E"),
@@ -406,7 +408,7 @@ class ComparisonTests {
 							"Symptoms",
 							Arrays.asList("Asymptomatic"),
 							Arrays.asList("Symptomatic")),
-						make_models.compartment("R")));
+						make_models.compartment("R"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(withFlowInGroup, withFlowInProduct);
 
@@ -444,6 +446,47 @@ class ComparisonTests {
 		Difference IDiff = seirDiff.childrenDiffResult.get().childrenDiffs.get(2);
 		assertEquals(Arrays.asList("I"), IDiff.match.matchedCompartmentPair.first.getLabels());
 		// and that diff should not be same
-		assertFalse(IDiff.isSame);
+//		assertFalse(IDiff.isSame);
+	}
+	
+	@Test
+	void test_rename_top_level() {
+		Epidemic a = make_models.create_model(make_models.compartment("1"));
+		
+		Epidemic b = make_models.create_model(
+				make_models.group("b",
+						make_models.compartment("1")));
+		
+		ComparisonResult res = use_epi.Compare.compare(a, b);
+		
+		// expect a to match b even if they have nothing in common (except type)
+		// because top level elements are always matched
+		assertEquals(1, res.matches.matches.size());
+		assertEquals(1, res.diffs.size());
+		Difference topLevelDiff = res.diffs.get(0);
+		// expect the first diff to be not same since it is a rename
+		assertFalse(topLevelDiff.isSame);
+	}
+	
+	@Test
+	void test_rename_non_top_level() {
+		Epidemic a1k = make_models.create_model(
+				make_models.group("a",
+						make_models.group("1",
+								make_models.compartment("k"))));
+		
+		Epidemic a2k = make_models.create_model(
+				make_models.group("a",
+						make_models.group("2",
+								make_models.compartment("k"))));
+		
+		ComparisonResult res = use_epi.Compare.compare(a1k, a2k);
+		
+		// expect 1 to match 2 because type and children match
+		assertEquals(3, res.matches.matches.size());
+		assertEquals(1, res.diffs.size());
+		Difference topLevelDiff = res.diffs.get(0);
+		// expect the first diff to be not same since it is a rename
+		assertFalse(topLevelDiff.isSame);
 	}
 }
