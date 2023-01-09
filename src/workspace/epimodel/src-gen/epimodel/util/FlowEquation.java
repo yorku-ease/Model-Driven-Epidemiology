@@ -1,6 +1,8 @@
 package epimodel.util;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
  * Example of HIV infecting [S]usceptible [M]en by [I]nfectious [W]omen (there could also be man/man,woman/man,woman/woman)
@@ -13,14 +15,14 @@ import java.util.List;
  * 	 OR more complex = [*, get]
  */
 
-public class PhysicalFlowEquation {
+public class FlowEquation {
 	public final List<PhysicalCompartment> equationCompartments;
 	public final List<PhysicalCompartment> affectedCompartments;
 	public final List<Float> coefficients;
 	public final String equation;
 	public final List<String> requiredOperators;
 	
-	public PhysicalFlowEquation(
+	public FlowEquation(
 		List<PhysicalCompartment> equationCompartments,
 		List<PhysicalCompartment> affectedCompartments,
 		List<Float> coefficients,
@@ -36,14 +38,23 @@ public class PhysicalFlowEquation {
 	
 	@Override
 	public boolean equals(Object other) {
-		return (other instanceof PhysicalFlowEquation && equals((PhysicalFlowEquation) other));
+		return (other instanceof FlowEquation && equals((FlowEquation) other));
 	}
 	
-	protected boolean equals(PhysicalFlowEquation other) {
+	protected boolean equals(FlowEquation other) {
 		return equationCompartments.equals(other.equationCompartments) && 
 				affectedCompartments.equals(other.affectedCompartments) && 
 				coefficients.equals(other.coefficients) && 
 				equation.equals(other.equation) && 
 				requiredOperators.equals(other.requiredOperators);
+	}
+	
+	public FlowEquation deepCopy() {
+		return new FlowEquation(
+				equationCompartments.stream().map(pc -> new PhysicalCompartment(new ArrayList<>(pc.labels))).collect(Collectors.toList()),
+				affectedCompartments.stream().map(pc -> new PhysicalCompartment(new ArrayList<>(pc.labels))).collect(Collectors.toList()),
+				new ArrayList<>(coefficients),
+				equation,
+				new ArrayList<>(requiredOperators));
 	}
 }

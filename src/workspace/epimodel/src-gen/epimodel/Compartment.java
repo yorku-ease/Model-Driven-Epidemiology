@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.MatchResult;
+import epimodel.util.FlowEquation;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,7 +48,7 @@ public interface Compartment extends EObject {
 
 	List<PhysicalCompartment> getPhysicalCompartments();
 
-	List<PhysicalFlow> getPhysicalFlows();
+	List<FlowEquation> getPhysicalFlows();
 
 	List<PhysicalCompartment> getSources();
 
