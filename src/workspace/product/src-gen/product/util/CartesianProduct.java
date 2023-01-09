@@ -20,4 +20,11 @@ public class CartesianProduct {
 	    }
 	    return combinations;
 	}
+	
+	public static <T> List<List<T>> selfCartesianProduct(List<T> list, int n) {
+		List<List<T>> replicatedNTimes = new ArrayList<>();
+		for (int i = 0; i < n; ++i)
+			replicatedNTimes.add(list);
+		return cartesianProduct(replicatedNTimes);
+	}
 }

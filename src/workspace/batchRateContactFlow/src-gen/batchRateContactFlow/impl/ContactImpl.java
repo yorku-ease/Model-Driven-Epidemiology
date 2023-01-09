@@ -6,10 +6,10 @@ import batchRateContactFlow.BatchRateContactFlowPackage;
 import batchRateContactFlow.Contact;
 
 import epimodel.Compartment;
+import epimodel.util.FlowEquation;
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
-import epimodel.util.PhysicalFlowEquation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,14 +36,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class ContactImpl extends FromToFlowImpl implements Contact {
 
 	@Override
-	public PhysicalFlow getPhysicalFlowTemplate() {
+	public List<FlowEquation> getEquations() {
 		List<PhysicalCompartment> equationCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(contact.getLabels()));
 		List<PhysicalCompartment> affectedCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()));
 		List<Float> coefficients = Arrays.asList(-1f, 1f);
 		String flowParameter = "(get " + getId() + " 0)";
 		String equation = "(* " + flowParameter + " $0 $1)";
 		List<String> requiredOperators = Arrays.asList("*", "get");
-		return new PhysicalFlow(Arrays.asList(new PhysicalFlowEquation(equationCompartments, affectedCompartments, coefficients, equation, requiredOperators)));
+		return new ArrayList<>(Arrays.asList(new FlowEquation(equationCompartments, affectedCompartments, coefficients, equation, requiredOperators)));
 	}
 
 	/**

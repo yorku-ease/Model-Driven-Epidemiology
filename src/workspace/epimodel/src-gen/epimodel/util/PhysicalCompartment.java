@@ -11,6 +11,8 @@ public class PhysicalCompartment {
 	
 	@Override
 	public boolean equals(Object other) {
-		return (other instanceof PhysicalCompartment && ((PhysicalCompartment) other).labels.equals(labels));
+		return other instanceof PhysicalCompartment &&
+				((PhysicalCompartment) other).labels.size() == labels.size()
+				&& labels.containsAll(((PhysicalCompartment) other).labels);
 	}
 }

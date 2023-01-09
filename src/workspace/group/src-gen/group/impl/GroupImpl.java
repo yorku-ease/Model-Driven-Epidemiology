@@ -8,8 +8,8 @@ import epimodel.Flow;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.CompartmentImpl;
+import epimodel.util.FlowEquation;
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
 import group.Group;
 import group.GroupPackage;
 
@@ -225,44 +225,69 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return getCompartment().stream().map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getPhysicalCompartments).flatMap(List::stream).map(p -> prependSelf(p))
+		return getCompartment()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getPhysicalCompartments)
+				.flatMap(List::stream)
+				.map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
-	//	@Override
-	//	public List<PhysicalCompartment> getSources() {
-	//		GroupSinks sources = getGroupSinks();
-	//		Stream<Compartment> l = (sources != null && sources.getLink().size() > 0)
-	//				? sources.getLink().stream().map(Link::getCompartment)
-	//				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
-	//
-	//		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
-	//	}
-	//
-	//	@Override
-	//	public List<PhysicalCompartment> getSinks() {
-	//		GroupSinks sinks = getGroupSinks();
-	//		Stream<Compartment> l = (sinks != null && sinks.getLink().size() > 0)
-	//				? sinks.getLink().stream().map(Link::getCompartment)
-	//				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
-	//
-	//		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
-	//	}
+//	@Override
+//	public List<PhysicalCompartment> getSources() {
+//		GroupSinks sources = getGroupSinks();
+//		Stream<Compartment> l = (sources != null && sources.getLink().size() > 0)
+//				? sources.getLink().stream().map(Link::getCompartment)
+//				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
+//
+//		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
+//	}
+//
+//	@Override
+//	public List<PhysicalCompartment> getSinks() {
+//		GroupSinks sinks = getGroupSinks();
+//		Stream<Compartment> l = (sinks != null && sinks.getLink().size() > 0)
+//				? sinks.getLink().stream().map(Link::getCompartment)
+//				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
+//
+//		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
+//	}
 
 	@Override
-	public List<PhysicalFlow> getPhysicalFlows() {
-		List<PhysicalFlow> res = new ArrayList<>();
-		//		res.addAll(getFlow().stream().map(FlowWrapper::getFlow).map(Flow::getPhysicalFlow).collect(Collectors.toList()));
-		res.addAll(getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getPhysicalFlows)
-				.flatMap(List::stream).collect(Collectors.toList()));
-		return res;
+	public List<FlowEquation> getPhysicalFlows() {
+		List<FlowEquation> flowsDefinedInChildren = getCompartment()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getPhysicalFlows)
+				.flatMap(List::stream)
+				.map(eq -> prependSelf(eq))
+				.collect(Collectors.toList());
+		
+		List<FlowEquation> flowsDefinedHere = getFlow()
+				.stream()
+				.map(FlowWrapper::getFlow)
+				.map(Flow::getEquations)
+				.flatMap(List::stream)
+				.map(eq -> prependSelf(eq))
+				.collect(Collectors.toList());
+		
+		flowsDefinedInChildren.addAll(flowsDefinedHere);
+		return flowsDefinedInChildren;
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
 		PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
 		p2.labels.addAll(0, getLabel());
 		return p2;
+	}
+	
+	FlowEquation prependSelf(FlowEquation eq) {
+		for (PhysicalCompartment pc : eq.affectedCompartments)
+			pc.labels.addAll(getLabel());
+		for (PhysicalCompartment pc : eq.equationCompartments)
+			pc.labels.addAll(getLabel());
+		return eq;
 	}
 
 	/**

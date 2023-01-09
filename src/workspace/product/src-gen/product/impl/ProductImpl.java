@@ -8,10 +8,11 @@ import epimodel.Flow;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.CompartmentImpl;
+import epimodel.util.FlowEquation;
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,45 +127,172 @@ public class ProductImpl extends CompartmentImpl implements Product {
 
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return CartesianProduct
-				.cartesianProduct(getCompartment().stream().map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getPhysicalCompartments).collect(Collectors.toList()))
-				.stream().map(ps -> combinePhysicalCompartmentsIntoOne(ps)).map(p -> prependSelf(p))
+		return CartesianProduct.cartesianProduct(
+					getCompartment()
+						.stream()
+						.map(CompartmentWrapper::getCompartment)
+						.map(Compartment::getPhysicalCompartments)
+						.collect(Collectors.toList())
+				)
+				.stream()
+				.map(ps -> combinePhysicalCompartmentsIntoOne(ps))
+				.map(p -> prependSelf(p))
 				.collect(Collectors.toList());
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
+		return prependLabelsToPC(p, getLabel());
+	}
+
+	protected PhysicalCompartment prependLabelsToPC(PhysicalCompartment p, List<String> labels) {
 		PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
-		p2.labels.addAll(0, getLabel());
+		p2.labels.addAll(0, labels);
 		return p2;
 	}
 
 	protected static PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
 		return new PhysicalCompartment(
-				toCombine.stream().map(p -> p.labels).flatMap(List::stream).collect(Collectors.toList()));
+			toCombine
+				.stream()
+				.map(p -> p.labels)
+				.flatMap(List::stream)
+				.collect(Collectors.toList())
+		);
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
-		return CartesianProduct
-				.cartesianProduct(getCompartment().stream().map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getSources).collect(Collectors.toList()))
-				.stream().map(ProductImpl::combinePhysicalCompartmentsIntoOne).map(p -> prependSelf(p))
-				.collect(Collectors.toList());
+		return CartesianProduct.cartesianProduct(
+				getCompartment()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getSources)
+				.collect(Collectors.toList()))
+				.stream()
+				.map(ProductImpl::combinePhysicalCompartmentsIntoOne)
+				.map(p -> prependSelf(p))
+				.collect(Collectors.toList()
+		);
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
-		return CartesianProduct
-				.cartesianProduct(getCompartment().stream().map(CompartmentWrapper::getCompartment)
-						.map(Compartment::getSinks).collect(Collectors.toList()))
-				.stream().map(ProductImpl::combinePhysicalCompartmentsIntoOne).map(p -> prependSelf(p))
-				.collect(Collectors.toList());
+		return CartesianProduct.cartesianProduct(
+				getCompartment()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getSinks)
+				.collect(Collectors.toList()))
+				.stream()
+				.map(ProductImpl::combinePhysicalCompartmentsIntoOne)
+				.map(p -> prependSelf(p))
+				.collect(Collectors.toList()
+		);
 	}
 	
 	@Override
-	public List<PhysicalFlow> getPhysicalFlows() {
-		return new ArrayList<>();
+	public List<FlowEquation> getPhysicalFlows() {
+		List<FlowEquation> flowsDefinedInChildren = getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions();
+		List<FlowEquation> flowsDefinedHere = getProductOfFlowsDefinedHereExpandedAlongAllDimensions();
+		
+		flowsDefinedInChildren.addAll(flowsDefinedHere);
+		return flowsDefinedInChildren
+				.stream()
+				.map(eq -> prependSelf(eq))
+				.collect(Collectors.toList());
+	}
+	
+	protected List<FlowEquation> getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions() {
+		
+		List<FlowEquation> res = new ArrayList<>();
+		
+		for (int dimensionIndex = 0; dimensionIndex < compartment.size(); ++dimensionIndex) {
+			Compartment dimension = getCompartment().get(dimensionIndex).getCompartment();
+			List<FlowEquation> dimensionFlows = dimension.getPhysicalFlows();
+			
+			List<List<PhysicalCompartment>> compartmentsOfOtherDimensions = new ArrayList<>();
+			
+			for (int otherDimensionIndex = 0; otherDimensionIndex < compartment.size(); ++otherDimensionIndex)
+				if (dimensionIndex != otherDimensionIndex)
+					compartmentsOfOtherDimensions.add(getCompartment().get(otherDimensionIndex).getCompartment().getPhysicalCompartments());
+			
+			res.addAll(dimensionFlows.stream().map(eq -> expand(eq, compartmentsOfOtherDimensions)).flatMap(List::stream).collect(Collectors.toList()));
+		}
+		
+		return res;
+	}
+	
+	protected List<FlowEquation> getProductOfFlowsDefinedHereExpandedAlongAllDimensions() {
+		List<FlowEquation> flowsDefinedHere = getFlow()
+				.stream()
+				.map(FlowWrapper::getFlow)
+				.map(Flow::getEquations)
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+		
+		List<List<PhysicalCompartment>> compartmentsOfEachDimension = getCompartment()
+				.stream()
+				.map(CompartmentWrapper::getCompartment)
+				.map(Compartment::getPhysicalCompartments)
+				.collect(Collectors.toList());
+		int a = 1;
+		return flowsDefinedHere.stream().map(eq -> expand(eq, compartmentsOfEachDimension)).flatMap(List::stream).collect(Collectors.toList());
+	}
+	
+
+	
+	// example:
+	// this = eq{[1]->[2]}
+	// pcs = [[a], [b]]
+	// result = [eq{[1,a]->[2,a]}, eq{[1,b]->[2,b]}]
+	// in technical terms we do a cartesian product between the equation compartments (as opposed to affected compartments)
+	// and the list of physical compartments passed in, in the simple example above, equation compartments = [[1]]
+	// this is done for every equation owned by this physical flow independently
+	
+	
+	// a physical flow with which we expand with pcs of size [2, 3] will yield 2 * 3 flows
+	// the number of equations per flow is kept the same (usually 1, complex flows can have more)
+	
+	protected List<FlowEquation> expand(FlowEquation eq, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
+		
+		int n = eq.equationCompartments.size();
+		
+		if (n == 0 || compartmentsOfEachDimension.size() == 0)
+			return new ArrayList<>(Arrays.asList(eq));
+		
+		List<List<PhysicalCompartment>> specializations = CartesianProduct.cartesianProduct(compartmentsOfEachDimension);
+		List<List<List<PhysicalCompartment>>> specializationsForEachEquationCompartment = 
+				CartesianProduct.selfCartesianProduct(specializations, n);
+		
+		List<FlowEquation> expanded = new ArrayList<>();
+		
+		for (List<List<PhysicalCompartment>> spec : specializationsForEachEquationCompartment) {
+			List<String> flatSpec = spec.stream().flatMap(List::stream).map(pc -> pc.labels).flatMap(List::stream).collect(Collectors.toList());
+			for (int i = 0; i < n; ++i) {
+				FlowEquation temp = eq.deepCopy();
+				
+				PhysicalCompartment pc = temp.equationCompartments.get(i);
+				if (temp.affectedCompartments.contains(pc))
+					for (int k = 0; k < temp.affectedCompartments.size(); ++k)
+						temp.affectedCompartments.set(k, prependLabelsToPC(temp.affectedCompartments.get(k), flatSpec));
+				temp.equationCompartments.set(i, prependLabelsToPC(temp.equationCompartments.get(i), flatSpec));
+				expanded.add(temp);
+			}
+		}
+		
+		return expanded;
+	}
+	
+	FlowEquation prependSelf(FlowEquation eq) {
+		return prepend(eq, getLabel());
+	}
+	
+	FlowEquation prepend(FlowEquation eq, List<String> labels) {
+		for (PhysicalCompartment pc : eq.affectedCompartments)
+			pc.labels.addAll(labels);
+		for (PhysicalCompartment pc : eq.equationCompartments)
+			pc.labels.addAll(labels);
+		return eq;
 	}
 	
 	/**

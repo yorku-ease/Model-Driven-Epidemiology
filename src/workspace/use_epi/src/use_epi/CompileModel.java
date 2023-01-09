@@ -5,9 +5,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.stream.Collectors;
 
+import epimodel.util.FlowEquation;
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
-import epimodel.util.PhysicalFlowEquation;
 
 public class CompileModel {
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
@@ -35,15 +34,13 @@ public class CompileModel {
 		}
 		{
 			PrintWriter writer = new PrintWriter(outfolder + myEpi.getCompartment().getLabels() + ".equations.txt", "UTF-8");
-			for (PhysicalFlow pf : myEpi.getCompartment().getPhysicalFlows()) {
-				for (PhysicalFlowEquation  pfe : pf.equations) {
-					writer.println(pfe.equation);
-					writer.println(pfe.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
-					writer.println(pfe.coefficients);
-					writer.println(pfe.affectedCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
-					writer.println(pfe.requiredOperators);
-				    writer.println();
-				}
+			for (FlowEquation eq : myEpi.getCompartment().getPhysicalFlows()) {
+				writer.println(eq.equation);
+				writer.println(eq.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
+				writer.println(eq.coefficients);
+				writer.println(eq.affectedCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
+				writer.println(eq.requiredOperators);
+			    writer.println();
 			}
 		    writer.close();
 		}

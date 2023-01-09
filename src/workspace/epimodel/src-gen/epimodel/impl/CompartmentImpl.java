@@ -31,9 +31,9 @@ import epimodel.FlowWrapper;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
+import epimodel.util.FlowEquation;
 import epimodel.util.Comparison;
 import epimodel.util.PhysicalCompartment;
-import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -143,8 +143,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<PhysicalCompartment> l2 = other.getPhysicalCompartments();
 		boolean sameCompartments = l1.equals(l2);
 
-		List<PhysicalFlow> lf1 = getPhysicalFlows();
-		List<PhysicalFlow> lf2 = other.getPhysicalFlows();
+		List<FlowEquation> lf1 = getPhysicalFlows();
+		List<FlowEquation> lf2 = other.getPhysicalFlows();
 		boolean sameFlows = lf1.equals(lf2);
 
 		StringBuilder sb = new StringBuilder();
@@ -177,7 +177,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
 	}
 
-	void diffFlows(StringBuilder sb, List<PhysicalFlow> l1, List<PhysicalFlow> l2) {
+	void diffFlows(StringBuilder sb, List<FlowEquation> l1, List<FlowEquation> l2) {
 		int addedFlows = l2.size() - l2.stream().filter(l1::contains).collect(Collectors.toList()).size();
 		int removedFlows = l1.size() + addedFlows - l2.size();
 		sb.append(" original model produces " + l1.size() + " physical flows and other model produces " + l2.size());
@@ -185,10 +185,29 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		sb.append(addedFlows + " added and " + removedFlows + " removed.");
 	}
 
-	//	@Override
-	//	public List<PhysicalFlow> getPhysicalFlows() {
-	//		return new ArrayList<>();
-	//	}
+	@Override
+	public List<PhysicalCompartment> getPhysicalCompartments() {
+		if (getClass() != CompartmentImpl.class)
+			throw new RuntimeException("Method `getPhysicalCompartments` not implemented for derived class " + getClass().getSimpleName());
+		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(getLabel())));
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSources() {
+		return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinks() {
+		return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<FlowEquation> getPhysicalFlows() {
+		if (getClass() != CompartmentImpl.class)
+			throw new RuntimeException("Method `getPhysicalFlows` not implemented for derived class " + getClass().getSimpleName());
+		return new ArrayList<>();
+	}
 
 	@Override
 	public List<String> getLabels() {
@@ -228,26 +247,6 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @ordered
 	 */
 	protected EList<String> label;
-
-	@Override
-	public List<PhysicalCompartment> getPhysicalCompartments() {
-		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(getLabel())));
-	}
-
-	@Override
-	public List<PhysicalCompartment> getSources() {
-		return getPhysicalCompartments();
-	}
-
-	@Override
-	public List<PhysicalCompartment> getSinks() {
-		return getPhysicalCompartments();
-	}
-
-	@Override
-	public List<PhysicalFlow> getPhysicalFlows() {
-		return new ArrayList<>();
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
