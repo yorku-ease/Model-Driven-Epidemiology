@@ -25,11 +25,9 @@ public class BatchImpl extends FromToFlowImpl implements Batch {
 	@Override
 	public List<FlowEquation> getEquations() {
 		List<PhysicalCompartment> equationCompartments = new ArrayList<>();
-		List<PhysicalCompartment> affectedCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()));
-		List<Float> coefficients = Arrays.asList(-1f, 1f);
 		String equation = "(get " + getId() + " 0)";
 		List<String> requiredOperators = Arrays.asList("get");
-		return new ArrayList<>(Arrays.asList(new FlowEquation(equationCompartments, affectedCompartments, coefficients, equation, requiredOperators)));
+		return new ArrayList<>(Arrays.asList(new FlowEquation(equationCompartments, new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
 	}
 
 	/**

@@ -38,12 +38,10 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	@Override
 	public List<FlowEquation> getEquations() {
 		List<PhysicalCompartment> equationCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(contact.getLabels()));
-		List<PhysicalCompartment> affectedCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()));
-		List<Float> coefficients = Arrays.asList(-1f, 1f);
 		String flowParameter = "(get " + getId() + " 0)";
 		String equation = "(* " + flowParameter + " $0 $1)";
 		List<String> requiredOperators = Arrays.asList("*", "get");
-		return new ArrayList<>(Arrays.asList(new FlowEquation(equationCompartments, affectedCompartments, coefficients, equation, requiredOperators)));
+		return new ArrayList<>(Arrays.asList(new FlowEquation(equationCompartments, new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
 	}
 
 	/**

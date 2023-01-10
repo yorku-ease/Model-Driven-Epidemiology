@@ -53,6 +53,10 @@ public interface Compartment extends EObject {
 	List<PhysicalCompartment> getSources();
 
 	List<PhysicalCompartment> getSinks();
+	
+	List<PhysicalCompartment> getSourcesFor(PhysicalCompartment child);
+	
+	List<PhysicalCompartment> getSinksFor(PhysicalCompartment child);
 
 	Difference compare(Compartment other, MatchResult matches);
 

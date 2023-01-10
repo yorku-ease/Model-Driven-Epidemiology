@@ -14,9 +14,7 @@ import epimodel.util.PhysicalCompartment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -142,17 +140,17 @@ public class ProductImpl extends CompartmentImpl implements Product {
 				.collect(Collectors.toList());
 	}
 
-	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
+	public PhysicalCompartment prependSelf(PhysicalCompartment p) {
 		return prependLabelsToPC(p, getLabel());
 	}
 
-	protected PhysicalCompartment prependLabelsToPC(PhysicalCompartment p, List<String> labels) {
+	public PhysicalCompartment prependLabelsToPC(PhysicalCompartment p, List<String> labels) {
 		PhysicalCompartment p2 = new PhysicalCompartment(new ArrayList<>(p.labels));
 		p2.labels.addAll(0, labels);
 		return p2;
 	}
 
-	protected static PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
+	public static PhysicalCompartment combinePhysicalCompartmentsIntoOne(List<PhysicalCompartment> toCombine) {
 		return new PhysicalCompartment(
 			toCombine
 				.stream()
@@ -205,7 +203,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 				.collect(Collectors.toList());
 	}
 	
-	protected List<FlowEquation> getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions() {
+	public List<FlowEquation> getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions() {
 		
 		List<FlowEquation> res = new ArrayList<>();
 		
@@ -219,16 +217,27 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return res;
 	}
 	
-	protected List<FlowEquation> expandFlowAsPartOfDimensionByIndex(FlowEquation eq, int dimensionIndex) {
+	public List<FlowEquation> expandFlowAsPartOfDimensionByIndex(FlowEquation eq, int dimensionIndex) {
 		List<List<PhysicalCompartment>> compartmentsOfOtherDimensions = new ArrayList<>();
 		
 		for (int otherDimensionIndex = 0; otherDimensionIndex < compartment.size(); ++otherDimensionIndex)
 			if (dimensionIndex != otherDimensionIndex)
 				compartmentsOfOtherDimensions.add(getCompartment().get(otherDimensionIndex).getCompartment().getPhysicalCompartments());
+		
 		return expand(eq, compartmentsOfOtherDimensions);
 	}
 	
-	protected List<FlowEquation> getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved()  {
+	public List<PhysicalCompartment> expandPCByDimensionIndex(PhysicalCompartment pc, int dimensionIndex) {
+		List<List<PhysicalCompartment>> compartmentsOfOtherDimensions = new ArrayList<>();
+		
+		for (int otherDimensionIndex = 0; otherDimensionIndex < compartment.size(); ++otherDimensionIndex)
+			if (dimensionIndex != otherDimensionIndex)
+				compartmentsOfOtherDimensions.add(getCompartment().get(otherDimensionIndex).getCompartment().getPhysicalCompartments());
+		
+		return expand(pc, compartmentsOfOtherDimensions).stream().map(p->prependSelf(p)).collect(Collectors.toList());
+	}
+	
+	public List<FlowEquation> getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved()  {
 		List<FlowEquation> flowsDefinedHere = getFlow()
 				.stream()
 				.map(FlowWrapper::getFlow)
@@ -246,7 +255,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			.stream()
 			.map(eq -> {
 				int dim = getPartOfWhichDimIndex(eq, compartmentsOfEachDimension);
-				return replicateEquationToMatchPCs(eq, compartmentsOfEachDimension.get(dim))
+				return replicateEquationToMatchPCs(eq, getCompartment().get(dim).getCompartment())
 						.stream()
 						.map(e -> expandFlowAsPartOfDimensionByIndex(e, dim))
 						.flatMap(List::stream)
@@ -256,91 +265,47 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			.collect(Collectors.toList());
 	}
 	
-	protected List<FlowEquation> replicateEquationToMatchPCs(FlowEquation eq, List<PhysicalCompartment> pcs) {
-		List<List<PhysicalCompartment>> affected = eq
-				.affectedCompartments
-				.stream()
-				.map(acmp ->
-					pcs.stream().filter(pc -> pc.labels.containsAll(acmp.labels)).collect(Collectors.toList())
-				)
-				.collect(Collectors.toList());
-		List<List<PhysicalCompartment>> used = eq
-				.equationCompartments
-				.stream()
-				.map(acmp ->
-					pcs.stream().filter(pc -> pc.labels.containsAll(acmp.labels)).collect(Collectors.toList())
-				)
-				.collect(Collectors.toList());
-		List<List<PhysicalCompartment>> mergedForCartesianProduct = new ArrayList<>();
-		mergedForCartesianProduct.addAll(affected);
-		mergedForCartesianProduct.addAll(used);
-		List<List<PhysicalCompartment>> mergedCartesianProduct = CartesianProduct.cartesianProduct(mergedForCartesianProduct);
-		
-		int m = eq.affectedCompartments.size();
-		int n = eq.equationCompartments.size();
-		
-		return mergedCartesianProduct.stream().map(arrangement -> {
-			FlowEquation res = eq.deepCopy();
-			for (int i = 0; i < m; ++i) {
-				PhysicalCompartment pc = res.affectedCompartments.get(i);
-				Set<String> present = new HashSet<>(pc.labels);
-				pc.labels.addAll(arrangement.get(i).labels.stream().filter(label -> {
-					return !present.contains(label);
-				}).collect(Collectors.toList()));
-			}
-			for (int i = 0; i < n; ++i) {
-				PhysicalCompartment pc = res.equationCompartments.get(i);
-				Set<String> present = new HashSet<>(pc.labels);
-				pc.labels.addAll(arrangement.get(i + m).labels.stream().filter(label -> {
-					return !present.contains(label);
-				}).collect(Collectors.toList()));
-			}
-			return res;
+	// create one copy per association of sink and source in the compartment
+	public List<FlowEquation> replicateEquationToMatchPCs(FlowEquation eq, Compartment dim) {
+		return CartesianProduct.cartesianProduct(Arrays.asList(
+			dim.getSinksFor(eq.source), // the source of the flow is a sink
+			dim.getSourcesFor(eq.sink)  // and the sink of the flow is a source
+		)).stream().map(sources_sinks -> {
+			FlowEquation cp = eq.deepCopy();
+			cp.source.labels.addAll(
+					sources_sinks
+						.get(0)
+						.labels
+						.stream()
+						.filter(label -> !cp.source.labels.contains(label))
+						.collect(Collectors.toList()));
+			cp.sink.labels.addAll(
+					sources_sinks
+						.get(1)
+						.labels
+						.stream()
+						.filter(label -> !cp.sink.labels.contains(label))
+						.collect(Collectors.toList()));
+			return cp;
 		}).collect(Collectors.toList());
 	}
 	
-	protected int getPartOfWhichDimIndex(FlowEquation equationDefinedHere, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
+	public int getPartOfWhichDimIndex(FlowEquation equationDefinedHere, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
 		for (int i = 0; i < getCompartment().size(); ++i)
 			for (List<PhysicalCompartment> pcl : compartmentsOfEachDimension)
-				for (PhysicalCompartment pc : pcl)
-					for (PhysicalCompartment used : equationDefinedHere.affectedCompartments)
-						for (String label : used.labels)
-							if (pc.labels.contains(label))
-								return i;
+				for (PhysicalCompartment pc : pcl) {
+					for (String label : equationDefinedHere.source.labels)
+						if (pc.labels.contains(label))
+							return i;
+					for (String label : equationDefinedHere.sink.labels)
+						if (pc.labels.contains(label))
+							return i;
+				}
 		throw new RuntimeException("Failed to find which child the flow should be applied to");
 	}
 	
-	protected List<FlowEquation> getProductOfFlowsDefinedHereExpandedAlongAllDimensions() {
-		List<FlowEquation> flowsDefinedHere = getFlow()
-				.stream()
-				.map(FlowWrapper::getFlow)
-				.map(Flow::getEquations)
-				.flatMap(List::stream)
-				.collect(Collectors.toList());
-		
-		List<List<PhysicalCompartment>> compartmentsOfEachDimension = getCompartment()
-				.stream()
-				.map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getPhysicalCompartments)
-				.collect(Collectors.toList());
-		return flowsDefinedHere.stream().map(eq -> expand(eq, compartmentsOfEachDimension)).flatMap(List::stream).collect(Collectors.toList());
-	}
-	
-
-	
-	// example:
-	// this = eq{[1]->[2]}
-	// pcs = [[a], [b]]
-	// result = [eq{[1,a]->[2,a]}, eq{[1,b]->[2,b]}]
-	// in technical terms we do a cartesian product between the equation compartments (as opposed to affected compartments)
-	// and the list of physical compartments passed in, in the simple example above, equation compartments = [[1]]
-	// this is done for every equation owned by this physical flow independently
-	
-	
-	// a physical flow with which we expand with pcs of size [2, 3] will yield 2 * 3 flows
-	// the number of equations per flow is kept the same (usually 1, complex flows can have more)
-	
-	protected List<FlowEquation> expand(FlowEquation eq, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
+	// tested
+	public List<FlowEquation> expand(FlowEquation eq, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
 		
 		int n = eq.equationCompartments.size();
 		
@@ -359,9 +324,10 @@ public class ProductImpl extends CompartmentImpl implements Product {
 				FlowEquation temp = eq.deepCopy();
 				
 				PhysicalCompartment pc = temp.equationCompartments.get(i);
-				if (temp.affectedCompartments.contains(pc))
-					for (int k = 0; k < temp.affectedCompartments.size(); ++k)
-						temp.affectedCompartments.set(k, prependLabelsToPC(temp.affectedCompartments.get(k), flatSpec));
+				if (temp.source.equals(pc) || temp.sink.equals(pc)) {
+					temp.source.labels.addAll(flatSpec);
+					temp.sink.labels.addAll(flatSpec);
+				}
 				temp.equationCompartments.set(i, prependLabelsToPC(temp.equationCompartments.get(i), flatSpec));
 				expanded.add(temp);
 			}
@@ -370,16 +336,59 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return expanded;
 	}
 	
-	FlowEquation prependSelf(FlowEquation eq) {
+	// tested
+	public List<PhysicalCompartment> expand(PhysicalCompartment pc, List<List<PhysicalCompartment>> compartmentsOfOtherDimensions) {
+		List<List<PhysicalCompartment>> product = CartesianProduct.cartesianProduct(compartmentsOfOtherDimensions);
+		
+		return product
+				.stream()
+				.map(arrangement -> new PhysicalCompartment(
+					arrangement.stream().map(a -> a.labels).flatMap(List::stream).collect(Collectors.toList())
+				))
+				.map(p -> prependLabelsToPC(p, pc.labels))
+				.collect(Collectors.toList());
+	}
+	
+	public FlowEquation prependSelf(FlowEquation eq) {
 		return prepend(eq, getLabel());
 	}
 	
-	FlowEquation prepend(FlowEquation eq, List<String> labels) {
-		for (PhysicalCompartment pc : eq.affectedCompartments)
-			pc.labels.addAll(labels);
+	public FlowEquation prepend(FlowEquation eq, List<String> labels) {
+		eq.source.labels.addAll(labels);
+		eq.sink.labels.addAll(labels);
 		for (PhysicalCompartment pc : eq.equationCompartments)
 			pc.labels.addAll(labels);
 		return eq;
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSourcesFor(PhysicalCompartment child) {
+		int n = getCompartment().size();
+		for  (int i = 0; i < n; ++i) {
+			int dim = i;
+			Compartment c = getCompartment().get(i).getCompartment();
+			if (c.getLabels().equals(child.labels))
+				return c.getSources().stream().map(pc->expandPCByDimensionIndex(pc, dim)).flatMap(List::stream).collect(Collectors.toList());
+			for (PhysicalCompartment pc : c.getPhysicalCompartments())
+				if (pc.labels.containsAll(child.labels))
+					return c.getSourcesFor(child).stream().map(pc2->expandPCByDimensionIndex(pc2, dim)).flatMap(List::stream).collect(Collectors.toList());
+		}
+		throw new RuntimeException("Product has no child matching " + child);
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinksFor(PhysicalCompartment child) {
+		int n = getCompartment().size();
+		for  (int i = 0; i < n; ++i) {
+			int dim = i;
+			Compartment c = getCompartment().get(i).getCompartment();
+			if (c.getLabels().equals(child.labels))
+				return c.getSinks().stream().map(pc->expandPCByDimensionIndex(pc, dim)).flatMap(List::stream).collect(Collectors.toList());
+			for (PhysicalCompartment pc : c.getPhysicalCompartments())
+				if (pc.labels.containsAll(child.labels))
+					return c.getSinksFor(child).stream().map(pc2->expandPCByDimensionIndex(pc2, dim)).flatMap(List::stream).collect(Collectors.toList());
+		}
+		throw new RuntimeException("Product has no child matching " + child);
 	}
 	
 	/**
@@ -407,7 +416,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ProductImpl() {
+	public ProductImpl() {
 		super();
 	}
 
