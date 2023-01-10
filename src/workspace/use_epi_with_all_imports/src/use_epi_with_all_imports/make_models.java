@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+
+import batchRateContactFlow.Batch;
 import batchRateContactFlow.Contact;
 import batchRateContactFlow.Rate;
 import product.Product;
@@ -172,6 +174,24 @@ public class make_models {
 		return g;
 	}
 	
+	static Product addBatch(Product p, String id, List<String> from, List<String> to) {
+		Batch f = batchRateContactFlow.impl.BatchRateContactFlowFactoryImpl.eINSTANCE.createBatch();
+		f.setId(id);
+		f.setTo(getCompartmentBasedOnLabels(p, to));
+		f.setFrom(getCompartmentBasedOnLabels(p, from));
+		p.getFlow().add(wrap(f));
+		return p;
+	}
+	
+	static Group addBatch(Group g, String id, List<String> from, List<String> to) {
+		Batch f = batchRateContactFlow.impl.BatchRateContactFlowFactoryImpl.eINSTANCE.createBatch();
+		f.setId(id);
+		f.setTo(getCompartmentBasedOnLabels(g, to));
+		f.setFrom(getCompartmentBasedOnLabels(g, from));
+		g.getFlow().add(wrap(f));
+		return g;
+	}
+	
 	static Product product(Object... labelsAndCompartments) {
 		Product p = ProductFactoryImpl.eINSTANCE.createProduct();
 		for (Object label : labelsAndCompartments)
@@ -180,6 +200,15 @@ public class make_models {
 		for (Object c : labelsAndCompartments)
 			if (c instanceof Compartment)
 				p.getCompartment().add(wrap((Compartment) c));
+		for (Object rate : labelsAndCompartments)
+			if (rate instanceof RateParam)
+				p = addRate(p, ((RateParam) rate).id, ((RateParam) rate).from, ((RateParam) rate).to);
+		for (Object flow : labelsAndCompartments)
+			if (flow instanceof BatchParam)
+				p = addBatch(p, ((BatchParam) flow).id, ((BatchParam) flow).from, ((BatchParam) flow).to);
+		for (Object flow : labelsAndCompartments)
+			if (flow instanceof ContactParam)
+				p = addContact(p, ((ContactParam) flow).id, ((ContactParam) flow).from, ((ContactParam) flow).to, ((ContactParam) flow).contact);
 		return p;
 	}
 	
@@ -191,6 +220,15 @@ public class make_models {
 		for (Object c : labelsAndCompartments)
 			if (c instanceof Compartment)
 				g.getCompartment().add(wrap((Compartment) c));
+		for (Object flow : labelsAndCompartments)
+			if (flow instanceof RateParam)
+				g = addRate(g, ((RateParam) flow).id, ((RateParam) flow).from, ((RateParam) flow).to);
+		for (Object flow : labelsAndCompartments)
+			if (flow instanceof BatchParam)
+				g = addBatch(g, ((BatchParam) flow).id, ((BatchParam) flow).from, ((BatchParam) flow).to);
+		for (Object flow : labelsAndCompartments)
+			if (flow instanceof ContactParam)
+				g = addContact(g, ((ContactParam) flow).id, ((ContactParam) flow).from, ((ContactParam) flow).to, ((ContactParam) flow).contact);
 		return g;
 	}
 	
@@ -211,5 +249,55 @@ public class make_models {
 		epimodel.FlowWrapper w = EpimodelFactoryImpl.eINSTANCE.createFlowWrapper();
 		w.setFlow(f);
 		return w;
+	}
+	
+	static RateParam rate(String id, List<String> from, List<String> to) {
+		return new RateParam(id, from, to);
+	}
+	
+	static BatchParam batch(String id, List<String> from, List<String> to) {
+		return new BatchParam(id, from, to);
+	}
+	
+	static ContactParam contact(String id, List<String> from, List<String> to, List<String> contact) {
+		return new ContactParam(id, from, to, contact);
+	}
+	
+	static class RateParam {
+		public final String id;
+		public final List<String> from;
+		public final List<String> to;
+		
+		public RateParam(String id, List<String> from, List<String> to) {
+			this.id = id;
+			this.from = from;
+			this.to = to;
+		}
+	}
+	
+	static class BatchParam {
+		public final String id;
+		public final List<String> from;
+		public final List<String> to;
+		
+		public BatchParam(String id, List<String> from, List<String> to) {
+			this.id = id;
+			this.from = from;
+			this.to = to;
+		}
+	}
+	
+	static class ContactParam {
+		public final String id;
+		public final List<String> from;
+		public final List<String> to;
+		public final List<String> contact;
+		
+		public ContactParam(String id, List<String> from, List<String> to, List<String> contact) {
+			this.id = id;
+			this.from = from;
+			this.to = to;
+			this.contact = contact;
+		}
 	}
 }

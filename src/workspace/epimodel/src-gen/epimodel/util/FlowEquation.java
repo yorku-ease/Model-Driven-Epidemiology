@@ -17,21 +17,21 @@ import java.util.stream.Collectors;
 
 public class FlowEquation {
 	public final List<PhysicalCompartment> equationCompartments;
-	public final List<PhysicalCompartment> affectedCompartments;
-	public final List<Float> coefficients;
+	public final PhysicalCompartment source;
+	public final PhysicalCompartment sink;
 	public final String equation;
 	public final List<String> requiredOperators;
 	
 	public FlowEquation(
 		List<PhysicalCompartment> equationCompartments,
-		List<PhysicalCompartment> affectedCompartments,
-		List<Float> coefficients,
+		PhysicalCompartment source,
+		PhysicalCompartment sink,
 		String equation,
 		List<String> requiredOperators
 	) {
 		this.equationCompartments = equationCompartments;
-		this.affectedCompartments = affectedCompartments;
-		this.coefficients = coefficients;
+		this.source = source;
+		this.sink = sink;
 		this.equation = equation;
 		this.requiredOperators = requiredOperators;
 	}
@@ -43,8 +43,8 @@ public class FlowEquation {
 	
 	protected boolean equals(FlowEquation other) {
 		return equationCompartments.equals(other.equationCompartments) && 
-				affectedCompartments.equals(other.affectedCompartments) && 
-				coefficients.equals(other.coefficients) && 
+				source.equals(other.source) && 
+				sink.equals(other.sink) && 
 				equation.equals(other.equation) && 
 				requiredOperators.equals(other.requiredOperators);
 	}
@@ -52,9 +52,14 @@ public class FlowEquation {
 	public FlowEquation deepCopy() {
 		return new FlowEquation(
 				equationCompartments.stream().map(pc -> new PhysicalCompartment(new ArrayList<>(pc.labels))).collect(Collectors.toList()),
-				affectedCompartments.stream().map(pc -> new PhysicalCompartment(new ArrayList<>(pc.labels))).collect(Collectors.toList()),
-				new ArrayList<>(coefficients),
+				new PhysicalCompartment(new ArrayList<>(source.labels)),
+				new PhysicalCompartment(new ArrayList<>(sink.labels)),
 				equation,
 				new ArrayList<>(requiredOperators));
+	}
+	
+	@Override
+	public String toString() {
+		return "{Flow: source = " + source + ", sink = " + sink + ", equationCompartments = " + equationCompartments + "}";
 	}
 }

@@ -215,6 +215,16 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	}
 
 	@Override
+	public List<PhysicalCompartment> getSourcesFor(PhysicalCompartment child) {
+		throw new RuntimeException("Compartment has no children");
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinksFor(PhysicalCompartment child) {
+		throw new RuntimeException("Compartment has no children");
+	}
+
+	@Override
 	public void edit(EObject dom, Shell shell, List<Control> controls) {
 		shell.setText("Edit Compartment " + getLabel());
 		shell.setLayout(new GridLayout(2, false));

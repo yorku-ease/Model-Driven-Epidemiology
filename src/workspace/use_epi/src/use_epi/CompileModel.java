@@ -37,8 +37,8 @@ public class CompileModel {
 			for (FlowEquation eq : myEpi.getCompartment().getPhysicalFlows()) {
 				writer.println(eq.equation);
 				writer.println(eq.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
-				writer.println(eq.coefficients);
-				writer.println(eq.affectedCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
+				writer.println(eq.source);
+				writer.println(eq.sink);
 				writer.println(eq.requiredOperators);
 			    writer.println();
 			}

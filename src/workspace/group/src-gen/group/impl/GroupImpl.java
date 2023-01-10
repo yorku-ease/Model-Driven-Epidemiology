@@ -269,11 +269,17 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(FlowWrapper::getFlow)
 				.map(Flow::getEquations)
 				.flatMap(List::stream)
+//				.map(f -> identifySourcesSinks(f))
+//				.flatMap(List::stream)
 				.map(eq -> prependSelf(eq))
 				.collect(Collectors.toList());
 		
 		flowsDefinedInChildren.addAll(flowsDefinedHere);
 		return flowsDefinedInChildren;
+	}
+	
+	protected List<FlowEquation> identifySourcesSinks(FlowEquation eq) {
+		return null;
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {
@@ -283,11 +289,37 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	}
 	
 	FlowEquation prependSelf(FlowEquation eq) {
-		for (PhysicalCompartment pc : eq.affectedCompartments)
-			pc.labels.addAll(getLabel());
+		eq.source.labels.addAll(0, getLabel());
+		eq.sink.labels.addAll(0, getLabel());
 		for (PhysicalCompartment pc : eq.equationCompartments)
-			pc.labels.addAll(getLabel());
+			pc.labels.addAll(0, getLabel());
 		return eq;
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSourcesFor(PhysicalCompartment child) {
+		for (CompartmentWrapper w : getCompartment()) {
+			Compartment c = w.getCompartment();
+			if (c.getLabels().equals(child.labels))
+				return c.getSources().stream().map(pc->prependSelf(pc)).collect(Collectors.toList());
+			for (PhysicalCompartment pc : c.getPhysicalCompartments())
+				if (pc.labels.containsAll(child.labels))
+					return c.getSourcesFor(child).stream().map(pc2->prependSelf(pc2)).collect(Collectors.toList());
+		}
+		throw new RuntimeException("Group has no child matching " + child);
+	}
+
+	@Override
+	public List<PhysicalCompartment> getSinksFor(PhysicalCompartment child) {
+		for (CompartmentWrapper w : getCompartment()) {
+			Compartment c = w.getCompartment();
+			if (c.getLabels().equals(child.labels))
+				return c.getSinks().stream().map(pc->prependSelf(pc)).collect(Collectors.toList());
+			for (PhysicalCompartment pc : c.getPhysicalCompartments())
+				if (pc.labels.containsAll(child.labels))
+					return c.getSinksFor(child).stream().map(pc2->prependSelf(pc2)).collect(Collectors.toList());
+		}
+		throw new RuntimeException("Group has no child matching " + child);
 	}
 
 	/**

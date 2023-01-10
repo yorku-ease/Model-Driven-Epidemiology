@@ -15,4 +15,9 @@ public class PhysicalCompartment {
 				((PhysicalCompartment) other).labels.size() == labels.size()
 				&& labels.containsAll(((PhysicalCompartment) other).labels);
 	}
+	
+	@Override
+	public String toString() {
+		return labels.toString();
+	}
 }
