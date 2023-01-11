@@ -6,14 +6,24 @@ import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.EpimodelPackage;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,6 +39,18 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public class CompartmentWrapperImpl extends MinimalEObjectImpl.Container implements CompartmentWrapper {
+
+	@Override
+	public void edit(EObject dom, Shell shell, List<Control> controls) {
+		if (getCompartment() == null)
+			displayCreateOption(dom, shell, controls);
+	}
+	
+	void displayCreateOption(EObject dom, Shell shell, List<Control> controls) {
+		epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, wrapper -> {
+			setCompartment(wrapper.getCompartment());
+		});
+	}
 
 	/**
 	 * The cached value of the '{@link #getCompartment() <em>Compartment</em>}' containment reference.

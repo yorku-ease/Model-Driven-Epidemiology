@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import epimodel.Compartment;
+import epimodel.CompartmentWrapper;
 
 public class ExternalJavaActionEditCompartment implements IExternalJavaAction {
 
@@ -37,8 +38,8 @@ public class ExternalJavaActionEditCompartment implements IExternalJavaAction {
         
         if (clicked instanceof Compartment)
         	((Compartment) clicked).edit(clicked, shell, controls);
-//        else if (clicked instanceof CompartmentWrapper)
-//        	((CompartmentWrapper) clicked).edit(clicked, shell, controls);
+        else if (clicked instanceof CompartmentWrapper)
+        	((CompartmentWrapper) clicked).edit(clicked, shell, controls);
         
         shell.pack(true);
         shell.open();
