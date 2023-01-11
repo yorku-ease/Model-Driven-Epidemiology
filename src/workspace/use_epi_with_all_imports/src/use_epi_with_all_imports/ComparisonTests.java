@@ -53,17 +53,16 @@ class ComparisonTests {
 					make_models.group("SEIR",
 							make_models.compartment("S"),
 							make_models.compartment("E"),
-							make_models.addRate(
-								make_models.product("I",
-										make_models.group("Variants",
-												make_models.compartment("DELTA"),
-												make_models.compartment("OMICRON")),
-										make_models.group("Infectious",
-												make_models.compartment("Asymptomatic"),
-												make_models.compartment("Symptomatic"))),
-								"Symptoms",
-								Arrays.asList("Asymptomatic"),
-								Arrays.asList("Symptomatic")),
+							make_models.product("I",
+									make_models.rate("Symptoms",
+											Arrays.asList("Asymptomatic"),
+											Arrays.asList("Symptomatic")),
+									make_models.group("Variants",
+											make_models.compartment("DELTA"),
+											make_models.compartment("OMICRON")),
+									make_models.group("Infectious",
+											make_models.compartment("Asymptomatic"),
+											make_models.compartment("Symptomatic"))),
 							make_models.compartment("R"))));
 		
 		ComparisonResult res = use_epi.Compare.compare(withFlowInGroup, withFlowInProduct);

@@ -143,8 +143,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<PhysicalCompartment> l2 = other.getPhysicalCompartments();
 		boolean sameCompartments = l1.equals(l2);
 
-		List<FlowEquation> lf1 = getPhysicalFlows();
-		List<FlowEquation> lf2 = other.getPhysicalFlows();
+		List<FlowEquation> lf1 = getEquations();
+		List<FlowEquation> lf2 = other.getEquations();
 		boolean sameFlows = lf1.equals(lf2);
 
 		StringBuilder sb = new StringBuilder();
@@ -194,16 +194,20 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
+		if (getClass() != CompartmentImpl.class)
+			throw new RuntimeException("Not implemented");
 		return getPhysicalCompartments();
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
+		if (getClass() != CompartmentImpl.class)
+			throw new RuntimeException("Not implemented");
 		return getPhysicalCompartments();
 	}
 
 	@Override
-	public List<FlowEquation> getPhysicalFlows() {
+	public List<FlowEquation> getEquations() {
 		if (getClass() != CompartmentImpl.class)
 			throw new RuntimeException("Method `getPhysicalFlows` not implemented for derived class " + getClass().getSimpleName());
 		return new ArrayList<>();
@@ -246,6 +250,50 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			});
 			shell.close();
 		});
+	}
+	
+	// tested
+	// create one copy per association of sink and source in the compartment
+	public List<FlowEquation> replicateEquationToMatchPCs(FlowEquation eq, Compartment c) {
+		List<FlowEquation> res = new ArrayList<>();
+		// the source of the flow is a sink for c
+		for (PhysicalCompartment source : c.getSinksFor(eq.source))
+			// and the sink of the flow is a source for c
+			for (PhysicalCompartment sink : c.getSourcesFor(eq.sink)) {
+				FlowEquation cp = eq.deepCopy();
+				for (PhysicalCompartment pc : cp.equationCompartments) {
+					if (pc.equals(cp.source))
+						pc.labels.addAll(
+								source
+									.labels
+									.stream()
+									.filter(label -> !cp.source.labels.contains(label))
+									.collect(Collectors.toList()));
+					if (pc.equals(cp.sink))
+						pc.labels.addAll(
+							sink
+								.labels
+								.stream()
+								.filter(label -> !cp.sink.labels.contains(label))
+								.collect(Collectors.toList()));
+					if (!pc.labels.containsAll(c.getLabels()))
+						pc.labels.addAll(c.getLabels());
+				}
+				cp.source.labels.addAll(
+						source
+							.labels
+							.stream()
+							.filter(label -> !cp.source.labels.contains(label))
+							.collect(Collectors.toList()));
+				cp.sink.labels.addAll(
+						sink
+							.labels
+							.stream()
+							.filter(label -> !cp.sink.labels.contains(label))
+							.collect(Collectors.toList()));
+				res.add(cp);
+			}
+		return res;
 	}
 
 	/**
