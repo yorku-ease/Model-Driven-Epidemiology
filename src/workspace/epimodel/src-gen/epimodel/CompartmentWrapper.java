@@ -2,7 +2,11 @@
  */
 package epimodel;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,6 +25,9 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface CompartmentWrapper extends EObject {
+	
+	void edit(EObject dom, Shell shell, List<Control> controls);
+	
 	/**
 	 * Returns the value of the '<em><b>Compartment</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

@@ -29,7 +29,7 @@ import org.osgi.framework.FrameworkUtil;
 import de.ovgu.featureide.fm.core.base.IFeatureModel;
 import de.ovgu.featureide.fm.core.base.IFeatureStructure;
 import de.ovgu.featureide.fm.core.configuration.Configuration;
-
+import epimodel.Epidemic;
 import epimodel.impl.EpimodelFactoryImpl;
 
 public class CustomProjectSupport {
@@ -180,7 +180,9 @@ public class CustomProjectSupport {
 		{
 			org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createFileURI(model_fn);
 	        Resource resource = resSet.createResource(uri);
-	        resource.getContents().add(EpimodelFactoryImpl.eINSTANCE.createCompartmentWrapper());
+	        Epidemic epi = EpimodelFactoryImpl.eINSTANCE.createEpidemic();
+	        epi.setCompartmentwrapper(EpimodelFactoryImpl.eINSTANCE.createCompartmentWrapper());
+	        resource.getContents().add(epi);
 	        resource.save(null);
 		}
 	}

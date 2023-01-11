@@ -70,14 +70,15 @@ public class Edit {
 		controls.forEach(Control::dispose);
 		controls.clear();
         shell.setLayout(new GridLayout(1, false));
-        for (EClass ec : getNonAbstractEClassesOfType(EpimodelPackage.Literals.COMPARTMENT)) {
+        List<EClass> types = getNonAbstractEClassesOfType(EpimodelPackage.Literals.COMPARTMENT);
+        for (EClass ec : types) {
         	addBtn(shell, controls, ec.getName(), () -> {
     			controls.forEach(Control::dispose);
     			controls.clear();
                 CompartmentWrapper w = EpimodelFactory.eINSTANCE.createCompartmentWrapper();
                 Compartment compartment = (Compartment) EcoreUtil.create(ec);
                 w.setCompartment(compartment);
-    			shell.addListener(SWT.Close, e -> callback.accept(w));
+    			shell.addListener(SWT.Close, e -> epimodel.util.Edit.transact(dom, () -> callback.accept(w)));
 	        	compartment.edit(dom, shell, controls);
     			shell.pack(true);
         	});
@@ -89,7 +90,8 @@ public class Edit {
 		controls.forEach(Control::dispose);
 		controls.clear();
         shell.setLayout(new GridLayout(1, false));
-        for (EClass ec : getNonAbstractEClassesOfType(EpimodelPackage.Literals.FLOW)) {
+        List<EClass> types = getNonAbstractEClassesOfType(EpimodelPackage.Literals.FLOW);
+        for (EClass ec : types) {
         	addBtn(shell, controls, ec.getName(), () -> {
                 FlowWrapper w = EpimodelFactory.eINSTANCE.createFlowWrapper();
                 Flow flow = (Flow) EcoreUtil.create(ec);
