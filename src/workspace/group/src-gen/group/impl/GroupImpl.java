@@ -234,32 +234,38 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.collect(Collectors.toList());
 	}
 
-//	@Override
-//	public List<PhysicalCompartment> getSources() {
-//		GroupSinks sources = getGroupSinks();
-//		Stream<Compartment> l = (sources != null && sources.getLink().size() > 0)
-//				? sources.getLink().stream().map(Link::getCompartment)
-//				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
-//
-//		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
-//	}
-//
-//	@Override
-//	public List<PhysicalCompartment> getSinks() {
-//		GroupSinks sinks = getGroupSinks();
-//		Stream<Compartment> l = (sinks != null && sinks.getLink().size() > 0)
-//				? sinks.getLink().stream().map(Link::getCompartment)
-//				: getCompartment().stream().map(CompartmentWrapper::getCompartment);
-//
-//		return l.map(Compartment::getSinks).flatMap(List::stream).collect(Collectors.toList());
-//	}
+	@Override
+	public List<PhysicalCompartment> getSources() {
+		if (getSource().size() > 0)
+			return getSource()
+				.stream()
+				.map(source -> source.getCompartment().getPhysicalCompartments())
+				.flatMap(List::stream)
+				.map(pc -> prependSelf(pc))
+				.collect(Collectors.toList());
+		else
+			return getPhysicalCompartments();
+	}
 
 	@Override
-	public List<FlowEquation> getPhysicalFlows() {
+	public List<PhysicalCompartment> getSinks() {
+		if (getSink().size() > 0)
+			return getSink()
+				.stream()
+				.map(sink -> sink.getCompartment().getPhysicalCompartments())
+				.flatMap(List::stream)
+				.map(pc -> prependSelf(pc))
+				.collect(Collectors.toList());
+		else
+			return getPhysicalCompartments();
+	}
+
+	@Override
+	public List<FlowEquation> getEquations() {
 		List<FlowEquation> flowsDefinedInChildren = getCompartment()
 				.stream()
 				.map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getPhysicalFlows)
+				.map(Compartment::getEquations)
 				.flatMap(List::stream)
 				.map(eq -> prependSelf(eq))
 				.collect(Collectors.toList());
@@ -269,17 +275,12 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(FlowWrapper::getFlow)
 				.map(Flow::getEquations)
 				.flatMap(List::stream)
-//				.map(f -> identifySourcesSinks(f))
-//				.flatMap(List::stream)
-				.map(eq -> prependSelf(eq))
+				.map(eq -> replicateEquationToMatchPCs(eq, this))
+				.flatMap(List::stream)
 				.collect(Collectors.toList());
 		
 		flowsDefinedInChildren.addAll(flowsDefinedHere);
 		return flowsDefinedInChildren;
-	}
-	
-	protected List<FlowEquation> identifySourcesSinks(FlowEquation eq) {
-		return null;
 	}
 
 	protected PhysicalCompartment prependSelf(PhysicalCompartment p) {

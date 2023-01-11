@@ -48,7 +48,7 @@ public interface Compartment extends EObject {
 
 	List<PhysicalCompartment> getPhysicalCompartments();
 
-	List<FlowEquation> getPhysicalFlows();
+	List<FlowEquation> getEquations();
 
 	List<PhysicalCompartment> getSources();
 

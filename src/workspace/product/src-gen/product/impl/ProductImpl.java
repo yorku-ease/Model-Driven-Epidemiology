@@ -191,7 +191,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	}
 	
 	@Override
-	public List<FlowEquation> getPhysicalFlows() {
+	public List<FlowEquation> getEquations() {
 		List<FlowEquation> flowsDefinedInChildren = getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions();
 //		List<FlowEquation> flowsDefinedHere = getProductOfFlowsDefinedHereExpandedAlongAllDimensions();
 		List<FlowEquation> flowsDefinedHere = getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved();
@@ -209,7 +209,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		
 		for (int dimensionIndex = 0; dimensionIndex < compartment.size(); ++dimensionIndex) {
 			Compartment dimension = getCompartment().get(dimensionIndex).getCompartment();
-			List<FlowEquation> dimensionFlows = dimension.getPhysicalFlows();
+			List<FlowEquation> dimensionFlows = dimension.getEquations();
 			int dim = dimensionIndex;
 			res.addAll(dimensionFlows.stream().map(eq -> expandFlowAsPartOfDimensionByIndex(eq, dim)).flatMap(List::stream).collect(Collectors.toList()));
 		}
@@ -265,42 +265,16 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			.collect(Collectors.toList());
 	}
 	
-	// create one copy per association of sink and source in the compartment
-	public List<FlowEquation> replicateEquationToMatchPCs(FlowEquation eq, Compartment dim) {
-		return CartesianProduct.cartesianProduct(Arrays.asList(
-			dim.getSinksFor(eq.source), // the source of the flow is a sink
-			dim.getSourcesFor(eq.sink)  // and the sink of the flow is a source
-		)).stream().map(sources_sinks -> {
-			FlowEquation cp = eq.deepCopy();
-			cp.source.labels.addAll(
-					sources_sinks
-						.get(0)
-						.labels
-						.stream()
-						.filter(label -> !cp.source.labels.contains(label))
-						.collect(Collectors.toList()));
-			cp.sink.labels.addAll(
-					sources_sinks
-						.get(1)
-						.labels
-						.stream()
-						.filter(label -> !cp.sink.labels.contains(label))
-						.collect(Collectors.toList()));
-			return cp;
-		}).collect(Collectors.toList());
-	}
-	
 	public int getPartOfWhichDimIndex(FlowEquation equationDefinedHere, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
 		for (int i = 0; i < getCompartment().size(); ++i)
-			for (List<PhysicalCompartment> pcl : compartmentsOfEachDimension)
-				for (PhysicalCompartment pc : pcl) {
-					for (String label : equationDefinedHere.source.labels)
-						if (pc.labels.contains(label))
-							return i;
-					for (String label : equationDefinedHere.sink.labels)
-						if (pc.labels.contains(label))
-							return i;
-				}
+			for (PhysicalCompartment pc : compartmentsOfEachDimension.get(i)) {
+				for (String label : equationDefinedHere.source.labels)
+					if (pc.labels.contains(label))
+						return i;
+				for (String label : equationDefinedHere.sink.labels)
+					if (pc.labels.contains(label))
+						return i;
+			}
 		throw new RuntimeException("Failed to find which child the flow should be applied to");
 	}
 	

@@ -192,43 +192,67 @@ public class make_models {
 		return g;
 	}
 	
-	static Product product(Object... labelsAndCompartments) {
+	static Group addSource(Group g, List<String> source) {
+		for (CompartmentWrapper w : g.getCompartment())
+			if (w.getCompartment().getLabels().equals(source)) {
+				g.getSource().add(w);
+				return g;
+			}
+		throw new RuntimeException("Missing compartment " + source);
+	}
+	
+	static Group addSink(Group g, List<String> sink) {
+		for (CompartmentWrapper w : g.getCompartment())
+			if (w.getCompartment().getLabels().equals(sink)) {
+				g.getSink().add(w);
+				return g;
+			}
+		throw new RuntimeException("Missing compartment " + sink);
+	}
+	
+	static Product product(Object... params) {
 		Product p = ProductFactoryImpl.eINSTANCE.createProduct();
-		for (Object label : labelsAndCompartments)
+		for (Object label : params)
 			if (label instanceof String)
 				p.getLabel().add((String) label);
-		for (Object c : labelsAndCompartments)
+		for (Object c : params)
 			if (c instanceof Compartment)
 				p.getCompartment().add(wrap((Compartment) c));
-		for (Object rate : labelsAndCompartments)
+		for (Object rate : params)
 			if (rate instanceof RateParam)
 				p = addRate(p, ((RateParam) rate).id, ((RateParam) rate).from, ((RateParam) rate).to);
-		for (Object flow : labelsAndCompartments)
+		for (Object flow : params)
 			if (flow instanceof BatchParam)
 				p = addBatch(p, ((BatchParam) flow).id, ((BatchParam) flow).from, ((BatchParam) flow).to);
-		for (Object flow : labelsAndCompartments)
+		for (Object flow : params)
 			if (flow instanceof ContactParam)
 				p = addContact(p, ((ContactParam) flow).id, ((ContactParam) flow).from, ((ContactParam) flow).to, ((ContactParam) flow).contact);
 		return p;
 	}
 	
-	static Group group(Object... labelsAndCompartments) {
+	static Group group(Object... params) {
 		Group g = GroupFactoryImpl.eINSTANCE.createGroup();
-		for (Object label : labelsAndCompartments)
+		for (Object label : params)
 			if (label instanceof String)
 				g.getLabel().add((String) label);
-		for (Object c : labelsAndCompartments)
+		for (Object c : params)
 			if (c instanceof Compartment)
 				g.getCompartment().add(wrap((Compartment) c));
-		for (Object flow : labelsAndCompartments)
+		for (Object flow : params)
 			if (flow instanceof RateParam)
 				g = addRate(g, ((RateParam) flow).id, ((RateParam) flow).from, ((RateParam) flow).to);
-		for (Object flow : labelsAndCompartments)
+		for (Object flow : params)
 			if (flow instanceof BatchParam)
 				g = addBatch(g, ((BatchParam) flow).id, ((BatchParam) flow).from, ((BatchParam) flow).to);
-		for (Object flow : labelsAndCompartments)
+		for (Object flow : params)
 			if (flow instanceof ContactParam)
 				g = addContact(g, ((ContactParam) flow).id, ((ContactParam) flow).from, ((ContactParam) flow).to, ((ContactParam) flow).contact);
+		for (Object source : params)
+			if (source instanceof SourceParam)
+				g = addSource(g, ((SourceParam) source).source);
+		for (Object sink : params)
+			if (sink instanceof SinkParam)
+				g = addSink(g, ((SinkParam) sink).sink);
 		return g;
 	}
 	
@@ -261,6 +285,14 @@ public class make_models {
 	
 	static ContactParam contact(String id, List<String> from, List<String> to, List<String> contact) {
 		return new ContactParam(id, from, to, contact);
+	}
+	
+	static SourceParam source(List<String> source) {
+		return new SourceParam(source);
+	}
+	
+	static SinkParam sink(List<String> sink) {
+		return new SinkParam(sink);
 	}
 	
 	static class RateParam {
@@ -298,6 +330,22 @@ public class make_models {
 			this.from = from;
 			this.to = to;
 			this.contact = contact;
+		}
+	}
+	
+	static class SourceParam {
+		public final List<String> source;
+		
+		public SourceParam(List<String> source) {
+			this.source = source;
+		}
+	}
+	
+	static class SinkParam {
+		public final List<String> sink;
+		
+		public SinkParam(List<String> sink) {
+			this.sink = sink;
 		}
 	}
 }

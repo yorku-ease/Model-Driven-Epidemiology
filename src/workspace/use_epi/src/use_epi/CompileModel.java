@@ -34,7 +34,7 @@ public class CompileModel {
 		}
 		{
 			PrintWriter writer = new PrintWriter(outfolder + myEpi.getCompartment().getLabels() + ".equations.txt", "UTF-8");
-			for (FlowEquation eq : myEpi.getCompartment().getPhysicalFlows()) {
+			for (FlowEquation eq : myEpi.getCompartment().getEquations()) {
 				writer.println(eq.equation);
 				writer.println(eq.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
 				writer.println(eq.source);
