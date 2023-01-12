@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -135,11 +134,14 @@ public class Edit {
 	            textBuilder.append((char) c);
 	        reader.close();
 			String filecontent = textBuilder.toString();
-			return Arrays.asList(filecontent.split("\n")).stream().map(String::trim).collect(Collectors.toList());
+			String[] lines = filecontent.split("\n");
+			return Arrays.asList(lines)
+					.stream()
+					.map(String::trim)
+					.collect(Collectors.toList());
 		} catch (IOException | CoreException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new ArrayList<>();
+			throw new RuntimeException(e);
 		}
 	}
 	

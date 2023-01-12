@@ -31,6 +31,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
@@ -116,18 +118,17 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		controls.clear();
 		int nCol = 4;
 		shell.setLayout(new GridLayout(nCol, false));
-		List<Compartment> l = getCompartment().stream().map(CompartmentWrapper::getCompartment)
-				.collect(Collectors.toList());
 
 		epimodel.util.Edit.addText(shell, controls, "Compartment");
 		epimodel.util.Edit.addText(shell, controls, "Is Source");
 		epimodel.util.Edit.addText(shell, controls, "Is Sink");
 		epimodel.util.Edit.addText(shell, controls, "Delete");
 
-		for (Compartment e : l) {
+		for (CompartmentWrapper w : getCompartment()) {
+			Compartment e = w.getCompartment();
 			epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
-			//			addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SOURCES);
-			//			addSourceSinkCheckbox(dom, shell, controls, e, CompartmentGroupPackage.Literals.GROUP__GROUP_SINKS);
+			addSourceSinkCheckbox(dom, shell, controls, w, GroupPackage.Literals.GROUP__SOURCE);
+			addSourceSinkCheckbox(dom, shell, controls, w, GroupPackage.Literals.GROUP__SINK);
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
 				epimodel.util.Edit.transact(dom, () -> {
 					controls.forEach(Control::dispose);
@@ -151,45 +152,29 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		shell.pack(true);
 	}
 
-	void addSourceSinkCheckbox(EObject dom, Shell shell, List<Control> controls, Compartment target,
+	void addSourceSinkCheckbox(
+			EObject dom, 
+			Shell shell,
+			List<Control> controls,
+			CompartmentWrapper target,
 			EReference sourceOrSinkRef) {
 		final Button checkbox = new Button(shell, SWT.CHECK);
-		//		EObject l = (EObject) eGet(sourceOrSinkRef);
-		//		final EList<Link> links = l == null ? null
-		//				: l instanceof GroupSources ? ((GroupSources) l).getLink() : ((GroupSinks) l).getLink();
-		//
-		//		if (l != null && links != null)
-		//			for (Link link : links)
-		//				if (link.getCompartment().equals(target)) {
-		//					checkbox.setSelection(true);
-		//					break;
-		//				}
-		//
-		//		checkbox.addSelectionListener(new SelectionAdapter() {
-		//			@SuppressWarnings("unchecked")
-		//			@Override
-		//			public void widgetSelected(SelectionEvent e) {
-		//				if (l == null)
-		//					eSet(sourceOrSinkRef, EcoreUtil.create(sourceOrSinkRef.getEReferenceType()));
-		//				EList<Link> links = (EList<Link>) ((EObject) eGet(sourceOrSinkRef))
-		//						.eGet(CompartmentGroupPackage.Literals.END__LINK);
-		//				if (checkbox.getSelection()) {
-		//					Link l = (Link) EcoreUtil.create(CompartmentGroupPackage.Literals.LINK);
-		//					l.setCompartment(target);
-		//					epimodel.util.Edit.transact(dom, () -> {
-		//						links.add(l);
-		//					});
-		//				} else {
-		//					for (Link link : links)
-		//						if (link.getCompartment().equals(target)) {
-		//							epimodel.util.Edit.transact(dom, () -> {
-		//								links.remove(link);
-		//							});
-		//							break;
-		//						}
-		//				}
-		//			}
-		//		});
+		@SuppressWarnings("unchecked")
+		EList<CompartmentWrapper> sourcesOrSinks = (EList<CompartmentWrapper>) eGet(sourceOrSinkRef);
+		
+		checkbox.setSelection(sourcesOrSinks.contains(target));
+		
+		checkbox.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				epimodel.util.Edit.transact(dom, () -> {
+					if (checkbox.getSelection())
+						sourcesOrSinks.add(target);
+					else
+						sourcesOrSinks.remove(target);
+				});
+			}
+		});
 
 		controls.add(checkbox);
 	}
