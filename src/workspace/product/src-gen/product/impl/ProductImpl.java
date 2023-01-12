@@ -73,27 +73,30 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		controls.forEach(Control::dispose);
 		controls.clear();
 		shell.setLayout(new GridLayout(2, false));
-		List<Compartment> l = getCompartment().stream().map(CompartmentWrapper::getCompartment)
-				.collect(Collectors.toList());
 
-		for (Compartment e : l) {
+		for (CompartmentWrapper w : getCompartment()) {
+			Compartment e = w.getCompartment();
 			epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
-				epimodel.util.Edit.transact(dom, () -> {
-					controls.forEach(Control::dispose);
-					controls.clear();
-					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
-					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-						epimodel.util.Edit.transact(dom, () -> getCompartment().remove(e.eContainer()));
-						shell.close();
-					});
-					shell.pack(true);
+				controls.forEach(Control::dispose);
+				controls.clear();
+				epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
+				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+					epimodel.util.Edit.transact(dom, () -> getCompartment().remove(e.eContainer()));
+					shell.close();
 				});
+				shell.pack(true);
 			});
 		}
 		epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension", () -> epimodel.util.Edit.addCompartmentWindow(dom,
-				shell, controls, w -> epimodel.util.Edit.transact(dom, () -> getCompartment().add(w))));
+		epimodel.util.Edit.addBtn(shell, controls, "Add Dimension",
+			() -> epimodel.util.Edit.addCompartmentWindow(
+				dom,
+				shell,
+				controls,
+				w -> getCompartment().add(w)
+			)
+		);
 		shell.pack(true);
 	}
 
@@ -106,22 +109,26 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		for (Flow e : l) {
 			epimodel.util.Edit.addText(shell, controls, e.getId().toString());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
-				epimodel.util.Edit.transact(dom, () -> {
-					controls.forEach(Control::dispose);
-					controls.clear();
-					epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
-					epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-						epimodel.util.Edit.transact(dom, () -> getCompartment().remove(e.eContainer()));
-						shell.close();
-					});
-					shell.pack(true);
+				controls.forEach(Control::dispose);
+				controls.clear();
+				epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
+				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
+					epimodel.util.Edit.transact(dom, () -> getCompartment().remove(e.eContainer()));
+					shell.close();
 				});
+				shell.pack(true);
 			});
 		}
 
 		epimodel.util.Edit.addText(shell, controls, "");
-		epimodel.util.Edit.addBtn(shell, controls, "Add Flow", () -> epimodel.util.Edit.addFlowWindow(shell, controls,
-				w -> epimodel.util.Edit.transact(dom, () -> getFlow().add(w))));
+		epimodel.util.Edit.addBtn(shell, controls, "Add Flow",
+			() -> epimodel.util.Edit.addFlowWindow(
+				this,
+				shell,
+				controls,
+				w -> getFlow().add(w)
+			)
+		);
 		shell.pack(true);
 	}
 
