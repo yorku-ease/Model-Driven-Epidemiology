@@ -57,12 +57,6 @@ public class CustomProjectSupport {
     			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6); // TODO why 6? maybe 'file:/'
     			
     			createEpimodel(model_fn_path);
-//    			Session aird = ModelingProjectManager.INSTANCE.createLocalRepresentationsFile(project, new NullProgressMonitor());
-//    			AddSemanticResourceCommand addCommand = new AddSemanticResourceCommand(
-//    				aird,
-//    				URI.createFileURI(model_fn_path),
-//    				new NullProgressMonitor());
-//    			aird.getTransactionalEditingDomain().getCommandStack().execute(addCommand);
             }
             {
                 Bundle bundle = FrameworkUtil.getBundle(CustomProjectSupport.class);

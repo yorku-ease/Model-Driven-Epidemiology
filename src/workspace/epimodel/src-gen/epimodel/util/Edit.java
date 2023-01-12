@@ -72,20 +72,28 @@ public class Edit {
         List<EClass> types = getNonAbstractEClassesOfType(EpimodelPackage.Literals.COMPARTMENT);
         for (EClass ec : types) {
         	addBtn(shell, controls, ec.getName(), () -> {
-    			controls.forEach(Control::dispose);
-    			controls.clear();
                 CompartmentWrapper w = EpimodelFactory.eINSTANCE.createCompartmentWrapper();
                 Compartment compartment = (Compartment) EcoreUtil.create(ec);
                 w.setCompartment(compartment);
-    			shell.addListener(SWT.Close, e -> epimodel.util.Edit.transact(dom, () -> callback.accept(w)));
-	        	compartment.edit(dom, shell, controls);
-    			shell.pack(true);
+                
+                // it was more complicated to directly open
+                // the edit window when selecting type
+                // but leave this commented in case someone wants to try it
+                
+//              controls.forEach(Control::dispose);
+//              controls.clear();
+//    			shell.addListener(SWT.Close, e -> epimodel.util.Edit.transact(dom, () -> callback.accept(w)));
+//	        	compartment.edit(dom, shell, controls);
+//              shell.pack(true);
+                
+                epimodel.util.Edit.transact(dom, () -> callback.accept(w));
+                shell.close();
         	});
         }
 		shell.pack(true);
 	}
 	
-	public static void addFlowWindow(Shell shell, List<Control> controls, Consumer<FlowWrapper> callback) {
+	public static void addFlowWindow(EObject dom, Shell shell, List<Control> controls, Consumer<FlowWrapper> callback) {
 		controls.forEach(Control::dispose);
 		controls.clear();
         shell.setLayout(new GridLayout(1, false));
@@ -95,7 +103,7 @@ public class Edit {
                 FlowWrapper w = EpimodelFactory.eINSTANCE.createFlowWrapper();
                 Flow flow = (Flow) EcoreUtil.create(ec);
                 w.setFlow(flow);
-                callback.accept(w);
+                epimodel.util.Edit.transact(dom, () -> callback.accept(w));
                 shell.close();
         	});
         }
