@@ -8,4 +8,4 @@ In reality we don't want to plot every compartment and we want to load our compa
 
 ![image](https://user-images.githubusercontent.com/43907476/156084266-0367099a-2225-4a82-8c37-439603b2c4ee.png)
 
-Ideally place parameters in a dict-like structure and set them using `params['Rate']['E->I1] = 0.77, params['Contagiousness']['I1'] = 0.1, ...`
+Ideally place parameters in a dict-like structure and set them using `params['Rate']['E->I1] = 0.7` for example
