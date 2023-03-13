@@ -14,6 +14,14 @@ import de.ovgu.featureide.fm.core.configuration.ConfigurationAnalyzer;
 
 public class Solver {
 	public static boolean canBeValid(IFeatureModel fm, Configuration conf, List<IConstraint> constraints) {
+		
+//		if (conf.getSelectedFeatures()
+//				.stream()
+//				.filter(f -> f.getStructure().getChildren().size() > 0)
+//				.findAny()
+//				.isPresent())
+//			return false;
+		
 		List<IConstraint> saved = new ArrayList<>(fm.getConstraints());
 		
 		fm.setConstraints(constraints);
@@ -28,12 +36,15 @@ public class Solver {
 	}
 	
 	public static List<List<IConstraint>> getErrors(IFeatureModel fm, Configuration conf, int maxSearchComplexity) {
-		// just in case someone calls this with a valid model
-		FeatureModelFormula fmf = new FeatureModelFormula(fm);
-		ConfigurationAnalyzer ca = new ConfigurationAnalyzer(fmf, conf);
-		if (ca.canBeValid())
-			return new ArrayList<>();
-		// potentially expensive, depends on the error complexity, max depth, number of features
+		{
+			// just in case someone calls this with a valid model
+			FeatureModelFormula fmf = new FeatureModelFormula(fm);
+			ConfigurationAnalyzer ca = new ConfigurationAnalyzer(fmf, conf);
+			if (ca.canBeValid())
+				return new ArrayList<>();
+		}
+		
+		// potentially expensive, depends on max depth reached and number of features and constraints
 		for (int i = 1; i <= maxSearchComplexity; ++i) {
 			List<List<IConstraint>> potential = getConstraintArrangementsOfComplexity(fm, i);
 			
@@ -42,10 +53,11 @@ public class Solver {
 				.filter(l -> !canBeValid(fm, conf, l))
 				.collect(Collectors.toList());
 
-			if (!errorsAtThisLevel.isEmpty() || maxSearchComplexity == 0)
+			if (!errorsAtThisLevel.isEmpty())
 				return errorsAtThisLevel;
 		}
-		throw new RuntimeException();
+		// there is an error and we could find it with a higher search complexity
+		throw new RuntimeException("Invalid Configuration but unable to identify the error");
 	}
 	
 	private static List<List<Integer>> getArrangementsOfComplexity(int complexity, int range) {

@@ -48,7 +48,9 @@ public class CustomProjectSupport {
             
             {
                 StringBuilder extensions = new StringBuilder();
-                extensions.append("epimodel\n"); // this isn't a 'plugin' so we add it manually as it won't be added by the FM
+                // epimodel isn't a plugin according to the
+                // feature model, so we need to add it manually
+                extensions.append("epimodel\n");
                 tree(fm.getFeature("EpidemicMetamodelLine").getStructure(), conf, extensions);
                 createFile(project, "extensions.txt", extensions.toString());
             }

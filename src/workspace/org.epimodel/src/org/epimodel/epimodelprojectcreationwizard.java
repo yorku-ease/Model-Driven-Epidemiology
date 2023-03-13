@@ -75,10 +75,18 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 	}
+	
+	@Override
+	public boolean canFinish() {
+		if (creationPage.getProjectName().trim().length() == 0)
+			return false;
+		return creationPage.isPageComplete();
+	}
 
 	@Override
 	public boolean performFinish() {
-		if (markPlugins()) {
+		List<List<IConstraint>> errs = markPlugins();
+		if (errs.size() == 0) {
 			CustomProjectSupport.createProject(
 					creationPage.getProjectName(),
 					ResourcesPlugin.getWorkspace().getRoot().getLocationURI(),
@@ -86,12 +94,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 					conf);
 			return true;
 		} else {
-			List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 3);
-			if (errs.size() > 0)
-				System.out.println("Invalid configuration, here are the unrespected sets of constraints:");
-	//		for (int i = 0; i < availableExtensions.size(); ++i) {
-	//			conf.setManual(availableExtensions.get(i), creationPage.getTruthValues().get(i) ? Selection.SELECTED : Selection.UNSELECTED);
-	//		}
+			System.out.println("Invalid configuration, here are the unrespected sets of constraints:");
 			for (List<IConstraint> err : errs) {
 				Solver.FeatureModelConfigurationError fmce = new Solver.FeatureModelConfigurationError(err);
 				System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
@@ -101,26 +104,34 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		}
 	}
 	
-	boolean markPlugins() {
+	List<List<IConstraint>> markPlugins() {
 		List<IFeatureStructure> pluginFeatures = fm.getFeature("Plugins").getStructure().getChildren();
 		
+		// enable all plugin features
 		{			
 			for (IFeatureStructure feature : pluginFeatures)
 				conf.setManual(feature.getFeature().getName(), Selection.SELECTED);
-			List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 1);
-			if (errs.size() > 0)
-				return false;	
 		}
 		
-		for (IFeatureStructure feature : pluginFeatures) {
-			conf.setManual(feature.getFeature().getName(), Selection.UNSELECTED);
+		// we expect there to be no errors when enabling plugins
+		// but if there are, something is wrong
+		{
 			List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 1);
 			if (errs.size() > 0)
-				conf.setManual(feature.getFeature().getName(), Selection.SELECTED);
+				return errs;
+		}
+		
+		// for each plugin feature, if they cause a solver error when disabled, keep them enabled
+		{
+			for (IFeatureStructure feature : pluginFeatures) {
+				conf.setManual(feature.getFeature().getName(), Selection.UNSELECTED);
+				List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 4);
+				if (errs.size() > 0)
+					conf.setManual(feature.getFeature().getName(), Selection.SELECTED);
+			}	
 		}
 
-		List<List<IConstraint>> errs = Solver.getErrors(fm,  conf, 1);
-		return errs.size() == 0;
+		return Solver.getErrors(fm,  conf, 5);
 	}
 	
 	@Override
@@ -141,8 +152,27 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 			super("WizardNewProjectCreationPage");
 			this.fm = fm;
 			this.conf = conf;
-	        setTitle("New Epidemiological Project");
-	        setDescription("Wizard: First page");
+	        setTitle("New Epidemiological Modeling Project");
+//	        setDescription("Wizard: First page");
+		}
+		
+		
+		@Override
+		public boolean isPageComplete() {
+			List<IFeature> l = conf.getSelectedFeatures();
+			for (IFeature f : l)
+				if (f.getStructure().hasChildren()) {
+					List<IFeatureStructure> children = f.getStructure().getChildren();
+					boolean hasChildSelected = false;
+					for (IFeatureStructure child : children)
+						if (l.contains(child.getFeature())) {
+							hasChildSelected = true;
+							break;
+						}
+					if (!hasChildSelected)
+						return false;
+				}
+			return true;
 		}
 
 		@Override
@@ -161,14 +191,9 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 
 	            @Override
 	            public void keyReleased(KeyEvent e) {
-	                if (!projectNameField.getText().isEmpty())
-	                    setPageComplete(true);
+	            	setPageComplete(isPageComplete());
 	            }
 	        });
-//
-//			this.checkboxes = new ArrayList<>(extensions.size());
-//			for (int i = 0; i < extensions.size(); ++i) {
-//			}
 	        
 	        redraw();
 	        
@@ -206,6 +231,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 						conf.setManual(feature.getFeature().getName(), Selection.UNSELECTED);
 						unselectChildren(feature);
 					}
+	            	setPageComplete(isPageComplete());
 					redraw();
 				}
 
