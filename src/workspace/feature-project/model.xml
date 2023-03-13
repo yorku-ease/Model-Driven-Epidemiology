@@ -22,7 +22,7 @@
 					<feature hidden="true" name="VaccinationCompartment"/>
 					<feature hidden="true" name="compartmentLink"/>
 				</or>
-				<or abstract="true" hidden="true" name="Vaccination">
+				<or abstract="true" name="Vaccination">
 					<feature name="VaccinationUsingProduct"/>
 					<feature name="VaccinationUsingProductAndVaccinationCompartment"/>
 				</or>
@@ -65,6 +65,15 @@
 		<rule>
 			<description>The ability to compose groups is required for an Epidemic to be created (this constraint can be lifted if other types of composability tools are offered instead but for now is required)</description>
 			<var>compartmentGroup</var>
+		</rule>
+		<rule>
+			<imp>
+				<var>Vaccination</var>
+				<disj>
+					<var>VaccinationUsingProduct</var>
+					<var>VaccinationUsingProductAndVaccinationCompartment</var>
+				</disj>
+			</imp>
 		</rule>
 	</constraints>
 </featureModel>
