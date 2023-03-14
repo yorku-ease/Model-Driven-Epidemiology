@@ -22,7 +22,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -48,13 +47,14 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
  */
 public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage {
 
+	static boolean isLoaded = false;
 	static List<String> packages = null;
 	static List<List<EClass>> eclassesByPackage = null;
 
 	static public List<EPackage> getEpimodelPackages() {
 		final EPackage.Registry reg = EPackage.Registry.INSTANCE;
-		List<EPackage> allPackages = reg.values().stream().filter(pkg -> pkg instanceof EPackage)
-				.map(pkg -> (EPackage) pkg).collect(Collectors.toList());
+		List<EPackage> allPackages = new ArrayList<>(reg.values().stream().filter(pkg -> pkg instanceof EPackage)
+				.map(pkg -> (EPackage) pkg).toList());
 		List<EPackage> epimodelPackages = new ArrayList<>();
 
 		do {
@@ -72,9 +72,11 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		return epimodelPackages;
 	}
 
-	public static void doCollectEClasses() {
+	public static void collectAllEClasses() {
+		if (packages != null && eclassesByPackage != null)
+			return;
 		List<EPackage> epimodelPackages = EpimodelPackageImpl.getEpimodelPackages();
-		packages = epimodelPackages.stream().map(EPackage::getName).collect(Collectors.toList());
+		packages = epimodelPackages.stream().map(EPackage::getName).toList();
 		eclassesByPackage = new ArrayList<>(packages.size());
 		for (int i = 0; i < packages.size(); ++i)
 			eclassesByPackage.add(new ArrayList<>());
@@ -93,8 +95,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 	}
 
 	public static List<EClass> collectEClasses(List<String> enabledPackages) {
-		if (packages == null || eclassesByPackage == null)
-			doCollectEClasses();
+		collectAllEClasses();
 		List<EClass> eclasses = new ArrayList<>();
 		for (int i = 0; i < packages.size(); ++i)
 			if (enabledPackages.contains(packages.get(i)))
@@ -125,7 +126,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		} catch (Exception e) {
 		}
 
-		List<String> pkgsStrToFindInXMI = pkgs.stream().map(p -> p.getName() + "#").collect(Collectors.toList());
+		List<String> pkgsStrToFindInXMI = pkgs.stream().map(p -> p.getName() + "#").toList();
 
 		String ecoreStr = output.toString();
 		return ecoreStr.contains("http://www.example.org/epimodel")
@@ -248,16 +249,19 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		// Added Manually
 		try {
-			loadExtensions();
+			loadExtensions(EpimodelPackageImpl.class.getClassLoader());
+			return theEpimodelPackage;
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-
-		return theEpimodelPackage;
 	}
 
-	public static void loadExtensions() throws Exception {
-
+	public static void loadExtensions(ClassLoader cl) throws Exception {
+		if (isLoaded)
+			return;
+		isLoaded = true;
+		System.out.println("Using ClassLoader " + cl);
 		{
 			String env = "epimodelJars";
 			String value = System.getenv(env);
@@ -284,24 +288,24 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		File[] listOfFiles = folder.listFiles();
 
 		for (File jar : listOfFiles)
-			addEPackageToRegistry(folder_path + "/" + jar.getName());
+			addEPackageToRegistry(folder_path + "/" + jar.getName(), cl);
 	}
 
-	static void addEPackageToRegistry(String jar) throws Exception {
-		for (Class<?> c : loadClassesFromJar(jar))
+	static void addEPackageToRegistry(String jar, ClassLoader cl) throws Exception {
+		for (Class<?> c : loadClassesFromJar(jar, cl))
 			if (c.getName().endsWith("Package"))
 				EPackage.Registry.INSTANCE.put((String) getStaticFieldByName(c, "eNS_URI"),
 						getStaticFieldByName(c, "eINSTANCE"));
 	}
-
-	protected static List<Class<?>> loadClassesFromJar(String pathToJar) throws IOException, ClassNotFoundException {
+	
+	protected static List<Class<?>> loadClassesFromJar(String pathToJar, ClassLoader _cl) throws IOException, ClassNotFoundException {
 		JarFile jarFile = new JarFile(pathToJar);
 		Enumeration<JarEntry> entry = jarFile.entries();
 		List<Class<?>> classes = new ArrayList<>();
 
 		URL[] urls = { new URL("jar:file:" + pathToJar + "!/") };
 
-		URLClassLoader cl = URLClassLoader.newInstance(urls, EpimodelPackageImpl.class.getClassLoader());
+		URLClassLoader cl = URLClassLoader.newInstance(urls, _cl);
 
 		while (entry.hasMoreElements()) {
 			JarEntry je = entry.nextElement();

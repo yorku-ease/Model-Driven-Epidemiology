@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -38,7 +37,7 @@ public class Comparison {
 						.getLabels()
 						.stream()
 						.filter(label -> uniqueLabels.contains(label) && !duplicateLabels.contains(label))
-						.collect(Collectors.toList()));
+						.toList());
 				uniqueLabels.addAll(compartment.getLabels());
 			});
 			uniqueLabels.removeAll(duplicateLabels);
@@ -176,7 +175,7 @@ public class Comparison {
 				}
 			}
 			
-			childrenDiffs = childrenMatches.stream().map(m -> m.compare(matches)).collect(Collectors.toList());
+			childrenDiffs = childrenMatches.stream().map(m -> m.compare(matches)).toList();
 			sameChildrenMatchAndDiffs = new ArrayList<>();
 			notSameChildrenMatchAndDiffs = new ArrayList<>();
 			
@@ -195,7 +194,7 @@ public class Comparison {
 					.stream()
 					.map(diffResult -> diffResult.accountsForMatches)
 					.flatMap(List::stream)
-					.collect(Collectors.toList());
+					.toList();
 			
 			this.isSame = notSameChildrenMatchAndDiffs.size() == 0 && myUnMatchedCompartments.size() == 0 && otherUnMatchedCompartments.size() == 0;
 		}
@@ -229,7 +228,7 @@ public class Comparison {
 						.map(c -> {
 							Optional<Match> o = matches.find(c);
 							return o.isPresent() ? c.getLabels() + "(Move detected)" : c.getLabels();
-						}).collect(Collectors.toList()).toString()
+						}).toList().toString()
 				);
 				requiresComma = true;
 			}
@@ -243,7 +242,7 @@ public class Comparison {
 						.map(c -> {
 							Optional<Match> o = matches.find(c);
 							return o.isPresent() ? c.getLabels() + "(Move detected)" : c.getLabels();
-						}).collect(Collectors.toList()).toString()
+						}).toList().toString()
 				);
 				requiresComma = true;
 			}
@@ -290,7 +289,7 @@ public class Comparison {
 							res.add((Compartment) o);
 					});
 					return res;
-				}).flatMap(List::stream).collect(Collectors.toList()),
+				}).flatMap(List::stream).toList(),
 			childrenDiffs.myUnMatchedCompartments
 				.stream()
 				.map(c -> {
@@ -301,7 +300,7 @@ public class Comparison {
 							res.add((Compartment) o);
 					});
 					return res;
-				}).flatMap(List::stream).collect(Collectors.toList()),
+				}).flatMap(List::stream).toList(),
 			Optional.of(childrenDiffs),
 			isSame,
 			description);
@@ -370,8 +369,8 @@ public class Comparison {
 		List<Compartment> model1compartments = new ArrayList<>(context.modelctx1.compartments);
 		List<Compartment> model2compartments = new ArrayList<>(context.modelctx2.compartments);
 		if (doPrint) {
-			System.out.println("Model1:\n" + model1compartments.stream().map(Compartment::getLabels).collect(Collectors.toList()));
-			System.out.println("Model2:\n" + model2compartments.stream().map(Compartment::getLabels).collect(Collectors.toList()));
+			System.out.println("Model1:\n" + model1compartments.stream().map(Compartment::getLabels).toList());
+			System.out.println("Model2:\n" + model2compartments.stream().map(Compartment::getLabels).toList());
 		}
 		
 		List<Compartment> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);

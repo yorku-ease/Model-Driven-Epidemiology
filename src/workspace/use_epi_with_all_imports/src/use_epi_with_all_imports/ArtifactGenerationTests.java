@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import epimodel.Compartment;
-import epimodel.Flow;
 import epimodel.util.FlowEquation;
 import epimodel.util.PhysicalCompartment;
 import group.Group;

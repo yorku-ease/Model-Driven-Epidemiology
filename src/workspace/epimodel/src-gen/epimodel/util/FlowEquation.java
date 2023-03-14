@@ -2,7 +2,6 @@ package epimodel.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /*
  * Example of HIV infecting [S]usceptible [M]en by [I]nfectious [W]omen (there could also be man/man,woman/man,woman/woman)
@@ -51,7 +50,11 @@ public class FlowEquation {
 	
 	public FlowEquation deepCopy() {
 		return new FlowEquation(
-				equationCompartments.stream().map(pc -> new PhysicalCompartment(new ArrayList<>(pc.labels))).collect(Collectors.toList()),
+				new ArrayList<>(
+						equationCompartments
+							.stream()
+							.map(pc -> new PhysicalCompartment(new ArrayList<>(pc.labels)))
+							.toList()),
 				new PhysicalCompartment(new ArrayList<>(source.labels)),
 				new PhysicalCompartment(new ArrayList<>(sink.labels)),
 				equation,

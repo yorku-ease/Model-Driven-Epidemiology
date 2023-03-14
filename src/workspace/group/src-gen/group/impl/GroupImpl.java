@@ -16,7 +16,6 @@ import group.GroupPackage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -179,7 +178,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		controls.forEach(Control::dispose);
 		controls.clear();
 		shell.setLayout(new GridLayout(2, false));
-		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).filter(f -> f != null).collect(Collectors.toList());
+		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).filter(f -> f != null).toList();
 		for (Flow e : l) {
 			epimodel.util.Edit.addText(shell, controls, e.getId());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
@@ -208,7 +207,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(Compartment::getPhysicalCompartments)
 				.flatMap(List::stream)
 				.map(p -> prependSelf(p))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	@Override
@@ -219,7 +218,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(source -> source.getCompartment().getPhysicalCompartments())
 				.flatMap(List::stream)
 				.map(pc -> prependSelf(pc))
-				.collect(Collectors.toList());
+				.toList();
 		else
 			return getPhysicalCompartments();
 	}
@@ -232,7 +231,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(sink -> sink.getCompartment().getPhysicalCompartments())
 				.flatMap(List::stream)
 				.map(pc -> prependSelf(pc))
-				.collect(Collectors.toList());
+				.toList();
 		else
 			return getPhysicalCompartments();
 	}
@@ -245,7 +244,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.map(Compartment::getEquations)
 				.flatMap(List::stream)
 				.map(eq -> prependSelf(eq))
-				.collect(Collectors.toList());
+				.toList();
 		
 		List<FlowEquation> flowsDefinedHere = getFlow()
 				.stream()
@@ -254,7 +253,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				.flatMap(List::stream)
 				.map(eq -> replicateEquationToMatchPCs(eq, this))
 				.flatMap(List::stream)
-				.collect(Collectors.toList());
+				.toList();
 		
 		flowsDefinedInChildren.addAll(flowsDefinedHere);
 		return flowsDefinedInChildren;
@@ -279,10 +278,10 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		for (CompartmentWrapper w : getCompartment()) {
 			Compartment c = w.getCompartment();
 			if (c.getLabels().equals(child.labels))
-				return c.getSources().stream().map(pc->prependSelf(pc)).collect(Collectors.toList());
+				return c.getSources().stream().map(pc->prependSelf(pc)).toList();
 			for (PhysicalCompartment pc : c.getPhysicalCompartments())
 				if (pc.labels.containsAll(child.labels))
-					return c.getSourcesFor(child).stream().map(pc2->prependSelf(pc2)).collect(Collectors.toList());
+					return c.getSourcesFor(child).stream().map(pc2->prependSelf(pc2)).toList();
 		}
 		throw new RuntimeException("Group has no child matching " + child);
 	}
@@ -292,10 +291,10 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		for (CompartmentWrapper w : getCompartment()) {
 			Compartment c = w.getCompartment();
 			if (c.getLabels().equals(child.labels))
-				return c.getSinks().stream().map(pc->prependSelf(pc)).collect(Collectors.toList());
+				return c.getSinks().stream().map(pc->prependSelf(pc)).toList();
 			for (PhysicalCompartment pc : c.getPhysicalCompartments())
 				if (pc.labels.containsAll(child.labels))
-					return c.getSinksFor(child).stream().map(pc2->prependSelf(pc2)).collect(Collectors.toList());
+					return c.getSinksFor(child).stream().map(pc2->prependSelf(pc2)).toList();
 		}
 		throw new RuntimeException("Group has no child matching " + child);
 	}

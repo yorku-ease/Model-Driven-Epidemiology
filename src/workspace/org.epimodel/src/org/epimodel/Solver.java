@@ -51,7 +51,7 @@ public class Solver {
 			List<List<IConstraint>> errorsAtThisLevel = potential
 				.stream()
 				.filter(l -> !canBeValid(fm, conf, l))
-				.collect(Collectors.toList());
+				.toList();
 
 			if (!errorsAtThisLevel.isEmpty())
 				return errorsAtThisLevel;
@@ -64,7 +64,10 @@ public class Solver {
 		List<Integer> base = new ArrayList<>();
 		for (int i = 0; i < range; ++i)
 			base.add(i);
-		List<List<Integer>> res = base.stream().map(c -> new ArrayList<>(Arrays.asList(c))).collect(Collectors.toList());
+		List<List<Integer>> res = base
+				.stream()
+				.map(c -> (List<Integer>) new ArrayList<>(Arrays.asList(c)))
+				.toList();
 
 		for (int i = 1; i < complexity; ++i) {
 			List<List<Integer>> temp = new ArrayList<>();
@@ -89,8 +92,8 @@ public class Solver {
 				.map(li -> li
 						.stream()
 						.map(i -> fm.getConstraints().get(i))
-						.collect(Collectors.toList()))
-				.collect(Collectors.toList());
+						.toList())
+				.toList();
 	}
 	
 	public static <T> List<T> newListFromListAndNewElement(List<T> l, T elem) {
@@ -110,7 +113,7 @@ public class Solver {
 			return errors
 					.stream()
 					.map(e -> e.getDisplayName())
-					.collect(Collectors.toList())
+					.toList()
 					.toString();
 		}
 		
