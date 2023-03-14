@@ -70,13 +70,13 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 		return eclasses.stream()
 				.map(c -> c.getEReferences().stream()
 						.filter(ref -> ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT))
-						.collect(Collectors.toList()))
-				.flatMap(List::stream).collect(Collectors.toList());
+						.toList())
+				.flatMap(List::stream).toList();
 	}
 
 	@Override
 	public final List<EObject> getTargetObjects() {
-		return flowRefs().stream().map(ref -> (EObject) eGet(ref)).collect(Collectors.toList());
+		return flowRefs().stream().map(ref -> (EObject) eGet(ref)).toList();
 	}
 
 	@Override

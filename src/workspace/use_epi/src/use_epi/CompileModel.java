@@ -3,7 +3,6 @@ package use_epi;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.stream.Collectors;
 
 import epimodel.util.FlowEquation;
 import epimodel.util.PhysicalCompartment;
@@ -36,7 +35,7 @@ public class CompileModel {
 			PrintWriter writer = new PrintWriter(outfolder + myEpi.getCompartment().getLabels() + ".equations.txt", "UTF-8");
 			for (FlowEquation eq : myEpi.getCompartment().getEquations()) {
 				writer.println(eq.equation);
-				writer.println(eq.equationCompartments.stream().map(p->p.labels).collect(Collectors.toList()));
+				writer.println(eq.equationCompartments.stream().map(p->p.labels).toList());
 				writer.println(eq.source);
 				writer.println(eq.sink);
 				writer.println(eq.requiredOperators);

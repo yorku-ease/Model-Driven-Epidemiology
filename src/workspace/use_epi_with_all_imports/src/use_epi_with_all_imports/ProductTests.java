@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,6 +27,15 @@ class ProductTests {
 	
 	@Test
 	void testCartesianProductOrder() {
+		
+		List<List<String>> computed = CartesianProduct.cartesianProduct(
+			Arrays.asList(
+					Arrays.asList("x", "y"),
+					Arrays.asList("1", "2", "3", "4"),
+					Arrays.asList("a", "b", "c")
+				)
+			);
+		
 		List<List<String>> expected = Arrays.asList(
 				Arrays.asList("x", "1", "a"),
 				Arrays.asList("x", "1", "b"),
@@ -53,14 +61,6 @@ class ProductTests {
 				Arrays.asList("y", "4", "a"),
 				Arrays.asList("y", "4", "b"),
 				Arrays.asList("y", "4", "c")
-			);
-		
-		List<List<String>> computed = CartesianProduct.cartesianProduct(
-			Arrays.asList(
-					Arrays.asList("x", "y"),
-					Arrays.asList("1", "2", "3", "4"),
-					Arrays.asList("a", "b", "c")
-				)
 			);
 		
 		assertEquals(expected, computed);
@@ -263,7 +263,7 @@ class ProductTests {
 			"", // equation
 			new ArrayList<>() // required ops
 		);
-		List<List<PhysicalCompartment>> pcl = epi.getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getPhysicalCompartments).collect(Collectors.toList());
+		List<List<PhysicalCompartment>> pcl = epi.getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getPhysicalCompartments).toList();
 		assertEquals(1, epi.getPartOfWhichDimIndex(symptoms, pcl));
 	}
 }

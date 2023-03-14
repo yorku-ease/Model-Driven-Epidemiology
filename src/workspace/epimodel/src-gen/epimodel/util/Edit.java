@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -125,7 +124,7 @@ public class Edit {
 				.collectEClasses(getCurrentPlugins())
 				.stream()
 				.filter(ec -> !ec.isAbstract() && !ec.isInterface() && supertype.isSuperTypeOf(ec))
-				.collect(Collectors.toList());
+				.toList();
 	}
 	
 	static List<String> getCurrentPlugins() {
@@ -146,7 +145,7 @@ public class Edit {
 			return Arrays.asList(lines)
 					.stream()
 					.map(String::trim)
-					.collect(Collectors.toList());
+					.toList();
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

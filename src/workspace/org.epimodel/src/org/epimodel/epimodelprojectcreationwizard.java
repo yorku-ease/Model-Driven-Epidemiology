@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -41,10 +42,12 @@ import de.ovgu.featureide.fm.core.configuration.Selection;
 import de.ovgu.featureide.fm.core.init.FMCoreLibrary;
 import de.ovgu.featureide.fm.core.init.LibraryManager;
 import de.ovgu.featureide.fm.core.io.manager.FeatureModelIO;
+import epimodel.impl.EpimodelPackageImpl;
 
 public class epimodelprojectcreationwizard extends Wizard implements INewWizard {
 	
-	protected WizardNewProjectCreationPage creationPage;
+	protected FeaturePage featurePage;
+	protected PluginPage pluginPage;
 	final IFeatureModel fm;
 	final FeatureModelFormula fmf;
 	final Configuration conf;
@@ -73,14 +76,13 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 	}
 
 	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-	}
+	public void init(IWorkbench workbench, IStructuredSelection selection) {}
 	
 	@Override
 	public boolean canFinish() {
-		if (creationPage.getProjectName().trim().length() == 0)
+		if (featurePage.getProjectName().trim().length() == 0)
 			return false;
-		return creationPage.isPageComplete();
+		return featurePage.isPageComplete();
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		List<List<IConstraint>> errs = markPlugins();
 		if (errs.size() == 0) {
 			CustomProjectSupport.createProject(
-					creationPage.getProjectName(),
+					featurePage.getProjectName(),
 					ResourcesPlugin.getWorkspace().getRoot().getLocationURI(),
 					fm,
 					conf);
@@ -137,23 +139,24 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 	@Override
     public void addPages() {
 		super.addPages();
-		creationPage = new WizardNewProjectCreationPage(fm, conf);
-		addPage(creationPage);
+		featurePage = new FeaturePage(fm, conf);
+		addPage(featurePage);
+		pluginPage = new PluginPage(conf);
+		addPage(pluginPage);
 	}
 	
-	class WizardNewProjectCreationPage extends WizardPage {
+	class FeaturePage extends WizardPage {
 	    private Composite container;
 		private Text projectNameField;
 		final IFeatureModel fm;
 		final Configuration conf;
 		List<Control> controls = new ArrayList<>();
 
-		protected WizardNewProjectCreationPage(IFeatureModel fm, Configuration conf) {
-			super("WizardNewProjectCreationPage");
+		protected FeaturePage(IFeatureModel fm, Configuration conf) {
+			super("FeaturePage");
 			this.fm = fm;
 			this.conf = conf;
 	        setTitle("New Epidemiological Modeling Project");
-//	        setDescription("Wizard: First page");
 		}
 		
 		
@@ -232,13 +235,12 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 						unselectChildren(feature);
 					}
 	            	setPageComplete(isPageComplete());
+	            	pluginPage.pluginsEnabledManually = new ArrayList<>();
 					redraw();
 				}
 
 				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-	        	
+				public void widgetDefaultSelected(SelectionEvent e) {}
 	        });
 	        
 			if (enabled)
@@ -271,6 +273,92 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		
 		public String getProjectName() {
 			return projectNameField.getText();
+		}
+	}
+	
+	class PluginPage extends WizardPage {
+		protected Composite container;
+		protected List<Control> controls = new ArrayList<>();
+		
+		List<String> availablePlugins = loadAvailablePlugins();
+		List<String> pluginsEnabledManually = new ArrayList<>();
+		
+		final Configuration conf;
+
+		protected PluginPage(Configuration conf) {
+			super("PluginPage");
+			this.conf = conf;
+	        setTitle("New Epidemiological Modeling Project");
+		}
+
+		@Override
+		public void createControl(Composite parent) {
+			container = new Composite(parent, SWT.NONE);
+	        container.setLayout(new GridLayout(2, false));
+	        Label label = new Label(container, SWT.NONE);
+	        label.setText("Project Name");
+	        
+	        redraw();
+	        
+	        setControl(container);
+	        
+	        setPageComplete(true);
+		}
+
+		void redraw() {
+			for (Control  c : controls)
+				c.dispose();
+			controls.clear();
+			
+			List<String> selectedFeatures = new ArrayList<>(conf.getSelectedFeatureNames());
+			
+			for (String plugin : availablePlugins) {
+				Button b = new Button(container, SWT.CHECK);
+		        Label label = new Label(container, SWT.NONE);
+		        controls.add(b);
+		        controls.add(label);
+		        label.setText(plugin);
+				
+				boolean selectedByFM = selectedFeatures.contains(plugin);
+				if (selectedByFM) {
+					b.setSelection(true);
+					b.setEnabled(false);
+				} else {
+			        b.addSelectionListener(new SelectionAdapter()  {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							boolean enabled = b.getSelection();
+							if (enabled && !pluginsEnabledManually.contains(plugin))
+								pluginsEnabledManually.add(plugin);
+							else if (!enabled && pluginsEnabledManually.contains(plugin))
+								pluginsEnabledManually.remove(plugin);
+							redraw();
+						}
+
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {}
+			        });
+				}
+					
+			}
+			
+        	container.layout();
+		}
+		
+		List<String> loadAvailablePlugins() {
+			
+			try {
+				EpimodelPackageImpl.loadExtensions(epimodelprojectcreationwizard.class.getClassLoader());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			EpimodelPackageImpl.collectAllEClasses();
+			EpimodelPackageImpl.getEpimodelPackages();
+			return EpimodelPackageImpl
+					.getEpimodelPackages()
+					.stream()
+					.map(EPackage::getName)
+					.toList();
 		}
 	}
 }
