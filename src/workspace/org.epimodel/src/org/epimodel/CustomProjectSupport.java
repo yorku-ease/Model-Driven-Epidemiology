@@ -5,6 +5,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -37,7 +40,8 @@ public class CustomProjectSupport {
 		String projectName,
 		java.net.URI location,
 		IFeatureModel fm,
-		Configuration conf
+		Configuration conf,
+		List<String> pluginsEnabledManually
     ) {
         Assert.isNotNull(projectName);
         Assert.isTrue(projectName.trim().length() > 0);
@@ -47,12 +51,17 @@ public class CustomProjectSupport {
             addNature(project, EpimodelProjectNature.NATURE_ID);
             
             {
-                StringBuilder extensions = new StringBuilder();
-                // epimodel isn't a plugin according to the
-                // feature model, so we need to add it manually
-                extensions.append("epimodel\n");
-                tree(fm.getFeature("EpidemicMetamodelLine").getStructure(), conf, extensions);
-                createFile(project, "extensions.txt", extensions.toString());
+                List<String> plugins = new ArrayList<>();
+                plugins.add("epimodel");
+                tree(fm.getFeature("EpidemicMetamodelLine").getStructure(), conf, plugins);
+                for (String plugin : pluginsEnabledManually)
+                	if (!plugins.contains(plugin))
+                		plugins.add(plugin);
+                createFile(
+                	project,
+                	"extensions.txt",
+                	plugins.stream().map(p -> p + "\n").collect(Collectors.joining())
+                );
             }
             {
     			String model_fn = projectName + ".epimodel";
@@ -86,18 +95,19 @@ public class CustomProjectSupport {
 	    return sb.toString();
 	}
  
-    private static void tree(IFeatureStructure feature, Configuration conf, StringBuilder sb) {
+    private static void tree(IFeatureStructure feature, Configuration conf, List<String> plugins) {
 		// maybe TODO here write in the file the features selected even though we don't need them
 		// as we only care about the plugins but if we want to show the user why the plugins are enabled
 		// we need to show it in terms of features
+    	// tldr: maybe should write ALL features not just plugins
 		for (IFeatureStructure child : feature.getChildren()) {
 			if (child.getFeature().getName().equals("Plugins")) {
 				for (IFeatureStructure plugin : child.getChildren())
 					if (conf.getSelectedFeatures().contains(plugin.getFeature()))
-						sb.append(plugin.getFeature().getName()+ "\n");
+						plugins.add(plugin.getFeature().getName());
 			}
 			else
-				tree(child, conf, sb);
+				tree(child, conf, plugins);
 		}
     }
     

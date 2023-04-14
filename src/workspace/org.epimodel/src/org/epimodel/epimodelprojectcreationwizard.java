@@ -93,7 +93,8 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 					featurePage.getProjectName(),
 					ResourcesPlugin.getWorkspace().getRoot().getLocationURI(),
 					fm,
-					conf);
+					conf,
+					pluginPage.pluginsEnabledManually);
 			return true;
 		} else {
 			System.out.println("Invalid configuration, here are the unrespected sets of constraints:");
@@ -102,6 +103,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 				System.out.println("Unrespected Set of Constraints: " + fmce.getShort());
 				System.out.println(fmce.getDetailed());
 			}
+			
 			return false;
 		}
 	}
@@ -284,7 +286,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		List<String> pluginsEnabledManually = new ArrayList<>();
 		
 		final Configuration conf;
-
+		
 		protected PluginPage(Configuration conf) {
 			super("PluginPage");
 			this.conf = conf;
@@ -295,8 +297,6 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		public void createControl(Composite parent) {
 			container = new Composite(parent, SWT.NONE);
 	        container.setLayout(new GridLayout(2, false));
-	        Label label = new Label(container, SWT.NONE);
-	        label.setText("Project Name");
 	        
 	        redraw();
 	        
@@ -324,6 +324,7 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 					b.setSelection(true);
 					b.setEnabled(false);
 				} else {
+		        	b.setSelection(pluginsEnabledManually.contains(plugin));
 			        b.addSelectionListener(new SelectionAdapter()  {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
@@ -346,18 +347,17 @@ public class epimodelprojectcreationwizard extends Wizard implements INewWizard 
 		}
 		
 		List<String> loadAvailablePlugins() {
-			
 			try {
 				EpimodelPackageImpl.loadExtensions(epimodelprojectcreationwizard.class.getClassLoader());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 			EpimodelPackageImpl.collectAllEClasses();
-			EpimodelPackageImpl.getEpimodelPackages();
 			return EpimodelPackageImpl
 					.getEpimodelPackages()
 					.stream()
 					.map(EPackage::getName)
+					.filter(p -> p != "epimodel")
 					.toList();
 		}
 	}
