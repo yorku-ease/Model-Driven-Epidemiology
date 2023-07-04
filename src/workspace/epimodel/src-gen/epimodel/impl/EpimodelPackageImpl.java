@@ -53,8 +53,8 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 	static public List<EPackage> getEpimodelPackages() {
 		final EPackage.Registry reg = EPackage.Registry.INSTANCE;
-		List<EPackage> allPackages = new ArrayList<>(reg.values().stream().filter(pkg -> pkg instanceof EPackage)
-				.map(pkg -> (EPackage) pkg).toList());
+		List<EPackage> allPackages = new ArrayList<>(
+				reg.values().stream().filter(pkg -> pkg instanceof EPackage).map(pkg -> (EPackage) pkg).toList());
 		List<EPackage> epimodelPackages = new ArrayList<>();
 
 		do {
@@ -293,12 +293,16 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 	static void addEPackageToRegistry(String jar, ClassLoader cl) throws Exception {
 		for (Class<?> c : loadClassesFromJar(jar, cl))
-			if (c.getName().endsWith("Package"))
+			// ignore epimodel.EpimodelPackage, it isnt meant to be included in the .jar but
+			// if it was by accident, at least it wont crash here, it has little consequence to just allow
+			// user error to include it in the jar and ignore here
+			if (c.getName().endsWith("Package") && c.getName() != "epimodel.EpimodelPackage")
 				EPackage.Registry.INSTANCE.put((String) getStaticFieldByName(c, "eNS_URI"),
 						getStaticFieldByName(c, "eINSTANCE"));
 	}
-	
-	protected static List<Class<?>> loadClassesFromJar(String pathToJar, ClassLoader _cl) throws IOException, ClassNotFoundException {
+
+	protected static List<Class<?>> loadClassesFromJar(String pathToJar, ClassLoader _cl)
+			throws IOException, ClassNotFoundException {
 		JarFile jarFile = new JarFile(pathToJar);
 		Enumeration<JarEntry> entry = jarFile.entries();
 		List<Class<?>> classes = new ArrayList<>();
@@ -323,7 +327,10 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		Field field = c.getField(fieldName);
 		field.setAccessible(true);
-		return field.get(new Object());
+		Object res = field.get(new Object());
+		if (res == null)
+			throw new NullPointerException("Could not get static field " + fieldName + " from " + c);
+		return res;
 	}
 
 	/**
@@ -505,7 +512,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		// Initialize classes, features, and operations; add parameters
 		initEClass(compartmentWrapperEClass, CompartmentWrapper.class, "CompartmentWrapper", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getCompartmentWrapper_Compartment(), this.getCompartment(), null, "compartment", null, 0, 1,
+		initEReference(getCompartmentWrapper_Compartment(), this.getCompartment(), null, "compartment", null, 1, 1,
 				CompartmentWrapper.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -516,7 +523,7 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 
 		initEClass(flowWrapperEClass, FlowWrapper.class, "FlowWrapper", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getFlowWrapper_Flow(), this.getFlow(), null, "flow", null, 0, 1, FlowWrapper.class,
+		initEReference(getFlowWrapper_Flow(), this.getFlow(), null, "flow", null, 1, 1, FlowWrapper.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

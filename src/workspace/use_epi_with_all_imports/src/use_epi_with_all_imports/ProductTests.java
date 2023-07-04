@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import epimodel.Compartment;
 import epimodel.CompartmentWrapper;
 import epimodel.impl.CompartmentImpl;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
 import product.impl.ProductImpl;
 import product.util.CartesianProduct;
@@ -116,7 +116,7 @@ class ProductTests {
 	void test_expand_equation_simple() {
 		ProductImpl epi = (ProductImpl) make_models.product("product");
 		
-		FlowEquation rateFromAtoB = new FlowEquation(
+		PhysicalFlow rateFromAtoB = new PhysicalFlow(
 			Arrays.asList(new PhysicalCompartment(Arrays.asList("A"))),
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B")),
@@ -130,7 +130,7 @@ class ProductTests {
 		
 		for (int i = 0; i < 4; ++i)
 			assertEquals(
-				new FlowEquation(
+				new PhysicalFlow(
 					Arrays.asList(new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1)))),
 					new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1))),
 					new PhysicalCompartment(Arrays.asList("B", prod.get(i).get(0), prod.get(i).get(1))),
@@ -153,7 +153,7 @@ class ProductTests {
 	void test_expand_equation_complex() {
 		ProductImpl epi = (ProductImpl) make_models.product("product");
 		
-		FlowEquation rateFromAtoB1 = new FlowEquation(
+		PhysicalFlow rateFromAtoB1 = new PhysicalFlow(
 			Arrays.asList(new PhysicalCompartment(Arrays.asList("A"))),
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B", "1")),
@@ -165,7 +165,7 @@ class ProductTests {
 			Arrays.asList(Arrays.asList("j", "k"), Arrays.asList("x", "y", "z"))
 		);
 		
-		List<FlowEquation> l = epi.expand(
+		List<PhysicalFlow> l = epi.expand(
 				rateFromAtoB1,
 				Arrays.asList(
 					Arrays.asList(
@@ -178,7 +178,7 @@ class ProductTests {
 		
 		for (int i = 0; i < 6; ++i)
 			assertEquals(
-				new FlowEquation(
+				new PhysicalFlow(
 					Arrays.asList(new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1)))),
 					new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1))),
 					new PhysicalCompartment(Arrays.asList("B", "1", prod.get(i).get(0), prod.get(i).get(1))),
@@ -193,7 +193,7 @@ class ProductTests {
 	void test_replicateEquationToMatchPCs_simple() {
 		ProductImpl epi = (ProductImpl) make_models.product("product");
 		
-		FlowEquation rateFromAtoB = new FlowEquation(
+		PhysicalFlow rateFromAtoB = new PhysicalFlow(
 			Arrays.asList(new PhysicalCompartment(Arrays.asList("A"))),
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B")),
@@ -201,7 +201,7 @@ class ProductTests {
 			new ArrayList<>() // required ops
 		);
 		
-		List<FlowEquation> l = epi.replicateEquationToMatchPCs(rateFromAtoB, new CompartmentImpl() {
+		List<PhysicalFlow> l = epi.replicateEquationToMatchPCs(rateFromAtoB, new CompartmentImpl() {
 			@Override
 			public List<PhysicalCompartment> getSourcesFor(PhysicalCompartment c) {
 				assertEquals("B", c.labels.get(0));
@@ -232,7 +232,7 @@ class ProductTests {
 		
 		for (int i = 0; i < 6; ++i)
 			assertEquals(
-				new FlowEquation(
+				new PhysicalFlow(
 						Arrays.asList(new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0)))),
 						new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0))),
 						new PhysicalCompartment(Arrays.asList("B", prod.get(i).get(1))),
@@ -256,7 +256,7 @@ class ProductTests {
 						make_models.compartment("Asymptomatic"),
 						make_models.compartment("Symptomatic")));
 		
-		FlowEquation symptoms = new FlowEquation(
+		PhysicalFlow symptoms = new PhysicalFlow(
 			Arrays.asList(new PhysicalCompartment(Arrays.asList("Asymptomatic"))),
 			new PhysicalCompartment(Arrays.asList("Asymptomatic")),
 			new PhysicalCompartment(Arrays.asList("Symptomatic")),

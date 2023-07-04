@@ -1,5 +1,9 @@
 package use_epi_with_all_imports;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,9 +42,15 @@ public class make_models {
 				compartment("S"),
 				compartment("I"))));
 		
-		create_model_file(create_model(group("GECC_SI_S_I",
-				compartment("SI", "S"),
-				compartment("SI", "I"))));
+		create_model_file(create_model(
+				addRate(
+						group("GECC_SI_S_I",
+						compartment("SI", "S"),
+						compartment("SI", "I")),
+					"a",
+					Arrays.asList("SI", "S"),
+					Arrays.asList("SI", "I")
+			)));
 		
 		create_model_file(create_model(product("DEG_SI_S_I",
 				group("SI",
@@ -113,11 +123,34 @@ public class make_models {
 	        resSet.setPackageRegistry(pkgRegistry);
 	        resSet.setResourceFactoryRegistry(factoryRegistry);
 		}
-        URI uri = URI.createFileURI("../../test-models/" + e.getCompartmentwrapper().getCompartment().getLabels() + ".epimodel");
+		String fn = "../../test-models/" + e.getCompartmentwrapper().getCompartment().getLabels().toString().replace("[",  "").replace("]",  "") + ".epimodel";
+        URI uri = URI.createFileURI(fn);
         Resource resource = resSet.createResource(uri);
         resource.getContents().add(e);
         resource.save(null);
+        
+        // need to remove this because it is used by EMF to refer to other files but
+        // we are in the current file and it just silently fails to retrieve the reference which is great
+        // (or maybe i forgot a parameter somewhere to
+        // resolve proxies but anyway just remove this file reference)
+        fileSubStringRemove(fn, fn + "#");
 	}
+	
+	public static void fileSubStringRemove(String filePath, String substringToRemove) throws IOException {
+        StringBuilder fileContent = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            fileContent.append(line).append(System.lineSeparator());
+        }
+        reader.close();
+
+        String modifiedContent = fileContent.toString().replaceAll(substringToRemove, "");
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+        writer.write(modifiedContent);
+        writer.close();
+    }
 	
 	static Compartment getCompartmentBasedOnLabels(EObject root, List<String> labels) {
 		List<Compartment> res = new ArrayList<>();

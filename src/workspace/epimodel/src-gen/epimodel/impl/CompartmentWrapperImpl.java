@@ -40,7 +40,7 @@ public class CompartmentWrapperImpl extends MinimalEObjectImpl.Container impleme
 		if (getCompartment() == null)
 			displayCreateOption(dom, shell, controls);
 	}
-	
+
 	void displayCreateOption(EObject dom, Shell shell, List<Control> controls) {
 		epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, wrapper -> {
 			setCompartment(wrapper.getCompartment());

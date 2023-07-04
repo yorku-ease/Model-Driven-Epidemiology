@@ -8,7 +8,7 @@ import epimodel.Flow;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.CompartmentImpl;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
 
 import java.util.ArrayList;
@@ -170,10 +170,11 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public List<PhysicalCompartment> getSources() {
 		return CartesianProduct.cartesianProduct(
 				getCompartment()
-				.stream()
-				.map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getSources)
-				.toList())
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getSources)
+					.toList()
+				)
 				.stream()
 				.map(ProductImpl::combinePhysicalCompartmentsIntoOne)
 				.map(p -> prependSelf(p))
@@ -184,10 +185,11 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public List<PhysicalCompartment> getSinks() {
 		return CartesianProduct.cartesianProduct(
 				getCompartment()
-				.stream()
-				.map(CompartmentWrapper::getCompartment)
-				.map(Compartment::getSinks)
-				.toList())
+					.stream()
+					.map(CompartmentWrapper::getCompartment)
+					.map(Compartment::getSinks)
+					.toList()
+				)
 				.stream()
 				.map(ProductImpl::combinePhysicalCompartmentsIntoOne)
 				.map(p -> prependSelf(p))
@@ -195,10 +197,9 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	}
 	
 	@Override
-	public List<FlowEquation> getEquations() {
-		List<FlowEquation> flowsDefinedInChildren = getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions();
-//		List<FlowEquation> flowsDefinedHere = getProductOfFlowsDefinedHereExpandedAlongAllDimensions();
-		List<FlowEquation> flowsDefinedHere = getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved();
+	public List<PhysicalFlow> getEquations() {
+		List<PhysicalFlow> flowsDefinedInChildren = new ArrayList<>(getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions());
+		List<PhysicalFlow> flowsDefinedHere = new ArrayList<>(getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved());
 		
 		flowsDefinedInChildren.addAll(flowsDefinedHere);
 		return flowsDefinedInChildren
@@ -207,13 +208,13 @@ public class ProductImpl extends CompartmentImpl implements Product {
 				.toList();
 	}
 	
-	public List<FlowEquation> getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions() {
+	public List<PhysicalFlow> getProductOfFlowsDefinedInChildrenExpandedAlongOtherDimensions() {
 		
-		List<FlowEquation> res = new ArrayList<>();
+		List<PhysicalFlow> res = new ArrayList<>();
 		
 		for (int dimensionIndex = 0; dimensionIndex < compartment.size(); ++dimensionIndex) {
 			Compartment dimension = getCompartment().get(dimensionIndex).getCompartment();
-			List<FlowEquation> dimensionFlows = dimension.getEquations();
+			List<PhysicalFlow> dimensionFlows = dimension.getEquations();
 			int dim = dimensionIndex;
 			res.addAll(dimensionFlows.stream().map(eq -> expandFlowAsPartOfDimensionByIndex(eq, dim)).flatMap(List::stream).toList());
 		}
@@ -221,7 +222,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return res;
 	}
 	
-	public List<FlowEquation> expandFlowAsPartOfDimensionByIndex(FlowEquation eq, int dimensionIndex) {
+	public List<PhysicalFlow> expandFlowAsPartOfDimensionByIndex(PhysicalFlow eq, int dimensionIndex) {
 		List<List<PhysicalCompartment>> compartmentsOfOtherDimensions = new ArrayList<>();
 		
 		for (int otherDimensionIndex = 0; otherDimensionIndex < compartment.size(); ++otherDimensionIndex)
@@ -241,8 +242,8 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		return expand(pc, compartmentsOfOtherDimensions).stream().map(p->prependSelf(p)).toList();
 	}
 	
-	public List<FlowEquation> getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved()  {
-		List<FlowEquation> flowsDefinedHere = getFlow()
+	public List<PhysicalFlow> getProductOfFlowsDefinedHereBelongingToOtherDimensionsResolved()  {
+		List<PhysicalFlow> flowsDefinedHere = getFlow()
 				.stream()
 				.map(FlowWrapper::getFlow)
 				.map(Flow::getEquations)
@@ -269,7 +270,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			.toList();
 	}
 	
-	public int getPartOfWhichDimIndex(FlowEquation equationDefinedHere, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
+	public int getPartOfWhichDimIndex(PhysicalFlow equationDefinedHere, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
 		for (int i = 0; i < getCompartment().size(); ++i)
 			for (PhysicalCompartment pc : compartmentsOfEachDimension.get(i)) {
 				for (String label : equationDefinedHere.source.labels)
@@ -283,7 +284,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	}
 	
 	// tested
-	public List<FlowEquation> expand(FlowEquation eq, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
+	public List<PhysicalFlow> expand(PhysicalFlow eq, List<List<PhysicalCompartment>> compartmentsOfEachDimension) {
 		
 		int n = eq.equationCompartments.size();
 		
@@ -294,12 +295,12 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		List<List<List<PhysicalCompartment>>> specializationsForEachEquationCompartment = 
 				CartesianProduct.selfCartesianProduct(specializations, n);
 		
-		List<FlowEquation> expanded = new ArrayList<>();
+		List<PhysicalFlow> expanded = new ArrayList<>();
 		
 		for (List<List<PhysicalCompartment>> spec : specializationsForEachEquationCompartment) {
 			List<String> flatSpec = spec.stream().flatMap(List::stream).map(pc -> pc.labels).flatMap(List::stream).toList();
 			for (int i = 0; i < n; ++i) {
-				FlowEquation temp = eq.deepCopy();
+				PhysicalFlow temp = eq.deepCopy();
 				
 				PhysicalCompartment pc = temp.equationCompartments.get(i);
 				if (temp.source.equals(pc) || temp.sink.equals(pc)) {
@@ -327,11 +328,11 @@ public class ProductImpl extends CompartmentImpl implements Product {
 				.toList();
 	}
 	
-	public FlowEquation prependSelf(FlowEquation eq) {
+	public PhysicalFlow prependSelf(PhysicalFlow eq) {
 		return prepend(eq, getLabel());
 	}
 	
-	public FlowEquation prepend(FlowEquation eq, List<String> labels) {
+	public PhysicalFlow prepend(PhysicalFlow eq, List<String> labels) {
 		eq.source.labels.addAll(labels);
 		eq.sink.labels.addAll(labels);
 		for (PhysicalCompartment pc : eq.equationCompartments)
