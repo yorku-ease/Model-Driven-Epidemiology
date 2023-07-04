@@ -31,7 +31,7 @@ import epimodel.FlowWrapper;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.Match;
 import epimodel.util.Comparison.MatchResult;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 import epimodel.util.Comparison;
 import epimodel.util.PhysicalCompartment;
 
@@ -114,10 +114,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<CompartmentWrapper> l1 = (List<CompartmentWrapper>) eGet(compartmentsFeature);
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l2 = (List<CompartmentWrapper>) other.eGet(compartmentsFeature);
-		List<Compartment> myCompartments = l1.stream().map(CompartmentWrapper::getCompartment)
-				.toList();
-		List<Compartment> otherCompartments = l2.stream().map(CompartmentWrapper::getCompartment)
-				.toList();
+		List<Compartment> myCompartments = l1.stream().map(CompartmentWrapper::getCompartment).toList();
+		List<Compartment> otherCompartments = l2.stream().map(CompartmentWrapper::getCompartment).toList();
 
 		if (flowsFeature == null)
 			return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, null, null);
@@ -143,8 +141,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<PhysicalCompartment> l2 = other.getPhysicalCompartments();
 		boolean sameCompartments = l1.equals(l2);
 
-		List<FlowEquation> lf1 = getEquations();
-		List<FlowEquation> lf2 = other.getEquations();
+		List<PhysicalFlow> lf1 = getEquations();
+		List<PhysicalFlow> lf2 = other.getEquations();
 		boolean sameFlows = lf1.equals(lf2);
 
 		StringBuilder sb = new StringBuilder();
@@ -177,7 +175,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
 	}
 
-	void diffFlows(StringBuilder sb, List<FlowEquation> l1, List<FlowEquation> l2) {
+	void diffFlows(StringBuilder sb, List<PhysicalFlow> l1, List<PhysicalFlow> l2) {
 		int addedFlows = l2.size() - l2.stream().filter(l1::contains).toList().size();
 		int removedFlows = l1.size() + addedFlows - l2.size();
 		sb.append(" original model produces " + l1.size() + " physical flows and other model produces " + l2.size());
@@ -188,7 +186,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public List<PhysicalCompartment> getPhysicalCompartments() {
 		if (getClass() != CompartmentImpl.class)
-			throw new RuntimeException("Method `getPhysicalCompartments` not implemented for derived class " + getClass().getSimpleName());
+			throw new RuntimeException(
+					"Method `getPhysicalCompartments` not implemented for derived class " + getClass().getSimpleName());
 		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(getLabel())));
 	}
 
@@ -207,9 +206,10 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	}
 
 	@Override
-	public List<FlowEquation> getEquations() {
+	public List<PhysicalFlow> getEquations() {
 		if (getClass() != CompartmentImpl.class)
-			throw new RuntimeException("Method `getPhysicalFlows` not implemented for derived class " + getClass().getSimpleName());
+			throw new RuntimeException(
+					"Method `getPhysicalFlows` not implemented for derived class " + getClass().getSimpleName());
 		return new ArrayList<>();
 	}
 
@@ -251,46 +251,29 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			shell.close();
 		});
 	}
-	
+
 	// tested
 	// create one copy per association of sink and source in the compartment
-	public List<FlowEquation> replicateEquationToMatchPCs(FlowEquation eq, Compartment c) {
-		List<FlowEquation> res = new ArrayList<>();
+	public List<PhysicalFlow> replicateEquationToMatchPCs(PhysicalFlow eq, Compartment c) {
+		List<PhysicalFlow> res = new ArrayList<>();
 		// the source of the flow is a sink for c
 		for (PhysicalCompartment source : c.getSinksFor(eq.source))
 			// and the sink of the flow is a source for c
 			for (PhysicalCompartment sink : c.getSourcesFor(eq.sink)) {
-				FlowEquation cp = eq.deepCopy();
+				PhysicalFlow cp = eq.deepCopy();
 				for (PhysicalCompartment pc : cp.equationCompartments) {
 					if (pc.equals(cp.source))
 						pc.labels.addAll(
-								source
-									.labels
-									.stream()
-									.filter(label -> !cp.source.labels.contains(label))
-									.toList());
+								source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
 					if (pc.equals(cp.sink))
-						pc.labels.addAll(
-							sink
-								.labels
-								.stream()
-								.filter(label -> !cp.sink.labels.contains(label))
-								.toList());
+						pc.labels
+								.addAll(sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList());
 					if (!pc.labels.containsAll(c.getLabels()))
 						pc.labels.addAll(c.getLabels());
 				}
-				cp.source.labels.addAll(
-						source
-							.labels
-							.stream()
-							.filter(label -> !cp.source.labels.contains(label))
-							.toList());
-				cp.sink.labels.addAll(
-						sink
-							.labels
-							.stream()
-							.filter(label -> !cp.sink.labels.contains(label))
-							.toList());
+				cp.source.labels
+						.addAll(source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
+				cp.sink.labels.addAll(sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList());
 				res.add(cp);
 			}
 		return res;

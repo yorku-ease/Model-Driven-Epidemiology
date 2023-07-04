@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +28,7 @@ import epimodel.util.FlowEquation;
  */
 public interface Flow extends EObject {
 
-	List<FlowEquation> getEquations();
+	List<PhysicalFlow> getEquations();
 
 	List<EObject> getTargetObjects();
 

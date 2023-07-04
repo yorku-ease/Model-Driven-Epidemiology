@@ -14,14 +14,14 @@ import java.util.List;
  * 	 OR more complex = [*, get]
  */
 
-public class FlowEquation {
+public class PhysicalFlow {
 	public final List<PhysicalCompartment> equationCompartments;
 	public final PhysicalCompartment source;
 	public final PhysicalCompartment sink;
 	public final String equation;
 	public final List<String> requiredOperators;
 	
-	public FlowEquation(
+	public PhysicalFlow(
 		List<PhysicalCompartment> equationCompartments,
 		PhysicalCompartment source,
 		PhysicalCompartment sink,
@@ -37,10 +37,10 @@ public class FlowEquation {
 	
 	@Override
 	public boolean equals(Object other) {
-		return (other instanceof FlowEquation && equals((FlowEquation) other));
+		return (other instanceof PhysicalFlow && equals((PhysicalFlow) other));
 	}
 	
-	protected boolean equals(FlowEquation other) {
+	protected boolean equals(PhysicalFlow other) {
 		return equationCompartments.equals(other.equationCompartments) && 
 				source.equals(other.source) && 
 				sink.equals(other.sink) && 
@@ -48,8 +48,8 @@ public class FlowEquation {
 				requiredOperators.equals(other.requiredOperators);
 	}
 	
-	public FlowEquation deepCopy() {
-		return new FlowEquation(
+	public PhysicalFlow deepCopy() {
+		return new PhysicalFlow(
 				new ArrayList<>(
 						equationCompartments
 							.stream()

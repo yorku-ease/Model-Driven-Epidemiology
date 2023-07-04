@@ -28,7 +28,7 @@ public interface FlowWrapper extends EObject {
 	 * @return the value of the '<em>Flow</em>' containment reference.
 	 * @see #setFlow(Flow)
 	 * @see epimodel.EpimodelPackage#getFlowWrapper_Flow()
-	 * @model containment="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	Flow getFlow();

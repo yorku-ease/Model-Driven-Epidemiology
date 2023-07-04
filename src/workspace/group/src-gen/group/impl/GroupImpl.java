@@ -8,7 +8,7 @@ import epimodel.Flow;
 import epimodel.FlowWrapper;
 
 import epimodel.impl.CompartmentImpl;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
 import group.Group;
 import group.GroupPackage;
@@ -133,7 +133,11 @@ public class GroupImpl extends CompartmentImpl implements Group {
 				controls.clear();
 				epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getLabel());
 				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-					epimodel.util.Edit.transact(dom, () -> getCompartment().remove(e.eContainer()));
+					epimodel.util.Edit.transact(dom, () -> {
+						getCompartment().remove(w);
+						getSource().remove(w);
+						getSink().remove(w);
+					});
 					shell.close();
 				});
 				shell.pack(true);
@@ -212,41 +216,35 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public List<PhysicalCompartment> getSources() {
-		if (getSource().size() > 0)
-			return getSource()
-				.stream()
-				.map(source -> source.getCompartment().getPhysicalCompartments())
-				.flatMap(List::stream)
-				.map(pc -> prependSelf(pc))
-				.toList();
-		else
-			return getPhysicalCompartments();
+		return getSource()
+			.stream()
+			.map(source -> source.getCompartment().getPhysicalCompartments())
+			.flatMap(List::stream)
+			.map(pc -> prependSelf(pc))
+			.toList();
 	}
 
 	@Override
 	public List<PhysicalCompartment> getSinks() {
-		if (getSink().size() > 0)
-			return getSink()
-				.stream()
-				.map(sink -> sink.getCompartment().getPhysicalCompartments())
-				.flatMap(List::stream)
-				.map(pc -> prependSelf(pc))
-				.toList();
-		else
-			return getPhysicalCompartments();
+		return getSink()
+			.stream()
+			.map(sink -> sink.getCompartment().getPhysicalCompartments())
+			.flatMap(List::stream)
+			.map(pc -> prependSelf(pc))
+			.toList();
 	}
 
 	@Override
-	public List<FlowEquation> getEquations() {
-		List<FlowEquation> flowsDefinedInChildren = getCompartment()
+	public List<PhysicalFlow> getEquations() {
+		List<PhysicalFlow> flowsDefinedInChildren = new ArrayList<>(getCompartment()
 				.stream()
 				.map(CompartmentWrapper::getCompartment)
 				.map(Compartment::getEquations)
 				.flatMap(List::stream)
 				.map(eq -> prependSelf(eq))
-				.toList();
+				.toList());
 		
-		List<FlowEquation> flowsDefinedHere = getFlow()
+		List<PhysicalFlow> flowsDefinedHere = getFlow()
 				.stream()
 				.map(FlowWrapper::getFlow)
 				.map(Flow::getEquations)
@@ -265,7 +263,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		return p2;
 	}
 	
-	FlowEquation prependSelf(FlowEquation eq) {
+	PhysicalFlow prependSelf(PhysicalFlow eq) {
 		eq.source.labels.addAll(0, getLabel());
 		eq.sink.labels.addAll(0, getLabel());
 		for (PhysicalCompartment pc : eq.equationCompartments)

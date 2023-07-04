@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import epimodel.util.PhysicalCompartment;
 import epimodel.util.Comparison.Difference;
 import epimodel.util.Comparison.MatchResult;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,14 +48,14 @@ public interface Compartment extends EObject {
 
 	List<PhysicalCompartment> getPhysicalCompartments();
 
-	List<FlowEquation> getEquations();
+	List<PhysicalFlow> getEquations();
 
 	List<PhysicalCompartment> getSources();
 
 	List<PhysicalCompartment> getSinks();
-	
+
 	List<PhysicalCompartment> getSourcesFor(PhysicalCompartment child);
-	
+
 	List<PhysicalCompartment> getSinksFor(PhysicalCompartment child);
 
 	Difference compare(Compartment other, MatchResult matches);

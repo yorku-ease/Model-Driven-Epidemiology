@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import epimodel.Compartment;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
 import group.Group;
 import product.util.CartesianProduct;
@@ -35,7 +35,7 @@ class ArtifactGenerationTests {
 						make_models.compartment("R"));
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> pfs = epi.getEquations();
+		List<PhysicalFlow> pfs = epi.getEquations();
 		
 		assertEquals(4, pcs.size());
 		assertEquals(1, pfs.size());
@@ -55,7 +55,7 @@ class ArtifactGenerationTests {
 							make_models.compartment("R")));
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> pfs = epi.getEquations();
+		List<PhysicalFlow> pfs = epi.getEquations();
 		
 		assertEquals(4, pcs.size());
 		assertEquals(1, pfs.size());
@@ -76,7 +76,7 @@ class ArtifactGenerationTests {
 						);
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> eqs = epi.getEquations();
+		List<PhysicalFlow> eqs = epi.getEquations();
 		
 		assertEquals(4, pcs.size());
 		assertEquals(1, eqs.size());
@@ -113,7 +113,7 @@ class ArtifactGenerationTests {
 								make_models.compartment("2")));
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> eqs = epi.getEquations();
+		List<PhysicalFlow> eqs = epi.getEquations();
 		
 		assertEquals(4, pcs.size());
 		assertEquals(2, eqs.size());
@@ -123,7 +123,7 @@ class ArtifactGenerationTests {
 		List<String> flowspecs = Arrays.asList("1", "2");
 		for (int i = 0; i < 2; ++i) {
 			
-			FlowEquation eq = eqs.get(i);
+			PhysicalFlow eq = eqs.get(i);
 			String spec = flowspecs.get(i);
 			
 			assertEquals(
@@ -154,7 +154,7 @@ class ArtifactGenerationTests {
 								make_models.compartment("Y")));
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> eqs = epi.getEquations();
+		List<PhysicalFlow> eqs = epi.getEquations();
 		
 		assertEquals(8, pcs.size());
 		assertEquals(4, eqs.size());
@@ -162,7 +162,7 @@ class ArtifactGenerationTests {
 		List<List<String>> flowspecs = CartesianProduct.cartesianProduct(Arrays.asList(Arrays.asList("1", "2"), Arrays.asList("X", "Y")));
 		for (int i = 0; i < 2; ++i) {
 			
-			FlowEquation eq = eqs.get(i);
+			PhysicalFlow eq = eqs.get(i);
 			List<String> spec = flowspecs.get(i);
 			
 			assertEquals(
@@ -197,7 +197,7 @@ class ArtifactGenerationTests {
 							make_models.compartment("Female")));
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> eqs = epi.getEquations();
+		List<PhysicalFlow> eqs = epi.getEquations();
 		
 		// there should be 2 rates
 		// the rate only takes us along the Age axis
@@ -236,7 +236,7 @@ class ArtifactGenerationTests {
 						make_models.compartment("Boucherville")));
 
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> eqs = epi.getEquations();
+		List<PhysicalFlow> eqs = epi.getEquations();
 		
 		// there should be 4 rates
 		// the rate only takes us along the Age axis
@@ -288,7 +288,7 @@ class ArtifactGenerationTests {
 			);
 		
 		List<PhysicalCompartment> pcs = epi.getPhysicalCompartments();
-		List<FlowEquation> eqs = epi.getEquations();
+		List<PhysicalFlow> eqs = epi.getEquations();
 		
 		assertEquals(3, pcs.size());
 		assertEquals(1, eqs.size());

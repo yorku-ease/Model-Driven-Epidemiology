@@ -4,7 +4,7 @@ package batchRateContactFlow.impl;
 
 import batchRateContactFlow.Batch;
 import batchRateContactFlow.BatchRateContactFlowPackage;
-import epimodel.util.FlowEquation;
+import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
 
 import java.util.ArrayList;
@@ -23,11 +23,11 @@ import org.eclipse.emf.ecore.EClass;
 public class BatchImpl extends FromToFlowImpl implements Batch {
 
 	@Override
-	public List<FlowEquation> getEquations() {
+	public List<PhysicalFlow> getEquations() {
 		List<PhysicalCompartment> equationCompartments = new ArrayList<>();
 		String equation = "(get " + getId() + " 0)";
 		List<String> requiredOperators = Arrays.asList("get");
-		return new ArrayList<>(Arrays.asList(new FlowEquation(equationCompartments, new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
+		return new ArrayList<>(Arrays.asList(new PhysicalFlow(equationCompartments, new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
 	}
 
 	/**
