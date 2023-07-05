@@ -246,7 +246,6 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				for (String label : labelsCSV.split(","))
 					if (label.length() > 0)
 						getLabel().add(label.trim());
-				shell.close();
 			});
 			shell.close();
 		});

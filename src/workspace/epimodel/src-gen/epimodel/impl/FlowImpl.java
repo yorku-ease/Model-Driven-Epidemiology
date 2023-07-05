@@ -6,7 +6,6 @@ import epimodel.Compartment;
 import epimodel.EpimodelPackage;
 import epimodel.Flow;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,22 +62,22 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 	//		return epidemic.getPhysicalSinksFor(c);
 	//	}
 
+	// use introspection to find what this flow references (example 1 ref to "from" compartment and one to "to" compartment)
 	final List<EReference> flowRefs() {
-		List<EClass> eclasses = new ArrayList<>(eClass().getEAllSuperTypes());
-		eclasses.add(eClass());
-
-		return eclasses.stream()
+		return eClass().getEAllSuperTypes().stream()
 				.map(c -> c.getEReferences().stream()
 						.filter(ref -> ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT)).toList())
 				.flatMap(List::stream).toList();
 	}
 
 	@Override
+	// use the list of refs to get the objects they point to in the respective order
 	public final List<EObject> getTargetObjects() {
 		return flowRefs().stream().map(ref -> (EObject) eGet(ref)).toList();
 	}
 
 	@Override
+	// now use the list of refs to
 	public final String getTargetRelation(EObject target) {
 		return flowRefs().stream().filter(ref -> eGet(ref).equals(target)).map(EReference::getName)
 				.collect(Collectors.joining(", "));
