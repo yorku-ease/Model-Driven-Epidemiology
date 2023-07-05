@@ -97,6 +97,7 @@ public class Edit {
 		controls.clear();
         shell.setLayout(new GridLayout(1, false));
         List<EClass> types = getNonAbstractEClassesOfType(EpimodelPackage.Literals.FLOW);
+    	System.out.println(types.stream().map(EClass::getName).toList());
         for (EClass ec : types) {
         	addBtn(shell, controls, ec.getName(), () -> {
                 FlowWrapper w = EpimodelFactory.eINSTANCE.createFlowWrapper();
@@ -120,6 +121,9 @@ public class Edit {
 	}
 	
 	public static List<EClass> getNonAbstractEClassesOfType(EClass supertype) {
+		System.out.println(EpimodelPackageImpl
+				.collectEClasses(getCurrentPlugins()).stream().map(EClass::getName).toList());
+		
 		return EpimodelPackageImpl
 				.collectEClasses(getCurrentPlugins())
 				.stream()

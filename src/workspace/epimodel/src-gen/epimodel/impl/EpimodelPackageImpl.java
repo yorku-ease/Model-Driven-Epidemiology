@@ -80,9 +80,6 @@ public class EpimodelPackageImpl extends EPackageImpl implements EpimodelPackage
 		eclassesByPackage = new ArrayList<>(packages.size());
 		for (int i = 0; i < packages.size(); ++i)
 			eclassesByPackage.add(new ArrayList<>());
-		System.out.println(epimodelPackages);
-		System.out.println(packages);
-		System.out.println(eclassesByPackage);
 		for (EPackage pkg : epimodelPackages) {
 			EList<EClassifier> eclassifiers = pkg.getEClassifiers();
 			for (EClassifier classifier : eclassifiers) {
