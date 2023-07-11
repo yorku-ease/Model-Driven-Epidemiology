@@ -6,6 +6,7 @@ import epimodel.Compartment;
 import epimodel.EpimodelPackage;
 import epimodel.Flow;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,9 @@ public abstract class FlowImpl extends MinimalEObjectImpl.Container implements F
 
 	// use introspection to find what this flow references (example 1 ref to "from" compartment and one to "to" compartment)
 	final List<EReference> flowRefs() {
-		return eClass().getEAllSuperTypes().stream()
+		List<EClass> classes = new ArrayList<>(eClass().getEAllSuperTypes());
+		classes.add(eClass());
+		return classes.stream()
 				.map(c -> c.getEReferences().stream()
 						.filter(ref -> ref.getEReferenceType().equals(EpimodelPackage.Literals.COMPARTMENT)).toList())
 				.flatMap(List::stream).toList();

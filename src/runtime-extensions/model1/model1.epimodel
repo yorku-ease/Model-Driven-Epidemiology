@@ -1,4 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:epimodel="http://www.example.org/epimodel">
-  <compartmentwrapper/>
+<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:epimodel="http://www.example.org/epimodel" xmlns:group="http://www.example.org/group" xmlns:product="http://www.example.org/product">
+  <compartmentwrapper>
+    <compartment xsi:type="product:Product">
+      <label>HIV-TB Coinfection</label>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>HIV</label>
+          <compartment>
+            <compartment>
+              <label>S</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>E</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>I</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Under Treatment</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="HIV Infection" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="HIV Treatment" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.3/@compartment"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Contact" id="HIV Exposure" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.1/@compartment" contact="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="HIV Waning" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.3/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment"/>
+          </flow>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Age</label>
+          <compartment>
+            <compartment>
+              <label>Child</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Adult 18 to 50</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>births</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Adult 51+</label>
+            </compartment>
+          </compartment>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Sex</label>
+          <compartment>
+            <compartment>
+              <label>M</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>F</label>
+            </compartment>
+          </compartment>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Tuberculosis</label>
+          <compartment>
+            <compartment>
+              <label>S</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>E</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>I</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>R</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Contact" id="TB Exposure" from="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.1/@compartment" contact="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.2/@compartment"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="TB Infection" from="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.2/@compartment"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="TB vaccine" from="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.3/@compartment"/>
+          </flow>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Mortality</label>
+          <compartment>
+            <compartment>
+              <label>Alive</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Deceased</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="Death" from="//@compartmentwrapper/@compartment/@compartment.4/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.4/@compartment/@compartment.1/@compartment"/>
+          </flow>
+        </compartment>
+      </compartment>
+    </compartment>
+  </compartmentwrapper>
 </epimodel:Epidemic>
