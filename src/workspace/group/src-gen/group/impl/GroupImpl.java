@@ -125,7 +125,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 		for (CompartmentWrapper w : getCompartment()) {
 			Compartment e = w.getCompartment();
-			epimodel.util.Edit.addText(shell, controls, e.getLabel().toString());
+			epimodel.util.Edit.addText(shell, controls, e.getLabel() == null ? "" : e.getLabel().toString());
 			addSourceSinkCheckbox(dom, shell, controls, w, GroupPackage.Literals.GROUP__SOURCE);
 			addSourceSinkCheckbox(dom, shell, controls, w, GroupPackage.Literals.GROUP__SINK);
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getLabel(), () -> {
@@ -184,13 +184,13 @@ public class GroupImpl extends CompartmentImpl implements Group {
 		shell.setLayout(new GridLayout(2, false));
 		List<Flow> l = getFlow().stream().map(FlowWrapper::getFlow).filter(f -> f != null).toList();
 		for (Flow e : l) {
-			epimodel.util.Edit.addText(shell, controls, e.getId());
+			epimodel.util.Edit.addText(shell, controls, e.getId() == null ? "" : e.getId());
 			epimodel.util.Edit.addBtn(shell, controls, "Delete " + e.getId(), () -> {
 				controls.forEach(Control::dispose);
 				controls.clear();
 				epimodel.util.Edit.addText(shell, controls, "Confirm Deletion of " + e.getId());
 				epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-					getFlow().remove(e.eContainer());
+					epimodel.util.Edit.transact(this, () -> getFlow().remove(e.eContainer()));
 					shell.close();
 				});
 				shell.pack(true);
