@@ -260,18 +260,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			// and the sink of the flow is a source for c
 			for (PhysicalCompartment sink : c.getSourcesFor(eq.sink)) {
 				PhysicalFlow cp = eq.deepCopy();
-				for (PhysicalCompartment pc : cp.equationCompartments) {
-					if (pc.equals(cp.source))
-						pc.labels.addAll(
-								source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
-					if (pc.equals(cp.sink))
-						pc.labels
-								.addAll(sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList());
-					if (!pc.labels.containsAll(c.getLabels()))
-						pc.labels.addAll(c.getLabels());
-				}
-				cp.source.labels
-						.addAll(source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
+				cp.source.labels.addAll(source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
 				cp.sink.labels.addAll(sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList());
 				res.add(cp);
 			}

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+  <extension point="org.eclipse.ui.intro" id="fr.obeo.dsl.designer.ce.intro" name="Obeo Designer Community">
+    <introProductBinding introId="fr.obeo.dsl.designer.ce.intro" productId="fr.obeo.dsl.designer.ce.product" />
+    <intro class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+    	   icon="icons/logo_16.png"
+           id="fr.obeo.dsl.designer.ce.intro">
+    </intro>
+  </extension>
+  <extension point="org.eclipse.ui.intro.config">
+    <config content="introContent.xml"
+            id="fr.obeo.dsl.designer.ce.introConfig"
+            introId="fr.obeo.dsl.designer.ce.intro">
+      <presentation home-page-id="root">
+        <implementation kind="html" />
+      </presentation>
+    </config>
+  </extension>
+  <extension point="org.eclipse.ui.intro.configExtension">
+    <configExtension
+        configId="org.eclipse.ui.intro.universalConfig"
+        content="intro/overviewExtensionContent.xml">
+    </configExtension>
+  </extension>
+  
+  <extension point="org.eclipse.help.toc">
+    <toc file="help/toc.xml" primary="true" />
+  </extension>
+
+  <extension point= "org.eclipse.ui.activities" >
+    <activity id= "visible.activity"
+              description= "Obeo Designer Activities"
+              name= "Obeo Designer"
+              />
+    <activity id= "hidden.activity"
+              description= "Hidden Activities"
+              name= "Hidden"
+              />
+    <!-- other activity requires activity -->
+    <activityRequirementBinding activityId= "hidden.activity"
+                                requiredActivityId= "visible.activity"
+                                />
+    <category id= "fr.obeo.dsl.designer.Category"
+              description= "Obeo Designer Activities"
+              name= "Obeo Designer"
+              />
+    <!-- put the activity in the category -->
+    <categoryActivityBinding activityId= "visible.activity"
+                             categoryId= "fr.obeo.dsl.designer.Category"
+                             />
+    <!-- visible contributions-->
+
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.sirius\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.jdt\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.pde\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.gmf\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.emf\..*/.*&amp;&amp;[^(org\.eclipse\.emf\.cdo\.ui/org\.eclipse\.emf\.cdo\.ui\.(RemoveResource|RenameResource|ExportResource))]"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.jet\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\.ant\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern= "org\.eclipse\..*/.*ant\..*/.*"/>
+    <activityPatternBinding activityId="visible.activity"  pattern="org\.eclipse\.team\.ui/org.*"/>
+    <activityPatternBinding activityId="visible.activity" pattern="org\.eclipse\.jdt\.debug/debugModel"/>
+    <activityPatternBinding activityId="visible.activity"  pattern="fr\.obeo\.dsl\.designer\.ce\..*/.*"/>
+
+    <!-- hidden contributions-->
+    <activityPatternBinding activityId="hidden.activity" pattern="fr\.obeo\.dsl\.designer\.editor\.wizards\.SiriusModelWizardID"/>
+    <activityPatternBinding activityId="hidden.activity"  pattern="org\.eclipse\.userstorage\..*/.*"/>
+
+    <!-- our activity should be enabled by default -->
+    <defaultEnablement id="visible.activity"/>
+
+  </extension>
+
+  <extension point="org.eclipse.core.runtime.products" id="fr.obeo.dsl.designer.ce.product">
+    <product name="Obeo Designer Community" application="org.eclipse.ui.ide.workbench">
+      <property name="windowImages" value="icons/logo_16.png,icons/logo_16.gif,icons/logo_32.png,icons/logo_32.gif,icons/logo_48.gif,icons/logo_64.png,icons/logo_64.gif,icons/logo_128.png,icons/logo_256.png"/>
+      <property name="appName" value="Obeo Designer Community"/>
+      <property name="aboutImage" value="icons/about.gif"/>
+      <property name="aboutText" value="Obeo Designer Community&#x0A;&#x0A;Version 11.6.0&#x0A;&#x0A;Copyright Obeo, Thales, Eclipse contributors and others 2000, 2021.  All rights reserved.&#x0A;Obeo, Obeo Designer, the Obeo logo, the Obeo Designer logo and splashscreen are trademarks of Obeo S.A.S. The Obeo logo and Obeo Designer logo and splashscreen cannot be altered without Obeo's permission. Obeo and Obeo Designer logos are provided for use under the Obeo logo and trademark guidelines.&#x0A;Eclipse and the Eclipse logo are trademarks of the Eclipse Foundation, Inc., https://www.eclipse.org/. The Eclipse logo cannot be altered without Eclipse's permission. Eclipse logos are provided for use under the Eclipse logo and trademark guidelines, https://www.eclipse.org/logotm/. Oracle and Java are trademarks or registered trademarks of Oracle and/or its affiliates. Other names may be trademarks of their respective owners.&#x0A;&#x0A;Visit http://www.obeodesigner.com/"/>
+      <property name="startupForegroundColor" value="000000"/>
+      <property name="startupMessageRect" value="7,308,458,18"/>
+      <property name="startupProgressRect" value="0,328,458,18"/>
+      <property name="preferenceCustomization" value="plugin_customization.ini"/>
+    </product>
+  </extension>
+
+  <!-- Extensions for the "Sirius" perspective -->
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="org.eclipse.sirius.ui.tools.perspective.design">
+      <actionSet id="org.eclipse.debug.ui.launchActionSet" />
+      <perspectiveShortcut id="org.eclipse.sirius.ui.tools.perspective.modeling" />
+      <viewShortcut id="org.eclipse.acceleo.ui.interpreter.view"/>
+    </perspectiveExtension>
+   
+    <!-- Extensions for the "Modeling" perspective -->
+    <perspectiveExtension targetID="org.eclipse.sirius.ui.tools.perspective.modeling">
+       <actionSet id="org.eclipse.debug.ui.launchActionSet"/>
+       <perspectiveShortcut id="org.eclipse.sirius.ui.tools.perspective.design"/>
+       <viewShortcut id="org.eclipse.acceleo.ui.interpreter.view"/>
+    </perspectiveExtension>
+
+    <perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
+       <newWizardShortcut id="org.eclipse.sirius.ui.modelingproject.wizard" />
+       <newWizardShortcut id="org.eclipse.sirius.ui.session.creation" />
+       <perspectiveShortcut id="org.eclipse.sirius.ui.tools.perspective.modeling"/>
+       <perspectiveShortcut id="org.eclipse.sirius.ui.tools.perspective.design"/>
+       <viewShortcut id="org.eclipse.sirius.ui.tools.views.model.explorer"/>
+    </perspectiveExtension>
+  </extension>
+  
+    <extension
+        point="org.eclipse.ui.navigator.navigatorContent">
+     <commonWizard
+           menuGroupId="org.eclipse.sirius.category"
+           type="new"
+           wizardId="org.eclipse.acceleo.ide.ui.wizards.newproject.AcceleoNewProjectWizard">
+        <enablement>
+           <with variable="activeWorkbenchWindow.activePerspective">
+                 <equals value="org.eclipse.sirius.ui.tools.perspective.design" />
+           </with>
+        </enablement>
+     </commonWizard>
+  </extension>
+</plugin>

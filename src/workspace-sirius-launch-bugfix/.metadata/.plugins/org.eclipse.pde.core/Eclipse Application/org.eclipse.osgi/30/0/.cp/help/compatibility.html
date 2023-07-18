@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Welcome to Obeo Designer</title>	
+    <link rel="stylesheet" type="text/css" href="style.css" />  
+  </head>
+  <body>
+    <div class="container-fluid">
+      
+      <div id="header">
+        <div id="logo"><a href="home.html"><img src="logo_OD.png" width="200"/></a></div>
+        <h2 class="slogan">The easiest way to define your own modeling tools!</h2>
+      </div>
+
+      <hr class="separator"></hr>  
+
+      <div class="span12">      
+        <div class="hero-unit">
+	  <h2 class="first">Compatibility</h2>
+
+          <p>If you have existing modeling tools which were created with the previous version of Obeo Designer, the recommended procedure to make them compatible with the latest release is to migrate them step by step on all intermediate major releases of Obeo Designer. For example, to migrate modeling tools defined using Obeo Designer 8.1 to Obeo Designer 10.0, you should first migrate them to Obeo Designer 9.0, then then to 9.1 and finally to 10.0.</p>
+
+          <p>The actual migration between two successive major versions <i>N</i> and <i>M</i> involves the following steps:</p>
+          <ul>
+            <li>Import the modeler's sources (made with version <i>N</i>) in the workspace of the target Obeo Designer (version <i>M</i>).</li>
+            <li>Open the modeler's VSM files (the <code>odesign</code> files) and save them back (you will need to make some change in the file to make it saveable; anything will do). This will automatically migrate the VSM data into the format of version <i>M</i>. <em>Note</em>: once this is done, you should never try to open the migrated VSM with version <i>N</i> (or earlier) of the software. Doing so is unsupported and may lead to unexpected behavior.</li>
+            <li>In the <code>MANIFEST.MF</code> file(s) of your modeler, update the version range for the dependencies to Sirius plug-ins so that the minimum version corresponds to the version in Obeo Designer <i>M</i>. This will guarantee your modeler (whose VSM is now incompatible with earlier versions of Sirius) can not be installed in environments which would not be able to use it correctly.</li>
+            <li>If your modeler contains Java code which uses the Sirius APIs, make sure to read the <a href="/help/topic/org.eclipse.sirius.doc/doc/Release_Notes.html">release notes</a> for the corresponding Sirius version. They contain important information on changes you may need to perform on your code to continue to work.</li>
+          </ul>
+
+	  <p>Some additional tasks have to be performed to migrate existing modeling tools created with Obeo Designer 6.2:</p>
+          <ul>
+            <li>Open and save the definition of the modeling tool (<code>.odesign</code> file) with Obeo Designer 7.0;</li>
+            <li>Update the <code>MANIFEST.MF</code> file:
+            <ul>
+              <li>remove the dependencies to Acceleo 2 (<code>fr.obeo.dsl.common.acceleo</code>),</li>
+              <li>replace the dependencies to proprietary source code by corresponding open source packages (<code>fr.obeo.dsl.viewpoint</code> -> <code>org.eclipse.sirius</code>),</li>
+              <li>in the <code>plugin.xml</code> file, replace reference to <code>fr.obeo.dsl.viewpoint.componentization</code> by <code>org.eclipse.sirius.componentization</code>.</li>
+            </ul>
+            </li>
+            <li>In the Java source code (ex: <code>Activator.java</code>), replace all the references to proprietary source code by the corresponding open source packages:</li>
+            <p>Before:</p>
+            <p><img class="shadow"   src="migration1.png" /></p>
+            <p>After:</p>
+            <p><img class="shadow"   src="migration2.png" /></p>
+            <li>Depending on their complexity, the Acceleo 2 expressions contained in the <code>.odesign</code> file have to be replaced by the appropriate query mechanism:</li>
+            <ul>
+              <li>AQL (recommended starting from Obeo Designer 8.1 and Sirius 3.1);</li>
+              <li>core interpreters (<code>var:</code>, <code>feature:</code> and <code>service:</code>);</li>
+              <li>Acceleo 3 expressions;</li>
+              <li>OCL expressions;</li>
+              <li>Java services.</li>
+            </ul>
+          </ul>
+          
+    	</div><!--/hero-unit-->
+      </div><!--/span12-->
+      <hr class="separator"></hr>  
+      <footer>
+        <div class="layout_footer"><p>&#169; 2009 - 2021 Obeo - All rights reserved</p></div>  
+      </footer>
+    </div><!--/.fluid-container-->
+  </body>
+</html>
+
