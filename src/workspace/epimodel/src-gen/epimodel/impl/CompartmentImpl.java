@@ -262,17 +262,22 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				PhysicalFlow cp = eq.deepCopy();
 				for (PhysicalCompartment pc : cp.equationCompartments) {
 					if (pc.equals(cp.source))
-						pc.labels.addAll(
-								source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
+						pc.labels.addAll(0,
+							source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList()
+						);
 					if (pc.equals(cp.sink))
-						pc.labels
-								.addAll(sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList());
+						pc.labels.addAll(0,
+							sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList()
+						);
 					if (!pc.labels.containsAll(c.getLabels()))
-						pc.labels.addAll(c.getLabels());
+						pc.labels.addAll(0, c.getLabels());
 				}
-				cp.source.labels
-						.addAll(source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList());
-				cp.sink.labels.addAll(sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList());
+				cp.source.labels.addAll(0,
+					source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList()
+				);
+				cp.sink.labels.addAll(0,
+					sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList()
+				);
 				res.add(cp);
 			}
 		return res;
