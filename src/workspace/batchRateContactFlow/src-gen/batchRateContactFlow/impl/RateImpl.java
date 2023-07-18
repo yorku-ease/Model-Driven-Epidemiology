@@ -25,8 +25,8 @@ public class RateImpl extends FromToFlowImpl implements Rate {
 	@Override
 	public List<PhysicalFlow> getEquations() {
 		List<PhysicalCompartment> equationCompartments = Arrays.asList(new PhysicalCompartment(from.getLabels()));
-		String equation = "(get " + getId() + " 0)";
-		List<String> requiredOperators = Arrays.asList("get");
+		String equation = "(* (get " + getId() + " 0) $0)";
+		List<String> requiredOperators = new ArrayList<>();
 		return new ArrayList<>(Arrays.asList(new PhysicalFlow(equationCompartments, new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
 	}
 

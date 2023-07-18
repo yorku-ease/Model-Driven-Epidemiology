@@ -37,10 +37,174 @@ public class make_models {
 	public static ResourceSet resSet = null;
 	
 	public static void main(String[] args) throws Exception {
-		// first model requires NO FLOWS (dependency loading hell)
+		// first model must require NO FLOWS (dependency loading hell)
 		create_model_file(create_model(group("GECC_S_I",
 				compartment("S"),
 				compartment("I"))));
+		
+		create_model_file(create_model(
+				addContact(
+					group(
+						"contact_g",
+						compartment("S"),
+						compartment("I")
+					),
+					"Exposure",
+					Arrays.asList("S"),
+					Arrays.asList("I"),
+					Arrays.asList("I"))
+				));
+		
+		create_model_file(create_model(
+				addContact(
+					product(
+						"pcontact_p_g",
+						group(
+							"contact_g",
+							compartment("S"),
+							compartment("I")
+						)
+					),
+					"Exposure",
+					Arrays.asList("S"),
+					Arrays.asList("I"),
+					Arrays.asList("I"))
+				));
+		
+		create_model_file(create_model(
+				addContact(
+					product(
+						"pcontact_p1_g",
+						group(
+							"si",
+							compartment("S"),
+							compartment("I")
+						),
+						compartment("0")
+					),
+					"Exposure",
+					Arrays.asList("S"),
+					Arrays.asList("I"),
+					Arrays.asList("I"))
+				));
+		
+		create_model_file(create_model(
+				addContact(
+					product(
+						"pcontact_p2_g",
+						group(
+							"si",
+							compartment("S"),
+							compartment("I")
+						),
+						group(
+							"01",
+							compartment("0"),
+							compartment("1")
+						)
+					),
+					"Exposure",
+					Arrays.asList("S"),
+					Arrays.asList("I"),
+					Arrays.asList("I"))
+				));
+		
+		create_model_file(create_model(
+					product(
+						"gcontact_p_g",
+						addContact(
+						group(
+							"contact_g",
+							compartment("S"),
+							compartment("I")
+						),
+						"Exposure",
+						Arrays.asList("S"),
+						Arrays.asList("I"),
+						Arrays.asList("I")
+					))
+				));
+		
+		create_model_file(create_model(
+					product(
+						"gcontact_p1_g",
+						addContact(
+							group(
+								"contact_g",
+								compartment("S"),
+								compartment("I")
+							),
+							"Exposure",
+							Arrays.asList("S"),
+							Arrays.asList("I"),
+							Arrays.asList("I")
+						),
+						compartment("0")
+					)
+				));
+		
+		create_model_file(create_model(
+					product(
+						"grate_p1_g",
+						addRate(
+							group(
+								"contact_g",
+								compartment("S"),
+								compartment("I")
+							),
+							"Exposure",
+							Arrays.asList("S"),
+							Arrays.asList("I")
+						),
+						compartment("0")
+					)
+				));
+		
+		create_model_file(create_model(
+				product(
+					"gcontact_p2_g",
+					addContact(
+						group(
+							"contact_g",
+							compartment("S"),
+							compartment("I")
+						),
+						"Exposure",
+						Arrays.asList("S"),
+						Arrays.asList("I"),
+						Arrays.asList("I")
+					),
+					group(
+						"01",
+						compartment("0"),
+						compartment("1")
+					)
+				)
+			));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		create_model_file(create_model(
 				addRate(
