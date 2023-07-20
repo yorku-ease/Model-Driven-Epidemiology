@@ -4,6 +4,7 @@ package batchRateContactFlow;
 
 import epimodel.Compartment;
 import epimodel.Flow;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,6 +17,7 @@ import epimodel.Flow;
  * <ul>
  *   <li>{@link batchRateContactFlow.FromToFlow#getFrom <em>From</em>}</li>
  *   <li>{@link batchRateContactFlow.FromToFlow#getTo <em>To</em>}</li>
+ *   <li>{@link batchRateContactFlow.FromToFlow#getParameter <em>Parameter</em>}</li>
  * </ul>
  *
  * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow()
@@ -66,5 +68,17 @@ public interface FromToFlow extends Flow {
 	 * @generated
 	 */
 	void setTo(Compartment value);
+
+	/**
+	 * Returns the value of the '<em><b>Parameter</b></em>' containment reference list.
+	 * The list contents are of type {@link batchRateContactFlow.Parameter}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameter</em>' containment reference list.
+	 * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow_Parameter()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Parameter> getParameter();
 
 } // FromToFlow

@@ -117,7 +117,6 @@ class ProductTests {
 		ProductImpl epi = (ProductImpl) make_models.product("product");
 		
 		PhysicalFlow rateFromAtoB = new PhysicalFlow(
-			Arrays.asList(new PhysicalCompartment(Arrays.asList("A"))),
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B")),
 			"", // equation
@@ -131,7 +130,6 @@ class ProductTests {
 		for (int i = 0; i < 4; ++i)
 			assertEquals(
 				new PhysicalFlow(
-					Arrays.asList(new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1)))),
 					new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1))),
 					new PhysicalCompartment(Arrays.asList("B", prod.get(i).get(0), prod.get(i).get(1))),
 					"", // equation
@@ -154,7 +152,6 @@ class ProductTests {
 		ProductImpl epi = (ProductImpl) make_models.product("product");
 		
 		PhysicalFlow rateFromAtoB1 = new PhysicalFlow(
-			Arrays.asList(new PhysicalCompartment(Arrays.asList("A"))),
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B", "1")),
 			"", // equation
@@ -179,7 +176,6 @@ class ProductTests {
 		for (int i = 0; i < 6; ++i)
 			assertEquals(
 				new PhysicalFlow(
-					Arrays.asList(new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1)))),
 					new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1))),
 					new PhysicalCompartment(Arrays.asList("B", "1", prod.get(i).get(0), prod.get(i).get(1))),
 					"", // equation
@@ -194,7 +190,6 @@ class ProductTests {
 		ProductImpl epi = (ProductImpl) make_models.product("product");
 		
 		PhysicalFlow rateFromAtoB = new PhysicalFlow(
-			Arrays.asList(new PhysicalCompartment(Arrays.asList("A"))),
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B")),
 			"", // equation
@@ -233,7 +228,6 @@ class ProductTests {
 		for (int i = 0; i < 6; ++i)
 			assertEquals(
 				new PhysicalFlow(
-						Arrays.asList(new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0)))),
 						new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0))),
 						new PhysicalCompartment(Arrays.asList("B", prod.get(i).get(1))),
 						"", // equation
@@ -257,7 +251,6 @@ class ProductTests {
 						make_models.compartment("Symptomatic")));
 		
 		PhysicalFlow symptoms = new PhysicalFlow(
-			Arrays.asList(new PhysicalCompartment(Arrays.asList("Asymptomatic"))),
 			new PhysicalCompartment(Arrays.asList("Asymptomatic")),
 			new PhysicalCompartment(Arrays.asList("Symptomatic")),
 			"", // equation

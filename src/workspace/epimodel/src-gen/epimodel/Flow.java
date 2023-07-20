@@ -32,6 +32,7 @@ public interface Flow extends EObject {
 
 	List<EObject> getTargetObjects();
 
+	void edit(Shell shell, List<Control> controls);
 	void edit(Shell shell, List<Control> controls, Compartment target);
 
 	String getTargetRelation(EObject target);

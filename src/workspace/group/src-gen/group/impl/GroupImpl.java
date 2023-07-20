@@ -95,20 +95,21 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	 */
 	protected EList<CompartmentWrapper> sink;
 
-	public void edit(EObject dom, Shell shell, List<Control> controls) {
+	@Override
+	public void edit(Shell shell, List<Control> controls) {
 		shell.setText("Edit Group Epidemic " + getLabel());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
 			controls.forEach(Control::dispose);
 			controls.clear();
-			super.edit(dom, shell, controls); // labels window
+			super.edit(shell, controls); // labels window
 			shell.pack(true);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
-			editCompartments(dom, shell, controls);
+			editCompartments(this, shell, controls);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify flows", () -> {
-			editFlows(dom, shell, controls);
+			editFlows(this, shell, controls);
 		});
 	}
 
@@ -266,8 +267,6 @@ public class GroupImpl extends CompartmentImpl implements Group {
 	PhysicalFlow prependSelf(PhysicalFlow eq) {
 		eq.source.labels.addAll(0, getLabel());
 		eq.sink.labels.addAll(0, getLabel());
-		for (PhysicalCompartment pc : eq.equationCompartments)
-			pc.labels.addAll(0, getLabel());
 		return eq;
 	}
 

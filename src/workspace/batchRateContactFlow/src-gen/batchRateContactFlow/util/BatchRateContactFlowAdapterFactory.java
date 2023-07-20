@@ -89,6 +89,11 @@ public class BatchRateContactFlowAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseParameter(Parameter object) {
+			return createParameterAdapter();
+		}
+
+		@Override
 		public Adapter caseFlow(Flow object) {
 			return createFlowAdapter();
 		}
@@ -165,6 +170,20 @@ public class BatchRateContactFlowAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createFromToFlowAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link batchRateContactFlow.Parameter <em>Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see batchRateContactFlow.Parameter
+	 * @generated
+	 */
+	public Adapter createParameterAdapter() {
 		return null;
 	}
 

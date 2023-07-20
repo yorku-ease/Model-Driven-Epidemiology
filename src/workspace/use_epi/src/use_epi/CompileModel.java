@@ -18,7 +18,7 @@ public class CompileModel {
 //		compile("../../test-models/pcontact_p_g.epimodel");
 //		compile("../../test-models/pcontact_p1_g.epimodel");
 //		compile("../../test-models/pcontact_p2_g.epimodel");
-		compile("../../runtime-extensions/model1/model1.epimodel");
+		compile("../../runtime/model1/model1.epimodel");
 	}
 	
 	static void compile(String model_fn) throws FileNotFoundException, UnsupportedEncodingException {
@@ -52,7 +52,6 @@ public class CompileModel {
 			PrintWriter writer = new PrintWriter(baseFileName + ".equations.txt", "UTF-8");
 			for (PhysicalFlow eq : myEpi.getCompartment().getEquations()) {
 				writer.println(eq.equation);
-				writer.println(eq.equationCompartments.stream().map(pc -> sorted(pc)).toList());
 				writer.println(sorted(eq.source));
 				writer.println(sorted(eq.sink));
 				writer.println(eq.requiredOperators);
