@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EReferenceImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -229,7 +228,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	}
 
 	@Override
-	public void edit(EObject dom, Shell shell, List<Control> controls) {
+	public void edit(Shell shell, List<Control> controls) {
 		shell.setText("Edit Compartment " + getLabel());
 		shell.setLayout(new GridLayout(2, false));
 		epimodel.util.Edit.addText(shell, controls, "Labels (comma sparated): ");
@@ -240,7 +239,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		controls.add(t);
 		epimodel.util.Edit.addText(shell, controls, "");
 		epimodel.util.Edit.addBtn(shell, controls, "Confirm", () -> {
-			epimodel.util.Edit.transact(dom, () -> {
+			epimodel.util.Edit.transact(this, () -> {
 				getLabel().clear();
 				String labelsCSV = t.getText();
 				for (String label : labelsCSV.split(","))
@@ -260,18 +259,6 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			// and the sink of the flow is a source for c
 			for (PhysicalCompartment sink : c.getSourcesFor(eq.sink)) {
 				PhysicalFlow cp = eq.deepCopy();
-				for (PhysicalCompartment pc : cp.equationCompartments) {
-					if (pc.equals(cp.source))
-						pc.labels.addAll(0,
-							source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList()
-						);
-					if (pc.equals(cp.sink))
-						pc.labels.addAll(0,
-							sink.labels.stream().filter(label -> !cp.sink.labels.contains(label)).toList()
-						);
-					if (!pc.labels.containsAll(c.getLabels()))
-						pc.labels.addAll(0, c.getLabels());
-				}
 				cp.source.labels.addAll(0,
 					source.labels.stream().filter(label -> !cp.source.labels.contains(label)).toList()
 				);

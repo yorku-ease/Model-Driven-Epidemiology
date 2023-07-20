@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,11 +38,29 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class ContactImpl extends FromToFlowImpl implements Contact {
 
 	@Override
+	public void edit(Shell shell, List<Control> controls, Compartment target) {
+//		shell.setText("Edit Flow " + getId() + " for compartment " + target.getLabel());
+//		shell.setLayout(new GridLayout(2, false));
+//		for (EReference ref : flowRefs()) {
+//			epimodel.util.Edit.addText(shell, controls, ref.getName());
+//			epimodel.util.Edit.addBtn(shell, controls, "Set '" + ref.getName() + "' to " + target.getLabel(), () -> {
+//				epimodel.util.Edit.transact(this, () -> eSet(ref, target));
+//				shell.close();
+//			});
+//		}
+	}
+
+	@Override
 	public List<PhysicalFlow> getEquations() {
-		String flowParameter = "(get " + getId() + " 0)";
-		String equation = "(* " + flowParameter + " $0 $1)";
-		List<String> requiredOperators = Arrays.asList("*", "get");
-		return new ArrayList<>(Arrays.asList(new PhysicalFlow(new PhysicalCompartment(from.getLabels()), new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
+		String basic_coefficient = "(parameter " + getId() + " " + from.getLabels() + ") ";
+		String from_compartment_value = from.getLabels().toString();
+		String contact_compartments = contact.getLabels().toString();
+		String sumproduct_of_contacts_times_coefs = "(sumproduct " + contact_compartments + ")";
+		// todo other coefficients susceptibility (from), infectiousness (contact), contact-mixing (from * contact)
+		String equation = "(* " + basic_coefficient + from_compartment_value + sumproduct_of_contacts_times_coefs + ")";
+		List<String> requiredOperators = Arrays.asList("*", "sumproduct");
+		return new ArrayList<>(Arrays.asList(new PhysicalFlow(new PhysicalCompartment(from.getLabels()),
+				new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
 	}
 
 	/**

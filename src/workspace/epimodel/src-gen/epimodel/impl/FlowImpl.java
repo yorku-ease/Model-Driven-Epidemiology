@@ -2,7 +2,6 @@
  */
 package epimodel.impl;
 
-import epimodel.Compartment;
 import epimodel.EpimodelPackage;
 import epimodel.Flow;
 
@@ -16,9 +15,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,19 +30,6 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public abstract class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
-
-	@Override
-	public void edit(Shell shell, List<Control> controls, Compartment target) {
-		shell.setText("Edit Flow " + getId() + " for compartment " + target.getLabel());
-		shell.setLayout(new GridLayout(2, false));
-		for (EReference ref : flowRefs()) {
-			epimodel.util.Edit.addText(shell, controls, ref.getName());
-			epimodel.util.Edit.addBtn(shell, controls, "Set '" + ref.getName() + "' to " + target.getLabel(), () -> {
-				epimodel.util.Edit.transact(this, () -> eSet(ref, target));
-				shell.close();
-			});
-		}
-	}
 
 	//	@Override
 	//	public List<PhysicalCompartment> getPhysicalFor(Epidemic epidemic, Compartment c) {

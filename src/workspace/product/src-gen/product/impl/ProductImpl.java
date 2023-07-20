@@ -11,7 +11,6 @@ import epimodel.impl.CompartmentImpl;
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,20 +50,20 @@ import product.ProductPackage;
 public class ProductImpl extends CompartmentImpl implements Product {
 	
 	@Override
-	public void edit(EObject dom, Shell shell, List<Control> controls) {
+	public void edit(Shell shell, List<Control> controls) {
 		shell.setText("Edit Product " + getLabel());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
 			controls.forEach(Control::dispose);
 			controls.clear();
-			super.edit(dom, shell, controls); // labels window
+			super.edit(shell, controls); // labels window
 			shell.pack(true);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
-			editCompartments(dom, shell, controls);
+			editCompartments(this, shell, controls);
 		});
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
-			editFlows(dom, shell, controls);
+			editFlows(this, shell, controls);
 		});
 	}
 
@@ -329,8 +328,6 @@ public class ProductImpl extends CompartmentImpl implements Product {
 			for (PhysicalCompartment spec_pc : spec) {
 				neq.source.labels.addAll(spec_pc.labels);
 				neq.sink.labels.addAll(spec_pc.labels);
-				for (PhysicalCompartment pc : neq.equationCompartments)
-					pc.labels.addAll(spec_pc.labels);
 			}
 			expanded.add(neq);
 		}
@@ -357,8 +354,6 @@ public class ProductImpl extends CompartmentImpl implements Product {
 	public PhysicalFlow prepend(PhysicalFlow eq, List<String> labels) {
 		eq.source.labels.addAll(0, labels);
 		eq.sink.labels.addAll(0, labels);
-		for (PhysicalCompartment pc : eq.equationCompartments)
-			pc.labels.addAll(0, labels);
 		return eq;
 	}
 

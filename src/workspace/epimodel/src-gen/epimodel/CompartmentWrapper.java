@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public interface CompartmentWrapper extends EObject {
 
-	void edit(EObject dom, Shell shell, List<Control> controls);
+	void edit(Shell shell, List<Control> controls);
 
 	/**
 	 * Returns the value of the '<em><b>Compartment</b></em>' containment reference.

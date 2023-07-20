@@ -7,10 +7,12 @@ import batchRateContactFlow.BatchRateContactFlowFactory;
 import batchRateContactFlow.BatchRateContactFlowPackage;
 import batchRateContactFlow.Contact;
 import batchRateContactFlow.FromToFlow;
+import batchRateContactFlow.Parameter;
 import batchRateContactFlow.Rate;
 
 import epimodel.EpimodelPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -51,6 +53,13 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 	 * @generated
 	 */
 	private EClass fromToFlowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass parameterEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -197,6 +206,56 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 	 * @generated
 	 */
 	@Override
+	public EReference getFromToFlow_Parameter() {
+		return (EReference) fromToFlowEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getParameter() {
+		return parameterEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getParameter_Name() {
+		return (EAttribute) parameterEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getParameter_Depends_on_source() {
+		return (EAttribute) parameterEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getParameter_Depends_on_sink() {
+		return (EAttribute) parameterEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public BatchRateContactFlowFactory getBatchRateContactFlowFactory() {
 		return (BatchRateContactFlowFactory) getEFactoryInstance();
 	}
@@ -231,6 +290,12 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 		fromToFlowEClass = createEClass(FROM_TO_FLOW);
 		createEReference(fromToFlowEClass, FROM_TO_FLOW__FROM);
 		createEReference(fromToFlowEClass, FROM_TO_FLOW__TO);
+		createEReference(fromToFlowEClass, FROM_TO_FLOW__PARAMETER);
+
+		parameterEClass = createEClass(PARAMETER);
+		createEAttribute(parameterEClass, PARAMETER__NAME);
+		createEAttribute(parameterEClass, PARAMETER__DEPENDS_ON_SOURCE);
+		createEAttribute(parameterEClass, PARAMETER__DEPENDS_ON_SINK);
 	}
 
 	/**
@@ -289,6 +354,20 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 		initEReference(getFromToFlow_To(), theEpimodelPackage.getCompartment(), null, "to", null, 0, 1,
 				FromToFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFromToFlow_Parameter(), this.getParameter(), null, "parameter", null, 0, -1, FromToFlow.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getParameter_Name(), ecorePackage.getEString(), "name", null, 1, 1, Parameter.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getParameter_Depends_on_source(), ecorePackage.getEBoolean(), "depends_on_source", null, 1, 1,
+				Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getParameter_Depends_on_sink(), ecorePackage.getEBoolean(), "depends_on_sink", null, 1, 1,
+				Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

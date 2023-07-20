@@ -64,5 +64,5 @@ public interface Compartment extends EObject {
 
 	Difference compareWithDifferentClass(Compartment other, MatchResult matches);
 
-	void edit(EObject dom, Shell shell, List<Control> controls);
+	void edit(Shell shell, List<Control> controls);
 } // Compartment

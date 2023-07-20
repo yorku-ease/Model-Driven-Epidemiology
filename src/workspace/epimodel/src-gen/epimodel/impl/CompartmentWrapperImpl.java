@@ -12,7 +12,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -36,13 +35,13 @@ import org.eclipse.swt.widgets.Shell;
 public class CompartmentWrapperImpl extends MinimalEObjectImpl.Container implements CompartmentWrapper {
 
 	@Override
-	public void edit(EObject dom, Shell shell, List<Control> controls) {
+	public void edit(Shell shell, List<Control> controls) {
 		if (getCompartment() == null)
-			displayCreateOption(dom, shell, controls);
+			displayCreateOption(shell, controls);
 	}
 
-	void displayCreateOption(EObject dom, Shell shell, List<Control> controls) {
-		epimodel.util.Edit.addCompartmentWindow(dom, shell, controls, wrapper -> {
+	void displayCreateOption(Shell shell, List<Control> controls) {
+		epimodel.util.Edit.addCompartmentWindow(this, shell, controls, wrapper -> {
 			setCompartment(wrapper.getCompartment());
 		});
 	}

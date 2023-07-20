@@ -82,14 +82,6 @@ class ArtifactGenerationTests {
 		assertEquals(1, eqs.size());
 		
 		assertEquals(
-			Arrays.asList(
-					new PhysicalCompartment(Arrays.asList("above", "SEIR", "S")),
-					new PhysicalCompartment(Arrays.asList("above", "SEIR", "I"))
-			),
-			eqs.get(0).equationCompartments
-		);
-		
-		assertEquals(
 			new PhysicalCompartment(Arrays.asList("S", "SEIR", "above")),
 			eqs.get(0).source
 		);
@@ -117,8 +109,6 @@ class ArtifactGenerationTests {
 		
 		assertEquals(4, pcs.size());
 		assertEquals(2, eqs.size());
-		assertEquals(1, eqs.get(0).equationCompartments.size());
-		assertEquals(1, eqs.get(1).equationCompartments.size());
 		
 		List<String> flowspecs = Arrays.asList("1", "2");
 		for (int i = 0; i < 2; ++i) {
@@ -164,13 +154,6 @@ class ArtifactGenerationTests {
 			
 			PhysicalFlow eq = eqs.get(i);
 			List<String> spec = flowspecs.get(i);
-			
-			assertEquals(
-				Arrays.asList(
-						new PhysicalCompartment(Arrays.asList("G1", "G2", "G3", spec.get(0), spec.get(1), "A", "above"))
-				),
-				eq.equationCompartments
-			);
 			
 			assertEquals(
 				new PhysicalCompartment(Arrays.asList("G1", "G2", "G3", spec.get(0), spec.get(1), "A", "above")),

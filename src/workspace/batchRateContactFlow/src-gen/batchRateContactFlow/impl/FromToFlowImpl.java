@@ -5,16 +5,26 @@ package batchRateContactFlow.impl;
 import batchRateContactFlow.BatchRateContactFlowPackage;
 import batchRateContactFlow.FromToFlow;
 
+import batchRateContactFlow.Parameter;
 import epimodel.Compartment;
 
 import epimodel.impl.FlowImpl;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,11 +36,26 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link batchRateContactFlow.impl.FromToFlowImpl#getFrom <em>From</em>}</li>
  *   <li>{@link batchRateContactFlow.impl.FromToFlowImpl#getTo <em>To</em>}</li>
+ *   <li>{@link batchRateContactFlow.impl.FromToFlowImpl#getParameter <em>Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
+
+	@Override
+	public void edit(Shell shell, List<Control> controls) {
+		System.out.println(getId());
+//		shell.setText("Edit Flow " + getId() + " for compartment " + target.getLabel());
+//		shell.setLayout(new GridLayout(2, false));
+//		for (EReference ref : flowRefs()) {
+//			epimodel.util.Edit.addText(shell, controls, ref.getName());
+//			epimodel.util.Edit.addBtn(shell, controls, "Set '" + ref.getName() + "' to " + target.getLabel(), () -> {
+//				epimodel.util.Edit.transact(this, () -> eSet(ref, target));
+//				shell.close();
+//			});
+//		}
+	}
 
 	/**
 	 * The cached value of the '{@link #getFrom() <em>From</em>}' reference.
@@ -51,6 +76,16 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 	 * @ordered
 	 */
 	protected Compartment to;
+
+	/**
+	 * The cached value of the '{@link #getParameter() <em>Parameter</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Parameter> parameter;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -161,6 +196,34 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 	 * @generated
 	 */
 	@Override
+	public EList<Parameter> getParameter() {
+		if (parameter == null) {
+			parameter = new EObjectContainmentEList<Parameter>(Parameter.class, this,
+					BatchRateContactFlowPackage.FROM_TO_FLOW__PARAMETER);
+		}
+		return parameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case BatchRateContactFlowPackage.FROM_TO_FLOW__PARAMETER:
+			return ((InternalEList<?>) getParameter()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case BatchRateContactFlowPackage.FROM_TO_FLOW__FROM:
@@ -171,6 +234,8 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 			if (resolve)
 				return getTo();
 			return basicGetTo();
+		case BatchRateContactFlowPackage.FROM_TO_FLOW__PARAMETER:
+			return getParameter();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -180,6 +245,7 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -188,6 +254,10 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 			return;
 		case BatchRateContactFlowPackage.FROM_TO_FLOW__TO:
 			setTo((Compartment) newValue);
+			return;
+		case BatchRateContactFlowPackage.FROM_TO_FLOW__PARAMETER:
+			getParameter().clear();
+			getParameter().addAll((Collection<? extends Parameter>) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -207,6 +277,9 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 		case BatchRateContactFlowPackage.FROM_TO_FLOW__TO:
 			setTo((Compartment) null);
 			return;
+		case BatchRateContactFlowPackage.FROM_TO_FLOW__PARAMETER:
+			getParameter().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -223,6 +296,8 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 			return from != null;
 		case BatchRateContactFlowPackage.FROM_TO_FLOW__TO:
 			return to != null;
+		case BatchRateContactFlowPackage.FROM_TO_FLOW__PARAMETER:
+			return parameter != null && !parameter.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

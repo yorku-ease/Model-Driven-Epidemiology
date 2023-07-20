@@ -16,8 +16,8 @@ import epimodel.util.Comparison.MatchResult;
 
 public class Compare {
 	public static void main(String[] args) {
-		String model1fn = "../../runtime-extensions/Modeling1/Modeling1.epimodel";
-		String model2fn = "../../runtime-extensions/Modeling2/Modeling2.epimodel";
+		String model1fn = "../../runtime/Modeling1/Modeling1.epimodel";
+		String model2fn = "../../runtime/Modeling2/Modeling2.epimodel";
 		compare(model1fn, model2fn);
 	}
 	
