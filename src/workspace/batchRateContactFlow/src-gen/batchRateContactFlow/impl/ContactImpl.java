@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
  * </p>
  * <ul>
  *   <li>{@link batchRateContactFlow.impl.ContactImpl#getContact <em>Contact</em>}</li>
+ *   <li>{@link batchRateContactFlow.impl.ContactImpl#getContactParameters <em>Contact Parameters</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,29 +37,27 @@ import org.eclipse.swt.widgets.Shell;
 public class ContactImpl extends FromToFlowImpl implements Contact {
 
 	@Override
-	public void edit(Shell shell, List<Control> controls, Compartment target) {
-//		shell.setText("Edit Flow " + getId() + " for compartment " + target.getLabel());
-//		shell.setLayout(new GridLayout(2, false));
-//		for (EReference ref : flowRefs()) {
-//			epimodel.util.Edit.addText(shell, controls, ref.getName());
-//			epimodel.util.Edit.addBtn(shell, controls, "Set '" + ref.getName() + "' to " + target.getLabel(), () -> {
-//				epimodel.util.Edit.transact(this, () -> eSet(ref, target));
-//				shell.close();
-//			});
-//		}
-	}
-
-	@Override
 	public List<PhysicalFlow> getEquations() {
-		String basic_coefficient = "(parameter " + getId() + " " + from.getLabels() + ") ";
-		String from_compartment_value = from.getLabels().toString();
-		String contact_compartments = contact.getLabels().toString();
-		String sumproduct_of_contacts_times_coefs = "(sumproduct " + contact_compartments + ")";
-		// todo other coefficients susceptibility (from), infectiousness (contact), contact-mixing (from * contact)
-		String equation = "(* " + basic_coefficient + from_compartment_value + sumproduct_of_contacts_times_coefs + ")";
-		List<String> requiredOperators = Arrays.asList("*", "sumproduct");
-		return new ArrayList<>(Arrays.asList(new PhysicalFlow(new PhysicalCompartment(from.getLabels()),
-				new PhysicalCompartment(to.getLabels()), equation, requiredOperators)));
+		String base_template = " (parameter {} " + getId() + " $)";
+		String _parameters = get_from_to_parameters();
+		String _contactParameters = "";
+		{
+			String contact_parameter_template = base_template.replace("$", contact.getLabels().toString());
+			if (contactParameters != null)
+				for (String p : contactParameters.split(","))
+					_contactParameters += contact_parameter_template.replace("{}", p);
+		}
+		String sumproduct_of_contacts_times_coefs = " (sumproduct " + contact.getLabels() + " " + _contactParameters + ")";
+		String equation = "(* $0" + sumproduct_of_contacts_times_coefs + _parameters + ")";
+		return new ArrayList<>(
+			Arrays.asList(
+					new PhysicalFlow(
+						new PhysicalCompartment(from.getLabels()),
+						new PhysicalCompartment(to.getLabels()),
+						equation
+					)
+				)
+		);
 	}
 
 	/**
@@ -72,6 +69,25 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	 * @ordered
 	 */
 	protected Compartment contact;
+
+	/**
+	 * The default value of the '{@link #getContactParameters() <em>Contact Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContactParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONTACT_PARAMETERS_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getContactParameters() <em>Contact Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContactParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected String contactParameters = CONTACT_PARAMETERS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -140,12 +156,38 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	 * @generated
 	 */
 	@Override
+	public String getContactParameters() {
+		return contactParameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setContactParameters(String newContactParameters) {
+		String oldContactParameters = contactParameters;
+		contactParameters = newContactParameters;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS, oldContactParameters, contactParameters));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT:
 			if (resolve)
 				return getContact();
 			return basicGetContact();
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
+			return getContactParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -160,6 +202,9 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		switch (featureID) {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT:
 			setContact((Compartment) newValue);
+			return;
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
+			setContactParameters((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -176,6 +221,9 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT:
 			setContact((Compartment) null);
 			return;
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
+			setContactParameters(CONTACT_PARAMETERS_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -190,8 +238,28 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		switch (featureID) {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT:
 			return contact != null;
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
+			return CONTACT_PARAMETERS_EDEFAULT == null ? contactParameters != null
+					: !CONTACT_PARAMETERS_EDEFAULT.equals(contactParameters);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (contactParameters: ");
+		result.append(contactParameters);
+		result.append(')');
+		return result.toString();
 	}
 
 } //ContactImpl

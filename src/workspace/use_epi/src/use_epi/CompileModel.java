@@ -54,7 +54,6 @@ public class CompileModel {
 				writer.println(eq.equation);
 				writer.println(sorted(eq.source));
 				writer.println(sorted(eq.sink));
-				writer.println(eq.requiredOperators);
 			    writer.println();
 			}
 		    writer.close();

@@ -62,8 +62,6 @@ public class BatchRateContactFlowFactoryImpl extends EFactoryImpl implements Bat
 			return createBatch();
 		case BatchRateContactFlowPackage.RATE:
 			return createRate();
-		case BatchRateContactFlowPackage.PARAMETER:
-			return createParameter();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -100,17 +98,6 @@ public class BatchRateContactFlowFactoryImpl extends EFactoryImpl implements Bat
 	public Rate createRate() {
 		RateImpl rate = new RateImpl();
 		return rate;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Parameter createParameter() {
-		ParameterImpl parameter = new ParameterImpl();
-		return parameter;
 	}
 
 	/**

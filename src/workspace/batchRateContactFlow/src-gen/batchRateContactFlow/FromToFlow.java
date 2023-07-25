@@ -4,7 +4,6 @@ package batchRateContactFlow;
 
 import epimodel.Compartment;
 import epimodel.Flow;
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,7 +16,9 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link batchRateContactFlow.FromToFlow#getFrom <em>From</em>}</li>
  *   <li>{@link batchRateContactFlow.FromToFlow#getTo <em>To</em>}</li>
- *   <li>{@link batchRateContactFlow.FromToFlow#getParameter <em>Parameter</em>}</li>
+ *   <li>{@link batchRateContactFlow.FromToFlow#getSourceParameters <em>Source Parameters</em>}</li>
+ *   <li>{@link batchRateContactFlow.FromToFlow#getSinkParameters <em>Sink Parameters</em>}</li>
+ *   <li>{@link batchRateContactFlow.FromToFlow#getParameters <em>Parameters</em>}</li>
  * </ul>
  *
  * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow()
@@ -70,15 +71,69 @@ public interface FromToFlow extends Flow {
 	void setTo(Compartment value);
 
 	/**
-	 * Returns the value of the '<em><b>Parameter</b></em>' containment reference list.
-	 * The list contents are of type {@link batchRateContactFlow.Parameter}.
+	 * Returns the value of the '<em><b>Source Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parameter</em>' containment reference list.
-	 * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow_Parameter()
-	 * @model containment="true"
+	 * @return the value of the '<em>Source Parameters</em>' attribute.
+	 * @see #setSourceParameters(String)
+	 * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow_SourceParameters()
+	 * @model
 	 * @generated
 	 */
-	EList<Parameter> getParameter();
+	String getSourceParameters();
+
+	/**
+	 * Sets the value of the '{@link batchRateContactFlow.FromToFlow#getSourceParameters <em>Source Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Source Parameters</em>' attribute.
+	 * @see #getSourceParameters()
+	 * @generated
+	 */
+	void setSourceParameters(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Sink Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sink Parameters</em>' attribute.
+	 * @see #setSinkParameters(String)
+	 * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow_SinkParameters()
+	 * @model
+	 * @generated
+	 */
+	String getSinkParameters();
+
+	/**
+	 * Sets the value of the '{@link batchRateContactFlow.FromToFlow#getSinkParameters <em>Sink Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Sink Parameters</em>' attribute.
+	 * @see #getSinkParameters()
+	 * @generated
+	 */
+	void setSinkParameters(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameters</em>' attribute.
+	 * @see #setParameters(String)
+	 * @see batchRateContactFlow.BatchRateContactFlowPackage#getFromToFlow_Parameters()
+	 * @model
+	 * @generated
+	 */
+	String getParameters();
+
+	/**
+	 * Sets the value of the '{@link batchRateContactFlow.FromToFlow#getParameters <em>Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Parameters</em>' attribute.
+	 * @see #getParameters()
+	 * @generated
+	 */
+	void setParameters(String value);
 
 } // FromToFlow
