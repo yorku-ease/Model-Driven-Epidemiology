@@ -96,13 +96,31 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	int FROM_TO_FLOW__TO = EpimodelPackage.FLOW_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FROM_TO_FLOW__PARAMETER = EpimodelPackage.FLOW_FEATURE_COUNT + 2;
+	int FROM_TO_FLOW__SOURCE_PARAMETERS = EpimodelPackage.FLOW_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Sink Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FROM_TO_FLOW__SINK_PARAMETERS = EpimodelPackage.FLOW_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FROM_TO_FLOW__PARAMETERS = EpimodelPackage.FLOW_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>From To Flow</em>' class.
@@ -111,7 +129,7 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FROM_TO_FLOW_FEATURE_COUNT = EpimodelPackage.FLOW_FEATURE_COUNT + 3;
+	int FROM_TO_FLOW_FEATURE_COUNT = EpimodelPackage.FLOW_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>From To Flow</em>' class.
@@ -160,13 +178,31 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	int CONTACT__TO = FROM_TO_FLOW__TO;
 
 	/**
-	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTACT__PARAMETER = FROM_TO_FLOW__PARAMETER;
+	int CONTACT__SOURCE_PARAMETERS = FROM_TO_FLOW__SOURCE_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Sink Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTACT__SINK_PARAMETERS = FROM_TO_FLOW__SINK_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTACT__PARAMETERS = FROM_TO_FLOW__PARAMETERS;
 
 	/**
 	 * The feature id for the '<em><b>Contact</b></em>' reference.
@@ -178,13 +214,22 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	int CONTACT__CONTACT = FROM_TO_FLOW_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Contact Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTACT__CONTACT_PARAMETERS = FROM_TO_FLOW_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Contact</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTACT_FEATURE_COUNT = FROM_TO_FLOW_FEATURE_COUNT + 1;
+	int CONTACT_FEATURE_COUNT = FROM_TO_FLOW_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Contact</em>' class.
@@ -233,13 +278,31 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	int BATCH__TO = FROM_TO_FLOW__TO;
 
 	/**
-	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BATCH__PARAMETER = FROM_TO_FLOW__PARAMETER;
+	int BATCH__SOURCE_PARAMETERS = FROM_TO_FLOW__SOURCE_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Sink Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BATCH__SINK_PARAMETERS = FROM_TO_FLOW__SINK_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BATCH__PARAMETERS = FROM_TO_FLOW__PARAMETERS;
 
 	/**
 	 * The number of structural features of the '<em>Batch</em>' class.
@@ -297,13 +360,31 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	int RATE__TO = FROM_TO_FLOW__TO;
 
 	/**
-	 * The feature id for the '<em><b>Parameter</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Source Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RATE__PARAMETER = FROM_TO_FLOW__PARAMETER;
+	int RATE__SOURCE_PARAMETERS = FROM_TO_FLOW__SOURCE_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Sink Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RATE__SINK_PARAMETERS = FROM_TO_FLOW__SINK_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RATE__PARAMETERS = FROM_TO_FLOW__PARAMETERS;
 
 	/**
 	 * The number of structural features of the '<em>Rate</em>' class.
@@ -322,61 +403,6 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	 * @ordered
 	 */
 	int RATE_OPERATION_COUNT = FROM_TO_FLOW_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link batchRateContactFlow.impl.ParameterImpl <em>Parameter</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see batchRateContactFlow.impl.ParameterImpl
-	 * @see batchRateContactFlow.impl.BatchRateContactFlowPackageImpl#getParameter()
-	 * @generated
-	 */
-	int PARAMETER = 4;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Depends on source</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER__DEPENDS_ON_SOURCE = 1;
-
-	/**
-	 * The feature id for the '<em><b>Depends on sink</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER__DEPENDS_ON_SINK = 2;
-
-	/**
-	 * The number of structural features of the '<em>Parameter</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER_FEATURE_COUNT = 3;
-
-	/**
-	 * The number of operations of the '<em>Parameter</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARAMETER_OPERATION_COUNT = 0;
 
 	/**
 	 * Returns the meta object for class '{@link batchRateContactFlow.Contact <em>Contact</em>}'.
@@ -398,6 +424,17 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getContact_Contact();
+
+	/**
+	 * Returns the meta object for the attribute '{@link batchRateContactFlow.Contact#getContactParameters <em>Contact Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contact Parameters</em>'.
+	 * @see batchRateContactFlow.Contact#getContactParameters()
+	 * @see #getContact()
+	 * @generated
+	 */
+	EAttribute getContact_ContactParameters();
 
 	/**
 	 * Returns the meta object for class '{@link batchRateContactFlow.Batch <em>Batch</em>}'.
@@ -452,58 +489,37 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	EReference getFromToFlow_To();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link batchRateContactFlow.FromToFlow#getParameter <em>Parameter</em>}'.
+	 * Returns the meta object for the attribute '{@link batchRateContactFlow.FromToFlow#getSourceParameters <em>Source Parameters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Parameter</em>'.
-	 * @see batchRateContactFlow.FromToFlow#getParameter()
+	 * @return the meta object for the attribute '<em>Source Parameters</em>'.
+	 * @see batchRateContactFlow.FromToFlow#getSourceParameters()
 	 * @see #getFromToFlow()
 	 * @generated
 	 */
-	EReference getFromToFlow_Parameter();
+	EAttribute getFromToFlow_SourceParameters();
 
 	/**
-	 * Returns the meta object for class '{@link batchRateContactFlow.Parameter <em>Parameter</em>}'.
+	 * Returns the meta object for the attribute '{@link batchRateContactFlow.FromToFlow#getSinkParameters <em>Sink Parameters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Parameter</em>'.
-	 * @see batchRateContactFlow.Parameter
+	 * @return the meta object for the attribute '<em>Sink Parameters</em>'.
+	 * @see batchRateContactFlow.FromToFlow#getSinkParameters()
+	 * @see #getFromToFlow()
 	 * @generated
 	 */
-	EClass getParameter();
+	EAttribute getFromToFlow_SinkParameters();
 
 	/**
-	 * Returns the meta object for the attribute '{@link batchRateContactFlow.Parameter#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link batchRateContactFlow.FromToFlow#getParameters <em>Parameters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see batchRateContactFlow.Parameter#getName()
-	 * @see #getParameter()
+	 * @return the meta object for the attribute '<em>Parameters</em>'.
+	 * @see batchRateContactFlow.FromToFlow#getParameters()
+	 * @see #getFromToFlow()
 	 * @generated
 	 */
-	EAttribute getParameter_Name();
-
-	/**
-	 * Returns the meta object for the attribute '{@link batchRateContactFlow.Parameter#isDepends_on_source <em>Depends on source</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Depends on source</em>'.
-	 * @see batchRateContactFlow.Parameter#isDepends_on_source()
-	 * @see #getParameter()
-	 * @generated
-	 */
-	EAttribute getParameter_Depends_on_source();
-
-	/**
-	 * Returns the meta object for the attribute '{@link batchRateContactFlow.Parameter#isDepends_on_sink <em>Depends on sink</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Depends on sink</em>'.
-	 * @see batchRateContactFlow.Parameter#isDepends_on_sink()
-	 * @see #getParameter()
-	 * @generated
-	 */
-	EAttribute getParameter_Depends_on_sink();
+	EAttribute getFromToFlow_Parameters();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -545,6 +561,14 @@ public interface BatchRateContactFlowPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONTACT__CONTACT = eINSTANCE.getContact_Contact();
+
+		/**
+		 * The meta object literal for the '<em><b>Contact Parameters</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONTACT__CONTACT_PARAMETERS = eINSTANCE.getContact_ContactParameters();
 
 		/**
 		 * The meta object literal for the '{@link batchRateContactFlow.impl.BatchImpl <em>Batch</em>}' class.
@@ -593,46 +617,28 @@ public interface BatchRateContactFlowPackage extends EPackage {
 		EReference FROM_TO_FLOW__TO = eINSTANCE.getFromToFlow_To();
 
 		/**
-		 * The meta object literal for the '<em><b>Parameter</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Source Parameters</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FROM_TO_FLOW__PARAMETER = eINSTANCE.getFromToFlow_Parameter();
+		EAttribute FROM_TO_FLOW__SOURCE_PARAMETERS = eINSTANCE.getFromToFlow_SourceParameters();
 
 		/**
-		 * The meta object literal for the '{@link batchRateContactFlow.impl.ParameterImpl <em>Parameter</em>}' class.
+		 * The meta object literal for the '<em><b>Sink Parameters</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see batchRateContactFlow.impl.ParameterImpl
-		 * @see batchRateContactFlow.impl.BatchRateContactFlowPackageImpl#getParameter()
 		 * @generated
 		 */
-		EClass PARAMETER = eINSTANCE.getParameter();
+		EAttribute FROM_TO_FLOW__SINK_PARAMETERS = eINSTANCE.getFromToFlow_SinkParameters();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Parameters</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute PARAMETER__NAME = eINSTANCE.getParameter_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Depends on source</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PARAMETER__DEPENDS_ON_SOURCE = eINSTANCE.getParameter_Depends_on_source();
-
-		/**
-		 * The meta object literal for the '<em><b>Depends on sink</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PARAMETER__DEPENDS_ON_SINK = eINSTANCE.getParameter_Depends_on_sink();
+		EAttribute FROM_TO_FLOW__PARAMETERS = eINSTANCE.getFromToFlow_Parameters();
 
 	}
 

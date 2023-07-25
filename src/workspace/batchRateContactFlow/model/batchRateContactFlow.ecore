@@ -4,20 +4,15 @@
     nsPrefix="batchRateContactFlow">
   <eClassifiers xsi:type="ecore:EClass" name="Contact" eSuperTypes="#//FromToFlow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contact" eType="ecore:EClass ../../epimodel/model/epimodel.ecore#//Compartment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contactParameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Batch" eSuperTypes="#//FromToFlow"/>
   <eClassifiers xsi:type="ecore:EClass" name="Rate" eSuperTypes="#//FromToFlow"/>
   <eClassifiers xsi:type="ecore:EClass" name="FromToFlow" abstract="true" eSuperTypes="../../epimodel/model/epimodel.ecore#//Flow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="ecore:EClass ../../epimodel/model/epimodel.ecore#//Compartment"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="ecore:EClass ../../epimodel/model/epimodel.ecore#//Compartment"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
-        eType="#//Parameter" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depends_on_source" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="depends_on_sink" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceParameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sinkParameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>
