@@ -38,11 +38,14 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 
 	@Override
 	public List<PhysicalFlow> getEquations() {
-		String base_template = " (parameter {} " + getId() + " $)";
 		String _parameters = get_from_to_parameters();
 		String _contactParameters = "";
 		{
-			String contact_parameter_template = base_template.replace("$", contact.getLabels().toString());
+			String base_template = " (parameter {} " + getId() + " $dim $contact)";
+			String dimensionStr = "(join - (intersection $0 $1))";
+			String contact_parameter_template = base_template
+					.replace("$dim", dimensionStr)
+					.replace("$contact", contact.getLabels().toString());
 			if (contactParameters != null)
 				for (String p : contactParameters.split(","))
 					_contactParameters += contact_parameter_template.replace("{}", p);

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import epimodel.util.PhysicalFlow;
 import epimodel.util.PhysicalCompartment;
@@ -23,7 +25,7 @@ public class CompileModel {
 	
 	static void compile(String model_fn) throws FileNotFoundException, UnsupportedEncodingException {
         
-		String outfolder = "C:/Users/Bruno/Desktop/compiled_models/";
+		String outfolder = "C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/";
 
 		epimodel.Epidemic root = (epimodel.Epidemic)
 				epimodel.impl.EpimodelPackageImpl.loadModel(model_fn);
@@ -51,9 +53,11 @@ public class CompileModel {
 		{
 			PrintWriter writer = new PrintWriter(baseFileName + ".equations.txt", "UTF-8");
 			for (PhysicalFlow eq : myEpi.getCompartment().getEquations()) {
-				writer.println(eq.equation);
-				writer.println(sorted(eq.source));
-				writer.println(sorted(eq.sink));
+				String source = sorted(eq.source);
+				String sink = sorted(eq.sink);
+				writer.println(eq.equation.replace("$0", source).replace("$1", sink));
+				writer.println(source);
+				writer.println(sink);
 			    writer.println();
 			}
 		    writer.close();
@@ -61,8 +65,12 @@ public class CompileModel {
 	}
 	
 	static String sorted(PhysicalCompartment pc) {
-		PhysicalCompartment pc2 = new PhysicalCompartment(pc.labels);
-		pc2.labels.sort(java.util.Comparator.naturalOrder());
-		return pc2.labels.toString();
+		return sorted(pc.labels);
+	}
+	
+	static String sorted(List<String> labels) {
+		List<String> l2 = new ArrayList<>(labels);
+		l2.sort(java.util.Comparator.naturalOrder());
+		return l2.toString();
 	}
 }
