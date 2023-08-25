@@ -58,6 +58,8 @@ public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
 				for (String p : sinkParameters.split(","))
 					_parameters += sink_parameter_template.replace("{}", p);
 		}
+		if (_parameters.equals(""))
+			throw new RuntimeException();
 		return _parameters;
 	}
 
