@@ -6,15 +6,18 @@ public class PhysicalFlow {
 	public final PhysicalCompartment source;
 	public final PhysicalCompartment sink;
 	public final String equation;
+	public final String name;
 	
 	public PhysicalFlow(
 		PhysicalCompartment source,
 		PhysicalCompartment sink,
-		String equation
+		String equation,
+		String name
 	) {
 		this.source = source;
 		this.sink = sink;
 		this.equation = equation;
+		this.name = name;
 	}
 	
 	@Override
@@ -32,6 +35,7 @@ public class PhysicalFlow {
 		return new PhysicalFlow(
 				new PhysicalCompartment(new ArrayList<>(source.labels)),
 				new PhysicalCompartment(new ArrayList<>(sink.labels)),
-				new String(equation));
+				new String(equation),
+				new String(name));
 	}
 }

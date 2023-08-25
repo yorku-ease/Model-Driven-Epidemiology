@@ -31,7 +31,8 @@ public class RateImpl extends FromToFlowImpl implements Rate {
 					new PhysicalFlow(
 						new PhysicalCompartment(from.getLabels()),
 						new PhysicalCompartment(to.getLabels()),
-						equation
+						equation,
+						getId()
 					)
 				)
 		);

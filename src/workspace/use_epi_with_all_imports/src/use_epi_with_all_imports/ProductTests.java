@@ -118,7 +118,8 @@ class ProductTests {
 		PhysicalFlow rateFromAtoB = new PhysicalFlow(
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B")),
-			"" // equation
+			"", // equation
+			"" // name
 		);
 		
 		List<List<String>> prod = CartesianProduct.cartesianProduct(
@@ -130,7 +131,8 @@ class ProductTests {
 				new PhysicalFlow(
 					new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1))),
 					new PhysicalCompartment(Arrays.asList("B", prod.get(i).get(0), prod.get(i).get(1))),
-					"" // equation
+					"", // equation
+					"" // name
 				),
 				epi.expand(
 					rateFromAtoB,
@@ -151,7 +153,8 @@ class ProductTests {
 		PhysicalFlow rateFromAtoB1 = new PhysicalFlow(
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B", "1")),
-			"" // equation
+			"", // equation
+			"" // name
 		);
 		
 		List<List<String>> prod = CartesianProduct.cartesianProduct(
@@ -174,7 +177,8 @@ class ProductTests {
 				new PhysicalFlow(
 					new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0), prod.get(i).get(1))),
 					new PhysicalCompartment(Arrays.asList("B", "1", prod.get(i).get(0), prod.get(i).get(1))),
-					"" // equation
+					"", // equation
+					"" // name
 				),
 				l.get(i)
 			);
@@ -187,7 +191,8 @@ class ProductTests {
 		PhysicalFlow rateFromAtoB = new PhysicalFlow(
 			new PhysicalCompartment(Arrays.asList("A")),
 			new PhysicalCompartment(Arrays.asList("B")),
-			"" // equation
+			"", // equation
+			"" // name
 		);
 		
 		List<PhysicalFlow> l = epi.replicateEquationToMatchPCs(rateFromAtoB, new CompartmentImpl() {
@@ -224,7 +229,8 @@ class ProductTests {
 				new PhysicalFlow(
 						new PhysicalCompartment(Arrays.asList("A", prod.get(i).get(0))),
 						new PhysicalCompartment(Arrays.asList("B", prod.get(i).get(1))),
-						"" // equation
+						"", // equation
+						"" // name
 					),
 				l.get(i)
 			);
@@ -246,7 +252,8 @@ class ProductTests {
 		PhysicalFlow symptoms = new PhysicalFlow(
 			new PhysicalCompartment(Arrays.asList("Asymptomatic")),
 			new PhysicalCompartment(Arrays.asList("Symptomatic")),
-			"" // equation
+			"", // equation
+			"" // name
 		);
 		List<List<PhysicalCompartment>> pcl = epi.getCompartment().stream().map(CompartmentWrapper::getCompartment).map(Compartment::getPhysicalCompartments).toList();
 		assertEquals(1, epi.getPartOfWhichDimIndex(symptoms, pcl));

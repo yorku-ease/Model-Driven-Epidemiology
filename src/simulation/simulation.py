@@ -1,8 +1,11 @@
+import numpy as np
+
 class Flow:
     def __init__(self, lines, parameters, compartments):
-        self.equation = lines[0].replace('\n', '').replace("$0", lines[1][:-1]).replace("$1", lines[2][:-1])#[:-1]
-        self.source = parse(read(lines[1])[0])#[:-1]
-        self.sink = parse(read(lines[2])[0])#[:-1]
+        self.equation = lines[0].replace('\n', '').replace("$0", lines[1][:-1]).replace("$1", lines[2][:-1])
+        self.source = parse(read(lines[1])[0])
+        self.sink = parse(read(lines[2])[0])
+        self.name = parse(read(lines[3])[0])
         self.compiled_equation = compile(parse(read(self.equation)[0]), parameters, compartments)
 
     def __repr__(self):
@@ -24,7 +27,10 @@ class Compartment:
         self.labels = labels
 
     def __repr__(self):
-        return 'Compartment' + str(self.labels)
+        return 'Compartment' + self.as_key()
+
+    def as_key(self):
+        return '[' + ','.join(self.labels) + ']'
 
 class WordOrSymbol:
     def __init__(self, value: str) -> None:
@@ -98,9 +104,9 @@ def parse_fn(string: str):
     return Function(terms[0], terms[1:])
 
 def parse_compartment(string: str):
-    if string[-1] != ']':
+    if string[0] != '[' or string[-1] != ']':
         print(string, string[-1])
-        raise 1
+        raise Exception('called parse_compartment with invalid string')
     string = string[1:-1] # take `...` from `[...]`
     return Compartment([s.strip() for s in string.split(',')])
 
@@ -146,6 +152,8 @@ def compile_equation(equation: Function, parameters, compartments):
             return lambda state: [parameter.evaluate() for parameter in parameters]
         else:
             if fn == '*':
+                if len(equation.operands) == 1:
+                    raise 1
                 compiled_operands = [compile(operand, parameters, compartments) for operand in equation.operands]
                 return lambda state: product([operand(state) for operand in compiled_operands])
             elif fn == 'sumproduct':
@@ -192,13 +200,26 @@ def parse_compartments(line):
     return [parse_compartment(c) for c in line.replace('[[', '[').replace(']]', ']').replace('\n', '').split('], ')]
 
 class Parameter:
-    def __init__(self, name, value) -> None:
-        self.name = name
+    def __init__(self, operands, value) -> None:
+        if type(operands) != type([]):
+            raise 1
+        self.operands = operands
         self.value = value
 
     def evaluate(self):
         if self.value is None:
             raise Exception(f"None valued parameter '{self.name}'")
+        else:
+            return self.value
+
+class CompartmentValue:
+    def __init__(self, compartment: Compartment, value) -> None:
+        self.compartment = compartment
+        self.value = value
+
+    def evaluate(self):
+        if self.value is None:
+            raise Exception(f"None valued compartment {self.compartment.labels}")
         else:
             return self.value
 
@@ -209,32 +230,30 @@ def prepare_parameter(operands, parameters, compartments):
             if not is_full_compartment_specification:
                 s = set(operand.labels)
                 subsets_of_partial_specialization = [Compartment(c) for c in compartments if set(c).issuperset(s)]
-                before, after = operands[:i], operands [i+1:]
+                before, after = operands[:i], operands[i+1:]
                 for c in subsets_of_partial_specialization:
                     prepare_parameter(before + [c] + after, parameters, compartments)
                 return
-        else:
-          if '[' in str(operand):
-            print(f'not compartment {operand}')
-            raise 1
     key = '(parameter'
     for op in operands:
         if isinstance(op, WordOrSymbol):
             key += ' ' + op.value
         if isinstance(op, Compartment):
-            key += ' ' + str(op.labels).replace('"', '').replace("'", '')
+            key += ' ' + op.as_key()
     key += ')'
     if key not in parameters:
         parameters[key] = Parameter(operands, None)
 
 def get_parameters(operands, parameters, compartments):
+    # check if any of our parameters are incomplete compartments (incomplete specifications)
+    # those refer to all the compartments who's labels are a superset of our compartment's labels
     for i, operand in enumerate(operands):
         if isinstance(operand, Compartment):
             is_full_compartment_specification = operand.labels in compartments
             if not is_full_compartment_specification:
                 s = set(operand.labels)
                 subsets_of_partial_specialization = [Compartment(c) for c in compartments if set(c).issuperset(s)]
-                before, after = operands[:i], operands [i+1:]
+                before, after = operands[:i], operands[i+1:]
                 res = []
                 for c in subsets_of_partial_specialization:
                     params = get_parameters(before + [c] + after, parameters, compartments)
@@ -243,12 +262,14 @@ def get_parameters(operands, parameters, compartments):
                     else:
                         res.extend([params])
                 return res
+    # note we early return in the for loop if any compartment was incomplete
+    # so at this point we are certain the parameters we have are complete
     key = '(parameter'
     for op in operands:
         if isinstance(op, WordOrSymbol):
             key += ' ' + op.value
         if isinstance(op, Compartment):
-            key += ' ' + str(op.labels).replace('"', '').replace("'", '')
+            key += ' ' + op.as_key()
     key += ')'
     return [parameters[key]]
 
@@ -257,9 +278,6 @@ def evalDelta(flows, state):
     for flow in flows:
         res += flow.compiled_equation(state)
     return res
-
-def derivativeForCompartmentIndex(flowsbycompartment, i):
-    return lambda state: evalDelta(flowsbycompartment[i][0], state) - evalDelta(flowsbycompartment[i][1], state)
 
 def model_derivative(derivatives, state, t):
     print(f'\r{t}                                                         ', end='')
@@ -270,64 +288,49 @@ def model_derivative(derivatives, state, t):
 def test_required_parameters(parameters):
     return [name for name, parameter in parameters.items() if parameter.value is None]
 
-def set_parameters(parameters, labels, value):
-    c_new = 0
-    c_replace = 0
-    for k, v in parameters.items():
-        if all(f"'{label}'" in k for label in labels):
-            if v.value is None:
-                c_new += 1
-            else:
-                c_replace += 1
-            parameters[k].value = float(value)
-    print(f'set {c_new} values and modified {c_replace} values')
+def readlines(fn):
+    f = open(fn, 'r')
+    l = f.readlines()
+    f.close()
+    return l
 
-def count_missing_parameters(parameters, labels):
-    c = 0
-    for k, v in parameters.items():
-        if v.value is None and all(f"'{label}'" in k for label in labels):
-            c += 1
-    print(f'missing {c} values')
+def identify_required_parameters(folder, project_name, provided_parameters):
+    compartments = [parse_compartment(line[:-1]).labels for line in readlines(f'{folder}{project_name}.compartments.txt')]
+    number_of_lines_per_flow_in_file = 5
+    nl = number_of_lines_per_flow_in_file
 
-def list_unique_missing_labels_parameters(parameters, labels):
-    missing = set()
-    for k, v in parameters.items():
-        if v.value is None and all(f"'{label}'" in k for label in labels):
-            for label in parse_compartment(k).labels:
-                missing.add(label)
-    print([label for label in missing if label not in labels])
+    equation_file_lines = list(readlines(f'{folder}{project_name}.equations.txt')) + ['\n']
+    n_eq = int(len(equation_file_lines) / nl)
+    # nl = 5 -> [[0,1,2,3,4],[5,6,7,8,9],...]
+    lines_of_each_eq = [equation_file_lines[i * nl:(i + 1) * nl] for i in range(n_eq)]
+    flows = [Flow(lines_of_eq, provided_parameters, compartments) for lines_of_eq in lines_of_each_eq]
 
-def validate_all_parameters_exist(folder, project_name):
-    compartments = [parse_compartment(line[:-1]).labels for line in open(f'{folder}{project_name}.compartments.txt').readlines()]
-    number_of_lines_per_flow_in_file = 4
-    flows = list(open(f'{folder}{project_name}.equations.txt').readlines()) + ['\n', '\n'] # add 2 empty lines just in case the file is not generated with them
-    flows = [flows[i * number_of_lines_per_flow_in_file:(i + 1) * number_of_lines_per_flow_in_file] for i in range(int(len(flows) / number_of_lines_per_flow_in_file))]
-    provided_parameters = {k.strip(): Parameter(k, float(v)) for k, v in [s.split('=') for s in open(f'{folder}{project_name}.parameters.txt').readlines()]}
-    flows = [Flow(lines, provided_parameters, compartments) for lines in flows]
+    return compartments, flows
 
-    # each compartment has an in and an out list
-    flowsbycompartment = [[[], []] for _ in compartments]
-    for flow in flows:
-        source = compartments.index(flow.source.labels)
-        sink = compartments.index(flow.sink.labels)
-        _in,_out = 0,1
-        flowsbycompartment[source][_out] += [flow]
-        flowsbycompartment[sink  ][_in ] += [flow]
+def derivative_for(flows):
+    return lambda state: evalDelta(flows[0], state) - evalDelta(flows[1], state)
 
-    print(f'model compartments = {len(compartments)}')
-    print(f'model equations = {len(flows)}')
+def read_initial_conditions(folder, project_name, list_of_list_of_labels):
+    compartments = [Compartment(c) for c in list_of_list_of_labels]
+    initial_conditions = { c.as_key() : CompartmentValue(c, None) for c in compartments }
+    for line in readlines(f'{folder}{project_name}.scenario-compartments.txt'):
+        k, v = line.split('=')
+        k = parse_compartment(k.strip()).as_key()
+        if k not in initial_conditions:
+            raise Exception(f"Provided population value in {folder}{project_name}.scenario-compartments.txt missing in {folder}{project_name}.compartments.txt")
+        initial_conditions[k] = CompartmentValue(parse_compartment(k), float(v))
+    return initial_conditions
 
-    missing_parameters = test_required_parameters(provided_parameters)
+def run_sim(folder, project_name, provided_parameters, compartments, flows, solver):
+    compartments = [parse_compartment(line[:-1]).labels for line in readlines(f'{folder}{project_name}.compartments.txt')]
+    number_of_lines_per_flow_in_file = 5
+    nl = number_of_lines_per_flow_in_file
 
-    return len(missing_parameters) == 0
-
-def run_sim(folder, project_name):
-    compartments = [parse_compartment(line[:-1]).labels for line in open(f'{folder}{project_name}.compartments.txt').readlines()]
-    number_of_lines_per_flow_in_file = 4
-    flows = list(open(f'{folder}{project_name}.equations.txt').readlines()) + ['\n', '\n'] # add 2 empty lines just in case the file is not generated with them
-    flows = [flows[i * number_of_lines_per_flow_in_file:(i + 1) * number_of_lines_per_flow_in_file] for i in range(int(len(flows) / number_of_lines_per_flow_in_file))]
-    provided_parameters = {k.strip(): Parameter(k, float(v)) for k, v in [s.split('=') for s in open(f'{folder}{project_name}.parameters.txt').readlines()]}
-    flows = [Flow(lines, provided_parameters, compartments) for lines in flows]
+    equation_file_lines = list(readlines(f'{folder}{project_name}.equations.txt')) + ['\n']
+    n_eq = int(len(equation_file_lines) / nl)
+    # nl = 5 -> [[0,1,2,3,4],[5,6,7,8,9],...]
+    lines_of_each_eq = [equation_file_lines[i * nl:(i + 1) * nl] for i in range(n_eq)]
+    flows = [Flow(lines_of_eq, provided_parameters, compartments) for lines_of_eq in lines_of_each_eq]
 
     # each compartment has an in and an out list
     flowsbycompartment = [[[], []] for _ in compartments]
@@ -337,9 +340,6 @@ def run_sim(folder, project_name):
         _in,_out = 0,1
         flowsbycompartment[source][_out] += [flow]
         flowsbycompartment[sink  ][_in ] += [flow]
-
-    print(f'model compartments = {len(compartments)}')
-    print(f'model equations = {len(flows)}')
 
     missing_parameters = test_required_parameters(provided_parameters)
 
@@ -349,85 +349,71 @@ def run_sim(folder, project_name):
             print(parameter)
         raise Exception("Missing Parameters")
     else:
-        derivatives = [derivativeForCompartmentIndex(flowsbycompartment, i) for i in range(len(compartments))]
-        initial_conditions = {str(c) : v for c, v in zip(compartments, [float(line.split('=')[1]) for line in open(f'{folder}{project_name}.scenario.txt').readlines()])}
-        print('d(model)/dt | t=0; = ', model_derivative(derivatives, [initial_conditions[str(c)] for c in compartments], 0))
+        derivatives = [derivative_for(flowsbycompartment[i]) for i in range(len(compartments))]
+        initial_conditions = { Compartment(c).as_key() : CompartmentValue(Compartment(c), None) for c in compartments }
+        for line in readlines(f'{folder}{project_name}.scenario-compartments.txt'):
+            k, v = line.split('=')
+            k = k.strip()
+            initial_conditions[k] = CompartmentValue(parse_compartment(k.strip()), float(v))
 
-        # min, max = 0, 100
-        # steps = 10
-        # t_span = np.linspace(min, max, num=steps)
+        min, max, steps = 0, 1000, 1000
+        t_span = linspace(min, max, steps)
 
-        # md = lambda state, t: model_derivative(derivatives, state, t)
-        # solution = np.array([[initial_conditions[str(c)] for c in compartments]])#odeint(md, [initial_conditions[str(c)] for c in compartments], t_span)
-        # return solution
+        md = lambda state, t: model_derivative(derivatives, state, t)
+        solution = solver(md, [initial_conditions[Compartment(c).as_key()].value for c in compartments], t_span)
+        print()
+        return solution
 
-project_name = 'HIV-TB-Coinfection'
-runLocal = True
-folder = f'C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/{project_name}/' if runLocal else ''
-# project_name = 'test-contact'
-solution = run_sim(folder, project_name)
+def base_solver(model_derivative_f, initial_conditions, t_span):
+    size = len(initial_conditions)
+    state = initial_conditions
+    res = [state]
+    previous_t = t_span[0]
+    for t in t_span[1:]:
+        dt = t - previous_t
+        model_derivative = model_derivative_f(state, previous_t)
 
-len(solution), len(solution[0])
+        # sign something is wrong, steps too large, dangerous
+        if (sum(np.abs(model_derivative)) * dt / sum(state)) > 1e-4:
+            # 10 steps 10 times smaller
+            smaller_steps_sln = base_solver(model_derivative_f, state, linspace(previous_t, t, 10))
+            # keep only the last
+            state = smaller_steps_sln[-1]
+        else:
+            state = [state[i] + model_derivative[i] * dt for i in range(size)]
 
-shape = (4, 4, 4, 2, 2)
-# shape = (2, 2)
+        state = [x if x > 0 else 0 for x in state]
+        res += [state]
+        previous_t = t
+    return np.array(res)
 
-# def plot_by_labels(list_of_list_of_labels):
-#     for list_of_labels in list_of_list_of_labels:
-#         curves = []
-#         sub = set(list_of_labels)
-#         for i, c in enumerate(compartments):
-#             if set(c).issuperset(sub):
-#                 curves += [solution[:, i]]
-#         res = np.sum(np.array(curves), axis = 0)
-#         l, = plt.plot(res)
-#         l.set_label(list_of_labels)
-#     plt.legend()
-#     plt.show()
+# produces an array of length `n_steps + 1`
+# interval [start, end] with `n_steps - 1` evenly spaced points in between
+def linspace(start, end, n_steps: int):
+    if n_steps < 1:
+        raise Exception("n_steps has to be a positive integer greater or equal to 1")
+    d = (end - start) / n_steps
+    return [start + d * i for i in range(n_steps)] + [end]
 
-# # plot_by_labels([['S'], ['I']])
-# # plot_by_labels([['S', 'Child'], ['I', 'Child']])
-# # plot_by_labels([['S', 'Adult'], ['I', 'Adult']])
-# # plot_by_labels([['I', 'Child'], ['I', 'Adult']])
+if __name__ == "__main__":
+    runLocal = True
+    project_name = 'HIV-TB-Coinfection'
+    # project_name = 'test-contact'
+    folder = f'C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/{project_name}/' if runLocal else ''
+    parameters = {k.strip(): Parameter(parse_fn(k).operands, float(v)) for k, v in [s.split('=') for s in readlines(f'{folder}{project_name}.parameters.txt')]}
 
-# # plot_by_labels([['S-HIV'], ['I-HIV']])
-# # plot_by_labels([['S-HIV', 'Child'], ['I-HIV', 'Child']])
-# # plot_by_labels([['S-HIV', 'Adult-51+'], ['I-HIV', 'Adult-51+']])
-# # plot_by_labels([['I-HIV', 'Child'], ['I-HIV', 'Adult-51+']])
+    compartments, flows = identify_required_parameters(folder, project_name, parameters)
+    missing = [k for k, v in parameters.items() if v.value is None]
 
-# def set_initial_conditions(initial_conditions, labels, value):
-#     c = 0
-#     for k, _ in initial_conditions.items():
-#         if all(f"'{label}'" in k for label in labels):
-#             c += 1
-#         initial_conditions[k] = float(value)
-#     print(f'modified {c} values')
+    if len(missing) == 0:
+        # solver = odeint
+        solver = base_solver
+        solution = run_sim(folder, project_name, parameters, compartments, flows, solver)
+    else:
+        print(f'missing {len(missing)} parameters')
+        fn = f'{folder}{project_name}.missing-parameters.txt'
+        print(f'writing missing parameters to `{fn}`')
 
-# def count_missing_initial_conditions(initial_conditions, labels):
-#     c = 0
-#     for k, v in initial_conditions.items():
-#         if v.value == None and all(f"'{label}'" in k for label in labels):
-#             c += 1
-#     print(f'missing {c} values')
-
-# def list_unique_missing_labels_initial_conditions(initial_conditions, labels):
-#     missing = set()
-#     for k, v in initial_conditions.items():
-#         if v.value == None and all(f"'{label}'" in k for label in labels):
-#             for label in parse_compartment(k).labels:
-#                 missing.add(label)
-#     print([label for label in missing if label not in labels])
-
-# count_missing_initial_conditions(initial_conditions, ['R-TB'])
-
-# list_unique_missing_labels_initial_conditions(initial_conditions, ['R-TB'])
-
-# # set_initial_conditions(initial_conditions, [], 0)
-# # set_initial_conditions(initial_conditions, ['Alive', 'S-HIV'], 999)
-# # set_initial_conditions(initial_conditions, ['Alive', 'S-TB'], 999)
-# # set_initial_conditions(initial_conditions, ['Alive', 'I-HIV', 'S-TB'], 1)
-# # set_initial_conditions(initial_conditions, ['Alive', 'S-HIV', 'I-TB'], 1)
-# # set_initial_conditions(initial_conditions, ['Alive', 'S-HIV', 'I-TB'], 1)
-
-# initial_conditions
-
+        with open(fn, 'w') as f:
+            for p in missing:
+                f.write(p + ' = 0\n')

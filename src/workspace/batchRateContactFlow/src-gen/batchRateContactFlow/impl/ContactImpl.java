@@ -57,7 +57,8 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 					new PhysicalFlow(
 						new PhysicalCompartment(from.getLabels()),
 						new PhysicalCompartment(to.getLabels()),
-						equation
+						equation,
+						getId()
 					)
 				)
 		);

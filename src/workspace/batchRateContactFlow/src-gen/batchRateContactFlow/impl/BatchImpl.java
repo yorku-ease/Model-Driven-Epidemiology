@@ -31,7 +31,8 @@ public class BatchImpl extends FromToFlowImpl implements Batch {
 					new PhysicalFlow(
 						new PhysicalCompartment(from.getLabels()),
 						new PhysicalCompartment(to.getLabels()),
-						equation
+						equation,
+						getId()
 					)
 				)
 		);

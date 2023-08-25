@@ -40,9 +40,9 @@ public class CompileModel {
 		
 		String innerFolder = outfolder + innerFolderName + "/";
 		
-		String baseFileName = innerFolder + innerFolderName;
-		
 		new File(innerFolder).mkdirs();
+		
+		String baseFileName = innerFolder + innerFolderName;
 		
 		{
 			PrintWriter writer = new PrintWriter(baseFileName + ".compartments.txt", "UTF-8");
@@ -52,12 +52,14 @@ public class CompileModel {
 		}
 		{
 			PrintWriter writer = new PrintWriter(baseFileName + ".equations.txt", "UTF-8");
+			
 			for (PhysicalFlow eq : myEpi.getCompartment().getEquations()) {
 				String source = sorted(eq.source);
 				String sink = sorted(eq.sink);
 				writer.println(eq.equation.replace("$0", source).replace("$1", sink));
 				writer.println(source);
 				writer.println(sink);
+				writer.println(eq.name);
 			    writer.println();
 			}
 		    writer.close();
