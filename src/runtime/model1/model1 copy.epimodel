@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:epimodel="http://www.example.org/epimodel" xmlns:group="http://www.example.org/group" xmlns:product="http://www.example.org/product">
+  <compartmentwrapper>
+    <compartment xsi:type="product:Product">
+      <label>HIV-TB-Coinfection</label>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>HIV</label>
+          <compartment>
+            <compartment>
+              <label>S-HIV</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>E-HIV</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>I-HIV</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Under-Treatment-HIV</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="Infection-HIV" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment" parameters="normalizing"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="Treatment-HIV" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.3/@compartment" parameters="normalizing"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Contact" id="Exposure-HIV" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.1/@compartment" sourceParameters="susceptibility-hiv" sinkParameters="" parameters="normalizing" contact="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment" contactParameters="contact-mixing-hiv,contagiousness-hiv"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="Waning-HIV" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.3/@compartment" to="//@compartmentwrapper/@compartment/@compartment.0/@compartment/@compartment.2/@compartment" parameters="normalizing"/>
+          </flow>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Age</label>
+          <compartment>
+            <compartment>
+              <label>Child</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Adult-18-to-50</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>births</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Adult-51+</label>
+            </compartment>
+          </compartment>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Sex</label>
+          <compartment>
+            <compartment>
+              <label>M</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>F</label>
+            </compartment>
+          </compartment>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Tuberculosis</label>
+          <compartment>
+            <compartment>
+              <label>S-TB</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>E-TB</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>I-TB</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>R-TB</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Contact" id="Exposure-TB" from="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.1/@compartment" sourceParameters="susceptibility-tb" sinkParameters="" parameters="normalizing" contact="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.2/@compartment" contactParameters="contact-mixing-tb,contagiousness-tb"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="Infection-TB" from="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.2/@compartment" parameters="normalizing"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="immunity-TB" from="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment/@compartment.3/@compartment" parameters="normalizing"/>
+          </flow>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group">
+          <label>Mortality</label>
+          <compartment>
+            <compartment>
+              <label>Alive</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>Deceased</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="Death" from="//@compartmentwrapper/@compartment/@compartment.4/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.4/@compartment/@compartment.1/@compartment" sourceParameters="death-coef" parameters="normalizing"/>
+          </flow>
+        </compartment>
+      </compartment>
+    </compartment>
+  </compartmentwrapper>
+</epimodel:Epidemic>

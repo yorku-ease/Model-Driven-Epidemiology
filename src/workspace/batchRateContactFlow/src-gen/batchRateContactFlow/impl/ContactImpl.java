@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link batchRateContactFlow.impl.ContactImpl#getContact <em>Contact</em>}</li>
  *   <li>{@link batchRateContactFlow.impl.ContactImpl#getContactParameters <em>Contact Parameters</em>}</li>
+ *   <li>{@link batchRateContactFlow.impl.ContactImpl#getContactAndSourceParameters <em>Contact And Source Parameters</em>}</li>
  * </ul>
  *
  * @generated
@@ -39,29 +40,31 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	@Override
 	public List<PhysicalFlow> getEquations() {
 		String _parameters = get_from_to_parameters();
-		String _contactParameters = "";
+		// parameters like contact mixing
+		String _contact_and_source_parameters = "";
 		{
 			String base_template = " (parameter {} " + getId() + " $dim $contact)";
 			String dimensionStr = "(join - (intersection $0 $1))";
-			String contact_parameter_template = base_template
-					.replace("$dim", dimensionStr)
-					.replace("$contact", contact.getLabels().toString());
-			if (contactParameters != null)
-				for (String p : contactParameters.split(","))
-					_contactParameters += contact_parameter_template.replace("{}", p);
+			String contact_parameter_template = base_template.replace("$dim", dimensionStr).replace("$contact",
+					contact.getLabels().toString());
+			if (contactAndSourceParameters != null && !contactAndSourceParameters.equals(""))
+				for (String p : contactAndSourceParameters.split(","))
+					_contact_and_source_parameters += contact_parameter_template.replace("{}", p);
 		}
-		String sumproduct_of_contacts_times_coefs = " (sumproduct " + contact.getLabels() + " " + _contactParameters + ")";
+		// parameters like contagiousness
+		String _contact_parameters = "";
+		{
+			String base_template = " (parameter {} " + getId() + " $contact)";
+			String contact_parameter_template = base_template.replace("$contact", contact.getLabels().toString());
+			if (contactParameters != null && !contactParameters.equals(""))
+				for (String p : contactParameters.split(","))
+					_contact_parameters += contact_parameter_template.replace("{}", p);
+		}
+		String sumproduct_of_contacts_times_coefs =
+				" (sumproduct " + contact.getLabels() + " " + _contact_parameters + " " + _contact_and_source_parameters + ")";
 		String equation = "(* $0" + sumproduct_of_contacts_times_coefs + _parameters + ")";
-		return new ArrayList<>(
-			Arrays.asList(
-					new PhysicalFlow(
-						new PhysicalCompartment(from.getLabels()),
-						new PhysicalCompartment(to.getLabels()),
-						equation,
-						getId()
-					)
-				)
-		);
+		return new ArrayList<>(Arrays.asList(new PhysicalFlow(new PhysicalCompartment(from.getLabels()),
+				new PhysicalCompartment(to.getLabels()), equation, getId())));
 	}
 
 	/**
@@ -92,6 +95,26 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	 * @ordered
 	 */
 	protected String contactParameters = CONTACT_PARAMETERS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getContactAndSourceParameters() <em>Contact And Source Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContactAndSourceParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CONTACT_AND_SOURCE_PARAMETERS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getContactAndSourceParameters() <em>Contact And Source Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContactAndSourceParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected String contactAndSourceParameters = CONTACT_AND_SOURCE_PARAMETERS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -184,6 +207,31 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 	 * @generated
 	 */
 	@Override
+	public String getContactAndSourceParameters() {
+		return contactAndSourceParameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setContactAndSourceParameters(String newContactAndSourceParameters) {
+		String oldContactAndSourceParameters = contactAndSourceParameters;
+		contactAndSourceParameters = newContactAndSourceParameters;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					BatchRateContactFlowPackage.CONTACT__CONTACT_AND_SOURCE_PARAMETERS, oldContactAndSourceParameters,
+					contactAndSourceParameters));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT:
@@ -192,6 +240,8 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 			return basicGetContact();
 		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
 			return getContactParameters();
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_AND_SOURCE_PARAMETERS:
+			return getContactAndSourceParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -209,6 +259,9 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 			return;
 		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
 			setContactParameters((String) newValue);
+			return;
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_AND_SOURCE_PARAMETERS:
+			setContactAndSourceParameters((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -228,6 +281,9 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
 			setContactParameters(CONTACT_PARAMETERS_EDEFAULT);
 			return;
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_AND_SOURCE_PARAMETERS:
+			setContactAndSourceParameters(CONTACT_AND_SOURCE_PARAMETERS_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -245,6 +301,9 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		case BatchRateContactFlowPackage.CONTACT__CONTACT_PARAMETERS:
 			return CONTACT_PARAMETERS_EDEFAULT == null ? contactParameters != null
 					: !CONTACT_PARAMETERS_EDEFAULT.equals(contactParameters);
+		case BatchRateContactFlowPackage.CONTACT__CONTACT_AND_SOURCE_PARAMETERS:
+			return CONTACT_AND_SOURCE_PARAMETERS_EDEFAULT == null ? contactAndSourceParameters != null
+					: !CONTACT_AND_SOURCE_PARAMETERS_EDEFAULT.equals(contactAndSourceParameters);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -262,6 +321,8 @@ public class ContactImpl extends FromToFlowImpl implements Contact {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (contactParameters: ");
 		result.append(contactParameters);
+		result.append(", contactAndSourceParameters: ");
+		result.append(contactAndSourceParameters);
 		result.append(')');
 		return result.toString();
 	}

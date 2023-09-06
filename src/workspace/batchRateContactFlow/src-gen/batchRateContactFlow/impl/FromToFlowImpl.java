@@ -36,25 +36,30 @@ import org.eclipse.swt.widgets.Shell;
  * @generated
  */
 public abstract class FromToFlowImpl extends FlowImpl implements FromToFlow {
-	
+
 	String get_from_to_parameters() {
 		String base_template = " (parameter {} " + getId() + " $)";
 		String _parameters = "";
+		// parameters like normalizing
 		{
 			String parameter_template = base_template.replace("$", "");
-			if (parameters != null)
+			if (parameters != null && !parameters.equals(""))
 				for (String p : parameters.split(","))
 					_parameters += parameter_template.replace("{}", p);
 		}
+		// parameters like susceptibility
 		{
 			String source_parameter_template = base_template.replace("$", "$0");
-			if (sourceParameters != null)
+			if (sourceParameters != null && !sourceParameters.equals(""))
 				for (String p : sourceParameters.split(","))
 					_parameters += source_parameter_template.replace("{}", p);
 		}
+		// may be useful if you point from 1 compartment to multiple
+		// eg: hospitalization into cold area or hot area (covid hot-cold)
+		// so maybe you want to multiply by 0.2 for hot and 0.8 for cold
 		{
 			String sink_parameter_template = base_template.replace("$", "$1");
-			if (sinkParameters != null)
+			if (sinkParameters != null && !sinkParameters.equals(""))
 				for (String p : sinkParameters.split(","))
 					_parameters += sink_parameter_template.replace("{}", p);
 		}

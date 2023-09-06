@@ -2,11 +2,13 @@ import numpy as np
 
 class Flow:
     def __init__(self, lines, parameters, compartments):
-        self.equation = lines[0].replace('\n', '').replace("$0", lines[1][:-1]).replace("$1", lines[2][:-1])
+        self.equation = lines[0].replace('\n', '')
         self.source = parse(read(lines[1])[0])
         self.sink = parse(read(lines[2])[0])
         self.name = parse(read(lines[3])[0])
         self.compiled_equation = compile(parse(read(self.equation)[0]), parameters, compartments)
+        if '(parameter Exposure-HIV [Age,Alive,Child,E-HIV,HIV,HIV-TB-Coinfection,M,Mortality,S-TB,Sex,Tuberculosis])' in parameters:
+            raise 1
 
     def __repr__(self):
         return f'Flow: equation{self.equation}'
