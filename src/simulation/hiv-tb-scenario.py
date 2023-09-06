@@ -6,21 +6,21 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
-def setup_compartments():
+def setup_compartments(scenario):
     select(scenario, criteria = []).set(0)
 
     # population of 34 million, remove 60k HIV and 1k TB
-    n_not_infected = (TOTAL_POP-61000)
+    N_NOT_INFECTED = TOTAL_POP - 61000
     # each of these .set(...) include a division by 2 for Male and Female
     susceptible_to_both_child = select(scenario, criteria = [
         select_scenario_compartment_contains('Alive', 'S-HIV', 'S-TB', 'Child'),
-    ]).set(n_not_infected * 0.3 / 2)
+    ]).set(N_NOT_INFECTED * CHILD_POP / TOTAL_POP / 2)
     susceptible_to_both_adult1 = select(scenario, criteria = [
         select_scenario_compartment_contains('Alive', 'S-HIV', 'S-TB', 'Adult-18-to-50'),
-    ]).set(n_not_infected * 0.4 / 2)
+    ]).set(N_NOT_INFECTED * ADULT_18_TO_50_POP / TOTAL_POP / 2)
     susceptible_to_both_adult2 = select(scenario, criteria = [
         select_scenario_compartment_contains('Alive', 'S-HIV', 'S-TB', 'Adult-51+'),
-    ]).set(n_not_infected * 0.3 / 2)
+    ]).set(N_NOT_INFECTED * ADULT_51_POP / TOTAL_POP / 2)
     # 8 = M/F * Age
     assert susceptible_to_both_child == susceptible_to_both_adult1 == susceptible_to_both_adult2 == (0, 2)
 
@@ -57,13 +57,11 @@ def setup_compartments():
     print(f'{tb=}')
     assert tb == (0, 2)
 
-    # make sure we have a population of 34 million
+    # make sure we have a population of 38.25 million
     pop = sum(v.value for _, v in scenario.items())
     assert pop == TOTAL_POP
 
-    save_scenario(folder + project_name, scenario)
-
-def setup_parameters_tb_exposure():
+def setup_parameters_tb_exposure(parameters):
     # the exposure equation is defined as such:
     # for each dimension orthogonal to the disease dimension there is a flow
     # from S_i to E_i = normalizing * susceptibility_i * sumproduct(`contagiousness_j, I_j, contact-mixing_i_j` for each infectious compartment I_j)
@@ -116,12 +114,12 @@ def setup_parameters_tb_exposure():
     ).set(1) # 100 % probability of TB exposure if you have HIV
 
 
-def setup_parameters_tb():
-    setup_parameters_tb_exposure()
-    parameters['(parameter normalizing Infection-TB)'].value = 1 # assume every exposed person becomes infected
+def setup_parameters_tb(parameters):
+    setup_parameters_tb_exposure(parameters)
+    parameters['(parameter normalizing Infection-TB)'].value = 1 # assume every exposed person becomes infected instantly
     parameters['(parameter normalizing immunity-TB)'].value = 5e-2 # assume 5% daily probability to go from I to R
 
-def setup_parameters_hiv_exposure():
+def setup_parameters_hiv_exposure(parameters):
     # the exposure equation is defined as such:
     # for each dimension orthogonal to the disease dimension there is a flow
     # from S_i to E_i = normalizing * susceptibility_i * sumproduct(`contagiousness_j, I_j, contact-mixing_i_j` for each infectious compartment I_j)
@@ -202,15 +200,15 @@ def setup_parameters_hiv_exposure():
 
 
 
-def setup_parameters_hiv():
-    setup_parameters_hiv_exposure()
+def setup_parameters_hiv(parameters):
+    setup_parameters_hiv_exposure(parameters)
     parameters['(parameter normalizing Infection-HIV)'].value = 1 # every exposed person will become infected
     parameters['(parameter normalizing Treatment-HIV)'].value = 1/365 # takes around 1 year for someone infected with HIV to get treatment
     parameters['(parameter normalizing Waning-HIV)'].value = 0 # everyone stays under treatment
 
 
 
-def setup_parameters_mortality():
+def setup_parameters_mortality(parameters):
     parameters['(parameter normalizing Death)'].value = 1
 
     select(
@@ -257,11 +255,11 @@ def setup_parameters_mortality():
     ).multiply(1e3) # 1000 times more likely to die on a given day if you have both HIV and TB
 
 
-def create_file_without_deceased_equations_and_exit_if_needs_to_be_copied():
+def create_file_without_deceased_equations_and_exit_if_needs_to_be_copied(fn):
     # remove flows which have a Deceased compartment as source to speed up computation
     # (doesn't change result since the weights would be zero but now we just skip them)
 
-    equation_file_lines = list(readlines(f'{folder}{project_name}.equations.txt')) + ['\n']
+    equation_file_lines = list(readlines(f'{fn}.equations.txt')) + ['\n']
     number_of_lines_per_flow_in_file = 5
     nl = number_of_lines_per_flow_in_file
     n_eq = int(len(equation_file_lines) / nl)
@@ -274,49 +272,52 @@ def create_file_without_deceased_equations_and_exit_if_needs_to_be_copied():
             equations_file_is_already_clear_of_useless_equations = False
             break
     
-    fn = f'{folder}{project_name}.non-deceased-equations.txt'
+    fn2 = f'{fn}.non-deceased-equations.txt'
     if equations_file_is_already_clear_of_useless_equations:
-        if exists(fn):
-            remove(fn)
+        if exists(fn2):
+            remove(fn2)
         return
     else:
-        with open(fn, 'w+') as f:
+        with open(fn2, 'w+') as f:
             for lines in lines_of_each_eq:
                 source: Compartment = parse(read(lines[1])[0])
                 if 'Deceased' not in source.labels:
                     f.writelines(lines)
-        # technically we could directly write to f'{folder}{project_name}.equations.txt' BUT if someone is bothered by this step
+        # technically we could directly write to f'{fn}.equations.txt' BUT if someone is bothered by this step
         # it is an indicator that they didn't read this file and don't understand why some equations are being removed
         # its like the box you click to agree to terms and conditions, you don't have to read all of it but 
-        print(f'Writing equations to `{fn}`, you are expected to replace the content of `{folder}{project_name}.equations.txt` with it')
+        print(f'Writing equations to `{fn2}`, you are expected to replace the content of `{fn}.equations.txt` with it')
         exit(1)
-
-
-
 
 from parameters_setting import *
 
-project_name = 'HIV-TB-Coinfection'
-folder = f'C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/{project_name}/'
-# parameters = {k.strip(): Parameter(parse_fn(k).operands, float(v)) for k, v in [s.split('=') for s in open(f'{folder}{project_name}.parameters.txt').readlines()]}
-parameters = {}
-compartments, _ = identify_required_parameters(folder, project_name, parameters)
-scenario = read_initial_conditions(folder, project_name, compartments)
-
-TOTAL_POP = 34000000
+TOTAL_POP = 38.25e6
+CHILD_POP = TOTAL_POP * 0.3
 ADULT_18_TO_50_POP = TOTAL_POP * 0.4
 ADULT_51_POP = TOTAL_POP * 0.3
-CHILD_POP = TOTAL_POP * 0.3
 
-setup_compartments()
-setup_parameters_tb()
-setup_parameters_hiv()
-setup_parameters_mortality()
+def main():
+    project_name = 'HIV-TB-Coinfection'
+    folder = f'C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/{project_name}/'
+    parameters = {}
+    compartments, _ = identify_required_parameters(folder, project_name, parameters)
+    scenario = read_initial_conditions(folder, project_name, compartments)
 
-for k, v in parameters.items():
-    if v.value is None:
-        raise Exception("Missing Parameter " + k)
+    create_file_without_deceased_equations_and_exit_if_needs_to_be_copied(folder + project_name)
 
-m = select(parameters, []).get_missing()
+    setup_compartments(scenario)
+    save_scenario(folder + project_name, scenario)
 
-save_parameters(folder + project_name, parameters)
+    setup_parameters_tb(parameters)
+    setup_parameters_hiv(parameters)
+    setup_parameters_mortality(parameters)
+
+    m = select(parameters, []).get_missing()
+    if len(m) != 0:
+        raise Exception("Missing Parameters")
+    
+    save_parameters(folder + project_name, parameters)
+
+
+if __name__ == "__main__":
+    main()

@@ -62,7 +62,7 @@ public class ProductImpl extends CompartmentImpl implements Product {
 		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
 			editCompartments(this, shell, controls);
 		});
-		epimodel.util.Edit.addBtn(shell, controls, "Modify compartments", () -> {
+		epimodel.util.Edit.addBtn(shell, controls, "Modify flows", () -> {
 			editFlows(this, shell, controls);
 		});
 	}

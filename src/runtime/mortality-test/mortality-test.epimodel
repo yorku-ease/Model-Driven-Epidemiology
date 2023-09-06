@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:epimodel="http://www.example.org/epimodel" xmlns:group="http://www.example.org/group" xmlns:mortality="http://www.example.org/mortality" xmlns:product="http://www.example.org/product">
+  <compartmentwrapper>
+    <compartment xsi:type="mortality:Mortality">
+      <label>model</label>
+      <mortality>
+        <compartment xsi:type="product:Product">
+          <label>a-seir</label>
+          <compartment>
+            <compartment xsi:type="group:Group">
+              <label>age</label>
+              <compartment>
+                <compartment>
+                  <label>Child</label>
+                </compartment>
+              </compartment>
+              <compartment>
+                <compartment>
+                  <label>Adult</label>
+                </compartment>
+              </compartment>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment xsi:type="group:Group">
+              <label>seir</label>
+              <compartment>
+                <compartment>
+                  <label>s</label>
+                </compartment>
+              </compartment>
+              <compartment>
+                <compartment>
+                  <label>e</label>
+                </compartment>
+              </compartment>
+              <compartment>
+                <compartment>
+                  <label>i</label>
+                </compartment>
+              </compartment>
+              <compartment>
+                <compartment>
+                  <label>r</label>
+                </compartment>
+              </compartment>
+              <flow>
+                <flow xsi:type="batchRateContactFlow:Contact" id="exposure" from="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" sourceParameters="susceptibility" contact="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.2/@compartment" contactParameters="contagiousness" contactAndSourceParameters="contact-mixing"/>
+              </flow>
+              <flow>
+                <flow xsi:type="batchRateContactFlow:Rate" id="infection" from="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.2/@compartment" sourceParameters="infection"/>
+              </flow>
+              <flow>
+                <flow xsi:type="batchRateContactFlow:Rate" id="recovery" from="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@mortality/@compartment/@compartment.1/@compartment/@compartment.3/@compartment" sourceParameters="recovery"/>
+              </flow>
+            </compartment>
+          </compartment>
+        </compartment>
+      </mortality>
+    </compartment>
+  </compartmentwrapper>
+</epimodel:Epidemic>

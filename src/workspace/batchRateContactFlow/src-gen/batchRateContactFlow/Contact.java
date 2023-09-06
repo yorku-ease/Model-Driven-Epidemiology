@@ -15,6 +15,7 @@ import epimodel.Compartment;
  * <ul>
  *   <li>{@link batchRateContactFlow.Contact#getContact <em>Contact</em>}</li>
  *   <li>{@link batchRateContactFlow.Contact#getContactParameters <em>Contact Parameters</em>}</li>
+ *   <li>{@link batchRateContactFlow.Contact#getContactAndSourceParameters <em>Contact And Source Parameters</em>}</li>
  * </ul>
  *
  * @see batchRateContactFlow.BatchRateContactFlowPackage#getContact()
@@ -65,5 +66,27 @@ public interface Contact extends FromToFlow {
 	 * @generated
 	 */
 	void setContactParameters(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Contact And Source Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Contact And Source Parameters</em>' attribute.
+	 * @see #setContactAndSourceParameters(String)
+	 * @see batchRateContactFlow.BatchRateContactFlowPackage#getContact_ContactAndSourceParameters()
+	 * @model
+	 * @generated
+	 */
+	String getContactAndSourceParameters();
+
+	/**
+	 * Sets the value of the '{@link batchRateContactFlow.Contact#getContactAndSourceParameters <em>Contact And Source Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Contact And Source Parameters</em>' attribute.
+	 * @see #getContactAndSourceParameters()
+	 * @generated
+	 */
+	void setContactAndSourceParameters(String value);
 
 } // Contact

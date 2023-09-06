@@ -105,8 +105,8 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 		isInited = true;
 
 		// Initialize simple dependencies
-//		Manually removed
-//		EpimodelPackage.eINSTANCE.eClass();
+		// manually removed
+		// EpimodelPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theBatchRateContactFlowPackage.createPackageContents();
@@ -150,6 +150,16 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 	@Override
 	public EAttribute getContact_ContactParameters() {
 		return (EAttribute) contactEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getContact_ContactAndSourceParameters() {
+		return (EAttribute) contactEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -265,6 +275,7 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 		contactEClass = createEClass(CONTACT);
 		createEReference(contactEClass, CONTACT__CONTACT);
 		createEAttribute(contactEClass, CONTACT__CONTACT_PARAMETERS);
+		createEAttribute(contactEClass, CONTACT__CONTACT_AND_SOURCE_PARAMETERS);
 
 		batchEClass = createEClass(BATCH);
 
@@ -324,6 +335,9 @@ public class BatchRateContactFlowPackageImpl extends EPackageImpl implements Bat
 		initEAttribute(getContact_ContactParameters(), ecorePackage.getEString(), "contactParameters", null, 0, 1,
 				Contact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContact_ContactAndSourceParameters(), ecorePackage.getEString(), "contactAndSourceParameters",
+				null, 0, 1, Contact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(batchEClass, Batch.class, "Batch", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

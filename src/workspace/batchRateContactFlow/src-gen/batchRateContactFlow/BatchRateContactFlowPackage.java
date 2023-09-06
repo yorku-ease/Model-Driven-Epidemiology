@@ -223,13 +223,22 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	int CONTACT__CONTACT_PARAMETERS = FROM_TO_FLOW_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Contact And Source Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTACT__CONTACT_AND_SOURCE_PARAMETERS = FROM_TO_FLOW_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Contact</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTACT_FEATURE_COUNT = FROM_TO_FLOW_FEATURE_COUNT + 2;
+	int CONTACT_FEATURE_COUNT = FROM_TO_FLOW_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Contact</em>' class.
@@ -437,6 +446,17 @@ public interface BatchRateContactFlowPackage extends EPackage {
 	EAttribute getContact_ContactParameters();
 
 	/**
+	 * Returns the meta object for the attribute '{@link batchRateContactFlow.Contact#getContactAndSourceParameters <em>Contact And Source Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contact And Source Parameters</em>'.
+	 * @see batchRateContactFlow.Contact#getContactAndSourceParameters()
+	 * @see #getContact()
+	 * @generated
+	 */
+	EAttribute getContact_ContactAndSourceParameters();
+
+	/**
 	 * Returns the meta object for class '{@link batchRateContactFlow.Batch <em>Batch</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -569,6 +589,14 @@ public interface BatchRateContactFlowPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONTACT__CONTACT_PARAMETERS = eINSTANCE.getContact_ContactParameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Contact And Source Parameters</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CONTACT__CONTACT_AND_SOURCE_PARAMETERS = eINSTANCE.getContact_ContactAndSourceParameters();
 
 		/**
 		 * The meta object literal for the '{@link batchRateContactFlow.impl.BatchImpl <em>Batch</em>}' class.
