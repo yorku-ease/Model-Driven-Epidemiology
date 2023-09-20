@@ -340,6 +340,7 @@ public class make_models {
 		f.setFrom(getCompartmentBasedOnLabels(p, from));
 		f.setContact(getCompartmentBasedOnLabels(p, contact));
 		p.getFlow().add(wrap(f));
+		f.setParameters("some-parameter-" + id);
 		return p;
 	}
 	
@@ -350,6 +351,7 @@ public class make_models {
 		f.setFrom(getCompartmentBasedOnLabels(g, from));
 		f.setContact(getCompartmentBasedOnLabels(g, contact));
 		g.getFlow().add(wrap(f));
+		f.setParameters("some-parameter-" + id);
 		return g;
 	}
 	
@@ -359,6 +361,7 @@ public class make_models {
 		f.setTo(getCompartmentBasedOnLabels(p, to));
 		f.setFrom(getCompartmentBasedOnLabels(p, from));
 		p.getFlow().add(wrap(f));
+		f.setParameters("some-parameter-" + id);
 		return p;
 	}
 	
@@ -368,6 +371,7 @@ public class make_models {
 		f.setTo(getCompartmentBasedOnLabels(g, to));
 		f.setFrom(getCompartmentBasedOnLabels(g, from));
 		g.getFlow().add(wrap(f));
+		f.setParameters("some-parameter-" + id);
 		return g;
 	}
 	
@@ -377,6 +381,7 @@ public class make_models {
 		f.setTo(getCompartmentBasedOnLabels(p, to));
 		f.setFrom(getCompartmentBasedOnLabels(p, from));
 		p.getFlow().add(wrap(f));
+		f.setParameters("some-parameter-" + id);
 		return p;
 	}
 	
@@ -386,6 +391,7 @@ public class make_models {
 		f.setTo(getCompartmentBasedOnLabels(g, to));
 		f.setFrom(getCompartmentBasedOnLabels(g, from));
 		g.getFlow().add(wrap(f));
+		f.setParameters("some-parameter-" + id);
 		return g;
 	}
 	
