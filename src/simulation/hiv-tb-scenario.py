@@ -9,7 +9,7 @@
 def setup_compartments(scenario):
     select(scenario, criteria = []).set(0)
 
-    # population of 34 million, remove 60k HIV and 1k TB
+    # population of 38 million, remove 60k HIV and 1k TB
     N_NOT_INFECTED = TOTAL_POP - 61000
     # each of these .set(...) include a division by 2 for Male and Female
     susceptible_to_both_child = select(scenario, criteria = [
