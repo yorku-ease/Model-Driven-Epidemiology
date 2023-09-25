@@ -447,24 +447,24 @@ class ComparisonTests {
 //		assertFalse(IDiff.isSame);
 	}
 	
-//	@Test
-//	void test_rename_top_level() {
-//		Epidemic a = make_models.create_model(make_models.compartment("1"));
-//		
-//		Epidemic b = make_models.create_model(
-//				make_models.group("b",
-//						make_models.compartment("1")));
-//		
-//		ComparisonResult res = use_epi.Compare.compare(a, b);
-//		
-//		// expect a to match b even if they have nothing in common (except type)
-//		// because top level elements are always matched
-//		assertEquals(1, res.matches.matches.size());
-//		assertEquals(1, res.diffs.size());
-//		Difference topLevelDiff = res.diffs.get(0);
-//		// expect the first diff to be not same since it is a rename
-//		assertFalse(topLevelDiff.isSame);
-//	}
+	@Test
+	void test_rename_top_level() {
+		Epidemic a = make_models.create_model(make_models.compartment("1"));
+		
+		Epidemic b = make_models.create_model(
+				make_models.group("b",
+						make_models.compartment("1")));
+		
+		ComparisonResult res = use_epi.Compare.compare(a, b);
+		
+		// expect match 1 -> 1
+		assertEquals(1, res.matches.matches.size());
+		assertEquals(1, res.diffs.size());
+		Difference diff_of_1s = res.diffs.get(0);
+		assertTrue(diff_of_1s.isSame);
+		assertEquals(0, diff_of_1s.accountsForAdditions.size());
+		assertEquals(0, diff_of_1s.accountsForSubstractions.size());
+	}
 	
 	@Test
 	void test_rename_non_top_level() {
