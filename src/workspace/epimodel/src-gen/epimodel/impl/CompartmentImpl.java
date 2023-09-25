@@ -58,9 +58,15 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	@Override
 	public Difference compareWithSameClass(Compartment other, MatchResult matches) {
 		if (getClass().equals(CompartmentImpl.class)) {
-			return new Difference(matches.find(this, other).get(), Arrays.asList(matches.find(this, other).get()),
-					new ArrayList<>(), new ArrayList<>(), Optional.empty(), getLabels().equals(other.getLabels()),
-					"Compartment " + getLabels() + " matches Compartment " + other.getLabels());
+			return new Difference(
+				matches.find(this, other).get(),
+				Arrays.asList(matches.find(this, other).get()),
+				new ArrayList<>(),
+				new ArrayList<>(),
+				Optional.empty(),
+				getLabels().equals(other.getLabels()),
+				"Compartment " + getLabels() + " matches Compartment " + other.getLabels()
+			);
 		} else
 			return compareWithSameClassNonCompartmentImpl(other, matches);
 	}
@@ -126,8 +132,15 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<Flow> myFlows = lf1.stream().map(FlowWrapper::getFlow).toList();
 		List<Flow> otherFlows = lf2.stream().map(FlowWrapper::getFlow).toList();
 
-		return Comparison.createDifference(this, other, matches, myCompartments, otherCompartments, myFlows,
-				otherFlows);
+		return Comparison.createDifference(
+			this,
+			other,
+			matches,
+			myCompartments,
+			otherCompartments,
+			myFlows,
+			otherFlows
+		);
 	}
 
 	@Override
