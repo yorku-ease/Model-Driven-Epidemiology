@@ -33,7 +33,7 @@ public class Comparison {
 				Compartment compartment = (Compartment) eobject;
 				compartments.add(compartment);
 				duplicateLabels.addAll(
-						compartment
+					compartment
 						.getLabels()
 						.stream()
 						.filter(label -> uniqueLabels.contains(label) && !duplicateLabels.contains(label))
@@ -267,7 +267,8 @@ public class Comparison {
 		ChildrenDiffResult childrenDiffs = new ChildrenDiffResult(myCompartments, otherCompartments, matches);
 		
 		List<Match> accountedForMatches = new ArrayList<>();
-		accountedForMatches.add(matches.find(me, other).get());
+		if (matches.find(me, other).isPresent())
+			accountedForMatches.add(matches.find(me, other).get());
 		accountedForMatches.addAll(childrenDiffs.accountsForMatches);
 		
 		boolean isSame = childrenDiffs.isSame && me.getLabels().equals(other.getLabels());
@@ -356,7 +357,7 @@ public class Comparison {
 		
 		public boolean isMove(Compartment c) {
 			Optional<Match> opt = matches.find(c);
-			return opt.isPresent() ? opt.get().isMove : false;
+			return opt.isPresent() && opt.get().isMove;
 		}
 	}
 
@@ -406,8 +407,9 @@ public class Comparison {
 					model2Not2ContainsAll1Compartments.remove(c2);
 				}
 
+		
 		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
-		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be uneligible but S and I are fine
+		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
 		for (Compartment c1 : model1NotExactMatchedCompartments)
 			for (Compartment c2 : model2NotExactMatchedCompartments)
 				if (c1.getLabels().containsAll(c2.getLabels())) {
@@ -436,35 +438,18 @@ public class Comparison {
 				if (!res.find(leftParentc, rightParentc).isPresent() &&
 					!res.find(leftParentc).isPresent() &&
 					!res.find(rightParentc).isPresent()) {
-					res.matches.add(new Match(leftParentc, rightParentc));
+					res.matches.add(i, new Match(leftParentc, rightParentc));
 				}
 			}
 		}
 		
-		// at this point there are most likely unmatched epidemics as it doesn't
-		// necessarily make sense for 2 models to be named the same for their top 
-		// level element, so we just look for the first epidemic of each model and
-		// if they are not matched we match and push them in front (logical order)
-		Compartment epi1 = (Compartment) model1compartments.stream().filter(c -> c instanceof Compartment).findFirst().get();
-		Compartment epi2 = (Compartment) model2compartments.stream().filter(c -> c instanceof Compartment).findFirst().get();
+		// at this point there are most likely unmatched top level elements
+		// if both are not matched we match and push them in front (logical order)
+		Compartment c1 = res.context.modelctx1.model.getCompartmentwrapper().getCompartment();
+		Compartment c2 = res.context.modelctx2.model.getCompartmentwrapper().getCompartment();
 		
-		// happy path
-		if (res.find(epi1, epi2).isPresent())
-			return res;
-
-		Optional<Match> m1 = res.find(epi1);
-		Optional<Match> m2 = res.find(epi2);
-		
-		// unhappy paths, either c1 or c2 is matched but not both, which means a second
-		// epidemic or compartment in either model matched with the other model's first epidemic.
-		// this is quite bad as it wouldn't make the comparison logic as straight forward
-		// so we will just remove the conflicting match and add our top level match
-		if (m1.isPresent() && !m2.isPresent())
-			res.matches.remove(m1.get());
-		else if (!m1.isPresent() && m2.isPresent())
-			res.matches.remove(m2.get());
-		
-		res.matches.add(0, new Match(epi1, epi2));
+		if (!res.find(c1).isPresent() && !res.find(c2).isPresent())
+			res.matches.add(0, new Match(c1, c2));
 		
 		return res;
 	}

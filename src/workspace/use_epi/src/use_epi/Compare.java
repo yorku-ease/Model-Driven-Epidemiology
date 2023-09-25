@@ -45,23 +45,29 @@ public class Compare {
 		Compartment topLevel1 = model1.getCompartmentwrapper().getCompartment();
 		Compartment topLevel2 = model2.getCompartmentwrapper().getCompartment();
 		
+		List<Difference> diffs = null;
+		
 		Match topLevelMatch = matches.find(topLevel1, topLevel2).orElse(null);
 		// if there is no top level match we might have a problem
-		if (topLevelMatch == null) {
-			Match left = matches.find(topLevel1).orElse(null);
-			Match right = matches.find(topLevel2).orElse(null);
-			// if either top level element left or right is matched, but not the other,
-			// we remove the match because we don't want that match.
-			// It is simpler to always assume a match for both top level elements
-			if (left == null && right != null)
-				matches.matches.remove(right);
-			else if (left != null && right == null)
-				matches.matches.remove(left);
-			// else they are both unmatched and that is ok
+		if (topLevelMatch != null) {
+			// happy path
+			diffs = new ArrayList<>(Arrays.asList(topLevel1.compare(topLevel2, matches)));
+		}
+		else {
+//			Match left = matches.find(topLevel1).orElse(null);
+//			Match right = matches.find(topLevel2).orElse(null);
+//			// if either top level element left or right is matched, but not the other,
+//			// we remove the match because we don't want that match.
+//			// It is simpler to always assume a match for both top level elements
+//			if (left == null && right != null)
+//				matches.matches.remove(right);
+//			else if (left != null && right == null)
+//				matches.matches.remove(left);
+//			// else they are both unmatched and that is ok
+			Pair<Compartment, Compartment> toplevel = matches.matches.get(0).matchedCompartmentPair;
+			diffs = new ArrayList<>(Arrays.asList(toplevel.first.compare(toplevel.second, matches)));
 		}
 		
-		// start diff with top level element always
-		List<Difference> diffs = new ArrayList<>(Arrays.asList(topLevel1.compare(topLevel2, matches)));
 		// iterate other matches in case the top level element did not account for all matches
 		// this happens if at some level incompatible type of objects are compared and unable to compare their children
 		for (Match match : matches.matches) {
