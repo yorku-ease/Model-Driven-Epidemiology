@@ -191,10 +191,10 @@ public class Comparison {
 			}
 			
 			accountsForMatches = childrenDiffs
-					.stream()
-					.map(diffResult -> diffResult.accountsForMatches)
-					.flatMap(List::stream)
-					.toList();
+				.stream()
+				.map(diffResult -> diffResult.accountsForMatches)
+				.flatMap(List::stream)
+				.toList();
 			
 			this.isSame = notSameChildrenMatchAndDiffs.size() == 0 && myUnMatchedCompartments.size() == 0 && otherUnMatchedCompartments.size() == 0;
 		}
@@ -443,13 +443,6 @@ public class Comparison {
 			}
 		}
 		
-		// at this point there are most likely unmatched top level elements
-		// if both are not matched we match and push them in front (logical order)
-		Compartment c1 = res.context.modelctx1.model.getCompartmentwrapper().getCompartment();
-		Compartment c2 = res.context.modelctx2.model.getCompartmentwrapper().getCompartment();
-		
-		if (!res.find(c1).isPresent() && !res.find(c2).isPresent())
-			res.matches.add(0, new Match(c1, c2));
 		
 		return res;
 	}
