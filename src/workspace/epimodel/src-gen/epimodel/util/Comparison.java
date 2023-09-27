@@ -362,17 +362,11 @@ public class Comparison {
 	}
 
 	public static MatchResult exactOrContainsLabelMatch(ComparisonContext context) {
-		return exactOrContainsLabelMatch(context, false);
-	}
-	
-	public static MatchResult exactOrContainsLabelMatch(ComparisonContext context, boolean doPrint) {
 		MatchResult res = new MatchResult(context);
 		List<Compartment> model1compartments = new ArrayList<>(context.modelctx1.compartments);
 		List<Compartment> model2compartments = new ArrayList<>(context.modelctx2.compartments);
-		if (doPrint) {
-			System.out.println("Model1:\n" + model1compartments.stream().map(Compartment::getLabels).toList());
-			System.out.println("Model2:\n" + model2compartments.stream().map(Compartment::getLabels).toList());
-		}
+		Set<String> uniqueLabels = new HashSet<String>(context.modelctx1.uniqueLabels);
+		uniqueLabels.retainAll(context.modelctx2.uniqueLabels);
 		
 		List<Compartment> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
 		List<Compartment> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
@@ -390,13 +384,13 @@ public class Comparison {
 		List<Compartment> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
 
 		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
-		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be uneligible but S and I are fine
+		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
 		for (Compartment c1 : model1NotExactMatchedCompartments)
 			for (Compartment c2 : model2NotExactMatchedCompartments)
 				if (c2.getLabels().containsAll(c1.getLabels())) {
 					boolean hasMatchedUnique = false;
 					for (String label : c1.getLabels())
-						if (context.modelctx1.uniqueLabels.contains(label) && context.modelctx2.uniqueLabels.contains(label)) {
+						if (uniqueLabels.contains(label)) {
 							hasMatchedUnique = true;
 							break;
 						}
@@ -415,7 +409,7 @@ public class Comparison {
 				if (c1.getLabels().containsAll(c2.getLabels())) {
 					boolean hasMatchedUnique = false;
 					for (String label : c2.getLabels())
-						if (context.modelctx1.uniqueLabels.contains(label) && context.modelctx2.uniqueLabels.contains(label)) {
+						if (uniqueLabels.contains(label)) {
 							hasMatchedUnique = true;
 							break;
 						}
@@ -442,7 +436,6 @@ public class Comparison {
 				}
 			}
 		}
-		
 		
 		return res;
 	}
