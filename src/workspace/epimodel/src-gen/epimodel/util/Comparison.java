@@ -382,24 +382,24 @@ public class Comparison {
 				if (res.find(c1).isEmpty() &&
 					res.find(c2).isEmpty() &&
 					c2.getLabels().containsAll(c1.getLabels()))
-						for (String label : c1.getLabels())
-							if (uniqueLabels.contains(label)) {
-								res.matches.add(new Match(c1, c2));
-								break;
-							}
+					for (String label : c1.getLabels())
+						if (uniqueLabels.contains(label)) {
+							res.matches.add(new Match(c1, c2));
+							break;
+						}
 		
 		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
 		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
 		for (Compartment c1 : model1compartments)
 			for (Compartment c2 : model2compartments)
 				if (res.find(c1).isEmpty() &&
-						res.find(c2).isEmpty() &&
-						c1.getLabels().containsAll(c2.getLabels()))
-							for (String label : c2.getLabels())
-								if (uniqueLabels.contains(label)) {
-									res.matches.add(new Match(c1, c2));
-									break;
-								}
+					res.find(c2).isEmpty() &&
+					c1.getLabels().containsAll(c2.getLabels()))
+					for (String label : c2.getLabels())
+						if (uniqueLabels.contains(label)) {
+							res.matches.add(new Match(c1, c2));
+							break;
+						}
 		
 		
 		// for each matched element pair, if parents are not matched but same type, match parents
@@ -412,10 +412,13 @@ public class Comparison {
 			if (leftParent instanceof Compartment && rightParent instanceof Compartment) {
 				Compartment leftParentc = (Compartment) leftParent;
 				Compartment rightParentc = (Compartment) rightParent;
-				if (!res.find(leftParentc, rightParentc).isPresent() &&
+				if (leftParent.getClass().equals(rightParent.getClass()) &&
 					!res.find(leftParentc).isPresent() &&
 					!res.find(rightParentc).isPresent()) {
+					// prepend it
 					res.matches.add(i, new Match(leftParentc, rightParentc));
+					// then backtrack
+					i -= 1;
 				}
 			}
 		}
