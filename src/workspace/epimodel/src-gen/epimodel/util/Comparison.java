@@ -368,55 +368,38 @@ public class Comparison {
 		Set<String> uniqueLabels = new HashSet<String>(context.modelctx1.uniqueLabels);
 		uniqueLabels.retainAll(context.modelctx2.uniqueLabels);
 		
-		List<Compartment> model1NotExactMatchedCompartments = new ArrayList<>(model1compartments);
-		List<Compartment> model2NotExactMatchedCompartments = new ArrayList<>(model2compartments);
-		
 		// look for same labels: ["S", "0"] matches only ["S", "0"]
 		for (Compartment c1 : model1compartments)
 			for (Compartment c2 : model2compartments)
-				if (c1.getLabels().equals(c2.getLabels())) {
+				if (c1.getLabels().equals(c2.getLabels()))
 					res.matches.add(new Match(c1, c2));
-					model1NotExactMatchedCompartments.remove(c1);
-					model2NotExactMatchedCompartments.remove(c2);
-				}
-		
-		List<Compartment> model1Not2ContainsAll1MatchedCompartments = new ArrayList<>(model1NotExactMatchedCompartments);
-		List<Compartment> model2Not2ContainsAll1Compartments = new ArrayList<>(model2NotExactMatchedCompartments);
 
 		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
 		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
-		for (Compartment c1 : model1NotExactMatchedCompartments)
-			for (Compartment c2 : model2NotExactMatchedCompartments)
-				if (c2.getLabels().containsAll(c1.getLabels())) {
-					boolean hasMatchedUnique = false;
-					for (String label : c1.getLabels())
-						if (uniqueLabels.contains(label)) {
-							hasMatchedUnique = true;
-							break;
-						}
-					if (!hasMatchedUnique)
-						continue;
-					res.matches.add(new Match(c1, c2));
-					model1Not2ContainsAll1MatchedCompartments.remove(c1);
-					model2Not2ContainsAll1Compartments.remove(c2);
-				}
-
+		for (Compartment c1 : model1compartments)
+			for (Compartment c2 : model2compartments)
+				// check for c1 each c2  is intended as c1 may change at any c2
+				if (res.find(c1).isEmpty() &&
+					res.find(c2).isEmpty() &&
+					c2.getLabels().containsAll(c1.getLabels()))
+						for (String label : c1.getLabels())
+							if (uniqueLabels.contains(label)) {
+								res.matches.add(new Match(c1, c2));
+								break;
+							}
 		
 		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
 		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
-		for (Compartment c1 : model1NotExactMatchedCompartments)
-			for (Compartment c2 : model2NotExactMatchedCompartments)
-				if (c1.getLabels().containsAll(c2.getLabels())) {
-					boolean hasMatchedUnique = false;
-					for (String label : c2.getLabels())
-						if (uniqueLabels.contains(label)) {
-							hasMatchedUnique = true;
-							break;
-						}
-					if (!hasMatchedUnique)
-						continue;
-					res.matches.add(new Match(c1, c2));
-				}
+		for (Compartment c1 : model1compartments)
+			for (Compartment c2 : model2compartments)
+				if (res.find(c1).isEmpty() &&
+						res.find(c2).isEmpty() &&
+						c1.getLabels().containsAll(c2.getLabels()))
+							for (String label : c2.getLabels())
+								if (uniqueLabels.contains(label)) {
+									res.matches.add(new Match(c1, c2));
+									break;
+								}
 		
 		
 		// for each matched element pair, if parents are not matched but same type, match parents
