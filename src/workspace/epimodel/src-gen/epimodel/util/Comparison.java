@@ -1,6 +1,7 @@
 package epimodel.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -360,61 +361,57 @@ public class Comparison {
 			return opt.isPresent() && opt.get().isMove;
 		}
 	}
+	
+	@SafeVarargs
+	public static <T> Set<T> intersection(Collection<T>... sets) {
+        if (sets.length == 0) {
+            // If no sets are provided, return an empty set
+            return new HashSet<>();
+        }
+
+        // Create a new set to store the result of the intersection
+        Set<T> resultSet = new HashSet<>(sets[0]);
+
+        for (int i = 1; i < sets.length; i++) {
+            // Use retainAll to keep only the elements that are in both sets
+            resultSet.retainAll(sets[i]);
+        }
+
+        return resultSet;
+    }
 
 	public static MatchResult exactOrContainsLabelMatch(ComparisonContext context) {
 		MatchResult res = new MatchResult(context);
-		List<Compartment> model1compartments = new ArrayList<>(context.modelctx1.compartments);
-		List<Compartment> model2compartments = new ArrayList<>(context.modelctx2.compartments);
 		Set<String> uniqueLabels = new HashSet<String>(context.modelctx1.uniqueLabels);
 		uniqueLabels.retainAll(context.modelctx2.uniqueLabels);
 		
-		// look for same labels: ["S", "0"] matches only ["S", "0"]
-		for (Compartment c1 : model1compartments)
-			for (Compartment c2 : model2compartments)
-				if (c1.getLabels().equals(c2.getLabels()))
-					res.matches.add(new Match(c1, c2));
-
-		// look for object from model1 who's labels are contained by a model2 object's labels: ["S"] (model1) matches [..., "S", ...] (model2)
-		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
-		for (Compartment c1 : model1compartments)
-			for (Compartment c2 : model2compartments)
-				// check for c1 each c2  is intended as c1 may change at any c2
+		for (Compartment c1 : context.modelctx1.compartments)
+			for (Compartment c2 : context.modelctx2.compartments)
 				if (res.find(c1).isEmpty() &&
 					res.find(c2).isEmpty() &&
-					c2.getLabels().containsAll(c1.getLabels()))
-					for (String label : c1.getLabels())
-						if (uniqueLabels.contains(label)) {
-							res.matches.add(new Match(c1, c2));
-							break;
-						}
-		
-		// look for object from model2 who's labels are contained by a model1 object's labels: [..., "S", ...] (model1) matches ["S"] (model2)
-		// Look only for unique labels so for example if [SI, S] and [SI, I] exist, SI would be ineligible but S and I are fine
-		for (Compartment c1 : model1compartments)
-			for (Compartment c2 : model2compartments)
-				if (res.find(c1).isEmpty() &&
-					res.find(c2).isEmpty() &&
-					c1.getLabels().containsAll(c2.getLabels()))
-					for (String label : c2.getLabels())
-						if (uniqueLabels.contains(label)) {
-							res.matches.add(new Match(c1, c2));
-							break;
-						}
+					intersection(
+						c1.getLabels(),
+						c2.getLabels(),
+						uniqueLabels
+					).size() > 0)
+						res.matches.add(new Match(c1, c2));
 		
 		
-		// for each matched element pair, if parents are not matched but same type, match parents
+		// for each matched element pair, if parents are not matched but same type, match them
 		// this isn't a for (Match m : res.matches) as we are modifying matches as we go
-		// and looping through the added elements aswell is required to apply recursively the parent matching
+		// and looping through the added elements as well is required to apply recursively the parent matching
 		for (int i = 0; i < res.matches.size(); ++i) {
 			Match m = res.matches.get(i);
 			EObject leftParent = m.matchedCompartmentPair.first.eContainer().eContainer();
 			EObject rightParent = m.matchedCompartmentPair.second.eContainer().eContainer();
-			if (leftParent instanceof Compartment && rightParent instanceof Compartment) {
+			if (leftParent instanceof Compartment &&
+				leftParent.getClass().equals(rightParent.getClass())
+			) {
 				Compartment leftParentc = (Compartment) leftParent;
 				Compartment rightParentc = (Compartment) rightParent;
-				if (leftParent.getClass().equals(rightParent.getClass()) &&
-					!res.find(leftParentc).isPresent() &&
-					!res.find(rightParentc).isPresent()) {
+				if (res.find(leftParentc).isEmpty() &&
+					res.find(rightParentc).isEmpty()
+				) {
 					// prepend it
 					res.matches.add(i, new Match(leftParentc, rightParentc));
 					// then backtrack
