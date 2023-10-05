@@ -1,6 +1,7 @@
 package epimodel.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 
 import epimodel.Compartment;
+import epimodel.CompartmentWrapper;
 import epimodel.Epidemic;
 import epimodel.Flow;
 
@@ -23,16 +25,40 @@ public class Comparison {
 		
 		public ModelContext(Epidemic model) {
 			this.model = model;
-			compartments = new ArrayList<>();
 			
 			uniqueLabels = new HashSet<>();
 			duplicateLabels = new HashSet<>();
+			
+			// this.compartments will be in breadth first order not depth first
+			List<List<Compartment>> compartments_by_level =
+				new ArrayList<>(Arrays.asList(new ArrayList<>(Arrays.asList(
+					model.getCompartmentwrapper().getCompartment()
+				))));
+			
+			while (true) {
+				List<CompartmentWrapper> next_level = new ArrayList<>();
+				
+				for (Compartment c : compartments_by_level.get(compartments_by_level.size() - 1))
+					for (EObject e : c.eContents())
+						if (e instanceof CompartmentWrapper)
+							next_level.add((CompartmentWrapper) e);
+				
+				if (next_level.isEmpty())
+					break;
+				else
+					compartments_by_level.add(
+						next_level
+							.stream()
+							.map(CompartmentWrapper::getCompartment)
+							.toList()
+					);
+			}
+			compartments = compartments_by_level.stream().flatMap(List::stream).toList();
 			
 			model.eAllContents().forEachRemaining(eobject -> {
 				if (!(eobject instanceof Compartment))
 					return;
 				Compartment compartment = (Compartment) eobject;
-				compartments.add(compartment);
 				duplicateLabels.addAll(
 					compartment
 						.getLabels()
@@ -156,13 +182,13 @@ public class Comparison {
 			this.matches = matches;
 			this.myCompartments = myCompartments;
 			this.otherCompartments = otherCompartments;
-
+			
 			myMatchedCompartments = new ArrayList<>();
 			myUnMatchedCompartments = new ArrayList<>(myCompartments);
 			
 			otherMatchedCompartments = new ArrayList<>();
 			otherUnMatchedCompartments = new ArrayList<>(otherCompartments);
-
+			
 			childrenMatches = new ArrayList<>();
 			
 			for (Compartment c : myCompartments) {
@@ -197,7 +223,9 @@ public class Comparison {
 				.flatMap(List::stream)
 				.toList();
 			
-			this.isSame = notSameChildrenMatchAndDiffs.size() == 0 && myUnMatchedCompartments.size() == 0 && otherUnMatchedCompartments.size() == 0;
+			this.isSame = notSameChildrenMatchAndDiffs.size() == 0 &&
+						  myUnMatchedCompartments.size() == 0 &&
+						  otherUnMatchedCompartments.size() == 0;
 		}
 		
 		public String getSimpleDescription() {
@@ -363,43 +391,37 @@ public class Comparison {
 	}
 	
 	@SafeVarargs
-	public static <T> Set<T> intersection(Collection<T>... sets) {
-        if (sets.length == 0) {
-            // If no sets are provided, return an empty set
+	public static <T> HashSet<T> intersection(Collection<T>... sets) {
+        if (sets.length == 0)
             return new HashSet<>();
-        }
+        
+        HashSet<T> resultSet = new HashSet<>(sets[0]);
 
-        // Create a new set to store the result of the intersection
-        Set<T> resultSet = new HashSet<>(sets[0]);
-
-        for (int i = 1; i < sets.length; i++) {
-            // Use retainAll to keep only the elements that are in both sets
+        for (int i = 1; i < sets.length; i++)
             resultSet.retainAll(sets[i]);
-        }
 
         return resultSet;
     }
 
-	public static MatchResult exactOrContainsLabelMatch(ComparisonContext context) {
+	public static MatchResult contains_same_unique_label_match(ComparisonContext context) {
 		MatchResult res = new MatchResult(context);
-		Set<String> uniqueLabels = new HashSet<String>(context.modelctx1.uniqueLabels);
-		uniqueLabels.retainAll(context.modelctx2.uniqueLabels);
+		Set<String> uniqueLabels = intersection(context.modelctx1.uniqueLabels, context.modelctx2.uniqueLabels);
 		
 		for (Compartment c1 : context.modelctx1.compartments)
 			for (Compartment c2 : context.modelctx2.compartments)
 				if (res.find(c1).isEmpty() &&
 					res.find(c2).isEmpty() &&
-					intersection(
+					!intersection(
 						c1.getLabels(),
 						c2.getLabels(),
 						uniqueLabels
-					).size() > 0)
+					).isEmpty())
 						res.matches.add(new Match(c1, c2));
 		
 		
 		// for each matched element pair, if parents are not matched but same type, match them
 		// this isn't a for (Match m : res.matches) as we are modifying matches as we go
-		// and looping through the added elements as well is required to apply recursively the parent matching
+		// and looping through the added elements as well is required to apply the parent matching recursively
 		for (int i = 0; i < res.matches.size(); ++i) {
 			Match m = res.matches.get(i);
 			EObject leftParent = m.matchedCompartmentPair.first.eContainer().eContainer();

@@ -16,15 +16,15 @@ import epimodel.util.Comparison.MatchResult;
 
 public class Compare {
 	public static void main(String[] args) {
-		String model1fn = "../../runtime/Modeling1/Modeling1.epimodel";
-		String model2fn = "../../runtime/Modeling2/Modeling2.epimodel";
+		String model1fn = "../../test-models/withFlowInGroup.epimodel";
+		String model2fn = "../../test-models/withFlowInProduct.epimodel";
 		compare(model1fn, model2fn);
 	}
 	
 	public static ComparisonResult compare(String model1fn, String model2fn) {
-		System.out.println("Comparing " + model1fn + " and " + model2fn);
 		Epidemic model1 = (Epidemic) epimodel.impl.EpimodelPackageImpl.loadModel(model1fn);
 		Epidemic model2 = (Epidemic) epimodel.impl.EpimodelPackageImpl.loadModel(model2fn);
+		System.out.println("Comparing " + model1fn + " and " + model2fn);
 		return compare(model1, model2, true);
 	}
 	
@@ -35,17 +35,21 @@ public class Compare {
 	public static ComparisonResult compare(Epidemic model1, Epidemic model2, boolean doPrint) {
 		List<Pair<String, String>> renamings = new ArrayList<>();
 		ComparisonContext context = new ComparisonContext(model1, model2, renamings);
-		MatchResult matches = Comparison.exactOrContainsLabelMatch(context);
+		MatchResult matches = Comparison.contains_same_unique_label_match(context);
 		
 		if (doPrint)
 			System.out.println(matches);
 		
-		Pair<Compartment, Compartment> highestLevelMatchFound = matches.matches.get(0).matchedCompartmentPair;
-		List<Difference> diffs = new ArrayList<>(Arrays.asList(highestLevelMatchFound.first.compare(highestLevelMatchFound.second, matches)));
+		Pair<Compartment, Compartment> highestLevelMatchFound =
+				matches.matches.get(0).matchedCompartmentPair;
+		List<Difference> diffs = new ArrayList<>(Arrays.asList(
+			highestLevelMatchFound.first.compare(highestLevelMatchFound.second, matches)
+		));
 		
-		
-		// iterate other matches in case the top level element did not account for all matches
-		// this happens if at some level incompatible type of objects are compared and unable to compare their children
+		// iterate other matches in case the highest match did not account for all matches
+		// this happens if at some level incompatible type of objects are
+		// compared and are unable to compare their children
+		// or if the highest level match is not the top level element
 		for (Match match : matches.matches) {
 			boolean accountedFor = false;
 			for (Difference d : diffs)
@@ -54,7 +58,12 @@ public class Compare {
 					break;
 				}
 			if (!accountedFor)
-				diffs.add(match.matchedCompartmentPair.first.compare(match.matchedCompartmentPair.second, matches));
+				diffs.add(
+					match.matchedCompartmentPair.first.compare(
+						match.matchedCompartmentPair.second,
+						matches
+					)
+				);
 		}
 		
 		for (Difference d : diffs) {
@@ -66,7 +75,8 @@ public class Compare {
 		
 		if (doPrint)
 			for (Difference d : diffs) {
-				// description isnt formatted so just find `{` and `}`, add newlines and indent them, and if there are newlines, tab them too
+				// description isn't formatted so just find `{` and `}`,
+				// add newlines and indent them, and if there are newlines, tab them too
 				String s = d.description;
 				StringBuilder sb = new StringBuilder();
 				int depth = 0;
