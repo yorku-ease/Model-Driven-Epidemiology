@@ -119,7 +119,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		List<CompartmentWrapper> l1 = (List<CompartmentWrapper>) eGet(compartmentsFeature);
 		@SuppressWarnings("unchecked")
 		List<CompartmentWrapper> l2 = (List<CompartmentWrapper>) other.eGet(compartmentsFeature);
-		List<Compartment> myCompartments = l1.stream().map(CompartmentWrapper::getCompartment).toList();
+		List<Compartment> myCompartments    = l1.stream().map(CompartmentWrapper::getCompartment).toList();
 		List<Compartment> otherCompartments = l2.stream().map(CompartmentWrapper::getCompartment).toList();
 
 		if (flowsFeature == null)
@@ -167,8 +167,16 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			else
 				sb.append(" does not exactly match ");
 			sb.append(other.getClass().getSimpleName() + " " + other.getLabels());
-			if (!sameCompartments)
-				diffCompartments(sb, l1, l2);
+			if (!sameCompartments) {
+				List<PhysicalCompartment> l_2_with_label_change = new ArrayList<>();
+				for (PhysicalCompartment pc : l2) {
+					List<String> labels = new ArrayList<>(pc.labels);
+					labels.removeAll(other.getLabels());
+					labels.addAll(0, getLabels());
+					l_2_with_label_change.add(new PhysicalCompartment(labels));
+				}
+				diffCompartments(sb, l1, l_2_with_label_change);
+			}
 			if (!sameFlows)
 				diffFlows(sb, lf1, lf2);
 		}
@@ -181,7 +189,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	void diffCompartments(StringBuilder sb, List<PhysicalCompartment> l1, List<PhysicalCompartment> l2) {
 		int addedCompartments = l2.size() - l2.stream().filter(l1::contains).toList().size();
 		int removedCompartments = l1.size() + addedCompartments - l2.size();
-		sb.append(" original model produces " + l1.size() + " physical compartments and other model produces "
+		sb.append(" original produces " + l1.size() + " physical compartments and other produces "
 				+ l2.size());
 		sb.append(": " + (l1.size() - removedCompartments) + " matched, ");
 		sb.append(addedCompartments + " added and " + removedCompartments + " removed.");
@@ -190,7 +198,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	void diffFlows(StringBuilder sb, List<PhysicalFlow> l1, List<PhysicalFlow> l2) {
 		int addedFlows = l2.size() - l2.stream().filter(l1::contains).toList().size();
 		int removedFlows = l1.size() + addedFlows - l2.size();
-		sb.append(" original model produces " + l1.size() + " physical flows and other model produces " + l2.size());
+		sb.append(" original produces " + l1.size() + " physical flows and other produces " + l2.size());
 		sb.append(": " + (l1.size() - removedFlows) + " matched, ");
 		sb.append(addedFlows + " added and " + removedFlows + " removed.");
 	}
