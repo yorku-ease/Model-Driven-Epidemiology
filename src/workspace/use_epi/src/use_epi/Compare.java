@@ -66,12 +66,9 @@ public class Compare {
 				);
 		}
 		
-		for (Difference d : diffs) {
+		for (Difference d : diffs)
 			for (Compartment c : d.accountsForAdditions)
 				matches.find(c).ifPresent(m -> m.isMove = true);
-			for (Compartment c : d.accountsForSubstractions)
-				matches.find(c).ifPresent(m -> m.isMove = true);
-		}
 		
 		if (doPrint)
 			for (Difference d : diffs) {
