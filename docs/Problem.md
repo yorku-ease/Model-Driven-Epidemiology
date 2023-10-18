@@ -42,4 +42,4 @@
 
 [Critiqued coronavirus simulation gets thumbs up from code-checking efforts](https://www.nature.com/articles/d41586-020-01685-y)
 
-Most useful: [Landscape mapping of software tools for climate-sensitive infectious disease modelling]https://wellcome.org/reports/landscape-mapping-software-tools-climate-sensitive-infectious-disease-modelling
+Most useful: [Landscape mapping of software tools for climate-sensitive infectious disease modelling](https://wellcome.org/reports/landscape-mapping-software-tools-climate-sensitive-infectious-disease-modelling)
