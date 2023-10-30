@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epimodel:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batchRateContactFlow="http://www.example.org/batchRateContactFlow" xmlns:epimodel="http://www.example.org/epimodel" xmlns:group="http://www.example.org/group" xmlns:product="http://www.example.org/product">
+  <compartmentwrapper>
+    <compartment xsi:type="group:Group">
+      <label>Tuite-Covid-Model</label>
+      <compartment>
+        <compartment>
+          <label>S</label>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="product:Product">
+          <label>E+I+Isolation</label>
+          <compartment>
+            <compartment xsi:type="group:Group">
+              <label>Isolation</label>
+              <compartment>
+                <compartment>
+                  <label>not-isolated</label>
+                </compartment>
+              </compartment>
+              <compartment>
+                <compartment>
+                  <label>isolated</label>
+                </compartment>
+              </compartment>
+              <flow>
+                <flow xsi:type="batchRateContactFlow:Rate" id="testing" from="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.0/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.0/@compartment/@compartment.1/@compartment" sourceParameters="testing-parameter" parameters=""/>
+              </flow>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment xsi:type="group:Group" source="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.0" sink="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1">
+              <label>E+I</label>
+              <compartment>
+                <compartment>
+                  <label>E</label>
+                </compartment>
+              </compartment>
+              <compartment>
+                <compartment xsi:type="group:Group" source="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.0" sink="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1 //@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.2">
+                  <label>I</label>
+                  <compartment>
+                    <compartment>
+                      <label>presym</label>
+                    </compartment>
+                  </compartment>
+                  <compartment>
+                    <compartment>
+                      <label>mild</label>
+                    </compartment>
+                  </compartment>
+                  <compartment>
+                    <compartment>
+                      <label>severe</label>
+                    </compartment>
+                  </compartment>
+                  <flow>
+                    <flow xsi:type="batchRateContactFlow:Rate" id="mild-symptoms" from="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" sourceParameters="mild-symptoms-parameter"/>
+                  </flow>
+                  <flow>
+                    <flow xsi:type="batchRateContactFlow:Rate" id="severe-symptoms" from="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.2/@compartment" sourceParameters="severe-symptoms-parameter"/>
+                  </flow>
+                </compartment>
+              </compartment>
+              <flow>
+                <flow xsi:type="batchRateContactFlow:Rate" id="infection" from="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" sourceParameters="infection-parameter" sinkParameters=""/>
+              </flow>
+            </compartment>
+          </compartment>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment xsi:type="group:Group" source="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.0 //@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.2" sink="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.0 //@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.3">
+          <label>H</label>
+          <compartment>
+            <compartment>
+              <label>no-icu</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>icu</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>pre-icu</label>
+            </compartment>
+          </compartment>
+          <compartment>
+            <compartment>
+              <label>post-icu</label>
+            </compartment>
+          </compartment>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="enter-icu" from="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.1/@compartment" sourceParameters="enter-icu-parameter"/>
+          </flow>
+          <flow>
+            <flow xsi:type="batchRateContactFlow:Rate" id="exit-icu" from="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.3/@compartment" sourceParameters="exit-icu-parameter"/>
+          </flow>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment>
+          <label>R</label>
+        </compartment>
+      </compartment>
+      <compartment>
+        <compartment>
+          <label>Dead</label>
+        </compartment>
+      </compartment>
+      <flow>
+        <flow xsi:type="batchRateContactFlow:Contact" id="exposure" from="//@compartmentwrapper/@compartment/@compartment.0/@compartment" to="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" sourceParameters="susceptibility" sinkParameters="" contact="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" contactParameters="contagiousness" contactAndSourceParameters="contact-mixing"/>
+      </flow>
+      <flow>
+        <flow xsi:type="batchRateContactFlow:Rate" id="hospitalization" from="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.2/@compartment" sourceParameters="hospitalization-parameter" sinkParameters="p-icu"/>
+      </flow>
+      <flow>
+        <flow xsi:type="batchRateContactFlow:Rate" id="death" from="//@compartmentwrapper/@compartment/@compartment.2/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.4/@compartment" sourceParameters="death-parameter"/>
+      </flow>
+      <flow>
+        <flow xsi:type="batchRateContactFlow:Rate" id="recovery-h" from="//@compartmentwrapper/@compartment/@compartment.2/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment" sourceParameters="recovery-h-parameter"/>
+      </flow>
+      <flow>
+        <flow xsi:type="batchRateContactFlow:Rate" id="recovery" from="//@compartmentwrapper/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment/@compartment.1/@compartment" to="//@compartmentwrapper/@compartment/@compartment.3/@compartment" sourceParameters="recovery-parameter"/>
+      </flow>
+    </compartment>
+  </compartmentwrapper>
+</epimodel:Epidemic>

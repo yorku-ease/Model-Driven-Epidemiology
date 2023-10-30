@@ -97,7 +97,7 @@ public class GroupImpl extends CompartmentImpl implements Group {
 
 	@Override
 	public void edit(Shell shell, List<Control> controls) {
-		shell.setText("Edit Group Epidemic " + getLabel());
+		shell.setText("Edit Group " + getLabel());
 		shell.setLayout(new GridLayout(1, false));
 		epimodel.util.Edit.addBtn(shell, controls, "Modify Labels", () -> {
 			controls.forEach(Control::dispose);
