@@ -21,8 +21,9 @@ public class CompileModel {
 //		compile("../../test-models/pcontact_p1_g.epimodel");
 //		compile("../../test-models/pcontact_p2_g.epimodel");
 		
-		compile("../../runtime/model1/model1.epimodel");
-		compile("../../runtime/mortality-test/mortality-test.epimodel");
+//		compile("../../runtime/model1/model1.epimodel");
+//		compile("../../runtime/mortality-test/mortality-test.epimodel");
+		compile("../../runtime/strat-tuite/strat-tuite.epimodel");
 	}
 	
 	static void compile(String model_fn) throws FileNotFoundException, UnsupportedEncodingException {

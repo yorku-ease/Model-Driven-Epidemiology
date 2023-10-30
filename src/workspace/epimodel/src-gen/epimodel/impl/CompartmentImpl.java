@@ -208,6 +208,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		if (getClass() != CompartmentImpl.class)
 			throw new RuntimeException(
 					"Method `getPhysicalCompartments` not implemented for derived class " + getClass().getSimpleName());
+		if (label == null)
+			throw new RuntimeException("label may not be null");
 		return new ArrayList<>(Arrays.asList(new PhysicalCompartment(getLabel())));
 	}
 
