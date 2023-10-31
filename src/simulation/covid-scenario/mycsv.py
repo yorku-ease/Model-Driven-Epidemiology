@@ -26,3 +26,7 @@ class CSV:
     def get_simple(self, col):
         for point in self.get(col):
             yield point[0]
+    
+    def __str__(self):
+        return 'headers = ' + str(self.headers) +\
+            '\ndata=\n\t' + '\n\t'.join(map(str, self.data))
