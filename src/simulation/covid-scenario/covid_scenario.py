@@ -45,6 +45,7 @@ for row in contact_csv.data:
     row[-2], row[-1] = (p_70_75_given_over_70 * row[-2], (1 - p_70_75_given_over_70) * row[-2])
 
 # then we will do the comorbidity table
+# we need a weighted average of comorbidity for our 2 data points being 75 to 80 and 80+
 # p(comorbidity given 75+) = (p(comorbidity given 80+) * p(80+) + p(comorbidity given 75-80) * p(75-80))/p(75+)
 p_comorbidity_given_80_plus = comorbidity_csv.data[-1][1]
 p_comorbidity_given_75_80 = comorbidity_csv.data[-2][1]
@@ -53,12 +54,12 @@ p_80_plus = sum(list(pop_csv.get_simple('count'))[-6:])
 p_75_80 = list(pop_csv.get_simple('count'))[-6]
 p_comorbidity_given_75_plus = (p_comorbidity_given_80_plus * p_80_plus + p_comorbidity_given_75_80 * p_75_80)/(p_75_80 + p_80_plus)
 # change 75-79 to 75+, set new value, remove 80+
-comorbidity_csv.data = comorbidity_csv.data[:-2] + [[75, 0], p_comorbidity_given_75_plus]
+comorbidity_csv.data = comorbidity_csv.data[:-2] + [[[75, 0], p_comorbidity_given_75_plus]]
 
 # finally we will do the population table
 count_75_plus = sum(list(pop_csv.get_simple('count'))[-6:])
 pop_csv.data = pop_csv.data[:-6]
-pop_csv.data += [[75, 0], count_75_plus]
+pop_csv.data += [[[75, 0], count_75_plus]]
 
 
 def main():
