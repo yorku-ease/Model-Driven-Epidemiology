@@ -1,10 +1,11 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Script used to setup parameters for the HIV-TB coinfection model
-# Scroll to the bottom for the overview of the steps
+# See main for the overview of the steps
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
+from parameters_setting import *
 
 def setup_compartments(scenario):
     select(scenario, criteria = []).set(0)
@@ -289,8 +290,6 @@ def create_file_without_deceased_equations_and_exit_if_needs_to_be_copied(fn):
         print(f'Writing equations to `{fn2}`, you are expected to replace the content of `{fn}.equations.txt` with it')
         exit(1)
 
-from parameters_setting import *
-
 TOTAL_POP = 38.25e6
 CHILD_POP = TOTAL_POP * 0.3
 ADULT_18_TO_50_POP = TOTAL_POP * 0.4
@@ -312,12 +311,11 @@ def main():
     setup_parameters_hiv(parameters)
     setup_parameters_mortality(parameters)
 
-    m = select(parameters, []).get_missing()
+    m = select(parameters, [], len(parameters)).get_missing()
     if len(m) != 0:
         raise Exception("Missing Parameters")
     
     save_parameters(folder + project_name, parameters)
-
 
 if __name__ == "__main__":
     main()

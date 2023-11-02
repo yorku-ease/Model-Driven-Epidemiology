@@ -1,4 +1,5 @@
 import numpy as np
+from os.path import exists
 
 class Flow:
     def __init__(self, lines, parameters, compartments):
@@ -312,10 +313,19 @@ def identify_required_parameters(folder, project_name, provided_parameters):
 def derivative_for(flows):
     return lambda state: evalDelta(flows[0], state) - evalDelta(flows[1], state)
 
+def create_initial_conditions(folder, project_name, list_of_list_of_labels):
+    compartments = [Compartment(c) for c in list_of_list_of_labels]
+    scenario_filename = f'{folder}{project_name}.scenario-compartments.txt'
+    with open(scenario_filename, 'w+') as f:
+        for compartment in compartments:
+            f.write(compartment.as_key() + ' = 0\n')
+    return read_initial_conditions(folder, project_name, list_of_list_of_labels)
+
 def read_initial_conditions(folder, project_name, list_of_list_of_labels):
     compartments = [Compartment(c) for c in list_of_list_of_labels]
     initial_conditions = { c.as_key() : CompartmentValue(c, None) for c in compartments }
-    for line in readlines(f'{folder}{project_name}.scenario-compartments.txt'):
+    scenario_filename = f'{folder}{project_name}.scenario-compartments.txt'
+    for line in readlines(scenario_filename):
         k, v = line.split('=')
         k = parse_compartment(k.strip()).as_key()
         if k not in initial_conditions:
