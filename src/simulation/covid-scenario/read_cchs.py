@@ -13,7 +13,7 @@ n_age_columns = len(ages)
 # cchs1.csv is built aggregating the aforementioned comorbidities and age groups
 # the file is built using beyond 20/20 and exporting to csv, no modification needed
 # in beyond 20/20 put the age groups as columns and diseases as rows (drag all 6 on the left, they will indent)
-csv = CSV('C:/Users/Bruno/Desktop/cchs1.csv', ',')
+csv = CSV('../../../../cchs1.csv', ',')
 
 
 # users with access to the original data may verify that they created

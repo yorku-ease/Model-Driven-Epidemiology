@@ -65,18 +65,21 @@ def select_parameter_compartment_contains(index, s):
 def select_parameter_compartment_does_not_contain(index, s):
     return lambda parameter: (len(parameter.operands) > index) and isinstance(parameter.operands[index], Compartment) and (s not in parameter.operands[index].labels)
 
-def select(container, criteria, expected = None):
+def select(container, criteria, n_expected: int):
     keys = []
     for k, v in container.items():
         if all(criterion(v) for criterion in criteria):
             keys += [k]
-    if (expected is None and len(keys) == 0) or (expected is not None and len(keys) != expected):
-        raise Exception("Invalid selection")
+    if len(keys) == 0:
+        raise Exception("Empty selection")
+    if len(keys) != n_expected:
+        raise Exception(f"Invalid selection, expected {n_expected}, found {len(keys)}")
     return Selection(container, keys)
 
 def save_parameters(filename_without_extension, parameters):
-    m  = select(parameters, []).get_missing()
-    nm = select(parameters, []).get_non_missing()
+    s = select(parameters, [], len(parameters))
+    m  = s.get_missing()
+    nm = s.get_non_missing()
 
     fn = f'{filename_without_extension}.missing-parameters.txt'
     if len(m):
@@ -104,7 +107,7 @@ def select_scenario_compartment_does_not_contain(first, *rest):
     return lambda compartment: all(x not in compartment.compartment.labels for x in [first, *rest])
 
 def save_scenario(filename_without_extension, scenario):
-    s = select(scenario, [])
+    s = select(scenario, [], len(scenario))
     m  = s.get_missing()
     nm = s.get_non_missing()
 
