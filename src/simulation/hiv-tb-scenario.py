@@ -8,53 +8,53 @@
 from parameters_setting import *
 
 def setup_compartments(scenario):
-    select(scenario, criteria = []).set(0)
+    # select(scenario, []).set(0)
 
     # population of 38 million, remove 60k HIV and 1k TB
     N_NOT_INFECTED = TOTAL_POP - 61000
     # each of these .set(...) include a division by 2 for Male and Female
-    susceptible_to_both_child = select(scenario, criteria = [
+    susceptible_to_both_child = select(scenario, [
         select_scenario_compartment_contains('Alive', 'S-HIV', 'S-TB', 'Child'),
-    ]).set(N_NOT_INFECTED * CHILD_POP / TOTAL_POP / 2)
-    susceptible_to_both_adult1 = select(scenario, criteria = [
+    ], 2).set(N_NOT_INFECTED * CHILD_POP / TOTAL_POP / 2)
+    susceptible_to_both_adult1 = select(scenario, [
         select_scenario_compartment_contains('Alive', 'S-HIV', 'S-TB', 'Adult-18-to-50'),
-    ]).set(N_NOT_INFECTED * ADULT_18_TO_50_POP / TOTAL_POP / 2)
-    susceptible_to_both_adult2 = select(scenario, criteria = [
+    ], 2).set(N_NOT_INFECTED * ADULT_18_TO_50_POP / TOTAL_POP / 2)
+    susceptible_to_both_adult2 = select(scenario, [
         select_scenario_compartment_contains('Alive', 'S-HIV', 'S-TB', 'Adult-51+'),
-    ]).set(N_NOT_INFECTED * ADULT_51_POP / TOTAL_POP / 2)
+    ], 2).set(N_NOT_INFECTED * ADULT_51_POP / TOTAL_POP / 2)
     # 8 = M/F * Age
     assert susceptible_to_both_child == susceptible_to_both_adult1 == susceptible_to_both_adult2 == (0, 2)
 
     # 45k adult men will have HIV, 44k under treatment
-    hiv_men_treatment = select(scenario, criteria = [
+    hiv_men_treatment = select(scenario, [
         select_scenario_compartment_contains('Alive', 'Under-Treatment-HIV', 'S-TB', 'Adult-18-to-50', 'M')
-    ]).set(44000)
+    ], 1).set(44000)
     print(f'{hiv_men_treatment=}')
     assert hiv_men_treatment == (0, 1)
 
-    hiv_men = select(scenario, criteria = [
+    hiv_men = select(scenario, [
         select_scenario_compartment_contains('Alive', 'I-HIV', 'S-TB', 'Adult-18-to-50', 'M')
-    ]).set(1000)
+    ], 1).set(1000)
     print(f'{hiv_men=}')
     assert hiv_men == (0, 1)
 
     # 15k adult women will have HIV, 14.5k under treatment
-    hiv_women_treatment = select(scenario, criteria = [
+    hiv_women_treatment = select(scenario, [
         select_scenario_compartment_contains('Alive', 'Under-Treatment-HIV', 'S-TB', 'Adult-18-to-50', 'F')
-    ]).set(14500)
+    ], 1).set(14500)
     print(f'{hiv_women_treatment=}')
     assert hiv_women_treatment == (0, 1)
 
-    hiv_women = select(scenario, criteria = [
+    hiv_women = select(scenario, [
         select_scenario_compartment_contains('Alive', 'I-HIV', 'S-TB', 'Adult-18-to-50', 'F')
-    ]).set(500)
+    ], 1).set(500)
     print(f'{hiv_women=}')
     assert hiv_women == (0, 1)
 
     # now we infect 1k with tuberculosis, 500 men and 500 women
-    tb = select(scenario, criteria = [
+    tb = select(scenario, [
         select_scenario_compartment_contains('Alive', 'I-TB', 'S-HIV', 'Adult-18-to-50')
-    ]).set(500)
+    ], 2).set(500)
     print(f'{tb=}')
     assert tb == (0, 2)
 
@@ -79,39 +79,44 @@ def setup_parameters_tb_exposure(parameters):
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-tb'),
-        ]
+        ],
+        2048
     ).set(10) # each person with untreated HIV will contact around 10 people per day
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-tb'),
             select_parameter_compartment_contains(3, 'Deceased'),
-        ]
+        ],
+        1024
     ).set(0) # nobody meets dead people
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contagiousness-tb'),
-        ]
+        ],
+        64
     ).set(0.1) # 10% probability to expose someone you meet, independent of characteristics
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'susceptibility-tb'),
-        ]
+        ],
+        32
     ).set(0.1) # 10 % probability of TB exposure, independent of characteristics
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'susceptibility-tb'),
             select_parameter_compartment_contains(2, 'I-HIV'),
-        ]
+        ],
+        8
     ).set(1) # 100 % probability of TB exposure if you have HIV
 
 
@@ -136,67 +141,75 @@ def setup_parameters_hiv_exposure(parameters):
     
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-hiv'),
-        ]
+        ],
+        2048
     ).set(0)
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-hiv'),
             select_parameter_string_contains(2, 'Adult-51+'),
             select_parameter_compartment_contains(3, 'Adult-51+'),
-        ]
+        ],
+        128
     ).set(1 / ADULT_51_POP)
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-hiv'),
             select_parameter_string_contains(2, 'Adult-51+'),
             select_parameter_compartment_contains(3, 'Adult-18-to-50'),
-        ]
+        ],
+        128
     ).set(1 / ADULT_18_TO_50_POP / 10)
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-hiv'),
             select_parameter_string_contains(2, 'Adult-18-to-50'),
             select_parameter_compartment_contains(3, 'Adult-18-to-50'),
-        ]
+        ],
+        128
     ).set(1 / ADULT_18_TO_50_POP)
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-hiv'),
             select_parameter_string_contains(2, 'Adult-18-to-50'),
             select_parameter_compartment_contains(3, 'Adult-51+'),
-        ]
+        ],
+        128
     ).set(1 / ADULT_51_POP / 10)
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contact-mixing-hiv'),
             select_parameter_compartment_contains(3, 'Deceased'),
-        ]
+        ],
+        1024
     ).set(0) # nobody meets dead people
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'contagiousness-hiv'),
-        ]
+        ],
+        64
     ).set(1)
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'susceptibility-hiv'),
-        ]
+        ],
+        32
     ).set(1)
 
 
@@ -214,45 +227,49 @@ def setup_parameters_mortality(parameters):
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'death-coef'),
         ],
-        expected = 128
+        128
     ).set(1e-5) # 0.001% probability to die per day
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'death-coef'),
             select_parameter_compartment_contains(2, 'Adult-51+'),
-        ]
+        ],
+        32
     ).set(1e-4) # 0.01% probability to die per day if you are 51+
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'death-coef'),
             select_parameter_compartment_does_not_contain(2, 'I-HIV'),
             select_parameter_compartment_contains(2, 'I-TB'),
-        ]
+        ],
+        24
     ).multiply(1e2) # 100 times more likely to die on a given day if you have TB but not HIV
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'death-coef'),
             select_parameter_compartment_contains(2, 'I-HIV'),
             select_parameter_compartment_does_not_contain(2, 'I-TB'),
-        ]
+        ],
+        24
     ).multiply(1e2) # 100 times more likely to die on a given day if you have HIV but not TB
 
     select(
         parameters,
-        criteria = [
+        [
             select_parameter_string_equals(0, 'death-coef'),
             select_parameter_compartment_contains(2, 'I-HIV'),
             select_parameter_compartment_contains(2, 'I-TB'),
-        ]
+        ],
+        8
     ).multiply(1e3) # 1000 times more likely to die on a given day if you have both HIV and TB
 
 

@@ -24,6 +24,8 @@ class CSV:
             yield [point[i] for i in indices]
     
     def get_simple(self, col):
+        if col not in self.headers:
+            raise Exception(f"Column not found '{col}', available columns are: " + str(self.headers))
         for point in self.get(col):
             yield point[0]
     

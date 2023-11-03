@@ -66,10 +66,10 @@ public class AgingImpl extends CompartmentImpl implements Aging {
 		List<PhysicalCompartment> pcs = getPhysicalCompartments();
 		for (int i = 0; i < pcs.size() - 1; ++i) {
 			res.add(new PhysicalFlow(
-			pcs.get(i),
-			pcs.get(i + 1),
-			"(* $0 (parameter normalizing Aging) (parameter Aging $0))",
-			"Aging"
+				pcs.get(i),
+				pcs.get(i + 1),
+				"(* $0 (parameter normalizing Aging) (parameter Aging $0))",
+				"Aging"
 			));
 		}
 		return res;
