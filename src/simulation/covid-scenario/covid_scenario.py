@@ -29,7 +29,9 @@ def get_pop_comorbidity_contact():
     comorbidity_csv = CSV('cchs-out.csv', ',', [can_gov_ages_to_range, float]) 
 
     # https://github.com/epiforecasts/socialmixr/issues/1
-    contact_csv = CSV('polymod_matrix.csv', ',', [float] * 15)
+    # we transpose it to access by column since the proposed layout is by row
+    # using transpose csv[age] = contacts of people of that age
+    contact_csv = CSV('polymod_matrix_t.csv', ',', [float] * 15)
     contact_csv.headers=list(map(polymod_age_to_range, contact_csv.headers))
 
     # now we need to reshape the data into the same groups used by the researchers
@@ -75,7 +77,7 @@ def get_pop_comorbidity_contact():
     # we will use this value for ages 0-4, 5-9 and average it with our current data at 12-14 for 10-14
     comorbidity_csv.data = [[[0, 4], 0.107], [[5, 9], 0.107],
         [[10, 14], 0.107 * 0.4 + comorbidity_csv.data[0][1] * 0.6]
-        ] + comorbidity_csv.data[1:]
+    ] + comorbidity_csv.data[1:]
 
 
     # finally we will do the population table
@@ -148,19 +150,84 @@ def setup_parameters_icu(parameters):
         select_parameter_string_equals(1, 'exit-icu')
     ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
 
-def setup_parameters_exposure(parameters):
+def setup_parameters_exposure(parameters, pop: CSV, comorbidity: CSV, contact_mixing: CSV):
+    '''
+    https://www.cmaj.ca/content/cmaj/suppl/2020/04/08/cmaj.200476.DC1/200476-res-1-at.pdf:
+
+    The rate at which susceptible individuals are infected (λi,j(t)) depends on the number of daily contacts
+    (cijkl), the transmission probability (β), volatility in the transmission parameter (ω(t)), the reduction in
+    transmission associated with isolation and quarantine (rri), and the reduction in contacts associated with
+    social distancing (rrci), where i and k represent the age groups, and j and l the health status groups of the
+    susceptible and infectious populations, respectively:
+
+    λi,j(t) = βω(t) * sum[k=1,16](
+        cik * rrci * (Ak,l + Bk,l + Ck,l + rri(Gk,l + Wk,l + Yk,l + Zk,l) / Nk,l
+    )
+
+    infectious = pre, mild, severe
+    [Ak,l + Bk,l + Ck,l] = Infectious not isolated
+    [Gk,l + Wk,l + Yk,l + Zk,l] = Infectious isolated
+        * note that we assumed that G is the same compartment as Y when reproducing the model
+        * i believe the distinction is not in their behavior but rather their previous compartment
+        * so by separating G and Y they can see proportions of infected people that were quarantined
+        * vs non quarantined
+    '''
+
     select(parameters, [
         select_parameter_string_equals(0, 'contagiousness'),
         select_parameter_string_equals(1, 'exposure')
-    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE).set(0)
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE).set(1)
     select(parameters, [
         select_parameter_string_equals(0, 'susceptibility'),
         select_parameter_string_equals(1, 'exposure')
-    ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
-    select(parameters, [
-        select_parameter_string_equals(0, 'contact-mixing'),
-        select_parameter_string_equals(1, 'exposure')
-    ], N_AGE_GROUPS ** 2 * N_COMORBIDITY ** 2 * N_ISO * N_SYMPTOMS_OR_PRE).set(0)
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1)
+
+    ages = list(pop.get_simple('age'))
+    if ages != list(contact_mixing.headers):
+        raise Exception("invalid data")
+    if ages != list(comorbidity.get_simple('age')):
+        raise Exception("invalid data")
+
+    age2str = lambda age: f'{age[0]}-{age[1]}' if age[1] != 0 else f'{age[0]}+'
+
+    p_comorbidity = list(comorbidity.get_simple('p-comorbidity'))
+    population_counts = list(pop.get_simple('count'))
+
+    for age_of_exposed, comorbidity_of_exposed in zip(ages, p_comorbidity):
+        contacts = contact_mixing.get_simple(age_of_exposed)
+        for age_of_contact, population_of_contact, comorbidity_of_contact, contacts_per_day in zip(ages, population_counts, p_comorbidity, contacts):
+            base_criteria = [
+                select_parameter_string_equals(0, 'contact-mixing'),
+                select_parameter_string_equals(1, 'exposure'),
+                select_parameter_string_contains(2, age2str(age_of_exposed) + '-'),
+                select_parameter_compartment_contains(3, age2str(age_of_contact)),
+            ]
+            select(
+                parameters,
+                base_criteria,
+                (N_COMORBIDITY ** 2) * N_ISO * N_SYMPTOMS_OR_PRE
+            ).set(contacts_per_day / population_of_contact)
+            # weight for absence and presence of comorbidity of exposed and contact
+            # select(
+            #     parameters,
+            #     base_criteria + [select_parameter_string_contains(2, 'Some')],
+            #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
+            # ).multiply(comorbidity_of_exposed)
+            # select(
+            #     parameters,
+            #     base_criteria + [select_parameter_string_contains(2, 'None')],
+            #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
+            # ).multiply(1 - comorbidity_of_exposed)
+            # select(
+            #     parameters,
+            #     base_criteria + [select_parameter_compartment_contains(3, 'Some')],
+            #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
+            # ).multiply(comorbidity_of_contact)
+            # select(
+            #     parameters,
+            #     base_criteria + [select_parameter_compartment_contains(3, 'None')],
+            #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
+            # ).multiply(1 - comorbidity_of_contact)
 
 def setup_parameters_hospitalization(parameters):
     select(parameters, [
@@ -186,17 +253,17 @@ def setup_parameters_aging(parameters):
     ], 1).set(0)
     select(parameters, [
         select_parameter_string_equals(0, 'Aging')
-    ], (N_AGE_GROUPS - 1) * N_COMORBIDITY * (N_S + N_ISO * N_EI + N_H + N_DEATH + N_R)).set(0)
+    ], (N_AGE_GROUPS - 1) * N_COMORBIDITY * (N_S + N_ISO * N_EI + N_HOSPITALIZED + N_DEATH + N_R)).set(0)
 
 
 N_AGE_GROUPS = 16
 N_COMORBIDITY = 2
 N_ISO = 2
-N_SYMPTOMS_OR_PRE = 3
 N_SYMPTOMS = 2
+N_SYMPTOMS_OR_PRE = N_SYMPTOMS + 1
 N_EI = 4 # E + presym + mild + severe
 N_BRANCH_ICU = 2 # no icu or icu
-N_H = 4 # no icu, pre, icu, post
+N_HOSPITALIZED = 4 # no icu, pre, icu, post
 N_DEATH = N_S = N_R = 1
 
 def main():
@@ -215,14 +282,11 @@ def main():
     setup_parameters_symptoms(parameters)
     setup_parameters_infection(parameters)
     setup_parameters_icu(parameters)
-    setup_parameters_exposure(parameters)
+    setup_parameters_exposure(parameters, pop_csv, comorbidity_csv, contact_csv)
     setup_parameters_hospitalization(parameters)
     setup_parameters_death(parameters)
     setup_parameters_recovery(parameters)
     setup_parameters_aging(parameters)
-
-
-    
 
     s = select(parameters, [], len(parameters))
     m = s.get_missing()
