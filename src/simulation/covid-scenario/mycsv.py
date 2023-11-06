@@ -2,6 +2,9 @@ def transform(point, transforms):
     if transforms == []:
         return point
     else:
+        if len(point) != len(transforms):
+            raise Exception(f'point has length {len(point)} and transforms has length {len(transforms)}')
+        print(point)
         return [f(p) for f, p in zip(transforms, point)]
 
 class CSV:
