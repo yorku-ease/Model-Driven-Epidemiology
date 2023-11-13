@@ -29,9 +29,6 @@ import org.epimodel.natures.EpimodelProjectNature;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-import de.ovgu.featureide.fm.core.base.IFeatureModel;
-import de.ovgu.featureide.fm.core.base.IFeatureStructure;
-import de.ovgu.featureide.fm.core.configuration.Configuration;
 import epimodel.Epidemic;
 import epimodel.impl.EpimodelFactoryImpl;
 
@@ -39,8 +36,6 @@ public class CustomProjectSupport {
     public static IProject createProject(
 		String projectName,
 		java.net.URI location,
-		IFeatureModel fm,
-		Configuration conf,
 		List<String> pluginsEnabledManually
     ) {
         Assert.isNotNull(projectName);
@@ -53,7 +48,6 @@ public class CustomProjectSupport {
             {
                 List<String> plugins = new ArrayList<>();
                 plugins.add("epimodel");
-                tree(fm.getFeature("EpidemicMetamodelLine").getStructure(), conf, plugins);
                 for (String plugin : pluginsEnabledManually)
                 	if (!plugins.contains(plugin))
                 		plugins.add(plugin);
@@ -65,7 +59,7 @@ public class CustomProjectSupport {
             }
             {
     			String model_fn = projectName + ".epimodel";
-    			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring(6); // TODO why 6? maybe 'file:/'
+    			String model_fn_path = project.getFile(model_fn).getLocationURI().toString().substring("file:/".length());
     			
     			createEpimodel(model_fn_path);
             }
@@ -94,22 +88,6 @@ public class CustomProjectSupport {
 		read.close();
 	    return sb.toString();
 	}
- 
-    private static void tree(IFeatureStructure feature, Configuration conf, List<String> plugins) {
-		// maybe TODO here write in the file the features selected even though we don't need them
-		// as we only care about the plugins but if we want to show the user why the plugins are enabled
-		// we need to show it in terms of features
-    	// tldr: maybe should write ALL features not just plugins
-		for (IFeatureStructure child : feature.getChildren()) {
-			if (child.getFeature().getName().equals("Plugins")) {
-				for (IFeatureStructure plugin : child.getChildren())
-					if (conf.getSelectedFeatures().contains(plugin.getFeature()))
-						plugins.add(plugin.getFeature().getName());
-			}
-			else
-				tree(child, conf, plugins);
-		}
-    }
     
     private static IProject createBaseProject(String projectName, java.net.URI location) {
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
