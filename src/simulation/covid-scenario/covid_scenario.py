@@ -29,11 +29,9 @@ def get_pop_comorbidity_contact():
     comorbidity_csv = CSV('cchs-out.csv', ',', [can_gov_ages_to_range, float]) 
 
     # https://github.com/epiforecasts/socialmixr/issues/1
-    # we transpose it to access by column since the proposed layout is by row
-    # using transposed gives us:
     #   csv[age] = contacts of people of that age
     #   people of age1 meet `csv[age1][age2]` people of age2 per day
-    contact_csv = CSV('polymod_matrix_t.csv', ',', [float] * 15)
+    contact_csv = CSV('polymod_matrix.csv', ',', [float] * 15)
     contact_csv.headers=list(map(polymod_age_to_range, contact_csv.headers))
 
     # now we need to reshape the data into the same groups used by the researchers
@@ -204,8 +202,8 @@ def setup_parameters_exposure(parameters, pop: CSV, comorbidity: CSV, contact_mi
                 select_parameter_string_contains(2, age2str(age_of_exposed) + '-'),
                 select_parameter_compartment_contains(3, age2str(age_of_contact)),
             ]
-
-            print(f'assume meet {contacts_per_day} over {population_of_contact}')
+            if age_of_contact == [25, 29]:
+                print(f'assume meet {contacts_per_day} over {population_of_contact}')
             select(
                 parameters,
                 base_criteria,
@@ -306,4 +304,5 @@ def main():
     
     save_parameters(folder + project_name, parameters)
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
