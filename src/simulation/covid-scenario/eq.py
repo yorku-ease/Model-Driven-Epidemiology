@@ -3,8 +3,6 @@ import params
 
 interv_on = False
 t = 0
-aging = params.aging
-births = params.births
 
 rho = 1 / params.quarantine_dur
 epsilon = 1 / params.latent_period
@@ -50,31 +48,49 @@ def derivative(state):
     icuc = state[14]
     r = state[15]
 
+    # print(f'{beta=}')
+    # print(f'{(a + rr_i*w)=}')
+    # print(f"{b=}")
+    # print(f"{rr_i=}")
+    # print(f"{g=}")
+    # print(f"{y=}")
+    # print(f'{(b+rr_i*(g+y))=}')
+    # print(f'{(c+rr_i*z)=}')
+    # print(f'{(s+v+e+q+a+w+b+c+y+z+g+h+icua+icub+icuc+r)=}')
+    # print(f'{np.multiply(theta, l_h)=}')
+
     #calculate force of infection
     l_h = beta * ((a + rr_i*w) + (b+rr_i*(g+y)) + (c+rr_i*z))/(s+v+e+q+a+w+b+c+y+z+g+h+icua+icub+icuc+r)
-    # _lambda = rowSums(sweep(theta, 2, l_h, `*`), na_rm=TRUE)
-    _lambda = np.nansum(np.multiply(theta, l_h[:, np.newaxis]), axis=1)
+    _lambda = np.sum(np.multiply(theta, l_h), axis=1)
 
-    dsdt = -_lambda*s - delta_s*s + rho*v + aging * s + births * (s+v+e+q+a+w+b+c+y+z+g+h+icua+icub+icuc+r)
-    dvdt = delta_s*s - rho*v + aging * v
-    dedt = (1-delta_e)*_lambda*s - epsilon*e + aging * e
-    dqdt = delta_e*_lambda*s - epsilon*q + aging * q
-    dadt = epsilon*e - gamma_p*a + aging * a
-    dwdt = epsilon*q - gamma_p*w + aging * w
-    dbdt = (1-sigma_s)*gamma_p*a - gamma_m*b - gamma_d*b + aging * b
-    dcdt = sigma_s*gamma_p*a - gamma_s*c + aging * c
-    dydt = (1-sigma_s)*gamma_p*w - gamma_m*y + aging * y
-    dzdt = sigma_s*gamma_p*w - gamma_s*z + aging * z
-    dgdt = gamma_d*b - gamma_i*g + aging * g
-    dhdt =  (1-sigma_i)*gamma_s*(c+z) - psi*h + aging * h
-    dicuadt = sigma_i*gamma_s*(c+z) - pi_a*icua + aging * icua
-    dicubdt = pi_a*icua - pi_b*icub + aging * icub
-    dicucdt =(1-cfr_icu)*pi_b*icub - pi_c*icuc +  aging * icuc
-    drdt = gamma_i*g + gamma_m*(b+y) + psi*h + cfr_icu*pi_b*icub + pi_c*icuc + aging * r
+    # print(f'{l_h=}')
+    # print(f'{_lambda=}')
+    # print(f'{-_lambda * s=}')
+    dsdt = -_lambda*s - delta_s*s + rho*v + params.aging.dot(s) + params.births.dot(s+v+e+q+a+w+b+c+y+z+g+h+icua+icub+icuc+r)
+    dvdt = delta_s*s - rho*v + params.aging.dot(v)
+    dedt = (1-delta_e)*_lambda*s - epsilon*e + params.aging.dot(e)
+    dqdt = delta_e*_lambda*s - epsilon*q + params.aging.dot(q)
+    dadt = epsilon*e - gamma_p*a + params.aging.dot(a)
+    dwdt = epsilon*q - gamma_p*w + params.aging.dot(w)
+    dbdt = (1-sigma_s)*gamma_p*a - gamma_m*b - gamma_d*b + params.aging.dot(b)
+    dcdt = sigma_s*gamma_p*a - gamma_s*c + params.aging.dot(c)
+    dydt = (1-sigma_s)*gamma_p*w - gamma_m*y + params.aging.dot(y)
+    dzdt = sigma_s*gamma_p*w - gamma_s*z + params.aging.dot(z)
+    dgdt = gamma_d*b - gamma_i*g + params.aging.dot(g)
+    dhdt =  (1-sigma_i)*gamma_s*(c+z) - psi*h + params.aging.dot(h)
+    dicuadt = sigma_i*gamma_s*(c+z) - pi_a*icua + params.aging.dot(icua)
+    dicubdt = pi_a*icua - pi_b*icub + params.aging.dot(icub)
+    dicucdt =(1-cfr_icu)*pi_b*icub - pi_c*icuc +  params.aging.dot(icuc)
+    drdt = gamma_i*g + gamma_m*(b+y) + psi*h + cfr_icu*pi_b*icub + pi_c*icuc + params.aging.dot(r)
 
-    dddt =  cfr_icu*pi_b*icub #to keep deaths as absorbing state and pop size constant, moving all hosp back to recovered/removed state
-    dincdt = _lambda*s
-    dkdt = gamma_d*b
-    djdt = gamma_s*(c+z)
+    return np.array([
+        dsdt, dvdt, dedt, dqdt, dadt, dwdt, dbdt, dcdt, dydt, dzdt, dgdt, dhdt, dicuadt, dicubdt, dicucdt, drdt
+    ])
+    # dddt =  cfr_icu*pi_b*icub #to keep deaths as absorbing state and pop size constant, moving all hosp back to recovered/removed state
+    # dincdt = _lambda*s
+    # dkdt = gamma_d*b
+    # djdt = gamma_s*(c+z)
 
-derivative(np.ones((16, 32)))
+d = derivative(params.initial_population)
+print(d[0])
+print(d[2])
