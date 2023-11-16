@@ -17,7 +17,7 @@ class Selection:
         if the provided value is none instead return (-number of values replaced by None, 0)
         '''
         c_new = 0
-        c_replace = 0
+        c_replaced = 0
 
         if value is None:
             for key in self.keys:
@@ -29,10 +29,30 @@ class Selection:
                 if self.container[key].value is None:
                     c_new += 1
                 else:
-                    c_replace += 1
+                    c_replaced += 1
                 self.container[key].value = float(value)
 
-        return c_new, c_replace
+        return c_new, c_replaced
+
+    def set_array(self, values: [float]):
+        '''
+        TODO doc just works like set (same reasoning with return value of (new, replaced))
+        '''
+        if len(self.keys) != len(values):
+            raise Exception(f"Expected {len(self.keys)} values but received {len(values)}")
+        
+        c_new = 0
+        c_replaced = 0
+
+        for key, value in zip(self.keys, values):
+            if self.container[key].value is None:
+                c_new += 1
+            else:
+                c_replaced += 1
+            self.container[key].value = float(value)
+        
+        return c_new, c_replaced
+
 
     def multiply(self, factor: float):
         '''

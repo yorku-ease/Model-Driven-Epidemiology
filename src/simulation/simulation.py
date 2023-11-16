@@ -384,6 +384,8 @@ def base_solver(model_derivative_f, initial_conditions, t_span):
     for t in t_span[1:]:
         dt = t - previous_t
         model_derivative = model_derivative_f(state, previous_t)
+        print(model_derivative)
+        exit(0)
 
         # sign something is wrong, steps too large, dangerous
         if (sum(np.abs(model_derivative)) * dt / sum(state)) > 1e-4:
@@ -409,7 +411,7 @@ def linspace(start, end, n_steps: int):
 
 if __name__ == "__main__":
     runLocal = True
-    project_name = 'HIV-TB-Coinfection'
+    project_name = 'Tuite-Covid-Model-Stratified'
     # project_name = 'test-contact'
     folder = f'C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/{project_name}/' if runLocal else ''
     parameters = {k.strip(): Parameter(parse_fn(k).operands, float(v)) for k, v in [s.split('=') for s in readlines(f'{folder}{project_name}.parameters.txt')]}
@@ -420,6 +422,7 @@ if __name__ == "__main__":
     if len(missing) == 0:
         # solver = odeint
         solver = base_solver
+        print('derivative')
         solution = run_sim(folder, project_name, parameters, compartments, flows, solver)
     else:
         print(f'missing {len(missing)} parameters')

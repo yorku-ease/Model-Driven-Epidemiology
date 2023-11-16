@@ -82,15 +82,15 @@ def derivative(state):
     dicubdt = pi_a*icua - pi_b*icub + params.aging.dot(icub)
     dicucdt =(1-cfr_icu)*pi_b*icub - pi_c*icuc +  params.aging.dot(icuc)
     drdt = gamma_i*g + gamma_m*(b+y) + psi*h + cfr_icu*pi_b*icub + pi_c*icuc + params.aging.dot(r)
+    dddt =  cfr_icu*pi_b*icub # to keep deaths as absorbing state and pop size constant, moving all hosp back to recovered/removed state
 
     return np.array([
-        dsdt, dvdt, dedt, dqdt, dadt, dwdt, dbdt, dcdt, dydt, dzdt, dgdt, dhdt, dicuadt, dicubdt, dicucdt, drdt
+        dsdt, dvdt, dedt, dqdt, dadt, dwdt, dbdt, dcdt, dydt, dzdt, dgdt, dhdt, dicuadt, dicubdt, dicucdt, drdt, dddt
     ])
-    # dddt =  cfr_icu*pi_b*icub #to keep deaths as absorbing state and pop size constant, moving all hosp back to recovered/removed state
     # dincdt = _lambda*s
     # dkdt = gamma_d*b
     # djdt = gamma_s*(c+z)
 
 d = derivative(params.initial_population)
-print(d[0])
-print(d[2])
+# print(d[0])
+# print(d[2])
