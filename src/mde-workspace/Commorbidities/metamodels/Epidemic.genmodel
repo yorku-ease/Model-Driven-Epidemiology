@@ -6,29 +6,31 @@
   <foreignModel>Epidemic.ecore</foreignModel>
   <genPackages prefix="Epidemic" disposableProviderFactory="true" ecorePackage="Epidemic.ecore#/">
     <genClasses ecoreClass="Epidemic.ecore#//Epidemic">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Epidemic/productable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Epidemic/compartment"/>
     </genClasses>
     <genClasses ecoreClass="Epidemic.ecore#//Group">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Group/flows"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Group/compartments"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Group/sink"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Group/source"/>
     </genClasses>
-    <genClasses ecoreClass="Epidemic.ecore#//Compartment">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//Compartment/label"/>
+    <genClasses ecoreClass="Epidemic.ecore#//UnitCompartment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//UnitCompartment/label"/>
     </genClasses>
     <genClasses ecoreClass="Epidemic.ecore#//Flow">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Flow/from"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Flow/to"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//Flow/sourceParameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//Flow/sinkParameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//Flow/parameters"/>
     </genClasses>
     <genClasses ecoreClass="Epidemic.ecore#//Contact">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Contact/contact"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//Contact/contactParameters"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Epidemic.ecore#//Contact/contactAndSourceParameters"/>
     </genClasses>
     <genClasses ecoreClass="Epidemic.ecore#//Batch"/>
     <genClasses ecoreClass="Epidemic.ecore#//Rate"/>
-    <genClasses ecoreClass="Epidemic.ecore#//Productable"/>
+    <genClasses ecoreClass="Epidemic.ecore#//AbstractCompartment"/>
+    <genClasses ecoreClass="Epidemic.ecore#//Product">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Epidemic.ecore#//Product/compartments"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
