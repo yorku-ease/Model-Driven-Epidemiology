@@ -6,7 +6,7 @@ import params
 # parameterization of the model following https://www.cmaj.ca/content/cmaj/suppl/2020/04/08/cmaj.200476.DC1/200476-res-1-at.pdf
 
 def setup_compartments(scenario):
-    pop = params.initial_population
+    pop = params.our_initial_population
     select(scenario, [], len(scenario)).set_array(pop.reshape((len(scenario),)))
 
 # def setup_parameters_testing(parameters):
@@ -35,88 +35,66 @@ def setup_compartments(scenario):
 #         select_parameter_string_equals(1, 'exit-icu')
 #     ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
 
-# def setup_parameters_exposure(parameters):
-#     '''
-#     https://www.cmaj.ca/content/cmaj/suppl/2020/04/08/cmaj.200476.DC1/200476-res-1-at.pdf:
+def setup_parameters_exposure(parameters):
+    '''
+    https://www.cmaj.ca/content/cmaj/suppl/2020/04/08/cmaj.200476.DC1/200476-res-1-at.pdf:
 
-#     The rate at which susceptible individuals are infected (λi,j(t)) depends on the number of daily contacts
-#     (cijkl), the transmission probability (β), volatility in the transmission parameter (ω(t)), the reduction in
-#     transmission associated with isolation and quarantine (rri), and the reduction in contacts associated with
-#     social distancing (rrci), where i and k represent the age groups, and j and l the health status groups of the
-#     susceptible and infectious populations, respectively:
+    The rate at which susceptible individuals are infected (λi,j(t)) depends on the number of daily contacts
+    (cijkl), the transmission probability (β), volatility in the transmission parameter (ω(t)), the reduction in
+    transmission associated with isolation and quarantine (rri), and the reduction in contacts associated with
+    social distancing (rrci), where i and k represent the age groups, and j and l the health status groups of the
+    susceptible and infectious populations, respectively:
 
-#     λi,j(t) = βω(t) * sum[k=1,16](
-#         cik * rrci * (Ak,l + Bk,l + Ck,l + rri(Gk,l + Wk,l + Yk,l + Zk,l) / Nk,l
-#     )
+    λi,j(t) = βω(t) * sum[k=1,16](
+        cik * rrci * (Ak,l + Bk,l + Ck,l + rri(Gk,l + Wk,l + Yk,l + Zk,l) / Nk,l
+    )
 
-#     infectious = pre, mild, severe
-#     [Ak,l + Bk,l + Ck,l] = Infectious not isolated
-#     [Gk,l + Wk,l + Yk,l + Zk,l] = Infectious isolated
-#         * note that we assumed that G is the same compartment as Y when reproducing the model
-#         * i believe the distinction is not in their behavior but rather their previous compartment
-#         * so by separating G and Y they can see proportions of infected people that were quarantined
-#         * vs non quarantined
-#     '''
+    infectious = pre, mild, severe
+    [Ak,l + Bk,l + Ck,l] = Infectious not isolated
+    [Gk,l + Wk,l + Yk,l + Zk,l] = Infectious isolated
+        * note that we assumed that G is the same compartment as Y when reproducing the model
+        * i believe the distinction is not in their behavior but rather their previous compartment
+        * so by separating G and Y they can see proportions of infected people that were quarantined
+        * vs non quarantined
+    '''
 
-#     select(parameters, [
-#         select_parameter_string_equals(0, 'contagiousness'),
-#         select_parameter_string_equals(1, 'exposure')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE).set(1)
-#     select(parameters, [
-#         select_parameter_string_equals(0, 'susceptibility'),
-#         select_parameter_string_equals(1, 'exposure')
-#     ], N_AGE_GROUPS * N_COMORBIDITY).set(1)
+    select(parameters, [
+        select_parameter_string_equals(0, 'contagiousness'),
+        select_parameter_string_equals(1, 'exposure')
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE).set(1)
+    select(parameters, [
+        select_parameter_string_equals(0, 'susceptibility'),
+        select_parameter_string_equals(1, 'exposure')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1)
 
-#     ages = list(pop.get_simple('age'))
-#     if ages != list(contact_mixing.headers):
-#         raise Exception("invalid data")
-#     if ages != list(comorbidity.get_simple('age')):
-#         raise Exception("invalid data")
-
-#     age2str = lambda age: f'{age[0]}-{age[1]}' if age[1] != 0 else f'{age[0]}+'
-
-#     p_comorbidity = list(comorbidity.get_simple('p-comorbidity'))
-#     population_counts = list(pop.get_simple('count'))
-
-#     for age_of_exposed, comorbidity_of_exposed in zip(ages, p_comorbidity):
-#         contacts = contact_mixing.get_simple(age_of_exposed)
-#         for age_of_contact, population_of_contact, comorbidity_of_contact, contacts_per_day in zip(ages, population_counts, p_comorbidity, contacts):
-#             base_criteria = [
-#                 select_parameter_string_equals(0, 'contact-mixing'),
-#                 select_parameter_string_equals(1, 'exposure'),
-#                 select_parameter_string_contains(2, age2str(age_of_exposed) + '-'),
-#                 select_parameter_compartment_contains(3, age2str(age_of_contact)),
-#             ]
-#             if age_of_contact == [25, 29]:
-#                 print(f'assume meet {contacts_per_day} over {population_of_contact}')
-#             select(
-#                 parameters,
-#                 base_criteria,
-#                 (N_COMORBIDITY ** 2) * N_ISO * N_SYMPTOMS_OR_PRE
-#             ).set(contacts_per_day / population_of_contact)
-
-#             # weight for absence and presence of comorbidity of exposed and contact
-#             # select(
-#             #     parameters,
-#             #     base_criteria + [select_parameter_string_contains(2, 'Some')],
-#             #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
-#             # ).multiply(comorbidity_of_exposed)
-#             # select(
-#             #     parameters,
-#             #     base_criteria + [select_parameter_string_contains(2, 'None')],
-#             #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
-#             # ).multiply(1 - comorbidity_of_exposed)
-#             # select(
-#             #     parameters,
-#             #     base_criteria + [select_parameter_compartment_contains(3, 'Some')],
-#             #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
-#             # ).multiply(comorbidity_of_contact)
-#             # select(
-#             #     parameters,
-#             #     base_criteria + [select_parameter_compartment_contains(3, 'None')],
-#             #     N_COMORBIDITY * N_ISO * N_SYMPTOMS_OR_PRE
-#             # ).multiply(1 - comorbidity_of_contact)
-
+    thetas = params.cm
+    for i, como in enumerate(['None', 'Some']):
+        for j, age in enumerate(AGE_GROUPS):
+            base_criteria = [
+                select_parameter_string_equals(0, 'contact-mixing'),
+                select_parameter_string_equals(1, 'exposure'),
+                select_parameter_string_contains(2, age + '-'),
+                select_parameter_string_contains(2, como),
+            ]
+            u = params.cm[i*16 + j] * params.beta / params.initial_population[0] / 2
+            for t in ['presym', 'mild', 'severe']:
+                select(
+                    parameters,
+                    base_criteria + [
+                        select_parameter_compartment_contains(3, 'not-isolated'),
+                        select_parameter_compartment_contains(3, t)
+                    ],
+                    N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY
+                ).set_array(u)
+                select(
+                    parameters,
+                    base_criteria + [
+                        select_parameter_compartment_contains(3, 'isolated'),
+                        select_parameter_compartment_contains(3, t)
+                    ],
+                    N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY
+                ).set_array(u / 10)
+        
 # def setup_parameters_hospitalization(parameters):
 #     select(parameters, [
 #         select_parameter_string_equals(1, 'hospitalization')
@@ -181,12 +159,14 @@ def setup_parameters_aging(parameters):
             select_parameter_string_equals(0, 'Aging'),
             select_parameter_compartment_contains(1, 'None'),
             select_parameter_compartment_contains(1, age),
-        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_none)
+        # ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_none)
+        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(0)
         select(parameters, [
             select_parameter_string_equals(0, 'Aging'),
             select_parameter_compartment_contains(1, 'Some'),
             select_parameter_compartment_contains(1, age),
-        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_some)
+        # ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_some)
+        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(0)
 
 AGE_GROUPS = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75+']
 N_COMPARTMENTS_BEFORE_STRATIFICATION = 16
@@ -215,7 +195,7 @@ def main():
     # setup_parameters_symptoms(parameters)
     # setup_parameters_infection(parameters)
     # setup_parameters_icu(parameters)
-    # setup_parameters_exposure(parameters, pop_csv, comorbidity_csv, contact_csv)
+    setup_parameters_exposure(parameters)
     # setup_parameters_hospitalization(parameters)
     # setup_parameters_death(parameters)
     # setup_parameters_recovery(parameters)
@@ -230,3 +210,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    import simulation
+    simulation.main()

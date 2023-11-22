@@ -409,7 +409,7 @@ def linspace(start, end, n_steps: int):
     d = (end - start) / n_steps
     return [start + d * i for i in range(n_steps)] + [end]
 
-if __name__ == "__main__":
+def main():
     runLocal = True
     project_name = 'Tuite-Covid-Model-Stratified'
     # project_name = 'test-contact'
@@ -432,3 +432,6 @@ if __name__ == "__main__":
         with open(fn, 'w') as f:
             for p in missing:
                 f.write(p + ' = 0\n')
+
+if __name__ == "__main__":
+    main()
