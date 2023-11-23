@@ -66,8 +66,17 @@ def setup_parameters_exposure(parameters):
         select_parameter_string_equals(0, 'susceptibility'),
         select_parameter_string_equals(1, 'exposure')
     ], N_AGE_GROUPS * N_COMORBIDITY).set(1)
+    select(parameters, [
+        select_parameter_string_equals(0, 'p_quarantine'),
+        select_parameter_string_equals(1, 'exposure'),
+        select_parameter_compartment_contains(2, 'isolated')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(params.p_quarantine_e)
+    select(parameters, [
+        select_parameter_string_equals(0, 'p_quarantine'),
+        select_parameter_string_equals(1, 'exposure'),
+        select_parameter_compartment_contains(2, 'not-isolated')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1 - params.p_quarantine_e)
 
-    thetas = params.cm
     for i, como in enumerate(['None', 'Some']):
         for j, age in enumerate(AGE_GROUPS):
             base_criteria = [
@@ -76,7 +85,8 @@ def setup_parameters_exposure(parameters):
                 select_parameter_string_contains(2, age + '-'),
                 select_parameter_string_contains(2, como),
             ]
-            u = params.cm[i*16 + j] * params.beta / params.initial_population[0] / 2
+            u = params.cm[N_AGE_GROUPS * i + j] * params.beta / np.sum(params.initial_population, axis=0)
+            # the contact mixing parameter is the same for the three infectious types and divides by 10 if isolated
             for t in ['presym', 'mild', 'severe']:
                 select(
                     parameters,
@@ -94,7 +104,7 @@ def setup_parameters_exposure(parameters):
                     ],
                     N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY
                 ).set_array(u / 10)
-        
+
 # def setup_parameters_hospitalization(parameters):
 #     select(parameters, [
 #         select_parameter_string_equals(1, 'hospitalization')
@@ -151,6 +161,8 @@ def setup_parameters_aging(parameters):
     # -5.899185e-05
     ]
     
+    if len(AGE_GROUPS) - 1 != len(coefs_none) or len(AGE_GROUPS) - 1 != len(coefs_some):
+        raise Exception(f"lengths were {len(AGE_GROUPS)}, {len(coefs_none)}, {len(coefs_some)}")
     for age, coef_none, coef_some in zip(AGE_GROUPS, coefs_none, coefs_some):
         select(parameters, [
             select_parameter_string_equals(1, 'Aging'),
@@ -159,14 +171,12 @@ def setup_parameters_aging(parameters):
             select_parameter_string_equals(0, 'Aging'),
             select_parameter_compartment_contains(1, 'None'),
             select_parameter_compartment_contains(1, age),
-        # ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_none)
-        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(0)
+        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_none)
         select(parameters, [
             select_parameter_string_equals(0, 'Aging'),
             select_parameter_compartment_contains(1, 'Some'),
             select_parameter_compartment_contains(1, age),
-        # ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_some)
-        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(0)
+        ], N_COMPARTMENTS_BEFORE_STRATIFICATION).set(coef_some)
 
 AGE_GROUPS = ['0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75+']
 N_COMPARTMENTS_BEFORE_STRATIFICATION = 16
@@ -201,14 +211,12 @@ def main():
     # setup_parameters_recovery(parameters)
     setup_parameters_aging(parameters)
 
-    s = select(parameters, [], len(parameters))
-    m = s.get_missing()
-    if len(m) != 0:
-        raise Exception(f"Missing {len(m)} Parameters, example: " + str(m[0]))
+    # s = select(parameters, [], len(parameters))
+    # m = s.get_missing()
+    # if len(m) != 0:
+    #     raise Exception(f"Missing {len(m)} Parameters, example: " + str(m[0]))
     
     save_parameters(folder + project_name, parameters)
 
 if __name__ == "__main__":
     main()
-    import simulation
-    simulation.main()

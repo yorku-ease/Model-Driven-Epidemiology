@@ -283,7 +283,7 @@ def evalDelta(flows, state):
     return res
 
 def model_derivative(derivatives, state, t):
-    print(f'\r{t}                                                         ', end='')
+    # print(f'\r{t}                                                         ', end='')
     state = [x if x > 0 else 0 for x in state]
     d = [derivatives[i](state) for i in range(len(state))]
     return d
@@ -384,8 +384,6 @@ def base_solver(model_derivative_f, initial_conditions, t_span):
     for t in t_span[1:]:
         dt = t - previous_t
         model_derivative = model_derivative_f(state, previous_t)
-        print(model_derivative)
-        exit(0)
 
         # sign something is wrong, steps too large, dangerous
         if (sum(np.abs(model_derivative)) * dt / sum(state)) > 1e-4:
