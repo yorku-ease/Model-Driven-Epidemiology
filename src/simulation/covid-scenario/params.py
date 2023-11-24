@@ -157,7 +157,6 @@ initial_population = np.array([
 #     initial_population[6][0] = 7
 #     initial_population[0][0] = 7
 
-
 tuite_order = ['s', 'v', 'e', 'q', 'a', 'w', 'b', 'c', 'y', 'z', 'h', 'icua', 'icub', 'icuc', 'r', 'd']
 our_order  =  ['s', 'e', 'a', 'b', 'c', 'q', 'w', 'y', 'z', 'h', 'icub', 'icua', 'icuc', 'r', 'd', 'v']
 

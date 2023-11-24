@@ -9,31 +9,39 @@ def setup_compartments(scenario):
     pop = params.our_initial_population
     select(scenario, [], len(scenario)).set_array(pop.reshape((len(scenario),)))
 
-# def setup_parameters_testing(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'testing')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_EI).set(0)
+#not used
+def setup_parameters_testing(parameters):
+    select(parameters, [
+        select_parameter_string_equals(1, 'testing')
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_EI).set(0)
 
-# def setup_parameters_symptoms(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'mild-symptoms')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set(0)
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'severe-symptoms')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set(0)
+def setup_parameters_symptoms(parameters):
+    psev = params.p_severe / params.inf_period_presymp
+    pmild = (np.ones(32) - params.p_severe) / params.inf_period_presymp
+    for iso in ['isolated', 'not-isolated']:
+        select(parameters, [
+            select_parameter_string_equals(1, 'symptoms'),
+            select_parameter_string_equals(0, 'severe-symptoms-parameter'),
+            select_parameter_compartment_contains(2, iso),
+        ], N_AGE_GROUPS * N_COMORBIDITY).set_array(psev)
+        select(parameters, [
+            select_parameter_string_equals(1, 'symptoms'),
+            select_parameter_string_equals(0, 'mild-symptoms-parameter'),
+            select_parameter_compartment_contains(2, iso),
+        ], N_AGE_GROUPS * N_COMORBIDITY).set_array(pmild)
 
-# def setup_parameters_infection(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'infection')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set(0)
+def setup_parameters_infection(parameters):
+    select(parameters, [
+        select_parameter_string_equals(1, 'infection')
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set(1 / params.latent_period)
 
-# def setup_parameters_icu(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'enter-icu')
-#     ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'exit-icu')
-#     ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
+def setup_parameters_icu(parameters):
+    select(parameters, [
+        select_parameter_string_equals(1, 'enter-icu')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1 / params.icu_a_dur)
+    select(parameters, [
+        select_parameter_string_equals(1, 'exit-icu')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1 / params.icu_b_dur)
 
 def setup_parameters_exposure(parameters):
     '''
@@ -105,23 +113,45 @@ def setup_parameters_exposure(parameters):
                     N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY
                 ).set_array(u / 10)
 
-# def setup_parameters_hospitalization(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'hospitalization')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO * N_BRANCH_ICU).set(0)
+def setup_parameters_hospitalization(parameters):
+    # There is a bug in epimodel!
+    # There should be twice as many equations here
+    # AKA 1 more multiplication by N_ISO
+    # iso/not-iso is a group in a product
+    # and by pointing from outside the product directly to "severe"
+    # which is inside a group adjacent to the iso group
+    # it seems to not stratify using the product
+    p_icu = params.p_icu
+    p_no_icu = np.ones(32) - p_icu
+    select(parameters, [
+        select_parameter_string_equals(0, 'hospitalization-parameter')
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set(1 / params.inf_period_severe)
+    select(parameters, [
+        select_parameter_string_equals(0, 'p-icu'),
+        select_parameter_compartment_contains(2, 'no-icu')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set_array(p_no_icu)
+    select(parameters, [
+        select_parameter_string_equals(0, 'p-icu'),
+        select_parameter_compartment_contains(2, 'pre-icu')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set_array(p_icu)
 
-# def setup_parameters_death(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'death')
-#     ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
+def setup_parameters_death(parameters):
+    select(parameters, [
+        select_parameter_string_equals(1, 'death')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(0)
 
-# def setup_parameters_recovery(parameters):
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'recovery-h')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_BRANCH_ICU).set(0)
-#     select(parameters, [
-#         select_parameter_string_equals(1, 'recovery')
-#     ], N_AGE_GROUPS * N_COMORBIDITY * N_SYMPTOMS).set(0)
+def setup_parameters_recovery(parameters):
+    select(parameters, [
+        select_parameter_string_equals(1, 'recovery-h'),
+        select_parameter_compartment_contains(2, 'no-icu')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1 / params.hosp_dur)
+    select(parameters, [
+        select_parameter_string_equals(1, 'recovery-h'),
+        select_parameter_compartment_contains(2, 'post-icu')
+    ], N_AGE_GROUPS * N_COMORBIDITY).set(1 / params.icu_c_dur)
+    select(parameters, [
+        select_parameter_string_equals(1, 'recovery')
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_SYMPTOMS).set(1 / params.inf_period_mild)
 
 def setup_parameters_aging(parameters):
     coefs_none = [
@@ -189,26 +219,25 @@ N_EI = 4 # E + presym + mild + severe
 N_BRANCH_ICU = 2 # no icu or icu
 N_HOSPITALIZED = 4 # no icu, pre, icu, post
 N_DEATH = N_S = N_R = 1
-# TOTAL_POP = None
 
 def main():
     project_name = 'Tuite-Covid-Model-Stratified'
     folder = f'C:/Users/Bruno/Desktop/Model-Driven-Epidemiology/compiled_models/{project_name}/'
     parameters = {}
-    compartments, _ = identify_required_parameters(folder, project_name, parameters)
+    compartments, flows = identify_required_parameters(folder, project_name, parameters)
     scenario = create_initial_conditions(folder, project_name, compartments)
 
     setup_compartments(scenario)
     save_scenario(folder + project_name, scenario)
 
-    # setup_parameters_testing(parameters)
-    # setup_parameters_symptoms(parameters)
-    # setup_parameters_infection(parameters)
-    # setup_parameters_icu(parameters)
+    setup_parameters_testing(parameters) # not used
+    setup_parameters_symptoms(parameters)
+    setup_parameters_infection(parameters)
+    setup_parameters_icu(parameters)
     setup_parameters_exposure(parameters)
-    # setup_parameters_hospitalization(parameters)
-    # setup_parameters_death(parameters)
-    # setup_parameters_recovery(parameters)
+    setup_parameters_hospitalization(parameters)
+    setup_parameters_death(parameters)
+    setup_parameters_recovery(parameters)
     setup_parameters_aging(parameters)
 
     # s = select(parameters, [], len(parameters))

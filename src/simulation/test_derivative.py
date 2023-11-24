@@ -34,6 +34,7 @@ def identify_required_parameters(folder, project_name, provided_parameters, equa
     if len(lines_of_each_eq) == 0:
         raise Exception('Filter rejected all equations')
     flows = [Flow(lines_of_eq, provided_parameters, compartments) for lines_of_eq in lines_of_each_eq]
+    flows = [f for f in flows if not 'Dead' in f.source.labels]
 
     return compartments, flows
 

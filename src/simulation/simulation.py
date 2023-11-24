@@ -307,7 +307,7 @@ def identify_required_parameters(folder, project_name, provided_parameters):
     # nl = 5 -> [[0,1,2,3,4],[5,6,7,8,9],...]
     lines_of_each_eq = [equation_file_lines[i * nl:(i + 1) * nl] for i in range(n_eq)]
     flows = [Flow(lines_of_eq, provided_parameters, compartments) for lines_of_eq in lines_of_each_eq]
-
+    flows = [f for f in flows if not 'Dead' in f.source.labels]
     return compartments, flows
 
 def derivative_for(flows):
@@ -334,15 +334,15 @@ def read_initial_conditions(folder, project_name, list_of_list_of_labels):
     return initial_conditions
 
 def run_sim(folder, project_name, provided_parameters, compartments, flows, solver):
-    compartments = [parse_compartment(line[:-1]).labels for line in readlines(f'{folder}{project_name}.compartments.txt')]
-    number_of_lines_per_flow_in_file = 5
-    nl = number_of_lines_per_flow_in_file
+    # compartments = [parse_compartment(line[:-1]).labels for line in readlines(f'{folder}{project_name}.compartments.txt')]
+    # number_of_lines_per_flow_in_file = 5
+    # nl = number_of_lines_per_flow_in_file
 
-    equation_file_lines = list(readlines(f'{folder}{project_name}.equations.txt')) + ['\n']
-    n_eq = int(len(equation_file_lines) / nl)
-    # nl = 5 -> [[0,1,2,3,4],[5,6,7,8,9],...]
-    lines_of_each_eq = [equation_file_lines[i * nl:(i + 1) * nl] for i in range(n_eq)]
-    flows = [Flow(lines_of_eq, provided_parameters, compartments) for lines_of_eq in lines_of_each_eq]
+    # equation_file_lines = list(readlines(f'{folder}{project_name}.equations.txt')) + ['\n']
+    # n_eq = int(len(equation_file_lines) / nl)
+    # # nl = 5 -> [[0,1,2,3,4],[5,6,7,8,9],...]
+    # lines_of_each_eq = [equation_file_lines[i * nl:(i + 1) * nl] for i in range(n_eq)]
+    # flows = [Flow(lines_of_eq, provided_parameters, compartments) for lines_of_eq in lines_of_each_eq]
 
     # each compartment has an in and an out list
     flowsbycompartment = [[[], []] for _ in compartments]

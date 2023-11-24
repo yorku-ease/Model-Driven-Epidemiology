@@ -27,7 +27,7 @@ psi = 1 / params.hosp_dur
 pi_a = 1 / params.icu_a_dur
 pi_b = 1 / params.icu_b_dur
 pi_c = 1 / params.icu_c_dur
-cfr_icu = params.cfr_icu
+p_death_icu = params.cfr_icu
 theta = params.cm * params.rr_contact_interv if interv_on else params.cm * params.rr_contact
 
 def derivative(state, equation_filter, do_index_remap):
@@ -62,22 +62,21 @@ def derivative(state, equation_filter, do_index_remap):
     _gamma_s = gamma_s       if equation_filter('hospitalization') else gamma_s * 0
     _sigma_i = sigma_i       if equation_filter('hospitalization') else sigma_i * 0
     _gamma_m = gamma_m       if equation_filter('recovery')        else gamma_m * 0
-    _aging    = params.aging  if equation_filter('Aging')           else params.aging * 0
+    _aging   = params.aging  if equation_filter('Aging')           else params.aging * 0
     if equation_filter('Aging') and not equation_filter('births'):
         _aging[15][15] = 0#- params.births[0][15]
         _aging[31][31] = 0#- params.births[16][31]
-    _births   = params.births if equation_filter('births')          else params.births * 0
+    _births  = params.births if equation_filter('births')          else params.births * 0
     _delta_s = delta_s       if equation_filter('quarantine')      else delta_s * 0
     _rho     = rho           if equation_filter('quarantine')      else rho * 0
     _pi_a    = pi_a          if equation_filter('enter-icu')       else pi_a * 0
     _pi_b    = pi_b          if equation_filter('exit-icu')        else pi_b * 0
     _pi_c    = pi_c          if equation_filter('recovery-h')      else pi_c * 0
-    _psi    = psi            if equation_filter('recovery-h')      else psi * 0
-
-    _cfr_icu = 0 # undocumented flow (not in diagram) from icu_b to recovered if this isnt 0
+    _psi     = psi           if equation_filter('recovery-h')      else psi * 0
+    _p_d_icu = p_death_icu   if equation_filter('death')           else p_death_icu * 0
 
     dsdt = -_lambda * s - _delta_s * s + _aging.dot(s) + _births.dot(pop) + _rho * v
-    dvdt = _delta_s * s - rho * v + _aging.dot(v)
+    dvdt = _delta_s * s - _rho * v + _aging.dot(v)
     dedt = (1-_delta_e) * _lambda * s - _epsilon * e + _aging.dot(e)
     dqdt = _delta_e * _lambda * s - _epsilon * q + _aging.dot(q)
     dadt = _epsilon * e - _gamma_p * a + _aging.dot(a)
@@ -90,9 +89,9 @@ def derivative(state, equation_filter, do_index_remap):
     dhdt =  (1-_sigma_i) * _gamma_s * (c+z) - _psi * h + _aging.dot(h)
     dicuadt = _sigma_i * _gamma_s * (c+z) - _pi_a * icua + _aging.dot(icua)
     dicubdt = _pi_a * icua - _pi_b * icub + _aging.dot(icub)
-    dicucdt =(1-_cfr_icu) * _pi_b * icub - _pi_c * icuc +  _aging.dot(icuc)
-    drdt = _gamma_m * (b+y) + _psi * h + _cfr_icu * _pi_b * icub + _pi_c * icuc + _aging.dot(r) # + gamma_i * g
-    dddt =  _cfr_icu * _pi_b * icub # to keep deaths as absorbing state and pop size constant, moving all hosp back to recovered/removed state
+    dicucdt = (1 - _p_d_icu) * _pi_b * icub - _pi_c * icuc +  _aging.dot(icuc)
+    drdt = _gamma_m * (b+y) + _psi * h+ _pi_c * icuc + _aging.dot(r) # + gamma_i * g# + (1 - _p_d_icu) * _pi_b * icub 
+    dddt =  _p_d_icu * _pi_b * icub
 
     res = np.array([
         dsdt, dvdt, dedt, dqdt, dadt, dwdt, dbdt, dcdt, dydt, dzdt,# dgdt,
