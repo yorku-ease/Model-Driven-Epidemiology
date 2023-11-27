@@ -108,13 +108,6 @@ def setup_parameters_exposure(parameters):
             ).set_array(p / 10)
 
 def setup_parameters_hospitalization(parameters):
-    # There is a bug in epimodel!
-    # There should be twice as many equations here
-    # AKA 1 more multiplication by N_ISO
-    # iso/not-iso is a group in a product
-    # and by pointing from outside the product directly to "severe"
-    # which is inside a group adjacent to the iso group
-    # it seems to not stratify using the product
     p_icu = params.p_icu
     p_no_icu = np.ones(32) - p_icu
     select(parameters, [
