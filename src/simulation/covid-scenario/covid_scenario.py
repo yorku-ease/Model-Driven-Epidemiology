@@ -180,6 +180,7 @@ def setup_parameters_aging(parameters):
     
     if len(AGE_GROUPS) - 1 != len(coefs_none) or len(AGE_GROUPS) - 1 != len(coefs_some):
         raise Exception(f"lengths were {len(AGE_GROUPS)}, {len(coefs_none)}, {len(coefs_some)}")
+    
     for age, coef_none, coef_some in zip(AGE_GROUPS, coefs_none, coefs_some):
         select(parameters, [
             select_parameter_string_equals(1, 'Aging'),
