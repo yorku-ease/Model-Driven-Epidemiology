@@ -18,17 +18,14 @@ def setup_parameters_testing(parameters):
 def setup_parameters_symptoms(parameters):
     psev = params.p_severe / params.inf_period_presymp
     pmild = (np.ones(32) - params.p_severe) / params.inf_period_presymp
-    for iso in ['isolated', 'not-isolated']:
-        select(parameters, [
-            select_parameter_string_equals(1, 'symptoms'),
-            select_parameter_string_equals(0, 'severe-symptoms-parameter'),
-            select_parameter_compartment_contains(2, iso),
-        ], N_AGE_GROUPS * N_COMORBIDITY).set_array(psev)
-        select(parameters, [
-            select_parameter_string_equals(1, 'symptoms'),
-            select_parameter_string_equals(0, 'mild-symptoms-parameter'),
-            select_parameter_compartment_contains(2, iso),
-        ], N_AGE_GROUPS * N_COMORBIDITY).set_array(pmild)
+    select(parameters, [
+        select_parameter_string_equals(1, 'symptoms'),
+        select_parameter_string_equals(0, 'severe-symptoms-parameter'),
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set_array(np.concatenate((psev, psev)))
+    select(parameters, [
+        select_parameter_string_equals(1, 'symptoms'),
+        select_parameter_string_equals(0, 'mild-symptoms-parameter'),
+    ], N_AGE_GROUPS * N_COMORBIDITY * N_ISO).set_array(np.concatenate((pmild, pmild)))
 
 def setup_parameters_infection(parameters):
     select(parameters, [
@@ -94,24 +91,21 @@ def setup_parameters_exposure(parameters):
                 select_parameter_string_contains(2, como),
             ]
             u = params.cm[N_AGE_GROUPS * i + j] * params.beta / np.sum(params.initial_population, axis=0)
-            # the contact mixing parameter is the same for the three infectious types and divides by 10 if isolated
-            for t in ['presym', 'mild', 'severe']:
-                select(
-                    parameters,
-                    base_criteria + [
-                        select_parameter_compartment_contains(3, 'not-isolated'),
-                        select_parameter_compartment_contains(3, t)
-                    ],
-                    N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY
-                ).set_array(u)
-                select(
-                    parameters,
-                    base_criteria + [
-                        select_parameter_compartment_contains(3, 'isolated'),
-                        select_parameter_compartment_contains(3, t)
-                    ],
-                    N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY
-                ).set_array(u / 10)
+            p = np.concatenate((u, u, u))
+            select(
+                parameters,
+                base_criteria + [
+                    select_parameter_compartment_contains(3, 'not-isolated')
+                ],
+                N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY * N_SYMPTOMS_OR_PRE
+            ).set_array(p)
+            select(
+                parameters,
+                base_criteria + [
+                    select_parameter_compartment_contains(3, 'isolated')
+                ],
+                N_COMPARTMENTS_BEFORE_STRATIFICATION * N_COMORBIDITY * N_SYMPTOMS_OR_PRE
+            ).set_array(p / 10)
 
 def setup_parameters_hospitalization(parameters):
     # There is a bug in epimodel!
