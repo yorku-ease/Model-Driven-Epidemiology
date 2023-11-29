@@ -8,19 +8,19 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import Epidemic.Contact;
-import Epidemic.Epidemic;
-import Epidemic.EpidemicFactory;
-import Epidemic.Group;
-import Epidemic.Product;
-import Epidemic.Rate;
-import Epidemic.UnitCompartment;
+import EpidemicRoot.Contact;
+import EpidemicRoot.Epidemic;
+import EpidemicRoot.EpidemicRootFactory;
+import EpidemicRoot.Group;
+import EpidemicRoot.Product;
+import EpidemicRoot.Rate;
+import EpidemicRoot.UnitCompartment;
 
 public class HIV {
 	
 	public static void main(String[] args) {
 		System.out.println("Start ............. !!!!!!!");
-		EpidemicFactory factory = EpidemicFactory.eINSTANCE;
+		EpidemicRootFactory factory = EpidemicRootFactory.eINSTANCE;
 		
 		Epidemic HIV_epidemic = factory.createEpidemic();
 		
