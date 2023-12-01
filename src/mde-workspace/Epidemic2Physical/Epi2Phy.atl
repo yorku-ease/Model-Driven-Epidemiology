@@ -1,0 +1,59 @@
+-- @nsURI MainEpidemic=geodes.sms.mde
+-- @nsURI PhysicalEpidemic=geodes.sms.phmde
+
+module Epi2Phy;
+create OUT : PhysicalEpidemic from IN : MainEpidemic;
+
+rule Epidemic2PhysicalEpidemic {
+	from
+		mm: MainEpidemic!Epidemic
+	to
+		pc: PhysicalEpidemic!PhysicalEpidemic (
+			-- flows <- mm
+		)
+}
+
+rule UnitCompartment2PhysicalCompartment {
+	from 
+		uc: MainEpidemic!UnitCompartment
+	to
+		pc: PhysicalEpidemic!PhysicalCompartment (
+			label <- uc.label
+		)
+		
+}
+
+rule Group2PhysicalCompartment {
+	from 
+		uc: MainEpidemic!Group
+	to
+		pc: PhysicalEpidemic!PhysicalCompartment (
+			label <- uc.label
+		)
+		
+}
+
+
+helper context MainEpidemic!Group def : getAllCompartments(): OrderedSet(PhysicalEpidemic!PhysicalCompartment) =
+	self.compartments->iterate(child ; elements : OrderedSet(PhysicalEpidemic!PhysicalCompartment)) = 
+		OrderedSet{} |
+		if child.oclIsTypeOf(MainEpidemic!UnitCompartment) then
+			elements.append(child)
+		else
+			elements.union(child.getAllCompartments())
+		endif
+		);
+		
+		
+
+helper context MainEpidemic!Product def : getAllCompartments(): OrderedSet(PhysicalEpidemic!PhysicalCompartment) =
+	self.compartments->iterate(child ; elements : OrderedSet(PhysicalEpidemic!PhysicalCompartment)) = 
+		OrderedSet{} |
+		if child.oclIsTypeOf(MainEpidemic!UnitCompartment) then
+			elements.append(child)
+		else
+			elements.union(child.getAllCompartments())
+		endif
+		);
+		
+
