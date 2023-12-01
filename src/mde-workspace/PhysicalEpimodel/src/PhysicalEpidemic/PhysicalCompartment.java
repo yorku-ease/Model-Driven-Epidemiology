@@ -2,6 +2,7 @@
  */
 package PhysicalEpidemic;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -13,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link PhysicalEpidemic.PhysicalCompartment#getTemplate <em>Template</em>}</li>
+ *   <li>{@link PhysicalEpidemic.PhysicalCompartment#getLabels <em>Labels</em>}</li>
  * </ul>
  *
  * @see PhysicalEpidemic.PhysicalEpidemicPackage#getPhysicalCompartment()
@@ -22,25 +23,15 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface PhysicalCompartment extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Template</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Labels</b></em>' containment reference list.
+	 * The list contents are of type {@link PhysicalEpidemic.Label}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Template</em>' containment reference.
-	 * @see #setTemplate(EquationTemplate)
-	 * @see PhysicalEpidemic.PhysicalEpidemicPackage#getPhysicalCompartment_Template()
-	 * @model containment="true" required="true"
+	 * @return the value of the '<em>Labels</em>' containment reference list.
+	 * @see PhysicalEpidemic.PhysicalEpidemicPackage#getPhysicalCompartment_Labels()
+	 * @model containment="true"
 	 * @generated
 	 */
-	EquationTemplate getTemplate();
-
-	/**
-	 * Sets the value of the '{@link PhysicalEpidemic.PhysicalCompartment#getTemplate <em>Template</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Template</em>' containment reference.
-	 * @see #getTemplate()
-	 * @generated
-	 */
-	void setTemplate(EquationTemplate value);
+	EList<Label> getLabels();
 
 } // PhysicalCompartment

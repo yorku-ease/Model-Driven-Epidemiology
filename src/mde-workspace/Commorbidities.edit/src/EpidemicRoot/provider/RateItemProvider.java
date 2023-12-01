@@ -64,7 +64,7 @@ public class RateItemProvider extends FlowItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Rate)object).getSourceParameters();
+		String label = ((Rate)object).getId();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Rate_type") :
 			getString("_UI_Rate_type") + " " + label;

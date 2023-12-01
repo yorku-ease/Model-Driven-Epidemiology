@@ -237,16 +237,6 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 	 * @generated
 	 */
 	@Override
-	public EAttribute getUnitCompartment_Label() {
-		return (EAttribute)unitCompartmentEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getFlow() {
 		return flowEClass;
 	}
@@ -279,6 +269,16 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 	@Override
 	public EAttribute getFlow_SourceParameters() {
 		return (EAttribute)flowEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getFlow_Id() {
+		return (EAttribute)flowEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -347,6 +347,16 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 	 * @generated
 	 */
 	@Override
+	public EAttribute getAbstractCompartment_Label() {
+		return (EAttribute)abstractCompartmentEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getProduct() {
 		return productEClass;
 	}
@@ -400,12 +410,12 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		createEReference(groupEClass, GROUP__SOURCE);
 
 		unitCompartmentEClass = createEClass(UNIT_COMPARTMENT);
-		createEAttribute(unitCompartmentEClass, UNIT_COMPARTMENT__LABEL);
 
 		flowEClass = createEClass(FLOW);
 		createEReference(flowEClass, FLOW__FROM);
 		createEReference(flowEClass, FLOW__TO);
 		createEAttribute(flowEClass, FLOW__SOURCE_PARAMETERS);
+		createEAttribute(flowEClass, FLOW__ID);
 
 		contactEClass = createEClass(CONTACT);
 		createEReference(contactEClass, CONTACT__CONTACT);
@@ -416,6 +426,7 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		rateEClass = createEClass(RATE);
 
 		abstractCompartmentEClass = createEClass(ABSTRACT_COMPARTMENT);
+		createEAttribute(abstractCompartmentEClass, ABSTRACT_COMPARTMENT__LABEL);
 
 		productEClass = createEClass(PRODUCT);
 		createEReference(productEClass, PRODUCT__COMPARTMENTS);
@@ -467,12 +478,12 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		initEReference(getGroup_Source(), this.getAbstractCompartment(), null, "source", null, 0, -1, Group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(unitCompartmentEClass, UnitCompartment.class, "UnitCompartment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getUnitCompartment_Label(), ecorePackage.getEString(), "label", null, 0, 1, UnitCompartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(flowEClass, Flow.class, "Flow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getFlow_From(), this.getAbstractCompartment(), null, "from", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFlow_To(), this.getAbstractCompartment(), null, "to", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getFlow_SourceParameters(), ecorePackage.getEString(), "sourceParameters", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(contactEClass, Contact.class, "Contact", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getContact_Contact(), this.getAbstractCompartment(), null, "contact", null, 0, 1, Contact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -483,6 +494,7 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		initEClass(rateEClass, Rate.class, "Rate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(abstractCompartmentEClass, AbstractCompartment.class, "AbstractCompartment", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAbstractCompartment_Label(), ecorePackage.getEString(), "label", null, 0, 1, AbstractCompartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(productEClass, Product.class, "Product", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getProduct_Compartments(), this.getAbstractCompartment(), null, "compartments", null, 0, -1, Product.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

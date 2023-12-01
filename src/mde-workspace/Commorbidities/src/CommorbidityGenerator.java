@@ -27,6 +27,7 @@ public class CommorbidityGenerator {
 
 		Epidemic commorbidity_epidemic = factory.createEpidemic();
 		Product main_commorbidity_product = factory.createProduct();
+		main_commorbidity_product.setLabel("commorbidity_p");
 
 		// Create a resource set.
 		ResourceSet resourceSet = new ResourceSetImpl();

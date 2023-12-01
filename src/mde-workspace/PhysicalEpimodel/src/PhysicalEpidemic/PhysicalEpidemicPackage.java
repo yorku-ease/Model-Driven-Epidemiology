@@ -150,13 +150,13 @@ public interface PhysicalEpidemicPackage extends EPackage {
 	int PHYSICAL_COMPARTMENT = 3;
 
 	/**
-	 * The feature id for the '<em><b>Template</b></em>' containment reference.
+	 * The feature id for the '<em><b>Labels</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PHYSICAL_COMPARTMENT__TEMPLATE = 0;
+	int PHYSICAL_COMPARTMENT__LABELS = 0;
 
 	/**
 	 * The number of structural features of the '<em>Physical Compartment</em>' class.
@@ -196,13 +196,13 @@ public interface PhysicalEpidemicPackage extends EPackage {
 	int PHYSICAL_FLOW__TO = 1;
 
 	/**
-	 * The feature id for the '<em><b>Labels</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Equationtemplate</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PHYSICAL_FLOW__LABELS = 2;
+	int PHYSICAL_FLOW__EQUATIONTEMPLATE = 2;
 
 	/**
 	 * The number of structural features of the '<em>Physical Flow</em>' class.
@@ -288,15 +288,15 @@ public interface PhysicalEpidemicPackage extends EPackage {
 	EClass getPhysicalCompartment();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link PhysicalEpidemic.PhysicalCompartment#getTemplate <em>Template</em>}'.
+	 * Returns the meta object for the containment reference list '{@link PhysicalEpidemic.PhysicalCompartment#getLabels <em>Labels</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Template</em>'.
-	 * @see PhysicalEpidemic.PhysicalCompartment#getTemplate()
+	 * @return the meta object for the containment reference list '<em>Labels</em>'.
+	 * @see PhysicalEpidemic.PhysicalCompartment#getLabels()
 	 * @see #getPhysicalCompartment()
 	 * @generated
 	 */
-	EReference getPhysicalCompartment_Template();
+	EReference getPhysicalCompartment_Labels();
 
 	/**
 	 * Returns the meta object for class '{@link PhysicalEpidemic.PhysicalFlow <em>Physical Flow</em>}'.
@@ -331,15 +331,15 @@ public interface PhysicalEpidemicPackage extends EPackage {
 	EReference getPhysicalFlow_To();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link PhysicalEpidemic.PhysicalFlow#getLabels <em>Labels</em>}'.
+	 * Returns the meta object for the containment reference '{@link PhysicalEpidemic.PhysicalFlow#getEquationtemplate <em>Equationtemplate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Labels</em>'.
-	 * @see PhysicalEpidemic.PhysicalFlow#getLabels()
+	 * @return the meta object for the containment reference '<em>Equationtemplate</em>'.
+	 * @see PhysicalEpidemic.PhysicalFlow#getEquationtemplate()
 	 * @see #getPhysicalFlow()
 	 * @generated
 	 */
-	EReference getPhysicalFlow_Labels();
+	EReference getPhysicalFlow_Equationtemplate();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -428,12 +428,12 @@ public interface PhysicalEpidemicPackage extends EPackage {
 		EClass PHYSICAL_COMPARTMENT = eINSTANCE.getPhysicalCompartment();
 
 		/**
-		 * The meta object literal for the '<em><b>Template</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Labels</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PHYSICAL_COMPARTMENT__TEMPLATE = eINSTANCE.getPhysicalCompartment_Template();
+		EReference PHYSICAL_COMPARTMENT__LABELS = eINSTANCE.getPhysicalCompartment_Labels();
 
 		/**
 		 * The meta object literal for the '{@link PhysicalEpidemic.impl.PhysicalFlowImpl <em>Physical Flow</em>}' class.
@@ -462,12 +462,12 @@ public interface PhysicalEpidemicPackage extends EPackage {
 		EReference PHYSICAL_FLOW__TO = eINSTANCE.getPhysicalFlow_To();
 
 		/**
-		 * The meta object literal for the '<em><b>Labels</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Equationtemplate</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PHYSICAL_FLOW__LABELS = eINSTANCE.getPhysicalFlow_Labels();
+		EReference PHYSICAL_FLOW__EQUATIONTEMPLATE = eINSTANCE.getPhysicalFlow_Equationtemplate();
 
 	}
 

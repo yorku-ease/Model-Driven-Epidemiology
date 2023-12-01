@@ -147,7 +147,10 @@ public class GroupItemProvider extends AbstractCompartmentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Group_type");
+		String label = ((Group)object).getLabel();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Group_type") :
+			getString("_UI_Group_type") + " " + label;
 	}
 
 

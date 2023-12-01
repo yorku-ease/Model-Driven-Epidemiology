@@ -77,7 +77,7 @@ public class PhysicalCompartmentItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(PhysicalEpidemicPackage.Literals.PHYSICAL_COMPARTMENT__TEMPLATE);
+			childrenFeatures.add(PhysicalEpidemicPackage.Literals.PHYSICAL_COMPARTMENT__LABELS);
 		}
 		return childrenFeatures;
 	}
@@ -130,7 +130,7 @@ public class PhysicalCompartmentItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(PhysicalCompartment.class)) {
-			case PhysicalEpidemicPackage.PHYSICAL_COMPARTMENT__TEMPLATE:
+			case PhysicalEpidemicPackage.PHYSICAL_COMPARTMENT__LABELS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -150,8 +150,8 @@ public class PhysicalCompartmentItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(PhysicalEpidemicPackage.Literals.PHYSICAL_COMPARTMENT__TEMPLATE,
-				 PhysicalEpidemicFactory.eINSTANCE.createEquationTemplate()));
+				(PhysicalEpidemicPackage.Literals.PHYSICAL_COMPARTMENT__LABELS,
+				 PhysicalEpidemicFactory.eINSTANCE.createLabel()));
 	}
 
 	/**

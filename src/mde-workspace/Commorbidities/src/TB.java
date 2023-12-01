@@ -38,6 +38,7 @@ public class TB {
 		
 		// A group to contain SEIR compartments
 		Group seir_compartments_gp = factory.createGroup();
+		seir_compartments_gp.setLabel("TB_SEIR");
 		seir_compartments_gp.getCompartments().add(S);
 		seir_compartments_gp.getCompartments().add(E);
 		seir_compartments_gp.getCompartments().add(I);
@@ -73,12 +74,14 @@ public class TB {
 		male.setLabel("M");
 		
 		Group gender_group = factory.createGroup();
+		gender_group.setLabel("gender");
 		gender_group.getCompartments().add(female);
 		gender_group.getCompartments().add(male);
 		
 		
 		// Define a main product to mix everything
 		Product main_product = factory.createProduct();
+		main_product.setLabel("TB_p");
 		main_product.getCompartments().add(seir_compartments_gp);
 		main_product.getCompartments().add(gender_group);
 		

@@ -64,7 +64,7 @@ public class BatchItemProvider extends FlowItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Batch)object).getSourceParameters();
+		String label = ((Batch)object).getId();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Batch_type") :
 			getString("_UI_Batch_type") + " " + label;

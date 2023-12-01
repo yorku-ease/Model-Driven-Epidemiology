@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link EpidemicRoot.impl.FlowImpl#getFrom <em>From</em>}</li>
  *   <li>{@link EpidemicRoot.impl.FlowImpl#getTo <em>To</em>}</li>
  *   <li>{@link EpidemicRoot.impl.FlowImpl#getSourceParameters <em>Source Parameters</em>}</li>
+ *   <li>{@link EpidemicRoot.impl.FlowImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated
@@ -69,6 +70,26 @@ public class FlowImpl extends EObjectImpl implements Flow {
 	 * @ordered
 	 */
 	protected String sourceParameters = SOURCE_PARAMETERS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected String id = ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -198,6 +219,29 @@ public class FlowImpl extends EObjectImpl implements Flow {
 	 * @generated
 	 */
 	@Override
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setId(String newId) {
+		String oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EpidemicRootPackage.FLOW__ID, oldId, id));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case EpidemicRootPackage.FLOW__FROM:
@@ -208,6 +252,8 @@ public class FlowImpl extends EObjectImpl implements Flow {
 				return basicGetTo();
 			case EpidemicRootPackage.FLOW__SOURCE_PARAMETERS:
 				return getSourceParameters();
+			case EpidemicRootPackage.FLOW__ID:
+				return getId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -228,6 +274,9 @@ public class FlowImpl extends EObjectImpl implements Flow {
 				return;
 			case EpidemicRootPackage.FLOW__SOURCE_PARAMETERS:
 				setSourceParameters((String)newValue);
+				return;
+			case EpidemicRootPackage.FLOW__ID:
+				setId((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -250,6 +299,9 @@ public class FlowImpl extends EObjectImpl implements Flow {
 			case EpidemicRootPackage.FLOW__SOURCE_PARAMETERS:
 				setSourceParameters(SOURCE_PARAMETERS_EDEFAULT);
 				return;
+			case EpidemicRootPackage.FLOW__ID:
+				setId(ID_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -268,6 +320,8 @@ public class FlowImpl extends EObjectImpl implements Flow {
 				return to != null;
 			case EpidemicRootPackage.FLOW__SOURCE_PARAMETERS:
 				return SOURCE_PARAMETERS_EDEFAULT == null ? sourceParameters != null : !SOURCE_PARAMETERS_EDEFAULT.equals(sourceParameters);
+			case EpidemicRootPackage.FLOW__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -284,6 +338,8 @@ public class FlowImpl extends EObjectImpl implements Flow {
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (sourceParameters: ");
 		result.append(sourceParameters);
+		result.append(", id: ");
+		result.append(id);
 		result.append(')');
 		return result.toString();
 	}

@@ -2,29 +2,29 @@
 package EpidemicRoot;
 
 class Epidemic {
-	val AbstractCompartment[1] compartment;
+  val AbstractCompartment[1] compartment;
 }
 
 class Group extends AbstractCompartment {
-	val Flow[*] flows;
-	val AbstractCompartment[*] compartments;
-	ref AbstractCompartment[*] sink;
-	ref AbstractCompartment[*] source;
+  val Flow[*] flows;
+  val AbstractCompartment[*] compartments;
+  ref AbstractCompartment[*] sink;
+  ref AbstractCompartment[*] source;
 }
 
 class UnitCompartment extends AbstractCompartment {
-	attr String label;
 }
 
 class Flow {
-	ref AbstractCompartment from;
-	ref AbstractCompartment to;
-	attr String sourceParameters;
+  ref AbstractCompartment from;
+  ref AbstractCompartment to;
+  attr String sourceParameters;
+  attr String ~id;
 }
 
 class Contact extends Flow {
-	ref AbstractCompartment contact;
-	attr String contactParameters;
+  ref AbstractCompartment contact;
+  attr String contactParameters;
 }
 
 class Batch extends Flow {
@@ -34,9 +34,10 @@ class Rate extends Flow {
 }
 
 abstract class AbstractCompartment {
+  attr String label;
 }
 
 class Product extends AbstractCompartment {
-	val AbstractCompartment[*] compartments;
+  val AbstractCompartment[*] compartments;
 }
 

@@ -99,7 +99,10 @@ public class ProductItemProvider extends AbstractCompartmentItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_Product_type");
+		String label = ((Product)object).getLabel();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Product_type") :
+			getString("_UI_Product_type") + " " + label;
 	}
 
 

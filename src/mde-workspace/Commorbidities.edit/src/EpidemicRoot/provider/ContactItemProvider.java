@@ -114,7 +114,7 @@ public class ContactItemProvider extends FlowItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Contact)object).getSourceParameters();
+		String label = ((Contact)object).getId();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Contact_type") :
 			getString("_UI_Contact_type") + " " + label;

@@ -2,6 +2,7 @@
  */
 package PhysicalEpidemic.impl;
 
+import PhysicalEpidemic.EquationTemplate;
 import PhysicalEpidemic.Label;
 import PhysicalEpidemic.PhysicalCompartment;
 import PhysicalEpidemic.PhysicalEpidemicPackage;
@@ -33,7 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link PhysicalEpidemic.impl.PhysicalFlowImpl#getFrom <em>From</em>}</li>
  *   <li>{@link PhysicalEpidemic.impl.PhysicalFlowImpl#getTo <em>To</em>}</li>
- *   <li>{@link PhysicalEpidemic.impl.PhysicalFlowImpl#getLabels <em>Labels</em>}</li>
+ *   <li>{@link PhysicalEpidemic.impl.PhysicalFlowImpl#getEquationtemplate <em>Equationtemplate</em>}</li>
  * </ul>
  *
  * @generated
@@ -60,14 +61,14 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 	protected PhysicalCompartment to;
 
 	/**
-	 * The cached value of the '{@link #getLabels() <em>Labels</em>}' containment reference list.
+	 * The cached value of the '{@link #getEquationtemplate() <em>Equationtemplate</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getLabels()
+	 * @see #getEquationtemplate()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Label> labels;
+	protected EquationTemplate equationtemplate;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -174,11 +175,43 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 	 * @generated
 	 */
 	@Override
-	public EList<Label> getLabels() {
-		if (labels == null) {
-			labels = new EObjectContainmentEList<Label>(Label.class, this, PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS);
+	public EquationTemplate getEquationtemplate() {
+		return equationtemplate;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetEquationtemplate(EquationTemplate newEquationtemplate, NotificationChain msgs) {
+		EquationTemplate oldEquationtemplate = equationtemplate;
+		equationtemplate = newEquationtemplate;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE, oldEquationtemplate, newEquationtemplate);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
-		return labels;
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setEquationtemplate(EquationTemplate newEquationtemplate) {
+		if (newEquationtemplate != equationtemplate) {
+			NotificationChain msgs = null;
+			if (equationtemplate != null)
+				msgs = ((InternalEObject)equationtemplate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE, null, msgs);
+			if (newEquationtemplate != null)
+				msgs = ((InternalEObject)newEquationtemplate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE, null, msgs);
+			msgs = basicSetEquationtemplate(newEquationtemplate, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE, newEquationtemplate, newEquationtemplate));
 	}
 
 	/**
@@ -189,8 +222,8 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS:
-				return ((InternalEList<?>)getLabels()).basicRemove(otherEnd, msgs);
+			case PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE:
+				return basicSetEquationtemplate(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -209,8 +242,8 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 			case PhysicalEpidemicPackage.PHYSICAL_FLOW__TO:
 				if (resolve) return getTo();
 				return basicGetTo();
-			case PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS:
-				return getLabels();
+			case PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE:
+				return getEquationtemplate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -230,9 +263,8 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 			case PhysicalEpidemicPackage.PHYSICAL_FLOW__TO:
 				setTo((PhysicalCompartment)newValue);
 				return;
-			case PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS:
-				getLabels().clear();
-				getLabels().addAll((Collection<? extends Label>)newValue);
+			case PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE:
+				setEquationtemplate((EquationTemplate)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -252,8 +284,8 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 			case PhysicalEpidemicPackage.PHYSICAL_FLOW__TO:
 				setTo((PhysicalCompartment)null);
 				return;
-			case PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS:
-				getLabels().clear();
+			case PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE:
+				setEquationtemplate((EquationTemplate)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -271,8 +303,8 @@ public class PhysicalFlowImpl extends EObjectImpl implements PhysicalFlow {
 				return from != null;
 			case PhysicalEpidemicPackage.PHYSICAL_FLOW__TO:
 				return to != null;
-			case PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS:
-				return labels != null && !labels.isEmpty();
+			case PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE:
+				return equationtemplate != null;
 		}
 		return super.eIsSet(featureID);
 	}

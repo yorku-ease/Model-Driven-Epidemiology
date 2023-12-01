@@ -124,7 +124,7 @@ public class PhysicalFlowItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(PhysicalEpidemicPackage.Literals.PHYSICAL_FLOW__LABELS);
+			childrenFeatures.add(PhysicalEpidemicPackage.Literals.PHYSICAL_FLOW__EQUATIONTEMPLATE);
 		}
 		return childrenFeatures;
 	}
@@ -177,7 +177,7 @@ public class PhysicalFlowItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(PhysicalFlow.class)) {
-			case PhysicalEpidemicPackage.PHYSICAL_FLOW__LABELS:
+			case PhysicalEpidemicPackage.PHYSICAL_FLOW__EQUATIONTEMPLATE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -197,8 +197,8 @@ public class PhysicalFlowItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(PhysicalEpidemicPackage.Literals.PHYSICAL_FLOW__LABELS,
-				 PhysicalEpidemicFactory.eINSTANCE.createLabel()));
+				(PhysicalEpidemicPackage.Literals.PHYSICAL_FLOW__EQUATIONTEMPLATE,
+				 PhysicalEpidemicFactory.eINSTANCE.createEquationTemplate()));
 	}
 
 	/**

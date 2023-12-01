@@ -14,13 +14,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" upperBound="-1"
         eType="#//AbstractCompartment"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UnitCompartment" eSuperTypes="#//AbstractCompartment">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnitCompartment" eSuperTypes="#//AbstractCompartment"/>
   <eClassifiers xsi:type="ecore:EClass" name="Flow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//AbstractCompartment"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="#//AbstractCompartment"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceParameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Contact" eSuperTypes="#//Flow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contact" eType="#//AbstractCompartment"/>
@@ -28,7 +27,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Batch" eSuperTypes="#//Flow"/>
   <eClassifiers xsi:type="ecore:EClass" name="Rate" eSuperTypes="#//Flow"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractCompartment" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractCompartment" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Product" eSuperTypes="#//AbstractCompartment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="compartments" upperBound="-1"
         eType="#//AbstractCompartment" containment="true"/>

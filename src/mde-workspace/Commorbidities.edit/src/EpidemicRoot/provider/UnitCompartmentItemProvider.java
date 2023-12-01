@@ -45,31 +45,8 @@ public class UnitCompartmentItemProvider extends AbstractCompartmentItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addLabelPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Label feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addLabelPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_UnitCompartment_label_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_UnitCompartment_label_feature", "_UI_UnitCompartment_type"),
-				 EpidemicRootPackage.Literals.UNIT_COMPARTMENT__LABEL,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -108,12 +85,6 @@ public class UnitCompartmentItemProvider extends AbstractCompartmentItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
-
-		switch (notification.getFeatureID(UnitCompartment.class)) {
-			case EpidemicRootPackage.UNIT_COMPARTMENT__LABEL:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-		}
 		super.notifyChanged(notification);
 	}
 

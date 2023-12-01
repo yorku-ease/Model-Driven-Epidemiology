@@ -94,13 +94,22 @@ public interface EpidemicRootPackage extends EPackage {
 	int ABSTRACT_COMPARTMENT = 7;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ABSTRACT_COMPARTMENT__LABEL = 0;
+
+	/**
 	 * The number of structural features of the '<em>Abstract Compartment</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ABSTRACT_COMPARTMENT_FEATURE_COUNT = 0;
+	int ABSTRACT_COMPARTMENT_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link EpidemicRoot.impl.GroupImpl <em>Group</em>}' class.
@@ -111,6 +120,15 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 */
 	int GROUP = 1;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GROUP__LABEL = ABSTRACT_COMPARTMENT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Flows</b></em>' containment reference list.
@@ -174,7 +192,7 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UNIT_COMPARTMENT__LABEL = ABSTRACT_COMPARTMENT_FEATURE_COUNT + 0;
+	int UNIT_COMPARTMENT__LABEL = ABSTRACT_COMPARTMENT__LABEL;
 
 	/**
 	 * The number of structural features of the '<em>Unit Compartment</em>' class.
@@ -183,7 +201,7 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int UNIT_COMPARTMENT_FEATURE_COUNT = ABSTRACT_COMPARTMENT_FEATURE_COUNT + 1;
+	int UNIT_COMPARTMENT_FEATURE_COUNT = ABSTRACT_COMPARTMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link EpidemicRoot.impl.FlowImpl <em>Flow</em>}' class.
@@ -223,13 +241,22 @@ public interface EpidemicRootPackage extends EPackage {
 	int FLOW__SOURCE_PARAMETERS = 2;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FLOW__ID = 3;
+
+	/**
 	 * The number of structural features of the '<em>Flow</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FLOW_FEATURE_COUNT = 3;
+	int FLOW_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link EpidemicRoot.impl.ContactImpl <em>Contact</em>}' class.
@@ -267,6 +294,15 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @ordered
 	 */
 	int CONTACT__SOURCE_PARAMETERS = FLOW__SOURCE_PARAMETERS;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTACT__ID = FLOW__ID;
 
 	/**
 	 * The feature id for the '<em><b>Contact</b></em>' reference.
@@ -333,6 +369,15 @@ public interface EpidemicRootPackage extends EPackage {
 	int BATCH__SOURCE_PARAMETERS = FLOW__SOURCE_PARAMETERS;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BATCH__ID = FLOW__ID;
+
+	/**
 	 * The number of structural features of the '<em>Batch</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -379,6 +424,15 @@ public interface EpidemicRootPackage extends EPackage {
 	int RATE__SOURCE_PARAMETERS = FLOW__SOURCE_PARAMETERS;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RATE__ID = FLOW__ID;
+
+	/**
 	 * The number of structural features of the '<em>Rate</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -396,6 +450,15 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 */
 	int PRODUCT = 8;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRODUCT__LABEL = ABSTRACT_COMPARTMENT__LABEL;
 
 	/**
 	 * The feature id for the '<em><b>Compartments</b></em>' containment reference list.
@@ -502,17 +565,6 @@ public interface EpidemicRootPackage extends EPackage {
 	EClass getUnitCompartment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link EpidemicRoot.UnitCompartment#getLabel <em>Label</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Label</em>'.
-	 * @see EpidemicRoot.UnitCompartment#getLabel()
-	 * @see #getUnitCompartment()
-	 * @generated
-	 */
-	EAttribute getUnitCompartment_Label();
-
-	/**
 	 * Returns the meta object for class '{@link EpidemicRoot.Flow <em>Flow</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -554,6 +606,17 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getFlow_SourceParameters();
+
+	/**
+	 * Returns the meta object for the attribute '{@link EpidemicRoot.Flow#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see EpidemicRoot.Flow#getId()
+	 * @see #getFlow()
+	 * @generated
+	 */
+	EAttribute getFlow_Id();
 
 	/**
 	 * Returns the meta object for class '{@link EpidemicRoot.Contact <em>Contact</em>}'.
@@ -616,6 +679,17 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getAbstractCompartment();
+
+	/**
+	 * Returns the meta object for the attribute '{@link EpidemicRoot.AbstractCompartment#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see EpidemicRoot.AbstractCompartment#getLabel()
+	 * @see #getAbstractCompartment()
+	 * @generated
+	 */
+	EAttribute getAbstractCompartment_Label();
 
 	/**
 	 * Returns the meta object for class '{@link EpidemicRoot.Product <em>Product</em>}'.
@@ -731,14 +805,6 @@ public interface EpidemicRootPackage extends EPackage {
 		EClass UNIT_COMPARTMENT = eINSTANCE.getUnitCompartment();
 
 		/**
-		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute UNIT_COMPARTMENT__LABEL = eINSTANCE.getUnitCompartment_Label();
-
-		/**
 		 * The meta object literal for the '{@link EpidemicRoot.impl.FlowImpl <em>Flow</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -771,6 +837,14 @@ public interface EpidemicRootPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute FLOW__SOURCE_PARAMETERS = eINSTANCE.getFlow_SourceParameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FLOW__ID = eINSTANCE.getFlow_Id();
 
 		/**
 		 * The meta object literal for the '{@link EpidemicRoot.impl.ContactImpl <em>Contact</em>}' class.
@@ -827,6 +901,14 @@ public interface EpidemicRootPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ABSTRACT_COMPARTMENT = eINSTANCE.getAbstractCompartment();
+
+		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ABSTRACT_COMPARTMENT__LABEL = eINSTANCE.getAbstractCompartment_Label();
 
 		/**
 		 * The meta object literal for the '{@link EpidemicRoot.impl.ProductImpl <em>Product</em>}' class.

@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link PhysicalEpidemic.PhysicalFlow#getFrom <em>From</em>}</li>
  *   <li>{@link PhysicalEpidemic.PhysicalFlow#getTo <em>To</em>}</li>
- *   <li>{@link PhysicalEpidemic.PhysicalFlow#getLabels <em>Labels</em>}</li>
+ *   <li>{@link PhysicalEpidemic.PhysicalFlow#getEquationtemplate <em>Equationtemplate</em>}</li>
  * </ul>
  *
  * @see PhysicalEpidemic.PhysicalEpidemicPackage#getPhysicalFlow()
@@ -70,15 +70,25 @@ public interface PhysicalFlow extends EObject {
 	void setTo(PhysicalCompartment value);
 
 	/**
-	 * Returns the value of the '<em><b>Labels</b></em>' containment reference list.
-	 * The list contents are of type {@link PhysicalEpidemic.Label}.
+	 * Returns the value of the '<em><b>Equationtemplate</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Labels</em>' containment reference list.
-	 * @see PhysicalEpidemic.PhysicalEpidemicPackage#getPhysicalFlow_Labels()
-	 * @model containment="true"
+	 * @return the value of the '<em>Equationtemplate</em>' containment reference.
+	 * @see #setEquationtemplate(EquationTemplate)
+	 * @see PhysicalEpidemic.PhysicalEpidemicPackage#getPhysicalFlow_Equationtemplate()
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
-	EList<Label> getLabels();
+	EquationTemplate getEquationtemplate();
+
+	/**
+	 * Sets the value of the '{@link PhysicalEpidemic.PhysicalFlow#getEquationtemplate <em>Equationtemplate</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Equationtemplate</em>' containment reference.
+	 * @see #getEquationtemplate()
+	 * @generated
+	 */
+	void setEquationtemplate(EquationTemplate value);
 
 } // PhysicalFlow

@@ -63,6 +63,7 @@ public class FlowItemProvider
 			addFromPropertyDescriptor(object);
 			addToPropertyDescriptor(object);
 			addSourceParametersPropertyDescriptor(object);
+			addIdPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -134,6 +135,28 @@ public class FlowItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Id feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addIdPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Flow_id_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Flow_id_feature", "_UI_Flow_type"),
+				 EpidemicRootPackage.Literals.FLOW__ID,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Flow.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -152,7 +175,7 @@ public class FlowItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Flow)object).getSourceParameters();
+		String label = ((Flow)object).getId();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Flow_type") :
 			getString("_UI_Flow_type") + " " + label;
@@ -172,6 +195,7 @@ public class FlowItemProvider
 
 		switch (notification.getFeatureID(Flow.class)) {
 			case EpidemicRootPackage.FLOW__SOURCE_PARAMETERS:
+			case EpidemicRootPackage.FLOW__ID:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

@@ -195,7 +195,7 @@ public class PhysicalEpidemicPackageImpl extends EPackageImpl implements Physica
 	 * @generated
 	 */
 	@Override
-	public EReference getPhysicalCompartment_Template() {
+	public EReference getPhysicalCompartment_Labels() {
 		return (EReference)physicalCompartmentEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -235,7 +235,7 @@ public class PhysicalEpidemicPackageImpl extends EPackageImpl implements Physica
 	 * @generated
 	 */
 	@Override
-	public EReference getPhysicalFlow_Labels() {
+	public EReference getPhysicalFlow_Equationtemplate() {
 		return (EReference)physicalFlowEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -278,12 +278,12 @@ public class PhysicalEpidemicPackageImpl extends EPackageImpl implements Physica
 		equationTemplateEClass = createEClass(EQUATION_TEMPLATE);
 
 		physicalCompartmentEClass = createEClass(PHYSICAL_COMPARTMENT);
-		createEReference(physicalCompartmentEClass, PHYSICAL_COMPARTMENT__TEMPLATE);
+		createEReference(physicalCompartmentEClass, PHYSICAL_COMPARTMENT__LABELS);
 
 		physicalFlowEClass = createEClass(PHYSICAL_FLOW);
 		createEReference(physicalFlowEClass, PHYSICAL_FLOW__FROM);
 		createEReference(physicalFlowEClass, PHYSICAL_FLOW__TO);
-		createEReference(physicalFlowEClass, PHYSICAL_FLOW__LABELS);
+		createEReference(physicalFlowEClass, PHYSICAL_FLOW__EQUATIONTEMPLATE);
 	}
 
 	/**
@@ -326,12 +326,12 @@ public class PhysicalEpidemicPackageImpl extends EPackageImpl implements Physica
 		initEClass(equationTemplateEClass, EquationTemplate.class, "EquationTemplate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(physicalCompartmentEClass, PhysicalCompartment.class, "PhysicalCompartment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPhysicalCompartment_Template(), this.getEquationTemplate(), null, "template", null, 1, 1, PhysicalCompartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPhysicalCompartment_Labels(), this.getLabel(), null, "labels", null, 0, -1, PhysicalCompartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(physicalFlowEClass, PhysicalFlow.class, "PhysicalFlow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPhysicalFlow_From(), this.getPhysicalCompartment(), null, "from", null, 0, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPhysicalFlow_To(), this.getPhysicalCompartment(), null, "to", null, 0, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPhysicalFlow_Labels(), this.getLabel(), null, "labels", null, 0, -1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPhysicalFlow_Equationtemplate(), this.getEquationTemplate(), null, "equationtemplate", null, 1, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
