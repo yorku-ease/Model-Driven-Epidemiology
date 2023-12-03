@@ -9,51 +9,55 @@ rule Epidemic2PhysicalEpidemic {
 		mm: MainEpidemic!Epidemic
 	to
 		pc: PhysicalEpidemic!PhysicalEpidemic (
-			-- flows <- mm
+			compartments <- mm.compartment.getAllCompartments()
 		)
 }
 
 rule UnitCompartment2PhysicalCompartment {
-	from 
+	from
 		uc: MainEpidemic!UnitCompartment
 	to
 		pc: PhysicalEpidemic!PhysicalCompartment (
-			label <- uc.label
+			name <- uc.collectLabels()
 		)
-		
 }
 
-rule Group2PhysicalCompartment {
-	from 
-		uc: MainEpidemic!Group
-	to
-		pc: PhysicalEpidemic!PhysicalCompartment (
-			label <- uc.label
+helper context MainEpidemic!UnitCompartment  def : collectLabels() : String = 
+	self.refImmediateComposite().collectLabels() + ' | ' + self.label;
+
+helper context MainEpidemic!Group def : collectLabels() : String =
+    let
+        parent : MainEpidemic!AbstractCompartment = self.refImmediateComposite() in
+        if parent.oclIsTypeOf(MainEpidemic!Epidemic) then
+            self.label
+        else
+            parent.collectLabels() + ' | ' + self.label
+        endif;
+
+helper context MainEpidemic!Product def : collectLabels() : String =
+    let
+        parent : MainEpidemic!AbstractCompartment = self.refImmediateComposite() in
+        if parent.oclIsTypeOf(MainEpidemic!Epidemic) then
+            self.label
+        else
+            parent.collectLabels() + ' | ' + self.label
+        endif;
+
+helper context MainEpidemic!AbstractCompartment def : getAllCompartments(): OrderedSet(MainEpidemic!UnitCompartment) =
+	if self.oclIsTypeOf(MainEpidemic!UnitCompartment) then
+		OrderedSet{self}
+	else
+		self.compartments->iterate(
+			child ; 
+			elements : OrderedSet(MainEpidemic!UnitCompartment) = OrderedSet{} |
+			if child.oclIsTypeOf(MainEpidemic!UnitCompartment) then
+				elements.append(child)
+			else
+				elements.union(child.getAllCompartments())
+			endif
 		)
-		
-}
+	endif;
 
+-- helper context MainEpidemic!UnitCompartment def: getAllCompartments: OrderedSet(PhysicalEpidemic!PhysicalCompartment) = self;
 
-helper context MainEpidemic!Group def : getAllCompartments(): OrderedSet(PhysicalEpidemic!PhysicalCompartment) =
-	self.compartments->iterate(child ; elements : OrderedSet(PhysicalEpidemic!PhysicalCompartment)) = 
-		OrderedSet{} |
-		if child.oclIsTypeOf(MainEpidemic!UnitCompartment) then
-			elements.append(child)
-		else
-			elements.union(child.getAllCompartments())
-		endif
-		);
-		
-		
-
-helper context MainEpidemic!Product def : getAllCompartments(): OrderedSet(PhysicalEpidemic!PhysicalCompartment) =
-	self.compartments->iterate(child ; elements : OrderedSet(PhysicalEpidemic!PhysicalCompartment)) = 
-		OrderedSet{} |
-		if child.oclIsTypeOf(MainEpidemic!UnitCompartment) then
-			elements.append(child)
-		else
-			elements.union(child.getAllCompartments())
-		endif
-		);
-		
 

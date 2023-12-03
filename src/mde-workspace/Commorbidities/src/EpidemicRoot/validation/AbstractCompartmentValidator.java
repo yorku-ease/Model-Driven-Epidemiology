@@ -14,4 +14,6 @@ package EpidemicRoot.validation;
 public interface AbstractCompartmentValidator {
 	boolean validate();
 
+	boolean validateLabel(String value);
+
 }

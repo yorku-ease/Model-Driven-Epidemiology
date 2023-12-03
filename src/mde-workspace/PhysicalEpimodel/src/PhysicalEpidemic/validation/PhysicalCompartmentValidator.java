@@ -5,6 +5,8 @@
 package PhysicalEpidemic.validation;
 
 import PhysicalEpidemic.EquationTemplate;
+import PhysicalEpidemic.Label;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link PhysicalEpidemic.PhysicalCompartment}.
@@ -14,6 +16,8 @@ import PhysicalEpidemic.EquationTemplate;
  */
 public interface PhysicalCompartmentValidator {
 	boolean validate();
+
+	boolean validateLabels(EList<Label> value);
 
 	boolean validateTemplate(EquationTemplate value);
 }

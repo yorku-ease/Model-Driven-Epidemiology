@@ -18,4 +18,6 @@ public interface FlowValidator {
 	boolean validateFrom(AbstractCompartment value);
 	boolean validateTo(AbstractCompartment value);
 	boolean validateSourceParameters(String value);
+
+	boolean validateId(String value);
 }

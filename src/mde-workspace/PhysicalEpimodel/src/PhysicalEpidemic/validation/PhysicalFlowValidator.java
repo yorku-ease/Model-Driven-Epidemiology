@@ -4,6 +4,7 @@
  */
 package PhysicalEpidemic.validation;
 
+import PhysicalEpidemic.EquationTemplate;
 import PhysicalEpidemic.Label;
 import PhysicalEpidemic.PhysicalCompartment;
 
@@ -20,5 +21,7 @@ public interface PhysicalFlowValidator {
 
 	boolean validateFrom(PhysicalCompartment value);
 	boolean validateTo(PhysicalCompartment value);
+	boolean validateEquationtemplate(EquationTemplate value);
+
 	boolean validateLabels(EList<Label> value);
 }
