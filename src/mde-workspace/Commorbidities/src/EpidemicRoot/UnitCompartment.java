@@ -14,5 +14,4 @@ package EpidemicRoot;
  * @generated
  */
 public interface UnitCompartment extends AbstractCompartment {
-
 } // UnitCompartment

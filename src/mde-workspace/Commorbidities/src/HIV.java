@@ -99,7 +99,7 @@ public class HIV {
 		Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 
 		// Get the URI of the model file.
-		URI fileURI = URI.createFileURI(new File("hiv_sample_model.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("hiv2.xmi").getAbsolutePath());
 
 		// Create a resource for this file.
 		Resource resource = resourceSet.createResource(fileURI);

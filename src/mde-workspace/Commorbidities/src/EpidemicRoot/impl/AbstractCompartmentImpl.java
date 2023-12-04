@@ -6,6 +6,7 @@ import EpidemicRoot.AbstractCompartment;
 import EpidemicRoot.EpidemicRootPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -34,6 +35,7 @@ public abstract class AbstractCompartmentImpl extends EObjectImpl implements Abs
 	 * @ordered
 	 */
 	protected static final String LABEL_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface AbstractCompartment extends EObject {
-
 	/**
 	 * Returns the value of the '<em><b>Label</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -43,4 +42,5 @@ public interface AbstractCompartment extends EObject {
 	 * @generated
 	 */
 	void setLabel(String value);
+
 } // AbstractCompartment
