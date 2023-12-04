@@ -14,13 +14,12 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import EpidemicRoot.AbstractCompartment;
 import EpidemicRoot.EpidemicRootPackage;
 import EpidemicRoot.Group;
-import EpidemicRoot.Product;
 import EpidemicRoot.UnitCompartment;
 import EpidemicRoot.impl.EpidemicImpl;
 import src_ph.PhysicalEpidemicRoot.Label;
 import src_ph.PhysicalEpidemicRoot.PhysicalCompartment;
-import src_ph.PhysicalEpidemicRoot.PhysicalEpidemic;
 import src_ph.PhysicalEpidemicRoot.PhysicalEpidemicRootFactory;
+import src_ph.PhysicalEpidemicRoot.PhysicalEpidemic;
 
 public class EpidemicToPhysicalEpidemic {
 	public static void main(String[] args) {
@@ -56,7 +55,7 @@ public class EpidemicToPhysicalEpidemic {
 
 
 		//Write the physical model to a file
-		fileURI = URI.createFileURI(new File("physical.xmi").getAbsolutePath());
+		fileURI = URI.createFileURI(new File("physical2.xmi").getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(physicalEpidemic);
 		System.out.println("Successfull!!");
