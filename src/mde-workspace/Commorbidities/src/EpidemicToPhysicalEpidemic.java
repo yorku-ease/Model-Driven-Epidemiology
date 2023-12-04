@@ -55,7 +55,7 @@ public class EpidemicToPhysicalEpidemic {
 
 
 		//Write the physical model to a file
-		fileURI = URI.createFileURI(new File("physical2.xmi").getAbsolutePath());
+		fileURI = URI.createFileURI(new File("physical244.xmi").getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(physicalEpidemic);
 		System.out.println("Successfull!!");
