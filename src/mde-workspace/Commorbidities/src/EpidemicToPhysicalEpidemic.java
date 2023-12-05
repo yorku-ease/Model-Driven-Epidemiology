@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import EpidemicRoot.AbstractCompartment;
+import EpidemicRoot.EpidemicRootFactory;
 import EpidemicRoot.EpidemicRootPackage;
 import EpidemicRoot.Group;
 import EpidemicRoot.Product;
@@ -56,7 +57,7 @@ public class EpidemicToPhysicalEpidemic {
 
 
 		//Write the physical model to a file
-		fileURI = URI.createFileURI(new File("physical244.xmi").getAbsolutePath());
+		fileURI = URI.createFileURI(new File("physical246.xmi").getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(physicalEpidemic);
 		System.out.println("Successfull!!");
@@ -69,6 +70,7 @@ public class EpidemicToPhysicalEpidemic {
 
 	public static void createPhysicalCompartments(ArrayList<PhysicalCompartment> physicalCompartmentsList, AbstractCompartment compartment, ArrayList<Label> pre_labels) {
 		PhysicalEpidemicRootFactory physicalFactory = PhysicalEpidemicRootFactory.eINSTANCE;
+		
 		if (pre_labels == null) {
 			pre_labels = new ArrayList<Label>();
 		}
@@ -110,6 +112,7 @@ public class EpidemicToPhysicalEpidemic {
 	}
 
 	static ArrayList<PhysicalCompartment> handleProducts(Product product) {
+		EpidemicRootFactory factory = EpidemicRootFactory.eINSTANCE;
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
 		int numberOfChildren = product.getCompartments().size();
 		
@@ -137,8 +140,38 @@ public class EpidemicToPhysicalEpidemic {
 			
 			
 		}
+		else if (numberOfChildren >2) {
+			Product subProduct1 = factory.createProduct();
+			// first do a product on children indexed 0..n-1
+			subProduct1.getCompartments().addAll(product.getCompartments().subList(0, numberOfChildren-1));
+			//Handle products for  0..n-1 using this same function (recursion)
+			ArrayList<PhysicalCompartment> physicalCompartments1 = handleProducts(subProduct1);
+			// Create physical compartments from the last child
+			ArrayList<PhysicalCompartment> physicalCompartments2= new ArrayList<PhysicalCompartment>();
+			createPhysicalCompartments( physicalCompartments2,product.getCompartments().get(product.getCompartments().size()-1), null);
+			
+			// We have 2 sets of physical compartments, between which we should do a product, so:
+			
+			for (PhysicalCompartment level1: physicalCompartments1) {
+				for(PhysicalCompartment level2: physicalCompartments2) {
+					
+					PhysicalCompartment producted = ph_factory.createPhysicalCompartment();
+					
+					ArrayList<Label> combinedLabels = combineLabels(level1.getLabels(),level2.getLabels());
+
+					System.out.println("The combined labels (if >2 ) ----> "+combinedLabels );
+					producted.getLabels().addAll(combinedLabels);
+					productedCompartments.add(producted);
+				}
+			}
+			
+		}
 		return productedCompartments;
 	}
+	
+//	public static ArrayList<PhysicalCompartment> ProductProductBetweenTwoPhysicalCompartment(){
+//		
+//	}
 
 	public static ArrayList<Label> deepCloneLabels(ArrayList<Label> labels) {
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
