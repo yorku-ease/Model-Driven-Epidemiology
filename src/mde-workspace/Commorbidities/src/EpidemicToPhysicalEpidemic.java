@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import EpidemicRoot.AbstractCompartment;
 import EpidemicRoot.EpidemicRootPackage;
 import EpidemicRoot.Group;
+import EpidemicRoot.Product;
 import EpidemicRoot.UnitCompartment;
 import EpidemicRoot.impl.EpidemicImpl;
 import src_ph.PhysicalEpidemicRoot.Label;
@@ -37,7 +38,7 @@ public class EpidemicToPhysicalEpidemic {
 
 		System.out.println("input abs compartment:"+in_abstract_compartment+ "the type:"+in_abstract_compartment.getClass().getName());
 
-		
+
 
 		//Create physical compartment for the output
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
@@ -45,9 +46,9 @@ public class EpidemicToPhysicalEpidemic {
 
 		// create an array list of physical compartments
 		ArrayList<PhysicalCompartment> physicalCompartments = new ArrayList<PhysicalCompartment>();
-		
 
-		createPhysicalCompartments(ph_factory, physicalCompartments,in_abstract_compartment, null);
+
+		createPhysicalCompartments(physicalCompartments,in_abstract_compartment, null);
 
 
 		physicalEpidemic.getCompartments().addAll(physicalCompartments);
@@ -66,15 +67,16 @@ public class EpidemicToPhysicalEpidemic {
 		catch (IOException e) {}
 	}
 
-	public static void createPhysicalCompartments(PhysicalEpidemicRootFactory physicalFactory, ArrayList<PhysicalCompartment> list, AbstractCompartment compartment, ArrayList<Label> pre_labels) {
+	public static void createPhysicalCompartments(ArrayList<PhysicalCompartment> physicalCompartmentsList, AbstractCompartment compartment, ArrayList<Label> pre_labels) {
+		PhysicalEpidemicRootFactory physicalFactory = PhysicalEpidemicRootFactory.eINSTANCE;
 		if (pre_labels == null) {
 			pre_labels = new ArrayList<Label>();
 		}
-		
+
 		String label = compartment.getLabel();
 		if (compartment instanceof UnitCompartment) {
 			System.out.println("UNIT!!! label: "+label);
-			System.out.println("physical compartments list so far:"+list);
+			System.out.println("physical compartments list so far:"+physicalCompartmentsList);
 			System.out.println("labels so far:"+pre_labels);
 			PhysicalCompartment ph_comp = physicalFactory.createPhysicalCompartment();
 			// Add it's label to the list
@@ -82,36 +84,91 @@ public class EpidemicToPhysicalEpidemic {
 			compartmentLabel.setName(label);
 			pre_labels.add(compartmentLabel);
 			ph_comp.getLabels().addAll(pre_labels);
-			list.add(ph_comp);
+			physicalCompartmentsList.add(ph_comp);
 		}
-		
+
 		else if (compartment instanceof Group) {
-			System.out.println("it is group, the stuff:"+ "physical compartments list so far:"+list);
+			System.out.println("it is group, the stuff:"+ "physical compartments list so far:"+physicalCompartmentsList);
 			System.out.println("labels so far:"+pre_labels);
 			// Add it's label to the list
 			Label compartmentLabel = physicalFactory.createLabel();
 			compartmentLabel.setName(label);
 			pre_labels.add(compartmentLabel);
-			
+
 			EList<AbstractCompartment> children = ((Group) compartment).getCompartments();
 			for(AbstractCompartment childCompartment:children ) {
-				createPhysicalCompartments(physicalFactory,list,childCompartment,deepCloneLabels(pre_labels));
+				createPhysicalCompartments(physicalCompartmentsList,childCompartment,deepCloneLabels(pre_labels));
 			}
 
 		}
 
+		else if (compartment instanceof Product) {
+			ArrayList<PhysicalCompartment> productedCompartments = handleProducts((Product)compartment);
+			physicalCompartmentsList.addAll(productedCompartments);
+		}
+
 	}
-	
+
+	static ArrayList<PhysicalCompartment> handleProducts(Product product) {
+		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
+		int numberOfChildren = product.getCompartments().size();
+		
+		ArrayList<PhysicalCompartment> productedCompartments = new ArrayList<PhysicalCompartment>();
+
+		if (numberOfChildren == 2) {
+			
+			ArrayList<PhysicalCompartment> physicalCompartments1 = new ArrayList<PhysicalCompartment>();
+			ArrayList<PhysicalCompartment> physicalCompartments2 = new ArrayList<PhysicalCompartment>();
+			createPhysicalCompartments( physicalCompartments1,product.getCompartments().get(0), null);
+			createPhysicalCompartments(physicalCompartments2,product.getCompartments().get(1), null);
+
+			for (PhysicalCompartment level1: physicalCompartments1) {
+				for(PhysicalCompartment level2: physicalCompartments2) {
+					
+					PhysicalCompartment producted = ph_factory.createPhysicalCompartment();
+					
+					ArrayList<Label> combinedLabels = combineLabels(level1.getLabels(),level2.getLabels());
+
+					System.out.println("The combined labels ----> "+combinedLabels );
+					producted.getLabels().addAll(combinedLabels);
+					productedCompartments.add(producted);
+				}
+			}
+			
+			
+		}
+		return productedCompartments;
+	}
+
 	public static ArrayList<Label> deepCloneLabels(ArrayList<Label> labels) {
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
-		
+
 		ArrayList<Label> copyLabels = new ArrayList<Label>();
 		for (Label label : labels) {
 			Label newLabel = ph_factory.createLabel();
 			newLabel.setName(label.getName());
-            copyLabels.add(newLabel);
-        }
-		
+			copyLabels.add(newLabel);
+		}
+
 		return copyLabels;
+	}
+	
+	public static ArrayList<Label> combineLabels(EList<Label> labels1, EList<Label> labels2) {
+		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
+		ArrayList<Label> result = new ArrayList<Label>();
+		for (Label label : labels1) {
+			Label newLabel = ph_factory.createLabel();
+			newLabel.setName(label.getName());
+			result.add(newLabel);
+		}
+		
+		for (Label label : labels2) {
+			Label newLabel = ph_factory.createLabel();
+			newLabel.setName(label.getName());
+			result.add(newLabel);
+		}
+		
+		return result;
+		
 	}
 }
