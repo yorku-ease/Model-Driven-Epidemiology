@@ -40,7 +40,6 @@ public class EpidemicToPhysicalEpidemic {
 		EpidemicImpl in_root = (EpidemicImpl)in_resource.getContents().get(0);
 		AbstractCompartment in_abstract_compartment = in_root.getCompartment();
 
-		//		in_abstract_compartment.c
 
 		System.out.println("input abs compartment:"+in_abstract_compartment+ "the type:"+in_abstract_compartment.getClass().getName());
 
@@ -66,15 +65,10 @@ public class EpidemicToPhysicalEpidemic {
 
 		// Add the physical compartments to the physical epidemic root
 		physicalEpidemic.getCompartments().addAll(physicalCompartments);
-
-		// create an array list of physical flows
-//		ArrayList<PhysicalFlow> physicalFlows = new ArrayList<PhysicalFlow>();
 		
-		// Get all the existing flows in the input epidemy model
-//		ArrayList<Flow> epidemyFlows = getFlows(in_abstract_compartment,null);
-		
+		//Add the constructed physical flows
+		physicalEpidemic.getFlows().addAll(physicalFlows);
 
-//		createPhysicalFlows(epidemyFlows, physicalCompartments);
 
 
 		//Write the physical model to a file
@@ -241,37 +235,6 @@ public class EpidemicToPhysicalEpidemic {
 
 	}
 
-	static ArrayList<Flow> getFlows(AbstractCompartment compartment, ArrayList<Flow> pre_flows) {
 
-		if (compartment instanceof Group) {
-			if (pre_flows == null) {
-				pre_flows = new ArrayList<>();
-			}
-
-			pre_flows.addAll(((Group)compartment).getFlows());
-
-			EList<AbstractCompartment> children = ((Group) compartment).getCompartments();
-			for(AbstractCompartment childCompartment:children ) {
-				getFlows(childCompartment, pre_flows);
-			}
-
-		}
-		
-		return pre_flows;
-	}
-
-	static void createPhysicalFlows(ArrayList<Flow> flows, ArrayList<PhysicalCompartment> physicalCompartments) {
-		System.out.println("the existing physical compartments size:"+physicalCompartments.size());
-
-		System.out.println("flowssss :"+flows);
-		for(Flow f: flows ) {
-			System.out.println("From : "+ f.getFrom());
-			System.out.println("To : "+ f.getTo());
-			System.out.println("------------------------------------");
-		}
-		
-		for(PhysicalCompartment pc: physicalCompartments ) {
-			System.out.println(pc.getLabels());
-		}
-	}
+	
 }
