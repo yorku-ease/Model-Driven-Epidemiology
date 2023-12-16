@@ -51,20 +51,23 @@ public class HIV {
 		contact.setFrom(S);
 		contact.setTo(E);
 		contact.setContact(I);
-		contact.setSourceParameters("An example of what I can put here?");
-		contact.setContactParameters("An example of what I can put here?");
+		contact.setSourceParameters("Susceptiblity_HIV");
+		contact.setContactParameters("Infectious_HIV");
+		seir_compartments_gp.getFlows().add(contact);
 		
 		// Define a rate flow between Exposed and Infectious
 		Rate rate_EI = factory.createRate();
 		rate_EI.setFrom(E);
 		rate_EI.setTo(I);
-		rate_EI.setSourceParameters("An example of what I can put here?");
+		rate_EI.setSourceParameters("EI_src_HIV");
+		seir_compartments_gp.getFlows().add(rate_EI);
 		
 		// Define a rate flow between Infectious and Recovered
 		Rate rate_IR = factory.createRate();
 		rate_IR.setFrom(I);
 		rate_IR.setTo(R);
-		rate_IR.setSourceParameters("An example of what I can put here?");
+		rate_IR.setSourceParameters("IR_src_HIV");
+		seir_compartments_gp.getFlows().add(rate_IR);
 		
 		
 		// Define a gender group and its compartments
@@ -99,7 +102,7 @@ public class HIV {
 		Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 
 		// Get the URI of the model file.
-		URI fileURI = URI.createFileURI(new File("hiv2.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("hiv_sample.xmi").getAbsolutePath());
 
 		// Create a resource for this file.
 		Resource resource = resourceSet.createResource(fileURI);

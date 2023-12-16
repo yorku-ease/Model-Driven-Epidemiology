@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="PhysicalEpidemicRoot" nsURI="geodes.sms.phmde" nsPrefix="phep">
+  <eClassifiers xsi:type="ecore:EClass" name="PhysicalEpidemic">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="compartments" upperBound="-1"
+        eType="#//PhysicalCompartment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="flows" upperBound="-1"
+        eType="#//PhysicalFlow" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Label">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EquationTemplate"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PhysicalCompartment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" upperBound="-1"
+        eType="#//Label" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PhysicalFlow">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//PhysicalCompartment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="#//PhysicalCompartment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="equationtemplate" lowerBound="1"
+        eType="#//EquationTemplate" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

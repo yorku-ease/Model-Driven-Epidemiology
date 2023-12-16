@@ -50,20 +50,23 @@ public class TB {
 		contact.setFrom(S);
 		contact.setTo(E);
 		contact.setContact(I);
-		contact.setSourceParameters("An example of what I can put here?");
-		contact.setContactParameters("An example of what I can put here?");
+		contact.setSourceParameters("Susceptiblity_TB");
+		contact.setContactParameters("Infectious_TB");
+		seir_compartments_gp.getFlows().add(contact);
 		
 		// Define a rate flow between Exposed and Infectious
 		Rate rate_EI = factory.createRate();
 		rate_EI.setFrom(E);
 		rate_EI.setTo(I);
-		rate_EI.setSourceParameters("An example of what I can put here?");
+		rate_EI.setSourceParameters("EI_src_TB");
+		seir_compartments_gp.getFlows().add(rate_EI);
 		
 		// Define a rate flow between Infectious and Recovered
 		Rate rate_IR = factory.createRate();
 		rate_IR.setFrom(I);
 		rate_IR.setTo(R);
-		rate_IR.setSourceParameters("An example of what I can put here?");
+		rate_IR.setSourceParameters("IR_src_TB");
+		seir_compartments_gp.getFlows().add(rate_IR);
 		
 		
 		// Define a gender group and its compartments
@@ -98,7 +101,7 @@ public class TB {
 		Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 
 		// Get the URI of the model file.
-		URI fileURI = URI.createFileURI(new File("tb_sample_model.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("tb_sample.xmi").getAbsolutePath());
 
 		// Create a resource for this file.
 		Resource resource = resourceSet.createResource(fileURI);

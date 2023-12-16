@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import EpidemicRoot.AbstractCompartment;
 import EpidemicRoot.EpidemicRootFactory;
 import EpidemicRoot.EpidemicRootPackage;
+import EpidemicRoot.Flow;
 import EpidemicRoot.Group;
 import EpidemicRoot.Product;
 import EpidemicRoot.UnitCompartment;
@@ -21,16 +22,20 @@ import EpidemicRoot.impl.EpidemicImpl;
 import src_ph.PhysicalEpidemicRoot.Label;
 import src_ph.PhysicalEpidemicRoot.PhysicalCompartment;
 import src_ph.PhysicalEpidemicRoot.PhysicalEpidemicRootFactory;
+import src_ph.PhysicalEpidemicRoot.PhysicalFlow;
 import src_ph.PhysicalEpidemicRoot.PhysicalEpidemic;
 
 public class EpidemicToPhysicalEpidemic {
+	
+	public static ArrayList<PhysicalFlow> physicalFlows = new ArrayList<>();
+	
 	public static void main(String[] args) {
 		// Read the input file
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		EpidemicRootPackage epidemicPackage = EpidemicRootPackage.eINSTANCE;
-		URI fileURI = URI.createFileURI(new File("hiv_sample_model.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("hiv2.xmi").getAbsolutePath());
 		Resource in_resource = resourceSet.getResource(fileURI, true);
 		EpidemicImpl in_root = (EpidemicImpl)in_resource.getContents().get(0);
 		AbstractCompartment in_abstract_compartment = in_root.getCompartment();
@@ -48,16 +53,32 @@ public class EpidemicToPhysicalEpidemic {
 		// create an array list of physical compartments
 		ArrayList<PhysicalCompartment> physicalCompartments = new ArrayList<PhysicalCompartment>();
 
-
+		// Create the physical compartments
 		createPhysicalCompartments(physicalCompartments,in_abstract_compartment, null);
+		
+		//print the physical flows
+		for (PhysicalFlow f : physicalFlows) {
+			System.out.println("flow:"+f);
+			System.out.println("from :"+f.getFrom().getLabels());
+			System.out.println("from :"+f.getTo().getLabels());
+		}
+			
 
-
+		// Add the physical compartments to the physical epidemic root
 		physicalEpidemic.getCompartments().addAll(physicalCompartments);
 
+		// create an array list of physical flows
+//		ArrayList<PhysicalFlow> physicalFlows = new ArrayList<PhysicalFlow>();
+		
+		// Get all the existing flows in the input epidemy model
+//		ArrayList<Flow> epidemyFlows = getFlows(in_abstract_compartment,null);
+		
+
+//		createPhysicalFlows(epidemyFlows, physicalCompartments);
 
 
 		//Write the physical model to a file
-		fileURI = URI.createFileURI(new File("physical246.xmi").getAbsolutePath());
+		fileURI = URI.createFileURI(new File("physical2.xmi").getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(physicalEpidemic);
 		System.out.println("Successfull!!");
@@ -70,16 +91,16 @@ public class EpidemicToPhysicalEpidemic {
 
 	public static void createPhysicalCompartments(ArrayList<PhysicalCompartment> physicalCompartmentsList, AbstractCompartment compartment, ArrayList<Label> pre_labels) {
 		PhysicalEpidemicRootFactory physicalFactory = PhysicalEpidemicRootFactory.eINSTANCE;
-		
+
 		if (pre_labels == null) {
 			pre_labels = new ArrayList<Label>();
 		}
 
 		String label = compartment.getLabel();
 		if (compartment instanceof UnitCompartment) {
-			System.out.println("UNIT!!! label: "+label);
-			System.out.println("physical compartments list so far:"+physicalCompartmentsList);
-			System.out.println("labels so far:"+pre_labels);
+			//			System.out.println("UNIT!!! label: "+label);
+			//			System.out.println("physical compartments list so far:"+physicalCompartmentsList);
+			//			System.out.println("labels so far:"+pre_labels);
 			PhysicalCompartment ph_comp = physicalFactory.createPhysicalCompartment();
 			// Add it's label to the list
 			Label compartmentLabel = physicalFactory.createLabel();
@@ -90,8 +111,8 @@ public class EpidemicToPhysicalEpidemic {
 		}
 
 		else if (compartment instanceof Group) {
-			System.out.println("it is group, the stuff:"+ "physical compartments list so far:"+physicalCompartmentsList);
-			System.out.println("labels so far:"+pre_labels);
+			//			System.out.println("it is group, the stuff:"+ "physical compartments list so far:"+physicalCompartmentsList);
+			//			System.out.println("labels so far:"+pre_labels);
 			// Add it's label to the list
 			Label compartmentLabel = physicalFactory.createLabel();
 			compartmentLabel.setName(label);
@@ -101,6 +122,25 @@ public class EpidemicToPhysicalEpidemic {
 			for(AbstractCompartment childCompartment:children ) {
 				createPhysicalCompartments(physicalCompartmentsList,childCompartment,deepCloneLabels(pre_labels));
 			}
+			
+			if (((Group) compartment).getFlows().size() > 0) {
+				
+				for (Flow flow:((Group) compartment).getFlows() ) {
+					ArrayList<PhysicalCompartment> fromCompartments = new ArrayList<>();
+					ArrayList<PhysicalCompartment> toCompartments = new ArrayList<>();
+					createPhysicalCompartments(fromCompartments,flow.getFrom(),deepCloneLabels(pre_labels));
+					createPhysicalCompartments(toCompartments,flow.getTo(),deepCloneLabels(pre_labels));
+					for (PhysicalCompartment from :fromCompartments ) {
+						for (PhysicalCompartment to: toCompartments) {
+							PhysicalFlow physicalFlow = physicalFactory.createPhysicalFlow();
+							physicalFlow.setFrom(from);
+							physicalFlow.setTo(to);
+							physicalFlows.add(physicalFlow);
+						}
+					}
+				}
+			}
+			
 
 		}
 
@@ -115,11 +155,11 @@ public class EpidemicToPhysicalEpidemic {
 		EpidemicRootFactory factory = EpidemicRootFactory.eINSTANCE;
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
 		int numberOfChildren = product.getCompartments().size();
-		
+
 		ArrayList<PhysicalCompartment> productedCompartments = new ArrayList<PhysicalCompartment>();
 
 		if (numberOfChildren == 2) {
-			
+
 			ArrayList<PhysicalCompartment> physicalCompartments1 = new ArrayList<PhysicalCompartment>();
 			ArrayList<PhysicalCompartment> physicalCompartments2 = new ArrayList<PhysicalCompartment>();
 			createPhysicalCompartments( physicalCompartments1,product.getCompartments().get(0), null);
@@ -127,18 +167,18 @@ public class EpidemicToPhysicalEpidemic {
 
 			for (PhysicalCompartment level1: physicalCompartments1) {
 				for(PhysicalCompartment level2: physicalCompartments2) {
-					
+
 					PhysicalCompartment producted = ph_factory.createPhysicalCompartment();
-					
+
 					ArrayList<Label> combinedLabels = combineLabels(level1.getLabels(),level2.getLabels());
 
-					System.out.println("The combined labels ----> "+combinedLabels );
+					//					System.out.println("The combined labels ----> "+combinedLabels );
 					producted.getLabels().addAll(combinedLabels);
 					productedCompartments.add(producted);
 				}
 			}
-			
-			
+
+
 		}
 		else if (numberOfChildren >2) {
 			Product subProduct1 = factory.createProduct();
@@ -149,29 +189,25 @@ public class EpidemicToPhysicalEpidemic {
 			// Create physical compartments from the last child
 			ArrayList<PhysicalCompartment> physicalCompartments2= new ArrayList<PhysicalCompartment>();
 			createPhysicalCompartments( physicalCompartments2,product.getCompartments().get(product.getCompartments().size()-1), null);
-			
+
 			// We have 2 sets of physical compartments, between which we should do a product, so:
-			
+
 			for (PhysicalCompartment level1: physicalCompartments1) {
 				for(PhysicalCompartment level2: physicalCompartments2) {
-					
+
 					PhysicalCompartment producted = ph_factory.createPhysicalCompartment();
-					
+
 					ArrayList<Label> combinedLabels = combineLabels(level1.getLabels(),level2.getLabels());
 
-					System.out.println("The combined labels (if >2 ) ----> "+combinedLabels );
+					//					System.out.println("The combined labels (if >2 ) ----> "+combinedLabels );
 					producted.getLabels().addAll(combinedLabels);
 					productedCompartments.add(producted);
 				}
 			}
-			
+
 		}
 		return productedCompartments;
 	}
-	
-//	public static ArrayList<PhysicalCompartment> ProductProductBetweenTwoPhysicalCompartment(){
-//		
-//	}
 
 	public static ArrayList<Label> deepCloneLabels(ArrayList<Label> labels) {
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
@@ -185,7 +221,7 @@ public class EpidemicToPhysicalEpidemic {
 
 		return copyLabels;
 	}
-	
+
 	public static ArrayList<Label> combineLabels(EList<Label> labels1, EList<Label> labels2) {
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
 		ArrayList<Label> result = new ArrayList<Label>();
@@ -194,14 +230,48 @@ public class EpidemicToPhysicalEpidemic {
 			newLabel.setName(label.getName());
 			result.add(newLabel);
 		}
-		
+
 		for (Label label : labels2) {
 			Label newLabel = ph_factory.createLabel();
 			newLabel.setName(label.getName());
 			result.add(newLabel);
 		}
-		
+
 		return result;
+
+	}
+
+	static ArrayList<Flow> getFlows(AbstractCompartment compartment, ArrayList<Flow> pre_flows) {
+
+		if (compartment instanceof Group) {
+			if (pre_flows == null) {
+				pre_flows = new ArrayList<>();
+			}
+
+			pre_flows.addAll(((Group)compartment).getFlows());
+
+			EList<AbstractCompartment> children = ((Group) compartment).getCompartments();
+			for(AbstractCompartment childCompartment:children ) {
+				getFlows(childCompartment, pre_flows);
+			}
+
+		}
 		
+		return pre_flows;
+	}
+
+	static void createPhysicalFlows(ArrayList<Flow> flows, ArrayList<PhysicalCompartment> physicalCompartments) {
+		System.out.println("the existing physical compartments size:"+physicalCompartments.size());
+
+		System.out.println("flowssss :"+flows);
+		for(Flow f: flows ) {
+			System.out.println("From : "+ f.getFrom());
+			System.out.println("To : "+ f.getTo());
+			System.out.println("------------------------------------");
+		}
+		
+		for(PhysicalCompartment pc: physicalCompartments ) {
+			System.out.println(pc.getLabels());
+		}
 	}
 }

@@ -39,11 +39,11 @@ public class CommorbidityGenerator {
 		EpidemicRootPackage epidemicPackage = EpidemicRootPackage.eINSTANCE;
 
 		// Get the URI of the model file.
-		URI fileURI = URI.createFileURI(new File("hiv_sample_model.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("hiv_sample.xmi").getAbsolutePath());
 		// Demand load the resource for this file.
 		Resource hiv_resource = resourceSet.getResource(fileURI, true);
 		
-		fileURI = URI.createFileURI(new File("tb_sample_model.xmi").getAbsolutePath());
+		fileURI = URI.createFileURI(new File("tb_sample.xmi").getAbsolutePath());
 		Resource tb_resource = resourceSet.getResource(fileURI, true);
 
 		// Print the contents of the resource to System.out.
@@ -70,7 +70,7 @@ public class CommorbidityGenerator {
 
 
 			// Get the URI of the model file.
-			fileURI = URI.createFileURI(new File("commorbidities.xmi").getAbsolutePath());
+			fileURI = URI.createFileURI(new File("commorbidities2.xmi").getAbsolutePath());
 			Resource resource = resourceSet.createResource(fileURI);
 			resource.getContents().add(commorbidity_epidemic);
 			resource.save(Collections.EMPTY_MAP);
