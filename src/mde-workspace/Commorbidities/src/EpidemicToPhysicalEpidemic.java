@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import EpidemicRoot.AbstractCompartment;
+import EpidemicRoot.Contact;
 import EpidemicRoot.EpidemicRootFactory;
 import EpidemicRoot.EpidemicRootPackage;
 import EpidemicRoot.Flow;
@@ -19,6 +20,7 @@ import EpidemicRoot.Group;
 import EpidemicRoot.Product;
 import EpidemicRoot.UnitCompartment;
 import EpidemicRoot.impl.EpidemicImpl;
+import src_ph.PhysicalEpidemicRoot.EquationTemplate;
 import src_ph.PhysicalEpidemicRoot.Label;
 import src_ph.PhysicalEpidemicRoot.PhysicalCompartment;
 import src_ph.PhysicalEpidemicRoot.PhysicalEpidemicRootFactory;
@@ -26,9 +28,9 @@ import src_ph.PhysicalEpidemicRoot.PhysicalFlow;
 import src_ph.PhysicalEpidemicRoot.PhysicalEpidemic;
 
 public class EpidemicToPhysicalEpidemic {
-	
+
 	public static ArrayList<PhysicalFlow> physicalFlows = new ArrayList<>();
-	
+
 	public static void main(String[] args) {
 		// Read the input file
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -54,7 +56,7 @@ public class EpidemicToPhysicalEpidemic {
 
 		// Create the physical compartments
 		createPhysicalCompartments(physicalCompartments,in_abstract_compartment, null);
-		
+
 		//print the physical flows
 		for (PhysicalFlow f : physicalFlows) {
 			System.out.println("______________________");
@@ -62,11 +64,11 @@ public class EpidemicToPhysicalEpidemic {
 			System.out.println("from :"+f.getFrom().getLabels());
 			System.out.println("from :"+f.getTo().getLabels());
 		}
-			
+
 
 		// Add the physical compartments to the physical epidemic root
 		physicalEpidemic.getCompartments().addAll(physicalCompartments);
-		
+
 		//Add the constructed physical flows
 		physicalEpidemic.getFlows().addAll(physicalFlows);
 
@@ -117,26 +119,45 @@ public class EpidemicToPhysicalEpidemic {
 			for(AbstractCompartment childCompartment:children ) {
 				createPhysicalCompartments(physicalCompartmentsList,childCompartment,deepCloneLabels(pre_labels));
 			}
-			
+
 			if (((Group) compartment).getFlows().size() > 0) {
-				
+
 				for (Flow flow:((Group) compartment).getFlows() ) {
 					ArrayList<PhysicalCompartment> fromCompartments = new ArrayList<>();
 					ArrayList<PhysicalCompartment> toCompartments = new ArrayList<>();
 					createPhysicalCompartments(fromCompartments,flow.getFrom(),deepCloneLabels(pre_labels));
 					createPhysicalCompartments(toCompartments,flow.getTo(),deepCloneLabels(pre_labels));
+					
+					
 					for (PhysicalCompartment from :fromCompartments ) {
 						for (PhysicalCompartment to: toCompartments) {
+							// Create the physical flow
 							PhysicalFlow physicalFlow = physicalFactory.createPhysicalFlow();
+							// Add the id
 							physicalFlow.setId(flow.getId());
+							// Add the from and to
 							physicalFlow.setFrom(from);
 							physicalFlow.setTo(to);
+							
+							// Create the equation template
+							EquationTemplate et = physicalFactory.createEquationTemplate();
+							et.setSourceParameters(flow.getSourceParameters());
+							if(flow instanceof Contact ) {
+								et.setContactCompartment(((Contact) flow).getContact().getLabel());
+								et.setContactParameters(((Contact) flow).getContactParameters());
+							}
+							physicalFlow.setEquationtemplate(et);
+							
+
+							// Add the constructed physical flow to the list of physical flows
 							physicalFlows.add(physicalFlow);
 						}
 					}
+
+					
 				}
 			}
-			
+
 
 		}
 
@@ -238,5 +259,5 @@ public class EpidemicToPhysicalEpidemic {
 	}
 
 
-	
+
 }
