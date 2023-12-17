@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link PhysicalEpidemicRoot.PhysicalFlow#getFrom <em>From</em>}</li>
  *   <li>{@link PhysicalEpidemicRoot.PhysicalFlow#getTo <em>To</em>}</li>
  *   <li>{@link PhysicalEpidemicRoot.PhysicalFlow#getEquationtemplate <em>Equationtemplate</em>}</li>
+ *   <li>{@link PhysicalEpidemicRoot.PhysicalFlow#getId <em>Id</em>}</li>
  * </ul>
  *
  * @see PhysicalEpidemicRoot.PhysicalEpidemicRootPackage#getPhysicalFlow()
@@ -88,5 +89,27 @@ public interface PhysicalFlow extends EObject {
 	 * @generated
 	 */
 	void setEquationtemplate(EquationTemplate value);
+
+	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see PhysicalEpidemicRoot.PhysicalEpidemicRootPackage#getPhysicalFlow_Id()
+	 * @model
+	 * @generated
+	 */
+	String getId();
+
+	/**
+	 * Sets the value of the '{@link PhysicalEpidemicRoot.PhysicalFlow#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	void setId(String value);
 
 } // PhysicalFlow

@@ -3,6 +3,8 @@
 package PhysicalEpidemicRoot.provider;
 
 
+import PhysicalEpidemicRoot.EquationTemplate;
+import PhysicalEpidemicRoot.PhysicalEpidemicRootPackage;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,13 +13,16 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a {@link PhysicalEpidemicRoot.EquationTemplate} object.
@@ -54,8 +59,77 @@ public class EquationTemplateItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addSourceParametersPropertyDescriptor(object);
+			addContactParametersPropertyDescriptor(object);
+			addContactCompartmentPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Source Parameters feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSourceParametersPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_EquationTemplate_sourceParameters_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_EquationTemplate_sourceParameters_feature", "_UI_EquationTemplate_type"),
+				 PhysicalEpidemicRootPackage.Literals.EQUATION_TEMPLATE__SOURCE_PARAMETERS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Contact Parameters feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addContactParametersPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_EquationTemplate_contactParameters_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_EquationTemplate_contactParameters_feature", "_UI_EquationTemplate_type"),
+				 PhysicalEpidemicRootPackage.Literals.EQUATION_TEMPLATE__CONTACT_PARAMETERS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Contact Compartment feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addContactCompartmentPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_EquationTemplate_contactCompartment_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_EquationTemplate_contactCompartment_feature", "_UI_EquationTemplate_type"),
+				 PhysicalEpidemicRootPackage.Literals.EQUATION_TEMPLATE__CONTACT_COMPARTMENT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -77,7 +151,10 @@ public class EquationTemplateItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_EquationTemplate_type");
+		String label = ((EquationTemplate)object).getSourceParameters();
+		return label == null || label.length() == 0 ?
+			getString("_UI_EquationTemplate_type") :
+			getString("_UI_EquationTemplate_type") + " " + label;
 	}
 
 
@@ -91,6 +168,14 @@ public class EquationTemplateItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+
+		switch (notification.getFeatureID(EquationTemplate.class)) {
+			case PhysicalEpidemicRootPackage.EQUATION_TEMPLATE__SOURCE_PARAMETERS:
+			case PhysicalEpidemicRootPackage.EQUATION_TEMPLATE__CONTACT_PARAMETERS:
+			case PhysicalEpidemicRootPackage.EQUATION_TEMPLATE__CONTACT_COMPARTMENT:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
 		super.notifyChanged(notification);
 	}
 

@@ -6,40 +6,31 @@
     xmlns:ep="geodes.sms.mde">
   <compartment
       xsi:type="ep:Group"
-      label="HIV_gp">
-    <flows from="//@compartment/@compartments.0"
+      label="Total">
+    <flows xsi:type="ep:Rate"
+        from="//@compartment/@compartments.0"
         to="//@compartment/@compartments.1"
-        sourceParameters="enchanting"
-        id="22"/>
-    <compartments
-        xsi:type="ep:UnitCompartment"
-        label="S"/>
-    <compartments
-        xsi:type="ep:UnitCompartment"
-        label="E"/>
-    <compartments
-        xsi:type="ep:UnitCompartment"
-        label="I"/>
-    <compartments
-        xsi:type="ep:UnitCompartment"
-        label="R"/>
+        sourceParameters="tokhmi"
+        id="LR_HR"/>
     <compartments
         xsi:type="ep:Group"
-        label="vaccinated">
-      <flows
-          from="//@compartment/@compartments.4/@compartments.1"
-          to="//@compartment/@compartments.4/@compartments.2"
-          sourceParameters="brand"
-          id="2To3Dose"/>
+        label="LR">
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="1"/>
+          label="S1"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="2"/>
+          label="R1"/>
+    </compartments>
+    <compartments
+        xsi:type="ep:Group"
+        label="HR">
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="3"/>
+          label="E"/>
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="S"/>
     </compartments>
   </compartment>
 </ep:Epidemic>

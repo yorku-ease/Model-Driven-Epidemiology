@@ -57,6 +57,7 @@ public class EpidemicToPhysicalEpidemic {
 		
 		//print the physical flows
 		for (PhysicalFlow f : physicalFlows) {
+			System.out.println("______________________");
 			System.out.println("flow:"+f);
 			System.out.println("from :"+f.getFrom().getLabels());
 			System.out.println("from :"+f.getTo().getLabels());
@@ -127,6 +128,7 @@ public class EpidemicToPhysicalEpidemic {
 					for (PhysicalCompartment from :fromCompartments ) {
 						for (PhysicalCompartment to: toCompartments) {
 							PhysicalFlow physicalFlow = physicalFactory.createPhysicalFlow();
+							physicalFlow.setId(flow.getId());
 							physicalFlow.setFrom(from);
 							physicalFlow.setTo(to);
 							physicalFlows.add(physicalFlow);

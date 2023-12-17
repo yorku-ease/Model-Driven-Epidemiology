@@ -131,13 +131,40 @@ public interface PhysicalEpidemicRootPackage extends EPackage {
 	int EQUATION_TEMPLATE = 2;
 
 	/**
+	 * The feature id for the '<em><b>Source Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUATION_TEMPLATE__SOURCE_PARAMETERS = 0;
+
+	/**
+	 * The feature id for the '<em><b>Contact Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUATION_TEMPLATE__CONTACT_PARAMETERS = 1;
+
+	/**
+	 * The feature id for the '<em><b>Contact Compartment</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUATION_TEMPLATE__CONTACT_COMPARTMENT = 2;
+
+	/**
 	 * The number of structural features of the '<em>Equation Template</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EQUATION_TEMPLATE_FEATURE_COUNT = 0;
+	int EQUATION_TEMPLATE_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link PhysicalEpidemicRoot.impl.PhysicalCompartmentImpl <em>Physical Compartment</em>}' class.
@@ -205,13 +232,22 @@ public interface PhysicalEpidemicRootPackage extends EPackage {
 	int PHYSICAL_FLOW__EQUATIONTEMPLATE = 2;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PHYSICAL_FLOW__ID = 3;
+
+	/**
 	 * The number of structural features of the '<em>Physical Flow</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PHYSICAL_FLOW_FEATURE_COUNT = 3;
+	int PHYSICAL_FLOW_FEATURE_COUNT = 4;
 
 
 	/**
@@ -278,6 +314,39 @@ public interface PhysicalEpidemicRootPackage extends EPackage {
 	EClass getEquationTemplate();
 
 	/**
+	 * Returns the meta object for the attribute '{@link PhysicalEpidemicRoot.EquationTemplate#getSourceParameters <em>Source Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Source Parameters</em>'.
+	 * @see PhysicalEpidemicRoot.EquationTemplate#getSourceParameters()
+	 * @see #getEquationTemplate()
+	 * @generated
+	 */
+	EAttribute getEquationTemplate_SourceParameters();
+
+	/**
+	 * Returns the meta object for the attribute '{@link PhysicalEpidemicRoot.EquationTemplate#getContactParameters <em>Contact Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contact Parameters</em>'.
+	 * @see PhysicalEpidemicRoot.EquationTemplate#getContactParameters()
+	 * @see #getEquationTemplate()
+	 * @generated
+	 */
+	EAttribute getEquationTemplate_ContactParameters();
+
+	/**
+	 * Returns the meta object for the attribute '{@link PhysicalEpidemicRoot.EquationTemplate#getContactCompartment <em>Contact Compartment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Contact Compartment</em>'.
+	 * @see PhysicalEpidemicRoot.EquationTemplate#getContactCompartment()
+	 * @see #getEquationTemplate()
+	 * @generated
+	 */
+	EAttribute getEquationTemplate_ContactCompartment();
+
+	/**
 	 * Returns the meta object for class '{@link PhysicalEpidemicRoot.PhysicalCompartment <em>Physical Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -340,6 +409,17 @@ public interface PhysicalEpidemicRootPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getPhysicalFlow_Equationtemplate();
+
+	/**
+	 * Returns the meta object for the attribute '{@link PhysicalEpidemicRoot.PhysicalFlow#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see PhysicalEpidemicRoot.PhysicalFlow#getId()
+	 * @see #getPhysicalFlow()
+	 * @generated
+	 */
+	EAttribute getPhysicalFlow_Id();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -418,6 +498,30 @@ public interface PhysicalEpidemicRootPackage extends EPackage {
 		EClass EQUATION_TEMPLATE = eINSTANCE.getEquationTemplate();
 
 		/**
+		 * The meta object literal for the '<em><b>Source Parameters</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EQUATION_TEMPLATE__SOURCE_PARAMETERS = eINSTANCE.getEquationTemplate_SourceParameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Contact Parameters</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EQUATION_TEMPLATE__CONTACT_PARAMETERS = eINSTANCE.getEquationTemplate_ContactParameters();
+
+		/**
+		 * The meta object literal for the '<em><b>Contact Compartment</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EQUATION_TEMPLATE__CONTACT_COMPARTMENT = eINSTANCE.getEquationTemplate_ContactCompartment();
+
+		/**
 		 * The meta object literal for the '{@link PhysicalEpidemicRoot.impl.PhysicalCompartmentImpl <em>Physical Compartment</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -468,6 +572,14 @@ public interface PhysicalEpidemicRootPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PHYSICAL_FLOW__EQUATIONTEMPLATE = eINSTANCE.getPhysicalFlow_Equationtemplate();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PHYSICAL_FLOW__ID = eINSTANCE.getPhysicalFlow_Id();
 
 	}
 

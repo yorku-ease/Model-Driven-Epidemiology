@@ -185,6 +185,36 @@ public class PhysicalEpidemicRootPackageImpl extends EPackageImpl implements Phy
 	 * @generated
 	 */
 	@Override
+	public EAttribute getEquationTemplate_SourceParameters() {
+		return (EAttribute)equationTemplateEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getEquationTemplate_ContactParameters() {
+		return (EAttribute)equationTemplateEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getEquationTemplate_ContactCompartment() {
+		return (EAttribute)equationTemplateEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getPhysicalCompartment() {
 		return physicalCompartmentEClass;
 	}
@@ -245,6 +275,16 @@ public class PhysicalEpidemicRootPackageImpl extends EPackageImpl implements Phy
 	 * @generated
 	 */
 	@Override
+	public EAttribute getPhysicalFlow_Id() {
+		return (EAttribute)physicalFlowEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public PhysicalEpidemicRootFactory getPhysicalEpidemicRootFactory() {
 		return (PhysicalEpidemicRootFactory)getEFactoryInstance();
 	}
@@ -276,6 +316,9 @@ public class PhysicalEpidemicRootPackageImpl extends EPackageImpl implements Phy
 		createEAttribute(labelEClass, LABEL__NAME);
 
 		equationTemplateEClass = createEClass(EQUATION_TEMPLATE);
+		createEAttribute(equationTemplateEClass, EQUATION_TEMPLATE__SOURCE_PARAMETERS);
+		createEAttribute(equationTemplateEClass, EQUATION_TEMPLATE__CONTACT_PARAMETERS);
+		createEAttribute(equationTemplateEClass, EQUATION_TEMPLATE__CONTACT_COMPARTMENT);
 
 		physicalCompartmentEClass = createEClass(PHYSICAL_COMPARTMENT);
 		createEReference(physicalCompartmentEClass, PHYSICAL_COMPARTMENT__LABELS);
@@ -284,6 +327,7 @@ public class PhysicalEpidemicRootPackageImpl extends EPackageImpl implements Phy
 		createEReference(physicalFlowEClass, PHYSICAL_FLOW__FROM);
 		createEReference(physicalFlowEClass, PHYSICAL_FLOW__TO);
 		createEReference(physicalFlowEClass, PHYSICAL_FLOW__EQUATIONTEMPLATE);
+		createEAttribute(physicalFlowEClass, PHYSICAL_FLOW__ID);
 	}
 
 	/**
@@ -324,6 +368,9 @@ public class PhysicalEpidemicRootPackageImpl extends EPackageImpl implements Phy
 		initEAttribute(getLabel_Name(), ecorePackage.getEString(), "name", null, 0, 1, Label.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(equationTemplateEClass, EquationTemplate.class, "EquationTemplate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEquationTemplate_SourceParameters(), ecorePackage.getEString(), "sourceParameters", null, 0, 1, EquationTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEquationTemplate_ContactParameters(), ecorePackage.getEString(), "contactParameters", null, 0, 1, EquationTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEquationTemplate_ContactCompartment(), ecorePackage.getEString(), "contactCompartment", null, 0, 1, EquationTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(physicalCompartmentEClass, PhysicalCompartment.class, "PhysicalCompartment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPhysicalCompartment_Labels(), this.getLabel(), null, "labels", null, 0, -1, PhysicalCompartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -332,6 +379,7 @@ public class PhysicalEpidemicRootPackageImpl extends EPackageImpl implements Phy
 		initEReference(getPhysicalFlow_From(), this.getPhysicalCompartment(), null, "from", null, 0, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPhysicalFlow_To(), this.getPhysicalCompartment(), null, "to", null, 0, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getPhysicalFlow_Equationtemplate(), this.getEquationTemplate(), null, "equationtemplate", null, 1, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPhysicalFlow_Id(), ecorePackage.getEString(), "id", null, 0, 1, PhysicalFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
