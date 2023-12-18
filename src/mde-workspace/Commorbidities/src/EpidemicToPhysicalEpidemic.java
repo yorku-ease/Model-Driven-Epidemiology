@@ -31,6 +31,30 @@ public class EpidemicToPhysicalEpidemic {
 
 	public static ArrayList<PhysicalFlow> physicalFlows = new ArrayList<>();
 
+	static PhysicalCompartment findEquivalantPhysicalCompartment (ArrayList<PhysicalCompartment> physicalCompartments, EList<Label> labels) {
+		System.out.println("The labels :"+labels);
+		for (PhysicalCompartment phc: physicalCompartments) {
+
+			if (labels.size() == phc.getLabels().size()) {
+				System.out.println("Current ph c labels :"+phc.getLabels());
+				boolean isSame = true;
+				for(int i=0; i< labels.size(); i++) {
+					if (labels.get(i).getName() != phc.getLabels().get(i).getName()) {
+						isSame = false;
+						break;
+					}
+				}
+				if (isSame)
+				{
+					System.out.println("The return value:"+phc.getLabels());
+					return phc;
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public static void main(String[] args) {
 		// Read the input file
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -60,10 +84,23 @@ public class EpidemicToPhysicalEpidemic {
 		//print the physical flows
 		for (PhysicalFlow f : physicalFlows) {
 			System.out.println("______________________");
-			System.out.println("flow:"+f);
-			System.out.println("from :"+f.getFrom().getLabels());
-			System.out.println("from :"+f.getTo().getLabels());
+			//			System.out.println("flow:"+f);
+			//			System.out.println("from :"+f.getFrom().getLabels());
+			//			System.out.println("from :"+f.getTo().getLabels());
+
+			PhysicalCompartment fromReference = findEquivalantPhysicalCompartment(physicalCompartments, f.getFrom().getLabels());
+			PhysicalCompartment toReference = findEquivalantPhysicalCompartment(physicalCompartments, f.getTo().getLabels());
+			
+			if(fromReference != null) {
+				f.setFrom(fromReference);
+			}
+			if(toReference != null) {
+				f.setTo(toReference);
+			}
+
 		}
+
+		//
 
 
 		// Add the physical compartments to the physical epidemic root
@@ -127,8 +164,8 @@ public class EpidemicToPhysicalEpidemic {
 					ArrayList<PhysicalCompartment> toCompartments = new ArrayList<>();
 					createPhysicalCompartments(fromCompartments,flow.getFrom(),deepCloneLabels(pre_labels));
 					createPhysicalCompartments(toCompartments,flow.getTo(),deepCloneLabels(pre_labels));
-					
-					
+
+
 					for (PhysicalCompartment from :fromCompartments ) {
 						for (PhysicalCompartment to: toCompartments) {
 							// Create the physical flow
@@ -138,7 +175,7 @@ public class EpidemicToPhysicalEpidemic {
 							// Add the from and to
 							physicalFlow.setFrom(from);
 							physicalFlow.setTo(to);
-							
+
 							// Create the equation template
 							EquationTemplate et = physicalFactory.createEquationTemplate();
 							et.setSourceParameters(flow.getSourceParameters());
@@ -147,14 +184,14 @@ public class EpidemicToPhysicalEpidemic {
 								et.setContactParameters(((Contact) flow).getContactParameters());
 							}
 							physicalFlow.setEquationtemplate(et);
-							
+
 
 							// Add the constructed physical flow to the list of physical flows
 							physicalFlows.add(physicalFlow);
 						}
 					}
 
-					
+
 				}
 			}
 
