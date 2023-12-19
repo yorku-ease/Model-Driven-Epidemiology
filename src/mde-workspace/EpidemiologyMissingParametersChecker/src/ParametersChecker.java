@@ -10,15 +10,18 @@ public class ParametersChecker {
 	public static void main(String[] args) {
 
 		String equationsFile = "src/equations.txt";
+		String compartmentsFile = "src/compartments.txt";
 		String parametersFile = "src/parameters.txt";
 
 		try {
 			ArrayList<String> parameterStrings = extractParameterStrings(equationsFile);
+			parameterStrings.addAll(extractContactParametersFromEquations(equationsFile, compartmentsFile));
 			ArrayList<String> missingParameters = findMissingParameters(parameterStrings, parametersFile);
 
 			// Print missing parameters
 			if (!missingParameters.isEmpty()) {
 				System.out.println(missingParameters.size()+ " Missing Parameters:");
+				// write it out to a report file.
 				for (String missingParameter : missingParameters) {
 					System.out.println(missingParameter);
 				}
@@ -51,6 +54,28 @@ public class ParametersChecker {
 
 		return parameterStrings;
 	}
+	
+	private static ArrayList<String> extractContactParametersFromEquations(String equationsFileName, String compartmentsFileName)
+	        throws IOException {
+	    ArrayList<String> newParameters = new ArrayList<>();
+	    ArrayList<String> compartments = loadCompartments(compartmentsFileName);
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(equationsFileName))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            String regex = "sumproduct[^()]*\\(parameter\\s+([^\\s]+)\\s+([^\\s]+)\\s+\\[([^\\]]+)\\]\\)";
+	            Pattern pattern = Pattern.compile(regex);
+	            Matcher matcher = pattern.matcher(line);
+
+	            while (matcher.find()) {
+	                //TO-DO
+	            }
+	        }
+	    }
+
+	    return newParameters;
+	}
+
 
 	private static ArrayList<String> findMissingParameters(ArrayList<String> parameterStrings, String parametersFileName) throws IOException {
 		ArrayList<String> parametersInFile = new ArrayList<>();
@@ -59,7 +84,7 @@ public class ParametersChecker {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				// Use regex to find parameter names in the format (parameter name1 name2)
-				String regex = "\\(parameter\\s+([^=]+)\\)";
+				String regex = "\\(parameter\\s*([^)]+\\s*)\\)";
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(line);
 
@@ -82,4 +107,19 @@ public class ParametersChecker {
 
 		return missingParameters;
 	}
+	
+	private static ArrayList<String> loadCompartments(String compartmentsFileName) throws IOException {
+	    ArrayList<String> compartments = new ArrayList<>();
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(compartmentsFileName))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            // Add entries to the compartments list
+	            compartments.add(line);
+	        }
+	    }
+
+	    return compartments;
+	}
+
 }
