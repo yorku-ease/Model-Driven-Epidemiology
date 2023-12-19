@@ -6,52 +6,52 @@
     xmlns:ep="geodes.sms.mde">
   <compartment
       xsi:type="ep:Group"
-      label="Total">
+      label="covid">
     <flows xsi:type="ep:Rate"
         from="//@compartment/@compartments.0"
         to="//@compartment/@compartments.1"
-        sourceParameters="tokhmi"
+        sourceParameters="rate_src_param"
         id="LR_HR"/>
     <compartments
         xsi:type="ep:Group"
-        label="LR">
+        label="LowRisk">
       <flows
           xsi:type="ep:Contact"
           from="//@compartment/@compartments.0/@compartments.0"
           to="//@compartment/@compartments.0/@compartments.1"
-          sourceParameters="salam"
-          id="testContact"
+          sourceParameters="source_sus"
+          id="low_contact"
           contact="//@compartment/@compartments.0/@compartments.2"
-          contactParameters="ga"/>
+          contactParameters="sneezing"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="S1"/>
+          label="S_low"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="R1"/>
+          label="E_low"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="I1"/>
+          label="I_low"/>
     </compartments>
     <compartments
         xsi:type="ep:Group"
-        label="HR">
+        label="HighRisk">
       <flows
           xsi:type="ep:Contact"
-          from="//@compartment/@compartments.1/@compartments.0"
-          to="//@compartment/@compartments.1/@compartments.1"
-          id="Monkey"
-          contact="//@compartment/@compartments.1/@compartments.2"
-          contactParameters="con_pram"/>
+          from="//@compartment/@compartments.1/@compartments.1"
+          to="//@compartment/@compartments.1/@compartments.2"
+          id="high_contact"
+          contact="//@compartment/@compartments.1/@compartments.0"
+          contactParameters="contagiousness-hiv"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="E"/>
+          label="S_high"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="S"/>
+          label="E_high"/>
       <compartments
           xsi:type="ep:UnitCompartment"
-          label="P"/>
+          label="I_high"/>
     </compartments>
   </compartment>
 </ep:Epidemic>

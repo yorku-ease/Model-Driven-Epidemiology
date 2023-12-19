@@ -49,7 +49,6 @@ public class MyDslGenerator extends AbstractGenerator {
       {
         Iterable<PhysicalFlow> _iterable = IteratorExtensions.<PhysicalFlow>toIterable(Iterators.<PhysicalFlow>filter(resource.getAllContents(), PhysicalFlow.class));
         for(final PhysicalFlow flow : _iterable) {
-          _builder.newLine();
           _builder.append("(* [");
           {
             EList<Label> _labels = flow.getFrom().getLabels();
@@ -123,10 +122,16 @@ public class MyDslGenerator extends AbstractGenerator {
           _builder.append("[");
           {
             EList<Label> _labels_1 = flow.getFrom().getLabels();
-            for(final Label toCompartment : _labels_1) {
-              String _name_1 = toCompartment.getName();
+            for(final Label srcCompartment_1 : _labels_1) {
+              String _name_1 = srcCompartment_1.getName();
               _builder.append(_name_1);
-              _builder.append(",");
+              {
+                Label _last_1 = IterableExtensions.<Label>last(flow.getFrom().getLabels());
+                boolean _tripleNotEquals_1 = (srcCompartment_1 != _last_1);
+                if (_tripleNotEquals_1) {
+                  _builder.append(", ");
+                }
+              }
             }
           }
           _builder.append("]");
@@ -134,10 +139,16 @@ public class MyDslGenerator extends AbstractGenerator {
           _builder.append("[");
           {
             EList<Label> _labels_2 = flow.getTo().getLabels();
-            for(final Label toCompartment_1 : _labels_2) {
-              String _name_2 = toCompartment_1.getName();
+            for(final Label toCompartment : _labels_2) {
+              String _name_2 = toCompartment.getName();
               _builder.append(_name_2);
-              _builder.append(",");
+              {
+                Label _last_2 = IterableExtensions.<Label>last(flow.getTo().getLabels());
+                boolean _tripleNotEquals_2 = (toCompartment != _last_2);
+                if (_tripleNotEquals_2) {
+                  _builder.append(", ");
+                }
+              }
             }
           }
           _builder.append("]");
@@ -145,7 +156,6 @@ public class MyDslGenerator extends AbstractGenerator {
           String _id_4 = flow.getId();
           _builder.append(_id_4);
           _builder.newLineIfNotEmpty();
-          _builder.newLine();
         }
       }
       fileWriter.write(_builder.toString());
@@ -187,8 +197,6 @@ public class MyDslGenerator extends AbstractGenerator {
           _builder.newLineIfNotEmpty();
         }
       }
-      _builder.append("\t");
-      _builder.newLine();
       fileWriter.write(_builder.toString());
       fileWriter.close();
       System.out.println("SUCCESS COMPARTMENTS GENERATION!");
