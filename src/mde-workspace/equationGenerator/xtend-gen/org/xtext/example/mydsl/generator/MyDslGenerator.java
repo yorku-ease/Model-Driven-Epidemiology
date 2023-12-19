@@ -49,49 +49,111 @@ public class MyDslGenerator extends AbstractGenerator {
       {
         Iterable<PhysicalFlow> _iterable = IteratorExtensions.<PhysicalFlow>toIterable(Iterators.<PhysicalFlow>filter(resource.getAllContents(), PhysicalFlow.class));
         for(final PhysicalFlow flow : _iterable) {
-          _builder.append("(* [");
           {
-            EList<Label> _labels = flow.getFrom().getLabels();
-            for(final Label toCompartment : _labels) {
-              String _name = toCompartment.getName();
-              _builder.append(_name);
+            if (((flow.getEquationtemplate().getSourceParameters() != null) && (flow.getEquationtemplate().getContactParameters() == null))) {
+              _builder.append("(* [");
+              {
+                EList<Label> _labels = flow.getFrom().getLabels();
+                for(final Label srcCompartment : _labels) {
+                  String _name = srcCompartment.getName();
+                  _builder.append(_name);
+                  _builder.append(",");
+                }
+              }
+              _builder.append("] (parameter ");
+              String _sourceParameters = flow.getEquationtemplate().getSourceParameters();
+              _builder.append(_sourceParameters);
+              _builder.append(" ");
+              String _id = flow.getId();
+              _builder.append(_id);
+              _builder.append(" ) )");
+              _builder.newLineIfNotEmpty();
+            }
+          }
+          {
+            if (((flow.getEquationtemplate().getSourceParameters() != null) && (flow.getEquationtemplate().getContactParameters() != null))) {
+              _builder.append("(* [");
+              {
+                EList<Label> _labels_1 = flow.getFrom().getLabels();
+                for(final Label srcCompartment_1 : _labels_1) {
+                  String _name_1 = srcCompartment_1.getName();
+                  _builder.append(_name_1);
+                  _builder.append(",");
+                }
+              }
+              _builder.append("] (parameter ");
+              String _sourceParameters_1 = flow.getEquationtemplate().getSourceParameters();
+              _builder.append(_sourceParameters_1);
+              _builder.append(" ");
+              String _id_1 = flow.getId();
+              _builder.append(_id_1);
+              _builder.append(" ) (sumproduct [");
+              String _contactCompartment = flow.getEquationtemplate().getContactCompartment();
+              _builder.append(_contactCompartment);
+              _builder.append("] (parameter ");
+              String _contactParameters = flow.getEquationtemplate().getContactParameters();
+              _builder.append(_contactParameters);
+              _builder.append(" ");
+              String _id_2 = flow.getId();
+              _builder.append(_id_2);
+              _builder.append(" [");
+              String _contactCompartment_1 = flow.getEquationtemplate().getContactCompartment();
+              _builder.append(_contactCompartment_1);
+              _builder.append("]) ))");
+              _builder.newLineIfNotEmpty();
+            }
+          }
+          {
+            if (((flow.getEquationtemplate().getSourceParameters() == null) && (flow.getEquationtemplate().getContactParameters() != null))) {
+              _builder.append("(* [");
+              {
+                EList<Label> _labels_2 = flow.getFrom().getLabels();
+                for(final Label srcCompartment_2 : _labels_2) {
+                  String _name_2 = srcCompartment_2.getName();
+                  _builder.append(_name_2);
+                  _builder.append(",");
+                }
+              }
+              _builder.append("] (sumproduct [");
+              String _contactCompartment_2 = flow.getEquationtemplate().getContactCompartment();
+              _builder.append(_contactCompartment_2);
+              _builder.append("] (parameter ");
+              String _contactParameters_1 = flow.getEquationtemplate().getContactParameters();
+              _builder.append(_contactParameters_1);
+              _builder.append(" ");
+              String _id_3 = flow.getId();
+              _builder.append(_id_3);
+              _builder.append(" [");
+              String _contactCompartment_3 = flow.getEquationtemplate().getContactCompartment();
+              _builder.append(_contactCompartment_3);
+              _builder.append("]) ))");
+              _builder.newLineIfNotEmpty();
+            }
+          }
+          _builder.append("[");
+          {
+            EList<Label> _labels_3 = flow.getFrom().getLabels();
+            for(final Label toCompartment : _labels_3) {
+              String _name_3 = toCompartment.getName();
+              _builder.append(_name_3);
               _builder.append(",");
             }
           }
-          _builder.append("])");
+          _builder.append("]");
           _builder.newLineIfNotEmpty();
-          _builder.append("(parameter ");
-          String _sourceParameters = flow.getEquationtemplate().getSourceParameters();
-          _builder.append(_sourceParameters);
-          _builder.append(" ");
-          String _id = flow.getId();
-          _builder.append(_id);
-          _builder.append(" )");
-          _builder.newLineIfNotEmpty();
-          _builder.append("(* [");
+          _builder.append("[");
           {
-            EList<Label> _labels_1 = flow.getFrom().getLabels();
-            for(final Label toCompartment_1 : _labels_1) {
-              String _name_1 = toCompartment_1.getName();
-              _builder.append(_name_1);
+            EList<Label> _labels_4 = flow.getTo().getLabels();
+            for(final Label toCompartment_1 : _labels_4) {
+              String _name_4 = toCompartment_1.getName();
+              _builder.append(_name_4);
               _builder.append(",");
             }
           }
-          _builder.append("])");
+          _builder.append("]");
           _builder.newLineIfNotEmpty();
-          _builder.append("(* [");
-          {
-            EList<Label> _labels_2 = flow.getTo().getLabels();
-            for(final Label toCompartment_2 : _labels_2) {
-              String _name_2 = toCompartment_2.getName();
-              _builder.append(_name_2);
-              _builder.append(",");
-            }
-          }
-          _builder.append("])");
-          _builder.newLineIfNotEmpty();
-          String _id_1 = flow.getId();
-          _builder.append(_id_1);
+          String _id_4 = flow.getId();
+          _builder.append(_id_4);
           _builder.newLineIfNotEmpty();
           _builder.newLine();
         }

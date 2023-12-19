@@ -54,10 +54,17 @@ def myDoGenerate(String xmiFileName){
 	fileWriter.write(
 		'''
 	«FOR flow: resource.allContents.filter(PhysicalFlow).toIterable()»
-	(* [«FOR toCompartment: flow.from.labels»«toCompartment.name»,«ENDFOR»])
-	(parameter «flow.equationtemplate.sourceParameters» «flow.id» )
-	(* [«FOR toCompartment: flow.from.labels»«toCompartment.name»,«ENDFOR»])
-	(* [«FOR toCompartment: flow.to.labels»«toCompartment.name»,«ENDFOR»])
+	«IF flow.equationtemplate.sourceParameters !== null && flow.equationtemplate.contactParameters === null»
+	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»,«ENDFOR»] (parameter «flow.equationtemplate.sourceParameters» «flow.id» ) )
+	«ENDIF»
+	«IF flow.equationtemplate.sourceParameters !== null && flow.equationtemplate.contactParameters !== null»
+	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»,«ENDFOR»] (parameter «flow.equationtemplate.sourceParameters» «flow.id» ) (sumproduct [«flow.equationtemplate.contactCompartment»] (parameter «flow.equationtemplate.contactParameters» «flow.id» [«flow.equationtemplate.contactCompartment»]) ))
+	«ENDIF»
+	«IF flow.equationtemplate.sourceParameters === null && flow.equationtemplate.contactParameters !== null»
+	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»,«ENDFOR»] (sumproduct [«flow.equationtemplate.contactCompartment»] (parameter «flow.equationtemplate.contactParameters» «flow.id» [«flow.equationtemplate.contactCompartment»]) ))
+	«ENDIF»
+	[«FOR toCompartment: flow.from.labels»«toCompartment.name»,«ENDFOR»]
+	[«FOR toCompartment: flow.to.labels»«toCompartment.name»,«ENDFOR»]
 	«flow.id»
 	
 	«ENDFOR»
