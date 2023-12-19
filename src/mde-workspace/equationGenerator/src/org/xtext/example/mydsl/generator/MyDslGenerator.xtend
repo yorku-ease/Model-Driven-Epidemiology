@@ -22,6 +22,7 @@ import java.io.FileWriter
 import PhysicalEpidemicRoot.PhysicalEpidemicRootPackage
 import PhysicalEpidemicRoot.PhysicalFlow
 import PhysicalEpidemicRoot.Label
+import PhysicalEpidemicRoot.PhysicalCompartment
 
 /**
  * Generates code from your model files on save.
@@ -33,12 +34,13 @@ class MyDslGenerator extends AbstractGenerator {
 
 
 def static void main(String[] args) {
-	new MyDslGenerator().myDoGenerate("physical2.xmi");
- 	
 	
+	new MyDslGenerator().EquationGenerator("physical2.xmi");
+ 	
+	new MyDslGenerator().CompartmentsGenerator("physical2.xmi");
 }
 
-def myDoGenerate(String xmiFileName){
+def EquationGenerator(String xmiFileName){
 	EMFInitialization();
 	
 	
@@ -49,7 +51,6 @@ def myDoGenerate(String xmiFileName){
 	val outputObj = new File("src-gen/equations.txt");
 	val fileWriter = new FileWriter("src-gen/equations.txt");
 	
-	generateParametersForFlows(resource);
 	
 	fileWriter.write(
 		'''
@@ -74,25 +75,39 @@ def myDoGenerate(String xmiFileName){
 
 	
 	fileWriter.close();
-	System.out.println("SUCCESSSSSful generation!")
+	System.out.println("SUCESS EQUATION GENERATION!")
 	
 }
 
-def generateParametersForFlows(Resource resource){
-	// [Age,Alive,Child,HIV,HIV-TB-Coinfection,I-HIV,M,Mortality,S-TB,Sex,Tuberculosis]
-	val labels = "";
-	val labelsString = "["+labels+"]";
+
+def CompartmentsGenerator(String xmiFileName){
+	EMFInitialization();
 	
-	System.out.println("Highhh:"+resource.allContents.filter(PhysicalFlow))
-	System.out.println("tea:"+resource.contents.filter(PhysicalFlow))
-	for (PhysicalFlow flow :resource.allContents.filter(PhysicalFlow).toIterable() ){
-		System.out.println("Skkyyy:"+flow.to.labels);
-		for (Label label:flow.to.labels ){
-			
-//			labels += label.name
-		}
-	}
+	
+	val resrcSet = new ResourceSetImpl();
+	val fileURL = URI.createURI(xmiFileName);
+	val resource= resrcSet.getResource(fileURL, true);
+	
+	val outputObj = new File("src-gen/compartments.txt");
+	val fileWriter = new FileWriter("src-gen/compartments.txt");
+	
+	
+	fileWriter.write(
+		'''
+		«FOR compartment: resource.allContents.filter(PhysicalCompartment).toIterable()»
+		[«FOR label: compartment.labels»«label.name»,«ENDFOR»]
+		«ENDFOR»
+	
+		'''
+	) 
+	
+
+	
+	fileWriter.close();
+	System.out.println("SUCCESS COMPARTMENTS GENERATION!")
+	
 }
+
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
 //			resource.allContents

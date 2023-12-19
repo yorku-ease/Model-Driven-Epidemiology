@@ -4,13 +4,12 @@
 package org.xtext.example.mydsl.generator;
 
 import PhysicalEpidemicRoot.Label;
+import PhysicalEpidemicRoot.PhysicalCompartment;
 import PhysicalEpidemicRoot.PhysicalEpidemicRootPackage;
 import PhysicalEpidemicRoot.PhysicalFlow;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -33,10 +32,11 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 @SuppressWarnings("all")
 public class MyDslGenerator extends AbstractGenerator {
   public static void main(final String[] args) {
-    new MyDslGenerator().myDoGenerate("physical2.xmi");
+    new MyDslGenerator().EquationGenerator("physical2.xmi");
+    new MyDslGenerator().CompartmentsGenerator("physical2.xmi");
   }
 
-  public void myDoGenerate(final String xmiFileName) {
+  public void EquationGenerator(final String xmiFileName) {
     try {
       this.EMFInitialization();
       final ResourceSetImpl resrcSet = new ResourceSetImpl();
@@ -44,7 +44,6 @@ public class MyDslGenerator extends AbstractGenerator {
       final Resource resource = resrcSet.getResource(fileURL, true);
       final File outputObj = new File("src-gen/equations.txt");
       final FileWriter fileWriter = new FileWriter("src-gen/equations.txt");
-      this.generateParametersForFlows(resource);
       StringConcatenation _builder = new StringConcatenation();
       {
         Iterable<PhysicalFlow> _iterable = IteratorExtensions.<PhysicalFlow>toIterable(Iterators.<PhysicalFlow>filter(resource.getAllContents(), PhysicalFlow.class));
@@ -160,31 +159,44 @@ public class MyDslGenerator extends AbstractGenerator {
       }
       fileWriter.write(_builder.toString());
       fileWriter.close();
-      System.out.println("SUCCESSSSSful generation!");
+      System.out.println("SUCESS EQUATION GENERATION!");
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
 
-  public void generateParametersForFlows(final Resource resource) {
-    final String labels = "";
-    final String labelsString = (("[" + labels) + "]");
-    Iterator<PhysicalFlow> _filter = Iterators.<PhysicalFlow>filter(resource.getAllContents(), PhysicalFlow.class);
-    String _plus = ("Highhh:" + _filter);
-    System.out.println(_plus);
-    Iterable<PhysicalFlow> _filter_1 = Iterables.<PhysicalFlow>filter(resource.getContents(), PhysicalFlow.class);
-    String _plus_1 = ("tea:" + _filter_1);
-    System.out.println(_plus_1);
-    Iterable<PhysicalFlow> _iterable = IteratorExtensions.<PhysicalFlow>toIterable(Iterators.<PhysicalFlow>filter(resource.getAllContents(), PhysicalFlow.class));
-    for (final PhysicalFlow flow : _iterable) {
+  public void CompartmentsGenerator(final String xmiFileName) {
+    try {
+      this.EMFInitialization();
+      final ResourceSetImpl resrcSet = new ResourceSetImpl();
+      final URI fileURL = URI.createURI(xmiFileName);
+      final Resource resource = resrcSet.getResource(fileURL, true);
+      final File outputObj = new File("src-gen/compartments.txt");
+      final FileWriter fileWriter = new FileWriter("src-gen/compartments.txt");
+      StringConcatenation _builder = new StringConcatenation();
       {
-        EList<Label> _labels = flow.getTo().getLabels();
-        String _plus_2 = ("Skkyyy:" + _labels);
-        System.out.println(_plus_2);
-        EList<Label> _labels_1 = flow.getTo().getLabels();
-        for (final Label label : _labels_1) {
+        Iterable<PhysicalCompartment> _iterable = IteratorExtensions.<PhysicalCompartment>toIterable(Iterators.<PhysicalCompartment>filter(resource.getAllContents(), PhysicalCompartment.class));
+        for(final PhysicalCompartment compartment : _iterable) {
+          _builder.append("[");
+          {
+            EList<Label> _labels = compartment.getLabels();
+            for(final Label label : _labels) {
+              String _name = label.getName();
+              _builder.append(_name);
+              _builder.append(",");
+            }
+          }
+          _builder.append("]");
+          _builder.newLineIfNotEmpty();
         }
       }
+      _builder.append("\t");
+      _builder.newLine();
+      fileWriter.write(_builder.toString());
+      fileWriter.close();
+      System.out.println("SUCCESS COMPARTMENTS GENERATION!");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
   }
 
