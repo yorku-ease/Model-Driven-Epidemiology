@@ -8,17 +8,11 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.eclipse.emf.ecore.EPackage
-//import Latex.LatexPackage
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import java.io.File
 import java.io.FileWriter
-//import Latex.Section
-//import Latex.SubSection
-//import Latex.SubSubSection
-//import Latex.Paragraph
-//import Latex.Document
 import PhysicalEpidemicRoot.PhysicalEpidemicRootPackage
 import PhysicalEpidemicRoot.PhysicalFlow
 import PhysicalEpidemicRoot.Label
@@ -55,14 +49,14 @@ def EquationGenerator(String xmiFileName){
 	fileWriter.write(
 		'''
 	«FOR flow: resource.allContents.filter(PhysicalFlow).toIterable()»
-	«IF flow.equationtemplate.sourceParameters !== null && flow.equationtemplate.contactParameters === null»
-	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»,«ENDFOR»] (parameter «flow.equationtemplate.sourceParameters» «flow.id» ) )
+	
+	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»«IF srcCompartment !== flow.from.labels.last», «ENDIF»«ENDFOR»]«IF flow.equationtemplate.sourceParameters !== null && flow.equationtemplate.contactParameters === null» (parameter «flow.equationtemplate.sourceParameters» «flow.id» ) )
 	«ENDIF»
 	«IF flow.equationtemplate.sourceParameters !== null && flow.equationtemplate.contactParameters !== null»
-	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»,«ENDFOR»] (parameter «flow.equationtemplate.sourceParameters» «flow.id» ) (sumproduct [«flow.equationtemplate.contactCompartment»] (parameter «flow.equationtemplate.contactParameters» «flow.id» [«flow.equationtemplate.contactCompartment»]) ))
+	 (parameter «flow.equationtemplate.sourceParameters» «flow.id» ) (sumproduct [«flow.equationtemplate.contactCompartment»] (parameter «flow.equationtemplate.contactParameters» «flow.id» [«flow.equationtemplate.contactCompartment»]) ))
 	«ENDIF»
 	«IF flow.equationtemplate.sourceParameters === null && flow.equationtemplate.contactParameters !== null»
-	(* [«FOR srcCompartment: flow.from.labels»«srcCompartment.name»,«ENDFOR»] (sumproduct [«flow.equationtemplate.contactCompartment»] (parameter «flow.equationtemplate.contactParameters» «flow.id» [«flow.equationtemplate.contactCompartment»]) ))
+    (sumproduct [«flow.equationtemplate.contactCompartment»] (parameter «flow.equationtemplate.contactParameters» «flow.id» [«flow.equationtemplate.contactCompartment»]) ))
 	«ENDIF»
 	[«FOR toCompartment: flow.from.labels»«toCompartment.name»,«ENDFOR»]
 	[«FOR toCompartment: flow.to.labels»«toCompartment.name»,«ENDFOR»]
@@ -95,7 +89,7 @@ def CompartmentsGenerator(String xmiFileName){
 	fileWriter.write(
 		'''
 		«FOR compartment: resource.allContents.filter(PhysicalCompartment).toIterable()»
-		[«FOR label: compartment.labels»«label.name»,«ENDFOR»]
+		[«FOR label: compartment.labels»«label.name»«IF label !== compartment.labels.last», «ENDIF»«ENDFOR»]
 		«ENDFOR»
 	
 		'''

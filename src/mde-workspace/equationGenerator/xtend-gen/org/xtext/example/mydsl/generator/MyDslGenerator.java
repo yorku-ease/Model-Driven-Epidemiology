@@ -22,6 +22,7 @@ import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 /**
@@ -48,18 +49,26 @@ public class MyDslGenerator extends AbstractGenerator {
       {
         Iterable<PhysicalFlow> _iterable = IteratorExtensions.<PhysicalFlow>toIterable(Iterators.<PhysicalFlow>filter(resource.getAllContents(), PhysicalFlow.class));
         for(final PhysicalFlow flow : _iterable) {
+          _builder.newLine();
+          _builder.append("(* [");
           {
-            if (((flow.getEquationtemplate().getSourceParameters() != null) && (flow.getEquationtemplate().getContactParameters() == null))) {
-              _builder.append("(* [");
+            EList<Label> _labels = flow.getFrom().getLabels();
+            for(final Label srcCompartment : _labels) {
+              String _name = srcCompartment.getName();
+              _builder.append(_name);
               {
-                EList<Label> _labels = flow.getFrom().getLabels();
-                for(final Label srcCompartment : _labels) {
-                  String _name = srcCompartment.getName();
-                  _builder.append(_name);
-                  _builder.append(",");
+                Label _last = IterableExtensions.<Label>last(flow.getFrom().getLabels());
+                boolean _tripleNotEquals = (srcCompartment != _last);
+                if (_tripleNotEquals) {
+                  _builder.append(", ");
                 }
               }
-              _builder.append("] (parameter ");
+            }
+          }
+          _builder.append("]");
+          {
+            if (((flow.getEquationtemplate().getSourceParameters() != null) && (flow.getEquationtemplate().getContactParameters() == null))) {
+              _builder.append(" (parameter ");
               String _sourceParameters = flow.getEquationtemplate().getSourceParameters();
               _builder.append(_sourceParameters);
               _builder.append(" ");
@@ -71,16 +80,7 @@ public class MyDslGenerator extends AbstractGenerator {
           }
           {
             if (((flow.getEquationtemplate().getSourceParameters() != null) && (flow.getEquationtemplate().getContactParameters() != null))) {
-              _builder.append("(* [");
-              {
-                EList<Label> _labels_1 = flow.getFrom().getLabels();
-                for(final Label srcCompartment_1 : _labels_1) {
-                  String _name_1 = srcCompartment_1.getName();
-                  _builder.append(_name_1);
-                  _builder.append(",");
-                }
-              }
-              _builder.append("] (parameter ");
+              _builder.append("(parameter ");
               String _sourceParameters_1 = flow.getEquationtemplate().getSourceParameters();
               _builder.append(_sourceParameters_1);
               _builder.append(" ");
@@ -104,16 +104,7 @@ public class MyDslGenerator extends AbstractGenerator {
           }
           {
             if (((flow.getEquationtemplate().getSourceParameters() == null) && (flow.getEquationtemplate().getContactParameters() != null))) {
-              _builder.append("(* [");
-              {
-                EList<Label> _labels_2 = flow.getFrom().getLabels();
-                for(final Label srcCompartment_2 : _labels_2) {
-                  String _name_2 = srcCompartment_2.getName();
-                  _builder.append(_name_2);
-                  _builder.append(",");
-                }
-              }
-              _builder.append("] (sumproduct [");
+              _builder.append("(sumproduct [");
               String _contactCompartment_2 = flow.getEquationtemplate().getContactCompartment();
               _builder.append(_contactCompartment_2);
               _builder.append("] (parameter ");
@@ -131,10 +122,10 @@ public class MyDslGenerator extends AbstractGenerator {
           }
           _builder.append("[");
           {
-            EList<Label> _labels_3 = flow.getFrom().getLabels();
-            for(final Label toCompartment : _labels_3) {
-              String _name_3 = toCompartment.getName();
-              _builder.append(_name_3);
+            EList<Label> _labels_1 = flow.getFrom().getLabels();
+            for(final Label toCompartment : _labels_1) {
+              String _name_1 = toCompartment.getName();
+              _builder.append(_name_1);
               _builder.append(",");
             }
           }
@@ -142,10 +133,10 @@ public class MyDslGenerator extends AbstractGenerator {
           _builder.newLineIfNotEmpty();
           _builder.append("[");
           {
-            EList<Label> _labels_4 = flow.getTo().getLabels();
-            for(final Label toCompartment_1 : _labels_4) {
-              String _name_4 = toCompartment_1.getName();
-              _builder.append(_name_4);
+            EList<Label> _labels_2 = flow.getTo().getLabels();
+            for(final Label toCompartment_1 : _labels_2) {
+              String _name_2 = toCompartment_1.getName();
+              _builder.append(_name_2);
               _builder.append(",");
             }
           }
@@ -183,7 +174,13 @@ public class MyDslGenerator extends AbstractGenerator {
             for(final Label label : _labels) {
               String _name = label.getName();
               _builder.append(_name);
-              _builder.append(",");
+              {
+                Label _last = IterableExtensions.<Label>last(compartment.getLabels());
+                boolean _tripleNotEquals = (label != _last);
+                if (_tripleNotEquals) {
+                  _builder.append(", ");
+                }
+              }
             }
           }
           _builder.append("]");
