@@ -46,20 +46,13 @@ public class CommorbidityGenerator {
 		fileURI = URI.createFileURI(new File("tb_sample.xmi").getAbsolutePath());
 		Resource tb_resource = resourceSet.getResource(fileURI, true);
 
-		// Print the contents of the resource to System.out.
 		try
 		{
-//			hiv_resource.save(System.out, Collections.EMPTY_MAP);
-//			tb_resource.save(System.out, Collections.EMPTY_MAP);
-
-			//		     System.out.print("resource --> "+  resource.getContents().get(0).getClass());
 			EpidemicImpl HIV_root = (EpidemicImpl)hiv_resource.getContents().get(0);
 			AbstractCompartment HIV_compartment = HIV_root.getCompartment();
-//			System.out.print(HIV_compartment);
 			
 			EpidemicImpl TB_root = (EpidemicImpl)tb_resource.getContents().get(0);
 			AbstractCompartment TB_compartment = TB_root.getCompartment();
-//			System.out.print(TB_compartment);
 			
 
 

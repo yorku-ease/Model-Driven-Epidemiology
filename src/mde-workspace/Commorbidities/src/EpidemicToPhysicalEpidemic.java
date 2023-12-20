@@ -32,11 +32,9 @@ public class EpidemicToPhysicalEpidemic {
 	public static ArrayList<PhysicalFlow> physicalFlows = new ArrayList<>();
 
 	static PhysicalCompartment findEquivalantPhysicalCompartment (ArrayList<PhysicalCompartment> physicalCompartments, EList<Label> labels) {
-		System.out.println("The labels :"+labels);
 		for (PhysicalCompartment phc: physicalCompartments) {
 
 			if (labels.size() == phc.getLabels().size()) {
-				System.out.println("Current ph c labels :"+phc.getLabels());
 				boolean isSame = true;
 				for(int i=0; i< labels.size(); i++) {
 					if (labels.get(i).getName() != phc.getLabels().get(i).getName()) {
@@ -46,7 +44,6 @@ public class EpidemicToPhysicalEpidemic {
 				}
 				if (isSame)
 				{
-					System.out.println("The return value:"+phc.getLabels());
 					return phc;
 				}
 			}
@@ -67,10 +64,6 @@ public class EpidemicToPhysicalEpidemic {
 		AbstractCompartment in_abstract_compartment = in_root.getCompartment();
 
 
-		System.out.println("input abs compartment:"+in_abstract_compartment+ "the type:"+in_abstract_compartment.getClass().getName());
-
-
-
 		//Create physical compartment for the output
 		PhysicalEpidemicRootFactory ph_factory = PhysicalEpidemicRootFactory.eINSTANCE;
 		PhysicalEpidemic physicalEpidemic = ph_factory.createPhysicalEpidemic();
@@ -83,11 +76,6 @@ public class EpidemicToPhysicalEpidemic {
 
 		//print the physical flows
 		for (PhysicalFlow f : physicalFlows) {
-			System.out.println("______________________");
-			//			System.out.println("flow:"+f);
-			//			System.out.println("from :"+f.getFrom().getLabels());
-			//			System.out.println("from :"+f.getTo().getLabels());
-
 			PhysicalCompartment fromReference = findEquivalantPhysicalCompartment(physicalCompartments, f.getFrom().getLabels());
 			PhysicalCompartment toReference = findEquivalantPhysicalCompartment(physicalCompartments, f.getTo().getLabels());
 			
@@ -115,7 +103,6 @@ public class EpidemicToPhysicalEpidemic {
 		fileURI = URI.createFileURI(new File("physical2.xmi").getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(physicalEpidemic);
-		System.out.println("Successfull!!");
 
 		try {
 			resource.save(Collections.EMPTY_MAP);
@@ -132,9 +119,6 @@ public class EpidemicToPhysicalEpidemic {
 
 		String label = compartment.getLabel();
 		if (compartment instanceof UnitCompartment) {
-			//			System.out.println("UNIT!!! label: "+label);
-			//			System.out.println("physical compartments list so far:"+physicalCompartmentsList);
-			//			System.out.println("labels so far:"+pre_labels);
 			PhysicalCompartment ph_comp = physicalFactory.createPhysicalCompartment();
 			// Add it's label to the list
 			Label compartmentLabel = physicalFactory.createLabel();
@@ -145,8 +129,6 @@ public class EpidemicToPhysicalEpidemic {
 		}
 
 		else if (compartment instanceof Group) {
-			//			System.out.println("it is group, the stuff:"+ "physical compartments list so far:"+physicalCompartmentsList);
-			//			System.out.println("labels so far:"+pre_labels);
 			// Add it's label to the list
 			Label compartmentLabel = physicalFactory.createLabel();
 			compartmentLabel.setName(label);
@@ -226,7 +208,6 @@ public class EpidemicToPhysicalEpidemic {
 
 					ArrayList<Label> combinedLabels = combineLabels(level1.getLabels(),level2.getLabels());
 
-					//					System.out.println("The combined labels ----> "+combinedLabels );
 					producted.getLabels().addAll(combinedLabels);
 					productedCompartments.add(producted);
 				}
@@ -253,7 +234,6 @@ public class EpidemicToPhysicalEpidemic {
 
 					ArrayList<Label> combinedLabels = combineLabels(level1.getLabels(),level2.getLabels());
 
-					//					System.out.println("The combined labels (if >2 ) ----> "+combinedLabels );
 					producted.getLabels().addAll(combinedLabels);
 					productedCompartments.add(producted);
 				}
