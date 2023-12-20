@@ -1,8 +1,12 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,21 +16,25 @@ public class ParametersChecker {
 		String equationsFile = "src/equations.txt";
 		String compartmentsFile = "src/compartments.txt";
 		String parametersFile = "src/parameters.txt";
+		String outputFile = "src/missing_parameters.txt";
 
 		try {
 			ArrayList<String> parameterStrings = extractParameterStrings(equationsFile);
 			parameterStrings.addAll(extractContactParametersFromEquations(equationsFile, compartmentsFile));
 			ArrayList<String> missingParameters = findMissingParameters(parameterStrings, parametersFile);
-
-			// Print missing parameters
-			if (!missingParameters.isEmpty()) {
-				System.out.println(missingParameters.size()+ " Missing Parameters:");
-				// write it out to a report file.
-				for (String missingParameter : missingParameters) {
-					System.out.println(missingParameter);
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+				// Print missing parameters
+				if (!missingParameters.isEmpty()) {
+					writer.write(missingParameters.size()+ " Missing Parameters:");
+					writer.newLine();
+					// write it out to a report file.
+					for (String missingParameter : missingParameters) {
+						writer.write(missingParameter);
+						writer.newLine();
+					}
+				} else {
+					writer.write("All parameters are present in the parameters file :)");
 				}
-			} else {
-				System.out.println("All parameters are present in the parameters file :)");
 			}
 
 		} catch (IOException e) {
@@ -68,13 +76,45 @@ public class ParametersChecker {
 	            Matcher matcher = pattern.matcher(line);
 
 	            while (matcher.find()) {
-	                //TO-DO
+	            	String wordWithinBrackets = matcher.group(3);
+	                List<List<String>> matchingCompartments = findAllCompartments(compartmentsFileName, wordWithinBrackets);
+	                
+	                for (List<String> innerList : matchingCompartments) {
+	                    String parameterString = String.format("(parameter %s %s %s)", matcher.group(1), matcher.group(2), innerList.toString());
+	                    newParameters.add(parameterString);
+	                }
+	                
 	            }
 	        }
 	    }
-
 	    return newParameters;
 	}
+	
+	private static List<List<String>> findAllCompartments(String filename, String wordToExtract) {
+		List<List<String>> matchingRows = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+            	ArrayList<String> row = convertRowToList(line);
+            	if (row.contains(wordToExtract)) {
+                    matchingRows.add(row);
+                    
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return matchingRows;
+    }
+	
+	private static ArrayList<String> convertRowToList(String row) {
+        // Assuming the row is enclosed in square brackets and elements are separated by commas
+        row = row.substring(1, row.length() - 1); // Remove square brackets
+        String[] elements = row.split(", ");
+        ArrayList<String> result = new ArrayList<String>(Arrays.asList(elements));
+        return result;
+    }
 
 
 	private static ArrayList<String> findMissingParameters(ArrayList<String> parameterStrings, String parametersFileName) throws IOException {
@@ -91,7 +131,6 @@ public class ParametersChecker {
 				while (matcher.find()) {
 					// Group 1 contains the entire parameter expression, and Group 2 contains the parameter value
 					String parameterExpression = matcher.group(0);
-					System.out.println("!!!!parameterExpression  " + parameterExpression);
 					parametersInFile.add(parameterExpression);
 				}
 			}

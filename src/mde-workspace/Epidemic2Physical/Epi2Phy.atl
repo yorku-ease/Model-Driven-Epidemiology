@@ -22,6 +22,15 @@ rule UnitCompartment2PhysicalCompartment {
 		)
 }
 
+rule SetUnitCompartment2PhysicalCompartment {
+	from
+		uc: OrderedSet(MainEpidemic!UnitCompartment)
+	to
+		pc: PhysicalEpidemic!PhysicalCompartment (
+			-- name <- uc.collect(c)
+		)
+}
+
 helper context MainEpidemic!UnitCompartment  def : collectLabels() : String = 
 	self.refImmediateComposite().collectLabels() + ' | ' + self.label;
 
@@ -43,11 +52,26 @@ helper context MainEpidemic!Product def : collectLabels() : String =
             parent.collectLabels() + ' | ' + self.label
         endif;
 
+helper context MainEpidemic!Product def : getGroupElements() : OrderedSet(OrderedSet(MainEpidemic!UnitCompartment)) =
+    self.compartments->iterate(
+        child; 
+        result : OrderedSet(OrderedSet(MainEpidemic!UnitCompartment)) = OrderedSet{} |
+        result.append(child.getAllCompartments())
+    );
+
+helper context MainEpidemic!Product def : cartesianProduct(groups:OrderedSet(OrderedSet(MainEpidemic!UnitCompartment)), labels: OrderedSet(String)) : OrderedSet(MainEpidemic!UnitCompartment) = OrderedSet{};
+		
+        
+        
+
 helper context MainEpidemic!AbstractCompartment def : getAllCompartments(): OrderedSet(MainEpidemic!UnitCompartment) =
 	if self.oclIsTypeOf(MainEpidemic!UnitCompartment) then
 		OrderedSet{self}
 	else
-		self.compartments->iterate(
+		if self.oclIsTypeOf(MainEpidemic!Product) then
+			self.cartesianProduct(self.getGroupElements(), OrderedSet{})
+		else
+			self.compartments->iterate(
 			child ; 
 			elements : OrderedSet(MainEpidemic!UnitCompartment) = OrderedSet{} |
 			if child.oclIsTypeOf(MainEpidemic!UnitCompartment) then
@@ -56,6 +80,7 @@ helper context MainEpidemic!AbstractCompartment def : getAllCompartments(): Orde
 				elements.union(child.getAllCompartments())
 			endif
 		)
+		endif
 	endif;
 
 -- helper context MainEpidemic!UnitCompartment def: getAllCompartments: OrderedSet(PhysicalEpidemic!PhysicalCompartment) = self;
