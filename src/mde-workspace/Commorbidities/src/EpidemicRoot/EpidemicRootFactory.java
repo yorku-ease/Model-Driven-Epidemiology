@@ -67,15 +67,6 @@ public interface EpidemicRootFactory extends EFactory {
 	Contact createContact();
 
 	/**
-	 * Returns a new object of class '<em>Batch</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Batch</em>'.
-	 * @generated
-	 */
-	Batch createBatch();
-
-	/**
 	 * Returns a new object of class '<em>Rate</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

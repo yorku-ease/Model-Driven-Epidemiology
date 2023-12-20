@@ -91,7 +91,7 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @see EpidemicRoot.impl.EpidemicRootPackageImpl#getAbstractCompartment()
 	 * @generated
 	 */
-	int ABSTRACT_COMPARTMENT = 7;
+	int ABSTRACT_COMPARTMENT = 6;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -332,61 +332,6 @@ public interface EpidemicRootPackage extends EPackage {
 	int CONTACT_FEATURE_COUNT = FLOW_FEATURE_COUNT + 2;
 
 	/**
-	 * The meta object id for the '{@link EpidemicRoot.impl.BatchImpl <em>Batch</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see EpidemicRoot.impl.BatchImpl
-	 * @see EpidemicRoot.impl.EpidemicRootPackageImpl#getBatch()
-	 * @generated
-	 */
-	int BATCH = 5;
-
-	/**
-	 * The feature id for the '<em><b>From</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BATCH__FROM = FLOW__FROM;
-
-	/**
-	 * The feature id for the '<em><b>To</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BATCH__TO = FLOW__TO;
-
-	/**
-	 * The feature id for the '<em><b>Source Parameters</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BATCH__SOURCE_PARAMETERS = FLOW__SOURCE_PARAMETERS;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BATCH__ID = FLOW__ID;
-
-	/**
-	 * The number of structural features of the '<em>Batch</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BATCH_FEATURE_COUNT = FLOW_FEATURE_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link EpidemicRoot.impl.RateImpl <em>Rate</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -394,7 +339,7 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @see EpidemicRoot.impl.EpidemicRootPackageImpl#getRate()
 	 * @generated
 	 */
-	int RATE = 6;
+	int RATE = 5;
 
 	/**
 	 * The feature id for the '<em><b>From</b></em>' reference.
@@ -449,7 +394,7 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @see EpidemicRoot.impl.EpidemicRootPackageImpl#getProduct()
 	 * @generated
 	 */
-	int PRODUCT = 8;
+	int PRODUCT = 7;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -649,16 +594,6 @@ public interface EpidemicRootPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getContact_ContactParameters();
-
-	/**
-	 * Returns the meta object for class '{@link EpidemicRoot.Batch <em>Batch</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Batch</em>'.
-	 * @see EpidemicRoot.Batch
-	 * @generated
-	 */
-	EClass getBatch();
 
 	/**
 	 * Returns the meta object for class '{@link EpidemicRoot.Rate <em>Rate</em>}'.
@@ -871,16 +806,6 @@ public interface EpidemicRootPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONTACT__CONTACT_PARAMETERS = eINSTANCE.getContact_ContactParameters();
-
-		/**
-		 * The meta object literal for the '{@link EpidemicRoot.impl.BatchImpl <em>Batch</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see EpidemicRoot.impl.BatchImpl
-		 * @see EpidemicRoot.impl.EpidemicRootPackageImpl#getBatch()
-		 * @generated
-		 */
-		EClass BATCH = eINSTANCE.getBatch();
 
 		/**
 		 * The meta object literal for the '{@link EpidemicRoot.impl.RateImpl <em>Rate</em>}' class.

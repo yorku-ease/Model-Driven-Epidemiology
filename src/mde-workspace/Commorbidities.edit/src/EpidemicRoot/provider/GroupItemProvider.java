@@ -198,11 +198,6 @@ public class GroupItemProvider extends AbstractCompartmentItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(EpidemicRootPackage.Literals.GROUP__FLOWS,
-				 EpidemicRootFactory.eINSTANCE.createBatch()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(EpidemicRootPackage.Literals.GROUP__FLOWS,
 				 EpidemicRootFactory.eINSTANCE.createRate()));
 
 		newChildDescriptors.add

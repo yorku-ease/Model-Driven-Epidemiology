@@ -61,7 +61,6 @@ public class EpidemicRootFactoryImpl extends EFactoryImpl implements EpidemicRoo
 			case EpidemicRootPackage.UNIT_COMPARTMENT: return createUnitCompartment();
 			case EpidemicRootPackage.FLOW: return createFlow();
 			case EpidemicRootPackage.CONTACT: return createContact();
-			case EpidemicRootPackage.BATCH: return createBatch();
 			case EpidemicRootPackage.RATE: return createRate();
 			case EpidemicRootPackage.PRODUCT: return createProduct();
 			default:
@@ -122,17 +121,6 @@ public class EpidemicRootFactoryImpl extends EFactoryImpl implements EpidemicRoo
 	public Contact createContact() {
 		ContactImpl contact = new ContactImpl();
 		return contact;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Batch createBatch() {
-		BatchImpl batch = new BatchImpl();
-		return batch;
 	}
 
 	/**

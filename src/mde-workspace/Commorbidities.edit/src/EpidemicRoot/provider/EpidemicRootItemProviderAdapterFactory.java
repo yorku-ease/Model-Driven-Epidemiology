@@ -187,29 +187,6 @@ public class EpidemicRootItemProviderAdapterFactory extends EpidemicRootAdapterF
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link EpidemicRoot.Batch} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected BatchItemProvider batchItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link EpidemicRoot.Batch}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createBatchAdapter() {
-		if (batchItemProvider == null) {
-			batchItemProvider = new BatchItemProvider(this);
-		}
-
-		return batchItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link EpidemicRoot.Rate} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -365,7 +342,6 @@ public class EpidemicRootItemProviderAdapterFactory extends EpidemicRootAdapterF
 		if (unitCompartmentItemProvider != null) unitCompartmentItemProvider.dispose();
 		if (flowItemProvider != null) flowItemProvider.dispose();
 		if (contactItemProvider != null) contactItemProvider.dispose();
-		if (batchItemProvider != null) batchItemProvider.dispose();
 		if (rateItemProvider != null) rateItemProvider.dispose();
 		if (productItemProvider != null) productItemProvider.dispose();
 	}

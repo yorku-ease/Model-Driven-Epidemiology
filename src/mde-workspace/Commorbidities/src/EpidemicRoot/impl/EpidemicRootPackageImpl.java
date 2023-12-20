@@ -68,13 +68,6 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass batchEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass rateEClass = null;
 
 	/**
@@ -317,16 +310,6 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 	 * @generated
 	 */
 	@Override
-	public EClass getBatch() {
-		return batchEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getRate() {
 		return rateEClass;
 	}
@@ -421,8 +404,6 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		createEReference(contactEClass, CONTACT__CONTACT);
 		createEAttribute(contactEClass, CONTACT__CONTACT_PARAMETERS);
 
-		batchEClass = createEClass(BATCH);
-
 		rateEClass = createEClass(RATE);
 
 		abstractCompartmentEClass = createEClass(ABSTRACT_COMPARTMENT);
@@ -463,7 +444,6 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		groupEClass.getESuperTypes().add(this.getAbstractCompartment());
 		unitCompartmentEClass.getESuperTypes().add(this.getAbstractCompartment());
 		contactEClass.getESuperTypes().add(this.getFlow());
-		batchEClass.getESuperTypes().add(this.getFlow());
 		rateEClass.getESuperTypes().add(this.getFlow());
 		productEClass.getESuperTypes().add(this.getAbstractCompartment());
 
@@ -488,8 +468,6 @@ public class EpidemicRootPackageImpl extends EPackageImpl implements EpidemicRoo
 		initEClass(contactEClass, Contact.class, "Contact", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getContact_Contact(), this.getAbstractCompartment(), null, "contact", null, 0, 1, Contact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getContact_ContactParameters(), ecorePackage.getEString(), "contactParameters", null, 0, 1, Contact.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(batchEClass, Batch.class, "Batch", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(rateEClass, Rate.class, "Rate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

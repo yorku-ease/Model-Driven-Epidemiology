@@ -88,10 +88,6 @@ public class EpidemicRootAdapterFactory extends AdapterFactoryImpl {
 				return createContactAdapter();
 			}
 			@Override
-			public Adapter caseBatch(Batch object) {
-				return createBatchAdapter();
-			}
-			@Override
 			public Adapter caseRate(Rate object) {
 				return createRateAdapter();
 			}
@@ -190,20 +186,6 @@ public class EpidemicRootAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createContactAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link EpidemicRoot.Batch <em>Batch</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see EpidemicRoot.Batch
-	 * @generated
-	 */
-	public Adapter createBatchAdapter() {
 		return null;
 	}
 
