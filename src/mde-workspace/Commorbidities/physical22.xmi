@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ASCII"?>
+<phep:PhysicalEpidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:phep="geodes.sms.phmde">
+  <compartments>
+    <labels name="covid"/>
+    <labels name="LowRisk"/>
+    <labels name="S_low"/>
+  </compartments>
+  <compartments>
+    <labels name="covid"/>
+    <labels name="LowRisk"/>
+    <labels name="E_low"/>
+  </compartments>
+  <compartments>
+    <labels name="covid"/>
+    <labels name="LowRisk"/>
+    <labels name="I_low"/>
+  </compartments>
+  <compartments>
+    <labels name="covid"/>
+    <labels name="HighRisk"/>
+    <labels name="S_high"/>
+  </compartments>
+  <compartments>
+    <labels name="covid"/>
+    <labels name="HighRisk"/>
+    <labels name="E_high"/>
+  </compartments>
+  <compartments>
+    <labels name="covid"/>
+    <labels name="HighRisk"/>
+    <labels name="I_high"/>
+  </compartments>
+  <flows from="//@compartments.0" to="//@compartments.1" id="low_contact">
+    <equationtemplate sourceParameters="source_sus" contactParameters="sneezing" contactCompartment="I_low"/>
+  </flows>
+  <flows from="//@compartments.4" to="//@compartments.5" id="high_contact">
+    <equationtemplate contactParameters="contagiousness-hiv" contactCompartment="S_high"/>
+  </flows>
+  <flows from="//@compartments.0" to="//@compartments.1" id="low_contact">
+    <equationtemplate sourceParameters="source_sus" contactParameters="sneezing" contactCompartment="I_low"/>
+  </flows>
+  <flows from="//@compartments.4" to="//@compartments.5" id="high_contact">
+    <equationtemplate contactParameters="contagiousness-hiv" contactCompartment="S_high"/>
+  </flows>
+  <flows from="//@compartments.0" to="//@compartments.3" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.0" to="//@compartments.4" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.0" to="//@compartments.5" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.1" to="//@compartments.3" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.1" to="//@compartments.4" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.1" to="//@compartments.5" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.2" to="//@compartments.3" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.2" to="//@compartments.4" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+  <flows from="//@compartments.2" to="//@compartments.5" id="LR_HR">
+    <equationtemplate sourceParameters="rate_src_param"/>
+  </flows>
+</phep:PhysicalEpidemic>

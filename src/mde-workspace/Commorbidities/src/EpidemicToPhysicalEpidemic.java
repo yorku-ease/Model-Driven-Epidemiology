@@ -58,7 +58,7 @@ public class EpidemicToPhysicalEpidemic {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
 				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		EpidemicRootPackage epidemicPackage = EpidemicRootPackage.eINSTANCE;
-		URI fileURI = URI.createFileURI(new File("hiv2.xmi").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("commorbidities.xmi").getAbsolutePath());
 		Resource in_resource = resourceSet.getResource(fileURI, true);
 		EpidemicImpl in_root = (EpidemicImpl)in_resource.getContents().get(0);
 		AbstractCompartment in_abstract_compartment = in_root.getCompartment();
@@ -100,7 +100,7 @@ public class EpidemicToPhysicalEpidemic {
 
 
 		//Write the physical model to a file
-		fileURI = URI.createFileURI(new File("physical2.xmi").getAbsolutePath());
+		fileURI = URI.createFileURI(new File("physical_comorbidity.xmi").getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(physicalEpidemic);
 
@@ -193,6 +193,12 @@ public class EpidemicToPhysicalEpidemic {
 		int numberOfChildren = product.getCompartments().size();
 
 		ArrayList<PhysicalCompartment> productedCompartments = new ArrayList<PhysicalCompartment>();
+		
+		if (numberOfChildren == 1) {
+			ArrayList<PhysicalCompartment> physicalCompartments = new ArrayList<PhysicalCompartment>();
+			createPhysicalCompartments(physicalCompartments,product.getCompartments().get(0), null);
+			productedCompartments.addAll(physicalCompartments);
+		}
 
 		if (numberOfChildren == 2) {
 

@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="ASCII"?>
-<ep:Epidemic xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ep="geodes.sms.mde">
-  <compartment xsi:type="ep:Product" label="TB_p">
-    <compartments xsi:type="ep:Group" label="TB_SEIR">
-      <flows xsi:type="ep:Contact" from="//@compartment/@compartments.0/@compartments.0" to="//@compartment/@compartments.0/@compartments.1" sourceParameters="Susceptiblity_TB" contact="//@compartment/@compartments.0/@compartments.2" contactParameters="Infectious_TB"/>
-      <flows xsi:type="ep:Rate" from="//@compartment/@compartments.0/@compartments.1" to="//@compartment/@compartments.0/@compartments.2" sourceParameters="EI_src_TB"/>
-      <flows xsi:type="ep:Rate" from="//@compartment/@compartments.0/@compartments.2" to="//@compartment/@compartments.0/@compartments.3" sourceParameters="IR_src_TB"/>
-      <compartments xsi:type="ep:UnitCompartment" label="S"/>
-      <compartments xsi:type="ep:UnitCompartment" label="E"/>
-      <compartments xsi:type="ep:UnitCompartment" label="I"/>
-      <compartments xsi:type="ep:UnitCompartment" label="R"/>
+<ep:Epidemic
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ep="geodes.sms.mde">
+  <compartment
+      xsi:type="ep:Product"
+      label="TB_parent">
+    <compartments
+        xsi:type="ep:Group"
+        label="TB_SEIR">
+      <flows
+          xsi:type="ep:Contact"
+          from="//@compartment/@compartments.0/@compartments.0"
+          to="//@compartment/@compartments.0/@compartments.1"
+          sourceParameters="Susceptiblity_TB"
+          id="contact_flow_TB"
+          contact="//@compartment/@compartments.0/@compartments.2"
+          contactParameters="Infectious_TB_con_params"/>
+      <flows
+          xsi:type="ep:Rate"
+          from="//@compartment/@compartments.0/@compartments.1"
+          to="//@compartment/@compartments.0/@compartments.2"
+          sourceParameters="EI_src_TB_param"
+          id="EI_TB"/>
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="S_tb"/>
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="E_tb"/>
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="I_tb"/>
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="R_tb"/>
     </compartments>
-    <compartments xsi:type="ep:Group" label="gender">
-      <compartments xsi:type="ep:UnitCompartment" label="F"/>
-      <compartments xsi:type="ep:UnitCompartment" label="M"/>
+    <compartments
+        xsi:type="ep:Group"
+        label="gender">
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="F"/>
+      <compartments
+          xsi:type="ep:UnitCompartment"
+          label="M"/>
     </compartments>
   </compartment>
 </ep:Epidemic>

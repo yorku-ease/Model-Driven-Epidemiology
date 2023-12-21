@@ -63,7 +63,7 @@ public class CommorbidityGenerator {
 
 
 			// Get the URI of the model file.
-			fileURI = URI.createFileURI(new File("commorbidities2.xmi").getAbsolutePath());
+			fileURI = URI.createFileURI(new File("commorbidities.xmi").getAbsolutePath());
 			Resource resource = resourceSet.createResource(fileURI);
 			resource.getContents().add(commorbidity_epidemic);
 			resource.save(Collections.EMPTY_MAP);
