@@ -5,7 +5,7 @@ Model Driven Engineering framework for developing Epidemiological models (Master
 
 - install [obeo designer](https://www.obeodesigner.com/en/)
 - run it and select your [workspace folder](https://github.com/yorku-ease/Model-Driven-Epidemiology/tree/main/src/workspace) as the workspace path, wherever you cloned the repo
-- create environment variable 'epimodelJars' and set the value to your [jars folder](https://github.com/yorku-ease/Model-Driven-Epidemiology/tree/main/metamodel-jars)
+- create environment variable 'epimodelExtensionsFolder' and set the value to your [jars folder](https://github.com/yorku-ease/Model-Driven-Epidemiology/tree/main/metamodel-jars)
 - create a new debug configuration for eclipse applications
   - name it plugin
   - set the "location" to `${workspace_loc}/../runtime`, the [runtime folder](https://github.com/yorku-ease/Model-Driven-Epidemiology/tree/main/src/runtime)
