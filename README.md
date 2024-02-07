@@ -1,5 +1,8 @@
 # Model-Driven-Epidemiology
-Model Driven Engineering framework for developing Epidemiological models (Masters project)
+
+Model Driven Engineering framework for developing Epidemiological models
+
+[Youtube Channel](https://www.youtube.com/@Epi-model)
 
 ## How to run (developer mode)
 
