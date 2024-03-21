@@ -145,7 +145,6 @@ def save_scenario(filename_without_extension, scenario):
     if len(nm):
         fn = f'{filename_without_extension}.scenario-compartments.txt'
         print(f'writing existing compartments to `{fn}`')
-
         with open(fn, 'w') as f:
             for p in nm:
                 f.write(p + f' = {scenario[p].value}\n')

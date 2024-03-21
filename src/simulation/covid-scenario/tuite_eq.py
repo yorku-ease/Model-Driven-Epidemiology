@@ -51,9 +51,18 @@ def derivative(state, equation_filter, do_index_remap):
     d = state[indices[15]]
 
     pop = (s+e+q+a+w+b+c+y+z+h+icua+icub+icuc+r)
+    # a+b+c = sum infectious
+    # w+y+z = sum infectious but isolated
+    # rr_i = factor of isolation, here it divides by 10
+    # pop is the total pop because cm is in contact per day for the average person, we need to calibrate it for the population
     l_h = beta * (a+b+c + rr_i*(w+y+z)) / pop
     _lambda = np.sum(theta * l_h, axis=1)
-    
+    # print('l_h, the impact of each age group (infectious) to the exposure')
+    # print(l_h)
+    # print('_lambda, the strength of infection for each age group (susceptible)')
+    # print(_lambda)
+    # print(s[0], b[0], theta[0][0], beta, theta[0][0] * beta, pop, theta[0][0] * beta / pop)
+    # print(params.cm2[0][0] * s[0] * b[0])
     _lambda  = _lambda       if equation_filter('exposure')        else _lambda * 0
     _delta_e = delta_e       if equation_filter('exposure')        else delta_e * 0
     _epsilon = epsilon       if equation_filter('infection')       else epsilon * 0
@@ -74,7 +83,6 @@ def derivative(state, equation_filter, do_index_remap):
     _pi_c    = pi_c          if equation_filter('recovery-h')      else pi_c * 0
     _psi     = psi           if equation_filter('recovery-h')      else psi * 0
     _p_d_icu = p_death_icu   if equation_filter('death')           else p_death_icu * 0
-
     dsdt = -_lambda * s - _delta_s * s + _aging.dot(s) + _births.dot(pop) + _rho * v
     dvdt = _delta_s * s - _rho * v + _aging.dot(v)
     dedt = (1-_delta_e) * _lambda * s - _epsilon * e + _aging.dot(e)

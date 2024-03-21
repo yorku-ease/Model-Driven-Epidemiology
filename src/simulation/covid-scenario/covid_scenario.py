@@ -90,7 +90,11 @@ def setup_parameters_exposure(parameters):
                 select_parameter_string_contains(2, age + '-'),
                 select_parameter_string_contains(2, como),
             ]
-            u = params.cm[N_AGE_GROUPS * i + j] * params.beta / np.sum(params.initial_population, axis=0)
+            # u = params.cm[N_AGE_GROUPS * i + j] * params.beta / np.sum(params.initial_population, axis=0)
+            u = params.cm2[N_AGE_GROUPS * i + j]
+            # print(params.cm2[N_AGE_GROUPS * i + j])
+            # print(u)
+            # raise 1
             p = np.concatenate((u, u, u))
             select(
                 parameters,

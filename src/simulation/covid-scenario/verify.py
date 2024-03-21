@@ -20,7 +20,6 @@ def main():
     for f in filters:
         ours = np.array(test_derivative.derivative(folder, project_name, lambda x: x == f)).reshape((16,32))
         expected = tuite_eq.derivative(params.our_initial_population, lambda x: x == f, True)
-
         equals = np.all(np.isclose(ours, expected, rtol = 1e-3))
         if equals:
             print(f, 'ok')
@@ -34,10 +33,12 @@ def main():
                     print(f'{ours[i]=}')
                     print(f'{expected[i]=}')
             exit(1)
-    if np.all(np.isclose(
-         np.array(test_derivative.derivative(folder, project_name, lambda x: True)).reshape((16,32)),
-         tuite_eq.derivative(params.our_initial_population, lambda x: x != 'births', True),
-         rtol = 1e-3)):
+
+    r = np.array(test_derivative.derivative(folder, project_name, lambda x: True)).reshape((16,32))
+    e = tuite_eq.derivative(params.our_initial_population, lambda x: x != 'births', True)
+    print(r[0])
+    print(e[0])
+    if np.all(np.isclose(r, e, rtol = 1e-10)):
         print('all equations work')
     else:
         print('every individually tested equations work but there seems to be a difference in the complete model')
