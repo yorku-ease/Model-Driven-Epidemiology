@@ -19,6 +19,10 @@ def main():
     filters = ['Aging', 'exposure', 'infection', 'symptoms', 'hospitalization', 'recovery', 'recovery-h', 'enter-icu', 'exit-icu', 'death']
     for f in filters:
         ours = np.array(test_derivative.derivative(folder, project_name, lambda x: x == f)).reshape((16,32))
+        print(f, ours[0][0])
+        print(f, ours[0][15])
+        print(f, ours[0][16])
+        print(f, ours[0][31])
         expected = tuite_eq.derivative(params.our_initial_population, lambda x: x == f, True)
         equals = np.all(np.isclose(ours, expected, rtol = 1e-3))
         if equals:
