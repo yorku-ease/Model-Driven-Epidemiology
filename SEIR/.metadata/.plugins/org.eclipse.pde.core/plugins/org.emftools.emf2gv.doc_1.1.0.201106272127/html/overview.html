@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Overview</title>
+	<link rel="stylesheet" href="book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Overview</h1>
+
+<a name="idea"><h2>The idea</h2></a>
+
+<p>The idea : EMF is a powerful framework that allows to create generic editors to manage your model files. These editors represent the models as a tree in a very convenient way.</p>
+
+<p>The tree representation is particularly adapted to visualize containment references. Unfortunately, when your model has several non containment references, it is not so easy to get a comprehensive representation of the model in the tree view. It is possible to show such referenced objects as child nodes by customizing the generated editor, but that way, a same object instance appears twice ore more in the tree editor and it is not obvious to understand which tree items correspond to the same instance object.</p>
+
+<p>In such cases, the best solution is to build a GMF diagram editor. That way, you get a graphical representation of your model in which references are clearly visible (at least, the ones you choose to represent). Unfortunately, GMF is a complex framework, and when you ecore model is not yet stable, having to keep up to date a GMF diagram editor in each stabilization iteration makes the iterations get longer.</p>
+
+<p>The idea of emf2gv is to provide a lightweight alternative to GMF in such cases allowing to quickly get a read-only graphical representation of any EMF model by simply drawing the <em>EClass</em> instances as nodes and the <em>EReferences</em> instances as edges (like an UML class diagram).</p>
+
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" valign="middle"><img src="images/sample-school-editor-thumb.gif"/></td>
+    <td align="center" valign="middle"><img src="images/arrow.gif"/></td>
+    <td align="center" valign="middle"><img src="images/processor.gif"/></td>
+    <td align="center" valign="middle"><img src="images/arrow.gif"/></td>
+    <td align="center" valign="middle"><br/><br/><img src="images/diagramidea.jpg"/></td>
+  </tr>
+</table>
+
+<a name="diagramgeneration"><h2>Diagram generation</h2></a>
+
+<p>Emf2gv allows to build a graphical representation of any EMF model.</p>
+
+<p>To do that, Emf2gv takes as input the following data :
+<ul>
+	<li>A model file</li>
+    <li>A graphical description corresponding to the <em>EPackages</em> used in the model file (optional, see below)</li>
+</ul>
+</p>
+
+<p>The graphical description indicates which <em>EClasses</em>, <em>EAttributes</em> and <em>EReferences</em> have to be drawn, and allows to adjust several appearance details (colors, arrow style, and so on). Please refer to the next paragraph for more details.</p>
+
+<p>Emf2gv is also able to build a diagram for a given model file without graphical description. That is why the graphical description is optional. In fact, in such case, emf2fv generates a default graphical description that only resides in memory.</p>
+
+<p>Emf2gv automatically retrieves and draws the EMF Edit plugin icons. Miscellaneous appearance details such as node color, edge style, or font style can be adjusted before rendering the graph through a configuration resource (the graphical description, *.graphdesc). Emf2gv also validates every <em>EObject</em> and shows an error or warning icon when needed.</p>
+
+<p>Here you can see the default result that emf2gv produces with the previous model example (notice the error icon on the "Empty Classroom" node and the warning icon on the "Tony Parker" node) : </p>
+
+<img src="images/sample-school-1-thumb.jpg"/>
+
+<a name="graphdescbasic"><h2>The graphical description (basic)</h2></a>
+
+<p>The graphical description is the configuration resource that is used to tell emf2gv how to render the diagram. When no graphical description is specified, emf2gv automatically generates a default one with default directives to render the diagram so that emf2gv is ready to use with any model.</p>
+
+<p>One can also create a graphical description (from scratch or through the dedicated wizard) to customize the generated diagrams.</p>
+
+<p>Emf2gv classically represents an EMF model like an UML class diagram (the difference is that emf2gv draws <em>EObjects</em> instances instead of classes as in an UML class diagram). In every node (which correspond to an <em>EObject</em> instance) it is possible to show the <em>EAttributes</em> values (the same maner as an UML class diagram shows the class attributes).</p>
+
+<p>Note : emf2gv also allows to show contained <em>EObjects</em> as nested nodes.</p>
+
+<p>The references between <em>EObjects</em> are classically represented as edges.</p>
+
+<a name="graphdescadvanced"><h2>The graphical description (advanced)</h2></a>
+
+<p>Emf2gv has several advanced options that increases the number of ways to render a model diagram. These options make it possible to :
+<ol>
+	<li>render an <em>EObject</em> the same way as a simple attribute value with the <a href="concepts/advanced/RichAttributeFigures.html">RichAttributeFigures</a></li>
+	<li>render an <em>EObject</em> the same way as an edge with the <a href="concepts/advanced/RichReferenceFigures.html">RichReferenceFigures</a></li>
+	<li>filter the <em>EObjects</em> to be drawn by using <a href="concepts/advanced/Filters.html">Filters</a></li>
+	<li>compute dynamically several figure's appearance properties like the node's background and header colors, the labels styles, and so on, with <a href="concepts/advanced/DynamicPropertyOverriders.html">Dynamic Property Overriders</a></li>
+</ol>
+</p>
+
+<p>As an illustration, it is thanks to these advanced features that emf2gv is able to render an <em>Ecore<em> model (the following diagram was generated with the graphdesc model itself) :</p>
+
+<a href="images/graphdesc-ecore-diagram.jpg"><img src="images/graphdesc-ecore-diagram-thumb.jpg" border="0"></a><br>
+<i>(Click to enlarge)</i><br>
+
+</body>
+</html>

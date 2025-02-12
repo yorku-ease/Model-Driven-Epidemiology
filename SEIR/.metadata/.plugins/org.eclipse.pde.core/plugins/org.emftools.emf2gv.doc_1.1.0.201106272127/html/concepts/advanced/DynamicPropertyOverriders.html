@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Dynamic Property Overriders</title>
+	<link rel="stylesheet" href="../../book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Dynamic Property Overriders</h1>
+
+<h2>Description</h2>
+
+<p>The pre-defined figure types (<a href="../basic/ClassFigures.html">ClassFigures</a>, <a href="../basic/AttributeFigures.html">AttributeFigures</a>, <a href="../basic/ReferenceFigures.html">ReferenceFigures</a>, <a href="RichAttributeFigures.html">RichAttributeFigures</a> and <a href="RichReferenceFigures.html">RichReferenceFigures</a>) allows to statically adjust several appearance properties like colors, font style, and so on.</p>
+
+<p>Once these properties have been defined, it is applied on every figure instance. For example, on the school sample, if the background color of the student's ClassFigure has been set to green, all the students appear as green nodes on the diagram. In some cases, one may need several apperance properties to become dynamic.</p>
+
+<p>For example, in the school sample, we may want to build dynamically the body background color of the students with their age. Let's imagine we want to use gray colors indexed on the age of the student. this can be done by doing the following actions :
+<ol>
+	<li>Add a <em>Dynamic Property Overrider</em> to the student's <em>ClassFigure</em></li>
+	<li>Select the <em>bodyBackgroundColor</em> in the <em>Property To Override</em> entry</li>
+	<li>Enter &quot;<em>newColor(256 - age*2, 256 - age*2, 256 - age*2)</em>&quot; in the <em>Overriding Expression</em> entry</li>
+</ol>
+You should get the following result (standard diagram on the left, diagram with dynamic colors on the right where you can notice the students node colors) :
+<table cellspacing="0" border="0">
+	<tr>
+		<td><img src="../../images/sample-school-1-thumb.jpg" border="1"></td>
+		<td><img src="../../images/arrow.gif"></td>
+		<td><img src="images/sample-school-dynamic-student-color-thumb.jpg" border="1"></td>
+	</tr>
+</table>
+</p>
+
+<p>Most of the figure's appearance properties are overridable. Here is a complete list of them :</p>
+
+<table cellspacing="0" border="1">
+<tr><th>Figure type</th><th>Overridable properties</th></tr>
+<tr><td>ClassFigure</td><td>labelStyle, headerBackgroundColor, bodyBackgroundColor</td></tr>
+<tr><td>AttributeFigure</td><td>labelStyle</td></tr>
+<tr><td>RichAttributeFigure</td><td>labelStyle</td></tr>
+<tr><td>ReferenceFigure</td><td>targetArrowType, sourceArrowType, customTargetArrow, customSourceArrow, color, style, minimumEdgeLength</td></tr>
+<tr><td>RichReferenceFigure</td><td>targetArrowType, sourceArrowType, customTargetArrow, customSourceArrow, color, style, minimumEdgeLength, sourceLabelStyle, standardLabelStyle, targetLabelStyle, labelDistance, labelAngle</td></tr>
+</table>
+
+<h2>Properties</h2>
+
+<p>The <em>DynamicPropertyOverrider</em> accepts the following properties : </p>
+
+<!-- Start of zone DynamicPropertyOverriderProperties -->
+<table cellspacing="0" border="1">
+<tr><th>Category</th><th>Name</th><th>Description</th><th>Default literal</th></tr>
+<tr><td valign="top" aligne="left" rowspan="3">-</td>
+<td valign="top" aligne="left">enabled</td><td valign="top" aligne="left">A boolean indicating if the dynamic property overrider is enabled or not</td><td valign="top" aligne="left">true</td></tr>
+<tr><td valign="top" aligne="left">overridingExpression</td><td valign="top" aligne="left">The OCL expression to be used to retrieve the overriding property value</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">propertyToOverride</td><td valign="top" aligne="left">The figure's appearance property to override</td><td valign="top" aligne="left">&nbsp;</td></tr>
+</table>
+<!-- End of zone DynamicPropertyOverriderProperties -->
+
+</body>
+</html>

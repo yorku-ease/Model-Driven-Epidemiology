@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Tutorial #3 - Standalone mode</title>
+	<link rel="stylesheet" href="../book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Tutorial #3 - Standalone mode</h1>
+
+<h2>Overview</h2>
+
+<p>Emf2gv allow to generate diagrams outside of Eclipse, for example in a standalone application.</p>
+
+<p>To do that, one has at first to get all the required libraries (go to the <a href="../reference/standalonemode/dependencies.html">dependencies</a> page for more details).</p>
+
+<p>This can be done manually by going (by retrieving it in the eclipse directory) or through an automated way (see the following paragraph).</p>
+
+<h2>Automated Way To Retrieve The Dependencies</h2>
+
+<p>
+<ul>
+	<li>Click on the <strong>File > New > Other...</strong> menu</li>
+	<li>Select the <strong>Plug-in Development > Feature Project</strong> entry, and click <strong>Next</strong></li>
+</ul>
+</p>
+
+<a href="images/tuto3-new-feature-project-1.png"><img src="images/tuto3-new-feature-project-1-thumb.png" border="0"></a><br>
+<i>(Click to enlarge)</i><br>
+
+<p>
+<ul>
+	<li>Type <code>org.emftools.emf2gv.standalonefeature</code> for the project's name and click <strong>Finish</strong></li>
+</ul>
+</p>
+
+<a href="images/tuto3-new-feature-project-2.png"><img src="images/tuto3-new-feature-project-2-thumb.png" border="0"></a><br>
+<i>(Click to enlarge)</i><br>
+
+<p>
+<ul>
+	<li>Open the <code>feature.xml</code> file and replace the file content by the following code :</li>
+</ul>
+</p>
+
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;feature
+	  id="org.emftools.emf2gv.standalonefeature"
+	  label="Standalone"
+	  version="1.0.0.qualifier"&gt;
+   &lt;!--
+	   Your model and edit plugins
+	   (replace the school sample libraries)
+	 --&gt;
+   &lt;plugin id="org.emftools.samples.school" version="0.0.0"/&gt;
+   &lt;plugin id="org.emftools.samples.school.edit" version="0.0.0"/&gt;
+   &lt;!--
+	   Required dependencies for the standalone mode
+	 --&gt;
+   &lt;plugin id="org.emftools.emf2gv.processor.core" version="0.0.0"/&gt;
+   &lt;plugin id="org.emftools.emf2gv.graphdesc" version="0.0.0"/&gt;
+   &lt;plugin id="org.emftools.emf2gv.util" version="0.0.0"/&gt;
+   &lt;plugin id="org.emftools.validation.utils" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.core.runtime" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.emf.ecore" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.emf.common" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.emf.ecore.xmi" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.equinox.common" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.ocl.ecore" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.ocl" version="0.0.0"/&gt;
+   &lt;plugin id="org.eclipse.emf.edit" version="0.0.0"/&gt;
+   &lt;plugin id="lpg.runtime.java" version="0.0.0"/&gt;
+&lt;/feature&gt;
+</pre>
+
+<p>
+<ul>
+	<li>Create a ANT build file named <code>build-libs.xml</code> (don't name it <code>build.xml</code> or it may be replaced during the PDE build) with the following content :</li>
+</ul>
+</p>
+
+<pre>
+&lt;project name="test" default="default"&gt;
+	&lt;target name="default"&gt;
+		&lt;pde.exportFeatures
+			features="org.emftools.emf2gv.standalonefeature"
+			destination="out"
+			exportType="directory" useJARFormat="true"/&gt;
+	&lt;/target&gt;
+&lt;/project&gt;
+</pre>
+
+<p>
+<ul>
+	<li>Launch the ANT script in the same JRE as the workspace (in the JRE tab of the <strong>External Tools Configuration</strong>, select <strong>Run in the same JRE as the workspace</strong>).</li>
+    <li>After a few seconds, if you refresh your workspace, the libraries must have been built :</li>
+</ul>
+</p>
+
+<a href="images/tuto3-dependency-libs.png"><img src="images/tuto3-dependency-libs-thumb.png" border="0"></a><br>
+<i>(Click to enlarge)</i><br>
+
+<br>
+<h2>Sample Standalone Application</h2>
+
+<p>Now that we have retrieved the dependencies, wit's time to create the sample application.</p>
+<p>
+<ul>
+	<li>Click on the <strong>File > New > Java Project</strong> menu</li>
+	<li>Type <code>org.emftools.emf2gv.standaloneapp</code> for the project's name and click <strong>Finish</strong></li>
+</ul>
+</p>
+
+<a href="images/tuto3-new-java-project.png"><img src="images/tuto3-new-java-project-thumb.png" border="0"></a><br>
+<i>(Click to enlarge)</i><br>
+
+<p>
+<ul>
+	<li>Create a new folder named <code>lib</code> in the project</li>
+	<li>Put the dependency libraries in this folder and add them to the classpath (right click on the libraries and select <strong>Build Path > Add to Build Path</strong>)</li>
+	<li>Create a new <em>Class</em> named <code>StandaloneApp</code> in the package <code>org.emftools.emf2gv.standaloneapp</code></li>
+	<li>Edit the <code>StandaloneApp</code> class and replace the file content by the following code :</li>
+</ul>
+</p>
+
+<table border="1" cellspacing="0"><tr><td>
+<pre>
+package org.emftools.emf2gv.standaloneapp;
+
+import java.io.File;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.emftools.emf2gv.graphdesc.GVFigureDescription;
+import org.emftools.emf2gv.graphdesc.GraphdescPackage;
+import org.emftools.emf2gv.processor.core.StandaloneProcessor;
+import org.emftools.samples.school.SchoolPackage;
+
+public class StandaloneApp {
+
+    public static void main(String[] args) {
+        try {
+            // Packages initialization
+            SchoolPackage.eINSTANCE.eClass();
+            GraphdescPackage.eINSTANCE.eClass();
+
+            // Load the model resource
+            System.out.println("Loading the model...");
+            ResourceSet rs = new ResourceSetImpl();
+            rs.getResourceFactoryRegistry()
+                    .getExtensionToFactoryMap()
+                    .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+                            new XMIResourceFactoryImpl());
+            Resource modelResource = rs.getResource(URI.createURI(
+                    StandaloneApp.class.getResource("sample.school")
+                            .toString(), true), true);
+
+            // Load the graphical description
+            System.out.println("Loading the graphical description...");
+            Resource graphDescResource = rs.getResource(URI.createURI(
+                    StandaloneApp.class.getResource("sample.graphdesc")
+                            .toString(), true), true);
+
+            // Graphical description retrieval
+            GVFigureDescription gvFigureDescription = (GVFigureDescription) graphDescResource
+                    .getContents().get(0);
+
+            // Diagram generation
+            System.out.println("Diagram generation...");
+            StandaloneProcessor.process(modelResource.getContents(), // model
+                    gvFigureDescription, // Figure description
+                    new File("emf2gvWorkDir"), // Work directory
+                    "sample.jpg", // diagram file
+                    null, // Callback
+                    null, // Icon provider
+                    null, // dot command
+                    true, // Add validation decorators ?
+                    false, // Keep generated Graphviz source file ?
+                    "UTF-8", // Graphviz source encoding
+                    null, // Additional filters
+                    null, // ILogger
+                    null); // Progress monitor
+            System.out.println("Done.");
+        } catch (Throwable t) {
+            System.err.println("An unexpected error occured");
+            t.printStackTrace();
+        }
+    }
+
+}
+</td></tr></table>
+
+<p>
+<ul>
+	<li>Copy the <a href="../ref-resources/sample.school">sample school model</a> in the same package of the <code>Standalone</code> class (follow the link)</li>
+	<li>Copy the <a href="../ref-resources/sample.graphdesc">sample school graphdesc</a> in the same package of the <code>Standalone</code> class (follow the link)</li>
+	<li>Launch the <code>StandaloneApp</code> (right click on the class, select <strong>Run As > Java Application</strong></li>
+	<li>After a few seconds, if you refresh the project (F5), a new file name <code>sample.jpg</code> appears in the project</li>
+	<li>If you open it, you get the following result :</li>
+</ul>
+</p>
+
+<a href="../images/sample-school-2.jpg"><img src="../images/sample-school-2-thumb.jpg" border="1"></a><br>
+<i>(Click to enlarge)</i><br>
+
+</body>
+</html>

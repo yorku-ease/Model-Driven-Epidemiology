@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Using DPO With Font Styles</title>
+	<link rel="stylesheet" href="../../book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Using DPO With Font Styles</h1>
+
+<p>With <em>Dynamic Property Overriders</em>, it is possible to override the static font styles of the diagram labels.</p>
+
+<p>The font styles belong to an <em>Enumeration</em> of the <em>graphdesc</em> meta-model.</p>
+
+<p>Let's imagine in the school sample that we want to associate the font styles of the classrooms header label with their student count. For example, if the students count is &gt; 0, we want a bold and underlined font style, and in other cases, we want an italic font.</p>
+
+<p>To get this result, we have to :
+<ol>
+	<li>Add a <em>Dynamic Property Overrider</em> to the <em>Classroom</em> <em>ClassFigure</em></li>
+	<li>Select the <em>labelStyle</em> in the <em>Property To Override</em> entry</li>
+	<li>Enter the following expression in the <em>Overriding Expression</em> entry (comments may be ommited) :
+<pre>
+-- if the classroom has at least one student
+if (students->size() > 0)
+then
+	-- the header label is bold and underlined
+	-- (we musn't forget to put the styles in a Collection, here
+	-- we choose a Set)
+	Set{ graphdesc::FontStyle::bold, graphdesc::FontStyle::underline }
+else
+	-- else it is italic (in a Set like before)
+	Set { graphdesc::FontStyle::italic }
+endif
+</pre></li>
+</ol>
+</p>
+
+<p>You should get the following result (without the DPO on the left, and with the DPO on the right ; we can see the font styles that become dynamic on the right diagram) :</p>
+<table cellspacing="0" border="0">
+	<tr>
+		<td><img src="images/dpo-font-style-before-thumb.jpg" border="1"></td>
+		<td><img src="../../images/arrow.gif"></td>
+		<td><img src="images/dpo-font-style-after-thumb.jpg" border="1"></td>
+	</tr>
+</table>
+
+</body>
+</html>

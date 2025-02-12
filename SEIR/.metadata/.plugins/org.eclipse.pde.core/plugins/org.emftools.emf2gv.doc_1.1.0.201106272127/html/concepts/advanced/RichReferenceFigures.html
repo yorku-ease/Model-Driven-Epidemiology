@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Rich Reference Figures</title>
+	<link rel="stylesheet" href="../../book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Rich Reference Figures</h1>
+
+<h2>Description</h2>
+
+<p>The <em>RichReferenceFigure</em> is used to render an <em>EObject</em> the same way as a reference (in other words with an <a href="../basic/ReferenceFigures.html">ReferenceFigure</a>).</p>
+
+<p>It is helpful when your model contains <em>Association classes</em>. In other words, it is helpful when you want to represent a relation between two <em>EObjects</em> that goes through an intermediate <em>EObject</em> without representing that intermediate </em>EObject</em> as a complete node.</p>
+
+<p>A <em>RichReferenceFigure</em> also allows to attach up to three labels on the edge (at the start, in the middle and at the end). The labels are configured through an <a href="../../reference/ocl/overview.html">OCL expression</a> (in order to be flexible enough to meet your own needs).</p>
+
+<h2>Illustration</h2>
+
+<p>For example, with the school sample, it is possible to represent the <em>Students</em> directly in the <em>Classroom</em> nodes (see the right diagram) instead of representing them fully as nodes (as on the left diagram) :
+<table cellspacing="0" border="0">
+	<tr>
+		<td><img src="../../images/sample-school-1-thumb.jpg" border="1"></td>
+		<td><img src="../../images/arrow.gif"></td>
+		<td><img src="images/sample-school-richreference-thumb.jpg" border="1"></td>
+	</tr>
+</table>
+</p>
+
+<h2>Label Positions</h2>
+
+<p>The <em>RichReferenceFigures</em> accepts up to 3 labels which can be put :
+<ul>
+	<li>at the beginning of the edge (through the <strong>Source Label EAttribute</strong> property)</li>
+	<li>in the middle of the edge (through the <strong>Standard Label EAttribute</strong> property)</li>
+	<li>at the end of the edge (through the <strong>Target Label EAttribute</strong> property)</li>
+</ul>
+</p>
+
+<a href="images/rich-reference-labels.jpg"><img src="images/rich-reference-labels-thumb.jpg" border="1"></a><br>
+<i>(Click to enlarge)</i>
+
+<p>The source and target label positions can be adjusted thanks to the <strong>Label Angle</strong> and the <strong>Distance from source/target label to the edge-node connection</strong> properties.</p>
+
+<p>Here is an illustration showing how to use the <strong>Label Angle</strong> property ;</p>
+
+<a href="images/rich-reference-label-angle.jpg"><img src="images/rich-reference-label-angle-thumb.jpg" border="1"></a><br>
+<i>(Click to enlarge)</i>
+
+<p>Here are three samples with three values (0, 4, 8) for the <strong>Label Distance</strong> property :</p>
+<a href="images/rich-reference-label-dist-0.jpg"><img src="images/rich-reference-label-dist-0-thumb.jpg" border="1"></a><br>
+<i>(Label Distance = 0 ; Click to enlarge)</i>
+<a href="images/rich-reference-label-dist-4.jpg"><img src="images/rich-reference-label-dist-4-thumb.jpg" border="1"></a><br>
+<i>(Label Distance = 4 ; Click to enlarge)</i>
+<a href="images/rich-reference-label-dist-8.jpg"><img src="images/rich-reference-label-dist-8-thumb.jpg" border="1"></a><br>
+<i>(Label Distance = 8 ; Click to enlarge)</i>
+
+
+<h2>Properties</h2>
+
+<p>The <em>RichReferenceFigure</em> accepts the following properties : </p>
+
+<!-- Start of zone RichReferenceFigureProperties -->
+<table cellspacing="0" border="1">
+<tr><th>Category</th><th>Name</th><th>Description</th><th>Default literal</th></tr>
+<tr><td valign="top" aligne="left" rowspan="15">Appearance</td>
+<td valign="top" aligne="left">color</td><td valign="top" aligne="left">The edge color</td><td valign="top" aligne="left">#000000</td></tr>
+<tr><td valign="top" aligne="left">customSourceArrow</td><td valign="top" aligne="left">The custom source arrow (graphviz compliant arrow style, ignored if sourceArrowType is not set to 'custom')</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">customTargetArrow</td><td valign="top" aligne="left">The custom target arrow (graphviz compliant arrow style, ignored if targetArrowType is not set to 'custom')</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">labelAngle</td><td valign="top" aligne="left">This, along with labeldistance, determine where the headlabel (taillabel) are placed with respect to the head (tail) in polar coordinates. The origin in the coordinate system is the point where the edge touches the node. The ray of 0 degrees goes from the origin back along the edge, parallel to the edge at the origin. (same as Graphviz labelangle property)</td><td valign="top" aligne="left">0</td></tr>
+<tr><td valign="top" aligne="left">labelDistance</td><td valign="top" aligne="left">Multiplicative scaling factor adjusting the distance that the headlabel(taillabel) is from the head(tail) node (same as Graphviz labeldistance property)</td><td valign="top" aligne="left">5.0</td></tr>
+<tr><td valign="top" aligne="left">minimumEdgeLength</td><td valign="top" aligne="left">Minimum edge length (same as Graphviz minlen property)</td><td valign="top" aligne="left">1</td></tr>
+<tr><td valign="top" aligne="left">sourceArrowType</td><td valign="top" aligne="left">The source arrow type</td><td valign="top" aligne="left">none</td></tr>
+<tr><td valign="top" aligne="left">sourceLabelExpression</td><td valign="top" aligne="left">The OCL expression to use to build the source label of the edge</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">sourceLabelStyle</td><td valign="top" aligne="left">The style of the source label</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">standardLabelExpression</td><td valign="top" aligne="left">The OCL expression to use to build the standard (centered) label of the edge</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">standardLabelStyle</td><td valign="top" aligne="left">The style of the standard (centered) label</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">style</td><td valign="top" aligne="left">The edge style</td><td valign="top" aligne="left">normal</td></tr>
+<tr><td valign="top" aligne="left">targetArrowType</td><td valign="top" aligne="left">The target arrow type</td><td valign="top" aligne="left">normal</td></tr>
+<tr><td valign="top" aligne="left">targetLabelExpression</td><td valign="top" aligne="left">The OCL expression to use to build the target label of the edge</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">targetLabelStyle</td><td valign="top" aligne="left">The style of the target label</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left" rowspan="2">Model</td>
+<td valign="top" aligne="left">eReference</td><td valign="top" aligne="left">The EReference that this figure will represent on the graph</td><td valign="top" aligne="left">&nbsp;</td></tr>
+<tr><td valign="top" aligne="left">targetEReference</td><td valign="top" aligne="left">The target EReference of the rich reference EClass</td><td valign="top" aligne="left">&nbsp;</td></tr>
+</table>
+<!-- End of zone RichReferenceFigureProperties -->
+
+</body>
+</html>
