@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Icons Management</title>
+	<link rel="stylesheet" href="../../book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Icons Management</h1>
+
+<p>In an eclipse environment, emf2gv uses the registration mechanism to retrieve the icons.</p>
+
+<p>Outside Eclipse, for example in a standalone application, this mechanism cannot be used.</p>
+
+<p>In that case, emf2gv uses an icon provider (<code>org.emftools.emf2gv.processor.core.IEObjectIconProvider</code>) that you are free to implement to meet your needs. Emf2gv nevertheless comes with a default implementation (<code>org.emftools.emf2gv.processor.core.ClasspathEObjectIconProvider</code>) that searches the icons in the classpath using the following rules :
+<ul>
+	<li><code>/&lt;epackage_name&gt;/&lt;eclass_name&gt;.(gif|png)</code></li>
+    <li><code>/&lt;eclass_name&gt;.(gif|png)</code></li>
+    <li><code>/icons/&lt;epackage_name>/&lt;eclass_name&gt;.(gif|png)</code></li>
+    <li><code>/icons/&lt;eclass_name&gt;.(gif|png)</code></li>
+    <li><code>/icons/full/obj16/<eclass_name>.(gif|png)</code></li>
+</ul>
+</p>
+
+<p>As you can see, this implementation allows to easily organizes the icons in the ClassPath. The last rule even allows to retrieve the icons from the generated EMF edit plugin.</p>
+
+</body>
+</html>

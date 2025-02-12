@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Using DPO With Edge Styles</title>
+	<link rel="stylesheet" href="../../book.css" charset="ISO-8859-1" type="text/css">
+</head>
+
+<body>
+<h1>Using DPO With Edge Styles</h1>
+
+<p>With <em>Dynamic Property Overriders</em>, it is possible to override the static edge styles of the diagram reference figures (both <em>ReferenceFigures</em> and <em>RichReferenceFigures</em>).</p>
+
+<p>The edge styles belong to an <em>Enumeration</em> of the <em>graphdesc</em> meta-model.</p>
+
+<p>Let's imagine in the school sample that we want to associate the edge styles of the classrooms reference with the capacity of the classroom. For example, if the capacity is &gt; 1, we want a dashed edge style, and in other cases, we want the default one.</p>
+
+<p>To get this result, we have to :
+<ol>
+	<li>Add a <em>Dynamic Property Overrider</em> to the classrooms <em>ReferenceFigure</em> (which is a child of the <em>School</em> <em>ClassFigure</em>)</li>
+	<li>Select the <em>sourceArrowType</em> in the <em>Property To Override</em> entry</li>
+	<li>Enter the following expression in the <em>Overriding Expression</em> entry (comments may be ommited) :
+<pre>
+-- if the classroom's capacity is more than 1
+if capacity &gt; 1
+then
+	-- the edge style is dashed
+	graphdesc::EdgeStyle::dashed
+else
+	-- else we use the static arrow type that has been defined
+	defaultPropertyValue
+endif
+</pre></li>
+</ol>
+</p>
+
+<p>You should get the following result (without the DPO on the left, and with the DPO on the right) :</p>
+<table cellspacing="0" border="0">
+	<tr>
+		<td><img src="images/dpo-edge-style-before-thumb.jpg" border="1"></td>
+		<td><img src="../../images/arrow.gif"></td>
+		<td><img src="images/dpo-edge-style-after-thumb.jpg" border="1"></td>
+	</tr>
+</table>
+
+</body>
+</html>
