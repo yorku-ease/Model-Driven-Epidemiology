@@ -4,23 +4,24 @@
 ---
 
 ## **📝 Project Overview**
-This project is an **SEIR (Susceptible-Exposed-Infectious-Recovered) compartmental model**, implemented using the **Eclipse Modeling Framework (EMF) and Java**.
+This project is an **SEIR (Susceptible-Exposed-Infectious-Recovered) compartmental model**, implemented using the **Eclipse Modeling Framework (EMF) and Java 17**.
 
 ### **✨ Features**
 ✅ Define an **SEIR meta-model** using **Ecore in Eclipse EMF**.  
 ✅ Automatically **generate differential equations** for compartment transitions.  
 ✅ Allow **users to modify compartments and flow rates** dynamically.  
-✅ Enable easy **equation extraction for simulations or further analysis**.
+✅ Enable easy **equation extraction for simulations or further analysis**.  
+✅ Uses **Eclipse Target Definitions** to manage dependencies (no Maven or Tycho required).
 
 ### **📂 Project Structure**
 ```
-SEIRModel/
-│── model/
+SEIR/
+│── org.seir.targetplatform/  # Target definition for dependencies
+│   ├── seir.target           # Eclipse Target Platform configuration
+│── SEIRModel/                # Main SEIR Model implementation
 │   ├── seirmodel.ecore       # The Ecore definition of the SEIR model
 │   ├── seirmodel.genmodel    # The generator model
-│── src/
-│   ├── seir/equationgenerator/
-│       ├── SEIREquationGenerator.java  # Java code for extracting equations
+│── SEIRModel.editor/         # Eclipse Editor Plugin
 │── SEIR_Equations.txt        # Output file containing generated equations
 │── README.md                 # Project documentation
 ```
@@ -34,57 +35,99 @@ This guide will walk you through **how to set up and run the project step by ste
 ### **🔹 Required Software**
 | Software | Version | Download Link |
 |----------|---------|--------------|
-| **Java JDK** | 11+ | [OpenJDK](https://adoptium.net/) |
+| **Java JDK** | 17+ | [OpenJDK](https://adoptium.net/) |
 | **Eclipse IDE** | Latest | [Eclipse Download](https://www.eclipse.org/downloads/) |
 | **EMF Modeling Tools** | Installed via Eclipse | `Help` → `Eclipse Marketplace` |
 
 ---
 
-## **📌 Step 2: Clone & Open the Project**
-### **🔹 Clone the Repository**
-Run the following command to clone the GitHub repository:
-```bash
-git clone https://github.com/yorku-ease/Model-Driven-Epidemiology.git
-```
-
-### **🔹 Open the Project in Eclipse**
+## **📌 Step 2: Open the Eclipse Workspace**
+### **🔹 Open the SEIR Project as a Workspace**
 1. Open **Eclipse**.
-2. Go to `File` → `Import...` → `Existing Projects into Workspace`.
-3. Select the **`SEIRModel`** project.
-4. Click **Finish**.
+2. When prompted for a workspace, **choose the `SEIR/` folder**.
+3. Eclipse will load all projects in this workspace, including:
+   - `SEIRModel`
+   - `SEIRModel.editor`
+   - `SEIRModel.edit`
+   - `SEIRModel.tests`
 
 ---
 
-## **📌 Step 3: Run the SEIR Model**
-### **🔹 Run the SEIR Equation Generator**
-1. **Open `SEIREquationGenerator.java`**.
-2. **Right-click the file** → `Run As` → `Java Application`.
-3. The system **automatically extracts equations** and **saves them in** `SEIR_Equations.txt`.
+## **📌 Step 3: Configure Eclipse Target Platform**
+> **Eclipse Target Platform ensures that all required dependencies are properly resolved.**
+### **🔹 Setup Target Platform**
+1. Open the file `org.seir.targetplatform/seir.target`.
+2. Click **Set as Active Target Platform**.
+3. Wait for dependencies to resolve.
 
-#### **🔹 Sample Expected Console Output**
-```plaintext
-🌟 Generated SEIR Model Equations:
-dS/dt = - 0.002 * S - 0.001 * S
-dE_N/dt = 0.001 * S - 0.4 * E_N
-dE_I/dt = 0.002 * S - 0.5 * E_I
-dI_S/dt = 0.5 * E_I + 0.4 * E_N - 0.2 * I_S
-dI_A/dt = 0.5 * E_I + 0.4 * E_N - 0.25 * I_A
-dR/dt = 0.2 * I_S + 0.25 * I_A
-🌟 Equations saved to SEIR_Equations.txt
-```
+✅ **Now all required Eclipse dependencies should be available.**  
+You **do not need Maven or Tycho**, as all dependencies are managed by the **target definition**.
 
-### **🔹 Verify the Output**
-1. Open **`SEIR_Equations.txt`**.
-2. **Check that the generated equations match expectations**.
+---
+
+## **📌 Step 4: Run the SEIR Model Editor**
+1. **Open `SEIRModel.editor` in Eclipse**.
+2. **Right-click on `SEIRModel.editor`** → `Run As > Eclipse Application`.
+3. **A new Eclipse instance will open**. This is the runtime workspace where you can create and modify SEIR models.
+
+---
+
+## **📌 Step 5: Add SEIR Model in the New Eclipse Instance**
+1. **In the new Eclipse instance**, go to `File > Import > Existing Projects into Workspace`.
+2. Select the **`SEIRModel`** project.
+3. Click **Finish**.
+
+Now, the `SEIRModel` project is available in the new Eclipse instance, allowing you to modify the SEIR model.
+
+---
+
+## **📌 Step 6: Create and Modify a SEIR Model**
+1. **In the new Eclipse instance, go to** `File > New > Other…`.
+2. **Search for `"SEIR Model"`** and **create a new model**.
+3. **Save the file as** `My.seirmodel`.
+
+### **🛠️ What is `My.seirmodel`?**
+- This file **stores the SEIR model definition** in a structured format.
+- It **contains compartments** (e.g., **S, E, I, R**) and **flows** between them.
+
+### **🔹 Modify the Model**
+1. **Double-click `My.seirmodel`** to open it in the editor.
+2. **Right-click** → `New Child` → Add **compartments** (Susceptible, Exposed, Infectious, etc.).
+3. **Right-click** on a compartment → `New Child` → Add **Flows**.
+4. **Set the target of the flow** and define the **flow rate**.
+
+### **🔹 Save and Validate**
+1. **Click `File > Save`** (`Ctrl+S`).
+2. **Right-click `My.seirmodel`** → `Validate`.
+3. If validation **fails**, ensure all compartments and flows are correctly linked.
+
+---
+
+## **📌 Step 7: Generate Equations using `SEIREquationGenerator.java`**
+1. **Switch back to the first Eclipse instance** (your development workspace).
+2. **Locate `SEIREquationGenerator.java`**:
+   ```
+   src/seir/equationgenerator/SEIREquationGenerator.java
+   ```
+3. **Right-click** → `Run As > Java Application`.
+
+🚀 **This will extract the SEIR model equations and print them to the console.**  
+✅ The equations will also be saved in `SEIR_Equations.txt`.
+
 
 ---
 
 # **📌 Troubleshooting**
-### **🚨 Common Errors & Fixes**
 | Error | Solution |
 |-------|----------|
+| `Missing dependencies` | Make sure **seir.target** is **set as the active target platform**. |
 | `PackageNotFoundException: http://example.com/seirmodel` | Run `SEIREquationGenerator.java` to register the model. |
 | `Exception in thread "main" java.io.FileNotFoundException` | Ensure **`My.seirmodel`** exists in the project root. |
-| `NoClassDefFoundError: org/eclipse/emf/ecore/resource` | **Add EMF JARs** to the classpath in `Java Build Path`. |
+| `NoClassDefFoundError: org/eclipse/emf/ecore/resource` | **Set the target definition** and restart Eclipse. |
+
+---
+
+## **🚀 Conclusion**
+This guide ensures **anyone can successfully set up, run, and test** your SEIR Model implementation. By **using an Eclipse Target Definition instead of Maven/Tycho**, you simplify dependency management and make it easier for new users to get started.
 
 ---
