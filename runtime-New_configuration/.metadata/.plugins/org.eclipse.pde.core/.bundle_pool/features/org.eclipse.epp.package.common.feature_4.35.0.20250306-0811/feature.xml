@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.epp.package.common.feature"
+      label="Eclipse Packaging Project Common Feature"
+      version="4.35.0.20250306-0811"
+      provider-name="Eclipse Packaging Project">
+
+   <description url="http://eclipse.org/epp">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <!-- This ensures this feature cannot be uninstalled. It is installed with installMode="root" in the product --> 
+      <import feature="org.eclipse.platform" version="4.0.0" match="compatible"/>
+      <import feature="org.eclipse.equinox.p2.user.ui"/>
+
+      <!-- Workaround Eclipse Platform default filetransfer not supporting authenticated proxies
+      See also the change in p2.inf
+      see https://github.com/eclipse-packaging/packages/issues/81 -->
+      <import feature="org.eclipse.ecf.filetransfer.httpclient5.feature"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.epp.package.common"
+         download-size="259"
+         install-size="424"
+         version="4.35.0.20250306-0811"
+         unpack="true"/>
+
+</feature>
