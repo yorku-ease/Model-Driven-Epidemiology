@@ -23,7 +23,7 @@ public class SEIREquationGenerator {
         initializeEMF();
 
         // Get the correct model path
-        String modelPath = System.getProperty("user.dir") + "/My.seirmodel"; 
+        String modelPath = System.getProperty("user.dir") + "/Sample.seirmodel"; 
 
         // Load the SEIR model
         SEIRModel seirModel = loadSEIRModel(modelPath);
