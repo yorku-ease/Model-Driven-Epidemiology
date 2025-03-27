@@ -1,133 +1,183 @@
-# **SEIR Model Implementation using Eclipse EMF & Java**
-### **A Compartmental SEIR Model with Dynamic Equation Generation**
+SEIR Model Editor (Graphical + Code)
 
----
+This project is a graphical and textual editor for SEIR epidemiological models, based on Eclipse Modeling Framework (EMF) and Sirius. The SEIR model (Susceptible, Exposed, Infectious, Recovered) supports customization through a metamodel defined in seir.ecore, and users can define instances using the .seirmodel file format.
 
-## **📝 Project Overview**
-This project is an **SEIR (Susceptible-Exposed-Infectious-Recovered) compartmental model**, implemented using the **Eclipse Modeling Framework (EMF) and Java 17**.
+It supports:
 
-### **✨ Features**
-✅ Define an **SEIR meta-model** using **Ecore in Eclipse EMF**.  
-✅ Automatically **generate differential equations** for compartment transitions.  
-✅ Allow **users to modify compartments and flow rates** dynamically.  
-✅ Enable easy **equation extraction for simulations or further analysis**.  
-✅ Uses **Eclipse Target Definitions** to manage dependencies (no Maven or Tycho required).
+Graphical editing (via Sirius diagrams)
 
-### **📂 Project Structure**
-```
-SEIR/
-│── org.seir.targetplatform/  # Target definition for dependencies
-│   ├── seir.target           # Eclipse Target Platform configuration
-│── SEIRModel/                # Main SEIR Model implementation
-│   ├── seirmodel.ecore       # The Ecore definition of the SEIR model
-│   ├── seirmodel.genmodel    # The generator model
-│── SEIRModel.editor/         # Eclipse Editor Plugin
-│── SEIR_Equations.txt        # Output file containing generated equations
-│── README.md                 # Project documentation
-```
+Model definition and generation (via EMF)
 
----
+Equation generation
 
-# **🛠️ Setup & Installation**
-This guide will walk you through **how to set up and run the project step by step**.
+Target platform resolution for dependency management
 
-## **📌 Step 1: Install Prerequisites**
-### **🔹 Required Software**
-| Software | Version | Download Link |
-|----------|---------|--------------|
-| **Java JDK** | 17+ | [OpenJDK](https://adoptium.net/) |
-| **Eclipse IDE** | Latest | [Eclipse Download](https://www.eclipse.org/downloads/) |
-| **EMF Modeling Tools** | Installed via Eclipse | `Help` → `Eclipse Marketplace` |
+📁 Project Structure
 
----
+SEIRModel/
+├── seir.ecore                 # Ecore metamodel definition
+├── seir.genmodel              # EMF GenModel
+├── seir.aird                  # Sirius representation instance
+├── Sample.seirmodel           # Sample SEIR model instance
+├── SEIR_Equations.txt         # Output from equation generation
+├── org.seir.targetplatform/   # Target platform project
+├── SEIRModel.design/          # Sirius graphical definition (.odesign)
+├── SEIRModel.edit/            # EMF edit plugin
+├── SEIRModel.editor/          # EMF editor plugin
+├── SEIRModel.tests/           # Unit tests
+└── SEIRModel/                 # Core model plugin
 
-## **📌 Step 2: Open the Eclipse Workspace**
-### **🔹 Open the SEIR Project as a Workspace**
-1. Open **Eclipse**.
-2. When prompted for a workspace, **choose the `SEIR/` folder**.
-3. Eclipse will load all projects in this workspace, including:
-   - `SEIRModel`
-   - `SEIRModel.editor`
-   - `SEIRModel.edit`
-   - `SEIRModel.tests`
+🚀 Setup Instructions
 
----
+1. Install Required Eclipse
 
-## **📌 Step 3: Configure Eclipse Target Platform**
-> **Eclipse Target Platform ensures that all required dependencies are properly resolved.**
-### **🔹 Setup Target Platform**
-1. Open the file `org.seir.targetplatform/seir.target`.
-2. Click **Set as Active Target Platform**.
-3. Wait for dependencies to resolve.
+Eclipse Modeling package
 
-✅ **Now all required Eclipse dependencies should be available.**  
-You **do not need Maven or Tycho**, as all dependencies are managed by the **target definition**.
+OR install features:
 
----
+EMF SDK
 
-## **📌 Step 4: Run the SEIR Model Editor**
-1. **Open `SEIRModel.editor` in Eclipse**.
-2. **Right-click on `SEIRModel.editor`** → `Run As > Eclipse Application`.
-3. **A new Eclipse instance will open**. This is the runtime workspace where you can create and modify SEIR models.
+Sirius (from update site)
 
----
+2. Import Projects
 
-## **📌 Step 5: Add SEIR Model in the New Eclipse Instance**
-1. **In the new Eclipse instance**, go to `File > Import > Existing Projects into Workspace`.
-2. Select the **`SEIRModel`** project.
-3. Click **Finish**.
+Use File > Import > Existing Projects into Workspace, and import all 6+ projects listed above.
 
-Now, the `SEIRModel` project is available in the new Eclipse instance, allowing you to modify the SEIR model.
+3. Setup Target Platform
 
----
+Open seir.target in Eclipse
 
-## **📌 Step 6: Create and Modify a SEIR Model**
-1. **In the new Eclipse instance, go to** `File > New > Other…`.
-2. **Search for `"SEIR Model"`** and **create a new model**.
-3. **Save the file as** `My.seirmodel`.
+Click "Set as Active Target Platform"
 
-### **🛠️ What is `My.seirmodel`?**
-- This file **stores the SEIR model definition** in a structured format.
-- It **contains compartments** (e.g., **S, E, I, R**) and **flows** between them.
+This will resolve dependencies like EMF, Sirius, and required runtimes.
 
-### **🔹 Modify the Model**
-1. **Double-click `My.seirmodel`** to open it in the editor.
-2. **Right-click** → `New Child` → Add **compartments** (Susceptible, Exposed, Infectious, etc.).
-3. **Right-click** on a compartment → `New Child` → Add **Flows**.
-4. **Set the target of the flow** and define the **flow rate**.
+🧠 SEIR Metamodel
 
-### **🔹 Save and Validate**
-1. **Click `File > Save`** (`Ctrl+S`).
-2. **Right-click `My.seirmodel`** → `Validate`.
-3. If validation **fails**, ensure all compartments and flows are correctly linked.
+The SEIR model is defined in seir.ecore and includes:
 
----
+SEIRModel (root)
 
-## **📌 Step 7: Generate Equations using `SEIREquationGenerator.java`**
-1. **Switch back to the first Eclipse instance** (your development workspace).
-2. **Locate `SEIREquationGenerator.java`**:
-   ```
-   src/seir/equationgenerator/SEIREquationGenerator.java
-   ```
-3. **Right-click** → `Run As > Java Application`.
+Compartment (abstract, with name, population, and outgoingFlows)
 
-🚀 **This will extract the SEIR model equations and print them to the console.**  
-✅ The equations will also be saved in `SEIR_Equations.txt`.
+Subtypes of Compartment:
 
+Susceptible, Exposed, ExposedIsolated, ExposedNonIsolated, Infectious, InfectiousSymptomatic, InfectiousAsymptomatic, Recovered
 
----
+Flow: has a rate, optional description, and a target reference
 
-# **📌 Troubleshooting**
-| Error | Solution |
-|-------|----------|
-| `Missing dependencies` | Make sure **seir.target** is **set as the active target platform**. |
-| `PackageNotFoundException: http://example.com/seirmodel` | Run `SEIREquationGenerator.java` to register the model. |
-| `Exception in thread "main" java.io.FileNotFoundException` | Ensure **`My.seirmodel`** exists in the project root. |
-| `NoClassDefFoundError: org/eclipse/emf/ecore/resource` | **Set the target definition** and restart Eclipse. |
+✏️ Creating and Editing Models
 
----
+Textual
 
-## **🚀 Conclusion**
-This guide ensures **anyone can successfully set up, run, and test** your SEIR Model implementation. By **using an Eclipse Target Definition instead of Maven/Tycho**, you simplify dependency management and make it easier for new users to get started.
+Right-click → New → Other → Example EMF Model Creation Wizards → SEIR Model
 
----
+Save with .seirmodel extension
+
+You can edit via the generated tree editor (SEIRModel.editor) or directly via XML
+
+Graphical (Sirius)
+
+Step-by-Step:
+
+Open SEIRModel.odesign (inside SEIRModel.design/description/)
+
+Ensure plugin.xml contains:
+
+<extension point="org.eclipse.sirius.componentization">
+  <component name="SEIRModel" id="SEIRModel.design" class="org.eclipse.sirius.business.api.componentization.ViewpointRegistry$ViewpointComponent">
+    <viewpoints>
+      <viewpoint path="/description/SEIRModel.odesign"/>
+    </viewpoints>
+  </component>
+</extension>
+
+Register viewpoint in MANIFEST.MF (bundle activator optional)
+
+Run as Eclipse Application
+
+In the runtime workspace:
+
+Open .aird file
+
+Right-click on .seirmodel → Viewpoints Selection → enable MyViewpoint
+
+Right-click → New Representation → SEIRDiagram
+
+Compartments will appear as nodes, and flows as arrows
+
+Label Flows with Rates
+
+In the .odesign, under FlowEdge → CenterLabelStyle, ensure:
+
+Label Expression: aql:self.rate
+
+Label Size: 12
+
+If it's showing as self.rate literally, check that AQL interpreter is selected in Sirius preferences.
+
+➕ Example: Sample.seirmodel
+
+<seir:SEIRModel>
+  <compartments xsi:type="seir:Susceptible" name="S" population="1000">
+    <outgoingFlows rate="0.002" target="//@compartments.2"/>
+  </compartments>
+  <compartments xsi:type="seir:ExposedNonIsolated" name="E_N" population="10">
+    <outgoingFlows rate="0.6" target="//@compartments.4"/>
+  </compartments>
+  <compartments xsi:type="seir:Recovered" name="R"/>
+</seir:SEIRModel>
+
+🧮 Equation Generation
+
+Implemented in SEIREquationGenerator.java. Generates text equations from .seirmodel files.
+
+To run:
+
+Open .seirmodel file
+
+Right-click or trigger the generator to output to SEIR_Equations.txt
+
+Example output:
+
+dS/dt = -0.002 * S
+
+❓ Troubleshooting
+
+Flows Not Showing in Diagram?
+
+Check FlowEdge mapping:
+
+Domain Class: seirmodel.Flow
+
+Semantic Candidates: aql:self.compartments.outgoingFlows
+
+Source Mapping: CompartmentNode
+
+Target Finder Expression: aql:self.target
+
+Label Showing self.rate Instead of Value?
+
+Use AQL (not Acceleo) interpreter
+
+Ensure Sirius Preferences > Interpreter uses AQL
+
+Viewpoints Don’t Appear?
+
+Make sure .odesign is registered correctly in plugin.xml
+
+Open .aird and enable the viewpoint from Viewpoint Selection
+
+📦 Exporting Diagrams
+
+Use toolbar buttons to export as image (PNG/SVG)
+
+Or right-click the canvas → Export as Image
+
+📌 Requirements
+
+Eclipse 2023-09 or later
+
+Java 17+
+
+Sirius 7.4.7 or later (configured via .target)
+
