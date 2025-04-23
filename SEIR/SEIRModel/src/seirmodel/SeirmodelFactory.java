@@ -49,22 +49,22 @@ public interface SeirmodelFactory extends EFactory {
 	ExposedNonIsolated createExposedNonIsolated();
 
 	/**
-	 * Returns a new object of class '<em>Infectious Symptomatic</em>'.
+	 * Returns a new object of class '<em>Symptomatic</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Infectious Symptomatic</em>'.
+	 * @return a new object of class '<em>Symptomatic</em>'.
 	 * @generated
 	 */
-	InfectiousSymptomatic createInfectiousSymptomatic();
+	Symptomatic createSymptomatic();
 
 	/**
-	 * Returns a new object of class '<em>Infectious Asymptomatic</em>'.
+	 * Returns a new object of class '<em>Asymptomatic</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Infectious Asymptomatic</em>'.
+	 * @return a new object of class '<em>Asymptomatic</em>'.
 	 * @generated
 	 */
-	InfectiousAsymptomatic createInfectiousAsymptomatic();
+	Asymptomatic createAsymptomatic();
 
 	/**
 	 * Returns a new object of class '<em>Recovered</em>'.
@@ -92,6 +92,51 @@ public interface SeirmodelFactory extends EFactory {
 	 * @generated
 	 */
 	SEIRModel createSEIRModel();
+
+	/**
+	 * Returns a new object of class '<em>Preclinical</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Preclinical</em>'.
+	 * @generated
+	 */
+	Preclinical createPreclinical();
+
+	/**
+	 * Returns a new object of class '<em>Mild</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Mild</em>'.
+	 * @generated
+	 */
+	Mild createMild();
+
+	/**
+	 * Returns a new object of class '<em>Severe</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Severe</em>'.
+	 * @generated
+	 */
+	Severe createSevere();
+
+	/**
+	 * Returns a new object of class '<em>Hospitalized</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Hospitalized</em>'.
+	 * @generated
+	 */
+	Hospitalized createHospitalized();
+
+	/**
+	 * Returns a new object of class '<em>Deaths</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Deaths</em>'.
+	 * @generated
+	 */
+	Deaths createDeaths();
 
 	/**
 	 * Returns the package supported by this factory.

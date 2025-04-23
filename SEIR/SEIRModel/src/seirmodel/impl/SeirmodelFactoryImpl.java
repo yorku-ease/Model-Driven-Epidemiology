@@ -59,11 +59,16 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 			case SeirmodelPackage.FLOW: return createFlow();
 			case SeirmodelPackage.SUSCEPTIBLE: return createSusceptible();
 			case SeirmodelPackage.EXPOSED_NON_ISOLATED: return createExposedNonIsolated();
-			case SeirmodelPackage.INFECTIOUS_SYMPTOMATIC: return createInfectiousSymptomatic();
-			case SeirmodelPackage.INFECTIOUS_ASYMPTOMATIC: return createInfectiousAsymptomatic();
+			case SeirmodelPackage.SYMPTOMATIC: return createSymptomatic();
+			case SeirmodelPackage.ASYMPTOMATIC: return createAsymptomatic();
 			case SeirmodelPackage.RECOVERED: return createRecovered();
 			case SeirmodelPackage.EXPOSED_ISOLATED: return createExposedIsolated();
 			case SeirmodelPackage.SEIR_MODEL: return createSEIRModel();
+			case SeirmodelPackage.PRECLINICAL: return createPreclinical();
+			case SeirmodelPackage.MILD: return createMild();
+			case SeirmodelPackage.SEVERE: return createSevere();
+			case SeirmodelPackage.HOSPITALIZED: return createHospitalized();
+			case SeirmodelPackage.DEATHS: return createDeaths();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -108,9 +113,9 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	 * @generated
 	 */
 	@Override
-	public InfectiousSymptomatic createInfectiousSymptomatic() {
-		InfectiousSymptomaticImpl infectiousSymptomatic = new InfectiousSymptomaticImpl();
-		return infectiousSymptomatic;
+	public Symptomatic createSymptomatic() {
+		SymptomaticImpl symptomatic = new SymptomaticImpl();
+		return symptomatic;
 	}
 
 	/**
@@ -119,9 +124,9 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	 * @generated
 	 */
 	@Override
-	public InfectiousAsymptomatic createInfectiousAsymptomatic() {
-		InfectiousAsymptomaticImpl infectiousAsymptomatic = new InfectiousAsymptomaticImpl();
-		return infectiousAsymptomatic;
+	public Asymptomatic createAsymptomatic() {
+		AsymptomaticImpl asymptomatic = new AsymptomaticImpl();
+		return asymptomatic;
 	}
 
 	/**
@@ -155,6 +160,61 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	public SEIRModel createSEIRModel() {
 		SEIRModelImpl seirModel = new SEIRModelImpl();
 		return seirModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Preclinical createPreclinical() {
+		PreclinicalImpl preclinical = new PreclinicalImpl();
+		return preclinical;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Mild createMild() {
+		MildImpl mild = new MildImpl();
+		return mild;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Severe createSevere() {
+		SevereImpl severe = new SevereImpl();
+		return severe;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Hospitalized createHospitalized() {
+		HospitalizedImpl hospitalized = new HospitalizedImpl();
+		return hospitalized;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Deaths createDeaths() {
+		DeathsImpl deaths = new DeathsImpl();
+		return deaths;
 	}
 
 	/**

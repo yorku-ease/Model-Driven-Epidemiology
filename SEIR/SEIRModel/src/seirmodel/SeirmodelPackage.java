@@ -387,14 +387,14 @@ public interface SeirmodelPackage extends EPackage {
 	int INFECTIOUS_OPERATION_COUNT = COMPARTMENT_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link seirmodel.impl.InfectiousSymptomaticImpl <em>Infectious Symptomatic</em>}' class.
+	 * The meta object id for the '{@link seirmodel.impl.SymptomaticImpl <em>Symptomatic</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see seirmodel.impl.InfectiousSymptomaticImpl
-	 * @see seirmodel.impl.SeirmodelPackageImpl#getInfectiousSymptomatic()
+	 * @see seirmodel.impl.SymptomaticImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getSymptomatic()
 	 * @generated
 	 */
-	int INFECTIOUS_SYMPTOMATIC = 5;
+	int SYMPTOMATIC = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -403,7 +403,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_SYMPTOMATIC__NAME = INFECTIOUS__NAME;
+	int SYMPTOMATIC__NAME = INFECTIOUS__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Population</b></em>' attribute.
@@ -412,7 +412,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_SYMPTOMATIC__POPULATION = INFECTIOUS__POPULATION;
+	int SYMPTOMATIC__POPULATION = INFECTIOUS__POPULATION;
 
 	/**
 	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
@@ -421,35 +421,35 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_SYMPTOMATIC__OUTGOING_FLOWS = INFECTIOUS__OUTGOING_FLOWS;
+	int SYMPTOMATIC__OUTGOING_FLOWS = INFECTIOUS__OUTGOING_FLOWS;
 
 	/**
-	 * The number of structural features of the '<em>Infectious Symptomatic</em>' class.
+	 * The number of structural features of the '<em>Symptomatic</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_SYMPTOMATIC_FEATURE_COUNT = INFECTIOUS_FEATURE_COUNT + 0;
+	int SYMPTOMATIC_FEATURE_COUNT = INFECTIOUS_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Infectious Symptomatic</em>' class.
+	 * The number of operations of the '<em>Symptomatic</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_SYMPTOMATIC_OPERATION_COUNT = INFECTIOUS_OPERATION_COUNT + 0;
+	int SYMPTOMATIC_OPERATION_COUNT = INFECTIOUS_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link seirmodel.impl.InfectiousAsymptomaticImpl <em>Infectious Asymptomatic</em>}' class.
+	 * The meta object id for the '{@link seirmodel.impl.AsymptomaticImpl <em>Asymptomatic</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see seirmodel.impl.InfectiousAsymptomaticImpl
-	 * @see seirmodel.impl.SeirmodelPackageImpl#getInfectiousAsymptomatic()
+	 * @see seirmodel.impl.AsymptomaticImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getAsymptomatic()
 	 * @generated
 	 */
-	int INFECTIOUS_ASYMPTOMATIC = 6;
+	int ASYMPTOMATIC = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -458,7 +458,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_ASYMPTOMATIC__NAME = INFECTIOUS__NAME;
+	int ASYMPTOMATIC__NAME = INFECTIOUS__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Population</b></em>' attribute.
@@ -467,7 +467,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_ASYMPTOMATIC__POPULATION = INFECTIOUS__POPULATION;
+	int ASYMPTOMATIC__POPULATION = INFECTIOUS__POPULATION;
 
 	/**
 	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
@@ -476,25 +476,25 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_ASYMPTOMATIC__OUTGOING_FLOWS = INFECTIOUS__OUTGOING_FLOWS;
+	int ASYMPTOMATIC__OUTGOING_FLOWS = INFECTIOUS__OUTGOING_FLOWS;
 
 	/**
-	 * The number of structural features of the '<em>Infectious Asymptomatic</em>' class.
+	 * The number of structural features of the '<em>Asymptomatic</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_ASYMPTOMATIC_FEATURE_COUNT = INFECTIOUS_FEATURE_COUNT + 0;
+	int ASYMPTOMATIC_FEATURE_COUNT = INFECTIOUS_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Infectious Asymptomatic</em>' class.
+	 * The number of operations of the '<em>Asymptomatic</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INFECTIOUS_ASYMPTOMATIC_OPERATION_COUNT = INFECTIOUS_OPERATION_COUNT + 0;
+	int ASYMPTOMATIC_OPERATION_COUNT = INFECTIOUS_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link seirmodel.impl.RecoveredImpl <em>Recovered</em>}' class.
@@ -646,6 +646,282 @@ public interface SeirmodelPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link seirmodel.impl.PreclinicalImpl <em>Preclinical</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.PreclinicalImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getPreclinical()
+	 * @generated
+	 */
+	int PRECLINICAL = 11;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRECLINICAL__NAME = COMPARTMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Population</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRECLINICAL__POPULATION = COMPARTMENT__POPULATION;
+
+	/**
+	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRECLINICAL__OUTGOING_FLOWS = COMPARTMENT__OUTGOING_FLOWS;
+
+	/**
+	 * The number of structural features of the '<em>Preclinical</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRECLINICAL_FEATURE_COUNT = COMPARTMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Preclinical</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRECLINICAL_OPERATION_COUNT = COMPARTMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link seirmodel.impl.MildImpl <em>Mild</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.MildImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getMild()
+	 * @generated
+	 */
+	int MILD = 12;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MILD__NAME = SYMPTOMATIC__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Population</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MILD__POPULATION = SYMPTOMATIC__POPULATION;
+
+	/**
+	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MILD__OUTGOING_FLOWS = SYMPTOMATIC__OUTGOING_FLOWS;
+
+	/**
+	 * The number of structural features of the '<em>Mild</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MILD_FEATURE_COUNT = SYMPTOMATIC_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Mild</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MILD_OPERATION_COUNT = SYMPTOMATIC_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link seirmodel.impl.SevereImpl <em>Severe</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.SevereImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getSevere()
+	 * @generated
+	 */
+	int SEVERE = 13;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SEVERE__NAME = SYMPTOMATIC__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Population</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SEVERE__POPULATION = SYMPTOMATIC__POPULATION;
+
+	/**
+	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SEVERE__OUTGOING_FLOWS = SYMPTOMATIC__OUTGOING_FLOWS;
+
+	/**
+	 * The number of structural features of the '<em>Severe</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SEVERE_FEATURE_COUNT = SYMPTOMATIC_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Severe</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SEVERE_OPERATION_COUNT = SYMPTOMATIC_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link seirmodel.impl.HospitalizedImpl <em>Hospitalized</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.HospitalizedImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getHospitalized()
+	 * @generated
+	 */
+	int HOSPITALIZED = 14;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HOSPITALIZED__NAME = COMPARTMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Population</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HOSPITALIZED__POPULATION = COMPARTMENT__POPULATION;
+
+	/**
+	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HOSPITALIZED__OUTGOING_FLOWS = COMPARTMENT__OUTGOING_FLOWS;
+
+	/**
+	 * The number of structural features of the '<em>Hospitalized</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HOSPITALIZED_FEATURE_COUNT = COMPARTMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Hospitalized</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HOSPITALIZED_OPERATION_COUNT = COMPARTMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link seirmodel.impl.DeathsImpl <em>Deaths</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.DeathsImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getDeaths()
+	 * @generated
+	 */
+	int DEATHS = 15;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATHS__NAME = COMPARTMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Population</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATHS__POPULATION = COMPARTMENT__POPULATION;
+
+	/**
+	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATHS__OUTGOING_FLOWS = COMPARTMENT__OUTGOING_FLOWS;
+
+	/**
+	 * The number of structural features of the '<em>Deaths</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATHS_FEATURE_COUNT = COMPARTMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Deaths</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATHS_OPERATION_COUNT = COMPARTMENT_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link seirmodel.Compartment <em>Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -762,24 +1038,24 @@ public interface SeirmodelPackage extends EPackage {
 	EClass getExposedNonIsolated();
 
 	/**
-	 * Returns the meta object for class '{@link seirmodel.InfectiousSymptomatic <em>Infectious Symptomatic</em>}'.
+	 * Returns the meta object for class '{@link seirmodel.Symptomatic <em>Symptomatic</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Infectious Symptomatic</em>'.
-	 * @see seirmodel.InfectiousSymptomatic
+	 * @return the meta object for class '<em>Symptomatic</em>'.
+	 * @see seirmodel.Symptomatic
 	 * @generated
 	 */
-	EClass getInfectiousSymptomatic();
+	EClass getSymptomatic();
 
 	/**
-	 * Returns the meta object for class '{@link seirmodel.InfectiousAsymptomatic <em>Infectious Asymptomatic</em>}'.
+	 * Returns the meta object for class '{@link seirmodel.Asymptomatic <em>Asymptomatic</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Infectious Asymptomatic</em>'.
-	 * @see seirmodel.InfectiousAsymptomatic
+	 * @return the meta object for class '<em>Asymptomatic</em>'.
+	 * @see seirmodel.Asymptomatic
 	 * @generated
 	 */
-	EClass getInfectiousAsymptomatic();
+	EClass getAsymptomatic();
 
 	/**
 	 * Returns the meta object for class '{@link seirmodel.Recovered <em>Recovered</em>}'.
@@ -831,6 +1107,56 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getSEIRModel_Compartments();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Preclinical <em>Preclinical</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Preclinical</em>'.
+	 * @see seirmodel.Preclinical
+	 * @generated
+	 */
+	EClass getPreclinical();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Mild <em>Mild</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Mild</em>'.
+	 * @see seirmodel.Mild
+	 * @generated
+	 */
+	EClass getMild();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Severe <em>Severe</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Severe</em>'.
+	 * @see seirmodel.Severe
+	 * @generated
+	 */
+	EClass getSevere();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Hospitalized <em>Hospitalized</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Hospitalized</em>'.
+	 * @see seirmodel.Hospitalized
+	 * @generated
+	 */
+	EClass getHospitalized();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Deaths <em>Deaths</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Deaths</em>'.
+	 * @see seirmodel.Deaths
+	 * @generated
+	 */
+	EClass getDeaths();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -954,24 +1280,24 @@ public interface SeirmodelPackage extends EPackage {
 		EClass EXPOSED_NON_ISOLATED = eINSTANCE.getExposedNonIsolated();
 
 		/**
-		 * The meta object literal for the '{@link seirmodel.impl.InfectiousSymptomaticImpl <em>Infectious Symptomatic</em>}' class.
+		 * The meta object literal for the '{@link seirmodel.impl.SymptomaticImpl <em>Symptomatic</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see seirmodel.impl.InfectiousSymptomaticImpl
-		 * @see seirmodel.impl.SeirmodelPackageImpl#getInfectiousSymptomatic()
+		 * @see seirmodel.impl.SymptomaticImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getSymptomatic()
 		 * @generated
 		 */
-		EClass INFECTIOUS_SYMPTOMATIC = eINSTANCE.getInfectiousSymptomatic();
+		EClass SYMPTOMATIC = eINSTANCE.getSymptomatic();
 
 		/**
-		 * The meta object literal for the '{@link seirmodel.impl.InfectiousAsymptomaticImpl <em>Infectious Asymptomatic</em>}' class.
+		 * The meta object literal for the '{@link seirmodel.impl.AsymptomaticImpl <em>Asymptomatic</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see seirmodel.impl.InfectiousAsymptomaticImpl
-		 * @see seirmodel.impl.SeirmodelPackageImpl#getInfectiousAsymptomatic()
+		 * @see seirmodel.impl.AsymptomaticImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getAsymptomatic()
 		 * @generated
 		 */
-		EClass INFECTIOUS_ASYMPTOMATIC = eINSTANCE.getInfectiousAsymptomatic();
+		EClass ASYMPTOMATIC = eINSTANCE.getAsymptomatic();
 
 		/**
 		 * The meta object literal for the '{@link seirmodel.impl.RecoveredImpl <em>Recovered</em>}' class.
@@ -1020,6 +1346,56 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SEIR_MODEL__COMPARTMENTS = eINSTANCE.getSEIRModel_Compartments();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.PreclinicalImpl <em>Preclinical</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.PreclinicalImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getPreclinical()
+		 * @generated
+		 */
+		EClass PRECLINICAL = eINSTANCE.getPreclinical();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.MildImpl <em>Mild</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.MildImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getMild()
+		 * @generated
+		 */
+		EClass MILD = eINSTANCE.getMild();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.SevereImpl <em>Severe</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.SevereImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getSevere()
+		 * @generated
+		 */
+		EClass SEVERE = eINSTANCE.getSevere();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.HospitalizedImpl <em>Hospitalized</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.HospitalizedImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getHospitalized()
+		 * @generated
+		 */
+		EClass HOSPITALIZED = eINSTANCE.getHospitalized();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.DeathsImpl <em>Deaths</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.DeathsImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getDeaths()
+		 * @generated
+		 */
+		EClass DEATHS = eINSTANCE.getDeaths();
 
 	}
 

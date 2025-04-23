@@ -100,19 +100,19 @@ public class SeirmodelSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case SeirmodelPackage.INFECTIOUS_SYMPTOMATIC: {
-				InfectiousSymptomatic infectiousSymptomatic = (InfectiousSymptomatic)theEObject;
-				T result = caseInfectiousSymptomatic(infectiousSymptomatic);
-				if (result == null) result = caseInfectious(infectiousSymptomatic);
-				if (result == null) result = caseCompartment(infectiousSymptomatic);
+			case SeirmodelPackage.SYMPTOMATIC: {
+				Symptomatic symptomatic = (Symptomatic)theEObject;
+				T result = caseSymptomatic(symptomatic);
+				if (result == null) result = caseInfectious(symptomatic);
+				if (result == null) result = caseCompartment(symptomatic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case SeirmodelPackage.INFECTIOUS_ASYMPTOMATIC: {
-				InfectiousAsymptomatic infectiousAsymptomatic = (InfectiousAsymptomatic)theEObject;
-				T result = caseInfectiousAsymptomatic(infectiousAsymptomatic);
-				if (result == null) result = caseInfectious(infectiousAsymptomatic);
-				if (result == null) result = caseCompartment(infectiousAsymptomatic);
+			case SeirmodelPackage.ASYMPTOMATIC: {
+				Asymptomatic asymptomatic = (Asymptomatic)theEObject;
+				T result = caseAsymptomatic(asymptomatic);
+				if (result == null) result = caseInfectious(asymptomatic);
+				if (result == null) result = caseCompartment(asymptomatic);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -141,6 +141,45 @@ public class SeirmodelSwitch<T> extends Switch<T> {
 			case SeirmodelPackage.SEIR_MODEL: {
 				SEIRModel seirModel = (SEIRModel)theEObject;
 				T result = caseSEIRModel(seirModel);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.PRECLINICAL: {
+				Preclinical preclinical = (Preclinical)theEObject;
+				T result = casePreclinical(preclinical);
+				if (result == null) result = caseCompartment(preclinical);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.MILD: {
+				Mild mild = (Mild)theEObject;
+				T result = caseMild(mild);
+				if (result == null) result = caseSymptomatic(mild);
+				if (result == null) result = caseInfectious(mild);
+				if (result == null) result = caseCompartment(mild);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.SEVERE: {
+				Severe severe = (Severe)theEObject;
+				T result = caseSevere(severe);
+				if (result == null) result = caseSymptomatic(severe);
+				if (result == null) result = caseInfectious(severe);
+				if (result == null) result = caseCompartment(severe);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.HOSPITALIZED: {
+				Hospitalized hospitalized = (Hospitalized)theEObject;
+				T result = caseHospitalized(hospitalized);
+				if (result == null) result = caseCompartment(hospitalized);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.DEATHS: {
+				Deaths deaths = (Deaths)theEObject;
+				T result = caseDeaths(deaths);
+				if (result == null) result = caseCompartment(deaths);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -224,32 +263,32 @@ public class SeirmodelSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Infectious Symptomatic</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Symptomatic</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Infectious Symptomatic</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Symptomatic</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInfectiousSymptomatic(InfectiousSymptomatic object) {
+	public T caseSymptomatic(Symptomatic object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Infectious Asymptomatic</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Asymptomatic</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Infectious Asymptomatic</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Asymptomatic</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInfectiousAsymptomatic(InfectiousAsymptomatic object) {
+	public T caseAsymptomatic(Asymptomatic object) {
 		return null;
 	}
 
@@ -310,6 +349,81 @@ public class SeirmodelSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseSEIRModel(SEIRModel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Preclinical</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Preclinical</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePreclinical(Preclinical object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Mild</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Mild</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMild(Mild object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Severe</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Severe</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSevere(Severe object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Hospitalized</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Hospitalized</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseHospitalized(Hospitalized object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Deaths</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Deaths</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDeaths(Deaths object) {
 		return null;
 	}
 

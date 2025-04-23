@@ -141,49 +141,49 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.InfectiousSymptomatic} instances.
+	 * This keeps track of the one adapter used for all {@link seirmodel.Symptomatic} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected InfectiousSymptomaticItemProvider infectiousSymptomaticItemProvider;
+	protected SymptomaticItemProvider symptomaticItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link seirmodel.InfectiousSymptomatic}.
+	 * This creates an adapter for a {@link seirmodel.Symptomatic}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createInfectiousSymptomaticAdapter() {
-		if (infectiousSymptomaticItemProvider == null) {
-			infectiousSymptomaticItemProvider = new InfectiousSymptomaticItemProvider(this);
+	public Adapter createSymptomaticAdapter() {
+		if (symptomaticItemProvider == null) {
+			symptomaticItemProvider = new SymptomaticItemProvider(this);
 		}
 
-		return infectiousSymptomaticItemProvider;
+		return symptomaticItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.InfectiousAsymptomatic} instances.
+	 * This keeps track of the one adapter used for all {@link seirmodel.Asymptomatic} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected InfectiousAsymptomaticItemProvider infectiousAsymptomaticItemProvider;
+	protected AsymptomaticItemProvider asymptomaticItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link seirmodel.InfectiousAsymptomatic}.
+	 * This creates an adapter for a {@link seirmodel.Asymptomatic}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createInfectiousAsymptomaticAdapter() {
-		if (infectiousAsymptomaticItemProvider == null) {
-			infectiousAsymptomaticItemProvider = new InfectiousAsymptomaticItemProvider(this);
+	public Adapter createAsymptomaticAdapter() {
+		if (asymptomaticItemProvider == null) {
+			asymptomaticItemProvider = new AsymptomaticItemProvider(this);
 		}
 
-		return infectiousAsymptomaticItemProvider;
+		return asymptomaticItemProvider;
 	}
 
 	/**
@@ -253,6 +253,121 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 		}
 
 		return seirModelItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Preclinical} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PreclinicalItemProvider preclinicalItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Preclinical}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createPreclinicalAdapter() {
+		if (preclinicalItemProvider == null) {
+			preclinicalItemProvider = new PreclinicalItemProvider(this);
+		}
+
+		return preclinicalItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Mild} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected MildItemProvider mildItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Mild}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createMildAdapter() {
+		if (mildItemProvider == null) {
+			mildItemProvider = new MildItemProvider(this);
+		}
+
+		return mildItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Severe} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SevereItemProvider severeItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Severe}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createSevereAdapter() {
+		if (severeItemProvider == null) {
+			severeItemProvider = new SevereItemProvider(this);
+		}
+
+		return severeItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Hospitalized} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected HospitalizedItemProvider hospitalizedItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Hospitalized}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createHospitalizedAdapter() {
+		if (hospitalizedItemProvider == null) {
+			hospitalizedItemProvider = new HospitalizedItemProvider(this);
+		}
+
+		return hospitalizedItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Deaths} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DeathsItemProvider deathsItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Deaths}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDeathsAdapter() {
+		if (deathsItemProvider == null) {
+			deathsItemProvider = new DeathsItemProvider(this);
+		}
+
+		return deathsItemProvider;
 	}
 
 	/**
@@ -363,11 +478,16 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 		if (flowItemProvider != null) flowItemProvider.dispose();
 		if (susceptibleItemProvider != null) susceptibleItemProvider.dispose();
 		if (exposedNonIsolatedItemProvider != null) exposedNonIsolatedItemProvider.dispose();
-		if (infectiousSymptomaticItemProvider != null) infectiousSymptomaticItemProvider.dispose();
-		if (infectiousAsymptomaticItemProvider != null) infectiousAsymptomaticItemProvider.dispose();
+		if (symptomaticItemProvider != null) symptomaticItemProvider.dispose();
+		if (asymptomaticItemProvider != null) asymptomaticItemProvider.dispose();
 		if (recoveredItemProvider != null) recoveredItemProvider.dispose();
 		if (exposedIsolatedItemProvider != null) exposedIsolatedItemProvider.dispose();
 		if (seirModelItemProvider != null) seirModelItemProvider.dispose();
+		if (preclinicalItemProvider != null) preclinicalItemProvider.dispose();
+		if (mildItemProvider != null) mildItemProvider.dispose();
+		if (severeItemProvider != null) severeItemProvider.dispose();
+		if (hospitalizedItemProvider != null) hospitalizedItemProvider.dispose();
+		if (deathsItemProvider != null) deathsItemProvider.dispose();
 	}
 
 }
