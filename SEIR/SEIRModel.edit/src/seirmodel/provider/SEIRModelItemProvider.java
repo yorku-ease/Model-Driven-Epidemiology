@@ -161,12 +161,12 @@ public class SEIRModelItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createInfectiousSymptomatic()));
+				 SeirmodelFactory.eINSTANCE.createSymptomatic()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createInfectiousAsymptomatic()));
+				 SeirmodelFactory.eINSTANCE.createAsymptomatic()));
 
 		newChildDescriptors.add
 			(createChildParameter
@@ -177,6 +177,31 @@ public class SEIRModelItemProvider
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
 				 SeirmodelFactory.eINSTANCE.createExposedIsolated()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
+				 SeirmodelFactory.eINSTANCE.createPreclinical()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
+				 SeirmodelFactory.eINSTANCE.createMild()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
+				 SeirmodelFactory.eINSTANCE.createSevere()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
+				 SeirmodelFactory.eINSTANCE.createHospitalized()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
+				 SeirmodelFactory.eINSTANCE.createDeaths()));
 	}
 
 	/**

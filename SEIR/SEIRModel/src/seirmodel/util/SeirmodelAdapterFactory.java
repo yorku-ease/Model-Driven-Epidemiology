@@ -88,12 +88,12 @@ public class SeirmodelAdapterFactory extends AdapterFactoryImpl {
 				return createExposedNonIsolatedAdapter();
 			}
 			@Override
-			public Adapter caseInfectiousSymptomatic(InfectiousSymptomatic object) {
-				return createInfectiousSymptomaticAdapter();
+			public Adapter caseSymptomatic(Symptomatic object) {
+				return createSymptomaticAdapter();
 			}
 			@Override
-			public Adapter caseInfectiousAsymptomatic(InfectiousAsymptomatic object) {
-				return createInfectiousAsymptomaticAdapter();
+			public Adapter caseAsymptomatic(Asymptomatic object) {
+				return createAsymptomaticAdapter();
 			}
 			@Override
 			public Adapter caseRecovered(Recovered object) {
@@ -110,6 +110,26 @@ public class SeirmodelAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseSEIRModel(SEIRModel object) {
 				return createSEIRModelAdapter();
+			}
+			@Override
+			public Adapter casePreclinical(Preclinical object) {
+				return createPreclinicalAdapter();
+			}
+			@Override
+			public Adapter caseMild(Mild object) {
+				return createMildAdapter();
+			}
+			@Override
+			public Adapter caseSevere(Severe object) {
+				return createSevereAdapter();
+			}
+			@Override
+			public Adapter caseHospitalized(Hospitalized object) {
+				return createHospitalizedAdapter();
+			}
+			@Override
+			public Adapter caseDeaths(Deaths object) {
+				return createDeathsAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -202,30 +222,30 @@ public class SeirmodelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link seirmodel.InfectiousSymptomatic <em>Infectious Symptomatic</em>}'.
+	 * Creates a new adapter for an object of class '{@link seirmodel.Symptomatic <em>Symptomatic</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see seirmodel.InfectiousSymptomatic
+	 * @see seirmodel.Symptomatic
 	 * @generated
 	 */
-	public Adapter createInfectiousSymptomaticAdapter() {
+	public Adapter createSymptomaticAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link seirmodel.InfectiousAsymptomatic <em>Infectious Asymptomatic</em>}'.
+	 * Creates a new adapter for an object of class '{@link seirmodel.Asymptomatic <em>Asymptomatic</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see seirmodel.InfectiousAsymptomatic
+	 * @see seirmodel.Asymptomatic
 	 * @generated
 	 */
-	public Adapter createInfectiousAsymptomaticAdapter() {
+	public Adapter createAsymptomaticAdapter() {
 		return null;
 	}
 
@@ -282,6 +302,76 @@ public class SeirmodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSEIRModelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Preclinical <em>Preclinical</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Preclinical
+	 * @generated
+	 */
+	public Adapter createPreclinicalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Mild <em>Mild</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Mild
+	 * @generated
+	 */
+	public Adapter createMildAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Severe <em>Severe</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Severe
+	 * @generated
+	 */
+	public Adapter createSevereAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Hospitalized <em>Hospitalized</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Hospitalized
+	 * @generated
+	 */
+	public Adapter createHospitalizedAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Deaths <em>Deaths</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Deaths
+	 * @generated
+	 */
+	public Adapter createDeathsAdapter() {
 		return null;
 	}
 

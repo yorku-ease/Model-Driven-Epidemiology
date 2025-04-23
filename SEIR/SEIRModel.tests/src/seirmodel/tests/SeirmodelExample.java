@@ -59,7 +59,7 @@ public class SeirmodelExample {
 		if (args.length == 0) {
 			System.out.println("Enter a list of file paths or URIs that have content like this:");
 			try {
-				Resource resource = resourceSet.createResource(URI.createURI("http:///My.xmi"));
+				Resource resource = resourceSet.createResource(URI.createURI("http:///My.seirmodel"));
 				Flow root = SeirmodelFactory.eINSTANCE.createFlow();
 				resource.getContents().add(root);
 				resource.save(System.out, null);
