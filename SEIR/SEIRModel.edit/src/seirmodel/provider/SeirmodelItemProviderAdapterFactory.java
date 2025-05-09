@@ -371,6 +371,29 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Test} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected TestItemProvider testItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Test}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createTestAdapter() {
+		if (testItemProvider == null) {
+			testItemProvider = new TestItemProvider(this);
+		}
+
+		return testItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -488,6 +511,7 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 		if (severeItemProvider != null) severeItemProvider.dispose();
 		if (hospitalizedItemProvider != null) hospitalizedItemProvider.dispose();
 		if (deathsItemProvider != null) deathsItemProvider.dispose();
+		if (testItemProvider != null) testItemProvider.dispose();
 	}
 
 }
