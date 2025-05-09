@@ -202,6 +202,11 @@ public class SEIRModelItemProvider
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
 				 SeirmodelFactory.eINSTANCE.createDeaths()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
+				 SeirmodelFactory.eINSTANCE.createTest()));
 	}
 
 	/**

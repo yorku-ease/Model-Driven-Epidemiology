@@ -139,6 +139,15 @@ public interface SeirmodelFactory extends EFactory {
 	Deaths createDeaths();
 
 	/**
+	 * Returns a new object of class '<em>Test</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Test</em>'.
+	 * @generated
+	 */
+	Test createTest();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

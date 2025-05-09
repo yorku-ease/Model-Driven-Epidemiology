@@ -27,6 +27,7 @@ import seirmodel.SeirmodelPackage;
 import seirmodel.Severe;
 import seirmodel.Susceptible;
 import seirmodel.Symptomatic;
+import seirmodel.Test;
 
 /**
  * <!-- begin-user-doc -->
@@ -146,6 +147,13 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	private EClass deathsEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass testEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -443,6 +451,16 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
+	public EClass getTest() {
+		return testEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public SeirmodelFactory getSeirmodelFactory() {
 		return (SeirmodelFactory)getEFactoryInstance();
 	}
@@ -504,6 +522,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		hospitalizedEClass = createEClass(HOSPITALIZED);
 
 		deathsEClass = createEClass(DEATHS);
+
+		testEClass = createEClass(TEST);
 	}
 
 	/**
@@ -547,6 +567,7 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		severeEClass.getESuperTypes().add(this.getSymptomatic());
 		hospitalizedEClass.getESuperTypes().add(this.getCompartment());
 		deathsEClass.getESuperTypes().add(this.getCompartment());
+		testEClass.getESuperTypes().add(this.getCompartment());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(compartmentEClass, Compartment.class, "Compartment", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -587,6 +608,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		initEClass(hospitalizedEClass, Hospitalized.class, "Hospitalized", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(deathsEClass, Deaths.class, "Deaths", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(testEClass, Test.class, "Test", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

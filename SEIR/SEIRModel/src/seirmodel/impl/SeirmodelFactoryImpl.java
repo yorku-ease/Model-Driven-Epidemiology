@@ -69,6 +69,7 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 			case SeirmodelPackage.SEVERE: return createSevere();
 			case SeirmodelPackage.HOSPITALIZED: return createHospitalized();
 			case SeirmodelPackage.DEATHS: return createDeaths();
+			case SeirmodelPackage.TEST: return createTest();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -215,6 +216,17 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	public Deaths createDeaths() {
 		DeathsImpl deaths = new DeathsImpl();
 		return deaths;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Test createTest() {
+		TestImpl test = new TestImpl();
+		return test;
 	}
 
 	/**

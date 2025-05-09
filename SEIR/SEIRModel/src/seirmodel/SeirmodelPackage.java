@@ -922,6 +922,62 @@ public interface SeirmodelPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link seirmodel.impl.TestImpl <em>Test</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.TestImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getTest()
+	 * @generated
+	 */
+	int TEST = 16;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST__NAME = COMPARTMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Population</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST__POPULATION = COMPARTMENT__POPULATION;
+
+	/**
+	 * The feature id for the '<em><b>Outgoing Flows</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST__OUTGOING_FLOWS = COMPARTMENT__OUTGOING_FLOWS;
+
+	/**
+	 * The number of structural features of the '<em>Test</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_FEATURE_COUNT = COMPARTMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Test</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TEST_OPERATION_COUNT = COMPARTMENT_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link seirmodel.Compartment <em>Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1157,6 +1213,16 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getDeaths();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Test <em>Test</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Test</em>'.
+	 * @see seirmodel.Test
+	 * @generated
+	 */
+	EClass getTest();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1396,6 +1462,16 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DEATHS = eINSTANCE.getDeaths();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.TestImpl <em>Test</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.TestImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getTest()
+		 * @generated
+		 */
+		EClass TEST = eINSTANCE.getTest();
 
 	}
 
