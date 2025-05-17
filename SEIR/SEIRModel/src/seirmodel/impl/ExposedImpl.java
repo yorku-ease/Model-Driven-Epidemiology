@@ -13,7 +13,7 @@ import seirmodel.SeirmodelPackage;
  *
  * @generated
  */
-public abstract class ExposedImpl extends CompartmentImpl implements Exposed {
+public class ExposedImpl extends CompartmentImpl implements Exposed {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

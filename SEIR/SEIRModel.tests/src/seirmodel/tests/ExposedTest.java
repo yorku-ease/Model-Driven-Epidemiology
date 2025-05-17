@@ -2,7 +2,9 @@
  */
 package seirmodel.tests;
 
+import junit.textui.TestRunner;
 import seirmodel.Exposed;
+import seirmodel.SeirmodelFactory;
 
 /**
  * <!-- begin-user-doc -->
@@ -10,7 +12,16 @@ import seirmodel.Exposed;
  * <!-- end-user-doc -->
  * @generated
  */
-public abstract class ExposedTest extends CompartmentTest {
+public class ExposedTest extends CompartmentTest {
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static void main(String[] args) {
+		TestRunner.run(ExposedTest.class);
+	}
 
 	/**
 	 * Constructs a new Exposed test case with the given name.
@@ -31,6 +42,28 @@ public abstract class ExposedTest extends CompartmentTest {
 	@Override
 	protected Exposed getFixture() {
 		return (Exposed)fixture;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		setFixture(SeirmodelFactory.eINSTANCE.createExposed());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		setFixture(null);
 	}
 
 } //ExposedTest

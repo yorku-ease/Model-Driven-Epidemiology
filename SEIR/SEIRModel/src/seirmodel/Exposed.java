@@ -9,7 +9,7 @@ package seirmodel;
  *
  *
  * @see seirmodel.SeirmodelPackage#getExposed()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface Exposed extends Compartment {

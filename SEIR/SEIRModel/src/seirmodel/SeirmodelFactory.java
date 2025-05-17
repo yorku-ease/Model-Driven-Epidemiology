@@ -40,49 +40,13 @@ public interface SeirmodelFactory extends EFactory {
 	Susceptible createSusceptible();
 
 	/**
-	 * Returns a new object of class '<em>Exposed Non Isolated</em>'.
+	 * Returns a new object of class '<em>Treated</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Exposed Non Isolated</em>'.
+	 * @return a new object of class '<em>Treated</em>'.
 	 * @generated
 	 */
-	ExposedNonIsolated createExposedNonIsolated();
-
-	/**
-	 * Returns a new object of class '<em>Symptomatic</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Symptomatic</em>'.
-	 * @generated
-	 */
-	Symptomatic createSymptomatic();
-
-	/**
-	 * Returns a new object of class '<em>Asymptomatic</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Asymptomatic</em>'.
-	 * @generated
-	 */
-	Asymptomatic createAsymptomatic();
-
-	/**
-	 * Returns a new object of class '<em>Recovered</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Recovered</em>'.
-	 * @generated
-	 */
-	Recovered createRecovered();
-
-	/**
-	 * Returns a new object of class '<em>Exposed Isolated</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Exposed Isolated</em>'.
-	 * @generated
-	 */
-	ExposedIsolated createExposedIsolated();
+	Treated createTreated();
 
 	/**
 	 * Returns a new object of class '<em>SEIR Model</em>'.
@@ -94,31 +58,13 @@ public interface SeirmodelFactory extends EFactory {
 	SEIRModel createSEIRModel();
 
 	/**
-	 * Returns a new object of class '<em>Preclinical</em>'.
+	 * Returns a new object of class '<em>AIDS</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Preclinical</em>'.
+	 * @return a new object of class '<em>AIDS</em>'.
 	 * @generated
 	 */
-	Preclinical createPreclinical();
-
-	/**
-	 * Returns a new object of class '<em>Mild</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Mild</em>'.
-	 * @generated
-	 */
-	Mild createMild();
-
-	/**
-	 * Returns a new object of class '<em>Severe</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Severe</em>'.
-	 * @generated
-	 */
-	Severe createSevere();
+	AIDS createAIDS();
 
 	/**
 	 * Returns a new object of class '<em>Hospitalized</em>'.
@@ -137,6 +83,60 @@ public interface SeirmodelFactory extends EFactory {
 	 * @generated
 	 */
 	Deaths createDeaths();
+
+	/**
+	 * Returns a new object of class '<em>Untreated Infectious</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Untreated Infectious</em>'.
+	 * @generated
+	 */
+	UntreatedInfectious createUntreatedInfectious();
+
+	/**
+	 * Returns a new object of class '<em>Vaccinated</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Vaccinated</em>'.
+	 * @generated
+	 */
+	Vaccinated createVaccinated();
+
+	/**
+	 * Returns a new object of class '<em>No Access</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>No Access</em>'.
+	 * @generated
+	 */
+	NoAccess createNoAccess();
+
+	/**
+	 * Returns a new object of class '<em>Isolated After Testing Positive</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Isolated After Testing Positive</em>'.
+	 * @generated
+	 */
+	IsolatedAfterTestingPositive createIsolatedAfterTestingPositive();
+
+	/**
+	 * Returns a new object of class '<em>Exposed</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Exposed</em>'.
+	 * @generated
+	 */
+	Exposed createExposed();
+
+	/**
+	 * Returns a new object of class '<em>Post Acute</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Post Acute</em>'.
+	 * @generated
+	 */
+	PostAcute createPostAcute();
 
 	/**
 	 * Returns the package supported by this factory.

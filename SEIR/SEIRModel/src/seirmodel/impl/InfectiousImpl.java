@@ -13,7 +13,7 @@ import seirmodel.SeirmodelPackage;
  *
  * @generated
  */
-public abstract class InfectiousImpl extends CompartmentImpl implements Infectious {
+public class InfectiousImpl extends CompartmentImpl implements Infectious {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -2,7 +2,9 @@
  */
 package seirmodel.tests;
 
+import junit.textui.TestRunner;
 import seirmodel.Infectious;
+import seirmodel.SeirmodelFactory;
 
 /**
  * <!-- begin-user-doc -->
@@ -10,7 +12,16 @@ import seirmodel.Infectious;
  * <!-- end-user-doc -->
  * @generated
  */
-public abstract class InfectiousTest extends CompartmentTest {
+public class InfectiousTest extends CompartmentTest {
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static void main(String[] args) {
+		TestRunner.run(InfectiousTest.class);
+	}
 
 	/**
 	 * Constructs a new Infectious test case with the given name.
@@ -31,6 +42,28 @@ public abstract class InfectiousTest extends CompartmentTest {
 	@Override
 	protected Infectious getFixture() {
 		return (Infectious)fixture;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#setUp()
+	 * @generated
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		setFixture(SeirmodelFactory.eINSTANCE.createInfectious());
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see junit.framework.TestCase#tearDown()
+	 * @generated
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		setFixture(null);
 	}
 
 } //InfectiousTest

@@ -58,17 +58,17 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 		switch (eClass.getClassifierID()) {
 			case SeirmodelPackage.FLOW: return createFlow();
 			case SeirmodelPackage.SUSCEPTIBLE: return createSusceptible();
-			case SeirmodelPackage.EXPOSED_NON_ISOLATED: return createExposedNonIsolated();
-			case SeirmodelPackage.SYMPTOMATIC: return createSymptomatic();
-			case SeirmodelPackage.ASYMPTOMATIC: return createAsymptomatic();
-			case SeirmodelPackage.RECOVERED: return createRecovered();
-			case SeirmodelPackage.EXPOSED_ISOLATED: return createExposedIsolated();
+			case SeirmodelPackage.TREATED: return createTreated();
 			case SeirmodelPackage.SEIR_MODEL: return createSEIRModel();
-			case SeirmodelPackage.PRECLINICAL: return createPreclinical();
-			case SeirmodelPackage.MILD: return createMild();
-			case SeirmodelPackage.SEVERE: return createSevere();
+			case SeirmodelPackage.AIDS: return createAIDS();
 			case SeirmodelPackage.HOSPITALIZED: return createHospitalized();
 			case SeirmodelPackage.DEATHS: return createDeaths();
+			case SeirmodelPackage.UNTREATED_INFECTIOUS: return createUntreatedInfectious();
+			case SeirmodelPackage.VACCINATED: return createVaccinated();
+			case SeirmodelPackage.NO_ACCESS: return createNoAccess();
+			case SeirmodelPackage.ISOLATED_AFTER_TESTING_POSITIVE: return createIsolatedAfterTestingPositive();
+			case SeirmodelPackage.EXPOSED: return createExposed();
+			case SeirmodelPackage.POST_ACUTE: return createPostAcute();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -102,53 +102,9 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	 * @generated
 	 */
 	@Override
-	public ExposedNonIsolated createExposedNonIsolated() {
-		ExposedNonIsolatedImpl exposedNonIsolated = new ExposedNonIsolatedImpl();
-		return exposedNonIsolated;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Symptomatic createSymptomatic() {
-		SymptomaticImpl symptomatic = new SymptomaticImpl();
-		return symptomatic;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Asymptomatic createAsymptomatic() {
-		AsymptomaticImpl asymptomatic = new AsymptomaticImpl();
-		return asymptomatic;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Recovered createRecovered() {
-		RecoveredImpl recovered = new RecoveredImpl();
-		return recovered;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ExposedIsolated createExposedIsolated() {
-		ExposedIsolatedImpl exposedIsolated = new ExposedIsolatedImpl();
-		return exposedIsolated;
+	public Treated createTreated() {
+		TreatedImpl treated = new TreatedImpl();
+		return treated;
 	}
 
 	/**
@@ -168,31 +124,9 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	 * @generated
 	 */
 	@Override
-	public Preclinical createPreclinical() {
-		PreclinicalImpl preclinical = new PreclinicalImpl();
-		return preclinical;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Mild createMild() {
-		MildImpl mild = new MildImpl();
-		return mild;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Severe createSevere() {
-		SevereImpl severe = new SevereImpl();
-		return severe;
+	public AIDS createAIDS() {
+		AIDSImpl aids = new AIDSImpl();
+		return aids;
 	}
 
 	/**
@@ -215,6 +149,72 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	public Deaths createDeaths() {
 		DeathsImpl deaths = new DeathsImpl();
 		return deaths;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public UntreatedInfectious createUntreatedInfectious() {
+		UntreatedInfectiousImpl untreatedInfectious = new UntreatedInfectiousImpl();
+		return untreatedInfectious;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Vaccinated createVaccinated() {
+		VaccinatedImpl vaccinated = new VaccinatedImpl();
+		return vaccinated;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NoAccess createNoAccess() {
+		NoAccessImpl noAccess = new NoAccessImpl();
+		return noAccess;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public IsolatedAfterTestingPositive createIsolatedAfterTestingPositive() {
+		IsolatedAfterTestingPositiveImpl isolatedAfterTestingPositive = new IsolatedAfterTestingPositiveImpl();
+		return isolatedAfterTestingPositive;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Exposed createExposed() {
+		ExposedImpl exposed = new ExposedImpl();
+		return exposed;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public PostAcute createPostAcute() {
+		PostAcuteImpl postAcute = new PostAcuteImpl();
+		return postAcute;
 	}
 
 	/**

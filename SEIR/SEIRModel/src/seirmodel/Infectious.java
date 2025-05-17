@@ -9,7 +9,7 @@ package seirmodel;
  *
  *
  * @see seirmodel.SeirmodelPackage#getInfectious()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface Infectious extends Compartment {
