@@ -34,7 +34,7 @@ import seirmodel.SeirmodelPackage;
  *
  * @generated
  */
-public abstract class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
+public class CompartmentImpl extends MinimalEObjectImpl.Container implements Compartment {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->

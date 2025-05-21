@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import seirmodel.Flow;
+import seirmodel.Compartment;
 import seirmodel.SeirmodelFactory;
 import seirmodel.SeirmodelPackage;
 
@@ -60,7 +60,7 @@ public class SeirmodelExample {
 			System.out.println("Enter a list of file paths or URIs that have content like this:");
 			try {
 				Resource resource = resourceSet.createResource(URI.createURI("http:///My.seirmodel"));
-				Flow root = SeirmodelFactory.eINSTANCE.createFlow();
+				Compartment root = SeirmodelFactory.eINSTANCE.createCompartment();
 				resource.getContents().add(root);
 				resource.save(System.out, null);
 			}

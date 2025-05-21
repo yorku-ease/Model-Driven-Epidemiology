@@ -151,62 +151,7 @@ public class SEIRModelItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createSusceptible()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createExposedNonIsolated()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createSymptomatic()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createAsymptomatic()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createRecovered()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createExposedIsolated()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createPreclinical()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createMild()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createSevere()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createHospitalized()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createDeaths()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
-				 SeirmodelFactory.eINSTANCE.createTest()));
+				 SeirmodelFactory.eINSTANCE.createCompartment()));
 	}
 
 	/**
