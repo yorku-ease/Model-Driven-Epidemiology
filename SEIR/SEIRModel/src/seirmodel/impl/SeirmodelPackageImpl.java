@@ -8,26 +8,11 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import seirmodel.Asymptomatic;
 import seirmodel.Compartment;
-import seirmodel.Deaths;
-import seirmodel.Exposed;
-import seirmodel.ExposedIsolated;
-import seirmodel.ExposedNonIsolated;
 import seirmodel.Flow;
-import seirmodel.Hospitalized;
-import seirmodel.Infectious;
-import seirmodel.Mild;
-import seirmodel.Preclinical;
-import seirmodel.Recovered;
 import seirmodel.SEIRModel;
 import seirmodel.SeirmodelFactory;
 import seirmodel.SeirmodelPackage;
-import seirmodel.Severe;
-import seirmodel.Susceptible;
-import seirmodel.Symptomatic;
-import seirmodel.Test;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,105 +40,7 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass susceptibleEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass exposedEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass exposedNonIsolatedEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass symptomaticEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass asymptomaticEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass recoveredEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass exposedIsolatedEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass infectiousEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass seirModelEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass preclinicalEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass mildEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass severeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass hospitalizedEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass deathsEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass testEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -301,86 +188,6 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
-	public EClass getSusceptible() {
-		return susceptibleEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getExposed() {
-		return exposedEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getExposedNonIsolated() {
-		return exposedNonIsolatedEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getSymptomatic() {
-		return symptomaticEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getAsymptomatic() {
-		return asymptomaticEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getRecovered() {
-		return recoveredEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getExposedIsolated() {
-		return exposedIsolatedEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getInfectious() {
-		return infectiousEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public EClass getSEIRModel() {
 		return seirModelEClass;
 	}
@@ -393,66 +200,6 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	@Override
 	public EReference getSEIRModel_Compartments() {
 		return (EReference)seirModelEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getPreclinical() {
-		return preclinicalEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getMild() {
-		return mildEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getSevere() {
-		return severeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getHospitalized() {
-		return hospitalizedEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getDeaths() {
-		return deathsEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public EClass getTest() {
-		return testEClass;
 	}
 
 	/**
@@ -494,36 +241,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		createEAttribute(flowEClass, FLOW__DESCRIPTION);
 		createEReference(flowEClass, FLOW__TARGET);
 
-		susceptibleEClass = createEClass(SUSCEPTIBLE);
-
-		exposedEClass = createEClass(EXPOSED);
-
-		exposedNonIsolatedEClass = createEClass(EXPOSED_NON_ISOLATED);
-
-		symptomaticEClass = createEClass(SYMPTOMATIC);
-
-		asymptomaticEClass = createEClass(ASYMPTOMATIC);
-
-		recoveredEClass = createEClass(RECOVERED);
-
-		exposedIsolatedEClass = createEClass(EXPOSED_ISOLATED);
-
-		infectiousEClass = createEClass(INFECTIOUS);
-
 		seirModelEClass = createEClass(SEIR_MODEL);
 		createEReference(seirModelEClass, SEIR_MODEL__COMPARTMENTS);
-
-		preclinicalEClass = createEClass(PRECLINICAL);
-
-		mildEClass = createEClass(MILD);
-
-		severeEClass = createEClass(SEVERE);
-
-		hospitalizedEClass = createEClass(HOSPITALIZED);
-
-		deathsEClass = createEClass(DEATHS);
-
-		testEClass = createEClass(TEST);
 	}
 
 	/**
@@ -554,23 +273,9 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		susceptibleEClass.getESuperTypes().add(this.getCompartment());
-		exposedEClass.getESuperTypes().add(this.getCompartment());
-		exposedNonIsolatedEClass.getESuperTypes().add(this.getExposed());
-		symptomaticEClass.getESuperTypes().add(this.getInfectious());
-		asymptomaticEClass.getESuperTypes().add(this.getInfectious());
-		recoveredEClass.getESuperTypes().add(this.getCompartment());
-		exposedIsolatedEClass.getESuperTypes().add(this.getExposed());
-		infectiousEClass.getESuperTypes().add(this.getCompartment());
-		preclinicalEClass.getESuperTypes().add(this.getCompartment());
-		mildEClass.getESuperTypes().add(this.getSymptomatic());
-		severeEClass.getESuperTypes().add(this.getSymptomatic());
-		hospitalizedEClass.getESuperTypes().add(this.getCompartment());
-		deathsEClass.getESuperTypes().add(this.getCompartment());
-		testEClass.getESuperTypes().add(this.getCompartment());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(compartmentEClass, Compartment.class, "Compartment", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(compartmentEClass, Compartment.class, "Compartment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCompartment_Name(), ecorePackage.getEString(), "name", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getCompartment_Population(), ecorePackage.getEInt(), "population", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartment_OutgoingFlows(), this.getFlow(), null, "outgoingFlows", null, 0, -1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -580,36 +285,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		initEAttribute(getFlow_Description(), ecorePackage.getEString(), "description", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFlow_Target(), this.getCompartment(), null, "target", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(susceptibleEClass, Susceptible.class, "Susceptible", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(exposedEClass, Exposed.class, "Exposed", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(exposedNonIsolatedEClass, ExposedNonIsolated.class, "ExposedNonIsolated", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(symptomaticEClass, Symptomatic.class, "Symptomatic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(asymptomaticEClass, Asymptomatic.class, "Asymptomatic", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(recoveredEClass, Recovered.class, "Recovered", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(exposedIsolatedEClass, ExposedIsolated.class, "ExposedIsolated", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(infectiousEClass, Infectious.class, "Infectious", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
 		initEClass(seirModelEClass, SEIRModel.class, "SEIRModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSEIRModel_Compartments(), this.getCompartment(), null, "compartments", null, 0, -1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(preclinicalEClass, Preclinical.class, "Preclinical", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(mildEClass, Mild.class, "Mild", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(severeEClass, Severe.class, "Severe", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(hospitalizedEClass, Hospitalized.class, "Hospitalized", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(deathsEClass, Deaths.class, "Deaths", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(testEClass, Test.class, "Test", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

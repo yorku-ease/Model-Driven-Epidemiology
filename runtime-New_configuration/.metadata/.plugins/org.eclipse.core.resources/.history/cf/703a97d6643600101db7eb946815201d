@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <compartments xsi:type="seir:Susceptible" name="S" population="200">
+    <outgoingFlows rate="0.4" target="//@compartments.1"/>
+  </compartments>
+  <compartments xsi:type="seir:Exposed" name="E">
+    <outgoingFlows rate="0.1" target="//@compartments.3"/>
+    <outgoingFlows rate="0.2" target="//@compartments.4"/>
+    <outgoingFlows rate="0.4" target="//@compartments.5"/>
+  </compartments>
+  <compartments xsi:type="seir:Recovered" name="R"/>
+  <compartments xsi:type="seir:Asymptomatic" name="I_A" population="600">
+    <outgoingFlows rate="0.9" target="//@compartments.2"/>
+  </compartments>
+  <compartments xsi:type="seir:Infectiouse_Moderate_Symptoms" name="I_M" population="150">
+    <outgoingFlows rate="0.5" target="//@compartments.2"/>
+  </compartments>
+  <compartments xsi:type="seir:Sever_Symptomatic" name="I_S" population="50">
+    <outgoingFlows rate="0.2" target="//@compartments.2"/>
+    <outgoingFlows rate="0.8" target="//@compartments.6"/>
+  </compartments>
+  <compartments xsi:type="seir:Deceased" name="D"/>
+</seir:SEIRModel>

@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see seirmodel.SeirmodelPackage#getCompartment()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface Compartment extends EObject {

@@ -72,6 +72,29 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Compartment} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CompartmentItemProvider compartmentItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Compartment}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCompartmentAdapter() {
+		if (compartmentItemProvider == null) {
+			compartmentItemProvider = new CompartmentItemProvider(this);
+		}
+
+		return compartmentItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link seirmodel.Flow} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -95,144 +118,6 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Susceptible} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected SusceptibleItemProvider susceptibleItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Susceptible}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createSusceptibleAdapter() {
-		if (susceptibleItemProvider == null) {
-			susceptibleItemProvider = new SusceptibleItemProvider(this);
-		}
-
-		return susceptibleItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.ExposedNonIsolated} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ExposedNonIsolatedItemProvider exposedNonIsolatedItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.ExposedNonIsolated}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createExposedNonIsolatedAdapter() {
-		if (exposedNonIsolatedItemProvider == null) {
-			exposedNonIsolatedItemProvider = new ExposedNonIsolatedItemProvider(this);
-		}
-
-		return exposedNonIsolatedItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Symptomatic} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected SymptomaticItemProvider symptomaticItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Symptomatic}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createSymptomaticAdapter() {
-		if (symptomaticItemProvider == null) {
-			symptomaticItemProvider = new SymptomaticItemProvider(this);
-		}
-
-		return symptomaticItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Asymptomatic} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected AsymptomaticItemProvider asymptomaticItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Asymptomatic}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createAsymptomaticAdapter() {
-		if (asymptomaticItemProvider == null) {
-			asymptomaticItemProvider = new AsymptomaticItemProvider(this);
-		}
-
-		return asymptomaticItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Recovered} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected RecoveredItemProvider recoveredItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Recovered}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createRecoveredAdapter() {
-		if (recoveredItemProvider == null) {
-			recoveredItemProvider = new RecoveredItemProvider(this);
-		}
-
-		return recoveredItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.ExposedIsolated} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ExposedIsolatedItemProvider exposedIsolatedItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.ExposedIsolated}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createExposedIsolatedAdapter() {
-		if (exposedIsolatedItemProvider == null) {
-			exposedIsolatedItemProvider = new ExposedIsolatedItemProvider(this);
-		}
-
-		return exposedIsolatedItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link seirmodel.SEIRModel} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -253,144 +138,6 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 		}
 
 		return seirModelItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Preclinical} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PreclinicalItemProvider preclinicalItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Preclinical}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createPreclinicalAdapter() {
-		if (preclinicalItemProvider == null) {
-			preclinicalItemProvider = new PreclinicalItemProvider(this);
-		}
-
-		return preclinicalItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Mild} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected MildItemProvider mildItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Mild}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createMildAdapter() {
-		if (mildItemProvider == null) {
-			mildItemProvider = new MildItemProvider(this);
-		}
-
-		return mildItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Severe} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected SevereItemProvider severeItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Severe}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createSevereAdapter() {
-		if (severeItemProvider == null) {
-			severeItemProvider = new SevereItemProvider(this);
-		}
-
-		return severeItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Hospitalized} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected HospitalizedItemProvider hospitalizedItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Hospitalized}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createHospitalizedAdapter() {
-		if (hospitalizedItemProvider == null) {
-			hospitalizedItemProvider = new HospitalizedItemProvider(this);
-		}
-
-		return hospitalizedItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Deaths} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected DeathsItemProvider deathsItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Deaths}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createDeathsAdapter() {
-		if (deathsItemProvider == null) {
-			deathsItemProvider = new DeathsItemProvider(this);
-		}
-
-		return deathsItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Test} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected TestItemProvider testItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link seirmodel.Test}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createTestAdapter() {
-		if (testItemProvider == null) {
-			testItemProvider = new TestItemProvider(this);
-		}
-
-		return testItemProvider;
 	}
 
 	/**
@@ -498,20 +245,9 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	 */
 	@Override
 	public void dispose() {
+		if (compartmentItemProvider != null) compartmentItemProvider.dispose();
 		if (flowItemProvider != null) flowItemProvider.dispose();
-		if (susceptibleItemProvider != null) susceptibleItemProvider.dispose();
-		if (exposedNonIsolatedItemProvider != null) exposedNonIsolatedItemProvider.dispose();
-		if (symptomaticItemProvider != null) symptomaticItemProvider.dispose();
-		if (asymptomaticItemProvider != null) asymptomaticItemProvider.dispose();
-		if (recoveredItemProvider != null) recoveredItemProvider.dispose();
-		if (exposedIsolatedItemProvider != null) exposedIsolatedItemProvider.dispose();
 		if (seirModelItemProvider != null) seirModelItemProvider.dispose();
-		if (preclinicalItemProvider != null) preclinicalItemProvider.dispose();
-		if (mildItemProvider != null) mildItemProvider.dispose();
-		if (severeItemProvider != null) severeItemProvider.dispose();
-		if (hospitalizedItemProvider != null) hospitalizedItemProvider.dispose();
-		if (deathsItemProvider != null) deathsItemProvider.dispose();
-		if (testItemProvider != null) testItemProvider.dispose();
 	}
 
 }
