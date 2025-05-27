@@ -78,21 +78,21 @@ public class SEIREquationGenerator {
         Map<String, String> equations = new HashMap<>();
 
         for (Compartment compartment : model.getCompartments()) {
-            StringBuilder equation = new StringBuilder("d" + compartment.getName() + "/dt = ");
+            StringBuilder equation = new StringBuilder("d" + compartment.getPrimaryName() + "/dt = ");
 
             for (Compartment source : model.getCompartments()) {
                 for (Flow flow : source.getOutgoingFlows()) {
                     if (flow.getTarget() == compartment) {
-                        equation.append("+ ").append(flow.getRate()).append(" * ").append(source.getName()).append(" ");
+                        equation.append("+ ").append(flow.getRate()).append(" * ").append(source.getPrimaryName()).append(" ");
                     }
                 }
             }
 
             for (Flow flow : compartment.getOutgoingFlows()) {
-                equation.append("- ").append(flow.getRate()).append(" * ").append(compartment.getName()).append(" ");
+                equation.append("- ").append(flow.getRate()).append(" * ").append(compartment.getPrimaryName()).append(" ");
             }
 
-            equations.put(compartment.getName(), equation.toString());
+            equations.put(compartment.getPrimaryName(), equation.toString());
         }
 
         return equations;

@@ -67,13 +67,13 @@ public interface SeirmodelPackage extends EPackage {
 	int COMPARTMENT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * The feature id for the '<em><b>Primary Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT__NAME = 0;
+	int COMPARTMENT__PRIMARY_NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Population</b></em>' attribute.
@@ -94,13 +94,22 @@ public interface SeirmodelPackage extends EPackage {
 	int COMPARTMENT__OUTGOING_FLOWS = 2;
 
 	/**
+	 * The feature id for the '<em><b>Secondary Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPARTMENT__SECONDARY_NAME = 3;
+
+	/**
 	 * The number of structural features of the '<em>Compartment</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_FEATURE_COUNT = 3;
+	int COMPARTMENT_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Compartment</em>' class.
@@ -215,15 +224,15 @@ public interface SeirmodelPackage extends EPackage {
 	EClass getCompartment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link seirmodel.Compartment#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link seirmodel.Compartment#getPrimaryName <em>Primary Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see seirmodel.Compartment#getName()
+	 * @return the meta object for the attribute '<em>Primary Name</em>'.
+	 * @see seirmodel.Compartment#getPrimaryName()
 	 * @see #getCompartment()
 	 * @generated
 	 */
-	EAttribute getCompartment_Name();
+	EAttribute getCompartment_PrimaryName();
 
 	/**
 	 * Returns the meta object for the attribute '{@link seirmodel.Compartment#getPopulation <em>Population</em>}'.
@@ -246,6 +255,17 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCompartment_OutgoingFlows();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.Compartment#getSecondaryName <em>Secondary Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Secondary Name</em>'.
+	 * @see seirmodel.Compartment#getSecondaryName()
+	 * @see #getCompartment()
+	 * @generated
+	 */
+	EAttribute getCompartment_SecondaryName();
 
 	/**
 	 * Returns the meta object for class '{@link seirmodel.Flow <em>Flow</em>}'.
@@ -345,12 +365,12 @@ public interface SeirmodelPackage extends EPackage {
 		EClass COMPARTMENT = eINSTANCE.getCompartment();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Primary Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute COMPARTMENT__NAME = eINSTANCE.getCompartment_Name();
+		EAttribute COMPARTMENT__PRIMARY_NAME = eINSTANCE.getCompartment_PrimaryName();
 
 		/**
 		 * The meta object literal for the '<em><b>Population</b></em>' attribute feature.
@@ -367,6 +387,14 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPARTMENT__OUTGOING_FLOWS = eINSTANCE.getCompartment_OutgoingFlows();
+
+		/**
+		 * The meta object literal for the '<em><b>Secondary Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPARTMENT__SECONDARY_NAME = eINSTANCE.getCompartment_SecondaryName();
 
 		/**
 		 * The meta object literal for the '{@link seirmodel.impl.FlowImpl <em>Flow</em>}' class.

@@ -62,26 +62,27 @@ public class CompartmentItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addNamePropertyDescriptor(object);
+			addPrimaryNamePropertyDescriptor(object);
 			addPopulationPropertyDescriptor(object);
+			addSecondaryNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Name feature.
+	 * This adds a property descriptor for the Primary Name feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addNamePropertyDescriptor(Object object) {
+	protected void addPrimaryNamePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Compartment_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Compartment_name_feature", "_UI_Compartment_type"),
-				 SeirmodelPackage.Literals.COMPARTMENT__NAME,
+				 getString("_UI_Compartment_PrimaryName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Compartment_PrimaryName_feature", "_UI_Compartment_type"),
+				 SeirmodelPackage.Literals.COMPARTMENT__PRIMARY_NAME,
 				 true,
 				 false,
 				 false,
@@ -108,6 +109,28 @@ public class CompartmentItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Secondary Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSecondaryNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Compartment_SecondaryName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Compartment_SecondaryName_feature", "_UI_Compartment_type"),
+				 SeirmodelPackage.Literals.COMPARTMENT__SECONDARY_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -150,7 +173,7 @@ public class CompartmentItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Compartment)object).getName();
+		String label = ((Compartment)object).getPrimaryName();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Compartment_type") :
 			getString("_UI_Compartment_type") + " " + label;
@@ -169,8 +192,9 @@ public class CompartmentItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Compartment.class)) {
-			case SeirmodelPackage.COMPARTMENT__NAME:
+			case SeirmodelPackage.COMPARTMENT__PRIMARY_NAME:
 			case SeirmodelPackage.COMPARTMENT__POPULATION:
+			case SeirmodelPackage.COMPARTMENT__SECONDARY_NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case SeirmodelPackage.COMPARTMENT__OUTGOING_FLOWS:

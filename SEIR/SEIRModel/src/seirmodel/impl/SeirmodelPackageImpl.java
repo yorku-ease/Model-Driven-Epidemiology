@@ -118,7 +118,7 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
-	public EAttribute getCompartment_Name() {
+	public EAttribute getCompartment_PrimaryName() {
 		return (EAttribute)compartmentEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -140,6 +140,16 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	@Override
 	public EReference getCompartment_OutgoingFlows() {
 		return (EReference)compartmentEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCompartment_SecondaryName() {
+		return (EAttribute)compartmentEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -232,9 +242,10 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 
 		// Create classes and their features
 		compartmentEClass = createEClass(COMPARTMENT);
-		createEAttribute(compartmentEClass, COMPARTMENT__NAME);
+		createEAttribute(compartmentEClass, COMPARTMENT__PRIMARY_NAME);
 		createEAttribute(compartmentEClass, COMPARTMENT__POPULATION);
 		createEReference(compartmentEClass, COMPARTMENT__OUTGOING_FLOWS);
+		createEAttribute(compartmentEClass, COMPARTMENT__SECONDARY_NAME);
 
 		flowEClass = createEClass(FLOW);
 		createEAttribute(flowEClass, FLOW__RATE);
@@ -276,9 +287,10 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(compartmentEClass, Compartment.class, "Compartment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCompartment_Name(), ecorePackage.getEString(), "name", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getCompartment_PrimaryName(), ecorePackage.getEString(), "PrimaryName", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getCompartment_Population(), ecorePackage.getEInt(), "population", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartment_OutgoingFlows(), this.getFlow(), null, "outgoingFlows", null, 0, -1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCompartment_SecondaryName(), ecorePackage.getEString(), "SecondaryName", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(flowEClass, Flow.class, "Flow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFlow_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

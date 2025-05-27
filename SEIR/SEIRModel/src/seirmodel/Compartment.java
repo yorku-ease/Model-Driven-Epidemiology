@@ -14,9 +14,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link seirmodel.Compartment#getName <em>Name</em>}</li>
+ *   <li>{@link seirmodel.Compartment#getPrimaryName <em>Primary Name</em>}</li>
  *   <li>{@link seirmodel.Compartment#getPopulation <em>Population</em>}</li>
  *   <li>{@link seirmodel.Compartment#getOutgoingFlows <em>Outgoing Flows</em>}</li>
+ *   <li>{@link seirmodel.Compartment#getSecondaryName <em>Secondary Name</em>}</li>
  * </ul>
  *
  * @see seirmodel.SeirmodelPackage#getCompartment()
@@ -25,26 +26,26 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Compartment extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * Returns the value of the '<em><b>Primary Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see seirmodel.SeirmodelPackage#getCompartment_Name()
+	 * @return the value of the '<em>Primary Name</em>' attribute.
+	 * @see #setPrimaryName(String)
+	 * @see seirmodel.SeirmodelPackage#getCompartment_PrimaryName()
 	 * @model ordered="false"
 	 * @generated
 	 */
-	String getName();
+	String getPrimaryName();
 
 	/**
-	 * Sets the value of the '{@link seirmodel.Compartment#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link seirmodel.Compartment#getPrimaryName <em>Primary Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
+	 * @param value the new value of the '<em>Primary Name</em>' attribute.
+	 * @see #getPrimaryName()
 	 * @generated
 	 */
-	void setName(String value);
+	void setPrimaryName(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Population</b></em>' attribute.
@@ -79,5 +80,27 @@ public interface Compartment extends EObject {
 	 * @generated
 	 */
 	EList<Flow> getOutgoingFlows();
+
+	/**
+	 * Returns the value of the '<em><b>Secondary Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Secondary Name</em>' attribute.
+	 * @see #setSecondaryName(String)
+	 * @see seirmodel.SeirmodelPackage#getCompartment_SecondaryName()
+	 * @model ordered="false"
+	 * @generated
+	 */
+	String getSecondaryName();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.Compartment#getSecondaryName <em>Secondary Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Secondary Name</em>' attribute.
+	 * @see #getSecondaryName()
+	 * @generated
+	 */
+	void setSecondaryName(String value);
 
 } // Compartment
