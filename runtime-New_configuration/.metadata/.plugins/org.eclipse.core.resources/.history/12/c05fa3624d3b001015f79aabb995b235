@@ -22,6 +22,13 @@
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
           </style>
+          <conditionnalStyles predicateExpression="aql:self.PrimaryName = 'Suspectible'">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
         </nodeMappings>
         <edgeMappings name="FlowEdge" semanticCandidatesExpression="aql:self.compartments.outgoingFlows" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='SEIRDiagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='SEIRDiagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetFinderExpression="aql:self.target" sourceFinderExpression="aql:self.eContainer()" domainClass="seirmodel.Flow" useDomainElement="true">
           <style sourceArrow="OutputArrow" routingStyle="tree" foldingStyle="SOURCE" endsCentering="Target">
