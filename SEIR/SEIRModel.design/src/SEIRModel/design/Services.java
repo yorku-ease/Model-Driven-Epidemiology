@@ -14,4 +14,16 @@ public class Services {
        // TODO Auto-generated code
       return self;
     }
+    
+
+    public String borderColorFromPrimaryName(String key) {
+        int hash = Math.abs(key.hashCode());
+        int r = (hash & 0xFF0000) >> 16;
+        int g = (hash & 0x00FF00) >> 8;
+        int b = (hash & 0x0000FF);
+//        return "rgb(" + r + "," + g + "," + b + ")";
+        return "rgb(255,0,0)";
+        
+    }
+
 }
