@@ -78,29 +78,21 @@ public class SEIREquationGenerator {
         Map<String, String> equations = new HashMap<>();
 
         for (Compartment compartment : model.getCompartments()) {
-            String primaryName = compartment.getPrimaryName();
-            String secondaryName = compartment.getSecondaryName() != null ? compartment.getSecondaryName() : "";
-            String displayName = primaryName + (secondaryName.isEmpty() ? "" : " (" + secondaryName + ")");
-            StringBuilder equation = new StringBuilder("d" + displayName + "/dt = ");
+            StringBuilder equation = new StringBuilder("d" + compartment.getPrimaryName() + "/dt = ");
 
-            // Incoming flows to this compartment
             for (Compartment source : model.getCompartments()) {
                 for (Flow flow : source.getOutgoingFlows()) {
                     if (flow.getTarget() == compartment) {
-                        String sourceName = source.getPrimaryName();
-                        String sourceSecondary = source.getSecondaryName();
-                        String sourceDisplay = sourceName + (sourceSecondary != null && !sourceSecondary.isEmpty() ? " (" + sourceSecondary + ")" : "");
-                        equation.append("+ ").append(flow.getRate()).append(" * ").append(sourceDisplay).append(" ");
+                        equation.append("+ ").append(flow.getRate()).append(" * ").append(source.getPrimaryName()).append(" ");
                     }
                 }
             }
 
-            // Outgoing flows from this compartment
             for (Flow flow : compartment.getOutgoingFlows()) {
-                equation.append("- ").append(flow.getRate()).append(" * ").append(displayName).append(" ");
+                equation.append("- ").append(flow.getRate()).append(" * ").append(compartment.getPrimaryName()).append(" ");
             }
 
-            equations.put(displayName, equation.toString());
+            equations.put(compartment.getPrimaryName(), equation.toString());
         }
 
         return equations;
