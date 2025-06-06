@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:seir="http://example.com/seirmodel">
+  <compartments PrimaryName="Susceptible" population="200">
+    <outgoingFlows rate="0.2" target="//@compartments.1"/>
+    <outgoingFlows rate="0.4" target="//@compartments.2"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="100">
+    <outgoingFlows rate="0.3" target="//@compartments.0"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="100">
+    <outgoingFlows rate="0.1" target="//@compartments.3"/>
+    <outgoingFlows rate="0.2" target="//@compartments.4"/>
+    <outgoingFlows rate="0.4" target="//@compartments.5"/>
+  </compartments>
+  <compartments PrimaryName="Infectious_Asymptomatic" SecondaryName="" population="600">
+    <outgoingFlows rate="0.9" target="//@compartments.6"/>
+  </compartments>
+  <compartments PrimaryName="Infectious_Moderate_Symptomatic" SecondaryName="" population="150">
+    <outgoingFlows rate="0.5" target="//@compartments.6"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Sever_Symptomatic" population="50">
+    <outgoingFlows rate="0.2" target="//@compartments.6"/>
+    <outgoingFlows rate="0.8" target="//@compartments.7"/>
+  </compartments>
+  <compartments PrimaryName="Recovered"/>
+  <compartments PrimaryName="Deceased"/>
+</seir:SEIRModel>
