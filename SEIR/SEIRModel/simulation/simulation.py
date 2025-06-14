@@ -57,10 +57,10 @@ def simulate(years):
             
             #NOTE: this for loop takes care of contact-based equation
             for char in eq[1:]:
-                if char == '{':
+                if char == '(':
                     bracket_count += 1
                     current += char
-                elif char == '}':
+                elif char == ')':
                     bracket_count -= 1
                     current += char
                 elif char in '+-' and bracket_count == 0 and (not current or current[-1] != 'E'):
@@ -106,7 +106,7 @@ def simulate(years):
         if step % 100 == 0:
             # Add headers if this is the first step
             if step == 0:
-                data = "Year," + ",".join(comp['name'] for comp in compartments) + "\n"
+                data = "Year," + ",".join(f'"{comp['name']}"' for comp in compartments) + "\n"
             data += f"{step * dt:.2f}," + ",".join(f"{comp['population']:.2f}" for comp in compartments) + "\n"
     return data
 
