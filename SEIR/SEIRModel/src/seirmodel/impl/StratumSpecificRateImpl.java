@@ -1,0 +1,277 @@
+/**
+ */
+package seirmodel.impl;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import seirmodel.SeirmodelPackage;
+import seirmodel.StratumSpecificRate;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Stratum Specific Rate</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getStratum <em>Stratum</em>}</li>
+ *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getMultiplier <em>Multiplier</em>}</li>
+ * </ul>
+ *
+ * @generated
+ */
+public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implements StratumSpecificRate {
+	/**
+	 * The default value of the '{@link #getStratum() <em>Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStratum()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String STRATUM_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getStratum() <em>Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStratum()
+	 * @generated
+	 * @ordered
+	 */
+	protected String stratum = STRATUM_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getRate() <em>Rate</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRate()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final double RATE_EDEFAULT = 0.0;
+
+	/**
+	 * The cached value of the '{@link #getRate() <em>Rate</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRate()
+	 * @generated
+	 * @ordered
+	 */
+	protected double rate = RATE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMultiplier() <em>Multiplier</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiplier()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final double MULTIPLIER_EDEFAULT = 1.0;
+
+	/**
+	 * The cached value of the '{@link #getMultiplier() <em>Multiplier</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiplier()
+	 * @generated
+	 * @ordered
+	 */
+	protected double multiplier = MULTIPLIER_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected StratumSpecificRateImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return SeirmodelPackage.Literals.STRATUM_SPECIFIC_RATE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String getStratum() {
+		return stratum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setStratum(String newStratum) {
+		String oldStratum = stratum;
+		stratum = newStratum;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.STRATUM_SPECIFIC_RATE__STRATUM, oldStratum, stratum));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public double getRate() {
+		return rate;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setRate(double newRate) {
+		double oldRate = rate;
+		rate = newRate;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE, oldRate, rate));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public double getMultiplier() {
+		return multiplier;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setMultiplier(double newMultiplier) {
+		double oldMultiplier = multiplier;
+		multiplier = newMultiplier;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER, oldMultiplier, multiplier));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__STRATUM:
+				return getStratum();
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
+				return getRate();
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
+				return getMultiplier();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__STRATUM:
+				setStratum((String)newValue);
+				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
+				setRate((Double)newValue);
+				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
+				setMultiplier((Double)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__STRATUM:
+				setStratum(STRATUM_EDEFAULT);
+				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
+				setRate(RATE_EDEFAULT);
+				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
+				setMultiplier(MULTIPLIER_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__STRATUM:
+				return STRATUM_EDEFAULT == null ? stratum != null : !STRATUM_EDEFAULT.equals(stratum);
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
+				return rate != RATE_EDEFAULT;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
+				return multiplier != MULTIPLIER_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (stratum: ");
+		result.append(stratum);
+		result.append(", rate: ");
+		result.append(rate);
+		result.append(", multiplier: ");
+		result.append(multiplier);
+		result.append(')');
+		return result.toString();
+	}
+
+} //StratumSpecificRateImpl

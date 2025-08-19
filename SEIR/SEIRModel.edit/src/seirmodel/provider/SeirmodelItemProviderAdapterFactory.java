@@ -95,26 +95,164 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link seirmodel.Flow} instances.
+	 * This keeps track of the one adapter used for all {@link seirmodel.RateFlow} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected FlowItemProvider flowItemProvider;
+	protected RateFlowItemProvider rateFlowItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link seirmodel.Flow}.
+	 * This creates an adapter for a {@link seirmodel.RateFlow}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createFlowAdapter() {
-		if (flowItemProvider == null) {
-			flowItemProvider = new FlowItemProvider(this);
+	public Adapter createRateFlowAdapter() {
+		if (rateFlowItemProvider == null) {
+			rateFlowItemProvider = new RateFlowItemProvider(this);
 		}
 
-		return flowItemProvider;
+		return rateFlowItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.ContactFlow} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ContactFlowItemProvider contactFlowItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.ContactFlow}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createContactFlowAdapter() {
+		if (contactFlowItemProvider == null) {
+			contactFlowItemProvider = new ContactFlowItemProvider(this);
+		}
+
+		return contactFlowItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.BirthSource} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected BirthSourceItemProvider birthSourceItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.BirthSource}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createBirthSourceAdapter() {
+		if (birthSourceItemProvider == null) {
+			birthSourceItemProvider = new BirthSourceItemProvider(this);
+		}
+
+		return birthSourceItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.DeathSink} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DeathSinkItemProvider deathSinkItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.DeathSink}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDeathSinkAdapter() {
+		if (deathSinkItemProvider == null) {
+			deathSinkItemProvider = new DeathSinkItemProvider(this);
+		}
+
+		return deathSinkItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.StratumSpecificRate} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected StratumSpecificRateItemProvider stratumSpecificRateItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.StratumSpecificRate}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createStratumSpecificRateAdapter() {
+		if (stratumSpecificRateItemProvider == null) {
+			stratumSpecificRateItemProvider = new StratumSpecificRateItemProvider(this);
+		}
+
+		return stratumSpecificRateItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Group} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GroupItemProvider groupItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Group}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGroupAdapter() {
+		if (groupItemProvider == null) {
+			groupItemProvider = new GroupItemProvider(this);
+		}
+
+		return groupItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Product} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ProductItemProvider productItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Product}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createProductAdapter() {
+		if (productItemProvider == null) {
+			productItemProvider = new ProductItemProvider(this);
+		}
+
+		return productItemProvider;
 	}
 
 	/**
@@ -246,7 +384,13 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	@Override
 	public void dispose() {
 		if (compartmentItemProvider != null) compartmentItemProvider.dispose();
-		if (flowItemProvider != null) flowItemProvider.dispose();
+		if (rateFlowItemProvider != null) rateFlowItemProvider.dispose();
+		if (contactFlowItemProvider != null) contactFlowItemProvider.dispose();
+		if (birthSourceItemProvider != null) birthSourceItemProvider.dispose();
+		if (deathSinkItemProvider != null) deathSinkItemProvider.dispose();
+		if (stratumSpecificRateItemProvider != null) stratumSpecificRateItemProvider.dispose();
+		if (groupItemProvider != null) groupItemProvider.dispose();
+		if (productItemProvider != null) productItemProvider.dispose();
 		if (seirModelItemProvider != null) seirModelItemProvider.dispose();
 	}
 

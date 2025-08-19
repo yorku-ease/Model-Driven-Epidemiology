@@ -13,12 +13,14 @@ import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -61,8 +63,77 @@ public class SEIRModelItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addTotalPopulationPropertyDescriptor(object);
+			addGlobalBirthRatePropertyDescriptor(object);
+			addGlobalDeathRatePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Total Population feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTotalPopulationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_SEIRModel_totalPopulation_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_SEIRModel_totalPopulation_feature", "_UI_SEIRModel_type"),
+				 SeirmodelPackage.Literals.SEIR_MODEL__TOTAL_POPULATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Global Birth Rate feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addGlobalBirthRatePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_SEIRModel_globalBirthRate_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_SEIRModel_globalBirthRate_feature", "_UI_SEIRModel_type"),
+				 SeirmodelPackage.Literals.SEIR_MODEL__GLOBAL_BIRTH_RATE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Global Death Rate feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addGlobalDeathRatePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_SEIRModel_globalDeathRate_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_SEIRModel_globalDeathRate_feature", "_UI_SEIRModel_type"),
+				 SeirmodelPackage.Literals.SEIR_MODEL__GLOBAL_DEATH_RATE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
 	}
 
 	/**
@@ -78,6 +149,10 @@ public class SEIRModelItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS);
+			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__BIRTH_SOURCES);
+			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__DEATH_SINKS);
+			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__GROUPS);
+			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__PRODUCTS);
 		}
 		return childrenFeatures;
 	}
@@ -114,7 +189,8 @@ public class SEIRModelItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_SEIRModel_type");
+		SEIRModel seirModel = (SEIRModel)object;
+		return getString("_UI_SEIRModel_type") + " " + seirModel.getTotalPopulation();
 	}
 
 
@@ -130,7 +206,16 @@ public class SEIRModelItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(SEIRModel.class)) {
+			case SeirmodelPackage.SEIR_MODEL__TOTAL_POPULATION:
+			case SeirmodelPackage.SEIR_MODEL__GLOBAL_BIRTH_RATE:
+			case SeirmodelPackage.SEIR_MODEL__GLOBAL_DEATH_RATE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
 			case SeirmodelPackage.SEIR_MODEL__COMPARTMENTS:
+			case SeirmodelPackage.SEIR_MODEL__BIRTH_SOURCES:
+			case SeirmodelPackage.SEIR_MODEL__DEATH_SINKS:
+			case SeirmodelPackage.SEIR_MODEL__GROUPS:
+			case SeirmodelPackage.SEIR_MODEL__PRODUCTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -152,6 +237,26 @@ public class SEIRModelItemProvider
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__COMPARTMENTS,
 				 SeirmodelFactory.eINSTANCE.createCompartment()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__BIRTH_SOURCES,
+				 SeirmodelFactory.eINSTANCE.createBirthSource()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__DEATH_SINKS,
+				 SeirmodelFactory.eINSTANCE.createDeathSink()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__GROUPS,
+				 SeirmodelFactory.eINSTANCE.createGroup()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__PRODUCTS,
+				 SeirmodelFactory.eINSTANCE.createProduct()));
 	}
 
 	/**

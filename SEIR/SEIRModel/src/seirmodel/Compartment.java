@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link seirmodel.Compartment#getPopulation <em>Population</em>}</li>
  *   <li>{@link seirmodel.Compartment#getOutgoingFlows <em>Outgoing Flows</em>}</li>
  *   <li>{@link seirmodel.Compartment#getSecondaryName <em>Secondary Name</em>}</li>
+ *   <li>{@link seirmodel.Compartment#getProduct <em>Product</em>}</li>
  * </ul>
  *
  * @see seirmodel.SeirmodelPackage#getCompartment()
@@ -102,5 +103,27 @@ public interface Compartment extends EObject {
 	 * @generated
 	 */
 	void setSecondaryName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Product</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Product</em>' reference.
+	 * @see #setProduct(Product)
+	 * @see seirmodel.SeirmodelPackage#getCompartment_Product()
+	 * @model
+	 * @generated
+	 */
+	Product getProduct();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.Compartment#getProduct <em>Product</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Product</em>' reference.
+	 * @see #getProduct()
+	 * @generated
+	 */
+	void setProduct(Product value);
 
 } // Compartment

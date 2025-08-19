@@ -76,6 +76,34 @@ public class SeirmodelAdapterFactory extends AdapterFactoryImpl {
 				return createFlowAdapter();
 			}
 			@Override
+			public Adapter caseRateFlow(RateFlow object) {
+				return createRateFlowAdapter();
+			}
+			@Override
+			public Adapter caseContactFlow(ContactFlow object) {
+				return createContactFlowAdapter();
+			}
+			@Override
+			public Adapter caseBirthSource(BirthSource object) {
+				return createBirthSourceAdapter();
+			}
+			@Override
+			public Adapter caseDeathSink(DeathSink object) {
+				return createDeathSinkAdapter();
+			}
+			@Override
+			public Adapter caseStratumSpecificRate(StratumSpecificRate object) {
+				return createStratumSpecificRateAdapter();
+			}
+			@Override
+			public Adapter caseGroup(Group object) {
+				return createGroupAdapter();
+			}
+			@Override
+			public Adapter caseProduct(Product object) {
+				return createProductAdapter();
+			}
+			@Override
 			public Adapter caseSEIRModel(SEIRModel object) {
 				return createSEIRModelAdapter();
 			}
@@ -124,6 +152,104 @@ public class SeirmodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createFlowAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.RateFlow <em>Rate Flow</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.RateFlow
+	 * @generated
+	 */
+	public Adapter createRateFlowAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.ContactFlow <em>Contact Flow</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.ContactFlow
+	 * @generated
+	 */
+	public Adapter createContactFlowAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.BirthSource <em>Birth Source</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.BirthSource
+	 * @generated
+	 */
+	public Adapter createBirthSourceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.DeathSink <em>Death Sink</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.DeathSink
+	 * @generated
+	 */
+	public Adapter createDeathSinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.StratumSpecificRate <em>Stratum Specific Rate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.StratumSpecificRate
+	 * @generated
+	 */
+	public Adapter createStratumSpecificRateAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Group <em>Group</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Group
+	 * @generated
+	 */
+	public Adapter createGroupAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link seirmodel.Product <em>Product</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see seirmodel.Product
+	 * @generated
+	 */
+	public Adapter createProductAdapter() {
 		return null;
 	}
 

@@ -5,19 +5,61 @@
     complianceLevel="21.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>seir.ecore</foreignModel>
   <genPackages prefix="Seirmodel" disposableProviderFactory="true" ecorePackage="seir.ecore#/">
-    <genClasses image="false" ecoreClass="seir.ecore#//Compartment">
+    <genClasses ecoreClass="seir.ecore#//Compartment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Compartment/PrimaryName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Compartment/population"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//Compartment/outgoingFlows"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Compartment/SecondaryName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference seir.ecore#//Compartment/product"/>
     </genClasses>
-    <genClasses ecoreClass="seir.ecore#//Flow">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Flow/rate"/>
+    <genClasses image="false" ecoreClass="seir.ecore#//Flow">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Flow/description"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference seir.ecore#//Flow/target"/>
     </genClasses>
+    <genClasses ecoreClass="seir.ecore#//RateFlow">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//RateFlow/rate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//RateFlow/stratumSpecificRates"/>
+    </genClasses>
+    <genClasses ecoreClass="seir.ecore#//ContactFlow">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference seir.ecore#//ContactFlow/contactCompartment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//ContactFlow/contactRate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//ContactFlow/contactParameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//ContactFlow/stratumSpecificRates"/>
+    </genClasses>
+    <genClasses ecoreClass="seir.ecore#//BirthSource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//BirthSource/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//BirthSource/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference seir.ecore#//BirthSource/targetCompartment"/>
+    </genClasses>
+    <genClasses ecoreClass="seir.ecore#//DeathSink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//DeathSink/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//DeathSink/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference seir.ecore#//DeathSink/sourceCompartment"/>
+    </genClasses>
+    <genClasses ecoreClass="seir.ecore#//StratumSpecificRate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//StratumSpecificRate/stratum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//StratumSpecificRate/rate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//StratumSpecificRate/multiplier"/>
+    </genClasses>
+    <genClasses ecoreClass="seir.ecore#//Group">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Group/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Group/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Group/values"/>
+    </genClasses>
+    <genClasses ecoreClass="seir.ecore#//Product">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Product/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//Product/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference seir.ecore#//Product/groups"/>
+    </genClasses>
     <genClasses ecoreClass="seir.ecore#//SEIRModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//SEIRModel/compartments"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//SEIRModel/birthSources"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//SEIRModel/deathSinks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//SEIRModel/groups"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference seir.ecore#//SEIRModel/products"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//SEIRModel/totalPopulation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//SEIRModel/globalBirthRate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute seir.ecore#//SEIRModel/globalDeathRate"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
