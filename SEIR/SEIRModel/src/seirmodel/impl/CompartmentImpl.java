@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import seirmodel.Compartment;
 import seirmodel.Flow;
+import seirmodel.Product;
 import seirmodel.SeirmodelPackage;
 
 /**
@@ -31,6 +32,7 @@ import seirmodel.SeirmodelPackage;
  *   <li>{@link seirmodel.impl.CompartmentImpl#getPopulation <em>Population</em>}</li>
  *   <li>{@link seirmodel.impl.CompartmentImpl#getOutgoingFlows <em>Outgoing Flows</em>}</li>
  *   <li>{@link seirmodel.impl.CompartmentImpl#getSecondaryName <em>Secondary Name</em>}</li>
+ *   <li>{@link seirmodel.impl.CompartmentImpl#getProduct <em>Product</em>}</li>
  * </ul>
  *
  * @generated
@@ -105,6 +107,16 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @ordered
 	 */
 	protected String secondaryName = SECONDARY_NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getProduct() <em>Product</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProduct()
+	 * @generated
+	 * @ordered
+	 */
+	protected Product product;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -213,6 +225,46 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 */
 	@Override
+	public Product getProduct() {
+		if (product != null && product.eIsProxy()) {
+			InternalEObject oldProduct = (InternalEObject)product;
+			product = (Product)eResolveProxy(oldProduct);
+			if (product != oldProduct) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.COMPARTMENT__PRODUCT, oldProduct, product));
+			}
+		}
+		return product;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Product basicGetProduct() {
+		return product;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setProduct(Product newProduct) {
+		Product oldProduct = product;
+		product = newProduct;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.COMPARTMENT__PRODUCT, oldProduct, product));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case SeirmodelPackage.COMPARTMENT__OUTGOING_FLOWS:
@@ -237,6 +289,9 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				return getOutgoingFlows();
 			case SeirmodelPackage.COMPARTMENT__SECONDARY_NAME:
 				return getSecondaryName();
+			case SeirmodelPackage.COMPARTMENT__PRODUCT:
+				if (resolve) return getProduct();
+				return basicGetProduct();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -263,6 +318,9 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			case SeirmodelPackage.COMPARTMENT__SECONDARY_NAME:
 				setSecondaryName((String)newValue);
 				return;
+			case SeirmodelPackage.COMPARTMENT__PRODUCT:
+				setProduct((Product)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -287,6 +345,9 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			case SeirmodelPackage.COMPARTMENT__SECONDARY_NAME:
 				setSecondaryName(SECONDARY_NAME_EDEFAULT);
 				return;
+			case SeirmodelPackage.COMPARTMENT__PRODUCT:
+				setProduct((Product)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -307,6 +368,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				return outgoingFlows != null && !outgoingFlows.isEmpty();
 			case SeirmodelPackage.COMPARTMENT__SECONDARY_NAME:
 				return SECONDARY_NAME_EDEFAULT == null ? secondaryName != null : !SECONDARY_NAME_EDEFAULT.equals(secondaryName);
+			case SeirmodelPackage.COMPARTMENT__PRODUCT:
+				return product != null;
 		}
 		return super.eIsSet(featureID);
 	}

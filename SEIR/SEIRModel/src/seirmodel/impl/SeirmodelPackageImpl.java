@@ -8,11 +8,18 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import seirmodel.BirthSource;
 import seirmodel.Compartment;
+import seirmodel.ContactFlow;
+import seirmodel.DeathSink;
 import seirmodel.Flow;
+import seirmodel.Group;
+import seirmodel.Product;
+import seirmodel.RateFlow;
 import seirmodel.SEIRModel;
 import seirmodel.SeirmodelFactory;
 import seirmodel.SeirmodelPackage;
+import seirmodel.StratumSpecificRate;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,6 +41,55 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	private EClass flowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass rateFlowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass contactFlowEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass birthSourceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass deathSinkEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass stratumSpecificRateEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass groupEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass productEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -158,6 +214,16 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
+	public EReference getCompartment_Product() {
+		return (EReference)compartmentEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getFlow() {
 		return flowEClass;
 	}
@@ -168,7 +234,7 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
-	public EAttribute getFlow_Rate() {
+	public EAttribute getFlow_Description() {
 		return (EAttribute)flowEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -178,8 +244,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
-	public EAttribute getFlow_Description() {
-		return (EAttribute)flowEClass.getEStructuralFeatures().get(1);
+	public EReference getFlow_Target() {
+		return (EReference)flowEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -188,8 +254,279 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
-	public EReference getFlow_Target() {
-		return (EReference)flowEClass.getEStructuralFeatures().get(2);
+	public EClass getRateFlow() {
+		return rateFlowEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getRateFlow_Rate() {
+		return (EAttribute)rateFlowEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getRateFlow_StratumSpecificRates() {
+		return (EReference)rateFlowEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getContactFlow() {
+		return contactFlowEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContactFlow_ContactCompartment() {
+		return (EReference)contactFlowEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getContactFlow_ContactRate() {
+		return (EAttribute)contactFlowEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getContactFlow_ContactParameters() {
+		return (EAttribute)contactFlowEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getContactFlow_StratumSpecificRates() {
+		return (EReference)contactFlowEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getBirthSource() {
+		return birthSourceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBirthSource_Name() {
+		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBirthSource_Rate() {
+		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getBirthSource_TargetCompartment() {
+		return (EReference)birthSourceEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getDeathSink() {
+		return deathSinkEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDeathSink_Name() {
+		return (EAttribute)deathSinkEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getDeathSink_Rate() {
+		return (EAttribute)deathSinkEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getDeathSink_SourceCompartment() {
+		return (EReference)deathSinkEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getStratumSpecificRate() {
+		return stratumSpecificRateEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getStratumSpecificRate_Stratum() {
+		return (EAttribute)stratumSpecificRateEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getStratumSpecificRate_Rate() {
+		return (EAttribute)stratumSpecificRateEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getStratumSpecificRate_Multiplier() {
+		return (EAttribute)stratumSpecificRateEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getGroup() {
+		return groupEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getGroup_Name() {
+		return (EAttribute)groupEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getGroup_Description() {
+		return (EAttribute)groupEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getGroup_Values() {
+		return (EAttribute)groupEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EClass getProduct() {
+		return productEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getProduct_Name() {
+		return (EAttribute)productEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getProduct_Description() {
+		return (EAttribute)productEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getProduct_Groups() {
+		return (EReference)productEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -210,6 +547,76 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	@Override
 	public EReference getSEIRModel_Compartments() {
 		return (EReference)seirModelEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSEIRModel_BirthSources() {
+		return (EReference)seirModelEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSEIRModel_DeathSinks() {
+		return (EReference)seirModelEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSEIRModel_Groups() {
+		return (EReference)seirModelEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getSEIRModel_Products() {
+		return (EReference)seirModelEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSEIRModel_TotalPopulation() {
+		return (EAttribute)seirModelEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSEIRModel_GlobalBirthRate() {
+		return (EAttribute)seirModelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSEIRModel_GlobalDeathRate() {
+		return (EAttribute)seirModelEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -246,14 +653,56 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		createEAttribute(compartmentEClass, COMPARTMENT__POPULATION);
 		createEReference(compartmentEClass, COMPARTMENT__OUTGOING_FLOWS);
 		createEAttribute(compartmentEClass, COMPARTMENT__SECONDARY_NAME);
+		createEReference(compartmentEClass, COMPARTMENT__PRODUCT);
 
 		flowEClass = createEClass(FLOW);
-		createEAttribute(flowEClass, FLOW__RATE);
 		createEAttribute(flowEClass, FLOW__DESCRIPTION);
 		createEReference(flowEClass, FLOW__TARGET);
 
+		rateFlowEClass = createEClass(RATE_FLOW);
+		createEAttribute(rateFlowEClass, RATE_FLOW__RATE);
+		createEReference(rateFlowEClass, RATE_FLOW__STRATUM_SPECIFIC_RATES);
+
+		contactFlowEClass = createEClass(CONTACT_FLOW);
+		createEReference(contactFlowEClass, CONTACT_FLOW__CONTACT_COMPARTMENT);
+		createEAttribute(contactFlowEClass, CONTACT_FLOW__CONTACT_RATE);
+		createEAttribute(contactFlowEClass, CONTACT_FLOW__CONTACT_PARAMETERS);
+		createEReference(contactFlowEClass, CONTACT_FLOW__STRATUM_SPECIFIC_RATES);
+
+		birthSourceEClass = createEClass(BIRTH_SOURCE);
+		createEAttribute(birthSourceEClass, BIRTH_SOURCE__NAME);
+		createEAttribute(birthSourceEClass, BIRTH_SOURCE__RATE);
+		createEReference(birthSourceEClass, BIRTH_SOURCE__TARGET_COMPARTMENT);
+
+		deathSinkEClass = createEClass(DEATH_SINK);
+		createEAttribute(deathSinkEClass, DEATH_SINK__NAME);
+		createEAttribute(deathSinkEClass, DEATH_SINK__RATE);
+		createEReference(deathSinkEClass, DEATH_SINK__SOURCE_COMPARTMENT);
+
+		stratumSpecificRateEClass = createEClass(STRATUM_SPECIFIC_RATE);
+		createEAttribute(stratumSpecificRateEClass, STRATUM_SPECIFIC_RATE__STRATUM);
+		createEAttribute(stratumSpecificRateEClass, STRATUM_SPECIFIC_RATE__RATE);
+		createEAttribute(stratumSpecificRateEClass, STRATUM_SPECIFIC_RATE__MULTIPLIER);
+
+		groupEClass = createEClass(GROUP);
+		createEAttribute(groupEClass, GROUP__NAME);
+		createEAttribute(groupEClass, GROUP__DESCRIPTION);
+		createEAttribute(groupEClass, GROUP__VALUES);
+
+		productEClass = createEClass(PRODUCT);
+		createEAttribute(productEClass, PRODUCT__NAME);
+		createEAttribute(productEClass, PRODUCT__DESCRIPTION);
+		createEReference(productEClass, PRODUCT__GROUPS);
+
 		seirModelEClass = createEClass(SEIR_MODEL);
 		createEReference(seirModelEClass, SEIR_MODEL__COMPARTMENTS);
+		createEReference(seirModelEClass, SEIR_MODEL__BIRTH_SOURCES);
+		createEReference(seirModelEClass, SEIR_MODEL__DEATH_SINKS);
+		createEReference(seirModelEClass, SEIR_MODEL__GROUPS);
+		createEReference(seirModelEClass, SEIR_MODEL__PRODUCTS);
+		createEAttribute(seirModelEClass, SEIR_MODEL__TOTAL_POPULATION);
+		createEAttribute(seirModelEClass, SEIR_MODEL__GLOBAL_BIRTH_RATE);
+		createEAttribute(seirModelEClass, SEIR_MODEL__GLOBAL_DEATH_RATE);
 	}
 
 	/**
@@ -284,6 +733,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		rateFlowEClass.getESuperTypes().add(this.getFlow());
+		contactFlowEClass.getESuperTypes().add(this.getFlow());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(compartmentEClass, Compartment.class, "Compartment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -291,14 +742,56 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		initEAttribute(getCompartment_Population(), ecorePackage.getEInt(), "population", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartment_OutgoingFlows(), this.getFlow(), null, "outgoingFlows", null, 0, -1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCompartment_SecondaryName(), ecorePackage.getEString(), "SecondaryName", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getCompartment_Product(), this.getProduct(), null, "product", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(flowEClass, Flow.class, "Flow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getFlow_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(flowEClass, Flow.class, "Flow", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFlow_Description(), ecorePackage.getEString(), "description", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getFlow_Target(), this.getCompartment(), null, "target", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(rateFlowEClass, RateFlow.class, "RateFlow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getRateFlow_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, RateFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRateFlow_StratumSpecificRates(), this.getStratumSpecificRate(), null, "stratumSpecificRates", null, 0, -1, RateFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(contactFlowEClass, ContactFlow.class, "ContactFlow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContactFlow_ContactCompartment(), this.getCompartment(), null, "contactCompartment", null, 0, 1, ContactFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContactFlow_ContactRate(), ecorePackage.getEDouble(), "contactRate", null, 0, 1, ContactFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContactFlow_ContactParameters(), ecorePackage.getEString(), "contactParameters", null, 0, 1, ContactFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContactFlow_StratumSpecificRates(), this.getStratumSpecificRate(), null, "stratumSpecificRates", null, 0, -1, ContactFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(birthSourceEClass, BirthSource.class, "BirthSource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBirthSource_Name(), ecorePackage.getEString(), "name", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBirthSource_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBirthSource_TargetCompartment(), this.getCompartment(), null, "targetCompartment", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(deathSinkEClass, DeathSink.class, "DeathSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDeathSink_Name(), ecorePackage.getEString(), "name", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDeathSink_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDeathSink_SourceCompartment(), this.getCompartment(), null, "sourceCompartment", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(stratumSpecificRateEClass, StratumSpecificRate.class, "StratumSpecificRate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getStratumSpecificRate_Stratum(), ecorePackage.getEString(), "stratum", null, 0, 1, StratumSpecificRate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getStratumSpecificRate_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, StratumSpecificRate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getStratumSpecificRate_Multiplier(), ecorePackage.getEDouble(), "multiplier", "1.0", 0, 1, StratumSpecificRate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(groupEClass, Group.class, "Group", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getGroup_Name(), ecorePackage.getEString(), "name", null, 0, 1, Group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGroup_Description(), ecorePackage.getEString(), "description", null, 0, 1, Group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getGroup_Values(), ecorePackage.getEString(), "values", null, 0, -1, Group.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(productEClass, Product.class, "Product", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getProduct_Name(), ecorePackage.getEString(), "name", null, 0, 1, Product.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getProduct_Description(), ecorePackage.getEString(), "description", null, 0, 1, Product.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProduct_Groups(), this.getGroup(), null, "groups", null, 0, -1, Product.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(seirModelEClass, SEIRModel.class, "SEIRModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSEIRModel_Compartments(), this.getCompartment(), null, "compartments", null, 0, -1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSEIRModel_BirthSources(), this.getBirthSource(), null, "birthSources", null, 0, -1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSEIRModel_DeathSinks(), this.getDeathSink(), null, "deathSinks", null, 0, -1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSEIRModel_Groups(), this.getGroup(), null, "groups", null, 0, -1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSEIRModel_Products(), this.getProduct(), null, "products", null, 0, -1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSEIRModel_TotalPopulation(), ecorePackage.getEInt(), "totalPopulation", null, 0, 1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSEIRModel_GlobalBirthRate(), ecorePackage.getEDouble(), "globalBirthRate", null, 0, 1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSEIRModel_GlobalDeathRate(), ecorePackage.getEDouble(), "globalDeathRate", null, 0, 1, SEIRModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

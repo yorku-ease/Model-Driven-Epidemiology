@@ -13,37 +13,15 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link seirmodel.Flow#getRate <em>Rate</em>}</li>
  *   <li>{@link seirmodel.Flow#getDescription <em>Description</em>}</li>
  *   <li>{@link seirmodel.Flow#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @see seirmodel.SeirmodelPackage#getFlow()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Flow extends EObject {
-	/**
-	 * Returns the value of the '<em><b>Rate</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Rate</em>' attribute.
-	 * @see #setRate(double)
-	 * @see seirmodel.SeirmodelPackage#getFlow_Rate()
-	 * @model
-	 * @generated
-	 */
-	double getRate();
-
-	/**
-	 * Sets the value of the '{@link seirmodel.Flow#getRate <em>Rate</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Rate</em>' attribute.
-	 * @see #getRate()
-	 * @generated
-	 */
-	void setRate(double value);
 
 	/**
 	 * Returns the value of the '<em><b>Description</b></em>' attribute.

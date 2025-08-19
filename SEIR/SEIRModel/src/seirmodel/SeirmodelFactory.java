@@ -31,13 +31,67 @@ public interface SeirmodelFactory extends EFactory {
 	Compartment createCompartment();
 
 	/**
-	 * Returns a new object of class '<em>Flow</em>'.
+	 * Returns a new object of class '<em>Rate Flow</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Flow</em>'.
+	 * @return a new object of class '<em>Rate Flow</em>'.
 	 * @generated
 	 */
-	Flow createFlow();
+	RateFlow createRateFlow();
+
+	/**
+	 * Returns a new object of class '<em>Contact Flow</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Contact Flow</em>'.
+	 * @generated
+	 */
+	ContactFlow createContactFlow();
+
+	/**
+	 * Returns a new object of class '<em>Birth Source</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Birth Source</em>'.
+	 * @generated
+	 */
+	BirthSource createBirthSource();
+
+	/**
+	 * Returns a new object of class '<em>Death Sink</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Death Sink</em>'.
+	 * @generated
+	 */
+	DeathSink createDeathSink();
+
+	/**
+	 * Returns a new object of class '<em>Stratum Specific Rate</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Stratum Specific Rate</em>'.
+	 * @generated
+	 */
+	StratumSpecificRate createStratumSpecificRate();
+
+	/**
+	 * Returns a new object of class '<em>Group</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Group</em>'.
+	 * @generated
+	 */
+	Group createGroup();
+
+	/**
+	 * Returns a new object of class '<em>Product</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Product</em>'.
+	 * @generated
+	 */
+	Product createProduct();
 
 	/**
 	 * Returns a new object of class '<em>SEIR Model</em>'.

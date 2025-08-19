@@ -57,7 +57,13 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case SeirmodelPackage.COMPARTMENT: return createCompartment();
-			case SeirmodelPackage.FLOW: return createFlow();
+			case SeirmodelPackage.RATE_FLOW: return createRateFlow();
+			case SeirmodelPackage.CONTACT_FLOW: return createContactFlow();
+			case SeirmodelPackage.BIRTH_SOURCE: return createBirthSource();
+			case SeirmodelPackage.DEATH_SINK: return createDeathSink();
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE: return createStratumSpecificRate();
+			case SeirmodelPackage.GROUP: return createGroup();
+			case SeirmodelPackage.PRODUCT: return createProduct();
 			case SeirmodelPackage.SEIR_MODEL: return createSEIRModel();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -81,9 +87,75 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	 * @generated
 	 */
 	@Override
-	public Flow createFlow() {
-		FlowImpl flow = new FlowImpl();
-		return flow;
+	public RateFlow createRateFlow() {
+		RateFlowImpl rateFlow = new RateFlowImpl();
+		return rateFlow;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ContactFlow createContactFlow() {
+		ContactFlowImpl contactFlow = new ContactFlowImpl();
+		return contactFlow;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public BirthSource createBirthSource() {
+		BirthSourceImpl birthSource = new BirthSourceImpl();
+		return birthSource;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public DeathSink createDeathSink() {
+		DeathSinkImpl deathSink = new DeathSinkImpl();
+		return deathSink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public StratumSpecificRate createStratumSpecificRate() {
+		StratumSpecificRateImpl stratumSpecificRate = new StratumSpecificRateImpl();
+		return stratumSpecificRate;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Group createGroup() {
+		GroupImpl group = new GroupImpl();
+		return group;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Product createProduct() {
+		ProductImpl product = new ProductImpl();
+		return product;
 	}
 
 	/**

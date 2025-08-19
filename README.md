@@ -5,7 +5,9 @@ This project is a graphical and textual editor for SEIR epidemiological models, 
 It supports:
 - **Graphical editing** (via Sirius diagrams)
 - **Model definition and generation** (via EMF)
-- **Equation generation**
+- **Population stratification** with group products (age, location, risk, vaccination status, etc.)
+- **Stratum-specific rates** for heterogeneous populations
+- **Automatic equation generation** for stratified models
 - **Target platform resolution** for dependency management
 
 ---
@@ -56,6 +58,10 @@ The SEIR model is defined in `seir.ecore` and includes:
 - Subtypes of Compartment:
   - `Susceptible`, `Exposed`, `ExposedIsolated`, `ExposedNonIsolated`, `Infectious`, `InfectiousSymptomatic`, `InfectiousAsymptomatic`, `Recovered`
 - `Flow`: has a `rate`, optional `description`, and a `target` reference
+- **New Stratification Components**:
+  - `Group`: defines population categories (e.g., age groups, locations)
+  - `Product`: creates combinations of groups (Cartesian products)
+  - `StratumSpecificRate`: allows different rates for each population segment
 
 ---
 
@@ -97,7 +103,7 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
 
 ---
 
-## ➕ Example: Sample.seirmodel
+## ➕ Example: Basic Model
 ```xml
 <seir:SEIRModel>
   <compartments xsi:type="seir:Susceptible" name="S" population="1000">
@@ -110,19 +116,62 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
 </seir:SEIRModel>
 ```
 
+## 🎯 Population Stratification Example
+
+The system now supports population stratification. Example from `covid.seirmodel`:
+
+```xml
+<!-- Define age groups -->
+<groups name="AgeGroup" description="Age-based population groups">
+  <values>0-17</values>   <!-- Children -->
+  <values>18-64</values>  <!-- Adults -->
+  <values>65+</values>    <!-- Elderly -->
+</groups>
+
+<!-- Create age-stratified product -->
+<products name="AgeStratified" description="Age-based stratification" groups="//@groups.0"/>
+
+<!-- Stratified compartment -->
+<compartments PrimaryName="Susceptible" population="990000" product="//@products.0">
+  <outgoingFlows xsi:type="seir:ContactFlow" 
+                 description="Infection" 
+                 contactRate="0.0001" 
+                 target="//@compartments.1">
+    <!-- Age-specific rates -->
+    <stratumSpecificRates stratum="0-17" rate="0.000006" multiplier="0.7"/>
+    <stratumSpecificRates stratum="18-64" rate="0.000015" multiplier="1.0"/>
+    <stratumSpecificRates stratum="65+" rate="0.000008" multiplier="1.3"/>
+  </outgoingFlows>
+</compartments>
+```
+
+This creates separate compartments for each age group (Susceptible_0-17, Susceptible_18-64, Susceptible_65+) with different transmission rates.
+
 ---
 
 ## 🧮 Equation Generation
 Implemented in `SEIREquationGenerator.java`. Generates text equations from `.seirmodel` files.
 
 **To run:**
-- Open `.seirmodel` file
-- Right-click or trigger the generator to output to `SEIR_Equations.txt`
+1. Navigate to `SEIRModel/src/seirmodel/SEIREquationGenerator.java`
+2. Right-click → "Run As" → "Java Application"
+3. Generated equations will be displayed in console and saved to output files
 
-Example output:
+**For stratified models**, the generator automatically creates equations for each population segment:
+
+Example output from COVID age-stratified model:
 ```
-dS/dt = -0.002 * S
+=== Age-Stratified SEIR Model ===
+dSusceptible_0-17/dt = - (0.0000042 * Susceptible_0-17 * Infectious_0-17 / N)
+dSusceptible_18-64/dt = - (0.000015 * Susceptible_18-64 * Infectious_18-64 / N)  
+dSusceptible_65+/dt = - (0.0000104 * Susceptible_65+ * Infectious_65+ / N)
+
+dInfectious_0-17/dt = + (0.0000042 * Susceptible_0-17 * Infectious_0-17 / N) - (0.1 * Infectious_0-17)
+dInfectious_18-64/dt = + (0.000015 * Susceptible_18-64 * Infectious_18-64 / N) - (0.1 * Infectious_18-64)
+dInfectious_65+/dt = + (0.0000104 * Susceptible_65+ * Infectious_65+ / N) - (0.1 * Infectious_65+)
 ```
+
+The system supports any stratification type: age groups, geographic locations, risk levels, vaccination status, occupation, etc.
 
 ---
 

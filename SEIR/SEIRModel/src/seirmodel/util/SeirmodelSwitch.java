@@ -78,6 +78,50 @@ public class SeirmodelSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case SeirmodelPackage.RATE_FLOW: {
+				RateFlow rateFlow = (RateFlow)theEObject;
+				T result = caseRateFlow(rateFlow);
+				if (result == null) result = caseFlow(rateFlow);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.CONTACT_FLOW: {
+				ContactFlow contactFlow = (ContactFlow)theEObject;
+				T result = caseContactFlow(contactFlow);
+				if (result == null) result = caseFlow(contactFlow);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.BIRTH_SOURCE: {
+				BirthSource birthSource = (BirthSource)theEObject;
+				T result = caseBirthSource(birthSource);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.DEATH_SINK: {
+				DeathSink deathSink = (DeathSink)theEObject;
+				T result = caseDeathSink(deathSink);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE: {
+				StratumSpecificRate stratumSpecificRate = (StratumSpecificRate)theEObject;
+				T result = caseStratumSpecificRate(stratumSpecificRate);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.GROUP: {
+				Group group = (Group)theEObject;
+				T result = caseGroup(group);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SeirmodelPackage.PRODUCT: {
+				Product product = (Product)theEObject;
+				T result = caseProduct(product);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case SeirmodelPackage.SEIR_MODEL: {
 				SEIRModel seirModel = (SEIRModel)theEObject;
 				T result = caseSEIRModel(seirModel);
@@ -115,6 +159,111 @@ public class SeirmodelSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseFlow(Flow object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Rate Flow</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Rate Flow</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRateFlow(RateFlow object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Contact Flow</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Contact Flow</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseContactFlow(ContactFlow object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Birth Source</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Birth Source</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBirthSource(BirthSource object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Death Sink</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Death Sink</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDeathSink(DeathSink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Stratum Specific Rate</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Stratum Specific Rate</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseStratumSpecificRate(StratumSpecificRate object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Group</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Group</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGroup(Group object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Product</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Product</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseProduct(Product object) {
 		return null;
 	}
 

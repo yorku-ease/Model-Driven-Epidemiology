@@ -22,34 +22,13 @@ import seirmodel.SeirmodelPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link seirmodel.impl.FlowImpl#getRate <em>Rate</em>}</li>
  *   <li>{@link seirmodel.impl.FlowImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link seirmodel.impl.FlowImpl#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
-	/**
-	 * The default value of the '{@link #getRate() <em>Rate</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRate()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final double RATE_EDEFAULT = 0.0;
-
-	/**
-	 * The cached value of the '{@link #getRate() <em>Rate</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getRate()
-	 * @generated
-	 * @ordered
-	 */
-	protected double rate = RATE_EDEFAULT;
-
+public abstract class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -97,29 +76,6 @@ public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 	@Override
 	protected EClass eStaticClass() {
 		return SeirmodelPackage.Literals.FLOW;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public double getRate() {
-		return rate;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setRate(double newRate) {
-		double oldRate = rate;
-		rate = newRate;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.FLOW__RATE, oldRate, rate));
 	}
 
 	/**
@@ -193,8 +149,6 @@ public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case SeirmodelPackage.FLOW__RATE:
-				return getRate();
 			case SeirmodelPackage.FLOW__DESCRIPTION:
 				return getDescription();
 			case SeirmodelPackage.FLOW__TARGET:
@@ -212,9 +166,6 @@ public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case SeirmodelPackage.FLOW__RATE:
-				setRate((Double)newValue);
-				return;
 			case SeirmodelPackage.FLOW__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
@@ -233,9 +184,6 @@ public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case SeirmodelPackage.FLOW__RATE:
-				setRate(RATE_EDEFAULT);
-				return;
 			case SeirmodelPackage.FLOW__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
@@ -254,8 +202,6 @@ public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case SeirmodelPackage.FLOW__RATE:
-				return rate != RATE_EDEFAULT;
 			case SeirmodelPackage.FLOW__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case SeirmodelPackage.FLOW__TARGET:
@@ -274,9 +220,7 @@ public class FlowImpl extends MinimalEObjectImpl.Container implements Flow {
 		if (eIsProxy()) return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (rate: ");
-		result.append(rate);
-		result.append(", description: ");
+		result.append(" (description: ");
 		result.append(description);
 		result.append(')');
 		return result.toString();

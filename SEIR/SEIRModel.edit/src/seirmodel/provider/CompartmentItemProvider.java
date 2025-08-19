@@ -65,6 +65,7 @@ public class CompartmentItemProvider
 			addPrimaryNamePropertyDescriptor(object);
 			addPopulationPropertyDescriptor(object);
 			addSecondaryNamePropertyDescriptor(object);
+			addProductPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -136,6 +137,28 @@ public class CompartmentItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Product feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addProductPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Compartment_product_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Compartment_product_feature", "_UI_Compartment_type"),
+				 SeirmodelPackage.Literals.COMPARTMENT__PRODUCT,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -163,6 +186,17 @@ public class CompartmentItemProvider
 		// adding (see {@link AddCommand}) it as a child.
 
 		return super.getChildFeature(object, child);
+	}
+
+	/**
+	 * This returns Compartment.gif.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object getImage(Object object) {
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Compartment"));
 	}
 
 	/**
@@ -218,7 +252,12 @@ public class CompartmentItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(SeirmodelPackage.Literals.COMPARTMENT__OUTGOING_FLOWS,
-				 SeirmodelFactory.eINSTANCE.createFlow()));
+				 SeirmodelFactory.eINSTANCE.createRateFlow()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.COMPARTMENT__OUTGOING_FLOWS,
+				 SeirmodelFactory.eINSTANCE.createContactFlow()));
 	}
 
 	/**

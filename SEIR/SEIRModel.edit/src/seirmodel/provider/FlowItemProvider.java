@@ -60,33 +60,10 @@ public class FlowItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addRatePropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
 			addTargetPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Rate feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addRatePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Flow_rate_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Flow_rate_feature", "_UI_Flow_type"),
-				 SeirmodelPackage.Literals.FLOW__RATE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -134,17 +111,6 @@ public class FlowItemProvider
 	}
 
 	/**
-	 * This returns Flow.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Flow"));
-	}
-
-	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -152,8 +118,10 @@ public class FlowItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		Flow flow = (Flow)object;
-		return getString("_UI_Flow_type") + " " + flow.getRate();
+		String label = ((Flow)object).getDescription();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Flow_type") :
+			getString("_UI_Flow_type") + " " + label;
 	}
 
 
@@ -169,7 +137,6 @@ public class FlowItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Flow.class)) {
-			case SeirmodelPackage.FLOW__RATE:
 			case SeirmodelPackage.FLOW__DESCRIPTION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
