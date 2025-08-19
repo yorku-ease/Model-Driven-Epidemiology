@@ -220,39 +220,56 @@ public class SEIREquationGenerator {
         String displayName = getCompartmentDisplayName(compartment, stratum);
         StringBuilder equation = new StringBuilder("d" + displayName + "/dt = ");
 
-        // Incoming flows to this compartment
+        // Incoming flows to this compartment (only from matching strata)
         for (Compartment source : model.getCompartments()) {
             for (Flow flow : source.getOutgoingFlows()) {
                 if (flow.getTarget() == compartment) {
-                    String sourceDisplay = getCompartmentDisplayName(source, stratum);
-                    
-                    if (flow instanceof ContactFlow) {
-                        ContactFlow contactFlow = (ContactFlow) flow;
-                        Compartment contactCompartment = contactFlow.getContactCompartment();
-                        String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
+                    // Only include flows if source and target have compatible stratification
+                    if (areCompatibleStrata(source, compartment, stratum)) {
+                        String sourceDisplay = getCompartmentDisplayName(source, stratum);
                         
-                        // Get stratum-specific rate or default rate
-                        double contactRate = getStratumSpecificRate(contactFlow, stratum, contactFlow.getContactRate());
-                        double susceptibilityMultiplier = getStratumSpecificMultiplier(contactFlow, stratum);
-                        
-                        equation.append("+ (").append(contactRate * susceptibilityMultiplier)
-                                .append(" * ").append(sourceDisplay)
-                                .append(" * ").append(contactDisplay)
-                                .append(" / ").append(model.getTotalPopulation()).append(") ");
-                    } else if (flow instanceof RateFlow) {
-                        RateFlow rateFlow = (RateFlow) flow;
-                        // Get stratum-specific rate or default rate
-                        double rate = getStratumSpecificRate(rateFlow, stratum, rateFlow.getRate());
-                        equation.append("+ ").append(rate).append(" * ").append(sourceDisplay).append(" ");
+                        if (flow instanceof ContactFlow) {
+                            ContactFlow contactFlow = (ContactFlow) flow;
+                            Compartment contactCompartment = contactFlow.getContactCompartment();
+                            
+                            // Only include if contact compartment also has compatible stratification
+                            if (areCompatibleStrata(contactCompartment, compartment, stratum)) {
+                                String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
+                                
+                                // Get stratum-specific rate or default rate
+                                double contactRate = getStratumSpecificRate(contactFlow, stratum, contactFlow.getContactRate());
+                                double susceptibilityMultiplier = getStratumSpecificMultiplier(contactFlow, stratum);
+                                
+                                equation.append("+ (").append(contactRate * susceptibilityMultiplier)
+                                        .append(" * ").append(sourceDisplay)
+                                        .append(" * ").append(contactDisplay)
+                                        .append(" / ").append(model.getTotalPopulation()).append(") ");
+                            }
+                        } else if (flow instanceof RateFlow) {
+                            RateFlow rateFlow = (RateFlow) flow;
+                            // Get stratum-specific rate or default rate
+                            double rate = getStratumSpecificRate(rateFlow, stratum, rateFlow.getRate());
+                            equation.append("+ ").append(rate).append(" * ").append(sourceDisplay).append(" ");
+                        }
                     }
                 }
             }
         }
 
-        // Birth sources flowing into this compartment
+        // Birth sources flowing into this compartment (only for matching strata)
         for (BirthSource birthSource : model.getBirthSources()) {
             if (birthSource.getTargetCompartment() == compartment) {
-                equation.append("+ ").append(birthSource.getRate()).append(" * ").append(model.getTotalPopulation()).append(" ");
+                // Only add birth flow if stratum matches or compartment is not stratified
+                Product targetProduct = compartment.getProduct();
+                if (targetProduct == null || stratum.isEmpty()) {
+                    // Non-stratified compartment - add full birth rate
+                    equation.append("+ ").append(birthSource.getRate()).append(" ");
+                } else {
+                    // Stratified compartment - divide birth rate among strata (could be enhanced with stratum-specific birth rates)
+                    List<String> allStrata = generateStrataCombinations(targetProduct);
+                    double stratumBirthRate = birthSource.getRate() / allStrata.size();
+                    equation.append("+ ").append(stratumBirthRate).append(" ");
+                }
             }
         }
 
@@ -338,6 +355,35 @@ public class SEIREquationGenerator {
         }
         
         return 1.0; // Default multiplier (no effect)
+    }
+
+    /**
+     * Check if two compartments have compatible stratification for the given stratum.
+     * Compatible means:
+     * 1. Both are non-stratified (product == null)
+     * 2. Both have the same product (same stratification scheme)
+     * 3. One is stratified and the other is not (mixed interaction)
+     */
+    private static boolean areCompatibleStrata(Compartment source, Compartment target, String stratum) {
+        Product sourceProduct = source.getProduct();
+        Product targetProduct = target.getProduct();
+        
+        // If stratum is empty, we're generating non-stratified equations
+        if (stratum.isEmpty()) {
+            return sourceProduct == null && targetProduct == null;
+        }
+        
+        // For stratified equations, only include if both compartments have the same stratification
+        // or if one is stratified and the other is not (for mixed interactions)
+        if (sourceProduct != null && targetProduct != null) {
+            return sourceProduct == targetProduct; // Same stratification scheme
+        } else if (sourceProduct == null && targetProduct != null) {
+            return false; // Non-stratified source to stratified target (skip to avoid duplication)
+        } else if (sourceProduct != null && targetProduct == null) {
+            return false; // Stratified source to non-stratified target (skip to avoid duplication)
+        } else {
+            return true; // Both non-stratified
+        }
     }
 
     private static void saveEquationsToFile(Map<String, String> equations, String outputFileName) {
