@@ -232,8 +232,8 @@ public class SEIREquationGenerator {
                             ContactFlow contactFlow = (ContactFlow) flow;
                             Compartment contactCompartment = contactFlow.getContactCompartment();
                             
-                            // Only include if contact compartment also has compatible stratification
-                            if (areCompatibleStrata(contactCompartment, compartment, stratum)) {
+                            // CRITICAL: Only include if this flow applies to the current stratum
+                            if (isFlowApplicableToStratum(contactFlow, stratum) && areCompatibleStrata(contactCompartment, compartment, stratum)) {
                                 String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
                                 
                                 // Get stratum-specific rate or default rate
@@ -259,16 +259,18 @@ public class SEIREquationGenerator {
         // Birth sources flowing into this compartment (only for matching strata)
         for (BirthSource birthSource : model.getBirthSources()) {
             if (birthSource.getTargetCompartment() == compartment) {
-                // Only add birth flow if stratum matches or compartment is not stratified
-                Product targetProduct = compartment.getProduct();
-                if (targetProduct == null || stratum.isEmpty()) {
-                    // Non-stratified compartment - add full birth rate
-                    equation.append("+ ").append(birthSource.getRate()).append(" ");
-                } else {
-                    // Stratified compartment - divide birth rate among strata (could be enhanced with stratum-specific birth rates)
-                    List<String> allStrata = generateStrataCombinations(targetProduct);
-                    double stratumBirthRate = birthSource.getRate() / allStrata.size();
-                    equation.append("+ ").append(stratumBirthRate).append(" ");
+                // Check if this birth source applies to the current stratum
+                if (isBirthSourceApplicableToStratum(birthSource, stratum)) {
+                    double rate = birthSource.getRate();
+                    
+                    // Check if this is a fixed rate or population-based rate
+                    if (isFixedRateBirthSource(birthSource)) {
+                        // Fixed rate - don't multiply by population
+                        equation.append("+ ").append(rate).append(" ");
+                    } else {
+                        // Population-based rate - multiply by total population (legacy behavior)
+                        equation.append("+ ").append(rate).append(" * ").append(model.getTotalPopulation()).append(" ");
+                    }
                 }
             }
         }
@@ -277,22 +279,30 @@ public class SEIREquationGenerator {
         for (Flow flow : compartment.getOutgoingFlows()) {
             if (flow instanceof ContactFlow) {
                 ContactFlow contactFlow = (ContactFlow) flow;
-                Compartment contactCompartment = contactFlow.getContactCompartment();
-                String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
                 
-                // Get stratum-specific rate or default rate
-                double contactRate = getStratumSpecificRate(contactFlow, stratum, contactFlow.getContactRate());
-                double susceptibilityMultiplier = getStratumSpecificMultiplier(contactFlow, stratum);
-                
-                equation.append("- (").append(contactRate * susceptibilityMultiplier)
-                        .append(" * ").append(displayName)
-                        .append(" * ").append(contactDisplay)
-                        .append(" / ").append(model.getTotalPopulation()).append(") ");
+                // CRITICAL: Only include if this flow applies to the current stratum
+                if (isFlowApplicableToStratum(contactFlow, stratum)) {
+                    Compartment contactCompartment = contactFlow.getContactCompartment();
+                    String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
+                    
+                    // Get stratum-specific rate or default rate
+                    double contactRate = getStratumSpecificRate(contactFlow, stratum, contactFlow.getContactRate());
+                    double susceptibilityMultiplier = getStratumSpecificMultiplier(contactFlow, stratum);
+                    
+                    equation.append("- (").append(contactRate * susceptibilityMultiplier)
+                            .append(" * ").append(displayName)
+                            .append(" * ").append(contactDisplay)
+                            .append(" / ").append(model.getTotalPopulation()).append(") ");
+                }
             } else if (flow instanceof RateFlow) {
                 RateFlow rateFlow = (RateFlow) flow;
-                // Get stratum-specific rate or default rate
-                double rate = getStratumSpecificRate(rateFlow, stratum, rateFlow.getRate());
-                equation.append("- ").append(rate).append(" * ").append(displayName).append(" ");
+                
+                // For RateFlow, check if it has stratum-specific rates and if they apply
+                if (isFlowApplicableToStratum(rateFlow, stratum)) {
+                    // Get stratum-specific rate or default rate
+                    double rate = getStratumSpecificRate(rateFlow, stratum, rateFlow.getRate());
+                    equation.append("- ").append(rate).append(" * ").append(displayName).append(" ");
+                }
             }
         }
 
@@ -384,6 +394,144 @@ public class SEIREquationGenerator {
         } else {
             return true; // Both non-stratified
         }
+    }
+
+    /**
+     * Check if a flow applies to the given stratum.
+     * A flow applies if:
+     * 1. It has no stratum-specific rates (applies to all)
+     * 2. It has stratum-specific rates and one matches the current stratum
+     */
+    private static boolean isFlowApplicableToStratum(ContactFlow contactFlow, String stratum) {
+        // If no stratum specified, apply to all non-stratified
+        if (stratum.isEmpty()) {
+            return true;
+        }
+        
+        // If flow has no stratum-specific rates, it applies to all
+        if (contactFlow.getStratumSpecificRates().isEmpty()) {
+            return true;
+        }
+        
+        // Check if any stratum-specific rate matches the current stratum
+        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
+        for (StratumSpecificRate stratumRate : contactFlow.getStratumSpecificRates()) {
+            if (stratumValue.equals(stratumRate.getStratum())) {
+                return true;
+            }
+        }
+        
+        // Flow has stratum-specific rates but none match - doesn't apply
+        return false;
+    }
+
+    /**
+     * Check if a RateFlow applies to the given stratum.
+     */
+    private static boolean isFlowApplicableToStratum(RateFlow rateFlow, String stratum) {
+        // If no stratum specified, apply to all non-stratified
+        if (stratum.isEmpty()) {
+            return true;
+        }
+        
+        // If flow has no stratum-specific rates, it applies to all strata
+        if (rateFlow.getStratumSpecificRates().isEmpty()) {
+            return true;
+        }
+        
+        // Check if any stratum-specific rate matches the current stratum
+        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
+        for (StratumSpecificRate stratumRate : rateFlow.getStratumSpecificRates()) {
+            if (stratumValue.equals(stratumRate.getStratum())) {
+                return true;
+            }
+        }
+        
+        // Flow has stratum-specific rates but none match - doesn't apply
+        return false;
+    }
+
+    /**
+     * Check if a birth source applies to the given stratum.
+     * Uses the targetStratum attribute if available, otherwise applies to all.
+     */
+    private static boolean isBirthSourceApplicableToStratum(BirthSource birthSource, String stratum) {
+        // If no stratum specified, birth source applies to non-stratified compartments
+        if (stratum.isEmpty()) {
+            return true;
+        }
+        
+        // Extract targetStratum from EMF object using reflection
+        // This is a workaround until EMF classes are regenerated
+        String targetStratum = getTargetStratumFromBirthSource(birthSource);
+        
+        if (targetStratum != null && !targetStratum.isEmpty()) {
+            return targetStratum.equals(stratum);
+        }
+        
+        // If no targetStratum specified, apply to all strata
+        return true;
+    }
+
+    /**
+     * Workaround to extract targetStratum attribute from BirthSource
+     * until EMF classes are regenerated with the new attribute
+     */
+    private static String getTargetStratumFromBirthSource(BirthSource birthSource) {
+        try {
+            // Try reflection to get the targetStratum attribute
+            Object eObject = birthSource;
+            if (eObject instanceof org.eclipse.emf.ecore.EObject) {
+                org.eclipse.emf.ecore.EObject eo = (org.eclipse.emf.ecore.EObject) eObject;
+                org.eclipse.emf.ecore.EClass eClass = eo.eClass();
+                
+                // Look for targetStratum attribute
+                for (org.eclipse.emf.ecore.EAttribute attr : eClass.getEAllAttributes()) {
+                    if ("targetStratum".equals(attr.getName())) {
+                        Object value = eo.eGet(attr);
+                        return value != null ? value.toString() : null;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // If reflection fails, return null (no specific targeting)
+            System.out.println("Warning: Could not extract targetStratum from birth source '" + 
+                             birthSource.getName() + "'. Consider regenerating EMF classes.");
+        }
+        
+        // If no targetStratum found, return null (will apply to all strata)
+        return null;
+    }
+
+    /**
+     * Check if a birth source uses fixed rate (not population-based)
+     * Tries to extract fixedRate attribute from EMF object
+     */
+    private static boolean isFixedRateBirthSource(BirthSource birthSource) {
+        try {
+            // Try reflection to get the fixedRate attribute
+            Object eObject = birthSource;
+            if (eObject instanceof org.eclipse.emf.ecore.EObject) {
+                org.eclipse.emf.ecore.EObject eo = (org.eclipse.emf.ecore.EObject) eObject;
+                org.eclipse.emf.ecore.EClass eClass = eo.eClass();
+                
+                // Look for fixedRate attribute
+                for (org.eclipse.emf.ecore.EAttribute attr : eClass.getEAllAttributes()) {
+                    if ("fixedRate".equals(attr.getName())) {
+                        Object value = eo.eGet(attr);
+                        if (value instanceof Boolean) {
+                            return (Boolean) value;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: Could not extract fixedRate from birth source '" + 
+                             birthSource.getName() + "'. Consider regenerating EMF classes.");
+        }
+        
+        // Default to population-based (legacy behavior) if no fixedRate attribute found
+        return false;
     }
 
     private static void saveEquationsToFile(Map<String, String> equations, String outputFileName) {

@@ -63,6 +63,8 @@ public class BirthSourceItemProvider
 			addNamePropertyDescriptor(object);
 			addRatePropertyDescriptor(object);
 			addTargetCompartmentPropertyDescriptor(object);
+			addTargetStratumPropertyDescriptor(object);
+			addFixedRatePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -134,6 +136,50 @@ public class BirthSourceItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Target Stratum feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTargetStratumPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BirthSource_targetStratum_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BirthSource_targetStratum_feature", "_UI_BirthSource_type"),
+				 SeirmodelPackage.Literals.BIRTH_SOURCE__TARGET_STRATUM,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Fixed Rate feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addFixedRatePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BirthSource_fixedRate_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BirthSource_fixedRate_feature", "_UI_BirthSource_type"),
+				 SeirmodelPackage.Literals.BIRTH_SOURCE__FIXED_RATE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns BirthSource.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -173,6 +219,8 @@ public class BirthSourceItemProvider
 		switch (notification.getFeatureID(BirthSource.class)) {
 			case SeirmodelPackage.BIRTH_SOURCE__NAME:
 			case SeirmodelPackage.BIRTH_SOURCE__RATE:
+			case SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM:
+			case SeirmodelPackage.BIRTH_SOURCE__FIXED_RATE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

@@ -25,6 +25,8 @@ import seirmodel.SeirmodelPackage;
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getRate <em>Rate</em>}</li>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getTargetCompartment <em>Target Compartment</em>}</li>
+ *   <li>{@link seirmodel.impl.BirthSourceImpl#getTargetStratum <em>Target Stratum</em>}</li>
+ *   <li>{@link seirmodel.impl.BirthSourceImpl#isFixedRate <em>Fixed Rate</em>}</li>
  * </ul>
  *
  * @generated
@@ -79,6 +81,46 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 	 * @ordered
 	 */
 	protected Compartment targetCompartment;
+
+	/**
+	 * The default value of the '{@link #getTargetStratum() <em>Target Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetStratum()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TARGET_STRATUM_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getTargetStratum() <em>Target Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetStratum()
+	 * @generated
+	 * @ordered
+	 */
+	protected String targetStratum = TARGET_STRATUM_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isFixedRate() <em>Fixed Rate</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFixedRate()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean FIXED_RATE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isFixedRate() <em>Fixed Rate</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFixedRate()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean fixedRate = FIXED_RATE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -191,6 +233,52 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 	 * @generated
 	 */
 	@Override
+	public String getTargetStratum() {
+		return targetStratum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setTargetStratum(String newTargetStratum) {
+		String oldTargetStratum = targetStratum;
+		targetStratum = newTargetStratum;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM, oldTargetStratum, targetStratum));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean isFixedRate() {
+		return fixedRate;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setFixedRate(boolean newFixedRate) {
+		boolean oldFixedRate = fixedRate;
+		fixedRate = newFixedRate;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.BIRTH_SOURCE__FIXED_RATE, oldFixedRate, fixedRate));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case SeirmodelPackage.BIRTH_SOURCE__NAME:
@@ -200,6 +288,10 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				if (resolve) return getTargetCompartment();
 				return basicGetTargetCompartment();
+			case SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM:
+				return getTargetStratum();
+			case SeirmodelPackage.BIRTH_SOURCE__FIXED_RATE:
+				return isFixedRate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -220,6 +312,12 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 				return;
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				setTargetCompartment((Compartment)newValue);
+				return;
+			case SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM:
+				setTargetStratum((String)newValue);
+				return;
+			case SeirmodelPackage.BIRTH_SOURCE__FIXED_RATE:
+				setFixedRate((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -242,6 +340,12 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				setTargetCompartment((Compartment)null);
 				return;
+			case SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM:
+				setTargetStratum(TARGET_STRATUM_EDEFAULT);
+				return;
+			case SeirmodelPackage.BIRTH_SOURCE__FIXED_RATE:
+				setFixedRate(FIXED_RATE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -260,6 +364,10 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 				return rate != RATE_EDEFAULT;
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				return targetCompartment != null;
+			case SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM:
+				return TARGET_STRATUM_EDEFAULT == null ? targetStratum != null : !TARGET_STRATUM_EDEFAULT.equals(targetStratum);
+			case SeirmodelPackage.BIRTH_SOURCE__FIXED_RATE:
+				return fixedRate != FIXED_RATE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -278,6 +386,10 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 		result.append(name);
 		result.append(", rate: ");
 		result.append(rate);
+		result.append(", targetStratum: ");
+		result.append(targetStratum);
+		result.append(", fixedRate: ");
+		result.append(fixedRate);
 		result.append(')');
 		return result.toString();
 	}
