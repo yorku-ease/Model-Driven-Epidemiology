@@ -1,52 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
-  <compartments PrimaryName="Recruitment" SecondaryName="Homosexual Men">
-    <outgoingFlows rate="12.7872" description="𝛹⁢𝜃⁢(1−𝛾)" target="//@compartments.3"/>
-  </compartments>
-  <compartments PrimaryName="Recruitment" SecondaryName="Women">
-    <outgoingFlows rate="173.16" description="𝛹⁢(1−𝜃)" target="//@compartments.4"/>
-  </compartments>
-  <compartments PrimaryName="Recruitment" SecondaryName="Heterosexual Men">
-    <outgoingFlows rate="147.0528" description="𝛹⁢𝜃⁢𝛾" target="//@compartments.5"/>
-  </compartments>
-  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men">
-    <outgoingFlows rate="0.09636" description="λh" target="//@compartments.6"/>
-    <outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
-  </compartments>
-  <compartments PrimaryName="Susceptible" SecondaryName="Women">
-  	<outgoingFlows rate="1.637E-5" description="λhw (From Homosexual Man) " target="//@compartments.7"/>
-  	<outgoingFlows rate="1.355E-5" description="λm (Form Woman)" target="//@compartments.7"/>
-  	<outgoingFlows rate="0.0129" description="μ " target="//@compartments.12"/>
-  </compartments>
-  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men">
-  	<outgoingFlows rate="2.5E-6" description="λw (From Heterosexual Man)" target="//@compartments.8"/>
-  	<outgoingFlows rate="1.1368E-4" description="λhm (From Homosexual Man)" target="//@compartments.8"/>
-    <outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
-  </compartments>
-  <compartments PrimaryName="Untreated Infected" SecondaryName="Homosexual Men">
-  	<outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
-    <outgoingFlows rate="0.29997" description="α * p" target="//@compartments.9"/>
-    <outgoingFlows rate="0.03333" description="1-p * α" target="//@compartments.10"/>
-  </compartments>
-  <compartments PrimaryName="Untreated Infected" SecondaryName="Women">
-  	<outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
-    <outgoingFlows rate="0.29997" description="p * α" target="//@compartments.9"/>
-    <outgoingFlows rate="0.03333" description="α * 1-p" target="//@compartments.10"/>
-  </compartments>
-  <compartments PrimaryName="Untreated Infected" SecondaryName="Heterosexual Men">
-  	<outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
-    <outgoingFlows rate="0.29997" description="p * α" target="//@compartments.9"/>
-    <outgoingFlows rate="0.03333" description="1-p * α" target="//@compartments.10"/>
-  </compartments>
-  <compartments PrimaryName="Treated with ART">
-  	<outgoingFlows rate="0.018" description="δ" target="//@compartments.10"/>
-    <outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
-  </compartments>
-  <compartments PrimaryName="People living with AIDS">
-  	<outgoingFlows rate="0.3333" description="d" target="//@compartments.11"/>
-    <outgoingFlows rate="0.0129" description="μ" target="//@compartments.12"/>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="362796" globalBirthRate="0" globalDeathRate="0">
+  
+  <groups name="SexualPreference" description="Population stratification based on sexual preference and gender">
+    <values>HomosexualMen</values>
+    <values>Women</values>
+    <values>HeterosexualMen</values>
+  </groups>
+  
+  <products name="GenderStratification" description="Stratification by sexual preference/gender" groups="//@groups.0"/>
+  
+  <birthSources name="Recruitment Homosexual Men" rate="12.7872" targetCompartment="//@compartments.0" targetStratum="HomosexualMen" fixedRate="true"/>
+  <birthSources name="Recruitment Women" rate="173.16" targetCompartment="//@compartments.0" targetStratum="Women" fixedRate="true"/>
+  <birthSources name="Recruitment Heterosexual Men" rate="147.0528" targetCompartment="//@compartments.0" targetStratum="HeterosexualMen" fixedRate="true"/>
+  
+  <compartments PrimaryName="Susceptible" population="362544" product="//@products.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" 
+                   contactRate="3.08" 
+                   contactCompartment="//@compartments.1" 
+                   description="Exclusive Homosexual Contact (λh)" 
+                   target="//@compartments.1">
+      <stratumSpecificRates stratum="HomosexualMen" rate="3.08"/>
+    </outgoingFlows>
+
+    <outgoingFlows xsi:type="seir:ContactFlow" 
+                   contactRate="0.036" 
+                   contactCompartment="//@compartments.1" 
+                   description="Bisexual Contact (λhw)" 
+                   target="//@compartments.1">
+      <stratumSpecificRates stratum="Women" rate="0.036"/>
+    </outgoingFlows>
+
+    <outgoingFlows xsi:type="seir:ContactFlow" 
+                   contactRate="0.25" 
+                   contactCompartment="//@compartments.1" 
+                   description="Bisexual Contact (λhm)" 
+                   target="//@compartments.1">
+      <stratumSpecificRates stratum="HeterosexualMen" rate="0.25"/>
+    </outgoingFlows>
+
+    <outgoingFlows xsi:type="seir:ContactFlow" 
+                   contactRate="0.08" 
+                   contactCompartment="//@compartments.1" 
+                   description="Heterosexual Contact (λw-m)" 
+                   target="//@compartments.1">
+      <stratumSpecificRates stratum="HeterosexualMen" rate="0.08"/>
+    </outgoingFlows>
+
+    <outgoingFlows xsi:type="seir:ContactFlow" 
+                   contactRate="0.08" 
+                   contactCompartment="//@compartments.1" 
+                   description="Heterosexual Contact (λm-w)" 
+                   target="//@compartments.1">
+      <stratumSpecificRates stratum="Women" rate="0.08"/>
+    </outgoingFlows>
   </compartments>
   
-  <compartments PrimaryName="Death due to AIDS"/>
-  <compartments PrimaryName="Natural Death"/>
+  <compartments PrimaryName="Untreated Infected" population="114" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.29997" description="p * α (Transition to ART)" target="//@compartments.2"/>
+
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.03333" description="(1-p) * α (Transition to AIDS)" target="//@compartments.3"/>
+  </compartments>
+  
+  <compartments PrimaryName="Treated with ART" population="107">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.018" description="δ (Treatment Failure)" target="//@compartments.3"/>
+  </compartments>
+  
+  <compartments PrimaryName="People living with AIDS" population="47"/>
+  
+  <deathSinks name="Death Due to AIDS" rate="0.3333" sourceCompartment="//@compartments.3"/>
+  
+  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.3"/>
 </seir:SEIRModel>

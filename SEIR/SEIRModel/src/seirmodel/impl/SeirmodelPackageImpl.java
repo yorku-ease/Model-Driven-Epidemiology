@@ -374,6 +374,26 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
+	public EAttribute getBirthSource_TargetStratum() {
+		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBirthSource_FixedRate() {
+		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getDeathSink() {
 		return deathSinkEClass;
 	}
@@ -673,6 +693,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		createEAttribute(birthSourceEClass, BIRTH_SOURCE__NAME);
 		createEAttribute(birthSourceEClass, BIRTH_SOURCE__RATE);
 		createEReference(birthSourceEClass, BIRTH_SOURCE__TARGET_COMPARTMENT);
+		createEAttribute(birthSourceEClass, BIRTH_SOURCE__TARGET_STRATUM);
+		createEAttribute(birthSourceEClass, BIRTH_SOURCE__FIXED_RATE);
 
 		deathSinkEClass = createEClass(DEATH_SINK);
 		createEAttribute(deathSinkEClass, DEATH_SINK__NAME);
@@ -762,6 +784,8 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		initEAttribute(getBirthSource_Name(), ecorePackage.getEString(), "name", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBirthSource_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBirthSource_TargetCompartment(), this.getCompartment(), null, "targetCompartment", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBirthSource_TargetStratum(), ecorePackage.getEString(), "targetStratum", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBirthSource_FixedRate(), ecorePackage.getEBoolean(), "fixedRate", "false", 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(deathSinkEClass, DeathSink.class, "DeathSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDeathSink_Name(), ecorePackage.getEString(), "name", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

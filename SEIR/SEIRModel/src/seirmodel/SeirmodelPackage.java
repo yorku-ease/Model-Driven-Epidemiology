@@ -359,13 +359,31 @@ public interface SeirmodelPackage extends EPackage {
 	int BIRTH_SOURCE__TARGET_COMPARTMENT = 2;
 
 	/**
+	 * The feature id for the '<em><b>Target Stratum</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BIRTH_SOURCE__TARGET_STRATUM = 3;
+
+	/**
+	 * The feature id for the '<em><b>Fixed Rate</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BIRTH_SOURCE__FIXED_RATE = 4;
+
+	/**
 	 * The number of structural features of the '<em>Birth Source</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE_FEATURE_COUNT = 3;
+	int BIRTH_SOURCE_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Birth Source</em>' class.
@@ -926,6 +944,28 @@ public interface SeirmodelPackage extends EPackage {
 	EReference getBirthSource_TargetCompartment();
 
 	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.BirthSource#getTargetStratum <em>Target Stratum</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Target Stratum</em>'.
+	 * @see seirmodel.BirthSource#getTargetStratum()
+	 * @see #getBirthSource()
+	 * @generated
+	 */
+	EAttribute getBirthSource_TargetStratum();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.BirthSource#isFixedRate <em>Fixed Rate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Fixed Rate</em>'.
+	 * @see seirmodel.BirthSource#isFixedRate()
+	 * @see #getBirthSource()
+	 * @generated
+	 */
+	EAttribute getBirthSource_FixedRate();
+
+	/**
 	 * Returns the meta object for class '{@link seirmodel.DeathSink <em>Death Sink</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1397,6 +1437,22 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference BIRTH_SOURCE__TARGET_COMPARTMENT = eINSTANCE.getBirthSource_TargetCompartment();
+
+		/**
+		 * The meta object literal for the '<em><b>Target Stratum</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BIRTH_SOURCE__TARGET_STRATUM = eINSTANCE.getBirthSource_TargetStratum();
+
+		/**
+		 * The meta object literal for the '<em><b>Fixed Rate</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BIRTH_SOURCE__FIXED_RATE = eINSTANCE.getBirthSource_FixedRate();
 
 		/**
 		 * The meta object literal for the '{@link seirmodel.impl.DeathSinkImpl <em>Death Sink</em>}' class.
