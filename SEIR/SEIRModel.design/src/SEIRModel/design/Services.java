@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * The services class used by VSM.
+ * Enhanced with dynamic group detection utilities.
  */
 public class Services {
     
@@ -24,6 +25,29 @@ public class Services {
 //        return "rgb(" + r + "," + g + "," + b + ")";
         return "rgb(255,0,0)";
         
+    }
+    
+    /**
+     * Get color for a group value based on hash
+     */
+    public String getColorForGroup(String groupValue) {
+        if (groupValue == null) return "black";
+        
+        int hash = Math.abs(groupValue.hashCode());
+        String[] colors = {"blue", "orange", "purple", "green", "red", "yellow", "gray", "brown"};
+        return colors[hash % colors.length];
+    }
+    
+    /**
+     * Get light version of color for group
+     */
+    public String getLightColorForGroup(String groupValue) {
+        if (groupValue == null) return "light_gray";
+        
+        int hash = Math.abs(groupValue.hashCode());
+        String[] colors = {"light_blue", "light_orange", "light_purple", "light_green", 
+                          "light_red", "light_yellow", "light_gray", "light_chocolate"};
+        return colors[hash % colors.length];
     }
 
 }

@@ -1,0 +1,243 @@
+{
+  "seirmodel_metamodel": {
+    "structure": {
+      "xml_declaration": {
+        "version": "1.0",
+        "encoding": "UTF-8"
+      },
+      "root_element": {
+        "tag": "seir:SEIRModel",
+        "attributes": {
+          "xmi:version": "2.0",
+          "xmlns:xmi": "http://www.omg.org/XMI",
+          "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+          "xmlns:seir": "http://example.com/seirmodel"
+        },
+        "optional_attributes": ["totalPopulation", "globalBirthRate", "globalDeathRate"]
+      },
+      "compartments": {
+        "element": "compartments",
+        "required_attributes": ["PrimaryName"],
+        "optional_attributes": ["SecondaryName", "population", "product"],
+        "child_elements": ["outgoingFlows"],
+        "constraints": {
+          "product": "Reference to product using format '//@products.X'"
+        }
+      },
+      "outgoingFlows": {
+        "abstract_element": "outgoingFlows",
+        "concrete_types": ["RateFlow", "ContactFlow"],
+        "common_required_attributes": ["target"],
+        "common_optional_attributes": ["description"],
+        "constraints": {
+          "target": "Must be 0-based index in format '//@compartments.X'"
+        }
+      },
+      "RateFlow": {
+        "element": "outgoingFlows",
+        "xsi_type": "seir:RateFlow",
+        "required_attributes": ["rate", "target"],
+        "optional_attributes": ["description"],
+        "child_elements": ["stratumSpecificRates"],
+        "constraints": {
+          "rate": "Must be float/decimal value (Strictly avoid using any symbols). Compute a final float numeric value and not a equation."
+        }
+      },
+      "ContactFlow": {
+        "element": "outgoingFlows", 
+        "xsi_type": "seir:ContactFlow",
+        "required_attributes": ["contactRate", "contactCompartment", "target"],
+        "optional_attributes": ["description", "contactParameters"],
+        "child_elements": ["stratumSpecificRates"],
+        "constraints": {
+          "contactRate": "Must be float/decimal value (Strictly avoid using any symbols). Compute a final float numeric value and not a equation.",
+          "contactCompartment": "Reference to compartment using format '//@compartments.X'"
+        }
+      },
+      "stratumSpecificRates": {
+        "element": "stratumSpecificRates",
+        "required_attributes": ["stratum", "rate"],
+        "optional_attributes": ["multiplier"],
+        "constraints": {
+          "rate": "Must be float/decimal value",
+          "multiplier": "Must be float/decimal value, defaults to 1.0"
+        }
+      },
+      "birthSources": {
+        "element": "birthSources",
+        "required_attributes": ["name", "rate", "targetCompartment"],
+        "optional_attributes": ["targetStratum", "fixedRate"],
+        "constraints": {
+          "rate": "Must be float/decimal value",
+          "targetCompartment": "Reference to compartment using format '//@compartments.X'",
+          "fixedRate": "Boolean value, defaults to false"
+        }
+      },
+      "deathSinks": {
+        "element": "deathSinks", 
+        "required_attributes": ["name", "rate", "sourceCompartment"],
+        "optional_attributes": [],
+        "constraints": {
+          "rate": "Must be float/decimal value",
+          "sourceCompartment": "Reference to compartment using format '//@compartments.X'"
+        }
+      },
+      "groups": {
+        "element": "groups",
+        "required_attributes": ["name"],
+        "optional_attributes": ["description"],
+        "child_elements": ["values"],
+        "constraints": {
+          "values": "Array of string values representing the group stratification levels"
+        }
+      },
+      "products": {
+        "element": "products",
+        "required_attributes": ["name"],
+        "optional_attributes": ["description"],
+        "child_elements": ["groups"],
+        "constraints": {
+          "groups": "Reference to groups using format '//@groups.X'"
+        }
+      }
+    },
+    "compartment_types": {
+      "epidemiological_states": [
+        "Susceptible",
+        "Exposed",
+        "Infectious",
+        "Recovered",
+        "Deceased",
+        "Dead",
+        "Removed"
+      ],
+      "treatment_states": [
+        "Vaccinated",
+        "Treated",
+        "Hospitalized",
+        "Quarantined",
+        "Isolated"
+      ],
+      "demographic_states": [
+        "Recruitment",
+        "Birth",
+        "Immigration"
+      ],
+      "terminal_states": [
+        "Death",
+        "Natural Death",
+        "Death due to AIDS",
+        "Dead"
+      ],
+      "severity_modifiers": [
+        "Asymptomatic",
+        "Symptomatic",
+        "Mild",
+        "Moderate",
+        "Severe",
+        "Critical"
+      ],
+      "location_modifiers": [
+        "ICU",
+        "Hospital",
+        "Home",
+        "Community"
+      ]
+    },
+    "secondary_name_patterns": {
+      "demographic_groups": [
+        "Homosexual Men",
+        "Heterosexual Men",
+        "Women",
+        "Children",
+        "Adults",
+        "Elderly"
+      ],
+      "disease_progression": [
+        "presymptomatic",
+        "mild to moderate",
+        "severe",
+        "pre-ICU",
+        "post-ICU"
+      ],
+      "intervention_status": [
+        "isolated",
+        "quarantined",
+        "with ART",
+        "living with AIDS"
+      ],
+      "vaccination_status": [
+        "Vaccinated",
+        "Unvaccinated",
+        "First dose",
+        "Second dose"
+      ]
+    },
+    "flow_patterns": {
+      "common_transitions": [
+        "Susceptible → Exposed",
+        "Exposed → Infectious",
+        "Infectious → Recovered",
+        "Infectious → Dead",
+        "All non-terminal compartment → Natural Death"
+      ],
+      "flow_types": {
+        "RateFlow": {
+          "description": "Simple progression flow with fixed or stratum-specific rates",
+          "examples": ["Exposed → Infectious", "Infectious → Recovered", "Hospital → ICU"]
+        },
+        "ContactFlow": {
+          "description": "Transmission flow based on contact with infectious compartments",
+          "examples": ["Susceptible → Exposed (contact with Infectious)"],
+          "parameters": {
+            "contactRate": "Base transmission rate per contact",
+            "contactCompartment": "Source compartment for transmission (usually Infectious)",
+            "contactParameters": "Additional transmission parameters (optional)"
+          }
+        }
+      },
+      "stratification": {
+        "description": "Age-based or demographic stratification using Groups and Products",
+        "stratum_specific_rates": "Different rates can be specified for each stratum within a flow",
+        "examples": {
+          "age_groups": ["0-17", "18-64", "65+"],
+          "demographic_groups": ["Male", "Female"],
+          "risk_groups": ["High Risk", "Low Risk"]
+        }
+      }
+    },
+    "validation_rules": {
+      "Inflow": "Use BirthSource elements for population inflows. The inflow to a compartment which doesn't have a source (like recruitment or birth) should use birthSources rather than regular flows",
+      "Outflow": "Use DeathSink elements for population outflows. Natural death and other population losses should use deathSinks rather than flows to non-existent compartments", 
+      "compartment_uniqueness": "Each (PrimaryName, SecondaryName) pair must be unique",
+      "index_consistency": "Target indices must reference existing compartments using format '//@compartments.X'",
+      "reference_consistency": "Product references must use format '//@products.X', Group references must use format '//@groups.X'",
+      "rate_format": "All rates must be numeric (Strictly avoid using any symbols). Compute a final float numeric value and not a equation.",
+      "flow_type_consistency": "Use xsi:type=\"seir:RateFlow\" for progression flows, xsi:type=\"seir:ContactFlow\" for transmission flows",
+      "stratification_consistency": "Compartments with product attribute should have stratumSpecificRates in their flows where applicable",
+      "terminal_compartments": "Terminal compartments (like Deaths, Recovered) typically have no outgoing flows",
+      "contact_flow_validation": "ContactFlow must specify contactCompartment (usually an Infectious compartment) and contactRate",
+      "stratum_validation": "stratumSpecificRates stratum values must match the values defined in the referenced Group",
+      "population_balance": "BirthSources and DeathSinks help maintain population balance in the model",
+      "description": "Even though description is optional, it would be very helpful if each flow has a brief description explaining the purpose of this flow."
+    },
+    "model_extensions": {
+      "stratification_system": {
+        "description": "New stratification system using Groups and Products",
+        "Groups": "Define demographic or risk categories (e.g., age groups, gender, risk levels)",
+        "Products": "Combine multiple groups for complex stratification",
+        "compartment_stratification": "Compartments can reference a Product to be automatically stratified"
+      },
+      "flow_enhancements": {
+        "abstract_flows": "Flow is now abstract with RateFlow and ContactFlow as concrete implementations",
+        "stratum_specific_rates": "Both RateFlow and ContactFlow support different rates for different strata",
+        "contact_modeling": "ContactFlow enables sophisticated transmission modeling with contact compartments"
+      },
+      "population_dynamics": {
+        "BirthSource": "Models population inflow (births, immigration, recruitment)",
+        "DeathSink": "Models population outflow (deaths, emigration)",
+        "global_rates": "SEIRModel can specify totalPopulation, globalBirthRate, globalDeathRate"
+      }
+    }
+  }
+}
