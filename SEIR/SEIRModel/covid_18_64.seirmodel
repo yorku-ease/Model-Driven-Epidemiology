@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ASCII"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="14800000">
+  <compartments PrimaryName="Susceptible" population="14700000" product="//@products.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Exposure (community transmission)" target="//@compartments.1" contactCompartment="//@compartments.3" contactRate="1.5E-5"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Exposure with quarantine measures" target="//@compartments.2" contactCompartment="//@compartments.3" contactRate="3.0E-6"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="5000" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Progression to presymptomatic infectious" target="//@compartments.3" rate="0.4"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="1000" SecondaryName="quarantined" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Progression to presymptomatic isolated" target="//@compartments.4" rate="0.4"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="3000" SecondaryName="presymptomatic" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Mild to moderate symptoms" target="//@compartments.5" rate="0.85"/>
+    <outgoingFlows xsi:type="seir:RateFlow" description="Severe symptoms" target="//@compartments.6" rate="0.15"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="1000" SecondaryName="presymptomatic, isolated" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Mild to moderate isolated" target="//@compartments.7" rate="0.85"/>
+    <outgoingFlows xsi:type="seir:RateFlow" description="Severe isolated" target="//@compartments.8" rate="0.15"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="8000" SecondaryName="mild to moderate">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Detection and isolation" target="//@compartments.9" rate="0.5"/>
+    <outgoingFlows xsi:type="seir:RateFlow" description="Recovery" target="//@compartments.10" rate="0.167"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="2000" SecondaryName="severe">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Hospital admission" target="//@compartments.11" rate="0.167"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="4000" SecondaryName="mild to moderate, isolated">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Recovery" target="//@compartments.10" rate="0.167"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="800" SecondaryName="severe, isolated">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Hospital admission" target="//@compartments.11" rate="0.167"/>
+  </compartments>
+  <compartments PrimaryName="Isolated" population="6000">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Recovery" target="//@compartments.10" rate="0.167"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="50000" product="//@products.0"/>
+  <compartments PrimaryName="Admitted to hospital" population="1500" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Recovery from hospital" target="//@compartments.10" rate="0.8"/>
+    <outgoingFlows xsi:type="seir:RateFlow" description="ICU admission" target="//@compartments.12" rate="0.2"/>
+  </compartments>
+  <compartments PrimaryName="ICU" population="400" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Recovery to post-ICU" target="//@compartments.13" rate="0.7"/>
+    <outgoingFlows xsi:type="seir:RateFlow" description="Death from COVID" target="//@compartments.14" rate="0.3"/>
+  </compartments>
+  <compartments PrimaryName="Admitted to hospital" population="200" SecondaryName="post-ICU">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Recovery post-ICU" target="//@compartments.10" rate="0.048"/>
+  </compartments>
+  <compartments PrimaryName="COVID Deaths" population="100" product="//@products.0"/>
+  <birthSources name="Population Birth (18-64)" rate="3.0E-5" targetCompartment="//@compartments.0"/>
+  <deathSinks name="Child Natural Death (18-64)" rate="5.0E-7" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Adult Natural Death (18-64)" rate="2.0E-5" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Elder Natural Death (18-64)" rate="2.0E-4" sourceCompartment="//@compartments.0"/>
+  <groups name="AgeGroup" description="Age-based population stratification with realistic COVID-19 characteristics">
+    <values>0-17</values>
+    <values>18-64</values>
+    <values>65+</values>
+  </groups>
+  <products name="AgeStratification" description="Age-based compartment stratification" groups="//@groups.0"/>
+</seir:SEIRModel>
