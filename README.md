@@ -8,6 +8,8 @@ It supports:
 - **Population stratification** with group products (age, location, risk, vaccination status, etc.)
 - **Stratum-specific rates** for heterogeneous populations
 - **Automatic equation generation** for stratified models
+- **Python simulation** for numerical integration and CSV output
+- **Automatic model splitting** utilities for large stratified models
 - **Target platform resolution** for dependency management
 
 ---
@@ -15,18 +17,26 @@ It supports:
 ## 📁 Project Structure
 
 ```
-SEIRModel/
-├── seir.ecore                 # Ecore metamodel definition
-├── seir.genmodel              # EMF GenModel
-├── seir.aird                  # Sirius representation instance
-├── Sample.seirmodel           # Sample SEIR model instance
-├── SEIR_Equations.txt         # Output from equation generation
+SEIR/
+├── SEIRModel/                 # Core model plugin
+│   ├── seir.ecore            # Ecore metamodel definition
+│   ├── seir.genmodel         # EMF GenModel
+│   ├── seir.aird             # Sirius representation instance
+│   ├── covid.seirmodel       # COVID-19 stratified model example
+│   ├── HIV.seirmodel         # HIV model example
+│   ├── covid_*.seirmodel     # Age-specific COVID models
+│   ├── simulation/           # Python simulation tools
+│   │   └── simulation.py     # Numerical integration script
+│   └── src/                  # Generated Java source
+│       ├── seirmodel/        # Core model classes
+│       └── seir/             # Utilities and equation generator
 ├── org.seir.targetplatform/   # Target platform project
-├── SEIRModel.design/          # Sirius graphical definition (.odesign)
+│   └── seir.target           # Eclipse target definition
+├── SEIRModel.design/          # Sirius graphical definition
+│   └── description/SEIRModel.odesign
 ├── SEIRModel.edit/            # EMF edit plugin
 ├── SEIRModel.editor/          # EMF editor plugin
-├── SEIRModel.tests/           # Unit tests
-└── SEIRModel/                 # Core model plugin
+└── SEIRModel.tests/           # Unit tests
 ```
 
 ---
@@ -57,8 +67,12 @@ The SEIR model is defined in `seir.ecore` and includes:
 - `Compartment` (abstract, with `name`, `population`, and `outgoingFlows`)
 - Subtypes of Compartment:
   - `Susceptible`, `Exposed`, `ExposedIsolated`, `ExposedNonIsolated`, `Infectious`, `InfectiousSymptomatic`, `InfectiousAsymptomatic`, `Recovered`
-- `Flow`: has a `rate`, optional `description`, and a `target` reference
-- **New Stratification Components**:
+- **Flow Types**:
+  - `RateFlow`: basic rate-based transitions
+  - `ContactFlow`: transmission flows based on contact rates
+  - `BirthSource`: population input flows
+  - `DeathSink`: population output flows
+- **Stratification Components**:
   - `Group`: defines population categories (e.g., age groups, locations)
   - `Product`: creates combinations of groups (Cartesian products)
   - `StratumSpecificRate`: allows different rates for each population segment
@@ -175,6 +189,63 @@ The system supports any stratification type: age groups, geographic locations, r
 
 ---
 
+## 🐍 Python Simulation
+
+The project includes Python simulation capabilities in `SEIRModel/simulation/simulation.py`.
+
+### Running Simulations:
+
+1. **Generate equations** first using `SEIREquationGenerator.java`
+2. **Navigate to simulation directory**:
+   ```bash
+   cd SEIR/SEIRModel/simulation/
+   ```
+3. **Run the simulation script**:
+   ```bash
+   python simulation.py
+   ```
+4. **Follow the interactive prompts**:
+   - Enter the equation file name (e.g., "HIV.txt")
+   - Select which compartments to include in simulation
+   - Provide initial population values
+   - Specify simulation duration in years
+
+### Output:
+- **CSV file** with timestamped population values
+- **Numerical integration** using Euler's method (dt=0.01)
+- **Customizable** compartment selection and initial conditions
+
+### Example Usage:
+```
+Enter .txt file name: HIV
+Choose compartments to simulate:
+Include 'Susceptible'? (y/n): y
+Include 'Infectious'? (y/n): y
+...
+Initial value for 'Susceptible': 10000
+Initial value for 'Infectious': 100
+...
+Simulate how many years?: 10
+Results saved to HIV.csv
+```
+
+---
+
+## 🔧 Model Utilities
+
+### Automatic Model Splitting
+Located in `src/seir/utilities/`, these tools help manage large stratified models:
+- `AutomaticModelSplitter.java`: Splits complex models into manageable components
+- `SimpleSplitter.java`: Basic model decomposition utilities
+- `DynamicDiagramGenerator.java`: Generates visual representations dynamically
+
+### Running Utilities:
+Use the provided scripts:
+- **Windows**: `run_splitter.bat`
+- **Linux/Mac**: `run_splitter.sh`
+
+---
+
 ## ❓ Troubleshooting
 
 ### Flows Not Showing in Diagram?
@@ -201,6 +272,19 @@ The system supports any stratification type: age groups, geographic locations, r
 ---
 
 ## 📌 Requirements
-- Eclipse 2023-09 or later
+
+### Eclipse Development:
+- Eclipse 2023-09 or later (Eclipse Modeling Distribution recommended)
 - Java 17+
 - Sirius 7.4.7 or later (configured via `.target`)
+- EMF (Eclipse Modeling Framework) SDK
+
+### Python Simulation:
+- Python 3.7+ for running simulations
+- No external Python dependencies required (uses standard library only)
+
+### Model Examples:
+- Several pre-built model examples included:
+  - `HIV.seirmodel` - Basic HIV transmission model
+  - `covid.seirmodel` - COVID-19 stratified model with age groups
+  - `covid_*.seirmodel` - Age-specific COVID model variants
