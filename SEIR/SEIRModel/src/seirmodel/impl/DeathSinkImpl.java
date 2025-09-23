@@ -25,6 +25,7 @@ import seirmodel.SeirmodelPackage;
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getRate <em>Rate</em>}</li>
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getSourceCompartment <em>Source Compartment</em>}</li>
+ *   <li>{@link seirmodel.impl.DeathSinkImpl#getSourceStratum <em>Source Stratum</em>}</li>
  * </ul>
  *
  * @generated
@@ -79,6 +80,27 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 	 * @ordered
 	 */
 	protected Compartment sourceCompartment;
+
+
+	/**
+	 * The default value of the '{@link #getSourceStratum() <em>Source Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSourceStratum()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String SOURCE_STRATUM_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getSourceStratum() <em>Source Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSourceStratum()
+	 * @generated
+	 * @ordered
+	 */
+	protected String sourceStratum = SOURCE_STRATUM_EDEFAULT;
 
 
 	/**
@@ -193,6 +215,29 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 	 * @generated
 	 */
 	@Override
+	public String getSourceStratum() {
+		return sourceStratum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setSourceStratum(String newSourceStratum) {
+		String oldSourceStratum = sourceStratum;
+		sourceStratum = newSourceStratum;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM, oldSourceStratum, sourceStratum));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case SeirmodelPackage.DEATH_SINK__NAME:
@@ -202,6 +247,8 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				if (resolve) return getSourceCompartment();
 				return basicGetSourceCompartment();
+			case SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM:
+				return getSourceStratum();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -222,6 +269,9 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 				return;
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				setSourceCompartment((Compartment)newValue);
+				return;
+			case SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM:
+				setSourceStratum((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -244,6 +294,9 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				setSourceCompartment((Compartment)null);
 				return;
+			case SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM:
+				setSourceStratum(SOURCE_STRATUM_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -262,6 +315,8 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 				return rate != RATE_EDEFAULT;
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				return sourceCompartment != null;
+			case SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM:
+				return SOURCE_STRATUM_EDEFAULT == null ? sourceStratum != null : !SOURCE_STRATUM_EDEFAULT.equals(sourceStratum);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -280,6 +335,8 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 		result.append(name);
 		result.append(", rate: ");
 		result.append(rate);
+		result.append(", sourceStratum: ");
+		result.append(sourceStratum);
 		result.append(')');
 		return result.toString();
 	}

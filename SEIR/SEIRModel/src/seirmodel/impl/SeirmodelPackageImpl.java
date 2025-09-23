@@ -435,6 +435,16 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 	 * @generated
 	 */
 	@Override
+	public EAttribute getDeathSink_SourceStratum() {
+		return (EAttribute)deathSinkEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getStratumSpecificRate() {
 		return stratumSpecificRateEClass;
 	}
@@ -700,6 +710,7 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		createEAttribute(deathSinkEClass, DEATH_SINK__NAME);
 		createEAttribute(deathSinkEClass, DEATH_SINK__RATE);
 		createEReference(deathSinkEClass, DEATH_SINK__SOURCE_COMPARTMENT);
+		createEAttribute(deathSinkEClass, DEATH_SINK__SOURCE_STRATUM);
 
 		stratumSpecificRateEClass = createEClass(STRATUM_SPECIFIC_RATE);
 		createEAttribute(stratumSpecificRateEClass, STRATUM_SPECIFIC_RATE__STRATUM);
@@ -791,6 +802,7 @@ public class SeirmodelPackageImpl extends EPackageImpl implements SeirmodelPacka
 		initEAttribute(getDeathSink_Name(), ecorePackage.getEString(), "name", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDeathSink_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDeathSink_SourceCompartment(), this.getCompartment(), null, "sourceCompartment", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDeathSink_SourceStratum(), ecorePackage.getEString(), "sourceStratum", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(stratumSpecificRateEClass, StratumSpecificRate.class, "StratumSpecificRate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStratumSpecificRate_Stratum(), ecorePackage.getEString(), "stratum", null, 0, 1, StratumSpecificRate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

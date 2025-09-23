@@ -68,75 +68,75 @@
   <!-- Infectious (Presymptomatic) with age-specific severity -->
   <compartments PrimaryName="Infectious" SecondaryName="presymptomatic" population="3000" product="//@products.0">
     <!-- Age-specific severity rates -->
-    <outgoingFlows xsi:type="seir:RateFlow" 
-                   rate="0.85" 
-                   description="Mild to moderate symptoms" 
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.85"
+                   description="Mild to moderate symptoms"
                    target="//@compartments.5">
-      <!-- Children: Very high rate of mild symptoms -->
-      <stratumSpecificRates stratum="0-17" rate="0.95"/>
-      <!-- Adults: Standard rate -->
-      <stratumSpecificRates stratum="18-64" rate="0.85"/>
-      <!-- Elderly: Lower rate of mild symptoms -->
+      <!-- Children: Very high rate of mild symptoms (99%) -->
+      <stratumSpecificRates stratum="0-17" rate="0.99"/>
+      <!-- Adults: High rate of mild symptoms (97%) -->
+      <stratumSpecificRates stratum="18-64" rate="0.97"/>
+      <!-- Elderly: Lower rate of mild symptoms (65%) -->
       <stratumSpecificRates stratum="65+" rate="0.65"/>
     </outgoingFlows>
-    
-    <outgoingFlows xsi:type="seir:RateFlow" 
-                   rate="0.15" 
-                   description="Severe symptoms" 
+
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.15"
+                   description="Severe symptoms"
                    target="//@compartments.6">
-      <!-- Children: Very low severe rate -->
-      <stratumSpecificRates stratum="0-17" rate="0.05"/>
-      <!-- Adults: Standard severe rate -->
-      <stratumSpecificRates stratum="18-64" rate="0.15"/>
-      <!-- Elderly: Much higher severe rate -->
+      <!-- Children: Very low severe rate (1%) -->
+      <stratumSpecificRates stratum="0-17" rate="0.01"/>
+      <!-- Adults: Low severe rate (3%) -->
+      <stratumSpecificRates stratum="18-64" rate="0.03"/>
+      <!-- Elderly: Higher severe rate (35%) -->
       <stratumSpecificRates stratum="65+" rate="0.35"/>
     </outgoingFlows>
   </compartments>
   
   <!-- Infectious (Presymptomatic, Isolated) -->
   <compartments PrimaryName="Infectious" SecondaryName="presymptomatic, isolated" population="1000" product="//@products.0">
-    <outgoingFlows xsi:type="seir:RateFlow" 
-                   rate="0.85" 
-                   description="Mild to moderate isolated" 
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.85"
+                   description="Mild to moderate isolated"
                    target="//@compartments.7">
-      <stratumSpecificRates stratum="0-17" rate="0.95"/>
-      <stratumSpecificRates stratum="18-64" rate="0.85"/>
+      <stratumSpecificRates stratum="0-17" rate="0.99"/>
+      <stratumSpecificRates stratum="18-64" rate="0.97"/>
       <stratumSpecificRates stratum="65+" rate="0.65"/>
     </outgoingFlows>
-    
-    <outgoingFlows xsi:type="seir:RateFlow" 
-                   rate="0.15" 
-                   description="Severe isolated" 
+
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.15"
+                   description="Severe isolated"
                    target="//@compartments.8">
-      <stratumSpecificRates stratum="0-17" rate="0.05"/>
-      <stratumSpecificRates stratum="18-64" rate="0.15"/>
+      <stratumSpecificRates stratum="0-17" rate="0.01"/>
+      <stratumSpecificRates stratum="18-64" rate="0.03"/>
       <stratumSpecificRates stratum="65+" rate="0.35"/>
     </outgoingFlows>
   </compartments>
   
   <!-- Infectious (Mild to Moderate) -->
-  <compartments PrimaryName="Infectious" SecondaryName="mild to moderate" population="8000">
+  <compartments PrimaryName="Infectious" SecondaryName="mild to moderate" population="8000" product="//@products.0">
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.5" description="Detection and isolation" target="//@compartments.9"/>
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.167" description="Recovery" target="//@compartments.10"/>
   </compartments>
   
   <!-- Infectious (Severe) -->
-  <compartments PrimaryName="Infectious" SecondaryName="severe" population="2000">
+  <compartments PrimaryName="Infectious" SecondaryName="severe" population="2000" product="//@products.0">
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.167" description="Hospital admission" target="//@compartments.11"/>
   </compartments>
   
   <!-- Infectious (Mild to Moderate, Isolated) -->
-  <compartments PrimaryName="Infectious" SecondaryName="mild to moderate, isolated" population="4000">
+  <compartments PrimaryName="Infectious" SecondaryName="mild to moderate, isolated" population="4000" product="//@products.0">
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.167" description="Recovery" target="//@compartments.10"/>
   </compartments>
   
   <!-- Infectious (Severe, Isolated) -->
-  <compartments PrimaryName="Infectious" SecondaryName="severe, isolated" population="800">
+  <compartments PrimaryName="Infectious" SecondaryName="severe, isolated" population="800" product="//@products.0">
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.167" description="Hospital admission" target="//@compartments.11"/>
   </compartments>
   
   <!-- Isolated (Detected cases) -->
-  <compartments PrimaryName="Isolated" population="6000">
+  <compartments PrimaryName="Isolated" population="6000" product="//@products.0">
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.167" description="Recovery" target="//@compartments.10"/>
   </compartments>
   
@@ -155,14 +155,14 @@
       <stratumSpecificRates stratum="65+" rate="0.60"/>    <!-- Slower elderly recovery -->
     </outgoingFlows>
     
-    <outgoingFlows xsi:type="seir:RateFlow" 
-                   rate="0.26" 
-                   description="ICU admission" 
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.26"
+                   description="ICU admission"
                    target="//@compartments.12">
-      <!-- Age-specific ICU admission rates -->
-      <stratumSpecificRates stratum="0-17" rate="0.10"/>   <!-- Very low ICU rate for children -->
-      <stratumSpecificRates stratum="18-64" rate="0.20"/>  <!-- Moderate ICU rate -->
-      <stratumSpecificRates stratum="65+" rate="0.40"/>    <!-- High ICU rate for elderly -->
+      <!-- ICU admission rate: 26% for all age groups (from paper) -->
+      <stratumSpecificRates stratum="0-17" rate="0.26"/>
+      <stratumSpecificRates stratum="18-64" rate="0.26"/>
+      <stratumSpecificRates stratum="65+" rate="0.26"/>
     </outgoingFlows>
   </compartments>
   
@@ -178,31 +178,28 @@
       <stratumSpecificRates stratum="65+" rate="0.45"/>    <!-- Lower recovery for elderly -->
     </outgoingFlows>
     
-    <outgoingFlows xsi:type="seir:RateFlow" 
-                   rate="0.4" 
-                   description="Death from COVID" 
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.4"
+                   description="Death from COVID"
                    target="//@compartments.14">
-      <!-- Age-specific mortality rates -->
-      <stratumSpecificRates stratum="0-17" rate="0.15"/>   <!-- Very low mortality for children -->
-      <stratumSpecificRates stratum="18-64" rate="0.30"/>  <!-- Moderate mortality -->
-      <stratumSpecificRates stratum="65+" rate="0.55"/>    <!-- High mortality for elderly -->
+      <!-- Age-specific ICU mortality rates (from paper Table 1) -->
+      <stratumSpecificRates stratum="0-17" rate="0.0"/>    <!-- 0% mortality for children -->
+      <stratumSpecificRates stratum="18-64" rate="0.20"/>  <!-- 20% mortality for adults -->
+      <stratumSpecificRates stratum="65+" rate="0.58"/>    <!-- 58% mortality for elderly -->
     </outgoingFlows>
   </compartments>
   
   <!-- Admitted to Hospital (Post-ICU) -->
-  <compartments PrimaryName="Admitted to hospital" SecondaryName="post-ICU" population="200">
+  <compartments PrimaryName="Admitted to hospital" SecondaryName="post-ICU" population="200" product="//@products.0">
     <outgoingFlows xsi:type="seir:RateFlow" rate="0.048" description="Recovery post-ICU" target="//@compartments.10"/>
   </compartments>
   
   <!-- COVID Deaths (Age-Stratified) -->
   <compartments PrimaryName="COVID Deaths" population="100" product="//@products.0"/>
   
-  <!-- Birth Sources with age-specific targeting -->
-  <birthSources name="Population Birth" rate="3.0E-5" targetCompartment="//@compartments.0"/>
+  <!-- Birth Sources - All births go to youngest age group -->
+  <birthSources name="Population Birth" rate="3.0E-5" targetCompartment="//@compartments.0" targetStratum="0-17"/>
   
-  <!-- Age-specific Natural Death Rates (realistic mortality by age) -->
-  <deathSinks name="Child Natural Death" rate="0.0000005" sourceCompartment="//@compartments.0"/>
-  <deathSinks name="Adult Natural Death" rate="0.00002" sourceCompartment="//@compartments.0"/>
-  <deathSinks name="Elder Natural Death" rate="0.0002" sourceCompartment="//@compartments.0"/>
+  <!-- No natural death rates modeled - following the paper approach where only COVID deaths in ICU are modeled -->
   
 </seir:SEIRModel>

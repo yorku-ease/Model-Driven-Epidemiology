@@ -20,7 +20,6 @@ import seirmodel.ContactFlow;
 import seirmodel.DeathSink;
 import seirmodel.Flow;
 import seirmodel.Group;
-import seirmodel.Product;
 import seirmodel.RateFlow;
 import seirmodel.SEIRModel;
 import seirmodel.StratumSpecificRate;
@@ -233,21 +232,29 @@ public class DynamicDiagramGenerator {
     }
     
     private static void updateLabels(SEIRModel model, String groupValue) {
-        // Add group identifier to birth sources
+        // Filter birth sources to only include those relevant to this group
+        List<BirthSource> relevantBirthSources = new ArrayList<BirthSource>();
         for (int i = 0; i < model.getBirthSources().size(); i++) {
             BirthSource source = model.getBirthSources().get(i);
-            if (source.getName() != null && !source.getName().contains("(" + groupValue + ")")) {
-                source.setName(source.getName() + " (" + groupValue + ")");
+            // Keep birth source if it belongs to this group or has no stratum specified
+            if (source.getTargetStratum() == null || groupValue.equals(source.getTargetStratum())) {
+                relevantBirthSources.add(source);
             }
         }
+        model.getBirthSources().clear();
+        model.getBirthSources().addAll(relevantBirthSources);
         
-        // Add group identifier to death sinks
+        // Filter death sinks to only include those relevant to this group
+        List<DeathSink> relevantDeathSinks = new ArrayList<DeathSink>();
         for (int i = 0; i < model.getDeathSinks().size(); i++) {
             DeathSink sink = model.getDeathSinks().get(i);
-            if (sink.getName() != null && !sink.getName().contains("(" + groupValue + ")")) {
-                sink.setName(sink.getName() + " (" + groupValue + ")");
+            // Keep death sink if it belongs to this group or has no stratum specified
+            if (sink.getSourceStratum() == null || groupValue.equals(sink.getSourceStratum())) {
+                relevantDeathSinks.add(sink);
             }
         }
+        model.getDeathSinks().clear();
+        model.getDeathSinks().addAll(relevantDeathSinks);
     }
     
     private static String generateFileName(String inputFile, String groupValue) {

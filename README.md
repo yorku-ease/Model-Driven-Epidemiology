@@ -68,10 +68,10 @@ The SEIR model is defined in `seir.ecore` and includes:
 - Subtypes of Compartment:
   - `Susceptible`, `Exposed`, `ExposedIsolated`, `ExposedNonIsolated`, `Infectious`, `InfectiousSymptomatic`, `InfectiousAsymptomatic`, `Recovered`
 - **Flow Types**:
-  - `RateFlow`: basic rate-based transitions
+  - `RateFlow`: basic rate-based transitions (includes flows to death compartments for disease-induced mortality)
   - `ContactFlow`: transmission flows based on contact rates
-  - `BirthSource`: population input flows
-  - `DeathSink`: population output flows
+  - `BirthSource`: population input flows with stratum-specific targeting
+  - `DeathSink`: population output flows for natural mortality (background death rates)
 - **Stratification Components**:
   - `Group`: defines population categories (e.g., age groups, locations)
   - `Product`: creates combinations of groups (Cartesian products)
@@ -161,6 +161,40 @@ The system now supports population stratification. Example from `covid.seirmodel
 
 This creates separate compartments for each age group (Susceptible_0-17, Susceptible_18-64, Susceptible_65+) with different transmission rates.
 
+### Birth Sources and Death Sinks with Stratification
+
+**Birth Sources** target specific population strata:
+```xml
+<birthSources name="Population Birth" rate="3.0E-5"
+              targetCompartment="//@compartments.0"
+              targetStratum="0-17"/>
+```
+
+**Death Sinks** handle natural mortality by stratum:
+```xml
+<deathSinks name="Child Natural Death (0-17)" rate="0.0000005"
+            sourceCompartment="//@compartments.0"
+            sourceStratum="0-17"/>
+<deathSinks name="Adult Natural Death (18-64)" rate="0.00002"
+            sourceCompartment="//@compartments.0"
+            sourceStratum="18-64"/>
+```
+
+**Disease-Induced Deaths** flow to death compartments:
+```xml
+<compartments PrimaryName="ICU" population="400" product="//@products.0">
+  <outgoingFlows xsi:type="seir:RateFlow"
+                 description="Death from COVID"
+                 target="//@compartments.14" rate="0.4">
+    <!-- Age-specific COVID mortality rates -->
+    <stratumSpecificRates stratum="0-17" rate="0.0"/>
+    <stratumSpecificRates stratum="18-64" rate="0.20"/>
+    <stratumSpecificRates stratum="65+" rate="0.58"/>
+  </outgoingFlows>
+</compartments>
+<compartments PrimaryName="COVID Deaths" population="100" product="//@products.0"/>
+```
+
 ---
 
 ## 🧮 Equation Generation
@@ -235,14 +269,24 @@ Results saved to HIV.csv
 
 ### Automatic Model Splitting
 Located in `src/seir/utilities/`, these tools help manage large stratified models:
-- `AutomaticModelSplitter.java`: Splits complex models into manageable components
-- `SimpleSplitter.java`: Basic model decomposition utilities
-- `DynamicDiagramGenerator.java`: Generates visual representations dynamically
 
-### Running Utilities:
-Use the provided scripts:
-- **Windows**: `run_splitter.bat`
-- **Linux/Mac**: `run_splitter.sh`
+- **`DynamicDiagramGenerator.java`**: **[RECOMMENDED]** Advanced group-aware model splitter that:
+  - Automatically detects all group values in your model
+  - Creates separate stratified models for each group (e.g., age-specific COVID models)
+  - Properly filters birth sources and death sinks by target/source stratum
+  - Handles stratum-specific rates and flows correctly
+  - Generates clean, executable models for each population group
+
+- **Legacy utilities** (deprecated):
+  - `AutomaticModelSplitter.java`: Basic model splitting
+  - `SimpleSplitter.java`: Simple decomposition utilities
+
+### Running Model Splitting:
+Use the provided scripts to run DynamicDiagramGenerator:
+- **Windows**: `run_splitter.bat covid.seirmodel`
+- **Linux/Mac**: `./run_splitter.sh covid.seirmodel`
+
+This will generate separate models like `covid_0-17.seirmodel`, `covid_18-64.seirmodel`, etc.
 
 ---
 
@@ -284,7 +328,14 @@ Use the provided scripts:
 - No external Python dependencies required (uses standard library only)
 
 ### Model Examples:
-- Several pre-built model examples included:
-  - `HIV.seirmodel` - Basic HIV transmission model
-  - `covid.seirmodel` - COVID-19 stratified model with age groups
-  - `covid_*.seirmodel` - Age-specific COVID model variants
+- **Epidemiological Models Included**:
+  - **`covid.seirmodel`** - COVID-19 age-stratified model (3 age groups: 0-17, 18-64, 65+)
+    - Based on published research (Tuite et al., 2020)
+    - No natural death rates (follows paper methodology - only COVID deaths in ICU)
+    - Age-specific transmission, hospitalization, and ICU mortality rates
+  - **`HIV.seirmodel`** - HIV transmission model with sexual behavior stratification
+    - Based on published research (Espitia et al., 2022)
+    - 3 sexual behavior groups: Homosexual Men, Women, Heterosexual Men
+    - Natural death rates for all compartments + AIDS-induced deaths to HIV Deaths compartment
+    - Complex transmission patterns including bisexual contacts
+  - **`covid_*.seirmodel`** - Auto-generated age-specific models from DynamicDiagramGenerator

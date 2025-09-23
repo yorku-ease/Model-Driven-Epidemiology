@@ -433,13 +433,22 @@ public interface SeirmodelPackage extends EPackage {
 
 
 	/**
+	 * The feature id for the '<em><b>Source Stratum</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATH_SINK__SOURCE_STRATUM = 3;
+
+	/**
 	 * The number of structural features of the '<em>Death Sink</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK_FEATURE_COUNT = 3;
+	int DEATH_SINK_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Death Sink</em>' class.
@@ -1010,6 +1019,17 @@ public interface SeirmodelPackage extends EPackage {
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.DeathSink#getSourceStratum <em>Source Stratum</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Source Stratum</em>'.
+	 * @see seirmodel.DeathSink#getSourceStratum()
+	 * @see #getDeathSink()
+	 * @generated
+	 */
+	EAttribute getDeathSink_SourceStratum();
+
+	/**
 	 * Returns the meta object for class '{@link seirmodel.StratumSpecificRate <em>Stratum Specific Rate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1488,6 +1508,14 @@ public interface SeirmodelPackage extends EPackage {
 		 */
 		EReference DEATH_SINK__SOURCE_COMPARTMENT = eINSTANCE.getDeathSink_SourceCompartment();
 
+
+		/**
+		 * The meta object literal for the '<em><b>Source Stratum</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DEATH_SINK__SOURCE_STRATUM = eINSTANCE.getDeathSink_SourceStratum();
 
 		/**
 		 * The meta object literal for the '{@link seirmodel.impl.StratumSpecificRateImpl <em>Stratum Specific Rate</em>}' class.

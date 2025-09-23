@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link seirmodel.DeathSink#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.DeathSink#getRate <em>Rate</em>}</li>
  *   <li>{@link seirmodel.DeathSink#getSourceCompartment <em>Source Compartment</em>}</li>
+ *   <li>{@link seirmodel.DeathSink#getSourceStratum <em>Source Stratum</em>}</li>
  * </ul>
  *
  * @see seirmodel.SeirmodelPackage#getDeathSink()
@@ -88,6 +89,28 @@ public interface DeathSink extends EObject {
 	 * @generated
 	 */
 	void setSourceCompartment(Compartment value);
+
+	/**
+	 * Returns the value of the '<em><b>Source Stratum</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Source Stratum</em>' attribute.
+	 * @see #setSourceStratum(String)
+	 * @see seirmodel.SeirmodelPackage#getDeathSink_SourceStratum()
+	 * @model
+	 * @generated
+	 */
+	String getSourceStratum();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.DeathSink#getSourceStratum <em>Source Stratum</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Source Stratum</em>' attribute.
+	 * @see #getSourceStratum()
+	 * @generated
+	 */
+	void setSourceStratum(String value);
 
 
 } // DeathSink
