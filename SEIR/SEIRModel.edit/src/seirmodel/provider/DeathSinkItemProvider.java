@@ -63,6 +63,7 @@ public class DeathSinkItemProvider
 			addNamePropertyDescriptor(object);
 			addRatePropertyDescriptor(object);
 			addSourceCompartmentPropertyDescriptor(object);
+			addSourceStratumPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -134,6 +135,28 @@ public class DeathSinkItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Source Stratum feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSourceStratumPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DeathSink_sourceStratum_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DeathSink_sourceStratum_feature", "_UI_DeathSink_type"),
+				 SeirmodelPackage.Literals.DEATH_SINK__SOURCE_STRATUM,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns DeathSink.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -173,6 +196,7 @@ public class DeathSinkItemProvider
 		switch (notification.getFeatureID(DeathSink.class)) {
 			case SeirmodelPackage.DEATH_SINK__NAME:
 			case SeirmodelPackage.DEATH_SINK__RATE:
+			case SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

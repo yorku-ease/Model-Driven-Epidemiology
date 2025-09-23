@@ -1,76 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="362796" globalBirthRate="0" globalDeathRate="0">
-  
-  <groups name="SexualPreference" description="Population stratification based on sexual preference and gender">
-    <values>HomosexualMen</values>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="362796">
+  <compartments PrimaryName="Susceptible" population="363613" product="//@products.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Transmission from infected homosexual men" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="0.09636435643564358">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.09636435643564358"/>
+      <stratumSpecificRates stratum="Women" rate="0.0011263366336633665"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.007821782178217822"/>
+    </outgoingFlows>
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Transmission from infected women" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="2.526315789473684E-6">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.0"/>
+      <stratumSpecificRates stratum="Women" rate="0.0"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="2.526315789473684E-6"/>
+    </outgoingFlows>
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Transmission from infected heterosexual men" target="//@compartments.1" contactCompartment="//@compartments.1" contactRate="1.355124355907057E-5">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.0"/>
+      <stratumSpecificRates stratum="Women" rate="1.355124355907057E-5"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.0"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="114" SecondaryName="Untreated Infected" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Initial treatment of infected individuals" target="//@compartments.2" rate="0.29997">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.29997"/>
+      <stratumSpecificRates stratum="Women" rate="0.29997"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.29997"/>
+    </outgoingFlows>
+    <outgoingFlows xsi:type="seir:RateFlow" description="Progression to AIDS for untreated individuals" target="//@compartments.3" rate="0.03333">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.03333"/>
+      <stratumSpecificRates stratum="Women" rate="0.03333"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.03333"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="Treated" population="107" SecondaryName="with ART" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Progression to AIDS for treated individuals" target="//@compartments.3" rate="0.018">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.018"/>
+      <stratumSpecificRates stratum="Women" rate="0.018"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.018"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="47" SecondaryName="living with AIDS" product="//@products.0">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Death from AIDS" target="//@compartments.4" rate="0.3333">
+      <stratumSpecificRates stratum="Homosexual Men" rate="0.3333"/>
+      <stratumSpecificRates stratum="Women" rate="0.3333"/>
+      <stratumSpecificRates stratum="Heterosexual Men" rate="0.3333"/>
+    </outgoingFlows>
+  </compartments>
+  <compartments PrimaryName="HIV Deaths" population="0" product="//@products.0"/>
+  <birthSources name="Recruitment of Homosexual Men" rate="12.7872" targetCompartment="//@compartments.0" targetStratum="Homosexual Men"/>
+  <birthSources name="Recruitment of Women" rate="173.16" targetCompartment="//@compartments.0" targetStratum="Women"/>
+  <birthSources name="Recruitment of Heterosexual Men" rate="147.0528" targetCompartment="//@compartments.0" targetStratum="Heterosexual Men"/>
+  <deathSinks name="Natural Death from Susceptible (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Homosexual Men"/>
+  <deathSinks name="Natural Death from Susceptible (Women)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Women"/>
+  <deathSinks name="Natural Death from Susceptible (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.0" sourceStratum="Heterosexual Men"/>
+  <deathSinks name="Natural Death from Untreated Infected (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Homosexual Men"/>
+  <deathSinks name="Natural Death from Untreated Infected (Women)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Women"/>
+  <deathSinks name="Natural Death from Untreated Infected (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.1" sourceStratum="Heterosexual Men"/>
+  <deathSinks name="Natural Death from Treated (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Homosexual Men"/>
+  <deathSinks name="Natural Death from Treated (Women)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Women"/>
+  <deathSinks name="Natural Death from Treated (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.2" sourceStratum="Heterosexual Men"/>
+  <deathSinks name="Natural Death from AIDS (Homosexual Men)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Homosexual Men"/>
+  <deathSinks name="Natural Death from AIDS (Women)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Women"/>
+  <deathSinks name="Natural Death from AIDS (Heterosexual Men)" rate="0.0129" sourceCompartment="//@compartments.3" sourceStratum="Heterosexual Men"/>
+  <!-- AIDS-induced deaths now flow to HIV Deaths compartment instead of death sinks -->
+  <groups name="SexualBehavior">
+    <values>Homosexual Men</values>
     <values>Women</values>
-    <values>HeterosexualMen</values>
+    <values>Heterosexual Men</values>
   </groups>
-  
-  <products name="GenderStratification" description="Stratification by sexual preference/gender" groups="//@groups.0"/>
-  
-  <birthSources name="Recruitment Homosexual Men" rate="12.7872" targetCompartment="//@compartments.0" targetStratum="HomosexualMen" fixedRate="true"/>
-  <birthSources name="Recruitment Women" rate="173.16" targetCompartment="//@compartments.0" targetStratum="Women" fixedRate="true"/>
-  <birthSources name="Recruitment Heterosexual Men" rate="147.0528" targetCompartment="//@compartments.0" targetStratum="HeterosexualMen" fixedRate="true"/>
-  
-  <compartments PrimaryName="Susceptible" population="362544" product="//@products.0">
-    <outgoingFlows xsi:type="seir:ContactFlow" 
-                   contactRate="3.08" 
-                   contactCompartment="//@compartments.1" 
-                   description="Exclusive Homosexual Contact (λh)" 
-                   target="//@compartments.1">
-      <stratumSpecificRates stratum="HomosexualMen" rate="3.08"/>
-    </outgoingFlows>
-
-    <outgoingFlows xsi:type="seir:ContactFlow" 
-                   contactRate="0.036" 
-                   contactCompartment="//@compartments.1" 
-                   description="Bisexual Contact (λhw)" 
-                   target="//@compartments.1">
-      <stratumSpecificRates stratum="Women" rate="0.036"/>
-    </outgoingFlows>
-
-    <outgoingFlows xsi:type="seir:ContactFlow" 
-                   contactRate="0.25" 
-                   contactCompartment="//@compartments.1" 
-                   description="Bisexual Contact (λhm)" 
-                   target="//@compartments.1">
-      <stratumSpecificRates stratum="HeterosexualMen" rate="0.25"/>
-    </outgoingFlows>
-
-    <outgoingFlows xsi:type="seir:ContactFlow" 
-                   contactRate="0.08" 
-                   contactCompartment="//@compartments.1" 
-                   description="Heterosexual Contact (λw-m)" 
-                   target="//@compartments.1">
-      <stratumSpecificRates stratum="HeterosexualMen" rate="0.08"/>
-    </outgoingFlows>
-
-    <outgoingFlows xsi:type="seir:ContactFlow" 
-                   contactRate="0.08" 
-                   contactCompartment="//@compartments.1" 
-                   description="Heterosexual Contact (λm-w)" 
-                   target="//@compartments.1">
-      <stratumSpecificRates stratum="Women" rate="0.08"/>
-    </outgoingFlows>
-  </compartments>
-  
-  <compartments PrimaryName="Untreated Infected" population="114" product="//@products.0">
-    <outgoingFlows xsi:type="seir:RateFlow" rate="0.29997" description="p * α (Transition to ART)" target="//@compartments.2"/>
-
-    <outgoingFlows xsi:type="seir:RateFlow" rate="0.03333" description="(1-p) * α (Transition to AIDS)" target="//@compartments.3"/>
-  </compartments>
-  
-  <compartments PrimaryName="Treated with ART" population="107">
-    <outgoingFlows xsi:type="seir:RateFlow" rate="0.018" description="δ (Treatment Failure)" target="//@compartments.3"/>
-  </compartments>
-  
-  <compartments PrimaryName="People living with AIDS" population="47"/>
-  
-  <deathSinks name="Death Due to AIDS" rate="0.3333" sourceCompartment="//@compartments.3"/>
-  
-  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.0"/>
-  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.1"/>
-  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.2"/>
-  <deathSinks name="Natural Death" rate="0.0129" sourceCompartment="//@compartments.3"/>
+  <products name="SexualBehaviorProduct" description="Stratification by sexual behavior" groups="//@groups.0"/>
 </seir:SEIRModel>
