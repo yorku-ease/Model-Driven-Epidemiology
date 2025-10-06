@@ -194,18 +194,19 @@ public class SEIREquationGenerator {
     private static List<String> generateStrataCombinations(Product product) {
         List<String> combinations = new ArrayList<>();
         combinations.add(""); // Start with empty combination
-        
+
         for (Group group : product.getGroups()) {
             List<String> newCombinations = new ArrayList<>();
             for (String combination : combinations) {
                 for (String value : group.getValues()) {
-                    String newCombination = combination.isEmpty() ? value : combination + "_" + value;
+                    // Use comma as separator to match model format (e.g., "0-17,Male")
+                    String newCombination = combination.isEmpty() ? value : combination + "," + value;
                     newCombinations.add(newCombination);
                 }
             }
             combinations = newCombinations;
         }
-        
+
         return combinations;
     }
 
@@ -213,7 +214,12 @@ public class SEIREquationGenerator {
         String primaryName = compartment.getPrimaryName();
         String secondaryName = compartment.getSecondaryName() != null ? compartment.getSecondaryName() : "";
         String baseName = primaryName + (secondaryName.isEmpty() ? "" : " (" + secondaryName + ")");
-        return stratum.isEmpty() ? baseName : baseName + "_" + stratum;
+        if (stratum.isEmpty()) {
+            return baseName;
+        }
+        // Replace commas with underscores for display/file naming
+        String displayStratum = stratum.replace(",", "_");
+        return baseName + "_" + displayStratum;
     }
 
     private static String generateCompartmentEquation(Compartment compartment, SEIRModel model, String stratum) {
@@ -306,10 +312,13 @@ public class SEIREquationGenerator {
             }
         }
 
-        // Death sinks flowing out of this compartment
+        // Death sinks flowing out of this compartment (with stratum matching)
         for (DeathSink deathSink : model.getDeathSinks()) {
             if (deathSink.getSourceCompartment() == compartment) {
-                equation.append("- ").append(deathSink.getRate()).append(" * ").append(displayName).append(" ");
+                // Check if death sink applies to this stratum
+                if (isDeathSinkApplicableToStratum(deathSink, stratum)) {
+                    equation.append("- ").append(deathSink.getRate()).append(" * ").append(displayName).append(" ");
+                }
             }
         }
 
@@ -320,16 +329,18 @@ public class SEIREquationGenerator {
         if (stratum.isEmpty() || contactFlow.getStratumSpecificRates().isEmpty()) {
             return defaultRate;
         }
-        
-        // Extract first stratum value from combined stratum (first part before underscore)
-        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
-        
+
+        // Try exact match first (for Cartesian products like "0-17,Male")
         for (StratumSpecificRate stratumRate : contactFlow.getStratumSpecificRates()) {
-            if (stratumValue.equals(stratumRate.getStratum())) {
+            if (stratum.equals(stratumRate.getStratum())) {
+                // If rate is 0, use multiplier instead
+                if (stratumRate.getRate() == 0.0 && stratumRate.getMultiplier() != 0.0) {
+                    return defaultRate * stratumRate.getMultiplier();
+                }
                 return stratumRate.getRate();
             }
         }
-        
+
         return defaultRate;
     }
 
@@ -337,16 +348,18 @@ public class SEIREquationGenerator {
         if (stratum.isEmpty() || rateFlow.getStratumSpecificRates().isEmpty()) {
             return defaultRate;
         }
-        
-        // Extract first stratum value from combined stratum (first part before underscore)
-        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
-        
+
+        // Try exact match first (for Cartesian products like "0-17,Male")
         for (StratumSpecificRate stratumRate : rateFlow.getStratumSpecificRates()) {
-            if (stratumValue.equals(stratumRate.getStratum())) {
+            if (stratum.equals(stratumRate.getStratum())) {
+                // If rate is 0, use multiplier instead
+                if (stratumRate.getRate() == 0.0 && stratumRate.getMultiplier() != 0.0) {
+                    return defaultRate * stratumRate.getMultiplier();
+                }
                 return stratumRate.getRate();
             }
         }
-        
+
         return defaultRate;
     }
 
@@ -354,16 +367,14 @@ public class SEIREquationGenerator {
         if (stratum.isEmpty() || contactFlow.getStratumSpecificRates().isEmpty()) {
             return 1.0; // Default multiplier (no effect)
         }
-        
-        // Extract first stratum value from combined stratum (first part before underscore)
-        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
-        
+
+        // Try exact match (for Cartesian products like "0-17,Male")
         for (StratumSpecificRate stratumRate : contactFlow.getStratumSpecificRates()) {
-            if (stratumValue.equals(stratumRate.getStratum())) {
+            if (stratum.equals(stratumRate.getStratum())) {
                 return stratumRate.getMultiplier();
             }
         }
-        
+
         return 1.0; // Default multiplier (no effect)
     }
 
@@ -407,20 +418,19 @@ public class SEIREquationGenerator {
         if (stratum.isEmpty()) {
             return true;
         }
-        
+
         // If flow has no stratum-specific rates, it applies to all
         if (contactFlow.getStratumSpecificRates().isEmpty()) {
             return true;
         }
-        
-        // Check if any stratum-specific rate matches the current stratum
-        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
+
+        // Check if any stratum-specific rate exactly matches the current stratum (e.g., "0-17,Male")
         for (StratumSpecificRate stratumRate : contactFlow.getStratumSpecificRates()) {
-            if (stratumValue.equals(stratumRate.getStratum())) {
+            if (stratum.equals(stratumRate.getStratum())) {
                 return true;
             }
         }
-        
+
         // Flow has stratum-specific rates but none match - doesn't apply
         return false;
     }
@@ -433,20 +443,19 @@ public class SEIREquationGenerator {
         if (stratum.isEmpty()) {
             return true;
         }
-        
+
         // If flow has no stratum-specific rates, it applies to all strata
         if (rateFlow.getStratumSpecificRates().isEmpty()) {
             return true;
         }
-        
-        // Check if any stratum-specific rate matches the current stratum
-        String stratumValue = stratum.contains("_") ? stratum.split("_")[0] : stratum;
+
+        // Check if any stratum-specific rate exactly matches the current stratum (e.g., "0-17,Male")
         for (StratumSpecificRate stratumRate : rateFlow.getStratumSpecificRates()) {
-            if (stratumValue.equals(stratumRate.getStratum())) {
+            if (stratum.equals(stratumRate.getStratum())) {
                 return true;
             }
         }
-        
+
         // Flow has stratum-specific rates but none match - doesn't apply
         return false;
     }
@@ -460,48 +469,41 @@ public class SEIREquationGenerator {
         if (stratum.isEmpty()) {
             return true;
         }
-        
+
         // Extract targetStratum from EMF object using reflection
-        // This is a workaround until EMF classes are regenerated
-        String targetStratum = getTargetStratumFromBirthSource(birthSource);
-        
+        String targetStratum = birthSource.getTargetStratum();
+
         if (targetStratum != null && !targetStratum.isEmpty()) {
+            // Exact match for Cartesian products (e.g., "0-17,Male")
             return targetStratum.equals(stratum);
         }
-        
-        // If no targetStratum specified, apply to all strata
-        return true;
+
+        // If no targetStratum specified, don't apply to stratified compartments (avoid duplication)
+        return false;
     }
 
     /**
-     * Workaround to extract targetStratum attribute from BirthSource
-     * until EMF classes are regenerated with the new attribute
+     * Check if a death sink applies to the given stratum.
+     * Uses the sourceStratum attribute if available, otherwise applies to all.
      */
-    private static String getTargetStratumFromBirthSource(BirthSource birthSource) {
-        try {
-            // Try reflection to get the targetStratum attribute
-            Object eObject = birthSource;
-            if (eObject instanceof org.eclipse.emf.ecore.EObject) {
-                org.eclipse.emf.ecore.EObject eo = (org.eclipse.emf.ecore.EObject) eObject;
-                org.eclipse.emf.ecore.EClass eClass = eo.eClass();
-                
-                // Look for targetStratum attribute
-                for (org.eclipse.emf.ecore.EAttribute attr : eClass.getEAllAttributes()) {
-                    if ("targetStratum".equals(attr.getName())) {
-                        Object value = eo.eGet(attr);
-                        return value != null ? value.toString() : null;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // If reflection fails, return null (no specific targeting)
-            System.out.println("Warning: Could not extract targetStratum from birth source '" + 
-                             birthSource.getName() + "'. Consider regenerating EMF classes.");
+    private static boolean isDeathSinkApplicableToStratum(DeathSink deathSink, String stratum) {
+        // If no stratum specified, death sink applies to non-stratified compartments
+        if (stratum.isEmpty()) {
+            return true;
         }
-        
-        // If no targetStratum found, return null (will apply to all strata)
-        return null;
+
+        // Extract sourceStratum from death sink
+        String sourceStratum = deathSink.getSourceStratum();
+
+        if (sourceStratum != null && !sourceStratum.isEmpty()) {
+            // Exact match for Cartesian products (e.g., "0-17,Male")
+            return sourceStratum.equals(stratum);
+        }
+
+        // If no sourceStratum specified, don't apply to stratified compartments (avoid duplication)
+        return false;
     }
+
 
     /**
      * Check if a birth source uses fixed rate (not population-based)

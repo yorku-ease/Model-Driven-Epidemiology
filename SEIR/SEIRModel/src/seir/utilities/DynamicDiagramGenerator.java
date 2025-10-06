@@ -86,45 +86,43 @@ public class DynamicDiagramGenerator {
                 }
             }
             
-            // Get all unique values across all groups
-            Set<String> allUniqueValues = new HashSet<String>();
-            for (GroupInfo groupInfo : allGroups) {
-                allUniqueValues.addAll(groupInfo.values);
-            }
-            
-            System.out.println("\n🔄 Creating " + allUniqueValues.size() + " group-specific models...");
-            
+            // Generate Cartesian product of all group values
+            List<String> cartesianProduct = generateCartesianProduct(allGroups);
+
+            System.out.println("\n🔄 Creating " + cartesianProduct.size() + " group-specific models...");
+            System.out.println("   (Cartesian product of " + allGroups.size() + " group(s))");
+
             int count = 0;
-            for (String groupValue : allUniqueValues) {
+            for (String groupValue : cartesianProduct) {
                 count++;
-                System.out.println("\n[" + count + "/" + allUniqueValues.size() + "] Processing: " + groupValue);
-                
+                System.out.println("\n[" + count + "/" + cartesianProduct.size() + "] Processing: " + groupValue);
+
                 // Create complete copy
                 SEIRModel groupModel = (SEIRModel) EcoreUtil.copy(originalModel);
-                
+
                 // Customize for this group
                 customizeModelForGroup(groupModel, groupValue);
-                
+
                 // Generate filename
                 String outputFile = generateFileName(inputFile, groupValue);
-                
+
                 // Save
                 saveModel(groupModel, outputFile);
-                
+
                 // Report
                 int compartments = groupModel.getCompartments().size();
                 int stratifiedCompartments = countStratifiedCompartments(groupModel);
-                
+
                 System.out.println("  ✓ Saved: " + outputFile);
                 System.out.println("    📊 " + compartments + " compartments (" + stratifiedCompartments + " stratified)");
                 System.out.println("    🔄 " + countFlows(groupModel) + " flows");
                 System.out.println("    📈 " + groupModel.getBirthSources().size() + " birth sources");
                 System.out.println("    📉 " + groupModel.getDeathSinks().size() + " death sinks");
             }
-            
-            System.out.println("\n🎉 SUCCESS! Generated " + allUniqueValues.size() + " group-specific models.");
+
+            System.out.println("\n🎉 SUCCESS! Generated " + cartesianProduct.size() + " group-specific models.");
             System.out.println("💡 You can now create diagrams from each file in Eclipse:");
-            for (String groupValue : allUniqueValues) {
+            for (String groupValue : cartesianProduct) {
                 System.out.println("  📋 " + generateFileName(inputFile, groupValue));
             }
             
@@ -148,22 +146,58 @@ public class DynamicDiagramGenerator {
     
     private static List<GroupInfo> analyzeGroups(SEIRModel model) {
         List<GroupInfo> groups = new ArrayList<GroupInfo>();
-        
+
         for (int i = 0; i < model.getGroups().size(); i++) {
             Group group = model.getGroups().get(i);
             GroupInfo info = new GroupInfo(group.getName(), group.getDescription());
-            
+
             // Collect all values
             for (int j = 0; j < group.getValues().size(); j++) {
                 info.values.add(group.getValues().get(j));
             }
-            
+
             if (!info.values.isEmpty()) {
                 groups.add(info);
             }
         }
-        
+
         return groups;
+    }
+
+    /**
+     * Generate Cartesian product of all group values.
+     * For example, if groups are:
+     *   Age: [0-17, 18-65, 66+]
+     *   Gender: [Male, Female]
+     * This returns: [0-17,Male, 0-17,Female, 18-65,Male, 18-65,Female, 66+,Male, 66+,Female]
+     */
+    private static List<String> generateCartesianProduct(List<GroupInfo> groups) {
+        List<String> result = new ArrayList<String>();
+
+        if (groups.isEmpty()) {
+            return result;
+        }
+
+        // Start with first group's values
+        for (String value : groups.get(0).values) {
+            result.add(value);
+        }
+
+        // For each additional group, expand the product
+        for (int i = 1; i < groups.size(); i++) {
+            List<String> newResult = new ArrayList<String>();
+            GroupInfo currentGroup = groups.get(i);
+
+            for (String existingCombo : result) {
+                for (String newValue : currentGroup.values) {
+                    newResult.add(existingCombo + "," + newValue);
+                }
+            }
+
+            result = newResult;
+        }
+
+        return result;
     }
     
     private static void customizeModelForGroup(SEIRModel model, String targetGroupValue) {
@@ -194,67 +228,93 @@ public class DynamicDiagramGenerator {
     
     private static boolean processFlow(Flow flow, String targetGroup) {
         boolean rateReplaced = false;
-        
+
         if (flow instanceof RateFlow) {
             RateFlow rateFlow = (RateFlow) flow;
-            
-            // Look for group-specific rate
+
+            // Look for group-specific rate (exact match for Cartesian product)
             for (int k = 0; k < rateFlow.getStratumSpecificRates().size(); k++) {
                 StratumSpecificRate stratumRate = rateFlow.getStratumSpecificRates().get(k);
                 if (targetGroup.equals(stratumRate.getStratum())) {
-                    rateFlow.setRate(stratumRate.getRate());
+                    // Use the stratum-specific rate if provided, otherwise calculate from multiplier
+                    double finalRate = stratumRate.getRate();
+                    if (finalRate == 0.0 && stratumRate.getMultiplier() != 0.0) {
+                        finalRate = rateFlow.getRate() * stratumRate.getMultiplier();
+                    }
+                    rateFlow.setRate(finalRate);
                     rateReplaced = true;
                     break;
                 }
             }
-            
+
             // Clear stratum-specific rates (no longer needed)
             rateFlow.getStratumSpecificRates().clear();
-            
+
         } else if (flow instanceof ContactFlow) {
             ContactFlow contactFlow = (ContactFlow) flow;
-            
-            // Look for group-specific contact rate
+
+            // Look for group-specific contact rate (exact match for Cartesian product)
             for (int k = 0; k < contactFlow.getStratumSpecificRates().size(); k++) {
                 StratumSpecificRate stratumRate = contactFlow.getStratumSpecificRates().get(k);
                 if (targetGroup.equals(stratumRate.getStratum())) {
-                    contactFlow.setContactRate(stratumRate.getRate());
+                    // Use the stratum-specific rate if provided, otherwise calculate from multiplier
+                    double finalRate = stratumRate.getRate();
+                    if (finalRate == 0.0 && stratumRate.getMultiplier() != 0.0) {
+                        finalRate = contactFlow.getContactRate() * stratumRate.getMultiplier();
+                    }
+                    contactFlow.setContactRate(finalRate);
                     rateReplaced = true;
                     break;
                 }
             }
-            
+
             // Clear stratum-specific rates
             contactFlow.getStratumSpecificRates().clear();
         }
-        
+
         return rateReplaced;
     }
     
     private static void updateLabels(SEIRModel model, String groupValue) {
-        // Filter birth sources to only include those relevant to this group
+        // Filter birth sources to only include those relevant to this group combination
         List<BirthSource> relevantBirthSources = new ArrayList<BirthSource>();
         for (int i = 0; i < model.getBirthSources().size(); i++) {
             BirthSource source = model.getBirthSources().get(i);
-            // Keep birth source if it belongs to this group or has no stratum specified
-            if (source.getTargetStratum() == null || groupValue.equals(source.getTargetStratum())) {
+            // Keep birth source if it belongs to this group combination or has no stratum specified
+            if (source.getTargetStratum() == null ||
+                groupValue.equals(source.getTargetStratum()) ||
+                isStratumMatch(groupValue, source.getTargetStratum())) {
                 relevantBirthSources.add(source);
             }
         }
         model.getBirthSources().clear();
         model.getBirthSources().addAll(relevantBirthSources);
-        
-        // Filter death sinks to only include those relevant to this group
+
+        // Filter death sinks to only include those relevant to this group combination
         List<DeathSink> relevantDeathSinks = new ArrayList<DeathSink>();
         for (int i = 0; i < model.getDeathSinks().size(); i++) {
             DeathSink sink = model.getDeathSinks().get(i);
-            // Keep death sink if it belongs to this group or has no stratum specified
-            if (sink.getSourceStratum() == null || groupValue.equals(sink.getSourceStratum())) {
+            // Keep death sink if it belongs to this group combination or has no stratum specified
+            if (sink.getSourceStratum() == null ||
+                groupValue.equals(sink.getSourceStratum()) ||
+                isStratumMatch(groupValue, sink.getSourceStratum())) {
                 relevantDeathSinks.add(sink);
             }
         }
         model.getDeathSinks().clear();
         model.getDeathSinks().addAll(relevantDeathSinks);
+    }
+
+    /**
+     * Check if a target stratum matches the current group value.
+     * Handles both exact matches and partial matches for Cartesian products.
+     * For example: "0-17,Male" matches "0-17,Male" exactly
+     */
+    private static boolean isStratumMatch(String groupValue, String stratum) {
+        if (groupValue == null || stratum == null) {
+            return false;
+        }
+        return groupValue.equals(stratum);
     }
     
     private static String generateFileName(String inputFile, String groupValue) {
