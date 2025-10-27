@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link seirmodel.ContactFlow#getContactCompartment <em>Contact Compartment</em>}</li>
  *   <li>{@link seirmodel.ContactFlow#getContactRate <em>Contact Rate</em>}</li>
+ *   <li>{@link seirmodel.ContactFlow#getContactRateParameter <em>Contact Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.ContactFlow#getContactParameters <em>Contact Parameters</em>}</li>
  *   <li>{@link seirmodel.ContactFlow#getStratumSpecificRates <em>Stratum Specific Rates</em>}</li>
  * </ul>
@@ -68,6 +69,28 @@ public interface ContactFlow extends Flow {
 	 * @generated
 	 */
 	void setContactRate(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Contact Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Contact Rate Parameter</em>' reference.
+	 * @see #setContactRateParameter(Parameter)
+	 * @see seirmodel.SeirmodelPackage#getContactFlow_ContactRateParameter()
+	 * @model
+	 * @generated
+	 */
+	Parameter getContactRateParameter();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.ContactFlow#getContactRateParameter <em>Contact Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Contact Rate Parameter</em>' reference.
+	 * @see #getContactRateParameter()
+	 * @generated
+	 */
+	void setContactRateParameter(Parameter value);
 
 	/**
 	 * Returns the value of the '<em><b>Contact Parameters</b></em>' attribute.

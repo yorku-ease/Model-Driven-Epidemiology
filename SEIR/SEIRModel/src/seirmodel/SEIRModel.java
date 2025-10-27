@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link seirmodel.SEIRModel#getDeathSinks <em>Death Sinks</em>}</li>
  *   <li>{@link seirmodel.SEIRModel#getGroups <em>Groups</em>}</li>
  *   <li>{@link seirmodel.SEIRModel#getProducts <em>Products</em>}</li>
+ *   <li>{@link seirmodel.SEIRModel#getParameters <em>Parameters</em>}</li>
  *   <li>{@link seirmodel.SEIRModel#getTotalPopulation <em>Total Population</em>}</li>
  *   <li>{@link seirmodel.SEIRModel#getGlobalBirthRate <em>Global Birth Rate</em>}</li>
  *   <li>{@link seirmodel.SEIRModel#getGlobalDeathRate <em>Global Death Rate</em>}</li>
@@ -88,6 +89,18 @@ public interface SEIRModel extends EObject {
 	 * @generated
 	 */
 	EList<Product> getProducts();
+
+	/**
+	 * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
+	 * The list contents are of type {@link seirmodel.Parameter}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameters</em>' containment reference list.
+	 * @see seirmodel.SeirmodelPackage#getSEIRModel_Parameters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Parameter> getParameters();
 
 	/**
 	 * Returns the value of the '<em><b>Total Population</b></em>' attribute.

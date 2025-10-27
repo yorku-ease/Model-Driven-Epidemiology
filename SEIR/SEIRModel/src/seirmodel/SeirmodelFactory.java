@@ -94,6 +94,15 @@ public interface SeirmodelFactory extends EFactory {
 	Product createProduct();
 
 	/**
+	 * Returns a new object of class '<em>Parameter</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Parameter</em>'.
+	 * @generated
+	 */
+	Parameter createParameter();
+
+	/**
 	 * Returns a new object of class '<em>SEIR Model</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

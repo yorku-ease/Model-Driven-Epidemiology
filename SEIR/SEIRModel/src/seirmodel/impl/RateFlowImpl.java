@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import seirmodel.Parameter;
 import seirmodel.RateFlow;
 import seirmodel.SeirmodelPackage;
 import seirmodel.StratumSpecificRate;
@@ -27,6 +28,7 @@ import seirmodel.StratumSpecificRate;
  * </p>
  * <ul>
  *   <li>{@link seirmodel.impl.RateFlowImpl#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.impl.RateFlowImpl#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.impl.RateFlowImpl#getStratumSpecificRates <em>Stratum Specific Rates</em>}</li>
  * </ul>
  *
@@ -52,6 +54,16 @@ public class RateFlowImpl extends FlowImpl implements RateFlow {
 	 * @ordered
 	 */
 	protected double rate = RATE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getRateParameter() <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRateParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected Parameter rateParameter;
 
 	/**
 	 * The cached value of the '{@link #getStratumSpecificRates() <em>Stratum Specific Rates</em>}' containment reference list.
@@ -111,6 +123,46 @@ public class RateFlowImpl extends FlowImpl implements RateFlow {
 	 * @generated
 	 */
 	@Override
+	public Parameter getRateParameter() {
+		if (rateParameter != null && rateParameter.eIsProxy()) {
+			InternalEObject oldRateParameter = (InternalEObject)rateParameter;
+			rateParameter = (Parameter)eResolveProxy(oldRateParameter);
+			if (rateParameter != oldRateParameter) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.RATE_FLOW__RATE_PARAMETER, oldRateParameter, rateParameter));
+			}
+		}
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter basicGetRateParameter() {
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setRateParameter(Parameter newRateParameter) {
+		Parameter oldRateParameter = rateParameter;
+		rateParameter = newRateParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.RATE_FLOW__RATE_PARAMETER, oldRateParameter, rateParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EList<StratumSpecificRate> getStratumSpecificRates() {
 		if (stratumSpecificRates == null) {
 			stratumSpecificRates = new EObjectContainmentEList<StratumSpecificRate>(StratumSpecificRate.class, this, SeirmodelPackage.RATE_FLOW__STRATUM_SPECIFIC_RATES);
@@ -142,6 +194,9 @@ public class RateFlowImpl extends FlowImpl implements RateFlow {
 		switch (featureID) {
 			case SeirmodelPackage.RATE_FLOW__RATE:
 				return getRate();
+			case SeirmodelPackage.RATE_FLOW__RATE_PARAMETER:
+				if (resolve) return getRateParameter();
+				return basicGetRateParameter();
 			case SeirmodelPackage.RATE_FLOW__STRATUM_SPECIFIC_RATES:
 				return getStratumSpecificRates();
 		}
@@ -159,6 +214,9 @@ public class RateFlowImpl extends FlowImpl implements RateFlow {
 		switch (featureID) {
 			case SeirmodelPackage.RATE_FLOW__RATE:
 				setRate((Double)newValue);
+				return;
+			case SeirmodelPackage.RATE_FLOW__RATE_PARAMETER:
+				setRateParameter((Parameter)newValue);
 				return;
 			case SeirmodelPackage.RATE_FLOW__STRATUM_SPECIFIC_RATES:
 				getStratumSpecificRates().clear();
@@ -179,6 +237,9 @@ public class RateFlowImpl extends FlowImpl implements RateFlow {
 			case SeirmodelPackage.RATE_FLOW__RATE:
 				setRate(RATE_EDEFAULT);
 				return;
+			case SeirmodelPackage.RATE_FLOW__RATE_PARAMETER:
+				setRateParameter((Parameter)null);
+				return;
 			case SeirmodelPackage.RATE_FLOW__STRATUM_SPECIFIC_RATES:
 				getStratumSpecificRates().clear();
 				return;
@@ -196,6 +257,8 @@ public class RateFlowImpl extends FlowImpl implements RateFlow {
 		switch (featureID) {
 			case SeirmodelPackage.RATE_FLOW__RATE:
 				return rate != RATE_EDEFAULT;
+			case SeirmodelPackage.RATE_FLOW__RATE_PARAMETER:
+				return rateParameter != null;
 			case SeirmodelPackage.RATE_FLOW__STRATUM_SPECIFIC_RATES:
 				return stratumSpecificRates != null && !stratumSpecificRates.isEmpty();
 		}

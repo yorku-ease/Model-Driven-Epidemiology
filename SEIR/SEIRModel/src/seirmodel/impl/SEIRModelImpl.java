@@ -18,6 +18,7 @@ import seirmodel.BirthSource;
 import seirmodel.Compartment;
 import seirmodel.DeathSink;
 import seirmodel.Group;
+import seirmodel.Parameter;
 import seirmodel.Product;
 import seirmodel.SEIRModel;
 import seirmodel.SeirmodelPackage;
@@ -35,6 +36,7 @@ import seirmodel.SeirmodelPackage;
  *   <li>{@link seirmodel.impl.SEIRModelImpl#getDeathSinks <em>Death Sinks</em>}</li>
  *   <li>{@link seirmodel.impl.SEIRModelImpl#getGroups <em>Groups</em>}</li>
  *   <li>{@link seirmodel.impl.SEIRModelImpl#getProducts <em>Products</em>}</li>
+ *   <li>{@link seirmodel.impl.SEIRModelImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link seirmodel.impl.SEIRModelImpl#getTotalPopulation <em>Total Population</em>}</li>
  *   <li>{@link seirmodel.impl.SEIRModelImpl#getGlobalBirthRate <em>Global Birth Rate</em>}</li>
  *   <li>{@link seirmodel.impl.SEIRModelImpl#getGlobalDeathRate <em>Global Death Rate</em>}</li>
@@ -90,6 +92,16 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 	 * @ordered
 	 */
 	protected EList<Product> products;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Parameter> parameters;
 
 	/**
 	 * The default value of the '{@link #getTotalPopulation() <em>Total Population</em>}' attribute.
@@ -236,6 +248,19 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 	 * @generated
 	 */
 	@Override
+	public EList<Parameter> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, SeirmodelPackage.SEIR_MODEL__PARAMETERS);
+		}
+		return parameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public int getTotalPopulation() {
 		return totalPopulation;
 	}
@@ -317,6 +342,8 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 				return ((InternalEList<?>)getGroups()).basicRemove(otherEnd, msgs);
 			case SeirmodelPackage.SEIR_MODEL__PRODUCTS:
 				return ((InternalEList<?>)getProducts()).basicRemove(otherEnd, msgs);
+			case SeirmodelPackage.SEIR_MODEL__PARAMETERS:
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -339,6 +366,8 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 				return getGroups();
 			case SeirmodelPackage.SEIR_MODEL__PRODUCTS:
 				return getProducts();
+			case SeirmodelPackage.SEIR_MODEL__PARAMETERS:
+				return getParameters();
 			case SeirmodelPackage.SEIR_MODEL__TOTAL_POPULATION:
 				return getTotalPopulation();
 			case SeirmodelPackage.SEIR_MODEL__GLOBAL_BIRTH_RATE:
@@ -378,6 +407,10 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 				getProducts().clear();
 				getProducts().addAll((Collection<? extends Product>)newValue);
 				return;
+			case SeirmodelPackage.SEIR_MODEL__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Parameter>)newValue);
+				return;
 			case SeirmodelPackage.SEIR_MODEL__TOTAL_POPULATION:
 				setTotalPopulation((Integer)newValue);
 				return;
@@ -414,6 +447,9 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 			case SeirmodelPackage.SEIR_MODEL__PRODUCTS:
 				getProducts().clear();
 				return;
+			case SeirmodelPackage.SEIR_MODEL__PARAMETERS:
+				getParameters().clear();
+				return;
 			case SeirmodelPackage.SEIR_MODEL__TOTAL_POPULATION:
 				setTotalPopulation(TOTAL_POPULATION_EDEFAULT);
 				return;
@@ -445,6 +481,8 @@ public class SEIRModelImpl extends MinimalEObjectImpl.Container implements SEIRM
 				return groups != null && !groups.isEmpty();
 			case SeirmodelPackage.SEIR_MODEL__PRODUCTS:
 				return products != null && !products.isEmpty();
+			case SeirmodelPackage.SEIR_MODEL__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
 			case SeirmodelPackage.SEIR_MODEL__TOTAL_POPULATION:
 				return totalPopulation != TOTAL_POPULATION_EDEFAULT;
 			case SeirmodelPackage.SEIR_MODEL__GLOBAL_BIRTH_RATE:

@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import seirmodel.Compartment;
 import seirmodel.ContactFlow;
+import seirmodel.Parameter;
 import seirmodel.SeirmodelPackage;
 import seirmodel.StratumSpecificRate;
 
@@ -29,6 +30,7 @@ import seirmodel.StratumSpecificRate;
  * <ul>
  *   <li>{@link seirmodel.impl.ContactFlowImpl#getContactCompartment <em>Contact Compartment</em>}</li>
  *   <li>{@link seirmodel.impl.ContactFlowImpl#getContactRate <em>Contact Rate</em>}</li>
+ *   <li>{@link seirmodel.impl.ContactFlowImpl#getContactRateParameter <em>Contact Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.impl.ContactFlowImpl#getContactParameters <em>Contact Parameters</em>}</li>
  *   <li>{@link seirmodel.impl.ContactFlowImpl#getStratumSpecificRates <em>Stratum Specific Rates</em>}</li>
  * </ul>
@@ -65,6 +67,16 @@ public class ContactFlowImpl extends FlowImpl implements ContactFlow {
 	 * @ordered
 	 */
 	protected double contactRate = CONTACT_RATE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getContactRateParameter() <em>Contact Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContactRateParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected Parameter contactRateParameter;
 
 	/**
 	 * The default value of the '{@link #getContactParameters() <em>Contact Parameters</em>}' attribute.
@@ -184,6 +196,46 @@ public class ContactFlowImpl extends FlowImpl implements ContactFlow {
 	 * @generated
 	 */
 	@Override
+	public Parameter getContactRateParameter() {
+		if (contactRateParameter != null && contactRateParameter.eIsProxy()) {
+			InternalEObject oldContactRateParameter = (InternalEObject)contactRateParameter;
+			contactRateParameter = (Parameter)eResolveProxy(oldContactRateParameter);
+			if (contactRateParameter != oldContactRateParameter) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE_PARAMETER, oldContactRateParameter, contactRateParameter));
+			}
+		}
+		return contactRateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter basicGetContactRateParameter() {
+		return contactRateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setContactRateParameter(Parameter newContactRateParameter) {
+		Parameter oldContactRateParameter = contactRateParameter;
+		contactRateParameter = newContactRateParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE_PARAMETER, oldContactRateParameter, contactRateParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String getContactParameters() {
 		return contactParameters;
 	}
@@ -241,6 +293,9 @@ public class ContactFlowImpl extends FlowImpl implements ContactFlow {
 				return basicGetContactCompartment();
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE:
 				return getContactRate();
+			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE_PARAMETER:
+				if (resolve) return getContactRateParameter();
+				return basicGetContactRateParameter();
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_PARAMETERS:
 				return getContactParameters();
 			case SeirmodelPackage.CONTACT_FLOW__STRATUM_SPECIFIC_RATES:
@@ -263,6 +318,9 @@ public class ContactFlowImpl extends FlowImpl implements ContactFlow {
 				return;
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE:
 				setContactRate((Double)newValue);
+				return;
+			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE_PARAMETER:
+				setContactRateParameter((Parameter)newValue);
 				return;
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_PARAMETERS:
 				setContactParameters((String)newValue);
@@ -289,6 +347,9 @@ public class ContactFlowImpl extends FlowImpl implements ContactFlow {
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE:
 				setContactRate(CONTACT_RATE_EDEFAULT);
 				return;
+			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE_PARAMETER:
+				setContactRateParameter((Parameter)null);
+				return;
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_PARAMETERS:
 				setContactParameters(CONTACT_PARAMETERS_EDEFAULT);
 				return;
@@ -311,6 +372,8 @@ public class ContactFlowImpl extends FlowImpl implements ContactFlow {
 				return contactCompartment != null;
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE:
 				return contactRate != CONTACT_RATE_EDEFAULT;
+			case SeirmodelPackage.CONTACT_FLOW__CONTACT_RATE_PARAMETER:
+				return contactRateParameter != null;
 			case SeirmodelPackage.CONTACT_FLOW__CONTACT_PARAMETERS:
 				return CONTACT_PARAMETERS_EDEFAULT == null ? contactParameters != null : !CONTACT_PARAMETERS_EDEFAULT.equals(contactParameters);
 			case SeirmodelPackage.CONTACT_FLOW__STRATUM_SPECIFIC_RATES:

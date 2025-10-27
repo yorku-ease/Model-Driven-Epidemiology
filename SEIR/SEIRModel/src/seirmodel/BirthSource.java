@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link seirmodel.BirthSource#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.BirthSource#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.BirthSource#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.BirthSource#getTargetCompartment <em>Target Compartment</em>}</li>
  *   <li>{@link seirmodel.BirthSource#getTargetStratum <em>Target Stratum</em>}</li>
  *   <li>{@link seirmodel.BirthSource#isFixedRate <em>Fixed Rate</em>}</li>
@@ -68,6 +69,28 @@ public interface BirthSource extends EObject {
 	 * @generated
 	 */
 	void setRate(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Rate Parameter</em>' reference.
+	 * @see #setRateParameter(Parameter)
+	 * @see seirmodel.SeirmodelPackage#getBirthSource_RateParameter()
+	 * @model
+	 * @generated
+	 */
+	Parameter getRateParameter();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.BirthSource#getRateParameter <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Rate Parameter</em>' reference.
+	 * @see #getRateParameter()
+	 * @generated
+	 */
+	void setRateParameter(Parameter value);
 
 	/**
 	 * Returns the value of the '<em><b>Target Compartment</b></em>' reference.

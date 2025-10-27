@@ -153,6 +153,7 @@ public class SEIRModelItemProvider
 			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__DEATH_SINKS);
 			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__GROUPS);
 			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__PRODUCTS);
+			childrenFeatures.add(SeirmodelPackage.Literals.SEIR_MODEL__PARAMETERS);
 		}
 		return childrenFeatures;
 	}
@@ -216,6 +217,7 @@ public class SEIRModelItemProvider
 			case SeirmodelPackage.SEIR_MODEL__DEATH_SINKS:
 			case SeirmodelPackage.SEIR_MODEL__GROUPS:
 			case SeirmodelPackage.SEIR_MODEL__PRODUCTS:
+			case SeirmodelPackage.SEIR_MODEL__PARAMETERS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -257,6 +259,11 @@ public class SEIRModelItemProvider
 			(createChildParameter
 				(SeirmodelPackage.Literals.SEIR_MODEL__PRODUCTS,
 				 SeirmodelFactory.eINSTANCE.createProduct()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SeirmodelPackage.Literals.SEIR_MODEL__PARAMETERS,
+				 SeirmodelFactory.eINSTANCE.createParameter()));
 	}
 
 	/**

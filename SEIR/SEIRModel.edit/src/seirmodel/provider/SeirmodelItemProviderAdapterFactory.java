@@ -256,6 +256,29 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link seirmodel.Parameter} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ParameterItemProvider parameterItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link seirmodel.Parameter}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createParameterAdapter() {
+		if (parameterItemProvider == null) {
+			parameterItemProvider = new ParameterItemProvider(this);
+		}
+
+		return parameterItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link seirmodel.SEIRModel} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -391,6 +414,7 @@ public class SeirmodelItemProviderAdapterFactory extends SeirmodelAdapterFactory
 		if (stratumSpecificRateItemProvider != null) stratumSpecificRateItemProvider.dispose();
 		if (groupItemProvider != null) groupItemProvider.dispose();
 		if (productItemProvider != null) productItemProvider.dispose();
+		if (parameterItemProvider != null) parameterItemProvider.dispose();
 		if (seirModelItemProvider != null) seirModelItemProvider.dispose();
 	}
 

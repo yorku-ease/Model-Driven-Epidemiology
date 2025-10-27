@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link seirmodel.DeathSink#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.DeathSink#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.DeathSink#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.DeathSink#getSourceCompartment <em>Source Compartment</em>}</li>
  *   <li>{@link seirmodel.DeathSink#getSourceStratum <em>Source Stratum</em>}</li>
  * </ul>
@@ -67,6 +68,28 @@ public interface DeathSink extends EObject {
 	 * @generated
 	 */
 	void setRate(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Rate Parameter</em>' reference.
+	 * @see #setRateParameter(Parameter)
+	 * @see seirmodel.SeirmodelPackage#getDeathSink_RateParameter()
+	 * @model
+	 * @generated
+	 */
+	Parameter getRateParameter();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.DeathSink#getRateParameter <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Rate Parameter</em>' reference.
+	 * @see #getRateParameter()
+	 * @generated
+	 */
+	void setRateParameter(Parameter value);
 
 	/**
 	 * Returns the value of the '<em><b>Source Compartment</b></em>' reference.

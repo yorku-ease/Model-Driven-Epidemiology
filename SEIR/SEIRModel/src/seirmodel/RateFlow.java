@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link seirmodel.RateFlow#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.RateFlow#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.RateFlow#getStratumSpecificRates <em>Stratum Specific Rates</em>}</li>
  * </ul>
  *
@@ -44,6 +45,28 @@ public interface RateFlow extends Flow {
 	 * @generated
 	 */
 	void setRate(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Rate Parameter</em>' reference.
+	 * @see #setRateParameter(Parameter)
+	 * @see seirmodel.SeirmodelPackage#getRateFlow_RateParameter()
+	 * @model
+	 * @generated
+	 */
+	Parameter getRateParameter();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.RateFlow#getRateParameter <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Rate Parameter</em>' reference.
+	 * @see #getRateParameter()
+	 * @generated
+	 */
+	void setRateParameter(Parameter value);
 
 	/**
 	 * Returns the value of the '<em><b>Stratum Specific Rates</b></em>' containment reference list.

@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import seirmodel.Compartment;
 import seirmodel.DeathSink;
+import seirmodel.Parameter;
 import seirmodel.SeirmodelPackage;
 
 /**
@@ -24,6 +25,7 @@ import seirmodel.SeirmodelPackage;
  * <ul>
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.impl.DeathSinkImpl#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getSourceCompartment <em>Source Compartment</em>}</li>
  *   <li>{@link seirmodel.impl.DeathSinkImpl#getSourceStratum <em>Source Stratum</em>}</li>
  * </ul>
@@ -70,6 +72,16 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 	 * @ordered
 	 */
 	protected double rate = RATE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getRateParameter() <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRateParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected Parameter rateParameter;
 
 	/**
 	 * The cached value of the '{@link #getSourceCompartment() <em>Source Compartment</em>}' reference.
@@ -174,6 +186,46 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 	 * @generated
 	 */
 	@Override
+	public Parameter getRateParameter() {
+		if (rateParameter != null && rateParameter.eIsProxy()) {
+			InternalEObject oldRateParameter = (InternalEObject)rateParameter;
+			rateParameter = (Parameter)eResolveProxy(oldRateParameter);
+			if (rateParameter != oldRateParameter) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.DEATH_SINK__RATE_PARAMETER, oldRateParameter, rateParameter));
+			}
+		}
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter basicGetRateParameter() {
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setRateParameter(Parameter newRateParameter) {
+		Parameter oldRateParameter = rateParameter;
+		rateParameter = newRateParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.DEATH_SINK__RATE_PARAMETER, oldRateParameter, rateParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Compartment getSourceCompartment() {
 		if (sourceCompartment != null && sourceCompartment.eIsProxy()) {
 			InternalEObject oldSourceCompartment = (InternalEObject)sourceCompartment;
@@ -244,6 +296,9 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 				return getName();
 			case SeirmodelPackage.DEATH_SINK__RATE:
 				return getRate();
+			case SeirmodelPackage.DEATH_SINK__RATE_PARAMETER:
+				if (resolve) return getRateParameter();
+				return basicGetRateParameter();
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				if (resolve) return getSourceCompartment();
 				return basicGetSourceCompartment();
@@ -266,6 +321,9 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 				return;
 			case SeirmodelPackage.DEATH_SINK__RATE:
 				setRate((Double)newValue);
+				return;
+			case SeirmodelPackage.DEATH_SINK__RATE_PARAMETER:
+				setRateParameter((Parameter)newValue);
 				return;
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				setSourceCompartment((Compartment)newValue);
@@ -291,6 +349,9 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 			case SeirmodelPackage.DEATH_SINK__RATE:
 				setRate(RATE_EDEFAULT);
 				return;
+			case SeirmodelPackage.DEATH_SINK__RATE_PARAMETER:
+				setRateParameter((Parameter)null);
+				return;
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				setSourceCompartment((Compartment)null);
 				return;
@@ -313,6 +374,8 @@ public class DeathSinkImpl extends MinimalEObjectImpl.Container implements Death
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SeirmodelPackage.DEATH_SINK__RATE:
 				return rate != RATE_EDEFAULT;
+			case SeirmodelPackage.DEATH_SINK__RATE_PARAMETER:
+				return rateParameter != null;
 			case SeirmodelPackage.DEATH_SINK__SOURCE_COMPARTMENT:
 				return sourceCompartment != null;
 			case SeirmodelPackage.DEATH_SINK__SOURCE_STRATUM:

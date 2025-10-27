@@ -62,6 +62,7 @@ public class DeathSinkItemProvider
 
 			addNamePropertyDescriptor(object);
 			addRatePropertyDescriptor(object);
+			addRateParameterPropertyDescriptor(object);
 			addSourceCompartmentPropertyDescriptor(object);
 			addSourceStratumPropertyDescriptor(object);
 		}
@@ -108,6 +109,28 @@ public class DeathSinkItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Rate Parameter feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRateParameterPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DeathSink_rateParameter_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DeathSink_rateParameter_feature", "_UI_DeathSink_type"),
+				 SeirmodelPackage.Literals.DEATH_SINK__RATE_PARAMETER,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}

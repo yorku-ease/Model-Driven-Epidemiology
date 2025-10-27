@@ -17,12 +17,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RateFlow" eSuperTypes="#//Flow">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="stratumSpecificRates" upperBound="-1"
         eType="#//StratumSpecificRate" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContactFlow" eSuperTypes="#//Flow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contactCompartment" eType="#//Compartment"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="contactRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contactRateParameter" eType="#//Parameter"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="contactParameters" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="stratumSpecificRates" upperBound="-1"
         eType="#//StratumSpecificRate" containment="true"/>
@@ -30,6 +32,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="BirthSource">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetCompartment" eType="#//Compartment"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetStratum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fixedRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
@@ -38,14 +41,17 @@
   <eClassifiers xsi:type="ecore:EClass" name="DeathSink">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceCompartment" eType="#//Compartment"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceStratum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StratumSpecificRate">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stratum" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiplier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
         defaultValueLiteral="1.0"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiplierParameter" eType="#//Parameter"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Group">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -59,6 +65,18 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"
         eType="#//Group"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//ParameterType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ParameterType">
+    <eLiterals name="CONSTANT" literal="CONSTANT"/>
+    <eLiterals name="VARIABLE" value="1" literal="VARIABLE"/>
+    <eLiterals name="EXPRESSION" value="2" literal="EXPRESSION"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SEIRModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="compartments" upperBound="-1"
         eType="#//Compartment" containment="true"/>
@@ -70,6 +88,8 @@
         eType="#//Group" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="products" upperBound="-1"
         eType="#//Product" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalPopulation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="globalBirthRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="globalDeathRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>

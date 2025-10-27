@@ -3,6 +3,7 @@
 package seirmodel.impl;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -64,9 +65,40 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE: return createStratumSpecificRate();
 			case SeirmodelPackage.GROUP: return createGroup();
 			case SeirmodelPackage.PRODUCT: return createProduct();
+			case SeirmodelPackage.PARAMETER: return createParameter();
 			case SeirmodelPackage.SEIR_MODEL: return createSEIRModel();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object createFromString(EDataType eDataType, String initialValue) {
+		switch (eDataType.getClassifierID()) {
+			case SeirmodelPackage.PARAMETER_TYPE:
+				return createParameterTypeFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String convertToString(EDataType eDataType, Object instanceValue) {
+		switch (eDataType.getClassifierID()) {
+			case SeirmodelPackage.PARAMETER_TYPE:
+				return convertParameterTypeToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -164,9 +196,40 @@ public class SeirmodelFactoryImpl extends EFactoryImpl implements SeirmodelFacto
 	 * @generated
 	 */
 	@Override
+	public Parameter createParameter() {
+		ParameterImpl parameter = new ParameterImpl();
+		return parameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public SEIRModel createSEIRModel() {
 		SEIRModelImpl seirModel = new SEIRModelImpl();
 		return seirModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ParameterType createParameterTypeFromString(EDataType eDataType, String initialValue) {
+		ParameterType result = ParameterType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertParameterTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**
