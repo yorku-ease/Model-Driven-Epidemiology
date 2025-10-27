@@ -62,6 +62,7 @@ public class BirthSourceItemProvider
 
 			addNamePropertyDescriptor(object);
 			addRatePropertyDescriptor(object);
+			addRateParameterPropertyDescriptor(object);
 			addTargetCompartmentPropertyDescriptor(object);
 			addTargetStratumPropertyDescriptor(object);
 			addFixedRatePropertyDescriptor(object);
@@ -109,6 +110,28 @@ public class BirthSourceItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Rate Parameter feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRateParameterPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BirthSource_rateParameter_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BirthSource_rateParameter_feature", "_UI_BirthSource_type"),
+				 SeirmodelPackage.Literals.BIRTH_SOURCE__RATE_PARAMETER,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}

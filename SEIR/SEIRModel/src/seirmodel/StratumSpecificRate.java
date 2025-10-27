@@ -15,7 +15,9 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link seirmodel.StratumSpecificRate#getStratum <em>Stratum</em>}</li>
  *   <li>{@link seirmodel.StratumSpecificRate#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.StratumSpecificRate#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.StratumSpecificRate#getMultiplier <em>Multiplier</em>}</li>
+ *   <li>{@link seirmodel.StratumSpecificRate#getMultiplierParameter <em>Multiplier Parameter</em>}</li>
  * </ul>
  *
  * @see seirmodel.SeirmodelPackage#getStratumSpecificRate()
@@ -75,6 +77,28 @@ public interface StratumSpecificRate extends EObject {
 	void setRate(double value);
 
 	/**
+	 * Returns the value of the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Rate Parameter</em>' reference.
+	 * @see #setRateParameter(Parameter)
+	 * @see seirmodel.SeirmodelPackage#getStratumSpecificRate_RateParameter()
+	 * @model
+	 * @generated
+	 */
+	Parameter getRateParameter();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.StratumSpecificRate#getRateParameter <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Rate Parameter</em>' reference.
+	 * @see #getRateParameter()
+	 * @generated
+	 */
+	void setRateParameter(Parameter value);
+
+	/**
 	 * Returns the value of the '<em><b>Multiplier</b></em>' attribute.
 	 * The default value is <code>"1.0"</code>.
 	 * <!-- begin-user-doc -->
@@ -100,5 +124,27 @@ public interface StratumSpecificRate extends EObject {
 	 * @generated
 	 */
 	void setMultiplier(double value);
+
+	/**
+	 * Returns the value of the '<em><b>Multiplier Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiplier Parameter</em>' reference.
+	 * @see #setMultiplierParameter(Parameter)
+	 * @see seirmodel.SeirmodelPackage#getStratumSpecificRate_MultiplierParameter()
+	 * @model
+	 * @generated
+	 */
+	Parameter getMultiplierParameter();
+
+	/**
+	 * Sets the value of the '{@link seirmodel.StratumSpecificRate#getMultiplierParameter <em>Multiplier Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiplier Parameter</em>' reference.
+	 * @see #getMultiplierParameter()
+	 * @generated
+	 */
+	void setMultiplierParameter(Parameter value);
 
 } // StratumSpecificRate

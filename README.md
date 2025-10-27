@@ -1,16 +1,40 @@
-# SEIR Model Editor (Graphical + Code)
+# EpiMDE: Epidemiological Model-Driven Engineering Framework
 
-This project is a graphical and textual editor for SEIR epidemiological models, based on Eclipse Modeling Framework (EMF) and Sirius. The SEIR model (Susceptible, Exposed, Infectious, Recovered) supports customization through a metamodel defined in `seir.ecore`, and users can define instances using the `.seirmodel` file format.
+EpiMDE is a comprehensive framework for building, analyzing, and simulating epidemiological models using Model-Driven Engineering (MDE) principles. Built on Eclipse Modeling Framework (EMF) and Sirius, it supports both graphical and textual model editing with a focus on symbolic/parametric modeling.
 
-It supports:
-- **Graphical editing** (via Sirius diagrams)
-- **Model definition and generation** (via EMF)
-- **Population stratification** with group products (age, location, risk, vaccination status, etc.)
-- **Stratum-specific rates** for heterogeneous populations
-- **Automatic equation generation** for stratified models
-- **Python simulation** for numerical integration and CSV output
-- **Automatic model splitting** utilities for large stratified models
-- **Target platform resolution** for dependency management
+## Key Features
+
+- **Symbolic/Parametric Modeling** 🎯 **NEW!**
+  - Define parameters with names, types (CONSTANT/VARIABLE/EXPRESSION), and descriptions
+  - Use symbolic expressions (e.g., `beta = eta_S * IM`) instead of hardcoded numbers
+  - Separate model structure from parameter values for reusability
+  - Support for environmental dependencies (temperature-dependent transmission)
+
+- **Graphical and Textual Editing**
+  - Sirius-based graphical diagrams
+  - Direct XML editing with EMF tree editor
+  - Automatic diagram generation from models
+
+- **Population Stratification**
+  - Age groups, geographic locations, risk levels, vaccination status, etc.
+  - Cartesian products of multiple groups
+  - Stratum-specific rates and flows
+
+- **Equation Generation** 🔧 **ENHANCED!**
+  - Automatic generation of differential equations from models
+  - Symbolic output matching mathematical papers
+  - Support for both parametric and numeric models
+  - Backward compatible with existing models
+
+- **Python Simulation**
+  - Numerical integration with customizable initial conditions
+  - CSV output for analysis and visualization
+  - Interactive compartment selection
+
+- **Model Utilities**
+  - Automatic model splitting for stratified populations
+  - Group-aware decomposition tools
+  - Target platform dependency management
 
 ---
 
@@ -63,19 +87,37 @@ This will resolve dependencies like EMF, Sirius, and required runtimes.
 ## 🧠 SEIR Metamodel
 
 The SEIR model is defined in `seir.ecore` and includes:
-- `SEIRModel` (root)
-- `Compartment` (abstract, with `name`, `population`, and `outgoingFlows`)
-- Subtypes of Compartment:
-  - `Susceptible`, `Exposed`, `ExposedIsolated`, `ExposedNonIsolated`, `Infectious`, `InfectiousSymptomatic`, `InfectiousAsymptomatic`, `Recovered`
+
+### Core Components
+- **`SEIRModel`** (root) - Contains compartments, flows, parameters, groups, and products
+- **`Compartment`** - Population states with `PrimaryName`, `SecondaryName`, `population`, and `outgoingFlows`
 - **Flow Types**:
-  - `RateFlow`: basic rate-based transitions (includes flows to death compartments for disease-induced mortality)
-  - `ContactFlow`: transmission flows based on contact rates
-  - `BirthSource`: population input flows with stratum-specific targeting
-  - `DeathSink`: population output flows for natural mortality (background death rates)
-- **Stratification Components**:
-  - `Group`: defines population categories (e.g., age groups, locations)
-  - `Product`: creates combinations of groups (Cartesian products)
-  - `StratumSpecificRate`: allows different rates for each population segment
+  - `RateFlow`: Rate-based transitions (e.g., recovery, progression)
+  - `ContactFlow`: Contact-based transmission between compartments
+  - `BirthSource`: Population inflows (recruitment, births)
+  - `DeathSink`: Population outflows (mortality)
+
+### Parametric Modeling 🆕
+- **`Parameter`** - Named parameters with three types:
+  - **CONSTANT**: Fixed values with names (e.g., `pi = 0.012`, `mu1 = 0.0002`)
+  - **VARIABLE**: Placeholders for simulation-time values (e.g., `temperature`, `intervention_level`)
+  - **EXPRESSION**: Computed from other parameters/compartments (e.g., `beta2 = eta_S * IM`)
+- **`ParameterType`** - Enum: `CONSTANT`, `VARIABLE`, `EXPRESSION`
+- **Parameter References**: All flows can reference parameters instead of using numeric values:
+  - `rateParameter` in RateFlow
+  - `contactRateParameter` in ContactFlow
+  - `rateParameter` in BirthSource/DeathSink
+  - `rateParameter` and `multiplierParameter` in StratumSpecificRate
+
+### Stratification Components
+- **`Group`** - Defines population categories (e.g., age groups: 0-17, 18-64, 65+)
+- **`Product`** - Creates Cartesian products of groups for multi-dimensional stratification
+- **`StratumSpecificRate`** - Allows different rates/multipliers for each population segment
+
+### Backward Compatibility
+- All numeric attributes (`rate`, `contactRate`, `multiplier`) are preserved
+- Old models without parameters continue to work exactly as before
+- Parameter references take precedence when both are present
 
 ---
 
@@ -117,18 +159,96 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
 
 ---
 
-## ➕ Example: Basic Model
+## ➕ Examples
+
+### Example 1: Numeric Model (Legacy Style)
 ```xml
-<seir:SEIRModel>
-  <compartments xsi:type="seir:Susceptible" name="S" population="1000">
-    <outgoingFlows rate="0.002" target="//@compartments.2"/>
+<seir:SEIRModel totalPopulation="10000">
+  <compartments PrimaryName="Susceptible" population="9900">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRate="0.0003"
+                   contactCompartment="//@compartments.1"
+                   target="//@compartments.1"/>
   </compartments>
-  <compartments xsi:type="seir:ExposedNonIsolated" name="E_N" population="10">
-    <outgoingFlows rate="0.6" target="//@compartments.4"/>
+  <compartments PrimaryName="Infectious" population="100">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.1"
+                   target="//@compartments.2"/>
   </compartments>
-  <compartments xsi:type="seir:Recovered" name="R"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+
+  <deathSinks name="Natural_Death" rate="0.00005" sourceCompartment="//@compartments.0"/>
 </seir:SEIRModel>
 ```
+
+### Example 2: Parametric Model (New Style) 🆕
+```xml
+<seir:SEIRModel totalPopulation="10000">
+  <!-- Define parameters -->
+  <parameters name="beta" type="CONSTANT"
+              expression="0.0003"
+              description="Transmission rate"
+              unit="per day"/>
+  <parameters name="gamma" type="CONSTANT"
+              expression="0.1"
+              description="Recovery rate"
+              unit="per day"/>
+  <parameters name="mu" type="CONSTANT"
+              expression="0.00005"
+              description="Natural death rate"
+              unit="per day"/>
+
+  <!-- Reference parameters in flows -->
+  <compartments PrimaryName="Susceptible" population="9900">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.0"
+                   contactCompartment="//@compartments.1"
+                   target="//@compartments.1"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="100">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.1"
+                   target="//@compartments.2"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+
+  <deathSinks name="Natural_Death"
+              rateParameter="//@parameters.2"
+              sourceCompartment="//@compartments.0"/>
+</seir:SEIRModel>
+```
+
+**Output difference:**
+- **Numeric model**: `dS/dt = - 0.0003 * S * I / 10000`
+- **Parametric model**: `dS/dt = - beta * S * I / 10000`
+
+### Example 3: Expression Parameters (Advanced) 🆕
+```xml
+<seir:SEIRModel totalPopulation="935">
+  <!-- Basic transmission parameters -->
+  <parameters name="eta_S" type="CONSTANT"
+              expression="0.0125"
+              description="Susceptible contact rate with mosquitoes"
+              unit="per day"/>
+
+  <!-- Composite expression -->
+  <parameters name="beta2" type="EXPRESSION"
+              expression="eta_S * IM"
+              description="Force of infection on susceptibles (vector transmission)"
+              unit="per day"/>
+
+  <!-- Use expression in flow -->
+  <compartments PrimaryName="Susceptible_Human" population="800">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.9"
+                   target="//@compartments.2"/>
+  </compartments>
+  <compartments PrimaryName="Infectious_Mosquito" population="5"/>
+</seir:SEIRModel>
+```
+
+**Output**: `dSusceptible_Human/dt = - (eta_S * IM) * Susceptible_Human * Infectious_Mosquito / 935`
 
 ## 🎯 Population Stratification Example
 
@@ -198,28 +318,62 @@ This creates separate compartments for each age group (Susceptible_0-17, Suscept
 ---
 
 ## 🧮 Equation Generation
-Implemented in `SEIREquationGenerator.java`. Generates text equations from `.seirmodel` files.
 
-**To run:**
-1. Navigate to `SEIRModel/src/seirmodel/SEIREquationGenerator.java`
-2. Right-click → "Run As" → "Java Application"
-3. Generated equations will be displayed in console and saved to output files
+Implemented in `SEIREquationGenerator.java`. Generates differential equations from `.seirmodel` files with support for both **numeric** and **parametric** models.
 
-**For stratified models**, the generator automatically creates equations for each population segment:
+### Running the Generator
 
-Example output from COVID age-stratified model:
+1. Right-click `SEIRModel/src/seir/equationgenerator/SEIREquationGenerator.java`
+2. Select **"Run As" → "Java Application"**
+3. Enter the model filename when prompted (e.g., `malaria.seirmodel`, `HIV.seirmodel`)
+4. Equations are displayed in console and saved to `.txt` files
+
+### Output Modes
+
+#### Numeric Models (Legacy)
+Models using numeric attributes output numeric values:
 ```
-=== Age-Stratified SEIR Model ===
-dSusceptible_0-17/dt = - (0.0000042 * Susceptible_0-17 * Infectious_0-17 / N)
-dSusceptible_18-64/dt = - (0.000015 * Susceptible_18-64 * Infectious_18-64 / N)  
-dSusceptible_65+/dt = - (0.0000104 * Susceptible_65+ * Infectious_65+ / N)
-
-dInfectious_0-17/dt = + (0.0000042 * Susceptible_0-17 * Infectious_0-17 / N) - (0.1 * Infectious_0-17)
-dInfectious_18-64/dt = + (0.000015 * Susceptible_18-64 * Infectious_18-64 / N) - (0.1 * Infectious_18-64)
-dInfectious_65+/dt = + (0.0000104 * Susceptible_65+ * Infectious_65+ / N) - (0.1 * Infectious_65+)
+dSusceptible/dt = - (0.0003 * Susceptible * Infectious / 10000)
+dInfectious/dt = + (0.0003 * Susceptible * Infectious / 10000) - 0.1 * Infectious
 ```
 
-The system supports any stratification type: age groups, geographic locations, risk levels, vaccination status, occupation, etc.
+#### Parametric Models (New) 🆕
+Models using parameters output symbolic equations:
+```
+dSusceptible/dt = - (beta) * Susceptible * Infectious / 10000
+dInfectious/dt = + (beta) * Susceptible * Infectious / 10000 - gamma * Infectious
+```
+
+#### Expression Parameters 🆕
+EXPRESSION type parameters are expanded inline:
+```
+dSusceptible_Human/dt = + pi * 935
+                        + theta * Vaccinated_Human
+                        + gamma * Recovered_Human
+                        - (eta_S * IM) * Susceptible_Human * Infectious_Mosquito / 935
+                        - (xi_S * IH) * Susceptible_Human * Infectious_Human / 935
+                        - mu1 * Susceptible_Human
+```
+
+### Stratified Models
+The generator automatically creates equations for each population segment:
+
+```
+=== Age-Stratified Model ===
+dSusceptible_0-17/dt = - (beta_child) * Susceptible_0-17 * Infectious_0-17 / N
+dSusceptible_18-64/dt = - (beta_adult) * Susceptible_18-64 * Infectious_18-64 / N
+dSusceptible_65+/dt = - (beta_elderly) * Susceptible_65+ * Infectious_65+ / N
+```
+
+### How It Works
+
+The generator intelligently handles parameters:
+- **CONSTANT parameters**: Outputs parameter name (e.g., `pi`, `mu1`, `gamma`)
+- **EXPRESSION parameters**: Outputs the expression (e.g., `eta_S * IM`)
+- **Numeric attributes**: Outputs numeric value (e.g., `0.0003`)
+- **Priority**: Parameter references take precedence over numeric attributes
+
+**Backward Compatible**: Old models without parameters continue to work unchanged.
 
 ---
 
@@ -290,6 +444,99 @@ This will generate separate models like `covid_0-17.seirmodel`, `covid_18-64.sei
 
 ---
 
+## 🔬 Parameter System Guide
+
+### Why Use Parameters?
+
+The parameter system allows you to:
+- **Match published papers**: Use the same mathematical notation as papers (e.g., `π`, `β`, `γ`)
+- **Separate structure from values**: One model structure, multiple parameter sets
+- **Enable sensitivity analysis**: Change parameters without modifying model
+- **Support environmental dependencies**: Temperature-dependent transmission rates
+- **Self-document models**: Parameters include descriptions and units
+
+### Parameter Types
+
+| Type | Purpose | Example |
+|------|---------|---------|
+| **CONSTANT** | Fixed values with names | `pi = 0.012` (birth rate) |
+| **VARIABLE** | Simulation-time inputs | `temperature` (to be specified) |
+| **EXPRESSION** | Computed from others | `beta2 = eta_S * IM` |
+
+### Creating Parameters
+
+```xml
+<!-- CONSTANT: Fixed value -->
+<parameters name="mu1" type="CONSTANT"
+            expression="0.0002"
+            description="Human natural death rate"
+            unit="per day"/>
+
+<!-- VARIABLE: To be assigned during simulation -->
+<parameters name="T" type="VARIABLE"
+            description="Temperature in degrees Celsius"
+            unit="°C"/>
+
+<!-- EXPRESSION: Computed from other parameters/compartments -->
+<parameters name="beta2" type="EXPRESSION"
+            expression="eta_S * IM"
+            description="Force of infection on susceptibles"
+            unit="per day"/>
+```
+
+### Using Parameters in Flows
+
+Reference parameters using XMI paths:
+```xml
+<!-- RateFlow with parameter -->
+<outgoingFlows xsi:type="seir:RateFlow"
+               rateParameter="//@parameters.0"
+               target="//@compartments.2"/>
+
+<!-- ContactFlow with parameter -->
+<outgoingFlows xsi:type="seir:ContactFlow"
+               contactRateParameter="//@parameters.5"
+               contactCompartment="//@compartments.9"
+               target="//@compartments.2"/>
+```
+
+**Index reference**: `//@parameters.N` refers to the (N+1)th parameter (0-indexed)
+
+### Equation Output
+
+The equation generator intelligently outputs:
+- **CONSTANT/VARIABLE**: Parameter name → `pi`, `mu1`, `gamma`
+- **EXPRESSION**: Full expression → `eta_S * IM`, `xi_V * IH`
+- **Numeric (legacy)**: Numeric value → `0.0003`, `0.1`
+
+### Migration from Numeric to Parametric
+
+**Step 1**: Define parameters at the top of your model
+```xml
+<parameters name="beta" type="CONSTANT" expression="0.0003" unit="per day"/>
+```
+
+**Step 2**: Change flow attributes from `rate=` to `rateParameter=`
+```xml
+<!-- Before -->
+<outgoingFlows xsi:type="seir:RateFlow" rate="0.0003" .../>
+
+<!-- After -->
+<outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.0" .../>
+```
+
+**Step 3**: Test equation generation to verify symbolic output
+
+### Documentation
+
+See these files for complete details:
+- **`PARAMETER_SYSTEM_DESIGN.md`** - Technical design and rationale
+- **`MALARIA_MODEL_DOCUMENTATION.md`** - Complete malaria model walkthrough
+- **`PARAMETER_NAME_OUTPUT_UPDATE.md`** - Equation generator behavior
+- **`BACKWARD_COMPATIBILITY_VERIFICATION.md`** - Compatibility guarantees
+
+---
+
 ## ❓ Troubleshooting
 
 ### Flows Not Showing in Diagram?
@@ -329,13 +576,103 @@ This will generate separate models like `covid_0-17.seirmodel`, `covid_18-64.sei
 
 ### Model Examples:
 - **Epidemiological Models Included**:
+  - **`malaria.seirmodel`** 🆕 - Malaria transmission model with dual pathways (NEW!)
+    - Based on Akowe et al. (2025) BMC Infectious Diseases 25:322
+    - **First fully parametric model** demonstrating new parameter system
+    - 24 parameters (19 CONSTANT + 5 EXPRESSION types)
+    - 10 compartments: 7 human (SH, VH, EH1, EH2, IH, TH, RH) + 3 mosquito (SM, EM, IM)
+    - Dual transmission: Vector-borne (mosquito) + Non-vector (blood transfusion, congenital)
+    - Vaccination dynamics with waning immunity
+    - Treatment and recovery pathways
+    - See `MALARIA_MODEL_DOCUMENTATION.md` for complete details
+
   - **`covid.seirmodel`** - COVID-19 age-stratified model (3 age groups: 0-17, 18-64, 65+)
     - Based on published research (Tuite et al., 2020)
+    - Uses **numeric values** (legacy style)
     - No natural death rates (follows paper methodology - only COVID deaths in ICU)
     - Age-specific transmission, hospitalization, and ICU mortality rates
+
   - **`HIV.seirmodel`** - HIV transmission model with sexual behavior stratification
     - Based on published research (Espitia et al., 2022)
+    - Uses **numeric values** (legacy style)
     - 3 sexual behavior groups: Homosexual Men, Women, Heterosexual Men
     - Natural death rates for all compartments + AIDS-induced deaths to HIV Deaths compartment
     - Complex transmission patterns including bisexual contacts
+
   - **`covid_*.seirmodel`** - Auto-generated age-specific models from DynamicDiagramGenerator
+
+---
+
+## 🆕 Recent Changes
+
+### Version 2.0 - Parameter System (2025)
+
+**Major Enhancement**: Symbolic/Parametric Modeling
+
+- ✅ **Metamodel Extended** (`seir.ecore`):
+  - Added `Parameter` entity with `name`, `type`, `expression`, `description`, `unit`
+  - Added `ParameterType` enum: `CONSTANT`, `VARIABLE`, `EXPRESSION`
+  - Added parameter references to all flow types: `rateParameter`, `contactRateParameter`, etc.
+  - Maintained full backward compatibility with numeric attributes
+
+- ✅ **Equation Generator Enhanced** (`SEIREquationGenerator.java`):
+  - Intelligent parameter handling: outputs names for CONSTANT, expressions for EXPRESSION
+  - Support for hierarchical expressions (parameters referencing other parameters)
+  - 100% backward compatible with numeric models (HIV, COVID)
+  - Priority system: parameter references > numeric values
+
+- ✅ **Malaria Model Created** (`malaria.seirmodel`):
+  - First fully parametric model demonstrating new system
+  - Based on Akowe et al. (2025) published research
+  - 24 parameters, 10 compartments, dual transmission pathways
+  - Complete documentation in `MALARIA_MODEL_DOCUMENTATION.md`
+
+- ✅ **Documentation Added**:
+  - `PARAMETER_SYSTEM_DESIGN.md` - Technical specification
+  - `MALARIA_MODEL_DOCUMENTATION.md` - Complete model walkthrough
+  - `PARAMETER_NAME_OUTPUT_UPDATE.md` - Generator behavior
+  - `BACKWARD_COMPATIBILITY_VERIFICATION.md` - Compatibility proofs
+  - `MALARIA_MODEL_FIXES_APPLIED.md` - Validation and corrections
+  - `COMPILATION_AND_TEST_INSTRUCTIONS.md` - Build and test guide
+
+**Benefits**:
+- Models now match published mathematical papers
+- Support for temperature/climate-dependent transmission
+- Enables sensitivity analysis without model duplication
+- Self-documenting with units and descriptions
+- Reusable model templates
+
+**Migration**: Existing models (HIV, COVID) work unchanged. New models can use parameters for symbolic equations.
+
+---
+
+## 📚 Additional Documentation
+
+Complete technical documentation available:
+- **Getting Started**: This README
+- **Parameter System**: `PARAMETER_SYSTEM_DESIGN.md`
+- **Example Models**:
+  - `MALARIA_MODEL_DOCUMENTATION.md` (parametric example)
+  - `SAMPLE_MODEL_EXPLANATION.md` (general guide)
+- **Implementation**: `NEXT_STEPS.md`, `COMPILATION_AND_TEST_INSTRUCTIONS.md`
+- **Validation**: `BACKWARD_COMPATIBILITY_VERIFICATION.md`, `MALARIA_MODEL_FIXES_APPLIED.md`
+
+---
+
+## 📧 Contact & Citation
+
+**Framework**: EpiMDE (Epidemiological Model-Driven Engineering)
+**Institution**: York University
+**License**: [Specify license]
+
+When using EpiMDE in research, please cite:
+- The framework paper (if published)
+- Relevant model papers:
+  - Malaria: Akowe et al. (2025) BMC Infectious Diseases 25:322
+  - COVID-19: Tuite et al. (2020)
+  - HIV: Espitia et al. (2022)
+
+---
+
+**Last Updated**: January 2025
+**Version**: 2.0 (Parameter System Release)

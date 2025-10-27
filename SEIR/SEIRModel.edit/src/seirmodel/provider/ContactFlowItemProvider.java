@@ -49,6 +49,7 @@ public class ContactFlowItemProvider extends FlowItemProvider {
 
 			addContactCompartmentPropertyDescriptor(object);
 			addContactRatePropertyDescriptor(object);
+			addContactRateParameterPropertyDescriptor(object);
 			addContactParametersPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -94,6 +95,28 @@ public class ContactFlowItemProvider extends FlowItemProvider {
 				 false,
 				 false,
 				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Contact Rate Parameter feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addContactRateParameterPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ContactFlow_contactRateParameter_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ContactFlow_contactRateParameter_feature", "_UI_ContactFlow_type"),
+				 SeirmodelPackage.Literals.CONTACT_FLOW__CONTACT_RATE_PARAMETER,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}

@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import seirmodel.BirthSource;
 import seirmodel.Compartment;
+import seirmodel.Parameter;
 import seirmodel.SeirmodelPackage;
 
 /**
@@ -24,6 +25,7 @@ import seirmodel.SeirmodelPackage;
  * <ul>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getName <em>Name</em>}</li>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.impl.BirthSourceImpl#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getTargetCompartment <em>Target Compartment</em>}</li>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#getTargetStratum <em>Target Stratum</em>}</li>
  *   <li>{@link seirmodel.impl.BirthSourceImpl#isFixedRate <em>Fixed Rate</em>}</li>
@@ -71,6 +73,16 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 	 * @ordered
 	 */
 	protected double rate = RATE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getRateParameter() <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRateParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected Parameter rateParameter;
 
 	/**
 	 * The cached value of the '{@link #getTargetCompartment() <em>Target Compartment</em>}' reference.
@@ -193,6 +205,46 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 	 * @generated
 	 */
 	@Override
+	public Parameter getRateParameter() {
+		if (rateParameter != null && rateParameter.eIsProxy()) {
+			InternalEObject oldRateParameter = (InternalEObject)rateParameter;
+			rateParameter = (Parameter)eResolveProxy(oldRateParameter);
+			if (rateParameter != oldRateParameter) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.BIRTH_SOURCE__RATE_PARAMETER, oldRateParameter, rateParameter));
+			}
+		}
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter basicGetRateParameter() {
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setRateParameter(Parameter newRateParameter) {
+		Parameter oldRateParameter = rateParameter;
+		rateParameter = newRateParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.BIRTH_SOURCE__RATE_PARAMETER, oldRateParameter, rateParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Compartment getTargetCompartment() {
 		if (targetCompartment != null && targetCompartment.eIsProxy()) {
 			InternalEObject oldTargetCompartment = (InternalEObject)targetCompartment;
@@ -285,6 +337,9 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 				return getName();
 			case SeirmodelPackage.BIRTH_SOURCE__RATE:
 				return getRate();
+			case SeirmodelPackage.BIRTH_SOURCE__RATE_PARAMETER:
+				if (resolve) return getRateParameter();
+				return basicGetRateParameter();
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				if (resolve) return getTargetCompartment();
 				return basicGetTargetCompartment();
@@ -309,6 +364,9 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 				return;
 			case SeirmodelPackage.BIRTH_SOURCE__RATE:
 				setRate((Double)newValue);
+				return;
+			case SeirmodelPackage.BIRTH_SOURCE__RATE_PARAMETER:
+				setRateParameter((Parameter)newValue);
 				return;
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				setTargetCompartment((Compartment)newValue);
@@ -337,6 +395,9 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 			case SeirmodelPackage.BIRTH_SOURCE__RATE:
 				setRate(RATE_EDEFAULT);
 				return;
+			case SeirmodelPackage.BIRTH_SOURCE__RATE_PARAMETER:
+				setRateParameter((Parameter)null);
+				return;
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				setTargetCompartment((Compartment)null);
 				return;
@@ -362,6 +423,8 @@ public class BirthSourceImpl extends MinimalEObjectImpl.Container implements Bir
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SeirmodelPackage.BIRTH_SOURCE__RATE:
 				return rate != RATE_EDEFAULT;
+			case SeirmodelPackage.BIRTH_SOURCE__RATE_PARAMETER:
+				return rateParameter != null;
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_COMPARTMENT:
 				return targetCompartment != null;
 			case SeirmodelPackage.BIRTH_SOURCE__TARGET_STRATUM:

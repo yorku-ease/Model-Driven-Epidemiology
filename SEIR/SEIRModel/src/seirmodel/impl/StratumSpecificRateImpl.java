@@ -6,9 +6,11 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import seirmodel.Parameter;
 import seirmodel.SeirmodelPackage;
 import seirmodel.StratumSpecificRate;
 
@@ -22,7 +24,9 @@ import seirmodel.StratumSpecificRate;
  * <ul>
  *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getStratum <em>Stratum</em>}</li>
  *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getRate <em>Rate</em>}</li>
+ *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getRateParameter <em>Rate Parameter</em>}</li>
  *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getMultiplier <em>Multiplier</em>}</li>
+ *   <li>{@link seirmodel.impl.StratumSpecificRateImpl#getMultiplierParameter <em>Multiplier Parameter</em>}</li>
  * </ul>
  *
  * @generated
@@ -69,6 +73,16 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 	protected double rate = RATE_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getRateParameter() <em>Rate Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRateParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected Parameter rateParameter;
+
+	/**
 	 * The default value of the '{@link #getMultiplier() <em>Multiplier</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -87,6 +101,16 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 	 * @ordered
 	 */
 	protected double multiplier = MULTIPLIER_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getMultiplierParameter() <em>Multiplier Parameter</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMultiplierParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected Parameter multiplierParameter;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -159,6 +183,46 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 	 * @generated
 	 */
 	@Override
+	public Parameter getRateParameter() {
+		if (rateParameter != null && rateParameter.eIsProxy()) {
+			InternalEObject oldRateParameter = (InternalEObject)rateParameter;
+			rateParameter = (Parameter)eResolveProxy(oldRateParameter);
+			if (rateParameter != oldRateParameter) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE_PARAMETER, oldRateParameter, rateParameter));
+			}
+		}
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter basicGetRateParameter() {
+		return rateParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setRateParameter(Parameter newRateParameter) {
+		Parameter oldRateParameter = rateParameter;
+		rateParameter = newRateParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE_PARAMETER, oldRateParameter, rateParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public double getMultiplier() {
 		return multiplier;
 	}
@@ -182,14 +246,60 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 	 * @generated
 	 */
 	@Override
+	public Parameter getMultiplierParameter() {
+		if (multiplierParameter != null && multiplierParameter.eIsProxy()) {
+			InternalEObject oldMultiplierParameter = (InternalEObject)multiplierParameter;
+			multiplierParameter = (Parameter)eResolveProxy(oldMultiplierParameter);
+			if (multiplierParameter != oldMultiplierParameter) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER, oldMultiplierParameter, multiplierParameter));
+			}
+		}
+		return multiplierParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Parameter basicGetMultiplierParameter() {
+		return multiplierParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setMultiplierParameter(Parameter newMultiplierParameter) {
+		Parameter oldMultiplierParameter = multiplierParameter;
+		multiplierParameter = newMultiplierParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER, oldMultiplierParameter, multiplierParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__STRATUM:
 				return getStratum();
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
 				return getRate();
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE_PARAMETER:
+				if (resolve) return getRateParameter();
+				return basicGetRateParameter();
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
 				return getMultiplier();
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER:
+				if (resolve) return getMultiplierParameter();
+				return basicGetMultiplierParameter();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -208,8 +318,14 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
 				setRate((Double)newValue);
 				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE_PARAMETER:
+				setRateParameter((Parameter)newValue);
+				return;
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
 				setMultiplier((Double)newValue);
+				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER:
+				setMultiplierParameter((Parameter)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -229,8 +345,14 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
 				setRate(RATE_EDEFAULT);
 				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE_PARAMETER:
+				setRateParameter((Parameter)null);
+				return;
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
 				setMultiplier(MULTIPLIER_EDEFAULT);
+				return;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER:
+				setMultiplierParameter((Parameter)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -248,8 +370,12 @@ public class StratumSpecificRateImpl extends MinimalEObjectImpl.Container implem
 				return STRATUM_EDEFAULT == null ? stratum != null : !STRATUM_EDEFAULT.equals(stratum);
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE:
 				return rate != RATE_EDEFAULT;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__RATE_PARAMETER:
+				return rateParameter != null;
 			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER:
 				return multiplier != MULTIPLIER_EDEFAULT;
+			case SeirmodelPackage.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER:
+				return multiplierParameter != null;
 		}
 		return super.eIsSet(featureID);
 	}

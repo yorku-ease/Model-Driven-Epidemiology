@@ -62,7 +62,9 @@ public class StratumSpecificRateItemProvider
 
 			addStratumPropertyDescriptor(object);
 			addRatePropertyDescriptor(object);
+			addRateParameterPropertyDescriptor(object);
 			addMultiplierPropertyDescriptor(object);
+			addMultiplierParameterPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -112,6 +114,28 @@ public class StratumSpecificRateItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Rate Parameter feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRateParameterPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_StratumSpecificRate_rateParameter_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_StratumSpecificRate_rateParameter_feature", "_UI_StratumSpecificRate_type"),
+				 SeirmodelPackage.Literals.STRATUM_SPECIFIC_RATE__RATE_PARAMETER,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This adds a property descriptor for the Multiplier feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -129,6 +153,28 @@ public class StratumSpecificRateItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Multiplier Parameter feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMultiplierParameterPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_StratumSpecificRate_multiplierParameter_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_StratumSpecificRate_multiplierParameter_feature", "_UI_StratumSpecificRate_type"),
+				 SeirmodelPackage.Literals.STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}

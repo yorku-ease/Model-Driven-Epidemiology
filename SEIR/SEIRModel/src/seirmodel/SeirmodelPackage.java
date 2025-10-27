@@ -4,6 +4,7 @@ package seirmodel;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -213,13 +214,22 @@ public interface SeirmodelPackage extends EPackage {
 	int RATE_FLOW__RATE = FLOW_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RATE_FLOW__RATE_PARAMETER = FLOW_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Stratum Specific Rates</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RATE_FLOW__STRATUM_SPECIFIC_RATES = FLOW_FEATURE_COUNT + 1;
+	int RATE_FLOW__STRATUM_SPECIFIC_RATES = FLOW_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Rate Flow</em>' class.
@@ -228,7 +238,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RATE_FLOW_FEATURE_COUNT = FLOW_FEATURE_COUNT + 2;
+	int RATE_FLOW_FEATURE_COUNT = FLOW_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Rate Flow</em>' class.
@@ -286,13 +296,22 @@ public interface SeirmodelPackage extends EPackage {
 	int CONTACT_FLOW__CONTACT_RATE = FLOW_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Contact Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONTACT_FLOW__CONTACT_RATE_PARAMETER = FLOW_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Contact Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CONTACT_FLOW__CONTACT_PARAMETERS = FLOW_FEATURE_COUNT + 2;
+	int CONTACT_FLOW__CONTACT_PARAMETERS = FLOW_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Stratum Specific Rates</b></em>' containment reference list.
@@ -301,7 +320,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTACT_FLOW__STRATUM_SPECIFIC_RATES = FLOW_FEATURE_COUNT + 3;
+	int CONTACT_FLOW__STRATUM_SPECIFIC_RATES = FLOW_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Contact Flow</em>' class.
@@ -310,7 +329,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CONTACT_FLOW_FEATURE_COUNT = FLOW_FEATURE_COUNT + 4;
+	int CONTACT_FLOW_FEATURE_COUNT = FLOW_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Contact Flow</em>' class.
@@ -350,13 +369,22 @@ public interface SeirmodelPackage extends EPackage {
 	int BIRTH_SOURCE__RATE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BIRTH_SOURCE__RATE_PARAMETER = 2;
+
+	/**
 	 * The feature id for the '<em><b>Target Compartment</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__TARGET_COMPARTMENT = 2;
+	int BIRTH_SOURCE__TARGET_COMPARTMENT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Target Stratum</b></em>' attribute.
@@ -365,7 +393,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__TARGET_STRATUM = 3;
+	int BIRTH_SOURCE__TARGET_STRATUM = 4;
 
 	/**
 	 * The feature id for the '<em><b>Fixed Rate</b></em>' attribute.
@@ -374,7 +402,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__FIXED_RATE = 4;
+	int BIRTH_SOURCE__FIXED_RATE = 5;
 
 	/**
 	 * The number of structural features of the '<em>Birth Source</em>' class.
@@ -383,7 +411,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE_FEATURE_COUNT = 5;
+	int BIRTH_SOURCE_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Birth Source</em>' class.
@@ -423,13 +451,22 @@ public interface SeirmodelPackage extends EPackage {
 	int DEATH_SINK__RATE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEATH_SINK__RATE_PARAMETER = 2;
+
+	/**
 	 * The feature id for the '<em><b>Source Compartment</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__SOURCE_COMPARTMENT = 2;
+	int DEATH_SINK__SOURCE_COMPARTMENT = 3;
 
 
 	/**
@@ -439,7 +476,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__SOURCE_STRATUM = 3;
+	int DEATH_SINK__SOURCE_STRATUM = 4;
 
 	/**
 	 * The number of structural features of the '<em>Death Sink</em>' class.
@@ -448,7 +485,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK_FEATURE_COUNT = 4;
+	int DEATH_SINK_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Death Sink</em>' class.
@@ -488,13 +525,31 @@ public interface SeirmodelPackage extends EPackage {
 	int STRATUM_SPECIFIC_RATE__RATE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Rate Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRATUM_SPECIFIC_RATE__RATE_PARAMETER = 2;
+
+	/**
 	 * The feature id for the '<em><b>Multiplier</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STRATUM_SPECIFIC_RATE__MULTIPLIER = 2;
+	int STRATUM_SPECIFIC_RATE__MULTIPLIER = 3;
+
+	/**
+	 * The feature id for the '<em><b>Multiplier Parameter</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER = 4;
 
 	/**
 	 * The number of structural features of the '<em>Stratum Specific Rate</em>' class.
@@ -503,7 +558,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATUM_SPECIFIC_RATE_FEATURE_COUNT = 3;
+	int STRATUM_SPECIFIC_RATE_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Stratum Specific Rate</em>' class.
@@ -625,6 +680,79 @@ public interface SeirmodelPackage extends EPackage {
 	int PRODUCT_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link seirmodel.impl.ParameterImpl <em>Parameter</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.impl.ParameterImpl
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getParameter()
+	 * @generated
+	 */
+	int PARAMETER = 9;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__TYPE = 1;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__EXPRESSION = 2;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__DESCRIPTION = 3;
+
+	/**
+	 * The feature id for the '<em><b>Unit</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__UNIT = 4;
+
+	/**
+	 * The number of structural features of the '<em>Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER_FEATURE_COUNT = 5;
+
+	/**
+	 * The number of operations of the '<em>Parameter</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link seirmodel.impl.SEIRModelImpl <em>SEIR Model</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -632,7 +760,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @see seirmodel.impl.SeirmodelPackageImpl#getSEIRModel()
 	 * @generated
 	 */
-	int SEIR_MODEL = 9;
+	int SEIR_MODEL = 10;
 
 	/**
 	 * The feature id for the '<em><b>Compartments</b></em>' containment reference list.
@@ -680,13 +808,22 @@ public interface SeirmodelPackage extends EPackage {
 	int SEIR_MODEL__PRODUCTS = 4;
 
 	/**
+	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SEIR_MODEL__PARAMETERS = 5;
+
+	/**
 	 * The feature id for the '<em><b>Total Population</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SEIR_MODEL__TOTAL_POPULATION = 5;
+	int SEIR_MODEL__TOTAL_POPULATION = 6;
 
 	/**
 	 * The feature id for the '<em><b>Global Birth Rate</b></em>' attribute.
@@ -695,7 +832,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SEIR_MODEL__GLOBAL_BIRTH_RATE = 6;
+	int SEIR_MODEL__GLOBAL_BIRTH_RATE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Global Death Rate</b></em>' attribute.
@@ -704,7 +841,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SEIR_MODEL__GLOBAL_DEATH_RATE = 7;
+	int SEIR_MODEL__GLOBAL_DEATH_RATE = 8;
 
 	/**
 	 * The number of structural features of the '<em>SEIR Model</em>' class.
@@ -713,7 +850,7 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SEIR_MODEL_FEATURE_COUNT = 8;
+	int SEIR_MODEL_FEATURE_COUNT = 9;
 
 	/**
 	 * The number of operations of the '<em>SEIR Model</em>' class.
@@ -723,6 +860,17 @@ public interface SeirmodelPackage extends EPackage {
 	 * @ordered
 	 */
 	int SEIR_MODEL_OPERATION_COUNT = 0;
+
+
+	/**
+	 * The meta object id for the '{@link seirmodel.ParameterType <em>Parameter Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see seirmodel.ParameterType
+	 * @see seirmodel.impl.SeirmodelPackageImpl#getParameterType()
+	 * @generated
+	 */
+	int PARAMETER_TYPE = 11;
 
 
 	/**
@@ -845,6 +993,17 @@ public interface SeirmodelPackage extends EPackage {
 	EAttribute getRateFlow_Rate();
 
 	/**
+	 * Returns the meta object for the reference '{@link seirmodel.RateFlow#getRateParameter <em>Rate Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Rate Parameter</em>'.
+	 * @see seirmodel.RateFlow#getRateParameter()
+	 * @see #getRateFlow()
+	 * @generated
+	 */
+	EReference getRateFlow_RateParameter();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link seirmodel.RateFlow#getStratumSpecificRates <em>Stratum Specific Rates</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -886,6 +1045,17 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getContactFlow_ContactRate();
+
+	/**
+	 * Returns the meta object for the reference '{@link seirmodel.ContactFlow#getContactRateParameter <em>Contact Rate Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Contact Rate Parameter</em>'.
+	 * @see seirmodel.ContactFlow#getContactRateParameter()
+	 * @see #getContactFlow()
+	 * @generated
+	 */
+	EReference getContactFlow_ContactRateParameter();
 
 	/**
 	 * Returns the meta object for the attribute '{@link seirmodel.ContactFlow#getContactParameters <em>Contact Parameters</em>}'.
@@ -940,6 +1110,17 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getBirthSource_Rate();
+
+	/**
+	 * Returns the meta object for the reference '{@link seirmodel.BirthSource#getRateParameter <em>Rate Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Rate Parameter</em>'.
+	 * @see seirmodel.BirthSource#getRateParameter()
+	 * @see #getBirthSource()
+	 * @generated
+	 */
+	EReference getBirthSource_RateParameter();
 
 	/**
 	 * Returns the meta object for the reference '{@link seirmodel.BirthSource#getTargetCompartment <em>Target Compartment</em>}'.
@@ -1007,6 +1188,17 @@ public interface SeirmodelPackage extends EPackage {
 	EAttribute getDeathSink_Rate();
 
 	/**
+	 * Returns the meta object for the reference '{@link seirmodel.DeathSink#getRateParameter <em>Rate Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Rate Parameter</em>'.
+	 * @see seirmodel.DeathSink#getRateParameter()
+	 * @see #getDeathSink()
+	 * @generated
+	 */
+	EReference getDeathSink_RateParameter();
+
+	/**
 	 * Returns the meta object for the reference '{@link seirmodel.DeathSink#getSourceCompartment <em>Source Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1062,6 +1254,17 @@ public interface SeirmodelPackage extends EPackage {
 	EAttribute getStratumSpecificRate_Rate();
 
 	/**
+	 * Returns the meta object for the reference '{@link seirmodel.StratumSpecificRate#getRateParameter <em>Rate Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Rate Parameter</em>'.
+	 * @see seirmodel.StratumSpecificRate#getRateParameter()
+	 * @see #getStratumSpecificRate()
+	 * @generated
+	 */
+	EReference getStratumSpecificRate_RateParameter();
+
+	/**
 	 * Returns the meta object for the attribute '{@link seirmodel.StratumSpecificRate#getMultiplier <em>Multiplier</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1071,6 +1274,17 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getStratumSpecificRate_Multiplier();
+
+	/**
+	 * Returns the meta object for the reference '{@link seirmodel.StratumSpecificRate#getMultiplierParameter <em>Multiplier Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Multiplier Parameter</em>'.
+	 * @see seirmodel.StratumSpecificRate#getMultiplierParameter()
+	 * @see #getStratumSpecificRate()
+	 * @generated
+	 */
+	EReference getStratumSpecificRate_MultiplierParameter();
 
 	/**
 	 * Returns the meta object for class '{@link seirmodel.SEIRModel <em>SEIR Model</em>}'.
@@ -1149,6 +1363,16 @@ public interface SeirmodelPackage extends EPackage {
 	EAttribute getSEIRModel_GlobalDeathRate();
 
 	/**
+	 * Returns the meta object for enum '{@link seirmodel.ParameterType <em>Parameter Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Parameter Type</em>'.
+	 * @see seirmodel.ParameterType
+	 * @generated
+	 */
+	EEnum getParameterType();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link seirmodel.SEIRModel#getGroups <em>Groups</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1169,6 +1393,17 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getSEIRModel_Products();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link seirmodel.SEIRModel#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
+	 * @see seirmodel.SEIRModel#getParameters()
+	 * @see #getSEIRModel()
+	 * @generated
+	 */
+	EReference getSEIRModel_Parameters();
 
 	/**
 	 * Returns the meta object for class '{@link seirmodel.Group <em>Group</em>}'.
@@ -1255,6 +1490,71 @@ public interface SeirmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getProduct_Groups();
+
+	/**
+	 * Returns the meta object for class '{@link seirmodel.Parameter <em>Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Parameter</em>'.
+	 * @see seirmodel.Parameter
+	 * @generated
+	 */
+	EClass getParameter();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.Parameter#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see seirmodel.Parameter#getName()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.Parameter#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see seirmodel.Parameter#getType()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.Parameter#getExpression <em>Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Expression</em>'.
+	 * @see seirmodel.Parameter#getExpression()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Expression();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.Parameter#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see seirmodel.Parameter#getDescription()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Description();
+
+	/**
+	 * Returns the meta object for the attribute '{@link seirmodel.Parameter#getUnit <em>Unit</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Unit</em>'.
+	 * @see seirmodel.Parameter#getUnit()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_Unit();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1375,6 +1675,14 @@ public interface SeirmodelPackage extends EPackage {
 		EAttribute RATE_FLOW__RATE = eINSTANCE.getRateFlow_Rate();
 
 		/**
+		 * The meta object literal for the '<em><b>Rate Parameter</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RATE_FLOW__RATE_PARAMETER = eINSTANCE.getRateFlow_RateParameter();
+
+		/**
 		 * The meta object literal for the '<em><b>Stratum Specific Rates</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1407,6 +1715,14 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute CONTACT_FLOW__CONTACT_RATE = eINSTANCE.getContactFlow_ContactRate();
+
+		/**
+		 * The meta object literal for the '<em><b>Contact Rate Parameter</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONTACT_FLOW__CONTACT_RATE_PARAMETER = eINSTANCE.getContactFlow_ContactRateParameter();
 
 		/**
 		 * The meta object literal for the '<em><b>Contact Parameters</b></em>' attribute feature.
@@ -1449,6 +1765,14 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute BIRTH_SOURCE__RATE = eINSTANCE.getBirthSource_Rate();
+
+		/**
+		 * The meta object literal for the '<em><b>Rate Parameter</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference BIRTH_SOURCE__RATE_PARAMETER = eINSTANCE.getBirthSource_RateParameter();
 
 		/**
 		 * The meta object literal for the '<em><b>Target Compartment</b></em>' reference feature.
@@ -1501,6 +1825,14 @@ public interface SeirmodelPackage extends EPackage {
 		EAttribute DEATH_SINK__RATE = eINSTANCE.getDeathSink_Rate();
 
 		/**
+		 * The meta object literal for the '<em><b>Rate Parameter</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DEATH_SINK__RATE_PARAMETER = eINSTANCE.getDeathSink_RateParameter();
+
+		/**
 		 * The meta object literal for the '<em><b>Source Compartment</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1544,12 +1876,28 @@ public interface SeirmodelPackage extends EPackage {
 		EAttribute STRATUM_SPECIFIC_RATE__RATE = eINSTANCE.getStratumSpecificRate_Rate();
 
 		/**
+		 * The meta object literal for the '<em><b>Rate Parameter</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STRATUM_SPECIFIC_RATE__RATE_PARAMETER = eINSTANCE.getStratumSpecificRate_RateParameter();
+
+		/**
 		 * The meta object literal for the '<em><b>Multiplier</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute STRATUM_SPECIFIC_RATE__MULTIPLIER = eINSTANCE.getStratumSpecificRate_Multiplier();
+
+		/**
+		 * The meta object literal for the '<em><b>Multiplier Parameter</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STRATUM_SPECIFIC_RATE__MULTIPLIER_PARAMETER = eINSTANCE.getStratumSpecificRate_MultiplierParameter();
 
 		/**
 		 * The meta object literal for the '{@link seirmodel.impl.SEIRModelImpl <em>SEIR Model</em>}' class.
@@ -1610,6 +1958,16 @@ public interface SeirmodelPackage extends EPackage {
 		EAttribute SEIR_MODEL__GLOBAL_DEATH_RATE = eINSTANCE.getSEIRModel_GlobalDeathRate();
 
 		/**
+		 * The meta object literal for the '{@link seirmodel.ParameterType <em>Parameter Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.ParameterType
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getParameterType()
+		 * @generated
+		 */
+		EEnum PARAMETER_TYPE = eINSTANCE.getParameterType();
+
+		/**
 		 * The meta object literal for the '<em><b>Groups</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1624,6 +1982,14 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SEIR_MODEL__PRODUCTS = eINSTANCE.getSEIRModel_Products();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SEIR_MODEL__PARAMETERS = eINSTANCE.getSEIRModel_Parameters();
 
 		/**
 		 * The meta object literal for the '{@link seirmodel.impl.GroupImpl <em>Group</em>}' class.
@@ -1692,6 +2058,56 @@ public interface SeirmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PRODUCT__GROUPS = eINSTANCE.getProduct_Groups();
+
+		/**
+		 * The meta object literal for the '{@link seirmodel.impl.ParameterImpl <em>Parameter</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see seirmodel.impl.ParameterImpl
+		 * @see seirmodel.impl.SeirmodelPackageImpl#getParameter()
+		 * @generated
+		 */
+		EClass PARAMETER = eINSTANCE.getParameter();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__NAME = eINSTANCE.getParameter_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__TYPE = eINSTANCE.getParameter_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Expression</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__EXPRESSION = eINSTANCE.getParameter_Expression();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__DESCRIPTION = eINSTANCE.getParameter_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Unit</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__UNIT = eINSTANCE.getParameter_Unit();
 
 	}
 

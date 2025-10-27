@@ -22,6 +22,7 @@ import seirmodel.ContactFlow;
 import seirmodel.DeathSink;
 import seirmodel.Flow;
 import seirmodel.Group;
+import seirmodel.Parameter;
 import seirmodel.Product;
 import seirmodel.RateFlow;
 import seirmodel.SEIRModel;
@@ -117,14 +118,16 @@ public class SEIREquationGenerator {
                             String contactName = contactCompartment.getPrimaryName();
                             String contactSecondary = contactCompartment.getSecondaryName();
                             String contactDisplay = contactName + (contactSecondary != null && !contactSecondary.isEmpty() ? " (" + contactSecondary + ")" : "");
-                            
-                            equation.append("+ (").append(contactFlow.getContactRate())
+
+                            String contactRateExpr = getContactRateExpression(contactFlow, "");
+                            equation.append("+ (").append(contactRateExpr)
                                     .append(" * ").append(sourceDisplay)
                                     .append(" * ").append(contactDisplay)
                                     .append(" / ").append(model.getTotalPopulation()).append(") ");
                         } else if (flow instanceof RateFlow) {
                             RateFlow rateFlow = (RateFlow) flow;
-                            equation.append("+ ").append(rateFlow.getRate()).append(" * ").append(sourceDisplay).append(" ");
+                            String rateExpr = getRateExpression(rateFlow, "");
+                            equation.append("+ ").append(rateExpr).append(" * ").append(sourceDisplay).append(" ");
                         }
                     }
                 }
@@ -133,7 +136,12 @@ public class SEIREquationGenerator {
             // Birth sources flowing into this compartment
             for (BirthSource birthSource : model.getBirthSources()) {
                 if (birthSource.getTargetCompartment() == compartment) {
-                    equation.append("+ ").append(birthSource.getRate()).append(" * ").append(model.getTotalPopulation()).append(" ");
+                    String birthRateExpr = getBirthRateExpression(birthSource);
+                    if (isFixedRateBirthSource(birthSource)) {
+                        equation.append("+ ").append(birthRateExpr).append(" ");
+                    } else {
+                        equation.append("+ ").append(birthRateExpr).append(" * ").append(model.getTotalPopulation()).append(" ");
+                    }
                 }
             }
 
@@ -145,21 +153,24 @@ public class SEIREquationGenerator {
                     String contactName = contactCompartment.getPrimaryName();
                     String contactSecondary = contactCompartment.getSecondaryName();
                     String contactDisplay = contactName + (contactSecondary != null && !contactSecondary.isEmpty() ? " (" + contactSecondary + ")" : "");
-                    
-                    equation.append("- (").append(contactFlow.getContactRate())
+
+                    String contactRateExpr = getContactRateExpression(contactFlow, "");
+                    equation.append("- (").append(contactRateExpr)
                             .append(" * ").append(displayName)
                             .append(" * ").append(contactDisplay)
                             .append(" / ").append(model.getTotalPopulation()).append(") ");
                 } else if (flow instanceof RateFlow) {
                     RateFlow rateFlow = (RateFlow) flow;
-                    equation.append("- ").append(rateFlow.getRate()).append(" * ").append(displayName).append(" ");
+                    String rateExpr = getRateExpression(rateFlow, "");
+                    equation.append("- ").append(rateExpr).append(" * ").append(displayName).append(" ");
                 }
             }
 
             // Death sinks flowing out of this compartment
             for (DeathSink deathSink : model.getDeathSinks()) {
                 if (deathSink.getSourceCompartment() == compartment) {
-                    equation.append("- ").append(deathSink.getRate()).append(" * ").append(displayName).append(" ");
+                    String deathRateExpr = getDeathRateExpression(deathSink);
+                    equation.append("- ").append(deathRateExpr).append(" * ").append(displayName).append(" ");
                 }
             }
 
@@ -241,21 +252,28 @@ public class SEIREquationGenerator {
                             // CRITICAL: Only include if this flow applies to the current stratum
                             if (isFlowApplicableToStratum(contactFlow, stratum) && areCompatibleStrata(contactCompartment, compartment, stratum)) {
                                 String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
-                                
-                                // Get stratum-specific rate or default rate
-                                double contactRate = getStratumSpecificRate(contactFlow, stratum, contactFlow.getContactRate());
-                                double susceptibilityMultiplier = getStratumSpecificMultiplier(contactFlow, stratum);
-                                
-                                equation.append("+ (").append(contactRate * susceptibilityMultiplier)
-                                        .append(" * ").append(sourceDisplay)
-                                        .append(" * ").append(contactDisplay)
-                                        .append(" / ").append(model.getTotalPopulation()).append(") ");
+
+                                // Get stratum-specific rate expression or default rate expression
+                                String contactRateExpr = getContactRateExpression(contactFlow, stratum);
+                                String multiplierExpr = getMultiplierExpression(contactFlow, stratum);
+
+                                if (!multiplierExpr.equals("1.0") && !multiplierExpr.equals("1")) {
+                                    equation.append("+ (").append(contactRateExpr).append(" * ").append(multiplierExpr)
+                                            .append(" * ").append(sourceDisplay)
+                                            .append(" * ").append(contactDisplay)
+                                            .append(" / ").append(model.getTotalPopulation()).append(") ");
+                                } else {
+                                    equation.append("+ (").append(contactRateExpr)
+                                            .append(" * ").append(sourceDisplay)
+                                            .append(" * ").append(contactDisplay)
+                                            .append(" / ").append(model.getTotalPopulation()).append(") ");
+                                }
                             }
                         } else if (flow instanceof RateFlow) {
                             RateFlow rateFlow = (RateFlow) flow;
-                            // Get stratum-specific rate or default rate
-                            double rate = getStratumSpecificRate(rateFlow, stratum, rateFlow.getRate());
-                            equation.append("+ ").append(rate).append(" * ").append(sourceDisplay).append(" ");
+                            // Get stratum-specific rate expression or default rate expression
+                            String rateExpr = getRateExpression(rateFlow, stratum);
+                            equation.append("+ ").append(rateExpr).append(" * ").append(sourceDisplay).append(" ");
                         }
                     }
                 }
@@ -267,15 +285,15 @@ public class SEIREquationGenerator {
             if (birthSource.getTargetCompartment() == compartment) {
                 // Check if this birth source applies to the current stratum
                 if (isBirthSourceApplicableToStratum(birthSource, stratum)) {
-                    double rate = birthSource.getRate();
-                    
+                    String birthRateExpr = getBirthRateExpression(birthSource);
+
                     // Check if this is a fixed rate or population-based rate
                     if (isFixedRateBirthSource(birthSource)) {
                         // Fixed rate - don't multiply by population
-                        equation.append("+ ").append(rate).append(" ");
+                        equation.append("+ ").append(birthRateExpr).append(" ");
                     } else {
                         // Population-based rate - multiply by total population (legacy behavior)
-                        equation.append("+ ").append(rate).append(" * ").append(model.getTotalPopulation()).append(" ");
+                        equation.append("+ ").append(birthRateExpr).append(" * ").append(model.getTotalPopulation()).append(" ");
                     }
                 }
             }
@@ -285,29 +303,36 @@ public class SEIREquationGenerator {
         for (Flow flow : compartment.getOutgoingFlows()) {
             if (flow instanceof ContactFlow) {
                 ContactFlow contactFlow = (ContactFlow) flow;
-                
+
                 // CRITICAL: Only include if this flow applies to the current stratum
                 if (isFlowApplicableToStratum(contactFlow, stratum)) {
                     Compartment contactCompartment = contactFlow.getContactCompartment();
                     String contactDisplay = getCompartmentDisplayName(contactCompartment, stratum);
-                    
-                    // Get stratum-specific rate or default rate
-                    double contactRate = getStratumSpecificRate(contactFlow, stratum, contactFlow.getContactRate());
-                    double susceptibilityMultiplier = getStratumSpecificMultiplier(contactFlow, stratum);
-                    
-                    equation.append("- (").append(contactRate * susceptibilityMultiplier)
-                            .append(" * ").append(displayName)
-                            .append(" * ").append(contactDisplay)
-                            .append(" / ").append(model.getTotalPopulation()).append(") ");
+
+                    // Get stratum-specific rate expression or default rate expression
+                    String contactRateExpr = getContactRateExpression(contactFlow, stratum);
+                    String multiplierExpr = getMultiplierExpression(contactFlow, stratum);
+
+                    if (!multiplierExpr.equals("1.0") && !multiplierExpr.equals("1")) {
+                        equation.append("- (").append(contactRateExpr).append(" * ").append(multiplierExpr)
+                                .append(" * ").append(displayName)
+                                .append(" * ").append(contactDisplay)
+                                .append(" / ").append(model.getTotalPopulation()).append(") ");
+                    } else {
+                        equation.append("- (").append(contactRateExpr)
+                                .append(" * ").append(displayName)
+                                .append(" * ").append(contactDisplay)
+                                .append(" / ").append(model.getTotalPopulation()).append(") ");
+                    }
                 }
             } else if (flow instanceof RateFlow) {
                 RateFlow rateFlow = (RateFlow) flow;
-                
+
                 // For RateFlow, check if it has stratum-specific rates and if they apply
                 if (isFlowApplicableToStratum(rateFlow, stratum)) {
-                    // Get stratum-specific rate or default rate
-                    double rate = getStratumSpecificRate(rateFlow, stratum, rateFlow.getRate());
-                    equation.append("- ").append(rate).append(" * ").append(displayName).append(" ");
+                    // Get stratum-specific rate expression or default rate expression
+                    String rateExpr = getRateExpression(rateFlow, stratum);
+                    equation.append("- ").append(rateExpr).append(" * ").append(displayName).append(" ");
                 }
             }
         }
@@ -317,7 +342,8 @@ public class SEIREquationGenerator {
             if (deathSink.getSourceCompartment() == compartment) {
                 // Check if death sink applies to this stratum
                 if (isDeathSinkApplicableToStratum(deathSink, stratum)) {
-                    equation.append("- ").append(deathSink.getRate()).append(" * ").append(displayName).append(" ");
+                    String deathRateExpr = getDeathRateExpression(deathSink);
+                    equation.append("- ").append(deathRateExpr).append(" * ").append(displayName).append(" ");
                 }
             }
         }
@@ -545,6 +571,144 @@ public class SEIREquationGenerator {
         } catch (IOException e) {
             System.err.println("❌ Error: Failed to save equations.");
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get contact rate as either a symbolic parameter name or numeric value.
+     * Prioritizes parameter reference over numeric attribute.
+     *
+     * For CONSTANT parameters: Returns the parameter NAME (e.g., "mu1")
+     * For EXPRESSION parameters: Returns the expression (e.g., "eta_S * IM")
+     * For numeric attributes: Returns the numeric value (e.g., "0.5")
+     */
+    private static String getContactRateExpression(ContactFlow flow, String stratum) {
+        // Check for stratum-specific parameter first
+        if (!stratum.isEmpty() && !flow.getStratumSpecificRates().isEmpty()) {
+            for (StratumSpecificRate ssr : flow.getStratumSpecificRates()) {
+                if (stratum.equals(ssr.getStratum())) {
+                    Parameter ssrParam = ssr.getRateParameter();
+                    if (ssrParam != null) {
+                        // Return parameter name for CONSTANT/VARIABLE, expression for EXPRESSION
+                        return getParameterRepresentation(ssrParam);
+                    } else if (ssr.getRate() != 0.0) {
+                        return String.valueOf(ssr.getRate());
+                    }
+                }
+            }
+        }
+
+        // Fall back to flow-level parameter or numeric value
+        Parameter param = flow.getContactRateParameter();
+        if (param != null) {
+            return getParameterRepresentation(param);
+        } else if (flow.getContactRate() != 0.0) {
+            return String.valueOf(flow.getContactRate());
+        } else {
+            return "UNKNOWN_CONTACT_RATE";
+        }
+    }
+
+    /**
+     * Get rate for RateFlow as symbolic parameter name or numeric value.
+     */
+    private static String getRateExpression(RateFlow flow, String stratum) {
+        // Check for stratum-specific parameter first
+        if (!stratum.isEmpty() && !flow.getStratumSpecificRates().isEmpty()) {
+            for (StratumSpecificRate ssr : flow.getStratumSpecificRates()) {
+                if (stratum.equals(ssr.getStratum())) {
+                    Parameter ssrParam = ssr.getRateParameter();
+                    if (ssrParam != null) {
+                        return getParameterRepresentation(ssrParam);
+                    } else if (ssr.getRate() != 0.0) {
+                        return String.valueOf(ssr.getRate());
+                    }
+                }
+            }
+        }
+
+        // Fall back to flow-level parameter or numeric value
+        Parameter param = flow.getRateParameter();
+        if (param != null) {
+            return getParameterRepresentation(param);
+        } else if (flow.getRate() != 0.0) {
+            return String.valueOf(flow.getRate());
+        } else {
+            return "UNKNOWN_RATE";
+        }
+    }
+
+    /**
+     * Get birth rate as symbolic parameter name or numeric value.
+     */
+    private static String getBirthRateExpression(BirthSource birthSource) {
+        Parameter param = birthSource.getRateParameter();
+        if (param != null) {
+            return getParameterRepresentation(param);
+        } else if (birthSource.getRate() != 0.0) {
+            return String.valueOf(birthSource.getRate());
+        } else {
+            return "UNKNOWN_BIRTH_RATE";
+        }
+    }
+
+    /**
+     * Get death rate as symbolic parameter name or numeric value.
+     */
+    private static String getDeathRateExpression(DeathSink deathSink) {
+        Parameter param = deathSink.getRateParameter();
+        if (param != null) {
+            return getParameterRepresentation(param);
+        } else if (deathSink.getRate() != 0.0) {
+            return String.valueOf(deathSink.getRate());
+        } else {
+            return "UNKNOWN_DEATH_RATE";
+        }
+    }
+
+    /**
+     * Get multiplier as symbolic parameter name or numeric value.
+     */
+    private static String getMultiplierExpression(ContactFlow flow, String stratum) {
+        if (stratum.isEmpty() || flow.getStratumSpecificRates().isEmpty()) {
+            return "1.0";
+        }
+
+        for (StratumSpecificRate ssr : flow.getStratumSpecificRates()) {
+            if (stratum.equals(ssr.getStratum())) {
+                Parameter multiplierParam = ssr.getMultiplierParameter();
+                if (multiplierParam != null) {
+                    return getParameterRepresentation(multiplierParam);
+                } else if (ssr.getMultiplier() != 0.0 && ssr.getMultiplier() != 1.0) {
+                    return String.valueOf(ssr.getMultiplier());
+                }
+            }
+        }
+
+        return "1.0";
+    }
+
+    /**
+     * Get the appropriate representation for a parameter:
+     * - For CONSTANT or VARIABLE: Return the parameter NAME (e.g., "pi", "mu1")
+     * - For EXPRESSION: Return the expression itself (e.g., "eta_S * IM")
+     */
+    private static String getParameterRepresentation(Parameter param) {
+        if (param == null) {
+            return "UNKNOWN_PARAM";
+        }
+
+        // Check parameter type
+        String typeName = param.getType() != null ? param.getType().toString() : "";
+
+        if ("EXPRESSION".equals(typeName)) {
+            // For EXPRESSION type, return the full expression
+            String expr = param.getExpression();
+            return (expr != null && !expr.isEmpty()) ? expr : param.getName();
+        } else {
+            // For CONSTANT or VARIABLE, return just the parameter name
+            String name = param.getName();
+            return (name != null && !name.isEmpty()) ? name : param.getExpression();
         }
     }
 }
