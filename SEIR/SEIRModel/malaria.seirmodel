@@ -1,321 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<seir:SEIRModel xmi:version="2.0"
-                xmlns:xmi="http://www.omg.org/XMI"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:seir="http://example.com/seirmodel"
-                totalPopulation="935"
-                globalBirthRate="0"
-                globalDeathRate="0">
-
-  <!-- ==================== MODEL PARAMETERS ==================== -->
-
-  <!-- Human Population Parameters -->
-  <parameters name="pi" type="CONSTANT"
-              expression="0.012"
-              description="Human population birth rate"
-              unit="per day"/>
-
-  <parameters name="k" type="CONSTANT"
-              expression="0.75"
-              description="Vaccination rate (fraction of births vaccinated)"
-              unit="dimensionless"/>
-
-  <parameters name="mu1" type="CONSTANT"
-              expression="0.0002"
-              description="Human natural death rate"
-              unit="per day"/>
-
-  <parameters name="theta" type="CONSTANT"
-              expression="0.15"
-              description="Rate of vaccine immunity loss"
-              unit="per day"/>
-
-  <parameters name="epsilon" type="CONSTANT"
-              expression="0.4"
-              description="Vaccine efficacy (1 - efficacy = susceptibility reduction)"
-              unit="dimensionless"/>
-
-  <!-- Vector Transmission Parameters -->
-  <parameters name="eta_V" type="CONSTANT"
-              expression="0.003"
-              description="Effective contact rate of vaccinated humans with infected mosquitoes"
-              unit="per day"/>
-
-  <parameters name="eta_S" type="CONSTANT"
-              expression="0.0125"
-              description="Effective contact rate of susceptible humans with infected mosquitoes"
-              unit="per day"/>
-
-  <!-- Non-Vector Transmission Parameters -->
-  <parameters name="xi_V" type="CONSTANT"
-              expression="0.001"
-              description="Effective contact rate of vaccinated humans with infected humans (non-vector)"
-              unit="per day"/>
-
-  <parameters name="xi_S" type="CONSTANT"
-              expression="0.002"
-              description="Effective contact rate of susceptible humans with infected humans (non-vector)"
-              unit="per day"/>
-
-  <!-- Progression and Recovery Parameters -->
-  <parameters name="tau1" type="CONSTANT"
-              expression="0.05"
-              description="Progression rate from vector-exposed to infectious (14 day incubation)"
-              unit="per day"/>
-
-  <parameters name="tau2" type="CONSTANT"
-              expression="0.05"
-              description="Progression rate from non-vector-exposed to infectious"
-              unit="per day"/>
-
-  <parameters name="sigma" type="CONSTANT"
-              expression="0.10"
-              description="Treatment rate (progression from infectious to treated)"
-              unit="per day"/>
-
-  <parameters name="omega" type="CONSTANT"
-              expression="0.05"
-              description="Recovery rate (progression from treated to recovered)"
-              unit="per day"/>
-
-  <parameters name="gamma" type="CONSTANT"
-              expression="0.01"
-              description="Immunity loss rate (recovered to susceptible)"
-              unit="per day"/>
-
-  <parameters name="delta1" type="CONSTANT"
-              expression="0.002"
-              description="Disease-induced death rate"
-              unit="per day"/>
-
-  <!-- Mosquito Population Parameters -->
-  <parameters name="Lambda" type="CONSTANT"
-              expression="0.02"
-              description="Mosquito birth rate"
-              unit="per day"/>
-
-  <parameters name="mu2" type="CONSTANT"
-              expression="0.1"
-              description="Mosquito natural death rate"
-              unit="per day"/>
-
-  <parameters name="rho" type="CONSTANT"
-              expression="0.03"
-              description="Effective contact rate of susceptible mosquitoes with infected humans"
-              unit="per mosquito per day"/>
-
-  <parameters name="phi" type="CONSTANT"
-              expression="0.10"
-              description="Mosquito progression rate from exposed to infectious"
-              unit="per day"/>
-
-  <!-- Composite Force of Infection Parameters (Expressions) -->
-  <parameters name="beta1" type="EXPRESSION"
-              expression="eta_V * IM"
-              description="Force of infection on vaccinated humans from mosquitoes"
-              unit="per day"/>
-
-  <parameters name="beta2" type="EXPRESSION"
-              expression="eta_S * IM"
-              description="Force of infection on susceptible humans from mosquitoes"
-              unit="per day"/>
-
-  <parameters name="alpha1" type="EXPRESSION"
-              expression="xi_V * IH"
-              description="Force of infection on vaccinated humans from infected humans (non-vector)"
-              unit="per day"/>
-
-  <parameters name="alpha2" type="EXPRESSION"
-              expression="xi_S * IH"
-              description="Force of infection on susceptible humans from infected humans (non-vector)"
-              unit="per day"/>
-
-  <parameters name="beta3" type="EXPRESSION"
-              expression="rho * IH"
-              description="Force of infection on susceptible mosquitoes from infected humans"
-              unit="per day"/>
-
-  <!-- ==================== HUMAN COMPARTMENTS ==================== -->
-
-  <!-- Susceptible Humans (SH) -->
-  <compartments PrimaryName="Susceptible_Human" population="800">
-    <!-- Vector transmission: Susceptible → Vector-Exposed -->
-    <outgoingFlows xsi:type="seir:ContactFlow"
-                   contactRateParameter="//@parameters.20"
-                   contactCompartment="//@compartments.9"
-                   description="Mosquito-borne infection of susceptible humans"
-                   target="//@compartments.2"/>
-
-    <!-- Non-vector transmission: Susceptible → Non-Vector-Exposed -->
-    <outgoingFlows xsi:type="seir:ContactFlow"
-                   contactRateParameter="//@parameters.22"
-                   contactCompartment="//@compartments.4"
-                   description="Non-vector infection (blood transfusion, congenital)"
-                   target="//@compartments.3"/>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="10933352">
+  <compartments PrimaryName="Susceptible Humans population">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Force of infection: beta1 * a(T) * Iv / Nh." target="//@compartments.1" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.2"/>
   </compartments>
-
-  <!-- Vaccinated Humans (VH) -->
-  <compartments PrimaryName="Vaccinated_Human" population="50">
-    <!-- Vaccine immunity loss: Vaccinated → Susceptible -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.3"
-                   description="Loss of vaccine immunity"
-                   target="//@compartments.0"/>
-
-    <!-- Vector transmission with reduced susceptibility: Vaccinated → Vector-Exposed -->
-    <outgoingFlows xsi:type="seir:ContactFlow"
-                   contactRateParameter="//@parameters.19"
-                   contactCompartment="//@compartments.9"
-                   description="Mosquito infection (reduced by vaccine efficacy)"
-                   target="//@compartments.2"/>
-
-    <!-- Non-vector transmission: Vaccinated → Non-Vector-Exposed -->
-    <outgoingFlows xsi:type="seir:ContactFlow"
-                   contactRateParameter="//@parameters.21"
-                   contactCompartment="//@compartments.4"
-                   description="Non-vector infection of vaccinated humans"
-                   target="//@compartments.3"/>
+  <compartments PrimaryName="Exposed Humans Population">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.2" rateParameter="//@parameters.8"/>
   </compartments>
-
-  <!-- Vector-Exposed Humans (EH1) -->
-  <compartments PrimaryName="Exposed_Human" SecondaryName="vector" population="30">
-    <!-- Progression to infectious -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.10"
-                   description="Progression from vector-exposed to infectious"
-                   target="//@compartments.4"/>
+  <compartments PrimaryName="Infected Humans Population" SecondaryName="">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.3" rateParameter="//@parameters.9"/>
   </compartments>
-
-  <!-- Non-Vector-Exposed Humans (EH2) -->
-  <compartments PrimaryName="Exposed_Human" SecondaryName="non-vector" population="20">
-    <!-- Progression to infectious -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.11"
-                   description="Progression from non-vector-exposed to infectious"
-                   target="//@compartments.4"/>
+  <compartments PrimaryName="Recovered Humans Population" SecondaryName="">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.0" rateParameter="//@parameters.3"/>
   </compartments>
-
-  <!-- Infectious Humans (IH) -->
-  <compartments PrimaryName="Infectious_Human" population="15">
-    <!-- Treatment -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.12"
-                   description="Treatment of infectious individuals"
-                   target="//@compartments.5"/>
+  <compartments PrimaryName="Susceptible Mosquitoes Population">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Force of infection: beta2 * a(T) * Ih / Nh." target="//@compartments.5" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.1"/>
   </compartments>
-
-  <!-- Treated Humans (TH) -->
-  <compartments PrimaryName="Treated_Human" population="10">
-    <!-- Recovery -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.12"
-                   description="Recovery from treatment"
-                   target="//@compartments.6"/>
+  <compartments PrimaryName="Exposed Mosquitoes Population">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.6" rateParameter="//@parameters.14"/>
   </compartments>
-
-  <!-- Recovered Humans (RH) -->
-  <compartments PrimaryName="Recovered_Human" population="5">
-    <!-- Recovery immunity loss: Recovered → Susceptible -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.13"
-                   description="Loss of recovery immunity"
-                   target="//@compartments.0"/>
-  </compartments>
-
-  <!-- ==================== MOSQUITO COMPARTMENTS ==================== -->
-
-  <!-- Susceptible Mosquitoes (SM) -->
-  <compartments PrimaryName="Susceptible_Mosquito" population="5">
-    <!-- Mosquito infection from infectious humans -->
-    <outgoingFlows xsi:type="seir:ContactFlow"
-                   contactRateParameter="//@parameters.23"
-                   contactCompartment="//@compartments.4"
-                   description="Mosquito infection from biting infected humans"
-                   target="//@compartments.8"/>
-  </compartments>
-
-  <!-- Exposed Mosquitoes (EM) -->
-  <compartments PrimaryName="Exposed_Mosquito" population="5">
-    <!-- Progression to infectious -->
-    <outgoingFlows xsi:type="seir:RateFlow"
-                   rateParameter="//@parameters.18"
-                   description="Progression from exposed to infectious mosquito"
-                   target="//@compartments.9"/>
-  </compartments>
-
-  <!-- Infectious Mosquitoes (IM) -->
-  <compartments PrimaryName="Infectious_Mosquito" population="5"/>
-
-  <!-- ==================== BIRTH SOURCES ==================== -->
-
-  <!-- Births into unvaccinated susceptible population -->
-  <birthSources name="Unvaccinated_Births"
-                rateParameter="//@parameters.0"
-                targetCompartment="//@compartments.0"
-                fixedRate="false"/>
-
-  <!-- Births into vaccinated population -->
-  <birthSources name="Vaccinated_Births"
-                rateParameter="//@parameters.0"
-                targetCompartment="//@compartments.1"
-                fixedRate="false"/>
-
-  <!-- Mosquito births -->
-  <birthSources name="Mosquito_Births"
-                rateParameter="//@parameters.15"
-                targetCompartment="//@compartments.7"
-                fixedRate="true"/>
-
-  <!-- ==================== DEATH SINKS ==================== -->
-
-  <!-- Natural death from all human compartments -->
-  <deathSinks name="Natural_Death_SH"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.0"/>
-
-  <deathSinks name="Natural_Death_VH"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.1"/>
-
-  <deathSinks name="Natural_Death_EH1"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.2"/>
-
-  <deathSinks name="Natural_Death_EH2"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.3"/>
-
-  <deathSinks name="Natural_Death_IH"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.4"/>
-
-  <deathSinks name="Disease_Death_IH"
-              rateParameter="//@parameters.14"
-              sourceCompartment="//@compartments.4"/>
-
-  <deathSinks name="Natural_Death_TH"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.5"/>
-
-  <deathSinks name="Disease_Death_TH"
-              rateParameter="//@parameters.14"
-              sourceCompartment="//@compartments.5"/>
-
-  <deathSinks name="Natural_Death_RH"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.6"/>
-
-  <!-- Mosquito deaths -->
-  <deathSinks name="Natural_Death_SM"
-              rateParameter="//@parameters.16"
-              sourceCompartment="//@compartments.7"/>
-
-  <deathSinks name="Natural_Death_EM"
-              rateParameter="//@parameters.16"
-              sourceCompartment="//@compartments.8"/>
-
-  <deathSinks name="Natural_Death_IM"
-              rateParameter="//@parameters.16"
-              sourceCompartment="//@compartments.9"/>
-
+  <compartments PrimaryName="Infected Mosquitoes Population"/>
+  <birthSources name="Humans" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+  <birthSources name="Mosquitoes" rateParameter="//@parameters.11" targetCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_SH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_EH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Death_IH" rateParameter="//@parameters.10" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_RH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural_Death_SM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_EM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Natural_Death_IM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.6"/>
+  <parameters name="alpha_h" expression="15129" description="Recruitment rate of human populations" unit="people/time"/>
+  <parameters name="beta2_times_a_T" type="EXPRESSION" expression="beta2 * a_T" description="Combined contact rate" unit="1/time"/>
+  <parameters name="beta1_times_a_T" type="EXPRESSION" expression="beta1 * a_T" description="Combined contact rate" unit="1/time"/>
+  <parameters name="q" expression="0.98765" description="Progression rate of Rh to Sh" unit="1/time"/>
+  <parameters name="beta1" expression="0.9969" description="Probability of transmission (human)" unit="dimensionless"/>
+  <parameters name="mu_h" expression="0.001384" description="Natural mortality rate of human population" unit="1/time"/>
+  <parameters name="a_T" type="EXPRESSION" expression="0.000203 * T * (T - 11.7) * sqrt(42.3 - T)" description="Mosquito biting rate" unit="bites/person/time"/>
+  <parameters name="mu_v_T" type="EXPRESSION" expression="1/((-0.03*T*T) + (1.31*T) - 4.4)" description="Mortality rate of adult mosquitoes" unit="1/time"/>
+  <parameters name="rho_h" expression="0.001995" description="Progression rate Eh to Ih" unit="1/time"/>
+  <parameters name="gamma_h" expression="0.120342" description="Recovery rate Ih to Rh" unit="1/time"/>
+  <parameters name="mu_h_delta" type="EXPRESSION" expression="mu_h + 0.017325" description="Disease-induced death rate" unit="1/time"/>
+  <parameters name="theta_v_T_R" type="EXPRESSION" expression="(200 * exp(-0.00554 * T + 0.06737) * 4 * R * (50 - R) * 6.75e-5) / (2 + (1 / (0.00554 * T - 0.056737))) * (1 - Nv / K) * Nv" description="Mosquito recruitment rate" unit="mosquitoes/time"/>
+  <parameters name="Nv" expression="80000" description="Approx. Mosquito population" unit="mosquitoes"/>
+  <parameters name="beta2" expression="0.9917" description="Probability of transmission (mosquito)" unit="dimensionless"/>
+  <parameters name="Lm_T" type="EXPRESSION" expression="1 / (exp(mu_v_T) * (111/(T - 16)))" description="Progression rate Ev to Iv" unit="1/time"/>
+  <parameters name="K" expression="100000" description="Mosquito carrying capacity" unit="mosquitoes"/>
+  <parameters name="T" type="VARIABLE" description="Temperature" unit="°C"/>
 </seir:SEIRModel>
