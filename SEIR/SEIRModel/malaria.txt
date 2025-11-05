@@ -1,10 +1,7 @@
-Exposed_Mosquito: dExposed_Mosquito/dt = + (rho * IH * Susceptible_Mosquito * Infectious_Human / 935) - phi * Exposed_Mosquito - mu2 * Exposed_Mosquito 
-Infectious_Mosquito: dInfectious_Mosquito/dt = + phi * Exposed_Mosquito - mu2 * Infectious_Mosquito 
-Recovered_Human: dRecovered_Human/dt = + omega * Treated_Human - gamma * Recovered_Human - mu1 * Recovered_Human 
-Exposed_Human (non-vector): dExposed_Human (non-vector)/dt = + (xi_S * IH * Susceptible_Human * Infectious_Human / 935) + (xi_V * IH * Vaccinated_Human * Infectious_Human / 935) - sigma * Exposed_Human (non-vector) - mu1 * Exposed_Human (non-vector) 
-Infectious_Human: dInfectious_Human/dt = + tau2 * Exposed_Human (vector) + sigma * Exposed_Human (non-vector) - omega * Infectious_Human - mu1 * Infectious_Human - delta1 * Infectious_Human 
-Susceptible_Human: dSusceptible_Human/dt = + theta * Vaccinated_Human + gamma * Recovered_Human + pi * 935 - (eta_S * IM * Susceptible_Human * Infectious_Mosquito / 935) - (xi_S * IH * Susceptible_Human * Infectious_Human / 935) - mu1 * Susceptible_Human 
-Vaccinated_Human: dVaccinated_Human/dt = + pi * 935 - theta * Vaccinated_Human - (eta_V * IM * Vaccinated_Human * Infectious_Mosquito / 935) - (xi_V * IH * Vaccinated_Human * Infectious_Human / 935) - mu1 * Vaccinated_Human 
-Susceptible_Mosquito: dSusceptible_Mosquito/dt = + Lambda - (rho * IH * Susceptible_Mosquito * Infectious_Human / 935) - mu2 * Susceptible_Mosquito 
-Exposed_Human (vector): dExposed_Human (vector)/dt = + (eta_S * IM * Susceptible_Human * Infectious_Mosquito / 935) + (eta_V * IM * Vaccinated_Human * Infectious_Mosquito / 935) - tau2 * Exposed_Human (vector) - mu1 * Exposed_Human (vector) 
-Treated_Human: dTreated_Human/dt = + omega * Infectious_Human - omega * Treated_Human - mu1 * Treated_Human - delta1 * Treated_Human 
+Exposed Mosquitoes Population: dExposed Mosquitoes Population/dt = + (beta2 * a_T * Susceptible Mosquitoes Population * Infected Humans Population / 10933352) - 1 / (exp(mu_v_T) * (111/(T - 16))) * Exposed Mosquitoes Population - 1/((-0.03*T*T) + (1.31*T) - 4.4) * Exposed Mosquitoes Population 
+Exposed Humans Population: dExposed Humans Population/dt = + (beta1 * a_T * Susceptible Humans population * Infected Mosquitoes Population / 10933352) - rho_h * Exposed Humans Population - mu_h * Exposed Humans Population 
+Recovered Humans Population: dRecovered Humans Population/dt = + gamma_h * Infected Humans Population - q * Recovered Humans Population - mu_h * Recovered Humans Population 
+Susceptible Humans population: dSusceptible Humans population/dt = + q * Recovered Humans Population + alpha_h * 10933352 - (beta1 * a_T * Susceptible Humans population * Infected Mosquitoes Population / 10933352) - mu_h * Susceptible Humans population 
+Susceptible Mosquitoes Population: dSusceptible Mosquitoes Population/dt = + (200 * exp(-0.00554 * T + 0.06737) * 4 * R * (50 - R) * 6.75e-5) / (2 + (1 / (0.00554 * T - 0.056737))) * (1 - Nv / K) * Nv * 10933352 - (beta2 * a_T * Susceptible Mosquitoes Population * Infected Humans Population / 10933352) - 1/((-0.03*T*T) + (1.31*T) - 4.4) * Susceptible Mosquitoes Population 
+Infected Humans Population: dInfected Humans Population/dt = + rho_h * Exposed Humans Population - gamma_h * Infected Humans Population - mu_h + 0.017325 * Infected Humans Population 
+Infected Mosquitoes Population: dInfected Mosquitoes Population/dt = + 1 / (exp(mu_v_T) * (111/(T - 16))) * Exposed Mosquitoes Population - 1/((-0.03*T*T) + (1.31*T) - 4.4) * Infected Mosquitoes Population 
