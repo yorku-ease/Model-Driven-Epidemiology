@@ -1,5 +1,7 @@
 {
   "seirmodel_metamodel": {
+    "version": "2.0",
+    "description": "EpiMDE Metamodel - Supports both numeric and parametric (symbolic) modeling approaches for epidemiological compartmental models",
     "structure": {
       "xml_declaration": {
         "version": "1.0",
@@ -14,6 +16,52 @@
           "xmlns:seir": "http://example.com/seirmodel"
         },
         "optional_attributes": ["totalPopulation", "globalBirthRate", "globalDeathRate"]
+      },
+      "parameters": {
+        "element": "parameters",
+        "required_attributes": ["name"],
+        "optional_attributes": ["type", "expression", "description", "unit"],
+        "description": "Named parameters for symbolic/parametric modeling. Enables separation of model structure from parameter values.",
+        "attributes": {
+          "name": {
+            "description": "Parameter identifier. Supports Unicode including Greek letters (α, β, γ, δ, μ, ρ, θ, λ) and subscripts (ₕ, ᵥ, ₁, ₂)",
+            "examples": ["β₁", "μₕ", "a(T)", "β₂a(T)", "θᵥ(T,R)", "γₕ"]
+          },
+          "type": {
+            "description": "Parameter type: CONSTANT (default), VARIABLE, or EXPRESSION",
+            "values": ["CONSTANT", "VARIABLE", "EXPRESSION"],
+            "default": "CONSTANT"
+          },
+          "expression": {
+            "description": "For CONSTANT/VARIABLE: numeric value. For EXPRESSION: mathematical formula referencing other parameters/compartments",
+            "examples": ["0.001384", "0.000203 * T * (T - 11.7) * sqrt(42.3 - T)", "β₂ * a(T)", "μₕ + 0.017325"]
+          },
+          "description": {
+            "description": "Human-readable explanation of the parameter",
+            "examples": ["Natural mortality rate of human population", "Mosquito biting rate", "Recovery rate Ih to Rh"]
+          },
+          "unit": {
+            "description": "Physical unit of measurement. Supports Unicode symbols.",
+            "examples": ["per day", "1/time", "dimensionless", "°C", "bites/person/time"]
+          }
+        },
+        "parameter_types": {
+          "CONSTANT": {
+            "description": "Fixed value with a name, used for model parameters that don't change during simulation",
+            "use_cases": ["Natural death rates", "Recovery rates", "Transmission probabilities"],
+            "example": "<parameters name=\"μₕ\" expression=\"0.001384\" description=\"Natural mortality rate\" unit=\"1/time\"/>"
+          },
+          "VARIABLE": {
+            "description": "Placeholder for values provided at simulation time, such as environmental conditions or intervention levels",
+            "use_cases": ["Temperature", "Rainfall", "Intervention effectiveness"],
+            "example": "<parameters name=\"T\" type=\"VARIABLE\" description=\"Temperature\" unit=\"°C\"/>"
+          },
+          "EXPRESSION": {
+            "description": "Computed value defined as a mathematical expression referencing other parameters and/or compartments",
+            "use_cases": ["Combined rates", "Temperature-dependent rates", "Death rates with disease mortality"],
+            "example": "<parameters name=\"β₂a(T)\" type=\"EXPRESSION\" expression=\"β₂ * a(T)\" description=\"Combined contact rate\" unit=\"1/time\"/>"
+          }
+        }
       },
       "compartments": {
         "element": "compartments",
@@ -36,50 +84,141 @@
       "RateFlow": {
         "element": "outgoingFlows",
         "xsi_type": "seir:RateFlow",
-        "required_attributes": ["rate", "target"],
+        "modeling_modes": {
+          "numeric": {
+            "required_attributes": ["rate", "target"],
+            "description": "Use numeric rate attribute directly"
+          },
+          "parametric": {
+            "required_attributes": ["rateParameter", "target"],
+            "description": "Reference a Parameter by index. Parameter takes precedence over numeric rate."
+          }
+        },
         "optional_attributes": ["description"],
         "child_elements": ["stratumSpecificRates"],
-        "constraints": {
-          "rate": "Must be float/decimal value (Strictly avoid using any symbols). Compute a final float numeric value and not a equation."
+        "attributes": {
+          "rate": {
+            "description": "Numeric rate value. For parametric models, set to 0.0 and use rateParameter instead.",
+            "constraint": "Must be float/decimal value"
+          },
+          "rateParameter": {
+            "description": "Reference to a Parameter defining this flow's rate. Format: '//@parameters.X' where X is 0-based index.",
+            "constraint": "Must reference existing parameter"
+          }
+        },
+        "examples": {
+          "numeric": "<outgoingFlows xsi:type=\"seir:RateFlow\" rate=\"0.120342\" target=\"//@compartments.3\"/>",
+          "parametric": "<outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.9\" target=\"//@compartments.3\"/>"
         }
       },
       "ContactFlow": {
-        "element": "outgoingFlows", 
+        "element": "outgoingFlows",
         "xsi_type": "seir:ContactFlow",
-        "required_attributes": ["contactRate", "contactCompartment", "target"],
+        "modeling_modes": {
+          "numeric": {
+            "required_attributes": ["contactRate", "contactCompartment", "target"],
+            "description": "Use numeric contactRate attribute directly"
+          },
+          "parametric": {
+            "required_attributes": ["contactRateParameter", "contactCompartment", "target"],
+            "description": "Reference a Parameter by index. Parameter takes precedence over numeric contactRate."
+          }
+        },
         "optional_attributes": ["description", "contactParameters"],
         "child_elements": ["stratumSpecificRates"],
-        "constraints": {
-          "contactRate": "Must be float/decimal value (Strictly avoid using any symbols). Compute a final float numeric value and not a equation.",
-          "contactCompartment": "Reference to compartment using format '//@compartments.X'"
+        "attributes": {
+          "contactRate": {
+            "description": "Numeric contact/transmission rate. For parametric models, set to 0.0 and use contactRateParameter instead.",
+            "constraint": "Must be float/decimal value"
+          },
+          "contactRateParameter": {
+            "description": "Reference to a Parameter defining this flow's contact rate. Format: '//@parameters.X' where X is 0-based index.",
+            "constraint": "Must reference existing parameter"
+          },
+          "contactCompartment": {
+            "description": "Reference to compartment influencing transmission (usually Infectious or Infected Mosquitoes)",
+            "constraint": "Must reference existing compartment using format '//@compartments.X'"
+          }
+        },
+        "examples": {
+          "numeric": "<outgoingFlows xsi:type=\"seir:ContactFlow\" contactRate=\"0.09636\" contactCompartment=\"//@compartments.1\" target=\"//@compartments.1\"/>",
+          "parametric": "<outgoingFlows xsi:type=\"seir:ContactFlow\" contactRateParameter=\"//@parameters.2\" contactCompartment=\"//@compartments.6\" target=\"//@compartments.1\"/>"
         }
       },
       "stratumSpecificRates": {
         "element": "stratumSpecificRates",
-        "required_attributes": ["stratum", "rate"],
-        "optional_attributes": ["multiplier"],
+        "modeling_modes": {
+          "numeric": {
+            "required_attributes": ["stratum", "rate"],
+            "optional_attributes": ["multiplier"]
+          },
+          "parametric": {
+            "required_attributes": ["stratum"],
+            "optional_attributes": ["rateParameter", "multiplierParameter"]
+          }
+        },
+        "attributes": {
+          "rate": "Numeric rate value for this stratum",
+          "rateParameter": "Reference to Parameter for this stratum's rate",
+          "multiplier": "Numeric multiplier applied to base rate (defaults to 1.0)",
+          "multiplierParameter": "Reference to Parameter for multiplier"
+        },
         "constraints": {
           "rate": "Must be float/decimal value",
-          "multiplier": "Must be float/decimal value, defaults to 1.0"
+          "multiplier": "Must be float/decimal value, defaults to 1.0",
+          "rateParameter": "Format: '//@parameters.X'",
+          "multiplierParameter": "Format: '//@parameters.X'"
         }
       },
       "birthSources": {
         "element": "birthSources",
-        "required_attributes": ["name", "rate", "targetCompartment"],
+        "modeling_modes": {
+          "numeric": {
+            "required_attributes": ["name", "rate", "targetCompartment"]
+          },
+          "parametric": {
+            "required_attributes": ["name", "rateParameter", "targetCompartment"]
+          }
+        },
         "optional_attributes": ["targetStratum", "fixedRate"],
+        "attributes": {
+          "rate": "Numeric birth rate",
+          "rateParameter": "Reference to Parameter for birth rate. Format: '//@parameters.X'"
+        },
         "constraints": {
           "rate": "Must be float/decimal value",
+          "rateParameter": "Must reference existing parameter",
           "targetCompartment": "Reference to compartment using format '//@compartments.X'",
           "fixedRate": "Boolean value, defaults to false"
+        },
+        "examples": {
+          "numeric": "<birthSources name=\"Humans\" rate=\"15129\" targetCompartment=\"//@compartments.0\"/>",
+          "parametric": "<birthSources name=\"Humans\" rateParameter=\"//@parameters.0\" targetCompartment=\"//@compartments.0\"/>"
         }
       },
       "deathSinks": {
-        "element": "deathSinks", 
-        "required_attributes": ["name", "rate", "sourceCompartment"],
-        "optional_attributes": [],
+        "element": "deathSinks",
+        "modeling_modes": {
+          "numeric": {
+            "required_attributes": ["name", "rate", "sourceCompartment"]
+          },
+          "parametric": {
+            "required_attributes": ["name", "rateParameter", "sourceCompartment"]
+          }
+        },
+        "optional_attributes": ["sourceStratum"],
+        "attributes": {
+          "rate": "Numeric death rate",
+          "rateParameter": "Reference to Parameter for death rate. Format: '//@parameters.X'"
+        },
         "constraints": {
           "rate": "Must be float/decimal value",
+          "rateParameter": "Must reference existing parameter",
           "sourceCompartment": "Reference to compartment using format '//@compartments.X'"
+        },
+        "examples": {
+          "numeric": "<deathSinks name=\"Natural_Death_SH\" rate=\"0.001384\" sourceCompartment=\"//@compartments.0\"/>",
+          "parametric": "<deathSinks name=\"Natural_Death_SH\" rateParameter=\"//@parameters.5\" sourceCompartment=\"//@compartments.0\"/>"
         }
       },
       "groups": {
@@ -117,6 +256,11 @@
         "Hospitalized",
         "Quarantined",
         "Isolated"
+      ],
+      "vector_states": [
+        "Susceptible Mosquitoes",
+        "Exposed Mosquitoes",
+        "Infectious Mosquitoes"
       ],
       "demographic_states": [
         "Recruitment",
@@ -171,6 +315,12 @@
         "Unvaccinated",
         "First dose",
         "Second dose"
+      ],
+      "transmission_route": [
+        "vector",
+        "non-vector",
+        "direct",
+        "indirect"
       ]
     },
     "flow_patterns": {
@@ -179,64 +329,205 @@
         "Exposed → Infectious",
         "Infectious → Recovered",
         "Infectious → Dead",
+        "Recovered → Susceptible (loss of immunity)",
+        "Vaccinated → Susceptible (loss of vaccine immunity)",
         "All non-terminal compartment → Natural Death"
       ],
       "flow_types": {
         "RateFlow": {
-          "description": "Simple progression flow with fixed or stratum-specific rates",
-          "examples": ["Exposed → Infectious", "Infectious → Recovered", "Hospital → ICU"]
+          "description": "Rate-based transition independent of other compartment populations. Supports both numeric rates and parameter references.",
+          "examples": [
+            "Exposed → Infectious (progression)",
+            "Infectious → Recovered (recovery)",
+            "Hospital → ICU (severity progression)",
+            "Recovered → Susceptible (immunity loss)"
+          ],
+          "use_numeric_when": "Model has hardcoded rates (legacy models, simple demonstrations)",
+          "use_parametric_when": "Model needs symbolic equations, parameter reuse, or matching published papers"
         },
         "ContactFlow": {
-          "description": "Transmission flow based on contact with infectious compartments",
-          "examples": ["Susceptible → Exposed (contact with Infectious)"],
+          "description": "Contact-based transmission dependent on another compartment's population. Models frequency-dependent or density-dependent transmission. Supports both numeric rates and parameter references.",
+          "examples": [
+            "Susceptible → Exposed (contact with Infectious)",
+            "Susceptible Humans → Exposed Humans (contact with Infectious Mosquitoes)",
+            "Susceptible Mosquitoes → Exposed Mosquitoes (contact with Infectious Humans)"
+          ],
           "parameters": {
-            "contactRate": "Base transmission rate per contact",
-            "contactCompartment": "Source compartment for transmission (usually Infectious)",
-            "contactParameters": "Additional transmission parameters (optional)"
-          }
+            "contactRate or contactRateParameter": "Transmission rate per contact",
+            "contactCompartment": "Source compartment for transmission (usually Infectious or vector compartment)",
+            "contactParameters": "Legacy parameter specification (deprecated)"
+          },
+          "use_numeric_when": "Simple models with constant transmission rates",
+          "use_parametric_when": "Complex transmission (temperature-dependent, combined rates, symbolic equations)"
         }
       },
       "stratification": {
         "description": "Age-based or demographic stratification using Groups and Products",
-        "stratum_specific_rates": "Different rates can be specified for each stratum within a flow",
+        "stratum_specific_rates": "Different rates can be specified for each stratum within a flow. Supports both numeric and parametric approaches.",
         "examples": {
           "age_groups": ["0-17", "18-64", "65+"],
           "demographic_groups": ["Male", "Female"],
-          "risk_groups": ["High Risk", "Low Risk"]
+          "risk_groups": ["High Risk", "Low Risk"],
+          "vaccination_groups": ["Vaccinated", "Unvaccinated"]
         }
       }
     },
     "validation_rules": {
       "Inflow": "Use BirthSource elements for population inflows. The inflow to a compartment which doesn't have a source (like recruitment or birth) should use birthSources rather than regular flows",
-      "Outflow": "Use DeathSink elements for population outflows. Natural death and other population losses should use deathSinks rather than flows to non-existent compartments", 
+      "Outflow": "Use DeathSink elements for population outflows. Natural death and other population losses should use deathSinks rather than flows to non-existent compartments",
       "compartment_uniqueness": "Each (PrimaryName, SecondaryName) pair must be unique",
       "index_consistency": "Target indices must reference existing compartments using format '//@compartments.X'",
-      "reference_consistency": "Product references must use format '//@products.X', Group references must use format '//@groups.X'",
-      "rate_format": "All rates must be numeric (Strictly avoid using any symbols). Compute a final float numeric value and not a equation.",
+      "reference_consistency": "Product references must use format '//@products.X', Group references must use format '//@groups.X', Parameter references must use format '//@parameters.X'",
+      "rate_format_numeric": "For numeric modeling: All rates must be numeric values (avoid symbols). Compute a final float numeric value, not an equation.",
+      "rate_format_parametric": "For parametric modeling: Set numeric rates to 0.0 and use rateParameter/contactRateParameter references instead.",
+      "parameter_uniqueness": "Parameter names must be unique within a model",
+      "parameter_references": "All parameter references must point to existing parameters using 0-based indexing",
       "flow_type_consistency": "Use xsi:type=\"seir:RateFlow\" for progression flows, xsi:type=\"seir:ContactFlow\" for transmission flows",
       "stratification_consistency": "Compartments with product attribute should have stratumSpecificRates in their flows where applicable",
-      "terminal_compartments": "Terminal compartments (like Deaths, Recovered) typically have no outgoing flows",
-      "contact_flow_validation": "ContactFlow must specify contactCompartment (usually an Infectious compartment) and contactRate",
+      "terminal_compartments": "Terminal compartments (like Deaths, Recovered) typically have no outgoing flows (exception: loss of immunity)",
+      "contact_flow_validation": "ContactFlow must specify contactCompartment (usually an Infectious compartment) and either contactRate or contactRateParameter",
       "stratum_validation": "stratumSpecificRates stratum values must match the values defined in the referenced Group",
       "population_balance": "BirthSources and DeathSinks help maintain population balance in the model",
-      "description": "Even though description is optional, it would be very helpful if each flow has a brief description explaining the purpose of this flow."
+      "description": "Even though description is optional, it would be very helpful if each flow has a brief description explaining the purpose of this flow.",
+      "unicode_support": "Parameter names support Unicode including Greek letters (α, β, γ, δ, μ, ρ, θ, λ) and subscripts (ₕ, ᵥ, ₁, ₂)"
     },
     "model_extensions": {
+      "parameter_system": {
+        "description": "NEW in Version 2.0: Comprehensive parameter system for symbolic/parametric modeling",
+        "features": [
+          "Three parameter types: CONSTANT, VARIABLE, EXPRESSION",
+          "Parameter references in RateFlow, ContactFlow, BirthSource, DeathSink, StratumSpecificRate",
+          "Unicode support for Greek symbols and mathematical notation",
+          "Separation of model structure from parameter values",
+          "Automatic equation generation with symbolic output"
+        ],
+        "benefits": [
+          "Reusability: Change parameters without modifying model structure",
+          "Documentation: Parameters carry descriptions and units",
+          "Professional output: Equations match published papers (β₁, μₕ instead of 0.9969, 0.001384)",
+          "Environmental dependencies: Temperature, rainfall, intervention levels",
+          "Backward compatibility: Existing numeric models continue working"
+        ]
+      },
       "stratification_system": {
-        "description": "New stratification system using Groups and Products",
+        "description": "Stratification system using Groups and Products",
         "Groups": "Define demographic or risk categories (e.g., age groups, gender, risk levels)",
         "Products": "Combine multiple groups for complex stratification",
         "compartment_stratification": "Compartments can reference a Product to be automatically stratified"
       },
       "flow_enhancements": {
         "abstract_flows": "Flow is now abstract with RateFlow and ContactFlow as concrete implementations",
-        "stratum_specific_rates": "Both RateFlow and ContactFlow support different rates for different strata",
-        "contact_modeling": "ContactFlow enables sophisticated transmission modeling with contact compartments"
+        "stratum_specific_rates": "Both RateFlow and ContactFlow support different rates for different strata (numeric or parametric)",
+        "contact_modeling": "ContactFlow enables sophisticated transmission modeling with contact compartments",
+        "parameter_references": "All flows can reference parameters instead of using numeric attributes"
       },
       "population_dynamics": {
-        "BirthSource": "Models population inflow (births, immigration, recruitment)",
-        "DeathSink": "Models population outflow (deaths, emigration)",
+        "BirthSource": "Models population inflow (births, immigration, recruitment). Supports numeric rates and parameter references.",
+        "DeathSink": "Models population outflow (deaths, emigration). Supports numeric rates and parameter references.",
         "global_rates": "SEIRModel can specify totalPopulation, globalBirthRate, globalDeathRate"
+      },
+      "diagram_support": {
+        "description": "Sirius diagrams intelligently display parameter names or numeric values",
+        "implementation": "AQL expressions check for parameter references using ->notEmpty(), displaying parameter names when available or numeric values otherwise",
+        "greek_symbols": "Full Unicode support in diagram labels for professional mathematical notation"
+      },
+      "equation_generation": {
+        "description": "SEIREquationGenerator produces symbolic equations for parametric models",
+        "features": [
+          "Parameter names in equations (γₕ, ρₕ, β₁) instead of numbers (0.120342, 0.001995, 0.9969)",
+          "EXPRESSION parameters expanded in equations",
+          "Backward compatible with numeric models",
+          "Output matches mathematical notation in published papers"
+        ]
+      }
+    },
+    "modeling_approaches": {
+      "numeric_modeling": {
+        "description": "Traditional approach using hardcoded numeric values",
+        "when_to_use": [
+          "Legacy models",
+          "Simple demonstrations",
+          "Quick prototypes",
+          "Models without parameter reuse"
+        ],
+        "example_snippet": "<outgoingFlows xsi:type=\"seir:RateFlow\" rate=\"0.120342\" target=\"//@compartments.3\"/>",
+        "limitations": [
+          "Equations show numbers instead of symbolic names",
+          "Hard to track which number represents which parameter",
+          "Changing a parameter value requires finding all uses",
+          "Doesn't match mathematical notation in papers"
+        ]
+      },
+      "parametric_modeling": {
+        "description": "NEW approach using named parameters with references",
+        "when_to_use": [
+          "Published models needing to match paper equations",
+          "Models with environmental dependencies (temperature, rainfall)",
+          "Models requiring parameter reuse",
+          "Complex models with many parameters",
+          "Models needing professional mathematical notation"
+        ],
+        "example_snippet": "<parameters name=\"γₕ\" expression=\"0.120342\" description=\"Recovery rate Ih to Rh\" unit=\"1/time\"/>\n<outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.9\" target=\"//@compartments.3\"/>",
+        "benefits": [
+          "Equations show symbolic names (γₕ, μₕ, β₁)",
+          "Parameters documented with descriptions and units",
+          "Easy to change parameter values in one place",
+          "Supports Greek symbols and professional notation",
+          "Matches published papers exactly",
+          "Enables sensitivity analysis and parameter sweeps"
+        ]
+      },
+      "mixed_modeling": {
+        "description": "Combination of numeric and parametric approaches in the same model",
+        "when_to_use": "Transitioning from numeric to parametric, or when only some parameters need symbolic representation",
+        "priority": "Parameter references take precedence over numeric attributes when both are present"
+      }
+    },
+    "best_practices": {
+      "parameter_naming": [
+        "Use Greek symbols for standard epidemiological parameters (β for transmission, μ for mortality, γ for recovery, ρ for progression)",
+        "Use subscripts to distinguish between populations (μₕ for human, μᵥ for vector)",
+        "Use function notation for dependencies: a(T) for temperature-dependent, θᵥ(T,R) for temperature and rainfall",
+        "Keep names concise but meaningful"
+      ],
+      "parameter_organization": [
+        "Define CONSTANT parameters first",
+        "Then VARIABLE parameters (environmental inputs)",
+        "Then EXPRESSION parameters (computed from others)",
+        "Group related parameters together",
+        "Always provide descriptions and units"
+      ],
+      "model_structure": [
+        "Use BirthSource for all population inflows (not flows from nowhere)",
+        "Use DeathSink for all population outflows (not flows to nowhere)",
+        "Use RateFlow for progression, recovery, immunity loss",
+        "Use ContactFlow for transmission and infection",
+        "Always provide flow descriptions"
+      ],
+      "parametric_vs_numeric": [
+        "For new models: Use parametric approach for better maintainability",
+        "For existing models: Can keep numeric or migrate to parametric",
+        "When using parametric: Set numeric attributes to 0.0",
+        "When unsure: Start parametric, easier to maintain long-term"
+      ]
+    },
+    "unicode_reference": {
+      "greek_letters": {
+        "lowercase": "α (alpha), β (beta), γ (gamma), δ (delta), ε (epsilon), θ (theta), λ (lambda), μ (mu), ρ (rho), σ (sigma), φ (phi), ω (omega)",
+        "uppercase": "Γ (Gamma), Δ (Delta), Θ (Theta), Λ (Lambda), Σ (Sigma), Φ (Phi), Ω (Omega)"
+      },
+      "subscripts": "₀ ₁ ₂ ₃ ₄ ₅ ₆ ₇ ₈ ₉ ₐ ₑ ₕ ᵢ ⱼ ₖ ₗ ₘ ₙ ₒ ₚ ᵣ ₛ ₜ ᵤ ᵥ ₓ",
+      "superscripts": "⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ⁺ ⁻ ⁼ ⁽ ⁾",
+      "common_combinations": {
+        "μₕ": "mu_h (human mortality)",
+        "μᵥ": "mu_v (vector mortality)",
+        "β₁": "beta1 (transmission probability 1)",
+        "β₂": "beta2 (transmission probability 2)",
+        "γₕ": "gamma_h (human recovery rate)",
+        "ρₕ": "rho_h (human progression rate)",
+        "θᵥ": "theta_v (vector recruitment)",
+        "αₕ": "alpha_h (human recruitment)",
+        "Λₘ": "Lambda_m (mosquito progression)"
       }
     }
   }
