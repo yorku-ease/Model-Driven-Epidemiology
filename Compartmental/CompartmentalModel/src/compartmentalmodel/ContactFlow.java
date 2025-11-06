@@ -10,6 +10,10 @@ import org.eclipse.emf.common.util.EList;
  * A representation of the model object '<em><b>Contact Flow</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <!-- begin-model-doc -->
+ * Contact-based transmission between compartments, where infection rate depends on contact with individuals in another compartment (e.g., susceptibles becoming exposed through contact with infectious individuals). Models frequency-dependent or density-dependent transmission. Supports both numeric and parametric modeling.
+ * <!-- end-model-doc -->
+ *
  * <p>
  * The following features are supported:
  * </p>
@@ -30,6 +34,9 @@ public interface ContactFlow extends Flow {
 	 * Returns the value of the '<em><b>Contact Compartment</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * The compartment whose population influences transmission (e.g., Infectious compartment for disease transmission, or Infected Mosquitoes for vector-borne diseases).
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Contact Compartment</em>' reference.
 	 * @see #setContactCompartment(Compartment)
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getContactFlow_ContactCompartment()
@@ -52,6 +59,9 @@ public interface ContactFlow extends Flow {
 	 * Returns the value of the '<em><b>Contact Rate</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Numeric contact/transmission rate. Used for numeric models or as default when contactRateParameter is not set. For parametric models, set this to 0.0 and use contactRateParameter instead.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Contact Rate</em>' attribute.
 	 * @see #setContactRate(double)
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getContactFlow_ContactRate()
@@ -74,6 +84,9 @@ public interface ContactFlow extends Flow {
 	 * Returns the value of the '<em><b>Contact Rate Parameter</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Reference to a Parameter defining this flow's contact rate. When set, this takes precedence over the numeric 'contactRate' attribute. Enables symbolic/parametric modeling (e.g., β₁a(T) for temperature-dependent mosquito biting rate).
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Contact Rate Parameter</em>' reference.
 	 * @see #setContactRateParameter(Parameter)
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getContactFlow_ContactRateParameter()
@@ -96,6 +109,9 @@ public interface ContactFlow extends Flow {
 	 * Returns the value of the '<em><b>Contact Parameters</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Legacy string-based parameter specification. Deprecated in favor of contactRateParameter for better type safety and tool support.
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Contact Parameters</em>' attribute.
 	 * @see #setContactParameters(String)
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getContactFlow_ContactParameters()
@@ -124,6 +140,9 @@ public interface ContactFlow extends Flow {
 	 * Examples: stratum="0-17" for age, stratum="Urban" for location, stratum="High-Risk" for risk level.
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Optional stratum-specific contact rates for population stratification. Allows different transmission rates between different population segments (e.g., age-specific contact matrices).
+	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Stratum Specific Rates</em>' containment reference list.
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getContactFlow_StratumSpecificRates()
 	 * @model containment="true"

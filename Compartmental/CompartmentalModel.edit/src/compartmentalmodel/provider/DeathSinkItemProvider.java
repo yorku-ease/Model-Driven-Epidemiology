@@ -246,7 +246,7 @@ public class DeathSinkItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return SeirEditPlugin.INSTANCE;
+		return CompartmentalEditPlugin.INSTANCE;
 	}
 
 }

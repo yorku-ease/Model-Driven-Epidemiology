@@ -13,6 +13,9 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Parameter Type</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
+ * <!-- begin-model-doc -->
+ * Enumeration defining the three types of parameters supported by EpiMDE: CONSTANT (fixed named values), VARIABLE (simulation-time inputs), and EXPRESSION (computed from other parameters).
+ * <!-- end-model-doc -->
  * @see compartmentalmodel.CompartmentalmodelPackage#getParameterType()
  * @model
  * @generated
@@ -22,6 +25,9 @@ public enum ParameterType implements Enumerator {
 	 * The '<em><b>CONSTANT</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Fixed value with a name, used for model parameters that don't change during simulation (e.g., natural death rate μₕ = 0.001384).
+	 * <!-- end-model-doc -->
 	 * @see #CONSTANT_VALUE
 	 * @generated
 	 * @ordered
@@ -32,6 +38,9 @@ public enum ParameterType implements Enumerator {
 	 * The '<em><b>VARIABLE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Placeholder for values provided at simulation time, such as environmental conditions (temperature T, rainfall R) or intervention levels.
+	 * <!-- end-model-doc -->
 	 * @see #VARIABLE_VALUE
 	 * @generated
 	 * @ordered
@@ -42,6 +51,9 @@ public enum ParameterType implements Enumerator {
 	 * The '<em><b>EXPRESSION</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Computed value defined as a mathematical expression referencing other parameters and/or compartments (e.g., β₂a(T) = β₂ * a(T), or μₕ+δ = μₕ + 0.017325).
+	 * <!-- end-model-doc -->
 	 * @see #EXPRESSION_VALUE
 	 * @generated
 	 * @ordered
@@ -52,6 +64,9 @@ public enum ParameterType implements Enumerator {
 	 * The '<em><b>CONSTANT</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Fixed value with a name, used for model parameters that don't change during simulation (e.g., natural death rate μₕ = 0.001384).
+	 * <!-- end-model-doc -->
 	 * @see #CONSTANT
 	 * @model
 	 * @generated
@@ -63,6 +78,9 @@ public enum ParameterType implements Enumerator {
 	 * The '<em><b>VARIABLE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Placeholder for values provided at simulation time, such as environmental conditions (temperature T, rainfall R) or intervention levels.
+	 * <!-- end-model-doc -->
 	 * @see #VARIABLE
 	 * @model
 	 * @generated
@@ -74,6 +92,9 @@ public enum ParameterType implements Enumerator {
 	 * The '<em><b>EXPRESSION</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Computed value defined as a mathematical expression referencing other parameters and/or compartments (e.g., β₂a(T) = β₂ * a(T), or μₕ+δ = μₕ + 0.017325).
+	 * <!-- end-model-doc -->
 	 * @see #EXPRESSION
 	 * @model
 	 * @generated

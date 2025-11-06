@@ -164,7 +164,7 @@ public class FlowItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return SeirEditPlugin.INSTANCE;
+		return CompartmentalEditPlugin.INSTANCE;
 	}
 
 }

@@ -200,7 +200,7 @@ public class GroupItemProvider
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return SeirEditPlugin.INSTANCE;
+		return CompartmentalEditPlugin.INSTANCE;
 	}
 
 }
