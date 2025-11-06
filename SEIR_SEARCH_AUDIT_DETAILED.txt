@@ -1,0 +1,393 @@
+COMPREHENSIVE SEIR REFERENCE AUDIT
+==================================
+
+This document lists ALL occurrences of "SEIR" and "seir" in the codebase for systematic renaming to "compartmental" or "compartmental model".
+
+================================================================================
+1. DIRECTORY STRUCTURE (Case-Sensitive)
+================================================================================
+
+Top-level directories:
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/.metadata/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/org.seir.targetplatform/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.design/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.edit/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.editor/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.tests/
+
+Subdirectories with "seir" references:
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel/bin/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel/bin/seir/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel/src/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel/src/seir/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.edit/bin/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.edit/src/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.edit/bin/seirmodel/provider/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.editor/bin/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.editor/src/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.tests/bin/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.tests/src/seirmodel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.design/bin/SEIRModel/
+  /home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/SEIR/SEIRModel.design/src/SEIRModel/
+
+================================================================================
+2. FILES WITH "SEIR"/"seir" IN THEIR NAMES
+================================================================================
+
+Metamodel and configuration files:
+  seir.ecore                  (Ecore metamodel - defines namespace prefix "seir")
+  seir.genmodel               (EMF GenModel)
+  seir.aird                   (Sirius representation instance)
+  seir.target                 (Eclipse target platform definition)
+
+Model instance files (.seirmodel extension):
+  covid.seirmodel
+  covid_0_17.seirmodel
+  covid_18_64.seirmodel
+  covid_65_.seirmodel
+  HIV.seirmodel
+  HIV_Women.seirmodel
+  HIV_Homosexual_Men.seirmodel
+  HIV_Heterosexual_Men.seirmodel
+  malaria.seirmodel
+  sample.seirmodel
+
+Design/UI files:
+  SEIRModel.odesign           (Sirius diagram definition)
+
+================================================================================
+3. PACKAGE NAMES AND NAMESPACES
+================================================================================
+
+Java packages with lowercase "seir":
+  seirmodel                   (Core model package)
+  seirmodel.impl              (Implementation classes)
+  seirmodel.util              (Utility classes)
+  seirmodel.provider          (Item provider adapter factory)
+  seirmodel.tests             (Test classes)
+  seirmodel.presentation      (Editor presentation classes)
+  seir.equationgenerator      (Equation generator)
+  seir.utilities              (Utilities like DynamicDiagramGenerator)
+
+XML namespace (in seir.ecore):
+  nsURI="http://example.com/seirmodel"
+  nsPrefix="seir"
+
+Bundle/Plugin symbolic names:
+  SEIRModel              (Core model plugin)
+  SEIRModel.edit         (Edit plugin)
+  SEIRModel.editor       (Editor plugin)
+  SEIRModel.design       (Design/diagram plugin)
+  SEIRModel.tests        (Tests plugin)
+  org.seir.targetplatform (Target platform plugin)
+
+================================================================================
+4. CLASS NAMES (Java/Generated Code)
+================================================================================
+
+IMPORTANT: These are EMF-generated classes. Renaming requires regenerating from .genmodel
+
+Main classes:
+  SEIRModel                   (Root class for compartmental models)
+  SEIRModelImpl                (Implementation)
+  SEIRModelItemProvider       (Item provider)
+  SEIREquationGenerator       (Java application for generating equations)
+
+Factory/Package classes:
+  SeirmodelFactory            (EMF factory)
+  SeirmodelFactoryImpl
+  SeirmodelPackage            (EMF package metadata)
+  SeirmodelPackageImpl
+  SeirmodelAdapterFactory     (Adapter factory)
+  SeirmodelSwitch             (Switch utility)
+
+Editor classes:
+  SeirmodelEditor
+  SeirmodelModelWizard
+  SeirmodelActionBarContributor
+  SeirEditorPlugin
+  SeirmodelItemProviderAdapterFactory
+  SeirEditPlugin
+
+Test classes:
+  SeirmodelTests
+  SeirmodelExample
+  SeirAllTests
+  SEIRModelTest
+  ContactFlowTest
+  BirthSourceTest
+  CompartmentTest
+  StratumSpecificRateTest
+
+Utility classes:
+  DynamicDiagramGenerator
+
+================================================================================
+5. CONFIGURATION FILES
+================================================================================
+
+plugin.xml files (references to "seir"):
+  SEIR/SEIRModel/plugin.xml
+    - Line: uri="http://example.com/seirmodel"
+    - Line: class="seirmodel.SeirmodelPackage"
+    - Line: genModel="seir.genmodel"
+
+  SEIR/SEIRModel.editor/plugin.xml
+    - Line: @generated seir
+    - Line: id="seirmodel.presentation.SeirmodelModelWizardID"
+    - Line: class="seirmodel.presentation.SeirmodelModelWizard"
+    - Line: extensions="seirmodel"
+    - Line: id="seirmodel.presentation.SeirmodelEditorID"
+    - Line: class="seirmodel.presentation.SeirmodelEditor"
+    - Line: contributorClass="seirmodel.presentation.SeirmodelActionBarContributor"
+
+  SEIR/SEIRModel.design/plugin.xml
+    - Line: id="SEIRModel.design"
+    - Line: name="SEIRModel Design"
+    - Line: path="/description/SEIRModel.odesign"
+
+  SEIR/SEIRModel.edit/plugin.xml
+    - Line: @generated seir
+    - Line: uri="http://example.com/seirmodel"
+    - Line: class="seirmodel.provider.SeirmodelItemProviderAdapterFactory"
+
+META-INF/MANIFEST.MF files (bundle names and exports):
+  SEIR/SEIRModel/META-INF/MANIFEST.MF
+    - Bundle-SymbolicName: SEIRModel;singleton:=true
+    - Automatic-Module-Name: SEIRModel
+    - Export-Package: seirmodel, seirmodel.impl, seirmodel.util
+
+  SEIR/SEIRModel.editor/META-INF/MANIFEST.MF
+    - Bundle-SymbolicName: SEIRModel.editor;singleton:=true
+    - Automatic-Module-Name: SEIRModel.editor
+    - Bundle-Activator: seirmodel.presentation.SeirEditorPlugin$Implementation
+    - Export-Package: seirmodel.presentation
+
+  SEIR/SEIRModel.edit/META-INF/MANIFEST.MF
+    - Bundle-SymbolicName: SEIRModel.edit;singleton:=true
+    - Automatic-Module-Name: SEIRModel.edit
+    - Bundle-Activator: seirmodel.provider.SeirEditPlugin$Implementation
+    - Export-Package: seirmodel.provider
+
+  SEIR/SEIRModel.design/META-INF/MANIFEST.MF
+    - Bundle-SymbolicName: SEIRModel.design;singleton:=true
+    - Automatic-Module-Name: SEIRModel.design
+
+  SEIR/SEIRModel.tests/META-INF/MANIFEST.MF
+    - Bundle-SymbolicName: SEIRModel.tests;singleton:=true
+    - Automatic-Module-Name: SEIRModel.tests
+    - Export-Package: seirmodel.tests
+
+  SEIR/org.seir.targetplatform/META-INF/MANIFEST.MF
+    - Bundle-SymbolicName: org.seir.targetplatform
+    - Automatic-Module-Name: org.seir.targetplatform
+
+plugin.properties files:
+  SEIR/SEIRModel/plugin.properties
+    - pluginName = SEIRModel
+
+  SEIR/SEIRModel.editor/plugin.properties
+    - pluginName = SEIRModel Editor
+    - _UI_SeirmodelEditor_menu = &Seirmodel Editor
+    - _UI_SeirmodelModelWizard_label = Seirmodel Model
+    - _UI_SeirmodelModelWizard_description = Create a new Seirmodel model
+    - _UI_SeirmodelEditor_label = Seirmodel Model Editor
+    - _UI_SeirmodelEditorFilenameExtensions = seirmodel
+
+  SEIR/SEIRModel.design/plugin.properties
+    - pluginName = SEIRModel.design
+
+================================================================================
+6. PROJECT FILES
+================================================================================
+
+.project files (Eclipse project descriptors):
+  SEIR/.project
+  SEIR/SEIRModel/.project
+  SEIR/SEIRModel.editor/.project
+  SEIR/SEIRModel.edit/.project
+  SEIR/SEIRModel.design/.project
+  SEIR/SEIRModel.tests/.project
+
+================================================================================
+7. DOCUMENTATION FILES
+================================================================================
+
+README.md occurrences (case-insensitive):
+  - "SEIR/" (directory reference, multiple lines)
+  - "SEIRModel/" (directory structure, multiple lines)
+  - "seir.ecore" (metamodel file)
+  - "seir.genmodel" (genmodel file)
+  - "seir.aird" (representation file)
+  - "seir.target" (target platform file)
+  - ".seirmodel" (file extension, multiple lines)
+  - "seir/" (package directory)
+  - "org.seir.targetplatform/" (plugin directory)
+  - "SEIRModel.design/" (design plugin)
+  - "SEIR Metamodel" (section heading)
+  - "SEIRModel" (class name, multiple lines)
+  - "SEIREquationGenerator.java" (class reference)
+  - "Generated SEIR Model Equations" (output text)
+  - Multiple XML examples with <seir:SEIRModel> tags and seir:ContactFlow, seir:RateFlow
+
+Markdown files in SEIR directory:
+  ECLIPSE_MODELING_GUIDE.md
+  SAMPLE_MODEL_EXPLANATION.md
+
+================================================================================
+8. JAVA SOURCE CODE FILES
+================================================================================
+
+Core model classes:
+  SEIR/SEIRModel/src/seirmodel/SeirmodelFactory.java
+  SEIR/SEIRModel/src/seirmodel/SeirmodelPackage.java
+  SEIR/SEIRModel/src/seirmodel/SEIRModel.java
+  SEIR/SEIRModel/src/seirmodel/util/SeirmodelAdapterFactory.java
+  SEIR/SEIRModel/src/seirmodel/util/SeirmodelSwitch.java
+  SEIR/SEIRModel/src/seirmodel/impl/SeirmodelFactoryImpl.java
+  SEIR/SEIRModel/src/seirmodel/impl/SEIRModelImpl.java
+  SEIR/SEIRModel/src/seirmodel/impl/SeirmodelPackageImpl.java
+
+Equation generator:
+  SEIR/SEIRModel/src/seir/equationgenerator/SEIREquationGenerator.java
+    - Package: seir.equationgenerator
+    - Class: SEIREquationGenerator
+    - Methods reference:
+      * loadSEIRModel()
+      * generateEquations()
+      * generateStratifiedEquations()
+      * generateCompartmentEquation()
+    - String literals with "SEIR", ".seirmodel", etc.
+
+Utilities:
+  SEIR/SEIRModel/src/seir/utilities/DynamicDiagramGenerator.java
+    - Package: seir.utilities
+    - File references: ".seirmodel" extension
+    - System messages with "SEIR"
+
+Editor classes:
+  SEIR/SEIRModel.editor/src/seirmodel/presentation/SeirmodelEditor.java
+  SEIR/SEIRModel.editor/src/seirmodel/presentation/SeirmodelModelWizard.java
+  SEIR/SEIRModel.editor/src/seirmodel/presentation/SeirmodelActionBarContributor.java
+  SEIR/SEIRModel.editor/src/seirmodel/presentation/SeirEditorPlugin.java
+
+Edit provider classes:
+  SEIR/SEIRModel.edit/src/seirmodel/provider/SeirmodelItemProviderAdapterFactory.java
+  SEIR/SEIRModel.edit/src/seirmodel/provider/SeirEditPlugin.java
+  SEIR/SEIRModel.edit/src/seirmodel/provider/SEIRModelItemProvider.java
+
+Test classes:
+  SEIR/SEIRModel.tests/src/seirmodel/tests/SeirmodelTests.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/SeirmodelExample.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/SeirAllTests.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/SEIRModelTest.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/ContactFlowTest.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/BirthSourceTest.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/CompartmentTest.java
+  SEIR/SEIRModel.tests/src/seirmodel/tests/StratumSpecificRateTest.java
+
+Design classes:
+  SEIR/SEIRModel.design/src/SEIRModel/design/Services.java
+  SEIR/SEIRModel.design/src/SEIRModel/design/Activator.java
+
+================================================================================
+9. RESOURCE/ICON FILES (generated content)
+================================================================================
+
+Binary class files in bin/ directories (can be regenerated):
+  All .class files in:
+    SEIR/SEIRModel/bin/seirmodel/
+    SEIR/SEIRModel/bin/seir/
+    SEIR/SEIRModel.editor/bin/seirmodel/
+    SEIR/SEIRModel.edit/bin/seirmodel/
+    SEIR/SEIRModel.tests/bin/seirmodel/
+    SEIR/SEIRModel.design/bin/SEIRModel/
+
+Icon/image files:
+  SEIR/SEIRModel.edit/icons/full/ctool16/CreateSEIRModel_*.gif
+  SEIR/SEIRModel.edit/icons/full/obj16/SEIRModel.gif
+  SEIR/SEIRModel.editor/icons/full/wizban/NewSeirmodel.gif
+  SEIR/SEIRModel.editor/icons/full/obj16/SeirmodelModelFile.gif
+
+Diagrams and visualizations:
+  SEIR/SEIRModel.design/description/SEIRModel.odesign
+
+================================================================================
+10. KEY REFERENCES IN CODE
+================================================================================
+
+In SEIREquationGenerator.java:
+  - Class name: SEIREquationGenerator
+  - System output: "Generated SEIR Model Equations"
+  - Method: generateEquations(SEIRModel model)
+  - Method: generateStratifiedEquations(SEIRModel model)
+  - File loading: ".seirmodel" extension
+  - Type casts: (SEIRModel)
+
+In DynamicDiagramGenerator.java:
+  - System output: "Dynamic SEIR Model Splitter"
+  - File operations: ".seirmodel" extension
+  - Type references: SEIRModel class
+
+In SeirmodelEditor.java, SeirmodelModelWizard.java, etc.:
+  - Package imports: "import seirmodel.*"
+  - Class references: SeirmodelPackage, SeirmodelFactory, etc.
+  - Resource file extension: "seirmodel"
+
+================================================================================
+11. BACKWARD COMPATIBILITY NOTES
+================================================================================
+
+Important considerations for renaming:
+  1. EMF Model URI: "http://example.com/seirmodel" - needs to be updated
+  2. File extension: ".seirmodel" - changing will require migration path
+  3. Generated code: Most Java classes are EMF-generated, need regeneration
+  4. Bundle symbolic names affect plugin loading
+  5. Package names affect import statements throughout codebase
+  6. Existing model files with .seirmodel extension will need conversion or mapping
+  7. XML namespace prefix in models: <seir:SEIRModel> - needs update
+  8. Build system may need adjustment
+
+================================================================================
+12. RENAME MAPPING SUGGESTIONS
+================================================================================
+
+Suggested renaming conventions:
+  
+Directory structure:
+  SEIR/ -> CompartmentalModel/
+  SEIRModel/ -> CompartmentalModel/
+  SEIRModel.edit -> CompartmentalModel.edit
+  SEIRModel.editor -> CompartmentalModel.editor
+  SEIRModel.design -> CompartmentalModel.design
+  SEIRModel.tests -> CompartmentalModel.tests
+  org.seir.targetplatform -> org.compartmentalmodel.targetplatform
+
+Package names:
+  seirmodel -> compartmentalmodel
+  seir -> compartmentalmodel (for utilities/generators)
+  seir.equationgenerator -> compartmentalmodel.equationgenerator
+  seir.utilities -> compartmentalmodel.utilities
+
+File extensions:
+  .seirmodel -> .compartmentalmodel
+
+Bundle symbolic names:
+  SEIRModel -> CompartmentalModel
+  org.seir.targetplatform -> org.compartmentalmodel.targetplatform
+
+Class names (main classes):
+  SEIRModel -> CompartmentalModel
+  SEIREquationGenerator -> CompartmentalEquationGenerator
+  SeirmodelEditor -> CompartmentalModelEditor
+  SeirmodelFactory -> CompartmentalModelFactory
+  SeirmodelPackage -> CompartmentalModelPackage
+  Etc. for all Seirmodel* classes -> Compartmental*
+
+XML namespace:
+  nsURI: "http://example.com/seirmodel" -> "http://example.com/compartmentalmodel"
+  nsPrefix: "seir" -> "compartmental" or "cmodel"
+
+================================================================================

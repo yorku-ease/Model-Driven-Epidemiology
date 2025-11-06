@@ -42,25 +42,25 @@ EpiMDE is a comprehensive framework for building, analyzing, and simulating epid
 
 ```
 SEIR/
-├── SEIRModel/                 # Core model plugin
-│   ├── seir.ecore            # Ecore metamodel definition
-│   ├── seir.genmodel         # EMF GenModel
+├── CompartmentalModel/                 # Core model plugin
+│   ├── compartmental.ecore            # Ecore metamodel definition
+│   ├── compartmental.genmodel         # EMF GenModel
 │   ├── seir.aird             # Sirius representation instance
-│   ├── covid.seirmodel       # COVID-19 stratified model example
-│   ├── HIV.seirmodel         # HIV model example
-│   ├── covid_*.seirmodel     # Age-specific COVID models
+│   ├── covid.compartmentalmodel       # COVID-19 stratified model example
+│   ├── HIV.compartmentalmodel         # HIV model example
+│   ├── covid_*.compartmentalmodel     # Age-specific COVID models
 │   ├── simulation/           # Python simulation tools
 │   │   └── simulation.py     # Numerical integration script
 │   └── src/                  # Generated Java source
-│       ├── seirmodel/        # Core model classes
+│       ├── compartmentalmodel/        # Core model classes
 │       └── seir/             # Utilities and equation generator
 ├── org.seir.targetplatform/   # Target platform project
 │   └── seir.target           # Eclipse target definition
-├── SEIRModel.design/          # Sirius graphical definition
-│   └── description/SEIRModel.odesign
-├── SEIRModel.edit/            # EMF edit plugin
-├── SEIRModel.editor/          # EMF editor plugin
-└── SEIRModel.tests/           # Unit tests
+├── CompartmentalModel.design/          # Sirius graphical definition
+│   └── description/CompartmentalModel.odesign
+├── CompartmentalModel.edit/            # EMF edit plugin
+├── CompartmentalModel.editor/          # EMF editor plugin
+└── CompartmentalModel.tests/           # Unit tests
 ```
 
 ---
@@ -86,10 +86,10 @@ This will resolve dependencies like EMF, Sirius, and required runtimes.
 
 ## 🧠 SEIR Metamodel
 
-The SEIR model is defined in `seir.ecore` and includes:
+The SEIR model is defined in `compartmental.ecore` and includes:
 
 ### Core Components
-- **`SEIRModel`** (root) - Contains compartments, flows, parameters, groups, and products
+- **`CompartmentalModel`** (root) - Contains compartments, flows, parameters, groups, and products
 - **`Compartment`** - Population states with `PrimaryName`, `SecondaryName`, `population`, and `outgoingFlows`
 - **Flow Types**:
   - `RateFlow`: Rate-based transitions (e.g., recovery, progression)
@@ -124,20 +124,20 @@ The SEIR model is defined in `seir.ecore` and includes:
 ## ✏️ Creating and Editing Models
 
 ### Textual
-- Right-click → `New → Other → Example EMF Model Creation Wizards → SEIR Model`
-- Save with `.seirmodel` extension
-- You can edit via the generated tree editor (`SEIRModel.editor`) or directly via XML
+- Right-click → `New → Other → Example EMF Model Creation Wizards → Compartmental Model`
+- Save with `.compartmentalmodel` extension
+- You can edit via the generated tree editor (`CompartmentalModel.editor`) or directly via XML
 
 ### Graphical (Sirius)
 
 #### Step-by-Step:
-1. Open `SEIRModel.odesign` (inside `SEIRModel.design/description/`)
+1. Open `CompartmentalModel.odesign` (inside `CompartmentalModel.design/description/`)
 2. Ensure `plugin.xml` contains:
 ```xml
 <extension point="org.eclipse.sirius.componentization">
-  <component name="SEIRModel" id="SEIRModel.design" class="org.eclipse.sirius.business.api.componentization.ViewpointRegistry$ViewpointComponent">
+  <component name="CompartmentalModel" id="CompartmentalModel.design" class="org.eclipse.sirius.business.api.componentization.ViewpointRegistry$ViewpointComponent">
     <viewpoints>
-      <viewpoint path="/description/SEIRModel.odesign"/>
+      <viewpoint path="/description/CompartmentalModel.odesign"/>
     </viewpoints>
   </component>
 </extension>
@@ -146,7 +146,7 @@ The SEIR model is defined in `seir.ecore` and includes:
 4. Run as `Eclipse Application`
 5. In the runtime workspace:
    - Open `.aird` file
-   - Right-click on `.seirmodel` → `Viewpoints Selection` → enable **MyViewpoint**
+   - Right-click on `.compartmentalmodel` → `Viewpoints Selection` → enable **MyViewpoint**
    - Right-click → `New Representation → SEIRDiagram`
    - Compartments will appear as nodes, and flows as arrows
 
@@ -163,7 +163,7 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
 
 ### Example 1: Numeric Model (Legacy Style)
 ```xml
-<seir:SEIRModel totalPopulation="10000">
+<seir:CompartmentalModel totalPopulation="10000">
   <compartments PrimaryName="Susceptible" population="9900">
     <outgoingFlows xsi:type="seir:ContactFlow"
                    contactRate="0.0003"
@@ -178,12 +178,12 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
   <compartments PrimaryName="Recovered" population="0"/>
 
   <deathSinks name="Natural_Death" rate="0.00005" sourceCompartment="//@compartments.0"/>
-</seir:SEIRModel>
+</seir:CompartmentalModel>
 ```
 
 ### Example 2: Parametric Model (New Style) 🆕
 ```xml
-<seir:SEIRModel totalPopulation="10000">
+<seir:CompartmentalModel totalPopulation="10000">
   <!-- Define parameters -->
   <parameters name="beta" type="CONSTANT"
               expression="0.0003"
@@ -215,7 +215,7 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
   <deathSinks name="Natural_Death"
               rateParameter="//@parameters.2"
               sourceCompartment="//@compartments.0"/>
-</seir:SEIRModel>
+</seir:CompartmentalModel>
 ```
 
 **Output difference:**
@@ -224,7 +224,7 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
 
 ### Example 3: Expression Parameters (Advanced) 🆕
 ```xml
-<seir:SEIRModel totalPopulation="935">
+<seir:CompartmentalModel totalPopulation="935">
   <!-- Basic transmission parameters -->
   <parameters name="eta_S" type="CONSTANT"
               expression="0.0125"
@@ -245,14 +245,14 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
                    target="//@compartments.2"/>
   </compartments>
   <compartments PrimaryName="Infectious_Mosquito" population="5"/>
-</seir:SEIRModel>
+</seir:CompartmentalModel>
 ```
 
 **Output**: `dSusceptible_Human/dt = - (eta_S * IM) * Susceptible_Human * Infectious_Mosquito / 935`
 
 ## 🎯 Population Stratification Example
 
-The system now supports population stratification. Example from `covid.seirmodel`:
+The system now supports population stratification. Example from `covid.compartmentalmodel`:
 
 ```xml
 <!-- Define age groups -->
@@ -319,13 +319,13 @@ This creates separate compartments for each age group (Susceptible_0-17, Suscept
 
 ## 🧮 Equation Generation
 
-Implemented in `SEIREquationGenerator.java`. Generates differential equations from `.seirmodel` files with support for both **numeric** and **parametric** models.
+Implemented in `SEIREquationGenerator.java`. Generates differential equations from `.compartmentalmodel` files with support for both **numeric** and **parametric** models.
 
 ### Running the Generator
 
-1. Right-click `SEIRModel/src/seir/equationgenerator/SEIREquationGenerator.java`
+1. Right-click `CompartmentalModel/src/seir/equationgenerator/SEIREquationGenerator.java`
 2. Select **"Run As" → "Java Application"**
-3. Enter the model filename when prompted (e.g., `malaria.seirmodel`, `HIV.seirmodel`)
+3. Enter the model filename when prompted (e.g., `malaria.compartmentalmodel`, `HIV.compartmentalmodel`)
 4. Equations are displayed in console and saved to `.txt` files
 
 ### Output Modes
@@ -379,14 +379,14 @@ The generator intelligently handles parameters:
 
 ## 🐍 Python Simulation
 
-The project includes Python simulation capabilities in `SEIRModel/simulation/simulation.py`.
+The project includes Python simulation capabilities in `CompartmentalModel/simulation/simulation.py`.
 
 ### Running Simulations:
 
 1. **Generate equations** first using `SEIREquationGenerator.java`
 2. **Navigate to simulation directory**:
    ```bash
-   cd SEIR/SEIRModel/simulation/
+   cd SEIR/CompartmentalModel/simulation/
    ```
 3. **Run the simulation script**:
    ```bash
@@ -437,10 +437,10 @@ Located in `src/seir/utilities/`, these tools help manage large stratified model
 
 ### Running Model Splitting:
 Use the provided scripts to run DynamicDiagramGenerator:
-- **Windows**: `run_splitter.bat covid.seirmodel`
-- **Linux/Mac**: `./run_splitter.sh covid.seirmodel`
+- **Windows**: `run_splitter.bat covid.compartmentalmodel`
+- **Linux/Mac**: `./run_splitter.sh covid.compartmentalmodel`
 
-This will generate separate models like `covid_0-17.seirmodel`, `covid_18-64.seirmodel`, etc.
+This will generate separate models like `covid_0-17.compartmentalmodel`, `covid_18-64.compartmentalmodel`, etc.
 
 ---
 
@@ -541,7 +541,7 @@ See these files for complete details:
 
 ### Flows Not Showing in Diagram?
 - Check `FlowEdge` mapping:
-  - Domain Class: `seirmodel.Flow`
+  - Domain Class: `compartmentalmodel.Flow`
   - Semantic Candidates: `aql:self.compartments.outgoingFlows`
   - Source Mapping: `CompartmentNode`
   - Target Finder Expression: `aql:self.target`
@@ -576,7 +576,7 @@ See these files for complete details:
 
 ### Model Examples:
 - **Epidemiological Models Included**:
-  - **`malaria.seirmodel`** 🆕 - Malaria transmission model with dual pathways (NEW!)
+  - **`malaria.compartmentalmodel`** 🆕 - Malaria transmission model with dual pathways (NEW!)
     - Based on Akowe et al. (2025) BMC Infectious Diseases 25:322
     - **First fully parametric model** demonstrating new parameter system
     - 24 parameters (19 CONSTANT + 5 EXPRESSION types)
@@ -586,17 +586,17 @@ See these files for complete details:
     - Treatment and recovery pathways
     - See `MALARIA_MODEL_DOCUMENTATION.md` for complete details
 
-  - **`covid.seirmodel`** - COVID-19 age-stratified model (3 age groups: 0-17, 18-64, 65+)
+  - **`covid.compartmentalmodel`** - COVID-19 age-stratified model (3 age groups: 0-17, 18-64, 65+)
     - Based on published research (Tuite et al., 2020)
     - Uses **numeric values** (legacy style)
     - No natural death rates (follows paper methodology - only COVID deaths in ICU)
     - Age-specific transmission, hospitalization, and ICU mortality rates
 
-  - **`HIV.seirmodel`** - HIV transmission model with sexual behavior stratification
+  - **`HIV.compartmentalmodel`** - HIV transmission model with sexual behavior stratification
     - Based on published research (Espitia et al., 2022)
     - Uses **numeric values** (legacy style)
     - 3 sexual behavior groups: Homosexual Men, Women, Heterosexual Men
     - Natural death rates for all compartments + AIDS-induced deaths to HIV Deaths compartment
     - Complex transmission patterns including bisexual contacts
 
-  - **`covid_*.seirmodel`** - Auto-generated age-specific models from DynamicDiagramGenerator
+  - **`covid_*.compartmentalmodel`** - Auto-generated age-specific models from DynamicDiagramGenerator
