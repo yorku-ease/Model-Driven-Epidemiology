@@ -33,7 +33,7 @@ public class CompartmentalEquationGenerator {
         initializeEMF();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the name of the .compartmentalmodel file (e.g. covid.compartmentalmodel): ");
+        System.out.print("Enter the name of the .compmodel file (e.g. covid.compmodel): ");
         String fileName = scanner.nextLine().trim();
         scanner.close();
 
@@ -54,21 +54,21 @@ public class CompartmentalEquationGenerator {
             System.out.println("✅ Generated Stratified Compartmental Model Equations:");
             stratifiedEquations.forEach((compartment, equation) -> System.out.println(equation));
             
-            String stratifiedOutputFileName = fileName.replace(".compartmentalmodel", "_stratified.txt");
+            String stratifiedOutputFileName = fileName.replace(".compmodel", "_stratified.txt");
             saveEquationsToFile(stratifiedEquations, stratifiedOutputFileName);
         }
 
         System.out.println("✅ Generated Compartmental Model Equations:");
         equations.forEach((compartment, equation) -> System.out.println(equation));
 
-        String outputFileName = fileName.replace(".compartmentalmodel", ".txt");
+        String outputFileName = fileName.replace(".compmodel", ".txt");
         saveEquationsToFile(equations, outputFileName);
     }
 
     private static void initializeEMF() {
         try {
             Class.forName("org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl");
-            Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("compartmentalmodel", new XMIResourceFactoryImpl());
+            Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("compmodel", new XMIResourceFactoryImpl());
         } catch (ClassNotFoundException e) {
             System.err.println("❌ Error: Unable to load EMF XMI Factory.");
             e.printStackTrace();
