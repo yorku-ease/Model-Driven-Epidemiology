@@ -111,7 +111,7 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int TOTAL_POPULATION_EDEFAULT = 0;
+	protected static final double TOTAL_POPULATION_EDEFAULT = 0.0;
 	/**
 	 * The cached value of the '{@link #getTotalPopulation() <em>Total Population</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -120,7 +120,7 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 * @ordered
 	 */
-	protected int totalPopulation = TOTAL_POPULATION_EDEFAULT;
+	protected double totalPopulation = TOTAL_POPULATION_EDEFAULT;
 	/**
 	 * The default value of the '{@link #getGlobalBirthRate() <em>Global Birth Rate</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -261,7 +261,7 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 */
 	@Override
-	public int getTotalPopulation() {
+	public double getTotalPopulation() {
 		return totalPopulation;
 	}
 
@@ -271,8 +271,8 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 */
 	@Override
-	public void setTotalPopulation(int newTotalPopulation) {
-		int oldTotalPopulation = totalPopulation;
+	public void setTotalPopulation(double newTotalPopulation) {
+		double oldTotalPopulation = totalPopulation;
 		totalPopulation = newTotalPopulation;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CompartmentalmodelPackage.COMPARTMENTAL_MODEL__TOTAL_POPULATION, oldTotalPopulation, totalPopulation));
@@ -412,7 +412,7 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 				getParameters().addAll((Collection<? extends Parameter>)newValue);
 				return;
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__TOTAL_POPULATION:
-				setTotalPopulation((Integer)newValue);
+				setTotalPopulation((Double)newValue);
 				return;
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GLOBAL_BIRTH_RATE:
 				setGlobalBirthRate((Double)newValue);

@@ -53,12 +53,12 @@ public interface Compartment extends EObject {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Population</em>' attribute.
-	 * @see #setPopulation(int)
+	 * @see #setPopulation(double)
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getCompartment_Population()
 	 * @model
 	 * @generated
 	 */
-	int getPopulation();
+	double getPopulation();
 
 	/**
 	 * Sets the value of the '{@link compartmentalmodel.Compartment#getPopulation <em>Population</em>}' attribute.
@@ -68,7 +68,7 @@ public interface Compartment extends EObject {
 	 * @see #getPopulation()
 	 * @generated
 	 */
-	void setPopulation(int value);
+	void setPopulation(double value);
 
 	/**
 	 * Returns the value of the '<em><b>Outgoing Flows</b></em>' containment reference list.

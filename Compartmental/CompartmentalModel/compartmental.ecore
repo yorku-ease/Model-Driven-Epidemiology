@@ -6,14 +6,27 @@
     <details key="documentation" value="EpiMDE Metamodel - A comprehensive framework for epidemiological compartmental models with support for symbolic/parametric modeling, population stratification, and automatic equation generation."/>
   </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="Compartment">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Represents a population compartment in the model. For epidemiological models, this is a disease state (Susceptible, Infected, etc.). For traffic models, this is a road link with vehicle density. The optional supplyFunction and junctionRule attributes enable traffic network modeling without affecting disease models."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="PrimaryName" ordered="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="population" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="population" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingFlows" upperBound="-1"
         eType="#//Flow" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="SecondaryName" ordered="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="product" eType="#//Product"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supplyFunction" eType="#//SupplyFunction" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional supply function for traffic network modeling. When present, indicates this compartment represents a road link with capacity constraints (supply-demand dynamics). Disease models leave this null and use standard rate-based flows."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="junctionRule" eType="#//JunctionRuleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional junction rule for traffic network modeling. Specifies how flows are computed at network junctions (NONE for disease models, PPFIFO for traffic). Default is NONE."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Flow" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -157,6 +170,87 @@
       </eAnnotations>
     </eLiterals>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SupplyFunction">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Defines supply and demand functions for flow networks based on capacity constraints and flow characteristics. Originally designed for traffic networks (triangular fundamental diagram) but generalizable to other flow systems. When a Compartment has a SupplyFunction, it represents a flow-constrained node rather than a simple state (e.g., road link in traffic, pipeline in fluids, queue in systems). Disease models do not use supply functions."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SupplyFunctionType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Type of supply/demand function: TRIANGULAR (piecewise linear with critical point), LINEAR (proportional), or CUSTOM (user-defined). TRIANGULAR follows flow network models like Coogan &amp; Arcak (2015) for traffic."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxDensity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximum density/capacity: the saturation point where no more entities can be stored (e.g., ρ^jam in traffic - vehicles per length when stopped, max queue size in systems, storage capacity in networks). For constrained nodes only; source nodes may have unbounded capacity."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="criticalDensity" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Critical density/threshold: the density at which maximum throughput occurs (e.g., ρ^crit in traffic). Below this is efficient/free-flow operation, above is congested/constrained regime. Typically criticalDensity &lt; maxDensity."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxThroughput" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximum throughput/capacity: the maximum flow rate that can pass through this node (e.g., Φ^crit in traffic - vehicles per time, max processing rate in systems, bandwidth in networks). Achieved at criticalDensity."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxDemand" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Maximum demand/output rate: upper bound on outflow for source nodes (e.g., Φ^max for onramps in traffic, max generation rate for sources, service rate for queues). For constrained nodes, leave at 0 (not used). Source nodes act as unbounded storage with demand bounded by maxDemand."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isSourceNode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="True if this is a source/entry node with external input (e.g., onramp in traffic, generator in systems, entry queue in networks), false for internal constrained nodes. Source nodes typically have unbounded storage capacity and use only demand function; constrained nodes have both supply and demand functions."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SupplyFunctionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Type of supply/demand function for traffic links. TRIANGULAR is the standard model from traffic flow theory (Coogan &amp; Arcak 2015, Daganzo 1994)."/>
+    </eAnnotations>
+    <eLiterals name="NONE" literal="NONE">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="No supply function (default for disease models)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TRIANGULAR" value="1" literal="TRIANGULAR">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Triangular fundamental diagram: demand increases linearly until ρ^crit, supply decreases linearly from ρ^crit to ρ^jam. Standard traffic model."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="LINEAR" value="2" literal="LINEAR">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Simplified linear model (for testing or special cases)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="CUSTOM" value="3" literal="CUSTOM">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="User-defined custom supply/demand functions."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="JunctionRuleType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Rule for computing flows at network junctions in traffic models. NONE is used for disease models which don't have junction constraints."/>
+    </eAnnotations>
+    <eLiterals name="NONE" literal="NONE">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="No junction rule (default for disease models). Flows are computed directly from rates without capacity constraints."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="PPFIFO" value="1" literal="PPFIFO">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Proportional Priority, First-In-First-Out rule (Coogan &amp; Arcak 2015). Computes α_v(ρ) to scale demands proportionally while respecting supply constraints: α_v(ρ) = max{α ∈ [0,1] : α ∑_j β_jk Φ^out_j ≤ Φ^in_k ∀k}."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="CUSTOM" value="2" literal="CUSTOM">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="User-defined custom junction rule."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CompartmentalModel">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Root container for epidemiological compartmental models. Supports both numeric and parametric (symbolic) modeling approaches. Contains compartments, flows, parameters, stratification groups, and demographic sources/sinks. Can represent SEIR, SIR, SEIRS, vector-borne, and other compartmental model variants."/>
@@ -197,7 +291,7 @@
         <details key="documentation" value="Named parameters (CONSTANT, VARIABLE, EXPRESSION) that can be referenced by flows, birth sources, and death sinks. Enables symbolic/parametric modeling where model structure is separated from parameter values."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalPopulation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalPopulation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Total population size used for normalization in contact-based transmission (frequency-dependent vs density-dependent). Sum of all compartment populations should typically equal this value."/>
       </eAnnotations>

@@ -66,7 +66,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int POPULATION_EDEFAULT = 0;
+	protected static final double POPULATION_EDEFAULT = 0.0;
 
 	/**
 	 * The cached value of the '{@link #getPopulation() <em>Population</em>}' attribute.
@@ -76,7 +76,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 * @ordered
 	 */
-	protected int population = POPULATION_EDEFAULT;
+	protected double population = POPULATION_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getOutgoingFlows() <em>Outgoing Flows</em>}' containment reference list.
@@ -166,7 +166,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 */
 	@Override
-	public int getPopulation() {
+	public double getPopulation() {
 		return population;
 	}
 
@@ -176,8 +176,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 */
 	@Override
-	public void setPopulation(int newPopulation) {
-		int oldPopulation = population;
+	public void setPopulation(double newPopulation) {
+		double oldPopulation = population;
 		population = newPopulation;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CompartmentalmodelPackage.COMPARTMENT__POPULATION, oldPopulation, population));
@@ -309,7 +309,7 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				setPrimaryName((String)newValue);
 				return;
 			case CompartmentalmodelPackage.COMPARTMENT__POPULATION:
-				setPopulation((Integer)newValue);
+				setPopulation((Double)newValue);
 				return;
 			case CompartmentalmodelPackage.COMPARTMENT__OUTGOING_FLOWS:
 				getOutgoingFlows().clear();

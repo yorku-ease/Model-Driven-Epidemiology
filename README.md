@@ -1,10 +1,20 @@
-# EpiMDE: Epidemiological Model-Driven Engineering Framework
+# EpiMDE: Compartmental Model-Driven Engineering Framework
 
-EpiMDE is a comprehensive framework for building, analyzing, and simulating epidemiological models using Model-Driven Engineering (MDE) principles. Built on Eclipse Modeling Framework (EMF) and Sirius, it supports both graphical and textual model editing with a focus on symbolic/parametric modeling.
+EpiMDE is a comprehensive framework for building, analyzing, and simulating compartmental models using Model-Driven Engineering (MDE) principles. Built on Eclipse Modeling Framework (EMF) and Sirius, it supports both graphical and textual model editing with a focus on symbolic/parametric modeling.
+
+**Version 3.0** extends support beyond epidemiology to **flow networks** including traffic systems, queue networks, and other capacity-constrained flow systems.
 
 ## Key Features
 
-- **Symbolic/Parametric Modeling** 🎯 **NEW!**
+- **Flow Network Modeling** 🚀 **NEW in Version 3.0!**
+  - **Traffic Networks**: Model highway traffic with supply-demand dynamics and ramp metering
+  - **Supply/Demand Functions**: Capacity constraints based on triangular fundamental diagram
+  - **Junction Rules**: PP/FIFO (Proportional Priority, First-In-First-Out) for realistic flow control
+  - **Generalized Attributes**: `isSourceNode`, `maxDensity`, `criticalDensity`, `maxThroughput`, `maxDemand`
+  - **100% Backward Compatible**: Disease models work unchanged
+  - **Multiple Domains**: Applicable to traffic, queues, pipelines, manufacturing, networks
+
+- **Symbolic/Parametric Modeling** 🎯
   - Define parameters with names, types (CONSTANT/VARIABLE/EXPRESSION), and descriptions
   - Use symbolic expressions (e.g., `beta = eta_S * IM`) instead of hardcoded numbers
   - Separate model structure from parameter values for reusability
@@ -24,6 +34,8 @@ EpiMDE is a comprehensive framework for building, analyzing, and simulating epid
   - Automatic generation of differential equations from models
   - Symbolic output matching mathematical papers
   - Support for both parametric and numeric models
+  - **NEW**: Automatic detection of disease vs. flow network models
+  - Generates supply/demand equations for traffic networks
   - Backward compatible with existing models
 
 - **Python Simulation**
@@ -249,6 +261,113 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
 ```
 
 **Output**: `dSusceptible_Human/dt = - (eta_S * IM) * Susceptible_Human * Infectious_Mosquito / 935`
+
+---
+
+## 🚦 Traffic Network Modeling (Version 3.0)
+
+**NEW!** The metamodel now supports flow networks with supply-demand dynamics. Perfect for modeling traffic, queues, pipelines, and other capacity-constrained systems.
+
+### Traffic Model Example
+
+Based on Coogan & Arcak (2015), implementing highway traffic with ramp metering:
+
+**Source Node (Onramp with external demand):**
+```xml
+<compartments PrimaryName="Onramp1" population="0" junctionRule="PPFIFO">
+  <supplyFunction type="TRIANGULAR" isSourceNode="true" maxDemand="3000"/>
+  <outgoingFlows xsi:type="compartmental:RateFlow"
+                 rateParameter="//@parameters.10"
+                 description="Split ratio β_12 = 0.5"
+                 target="//@compartments.1"/>
+</compartments>
+```
+
+**Constrained Node (Road link with capacity limits):**
+```xml
+<compartments PrimaryName="Link2" population="37.5" junctionRule="PPFIFO">
+  <supplyFunction type="TRIANGULAR" isSourceNode="false"
+                  maxDensity="360" criticalDensity="90" maxThroughput="3000"/>
+  <outgoingFlows xsi:type="compartmental:RateFlow"
+                 rateParameter="//@parameters.12"
+                 description="Split ratio β_25 = 1.0"
+                 target="//@compartments.4"/>
+</compartments>
+```
+
+### Key Concepts
+
+| Attribute | Description | Traffic Example | General Use |
+|-----------|-------------|-----------------|-------------|
+| `isSourceNode` | Entry point with external input | Onramp | Generator, inlet, source queue |
+| `maxDensity` | Maximum capacity | ρ^jam (vehicles/length) | Max queue size, storage limit |
+| `criticalDensity` | Optimal throughput point | ρ^crit (free-flow threshold) | Optimal operation point |
+| `maxThroughput` | Maximum flow rate | Φ^crit (vehicles/hour) | Bandwidth, processing rate |
+| `maxDemand` | Source output limit | Φ^max (onramp rate) | Generation rate, service rate |
+| `junctionRule` | Flow computation rule | PPFIFO | Junction/merge logic |
+
+### Supply and Demand Functions
+
+**Source Nodes** (e.g., onramps):
+- **Demand**: Φ^out(ρ) = min(max(ρ, maxDemand), maxDemand)
+- **Supply**: Φ^in(ρ) = ∞ (unbounded storage)
+
+**Constrained Nodes** (e.g., road links):
+- **Demand** (increasing): Φ^out(ρ) = min((maxThroughput/criticalDensity)×ρ, maxThroughput)
+- **Supply** (decreasing): Φ^in(ρ) = (maxThroughput/(maxDensity-criticalDensity))×(maxDensity-ρ)
+
+### Generated Equations
+
+The equation generator automatically detects traffic models and outputs:
+
+```
+MODEL TYPE: Traffic Network (Supply-Demand Dynamics)
+
+Supply and Demand Functions:
+Onramp1:
+  Type: Source Node
+  Demand: Φ^out(ρ) = min(max(ρ, 3000.0), 3000.0)
+  Supply: Φ^in(ρ) = ∞
+
+Link2:
+  Type: Constrained Node
+  ρ^max = 360.0, ρ^crit = 90.0, Φ^max = 3000.0
+  Demand: Φ^out(ρ) = min((Φ^max/ρ^crit)*ρ, Φ^max)
+  Supply: Φ^in(ρ) = min((Φ^max/(ρ^max-ρ^crit))*(ρ^max-ρ), Φ^max)
+
+Junction Rules: PPFIFO
+
+Differential Equations:
+dρ_Onramp1/dt = d_1 - f^out_Onramp1(ρ)
+dρ_Link2/dt = f^in_Link2(ρ) - f^out_Link2(ρ)
+```
+
+### Applications Beyond Traffic
+
+The generalized design supports multiple domains:
+- **Queue Systems**: Generators (sources) and service queues (constrained nodes)
+- **Manufacturing**: Input stations and processing stages with capacity limits
+- **Computer Networks**: Packet generators and routers with bandwidth constraints
+- **Pipeline Networks**: Inlets and pipes with flow capacity limits
+
+### Running Traffic Models
+
+```bash
+# Generate equations
+python3 equation_generator.py traffic.compmodel traffic_equations.txt
+
+# Full simulation (see traffic_network.py for PP/FIFO implementation)
+python3 traffic_network.py
+```
+
+### Documentation
+
+- **`TRAFFIC_MODEL_IMPLEMENTATION_SUMMARY.md`** - Complete implementation details
+- **`metamodel.txt`** - Full metamodel specification (Version 3.0)
+- **`traffic.compmodel`** - Example traffic network (Coogan & Arcak 2015)
+- **`traffic_network.py`** - Python implementation with PP/FIFO simulation
+
+---
 
 ## 🎯 Population Stratification Example
 
@@ -575,6 +694,17 @@ See these files for complete details:
 - No external Python dependencies required (uses standard library only)
 
 ### Model Examples:
+
+- **Flow Network Models** 🚀 **NEW in Version 3.0!**:
+  - **`traffic.compmodel`** - Highway traffic network with ramp metering
+    - Based on Coogan & Arcak (2015) IEEE Trans. Automatic Control
+    - Example 2 from the paper: 5 links (2 onramps, 3 ordinary links)
+    - Demonstrates PP/FIFO junction rule and non-cooperative dynamics
+    - Supply-demand constrained flows with triangular fundamental diagram
+    - Ramp metering optimization achieving 6.25% throughput improvement
+    - **First flow network model** with generalized attributes
+    - See `TRAFFIC_MODEL_IMPLEMENTATION_SUMMARY.md` for complete details
+
 - **Epidemiological Models Included**:
   - **`malaria.compartmentalmodel`** 🆕 - Malaria transmission model with dual pathways (NEW!)
     - Based on Akowe et al. (2025) BMC Infectious Diseases 25:322

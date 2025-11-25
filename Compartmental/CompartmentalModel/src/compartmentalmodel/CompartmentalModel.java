@@ -132,12 +132,12 @@ public interface CompartmentalModel extends EObject {
 	 * Total population size used for normalization in contact-based transmission (frequency-dependent vs density-dependent). Sum of all compartment populations should typically equal this value.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Total Population</em>' attribute.
-	 * @see #setTotalPopulation(int)
+	 * @see #setTotalPopulation(double)
 	 * @see compartmentalmodel.CompartmentalmodelPackage#getCompartmentalModel_TotalPopulation()
 	 * @model
 	 * @generated
 	 */
-	int getTotalPopulation();
+	double getTotalPopulation();
 
 	/**
 	 * Sets the value of the '{@link compartmentalmodel.CompartmentalModel#getTotalPopulation <em>Total Population</em>}' attribute.
@@ -147,7 +147,7 @@ public interface CompartmentalModel extends EObject {
 	 * @see #getTotalPopulation()
 	 * @generated
 	 */
-	void setTotalPopulation(int value);
+	void setTotalPopulation(double value);
 
 	/**
 	 * Returns the value of the '<em><b>Global Birth Rate</b></em>' attribute.

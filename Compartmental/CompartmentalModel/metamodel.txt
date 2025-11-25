@@ -1,7 +1,12 @@
 {
-  "seirmodel_metamodel": {
-    "version": "2.0",
-    "description": "EpiMDE Metamodel - Supports both numeric and parametric (symbolic) modeling approaches for epidemiological compartmental models",
+  "compartmental_metamodel": {
+    "version": "3.0",
+    "description": "EpiMDE Compartmental Metamodel - Unified framework for epidemiological models and traffic network models with parametric (symbolic) modeling support",
+    "changelog": {
+      "3.0": "Added traffic network modeling with supply-demand dynamics, PP/FIFO junction rules, and triangular fundamental diagram support. Fully backward compatible with disease models.",
+      "2.0": "Added comprehensive parameter system for symbolic/parametric modeling with Unicode support",
+      "1.0": "Initial SEIR/epidemiological metamodel"
+    },
     "structure": {
       "xml_declaration": {
         "version": "1.0",
@@ -66,10 +71,73 @@
       "compartments": {
         "element": "compartments",
         "required_attributes": ["PrimaryName"],
-        "optional_attributes": ["SecondaryName", "population", "product"],
-        "child_elements": ["outgoingFlows"],
+        "optional_attributes": ["SecondaryName", "population", "product", "junctionRule"],
+        "child_elements": ["outgoingFlows", "supplyFunction"],
         "constraints": {
-          "product": "Reference to product using format '//@products.X'"
+          "product": "Reference to product using format '//@products.X'",
+          "junctionRule": "Optional. For traffic models use PPFIFO. For disease models use NONE (default)."
+        },
+        "attributes": {
+          "PrimaryName": {
+            "description": "Main identifier for the compartment",
+            "examples": ["Susceptible", "Exposed", "Infectious", "Onramp1", "Link2"]
+          },
+          "SecondaryName": {
+            "description": "Additional descriptor for stratification or link type",
+            "examples": ["Adults", "Children", "Ordinary", "Onramp"]
+          },
+          "population": {
+            "description": "Initial population count (disease models) or initial density (traffic models)",
+            "constraint": "Must be float/decimal value"
+          },
+          "junctionRule": {
+            "description": "Junction rule type for traffic models. NONE for disease models (default), PPFIFO for traffic networks.",
+            "values": ["NONE", "PPFIFO", "CUSTOM"],
+            "default": "NONE"
+          }
+        }
+      },
+      "supplyFunction": {
+        "element": "supplyFunction",
+        "required_attributes": ["type"],
+        "optional_attributes": ["isSourceNode", "maxDensity", "criticalDensity", "maxThroughput", "maxDemand"],
+        "description": "Flow network supply and demand functions based on capacity constraints. Generalizable to traffic networks, queue systems, pipeline networks, etc. Only present for flow-constrained models. Disease models do not have this element.",
+        "attributes": {
+          "type": {
+            "description": "Type of supply/demand function",
+            "values": ["NONE", "TRIANGULAR", "LINEAR", "CUSTOM"],
+            "default": "NONE"
+          },
+          "isSourceNode": {
+            "description": "Boolean indicating if this is a source/entry node with external input (true) or constrained internal node (false)",
+            "values": ["true", "false"],
+            "default": "false",
+            "examples": ["Onramps in traffic, generators in systems, entry queues in networks"]
+          },
+          "maxDensity": {
+            "description": "Maximum density/capacity - saturation point (constrained nodes only)",
+            "unit": "entities/space",
+            "traffic_example": "ρ^jam - vehicles per length when stopped"
+          },
+          "criticalDensity": {
+            "description": "Critical density/threshold - point of maximum throughput (constrained nodes only)",
+            "unit": "entities/space",
+            "traffic_example": "ρ^crit - density at maximum flow"
+          },
+          "maxThroughput": {
+            "description": "Maximum throughput/capacity - max flow rate (constrained nodes only)",
+            "unit": "entities/time",
+            "traffic_example": "Φ^crit - vehicles per hour"
+          },
+          "maxDemand": {
+            "description": "Maximum demand/output rate - upper bound on outflow (source nodes only)",
+            "unit": "entities/time",
+            "traffic_example": "Φ^max - max vehicles per hour from onramp"
+          }
+        },
+        "examples": {
+          "source_node": "<supplyFunction type=\"TRIANGULAR\" isSourceNode=\"true\" maxDemand=\"3000\"/>",
+          "constrained_node": "<supplyFunction type=\"TRIANGULAR\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\"/>"
         }
       },
       "outgoingFlows": {
@@ -241,6 +309,15 @@
       }
     },
     "compartment_types": {
+      "traffic_components": [
+        "Onramp",
+        "Link",
+        "Ordinary Link",
+        "Highway Link",
+        "Road Segment",
+        "Junction",
+        "Merge Point"
+      ],
       "epidemiological_states": [
         "Susceptible",
         "Exposed",
@@ -389,9 +466,121 @@
       "stratum_validation": "stratumSpecificRates stratum values must match the values defined in the referenced Group",
       "population_balance": "BirthSources and DeathSinks help maintain population balance in the model",
       "description": "Even though description is optional, it would be very helpful if each flow has a brief description explaining the purpose of this flow.",
-      "unicode_support": "Parameter names support Unicode including Greek letters (α, β, γ, δ, μ, ρ, θ, λ) and subscripts (ₕ, ᵥ, ₁, ₂)"
+      "unicode_support": "Parameter names support Unicode including Greek letters (α, β, γ, δ, μ, ρ, θ, λ) and subscripts (ₕ, ᵥ, ₁, ₂)",
+      "flow_network_validation": {
+        "supply_function_required": "Flow-constrained compartments must have a supplyFunction element",
+        "junction_rule_required": "Flow network compartments must set junctionRule=\"PPFIFO\" or \"CUSTOM\"",
+        "source_node_attributes": "Source nodes (isSourceNode=true) must specify maxDemand but not maxDensity/criticalDensity/maxThroughput",
+        "constrained_node_attributes": "Constrained nodes (isSourceNode=false) must specify maxDensity, criticalDensity, maxThroughput but not maxDemand",
+        "split_ratios": "Outgoing flows from network compartments should use RateFlow with parameters representing split ratios/routing coefficients",
+        "source_node_input": "Source nodes should have a BirthSource with rateParameter for external input/demand",
+        "consistency": "All compartments in a model should be either all flow-network (with supplyFunction) or all disease (without supplyFunction)"
+      }
     },
     "model_extensions": {
+      "traffic_networks": {
+        "description": "NEW in Version 3.0: Traffic network modeling with supply-demand dynamics and PP/FIFO junction rules",
+        "features": [
+          "Supply and demand functions for road links (triangular fundamental diagram)",
+          "PP/FIFO (Proportional Priority, First-In-First-Out) junction rules",
+          "Onramps as unbounded queues with max demand",
+          "Ordinary links with capacity constraints",
+          "Non-cooperative dynamics for traffic optimization",
+          "Backward compatible with disease models"
+        ],
+        "components": {
+          "SupplyFunction": {
+            "description": "Defines traffic flow characteristics based on vehicle density",
+            "types": {
+              "TRIANGULAR": "Standard traffic model (Daganzo 1994, Coogan & Arcak 2015)",
+              "LINEAR": "Simplified linear flow model",
+              "CUSTOM": "User-defined supply/demand functions",
+              "NONE": "No supply function (disease models)"
+            },
+            "source_nodes": {
+              "description": "Entry points with unbounded storage (e.g., onramps in traffic, generators in systems)",
+              "demand": "Φ^out(ρ) = min(max(ρ, maxDemand), maxDemand)",
+              "supply": "Φ^in(ρ) = ∞",
+              "attributes": ["type", "isSourceNode=true", "maxDemand"]
+            },
+            "constrained_nodes": {
+              "description": "Internal nodes with capacity constraints (e.g., road segments in traffic, pipes in flow networks)",
+              "demand": "Φ^out(ρ) = min((maxThroughput/criticalDensity)*ρ, maxThroughput) for ρ ≤ criticalDensity; maxThroughput for ρ > criticalDensity",
+              "supply": "Φ^in(ρ) = maxThroughput for ρ ≤ criticalDensity; (maxThroughput/(maxDensity-criticalDensity))*(maxDensity-ρ) for ρ > criticalDensity",
+              "attributes": ["type", "isSourceNode=false", "maxDensity", "criticalDensity", "maxThroughput"]
+            }
+          },
+          "JunctionRule": {
+            "description": "Specifies how flows are computed at network junctions",
+            "types": {
+              "NONE": "No junction constraints (disease models - default)",
+              "PPFIFO": "Proportional Priority, First-In-First-Out (traffic networks)",
+              "CUSTOM": "User-defined junction rules"
+            },
+            "ppfifo_rule": {
+              "description": "α_v(ρ) = max{α ∈ [0,1] : α Σ_{j∈incoming} β_{jk} Φ^out_j(ρ_j) ≤ Φ^in_k(ρ_k) ∀k∈outgoing}",
+              "computation": "At each time step, compute α that satisfies downstream supply constraints",
+              "output_flow": "f^out_l(ρ) = α_v(ρ) * Φ^out_l(ρ_l) for all incoming links"
+            }
+          }
+        },
+        "dynamics": {
+          "disease_models": {
+            "description": "Standard rate-based and contact-based flows (unchanged)",
+            "equations": [
+              "dS/dt = -β*S*I (Contact flow)",
+              "dI/dt = β*S*I - γ*I (Rate flow)",
+              "dR/dt = γ*I (Rate flow)"
+            ]
+          },
+          "traffic_models": {
+            "description": "Supply-demand constrained flows with PP/FIFO",
+            "equations": [
+              "Onramps: dρ_l/dt = d_l - f^out_l(ρ)",
+              "Ordinary: dρ_l/dt = f^in_l(ρ) - f^out_l(ρ)"
+            ],
+            "note": "f^out and f^in computed via PP/FIFO rule with supply-demand constraints"
+          }
+        },
+        "backward_compatibility": {
+          "description": "Traffic features are fully optional - disease models work unchanged",
+          "disease_models": "Leave supplyFunction absent and junctionRule=NONE (default)",
+          "traffic_models": "Add supplyFunction element and set junctionRule=PPFIFO",
+          "detection": "Presence of supplyFunction element indicates traffic model"
+        },
+        "use_cases": {
+          "traffic_networks": [
+            "Highway traffic flow optimization",
+            "Ramp metering control",
+            "Congestion analysis",
+            "Network throughput optimization"
+          ],
+          "disease_models": [
+            "Epidemiological compartmental models (SEIR, SIR, etc.)",
+            "Vector-borne disease transmission",
+            "Age-stratified disease models",
+            "Multi-pathogen models"
+          ]
+        },
+        "examples": {
+          "source_node_traffic": {
+            "description": "Source node (onramp) with max demand 3000 vehicles/hour",
+            "xml": "<compartments PrimaryName=\"Onramp1\" population=\"0\" junctionRule=\"PPFIFO\">\n  <supplyFunction type=\"TRIANGULAR\" isSourceNode=\"true\" maxDemand=\"3000\"/>\n  <outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.0\" target=\"//@compartments.1\"/>\n</compartments>"
+          },
+          "constrained_node_traffic": {
+            "description": "Constrained node (road link) with capacity constraints",
+            "xml": "<compartments PrimaryName=\"Link2\" population=\"37.5\" junctionRule=\"PPFIFO\">\n  <supplyFunction type=\"TRIANGULAR\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\"/>\n  <outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.1\" target=\"//@compartments.2\"/>\n</compartments>"
+          },
+          "disease_compartment": {
+            "description": "Disease compartment (unchanged - no flow network features)",
+            "xml": "<compartments PrimaryName=\"Susceptible\" population=\"1000\">\n  <outgoingFlows xsi:type=\"seir:ContactFlow\" contactRateParameter=\"//@parameters.0\" contactCompartment=\"//@compartments.1\" target=\"//@compartments.1\"/>\n</compartments>"
+          }
+        },
+        "references": [
+          "Coogan, S., & Arcak, M. (2015). A Compartmental Model for Traffic Networks and its Dynamical Behavior. IEEE Trans. Automatic Control, 60(10), 2698-2703.",
+          "Daganzo, C. F. (1994). The Cell Transmission Model: A Dynamic Representation of Highway Traffic. Transportation Research Part B, 28(4), 269-287."
+        ]
+      },
       "parameter_system": {
         "description": "NEW in Version 2.0: Comprehensive parameter system for symbolic/parametric modeling",
         "features": [
@@ -484,9 +673,23 @@
       }
     },
     "best_practices": {
+      "model_type_selection": {
+        "disease_models": "Use standard compartments with rate-based and contact-based flows. Do not add supplyFunction or set junctionRule.",
+        "traffic_models": "Use compartments with supplyFunction element and junctionRule=\"PPFIFO\". Use parameters for split ratios (β) and supply/demand function parameters.",
+        "mixed_models": "Not recommended - keep disease and traffic models separate for clarity"
+      },
+      "flow_network_design": [
+        "Define source nodes with isSourceNode=true and maxDemand parameter",
+        "Define constrained nodes with isSourceNode=false and maxDensity, criticalDensity, maxThroughput parameters",
+        "Use RateFlow with routing coefficient parameters (e.g., β_{lk} for split ratios in traffic) for routing",
+        "Use BirthSource for source node external input/demand (e.g., d_l in traffic)",
+        "Set junctionRule=\"PPFIFO\" for all flow network compartments",
+        "Use Parameters for all network-specific values (allows easy modification and sensitivity analysis)"
+      ],
       "parameter_naming": [
-        "Use Greek symbols for standard epidemiological parameters (β for transmission, μ for mortality, γ for recovery, ρ for progression)",
-        "Use subscripts to distinguish between populations (μₕ for human, μᵥ for vector)",
+        "Disease models: Use Greek symbols (β for transmission, μ for mortality, γ for recovery, ρ for progression)",
+        "Traffic models: Use standard notation (ρ for density, Φ for flow, β for split ratio)",
+        "Use subscripts to distinguish entities (μₕ for human, μᵥ for vector, β_{12} for split ratio link 1→2)",
         "Use function notation for dependencies: a(T) for temperature-dependent, θᵥ(T,R) for temperature and rainfall",
         "Keep names concise but meaningful"
       ],
