@@ -1,8 +1,9 @@
 {
   "compartmental_metamodel": {
-    "version": "3.0",
-    "description": "EpiMDE Compartmental Metamodel - Unified framework for epidemiological models and traffic network models with parametric (symbolic) modeling support",
+    "version": "3.1",
+    "description": "EpiMDE Compartmental Metamodel - Unified framework for epidemiological models, classical traffic networks, and Traffic Reaction Model (TRM) with parametric (symbolic) modeling support",
     "changelog": {
+      "3.1": "Added Traffic Reaction Model (TRM) support with flux decomposition, dual variable tracking, and kinetic interpretation. New decomposition types: TRM_MAK, TRM_GODUNOV, TRM_CAPACITATED. Extended TRM with capacity drop factors. Fully backward compatible.",
       "3.0": "Added traffic network modeling with supply-demand dynamics, PP/FIFO junction rules, and triangular fundamental diagram support. Fully backward compatible with disease models.",
       "2.0": "Added comprehensive parameter system for symbolic/parametric modeling with Unicode support",
       "1.0": "Initial SEIR/epidemiological metamodel"
@@ -100,12 +101,12 @@
       "supplyFunction": {
         "element": "supplyFunction",
         "required_attributes": ["type"],
-        "optional_attributes": ["isSourceNode", "maxDensity", "criticalDensity", "maxThroughput", "maxDemand"],
-        "description": "Flow network supply and demand functions based on capacity constraints. Generalizable to traffic networks, queue systems, pipeline networks, etc. Only present for flow-constrained models. Disease models do not have this element.",
+        "optional_attributes": ["isSourceNode", "maxDensity", "criticalDensity", "maxThroughput", "maxDemand", "omega", "capacityDropFactor", "enableDualVariable"],
+        "description": "Flow network supply and demand functions based on capacity constraints. Supports classical traffic models (Coogan & Arcak 2015) and Traffic Reaction Model (TRM) with kinetic decompositions (Pereira et al. 2024). Generalizable to traffic networks, queue systems, pipeline networks, etc. Only present for flow-constrained models. Disease models do not have this element.",
         "attributes": {
           "type": {
             "description": "Type of supply/demand function",
-            "values": ["NONE", "TRIANGULAR", "LINEAR", "CUSTOM"],
+            "values": ["NONE", "TRIANGULAR", "LINEAR", "CUSTOM", "TRM_MAK", "TRM_GODUNOV", "TRM_CAPACITATED"],
             "default": "NONE"
           },
           "isSourceNode": {
@@ -133,11 +134,32 @@
             "description": "Maximum demand/output rate - upper bound on outflow (source nodes only)",
             "unit": "entities/time",
             "traffic_example": "Φ^max - max vehicles per hour from onramp"
+          },
+          "omega": {
+            "description": "Reaction rate constant ω for TRM_MAK (Mass Action Kinetic) decomposition. Used in flux g(ρ,ν) = ωρν where ν = ρ_max - ρ (TRM models only)",
+            "unit": "1/(entities·time)",
+            "trm_example": "ω = 0.001 for MAK decomposition",
+            "default": "0.0"
+          },
+          "capacityDropFactor": {
+            "description": "Time-varying capacity drop factor C_i(t) for Extended TRM models. Enables modeling of changing traffic conditions (incidents, construction, weather). Value in range (0, 1] where 1 = normal capacity (TRM models only)",
+            "unit": "dimensionless",
+            "trm_example": "0.75 represents 25% capacity reduction",
+            "default": "1.0"
+          },
+          "enableDualVariable": {
+            "description": "Boolean flag to enable dual variable tracking: ρ (vehicle density) and ν (free space density) where ν = ρ_max - ρ. Enables kinetic/compartmental interpretation of TRM (TRM models only)",
+            "values": ["true", "false"],
+            "default": "false",
+            "note": "When true, simulation tracks both occupied space N_i and free space S_i"
           }
         },
         "examples": {
           "source_node": "<supplyFunction type=\"TRIANGULAR\" isSourceNode=\"true\" maxDemand=\"3000\"/>",
-          "constrained_node": "<supplyFunction type=\"TRIANGULAR\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\"/>"
+          "constrained_node": "<supplyFunction type=\"TRIANGULAR\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\"/>",
+          "trm_mak_node": "<supplyFunction type=\"TRM_MAK\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\" omega=\"0.001\" enableDualVariable=\"true\"/>",
+          "trm_godunov_node": "<supplyFunction type=\"TRM_GODUNOV\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\" enableDualVariable=\"true\"/>",
+          "extended_trm_node": "<supplyFunction type=\"TRM_CAPACITATED\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\" capacityDropFactor=\"0.8\" enableDualVariable=\"true\"/>"
         }
       },
       "outgoingFlows": {
@@ -475,6 +497,17 @@
         "split_ratios": "Outgoing flows from network compartments should use RateFlow with parameters representing split ratios/routing coefficients",
         "source_node_input": "Source nodes should have a BirthSource with rateParameter for external input/demand",
         "consistency": "All compartments in a model should be either all flow-network (with supplyFunction) or all disease (without supplyFunction)"
+      },
+      "trm_validation": {
+        "trm_type_validation": "TRM compartments must use type=\"TRM_MAK\", \"TRM_GODUNOV\", or \"TRM_CAPACITATED\"",
+        "trm_mak_omega": "TRM_MAK type requires omega attribute to be specified (reaction rate constant ω)",
+        "omega_positive": "omega must be positive: ω > 0",
+        "capacity_drop_range": "capacityDropFactor must be in range (0, 1]: 0 < C_i(t) ≤ 1",
+        "dual_variable_flag": "enableDualVariable=\"true\" recommended for TRM models to track both ρ and ν = ρ_max - ρ",
+        "trm_base_attributes": "All TRM compartments must specify maxDensity (ρ_max), criticalDensity (ρ_crit), and maxThroughput (Φ_max)",
+        "extended_trm_capacity": "Extended TRM models with capacityDropFactor should use values < 1.0 to model reduced capacity scenarios",
+        "trm_compatibility": "TRM models are compatible with classical traffic models - can mix TRIANGULAR and TRM types in same network",
+        "godunov_equivalence": "TRM_GODUNOV with proper configuration is equivalent to Cell Transmission Model (CTM)"
       }
     },
     "model_extensions": {
@@ -579,6 +612,184 @@
         "references": [
           "Coogan, S., & Arcak, M. (2015). A Compartmental Model for Traffic Networks and its Dynamical Behavior. IEEE Trans. Automatic Control, 60(10), 2698-2703.",
           "Daganzo, C. F. (1994). The Cell Transmission Model: A Dynamic Representation of Highway Traffic. Transportation Research Part B, 28(4), 269-287."
+        ]
+      },
+      "traffic_reaction_model": {
+        "description": "NEW in Version 3.1: Traffic Reaction Model (TRM) - A kinetic compartmental approach to road traffic modeling with flux decomposition and dual variable tracking (Pereira et al. 2024)",
+        "features": [
+          "Flux decomposition: f(ρ) = g(ρ, ρ_max - ρ) using dual variables",
+          "Dual variable tracking: ρ (vehicle density) and ν (free space density)",
+          "Kinetic interpretation: traffic as chemical reactions between compartments",
+          "Multiple decomposition types: MAK, Godunov, Capacitated",
+          "TRM-CTM equivalence: TRM is equivalent to Cell Transmission Model",
+          "Extended TRM: Time-varying capacity drop factors C_i(t)",
+          "Network TRM: Multi-lane intersections with incoming/outgoing flows",
+          "Fully backward compatible with classical traffic models"
+        ],
+        "mathematical_foundation": {
+          "lwr_model": "∂_t ρ + ∂_x f(ρ) = r - s (Lighthill-Whitham-Richards)",
+          "flux_decomposition": "f(ρ) = g(ρ, ν) where ν = ρ_max - ρ",
+          "trm_discretization": "ρ̇_i = (1/Δx)[F(ρ_{i-1}, ρ_i) - F(ρ_i, ρ_{i+1}) + R_i - S_i]",
+          "numerical_flux": "F(u,v) = g(u, ρ_max - v)",
+          "kinetic_reactions": "N_{i-1} + S_i →^{κ_{i-1,i}} N_i + S_{i-1}"
+        },
+        "decomposition_types": {
+          "TRM_MAK": {
+            "name": "Mass Action Kinetic decomposition",
+            "flux_formula": "g(ρ, ν) = ωρν",
+            "parameters": ["omega (ω): reaction rate constant"],
+            "characteristics": [
+              "Inspired by chemical reaction kinetics",
+              "Bilinear in ρ and ν",
+              "Simple and elegant formulation",
+              "Satisfies monotonicity and Lipschitz continuity"
+            ],
+            "use_cases": [
+              "Theoretical analysis of traffic dynamics",
+              "Studying kinetic interpretation of traffic flow",
+              "Educational purposes"
+            ]
+          },
+          "TRM_GODUNOV": {
+            "name": "Godunov decomposition",
+            "flux_formula": "g(ρ, ν) = min(D(ρ), Q(ρ_max - ν))",
+            "parameters": ["D(ρ): demand function", "Q(ν): supply function"],
+            "characteristics": [
+              "Equivalent to classical Godunov scheme",
+              "Natural supply-demand interpretation",
+              "Widely used in traffic simulation",
+              "Compatible with CTM and Coogan & Arcak 2015"
+            ],
+            "use_cases": [
+              "Highway traffic simulation",
+              "Network traffic optimization",
+              "Comparison with classical CTM models",
+              "Production traffic management systems"
+            ],
+            "note": "TRM with Godunov decomposition is equivalent to CTM with specific input capacity"
+          },
+          "TRM_CAPACITATED": {
+            "name": "Capacitated decomposition",
+            "flux_formula": "g(ρ, ν) = D(ρ)Q(ρ_max - ν)/f_max",
+            "parameters": ["D(ρ): demand function", "Q(ν): supply function", "f_max: maximum flux"],
+            "characteristics": [
+              "Multiplicative coupling of demand and supply",
+              "Smooth variation of flux",
+              "Alternative to min-based decomposition",
+              "Satisfies required mathematical properties"
+            ],
+            "use_cases": [
+              "Smooth traffic flow modeling",
+              "Alternative to discontinuous min function",
+              "Sensitivity analysis and optimization"
+            ]
+          }
+        },
+        "dual_variable_interpretation": {
+          "description": "TRM interprets road segments as compartments with two species",
+          "vehicle_density": "ρ_i(t) = N_i(t)/Δx (occupied space per unit length)",
+          "free_space_density": "ν_i(t) = S_i(t)/Δx = ρ_max - ρ_i(t)",
+          "conservation": "N_i + S_i = ρ_max * Δx (constant total capacity)",
+          "kinetic_reaction": "N_{i-1} + S_i →^{κ_{i-1,i}} N_i + S_{i-1}",
+          "reaction_rate": "κ_{i-1,i} = (1/Δx) * g(ρ_{i-1}, ν_i)",
+          "benefits": [
+            "Enables application of reaction network theory",
+            "Lyapunov stability analysis using entropy functions",
+            "Persistence guarantees (no trajectories reach boundary)",
+            "Connection to chemical reaction network theory"
+          ]
+        },
+        "extended_trm": {
+          "description": "Extended TRM with time-varying capacity drop factors",
+          "capacity_drop": "C_i(t) ∈ (0, 1] models reduced capacity",
+          "modified_flux": "g(ρ, ν) with ν = C_i(t) * ρ_max - ρ",
+          "applications": [
+            "Traffic incidents reducing capacity",
+            "Construction zones",
+            "Weather conditions (rain, fog, snow)",
+            "Variable speed limits",
+            "Time-of-day lane usage"
+          ],
+          "implementation": "Set capacityDropFactor attribute in supplyFunction"
+        },
+        "network_trm": {
+          "description": "Extension to road networks with junctions",
+          "junction_dynamics": "ρ̇_i = (1/Δx)[Σ_k F_k(incoming) - Σ_j F_j(outgoing)]",
+          "multi_lane_support": "Multiple incoming and outgoing flows",
+          "compatibility": "Works with existing PP/FIFO junction rules",
+          "routing": "Uses RateFlow with split ratio parameters"
+        },
+        "trm_ctm_equivalence": {
+          "description": "TRM with Godunov decomposition is equivalent to CTM",
+          "equivalence_condition": "Input capacity u^in_i = Q(ρ_max - ρ_{i-1})",
+          "key_insight": "TRM provides kinetic interpretation of CTM",
+          "practical_impact": "TRM and CTM produce identical simulation results when properly configured"
+        },
+        "stability_analysis": {
+          "description": "TRM inherits stability properties from reaction network theory",
+          "persistence": "All trajectories remain in interior of state space",
+          "lyapunov_functions": "Entropy-like functions from chemical kinetics",
+          "equilibrium_uniqueness": "Unique equilibrium under feasibility conditions",
+          "asymptotic_stability": "Equilibria are asymptotically stable"
+        },
+        "model_structure": {
+          "compartments": {
+            "description": "Road segments as compartments with supplyFunction element",
+            "required_attributes": ["PrimaryName", "population (initial density)", "junctionRule"],
+            "supply_function_type": "TRM_MAK, TRM_GODUNOV, or TRM_CAPACITATED",
+            "dual_variable_flag": "enableDualVariable=\"true\" for kinetic interpretation"
+          },
+          "parameters": {
+            "description": "TRM-specific parameters",
+            "examples": [
+              "ω: reaction rate constant for MAK",
+              "ρ_max: maximum density (jam density)",
+              "ρ_crit: critical density",
+              "Φ_max: maximum flux",
+              "C_i(t): capacity drop factor",
+              "Δx: cell length"
+            ]
+          },
+          "flows": {
+            "description": "Use RateFlow for routing between segments",
+            "split_ratios": "Parameters represent routing coefficients",
+            "junction_rule": "Set junctionRule=\"PPFIFO\" or \"NONE\" for exit cells"
+          }
+        },
+        "examples": {
+          "trm_mak_cell": {
+            "description": "TRM cell with MAK decomposition",
+            "xml": "<compartments PrimaryName=\"Cell1\" population=\"50\" junctionRule=\"PPFIFO\">\n  <supplyFunction type=\"TRM_MAK\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\" omega=\"0.001\" enableDualVariable=\"true\"/>\n  <outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.0\" target=\"//@compartments.1\"/>\n</compartments>"
+          },
+          "trm_godunov_cell": {
+            "description": "TRM cell with Godunov decomposition (CTM-equivalent)",
+            "xml": "<compartments PrimaryName=\"Cell2\" population=\"75\" junctionRule=\"PPFIFO\">\n  <supplyFunction type=\"TRM_GODUNOV\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\" enableDualVariable=\"true\"/>\n  <outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.1\" target=\"//@compartments.2\"/>\n</compartments>"
+          },
+          "extended_trm_cell": {
+            "description": "Extended TRM with capacity drop (incident zone)",
+            "xml": "<compartments PrimaryName=\"IncidentZone\" population=\"120\" junctionRule=\"PPFIFO\">\n  <supplyFunction type=\"TRM_CAPACITATED\" isSourceNode=\"false\" maxDensity=\"360\" criticalDensity=\"90\" maxThroughput=\"3000\" capacityDropFactor=\"0.6\" enableDualVariable=\"true\"/>\n  <outgoingFlows xsi:type=\"seir:RateFlow\" rateParameter=\"//@parameters.2\" target=\"//@compartments.3\"/>\n</compartments>"
+          }
+        },
+        "backward_compatibility": {
+          "description": "TRM features are fully optional - classical traffic models work unchanged",
+          "classical_traffic": "Use type=\"TRIANGULAR\" without TRM-specific attributes",
+          "trm_models": "Use type=\"TRM_MAK\", \"TRM_GODUNOV\", or \"TRM_CAPACITATED\"",
+          "detection": "Equation generator automatically detects TRM types"
+        },
+        "use_cases": {
+          "trm_applications": [
+            "Highway traffic simulation with kinetic interpretation",
+            "Stability analysis using reaction network theory",
+            "Comparison between different flux decompositions",
+            "Extended TRM for incident modeling",
+            "Network TRM for complex intersections",
+            "Educational: understanding traffic as reactions"
+          ]
+        },
+        "references": [
+          "Pereira, F. L., Figueiredo, J., & Ramos, C. C. (2024). The Traffic Reaction Model: A kinetic compartmental approach to road traffic modeling. Transportation Research Part B, 179, 102871.",
+          "Coogan, S., & Arcak, M. (2015). A Compartmental Model for Traffic Networks and its Dynamical Behavior. IEEE Trans. Automatic Control, 60(10), 2698-2703.",
+          "Daganzo, C. F. (1995). The Cell Transmission Model, Part II: Network Traffic. Transportation Research Part B, 29(2), 79-93."
         ]
       },
       "parameter_system": {

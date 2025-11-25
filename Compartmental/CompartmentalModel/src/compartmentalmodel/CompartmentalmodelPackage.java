@@ -116,13 +116,31 @@ public interface CompartmentalmodelPackage extends EPackage {
 	int COMPARTMENT__PRODUCT = 4;
 
 	/**
+	 * The feature id for the '<em><b>Supply Function</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPARTMENT__SUPPLY_FUNCTION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Junction Rule</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPARTMENT__JUNCTION_RULE = 6;
+
+	/**
 	 * The number of structural features of the '<em>Compartment</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENT_FEATURE_COUNT = 5;
+	int COMPARTMENT_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Compartment</em>' class.
@@ -756,6 +774,88 @@ public interface CompartmentalmodelPackage extends EPackage {
 	int PARAMETER_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link compartmentalmodel.impl.SupplyFunctionImpl <em>Supply Function</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentalmodel.impl.SupplyFunctionImpl
+	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getSupplyFunction()
+	 * @generated
+	 */
+	int SUPPLY_FUNCTION = 10;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION__TYPE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Max Density</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION__MAX_DENSITY = 1;
+
+	/**
+	 * The feature id for the '<em><b>Critical Density</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION__CRITICAL_DENSITY = 2;
+
+	/**
+	 * The feature id for the '<em><b>Max Throughput</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION__MAX_THROUGHPUT = 3;
+
+	/**
+	 * The feature id for the '<em><b>Max Demand</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION__MAX_DEMAND = 4;
+
+	/**
+	 * The feature id for the '<em><b>Is Source Node</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION__IS_SOURCE_NODE = 5;
+
+	/**
+	 * The number of structural features of the '<em>Supply Function</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION_FEATURE_COUNT = 6;
+
+	/**
+	 * The number of operations of the '<em>Supply Function</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUPPLY_FUNCTION_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link compartmentalmodel.impl.CompartmentalModelImpl <em>Compartmental Model</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -763,7 +863,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getCompartmentalModel()
 	 * @generated
 	 */
-	int COMPARTMENTAL_MODEL = 10;
+	int COMPARTMENTAL_MODEL = 11;
 
 	/**
 	 * The feature id for the '<em><b>Compartments</b></em>' containment reference list.
@@ -872,7 +972,28 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getParameterType()
 	 * @generated
 	 */
-	int PARAMETER_TYPE = 11;
+	int PARAMETER_TYPE = 12;
+
+
+	/**
+	 * The meta object id for the '{@link compartmentalmodel.SupplyFunctionType <em>Supply Function Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentalmodel.SupplyFunctionType
+	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getSupplyFunctionType()
+	 * @generated
+	 */
+	int SUPPLY_FUNCTION_TYPE = 13;
+
+	/**
+	 * The meta object id for the '{@link compartmentalmodel.JunctionRuleType <em>Junction Rule Type</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see compartmentalmodel.JunctionRuleType
+	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getJunctionRuleType()
+	 * @generated
+	 */
+	int JUNCTION_RULE_TYPE = 14;
 
 
 	/**
@@ -939,6 +1060,28 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCompartment_Product();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link compartmentalmodel.Compartment#getSupplyFunction <em>Supply Function</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Supply Function</em>'.
+	 * @see compartmentalmodel.Compartment#getSupplyFunction()
+	 * @see #getCompartment()
+	 * @generated
+	 */
+	EReference getCompartment_SupplyFunction();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.Compartment#getJunctionRule <em>Junction Rule</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Junction Rule</em>'.
+	 * @see compartmentalmodel.Compartment#getJunctionRule()
+	 * @see #getCompartment()
+	 * @generated
+	 */
+	EAttribute getCompartment_JunctionRule();
 
 	/**
 	 * Returns the meta object for class '{@link compartmentalmodel.Flow <em>Flow</em>}'.
@@ -1375,6 +1518,26 @@ public interface CompartmentalmodelPackage extends EPackage {
 	EEnum getParameterType();
 
 	/**
+	 * Returns the meta object for enum '{@link compartmentalmodel.SupplyFunctionType <em>Supply Function Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Supply Function Type</em>'.
+	 * @see compartmentalmodel.SupplyFunctionType
+	 * @generated
+	 */
+	EEnum getSupplyFunctionType();
+
+	/**
+	 * Returns the meta object for enum '{@link compartmentalmodel.JunctionRuleType <em>Junction Rule Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Junction Rule Type</em>'.
+	 * @see compartmentalmodel.JunctionRuleType
+	 * @generated
+	 */
+	EEnum getJunctionRuleType();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link compartmentalmodel.CompartmentalModel#getGroups <em>Groups</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1559,6 +1722,82 @@ public interface CompartmentalmodelPackage extends EPackage {
 	EAttribute getParameter_Unit();
 
 	/**
+	 * Returns the meta object for class '{@link compartmentalmodel.SupplyFunction <em>Supply Function</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Supply Function</em>'.
+	 * @see compartmentalmodel.SupplyFunction
+	 * @generated
+	 */
+	EClass getSupplyFunction();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.SupplyFunction#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see compartmentalmodel.SupplyFunction#getType()
+	 * @see #getSupplyFunction()
+	 * @generated
+	 */
+	EAttribute getSupplyFunction_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.SupplyFunction#getMaxDensity <em>Max Density</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Max Density</em>'.
+	 * @see compartmentalmodel.SupplyFunction#getMaxDensity()
+	 * @see #getSupplyFunction()
+	 * @generated
+	 */
+	EAttribute getSupplyFunction_MaxDensity();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.SupplyFunction#getCriticalDensity <em>Critical Density</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Critical Density</em>'.
+	 * @see compartmentalmodel.SupplyFunction#getCriticalDensity()
+	 * @see #getSupplyFunction()
+	 * @generated
+	 */
+	EAttribute getSupplyFunction_CriticalDensity();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.SupplyFunction#getMaxThroughput <em>Max Throughput</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Max Throughput</em>'.
+	 * @see compartmentalmodel.SupplyFunction#getMaxThroughput()
+	 * @see #getSupplyFunction()
+	 * @generated
+	 */
+	EAttribute getSupplyFunction_MaxThroughput();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.SupplyFunction#getMaxDemand <em>Max Demand</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Max Demand</em>'.
+	 * @see compartmentalmodel.SupplyFunction#getMaxDemand()
+	 * @see #getSupplyFunction()
+	 * @generated
+	 */
+	EAttribute getSupplyFunction_MaxDemand();
+
+	/**
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.SupplyFunction#isIsSourceNode <em>Is Source Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Source Node</em>'.
+	 * @see compartmentalmodel.SupplyFunction#isIsSourceNode()
+	 * @see #getSupplyFunction()
+	 * @generated
+	 */
+	EAttribute getSupplyFunction_IsSourceNode();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1630,6 +1869,22 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPARTMENT__PRODUCT = eINSTANCE.getCompartment_Product();
+
+		/**
+		 * The meta object literal for the '<em><b>Supply Function</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPARTMENT__SUPPLY_FUNCTION = eINSTANCE.getCompartment_SupplyFunction();
+
+		/**
+		 * The meta object literal for the '<em><b>Junction Rule</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPARTMENT__JUNCTION_RULE = eINSTANCE.getCompartment_JunctionRule();
 
 		/**
 		 * The meta object literal for the '{@link compartmentalmodel.impl.FlowImpl <em>Flow</em>}' class.
@@ -1912,6 +2167,26 @@ public interface CompartmentalmodelPackage extends EPackage {
 		EEnum PARAMETER_TYPE = eINSTANCE.getParameterType();
 
 		/**
+		 * The meta object literal for the '{@link compartmentalmodel.SupplyFunctionType <em>Supply Function Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentalmodel.SupplyFunctionType
+		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getSupplyFunctionType()
+		 * @generated
+		 */
+		EEnum SUPPLY_FUNCTION_TYPE = eINSTANCE.getSupplyFunctionType();
+
+		/**
+		 * The meta object literal for the '{@link compartmentalmodel.JunctionRuleType <em>Junction Rule Type</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentalmodel.JunctionRuleType
+		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getJunctionRuleType()
+		 * @generated
+		 */
+		EEnum JUNCTION_RULE_TYPE = eINSTANCE.getJunctionRuleType();
+
+		/**
 		 * The meta object literal for the '{@link compartmentalmodel.impl.GroupImpl <em>Group</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2028,6 +2303,64 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PARAMETER__UNIT = eINSTANCE.getParameter_Unit();
+
+		/**
+		 * The meta object literal for the '{@link compartmentalmodel.impl.SupplyFunctionImpl <em>Supply Function</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see compartmentalmodel.impl.SupplyFunctionImpl
+		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getSupplyFunction()
+		 * @generated
+		 */
+		EClass SUPPLY_FUNCTION = eINSTANCE.getSupplyFunction();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SUPPLY_FUNCTION__TYPE = eINSTANCE.getSupplyFunction_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Max Density</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SUPPLY_FUNCTION__MAX_DENSITY = eINSTANCE.getSupplyFunction_MaxDensity();
+
+		/**
+		 * The meta object literal for the '<em><b>Critical Density</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SUPPLY_FUNCTION__CRITICAL_DENSITY = eINSTANCE.getSupplyFunction_CriticalDensity();
+
+		/**
+		 * The meta object literal for the '<em><b>Max Throughput</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SUPPLY_FUNCTION__MAX_THROUGHPUT = eINSTANCE.getSupplyFunction_MaxThroughput();
+
+		/**
+		 * The meta object literal for the '<em><b>Max Demand</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SUPPLY_FUNCTION__MAX_DEMAND = eINSTANCE.getSupplyFunction_MaxDemand();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Source Node</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SUPPLY_FUNCTION__IS_SOURCE_NODE = eINSTANCE.getSupplyFunction_IsSourceNode();
 
 		/**
 		 * The meta object literal for the '{@link compartmentalmodel.impl.CompartmentalModelImpl <em>Compartmental Model</em>}' class.

@@ -39,30 +39,55 @@ public class CompartmentalEquationGenerator {
 
         String modelPath = System.getProperty("user.dir") + "/" + fileName;
 
-        CompartmentalModel seirModel = loadCompartmentalModel(modelPath);
-        if (seirModel == null) {
+        CompartmentalModel model = loadCompartmentalModel(modelPath);
+        if (model == null) {
             System.out.println("❌ Failed to load compartmental model.");
             return;
         }
 
-        Map<String, String> equations = generateEquations(seirModel);
-        
-        // Also generate stratified equations if products exist
-        if (!seirModel.getProducts().isEmpty()) {
-            System.out.println("\n🔍 Stratification detected! Generating expanded equations...");
-            Map<String, String> stratifiedEquations = generateStratifiedEquations(seirModel);
-            System.out.println("✅ Generated Stratified Compartmental Model Equations:");
-            stratifiedEquations.forEach((compartment, equation) -> System.out.println(equation));
-            
-            String stratifiedOutputFileName = fileName.replace(".compmodel", "_stratified.txt");
-            saveEquationsToFile(stratifiedEquations, stratifiedOutputFileName);
+        // Detect model type
+        boolean isTRM = isTRMModel(model);
+        boolean hasTraffic = hasTrafficFeatures(model);
+
+        if (isTRM) {
+            // Generate TRM equations
+            System.out.println("🚗 Traffic Reaction Model (TRM) detected!");
+            String outputFileName = fileName.replace(".compmodel", "_equations.txt");
+            generateTRMEquations(model, outputFileName);
+        } else if (hasTraffic) {
+            // Generate classical traffic equations (if implemented)
+            System.out.println("🚗 Classical Traffic Network detected!");
+            System.out.println("⚠️  Classical traffic equation generation not yet fully implemented in Java.");
+            System.out.println("   Use Python simulation: python3 traffic_network.py");
+            System.out.println("   For now, generating basic disease-model-style equations...\n");
+
+            // Fall through to disease model generation for now
+            Map<String, String> equations = generateEquations(model);
+            System.out.println("✅ Generated Equations:");
+            equations.forEach((compartment, equation) -> System.out.println(equation));
+            String outputFileName = fileName.replace(".compmodel", ".txt");
+            saveEquationsToFile(equations, outputFileName);
+        } else {
+            // Generate disease model equations (existing logic)
+            Map<String, String> equations = generateEquations(model);
+
+            // Also generate stratified equations if products exist
+            if (!model.getProducts().isEmpty()) {
+                System.out.println("\n🔍 Stratification detected! Generating expanded equations...");
+                Map<String, String> stratifiedEquations = generateStratifiedEquations(model);
+                System.out.println("✅ Generated Stratified Compartmental Model Equations:");
+                stratifiedEquations.forEach((compartment, equation) -> System.out.println(equation));
+
+                String stratifiedOutputFileName = fileName.replace(".compmodel", "_stratified.txt");
+                saveEquationsToFile(stratifiedEquations, stratifiedOutputFileName);
+            }
+
+            System.out.println("✅ Generated Compartmental Model Equations:");
+            equations.forEach((compartment, equation) -> System.out.println(equation));
+
+            String outputFileName = fileName.replace(".compmodel", ".txt");
+            saveEquationsToFile(equations, outputFileName);
         }
-
-        System.out.println("✅ Generated Compartmental Model Equations:");
-        equations.forEach((compartment, equation) -> System.out.println(equation));
-
-        String outputFileName = fileName.replace(".compmodel", ".txt");
-        saveEquationsToFile(equations, outputFileName);
     }
 
     private static void initializeEMF() {
@@ -709,6 +734,171 @@ public class CompartmentalEquationGenerator {
             // For CONSTANT or VARIABLE, return just the parameter name
             String name = param.getName();
             return (name != null && !name.isEmpty()) ? name : param.getExpression();
+        }
+    }
+
+    /**
+     * Find parameter by name (supports alternative names)
+     * Used to look up TRM parameters like "ω" (or "omega"), "C" (or "capacityDropFactor")
+     */
+    private static Parameter findParameter(CompartmentalModel model, String... names) {
+        for (Parameter param : model.getParameters()) {
+            String paramName = param.getName();
+            for (String name : names) {
+                if (name.equals(paramName)) {
+                    return param;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check if model uses Traffic Reaction Model (TRM) features
+     * Returns true if any compartment uses TRM_MAK or TRM_CAPACITATED supply functions
+     *
+     * NOTE: Requires EMF regeneration from .ecore to access TRM_MAK and TRM_CAPACITATED enums
+     */
+    private static boolean isTRMModel(CompartmentalModel model) {
+        for (Compartment comp : model.getCompartments()) {
+            if (comp.getSupplyFunction() != null) {
+                String typeName = comp.getSupplyFunction().getType().toString();
+                if ("TRM_MAK".equals(typeName) || "TRM_CAPACITATED".equals(typeName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if model has traffic features (supply functions)
+     */
+    private static boolean hasTrafficFeatures(CompartmentalModel model) {
+        for (Compartment comp : model.getCompartments()) {
+            if (comp.getSupplyFunction() != null) {
+                String typeName = comp.getSupplyFunction().getType().toString();
+                if (!"NONE".equals(typeName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Generate TRM equations with flux decomposition
+     */
+    private static void generateTRMEquations(CompartmentalModel model, String outputFileName) {
+        try (FileWriter writer = new FileWriter(outputFileName)) {
+            writer.write("======================================================================\n");
+            writer.write("Differential Equations Generated from: " + outputFileName.replace("_equations.txt", ".compmodel") + "\n");
+            writer.write("======================================================================\n\n");
+            writer.write("MODEL TYPE: Traffic Reaction Model (TRM) - Kinetic Compartmental Approach\n\n");
+
+            // Extract TRM parameters
+            Parameter omega = findParameter(model, "ω", "omega");
+            Parameter capacityDrop = findParameter(model, "C", "capacityDropFactor");
+            Parameter rhoMax = findParameter(model, "ρ_max", "rho_max", "maxDensity");
+            Parameter rhoCrit = findParameter(model, "ρ_crit", "rho_crit", "criticalDensity");
+            Parameter phiMax = findParameter(model, "Φ_max", "phi_max", "maxThroughput");
+            Parameter deltaX = findParameter(model, "Δx", "delta_x", "cellLength");
+
+            writer.write("Traffic Reaction Model (TRM) Parameters:\n");
+            if (deltaX != null) writer.write("  Δx = " + deltaX.getExpression() + "\n");
+            if (rhoMax != null) writer.write("  ρ_max = " + rhoMax.getExpression() + "\n");
+            if (rhoCrit != null) writer.write("  ρ_crit = " + rhoCrit.getExpression() + "\n");
+            if (phiMax != null) writer.write("  Φ_max = " + phiMax.getExpression() + "\n");
+            if (omega != null) writer.write("  ω = " + omega.getExpression() + "\n");
+            if (capacityDrop != null) writer.write("  C = " + capacityDrop.getExpression() + "\n");
+            writer.write("\n");
+
+            writer.write("TRM Decomposition Types and Flux Functions:\n\n");
+
+            // Generate compartment descriptions
+            for (Compartment comp : model.getCompartments()) {
+                String primaryName = comp.getPrimaryName();
+                writer.write(primaryName + ":\n");
+
+                if (comp.getSupplyFunction() != null) {
+                    String typeName = comp.getSupplyFunction().getType().toString();
+                    writer.write("  Type: " + typeName + "\n");
+
+                    if (comp.getSupplyFunction().isIsSourceNode()) {
+                        writer.write("  Node Type: Source Node\n");
+                    } else {
+                        writer.write("  Node Type: Constrained (Internal)\n");
+                    }
+
+                    double rhoMaxVal = comp.getSupplyFunction().getMaxDensity();
+                    double rhoCritVal = comp.getSupplyFunction().getCriticalDensity();
+                    double phiMaxVal = comp.getSupplyFunction().getMaxThroughput();
+
+                    writer.write("  ρ^max = " + rhoMaxVal + "\n");
+                    writer.write("  ρ^crit = " + rhoCritVal + "\n");
+                    writer.write("  Φ^max = " + phiMaxVal + "\n");
+
+                    if (capacityDrop != null) {
+                        writer.write("  C(t) = " + capacityDrop.getExpression() + " (Extended TRM with capacity drop)\n");
+                    }
+
+                    // Type-specific flux decomposition
+                    if ("TRM_MAK".equals(typeName)) {
+                        if (omega != null) {
+                            writer.write("  ω = " + omega.getExpression() + " (reaction rate constant from parameters)\n");
+                        }
+                        writer.write("  Flux Decomposition (MAK): g(ρ, ν) = ω·ρ·ν\n");
+                        writer.write("  where ν = ρ^max - ρ (free space density)\n");
+                    } else if ("TRM_CAPACITATED".equals(typeName)) {
+                        writer.write("  Flux Decomposition (Capacitated): g(ρ, ν) = D(ρ)·Q(ρ^max - ν)/Φ^max\n");
+                        writer.write("  D(ρ) = min((Φ^max/ρ^crit)·ρ, Φ^max) (demand function)\n");
+                        writer.write("  Q(ν) = min((Φ^max/(ρ^max-ρ^crit))·ν, Φ^max) (supply function)\n");
+                    } else if ("TRIANGULAR".equals(typeName)) {
+                        writer.write("  Flux: g(ρ, ν) = min(D(ρ), Q(ρ^max - ν))\n");
+                        writer.write("  Note: TRIANGULAR = TRM Godunov = Cell Transmission Model\n");
+                    }
+
+                    writer.write("  Dual Variable Tracking: Available\n");
+                    writer.write("    ρ(t) = N(t)/Δx (occupied space density)\n");
+                    writer.write("    ν(t) = S(t)/Δx = ρ^max - ρ(t) (free space density)\n");
+                    writer.write("    Conservation: N + S = ρ^max·Δx\n");
+                }
+
+                writer.write("\n");
+            }
+
+            writer.write("\nKinetic Interpretation (for dual variable models):\n");
+            writer.write("  Each road segment is a compartment with two species:\n");
+            writer.write("    N_i(t) = occupied space (vehicles)\n");
+            writer.write("    S_i(t) = free space (available capacity)\n");
+            writer.write("  Chemical reaction: N_{i-1} + S_i →^{κ_{i-1,i}} N_i + S_{i-1}\n");
+            writer.write("  Reaction rate: κ_{i-1,i}(t) = (1/Δx)·g(ρ_{i-1}, ν_i)\n\n");
+
+            writer.write("Differential Equations:\n\n");
+            writer.write("NOTE: TRM requires numerical flux computation F(u,v) = g(u, ρ^max - v)\n");
+            writer.write("See trm_simulation.py for full implementation.\n\n");
+
+            // Generate equations
+            for (Compartment comp : model.getCompartments()) {
+                String primaryName = comp.getPrimaryName();
+                writer.write("dρ_" + primaryName + "/dt = (1/Δx)[F(ρ_upstream, ρ_" + primaryName + ") - F(ρ_" + primaryName + ", ρ_downstream)]\n");
+                writer.write("dν_" + primaryName + "/dt = -dρ_" + primaryName + "/dt (conservation)\n\n");
+            }
+
+            writer.write("\nNumerical Flux Computation:\n");
+            writer.write("  F(ρ_i, ρ_{i+1}) = g(ρ_i, ρ^max - ρ_{i+1})\n");
+            writer.write("  This couples upstream density ρ_i with downstream free space ν_{i+1} = ρ^max - ρ_{i+1}\n\n");
+
+            writer.write("TRM Properties:\n");
+            writer.write("  - Persistence: All trajectories remain in (0, ρ^max)\n");
+            writer.write("  - Monotonicity: g increasing in ρ, decreasing in ρ^max - ν\n");
+            writer.write("  - Lipschitz Continuity: g is Lipschitz continuous\n");
+            writer.write("  - CTM Equivalence: TRIANGULAR ≡ Cell Transmission Model\n");
+
+            System.out.println("✅ TRM equations saved to " + outputFileName);
+        } catch (IOException e) {
+            System.err.println("❌ Error: Failed to save TRM equations.");
+            e.printStackTrace();
         }
     }
 }

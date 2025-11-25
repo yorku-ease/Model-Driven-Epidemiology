@@ -17,7 +17,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="SecondaryName" ordered="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="product" eType="#//Product"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="supplyFunction" eType="#//SupplyFunction" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supplyFunction" eType="#//SupplyFunction"
+        containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Optional supply function for traffic network modeling. When present, indicates this compartment represents a road link with capacity constraints (supply-demand dynamics). Disease models leave this null and use standard rate-based flows."/>
       </eAnnotations>
@@ -228,6 +229,16 @@
     <eLiterals name="CUSTOM" value="3" literal="CUSTOM">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="User-defined custom supply/demand functions."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TRM_MAK" value="4" literal="TRM_MAK">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Traffic Reaction Model with Mass Action Kinetic decomposition: g(ρ, ν) = ω·ρ·ν where ν = ρ^max - ρ. Uses parameter ω (omega) for reaction rate. Kinetic/compartmental interpretation of traffic flow (Pereira et al. 2024)."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TRM_CAPACITATED" value="5" literal="TRM_CAPACITATED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Traffic Reaction Model with Capacitated decomposition: g(ρ, ν) = D(ρ)·Q(ρ^max - ν)/Φ^max. Multiplicative coupling of demand and supply. Optional parameter C for capacity drop (Pereira et al. 2024)."/>
       </eAnnotations>
     </eLiterals>
   </eClassifiers>

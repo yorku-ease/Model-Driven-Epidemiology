@@ -279,6 +279,29 @@ public class CompartmentalmodelItemProviderAdapterFactory extends Compartmentalm
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link compartmentalmodel.SupplyFunction} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SupplyFunctionItemProvider supplyFunctionItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link compartmentalmodel.SupplyFunction}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createSupplyFunctionAdapter() {
+		if (supplyFunctionItemProvider == null) {
+			supplyFunctionItemProvider = new SupplyFunctionItemProvider(this);
+		}
+
+		return supplyFunctionItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link compartmentalmodel.CompartmentalModel} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -415,6 +438,7 @@ public class CompartmentalmodelItemProviderAdapterFactory extends Compartmentalm
 		if (groupItemProvider != null) groupItemProvider.dispose();
 		if (productItemProvider != null) productItemProvider.dispose();
 		if (parameterItemProvider != null) parameterItemProvider.dispose();
+		if (supplyFunctionItemProvider != null) supplyFunctionItemProvider.dispose();
 		if (compartmentalModelItemProvider != null) compartmentalModelItemProvider.dispose();
 	}
 

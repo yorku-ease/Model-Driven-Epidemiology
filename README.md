@@ -2,14 +2,16 @@
 
 EpiMDE is a comprehensive framework for building, analyzing, and simulating compartmental models using Model-Driven Engineering (MDE) principles. Built on Eclipse Modeling Framework (EMF) and Sirius, it supports both graphical and textual model editing with a focus on symbolic/parametric modeling.
 
-**Version 3.0** extends support beyond epidemiology to **flow networks** including traffic systems, queue networks, and other capacity-constrained flow systems.
+**Version 3.1** extends support beyond epidemiology to **flow networks** including traffic systems (classical and kinetic), queue networks, and other capacity-constrained flow systems.
 
 ## Key Features
 
-- **Flow Network Modeling** 🚀 **NEW in Version 3.0!**
-  - **Traffic Networks**: Model highway traffic with supply-demand dynamics and ramp metering
+- **Flow Network Modeling** 🚀 **NEW in Version 3.0-3.1!**
+  - **Classical Traffic Networks**: Highway traffic with supply-demand dynamics and ramp metering (Coogan & Arcak 2015)
+  - **Traffic Reaction Model (TRM)**: Kinetic compartmental traffic with flux decomposition and dual variables (Pereira et al. 2024)
   - **Supply/Demand Functions**: Capacity constraints based on triangular fundamental diagram
   - **Junction Rules**: PP/FIFO (Proportional Priority, First-In-First-Out) for realistic flow control
+  - **Flux Decomposition**: TRM_MAK, TRM_CAPACITATED, and TRIANGULAR (CTM-equivalent)
   - **Generalized Attributes**: `isSourceNode`, `maxDensity`, `criticalDensity`, `maxThroughput`, `maxDemand`
   - **100% Backward Compatible**: Disease models work unchanged
   - **Multiple Domains**: Applicable to traffic, queues, pipelines, manufacturing, networks
@@ -362,10 +364,115 @@ python3 traffic_network.py
 
 ### Documentation
 
-- **`TRAFFIC_MODEL_IMPLEMENTATION_SUMMARY.md`** - Complete implementation details
-- **`metamodel.txt`** - Full metamodel specification (Version 3.0)
-- **`traffic.compmodel`** - Example traffic network (Coogan & Arcak 2015)
-- **`traffic_network.py`** - Python implementation with PP/FIFO simulation
+- **`Compartmental/CompartmentalModel/CLASSICAL_TRAFFIC_README.md`** - Classical traffic implementation (Coogan & Arcak 2015)
+- **`Compartmental/CompartmentalModel/TRM_README.md`** - Traffic Reaction Model implementation (Pereira et al. 2024)
+- **`Compartmental/CompartmentalModel/metamodel.txt`** - Full metamodel specification (Version 3.1)
+- **`Compartmental/CompartmentalModel/traffic.compmodel`** - Example classical traffic network
+- **`Compartmental/CompartmentalModel/trm_highway.compmodel`** - Example TRM model with 5 cells
+- **`Compartmental/CompartmentalModel/traffic_network.py`** - Python simulation for classical traffic
+- **`Compartmental/CompartmentalModel/trm_simulation.py`** - Python simulation for TRM
+
+---
+
+## 🚗 Traffic Reaction Model (TRM) - Version 3.1
+
+**NEW!** The metamodel now supports kinetic compartmental traffic modeling with flux decomposition and dual variable tracking.
+
+### TRM Model Example
+
+Based on Pereira et al. (2024), implementing highway traffic as chemical reactions:
+
+**Parameters (using existing parameter system)**:
+```xml
+<parameters name="ω" type="CONSTANT" expression="0.444" description="Reaction rate constant"/>
+<parameters name="C" type="CONSTANT" expression="0.75" description="Capacity drop factor"/>
+<parameters name="ρ_max" type="CONSTANT" expression="180" unit="veh/km"/>
+```
+
+**TRM_MAK Cell (Mass Action Kinetic)**:
+```xml
+<compartments PrimaryName="Cell2" population="40">
+  <supplyFunction type="TRM_MAK" isSourceNode="false"
+                  maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+  <outgoingFlows xsi:type="compartmental:RateFlow" rate="1.0" target="//@compartments.3"/>
+</compartments>
+```
+
+**TRM_CAPACITATED Cell (Extended TRM)**:
+```xml
+<compartments PrimaryName="Cell3" population="90">
+  <supplyFunction type="TRM_CAPACITATED" isSourceNode="false"
+                  maxDensity="180" criticalDensity="30" maxThroughput="2000"/>
+</compartments>
+```
+
+### Key Concepts
+
+| Decomposition Type | Flux Formula | Use Case |
+|-------------------|--------------|----------|
+| **TRM_MAK** | g(ρ, ν) = ω·ρ·ν | Kinetic interpretation, simple bilinear |
+| **TRIANGULAR** | g(ρ, ν) = min(D(ρ), Q(ρ_max - ν)) | TRM Godunov = CTM (existing enum!) |
+| **TRM_CAPACITATED** | g(ρ, ν) = D(ρ)·Q(ρ_max - ν)/Φ_max | Extended TRM with capacity drops |
+
+**Dual Variables**:
+- ρ(t) = N(t)/Δx (occupied space density)
+- ν(t) = S(t)/Δx = ρ_max - ρ(t) (free space density)
+- Conservation: N + S = ρ_max·Δx
+
+**Numerical Flux**: F(ρ_i, ρ_{i+1}) = g(ρ_i, ρ_max - ρ_{i+1})
+
+### Generated Equations
+
+The equation generator automatically detects TRM models and outputs:
+
+```
+MODEL TYPE: Traffic Reaction Model (TRM)
+
+TRM Parameters:
+  ω = 0.444
+  C = 0.75
+  ρ_max = 180
+
+Cell2:
+  Type: TRM_MAK
+  ω = 0.444 (reaction rate constant)
+  Flux: g(ρ, ν) = ω·ρ·ν
+
+Differential Equations:
+dρ_Cell2/dt = (1/Δx)[F(ρ_Cell1, ρ_Cell2) - F(ρ_Cell2, ρ_Cell3)]
+dν_Cell2/dt = -dρ_Cell2/dt (conservation)
+
+where F(u,v) = g(u, ρ^max - v)
+```
+
+### Minimal Metamodel Changes
+
+The TRM implementation demonstrates the power of proper abstraction:
+
+**Added to .ecore** (only 2 enum values):
+```xml
+<eLiterals name="TRM_MAK" value="4"/>
+<eLiterals name="TRM_CAPACITATED" value="5"/>
+```
+
+**NOT added** (uses existing features):
+- ω, C values → use `<parameters>` system
+- Dual variables → simulation detail, not model structure
+- TRM_GODUNOV → use existing TRIANGULAR (mathematically identical!)
+
+This minimal approach keeps the metamodel general and domain-agnostic.
+
+### Running TRM Models
+
+```bash
+# Python simulation
+cd Compartmental/CompartmentalModel
+python3 trm_simulation.py
+
+# Java equation generation
+# Run CompartmentalEquationGenerator.java
+# Enter: trm_highway.compmodel
+```
 
 ---
 

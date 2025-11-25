@@ -15,6 +15,7 @@ import compartmentalmodel.ContactFlow;
 import compartmentalmodel.DeathSink;
 import compartmentalmodel.Flow;
 import compartmentalmodel.Group;
+import compartmentalmodel.JunctionRuleType;
 import compartmentalmodel.Parameter;
 import compartmentalmodel.ParameterType;
 import compartmentalmodel.Product;
@@ -23,6 +24,8 @@ import compartmentalmodel.CompartmentalModel;
 import compartmentalmodel.CompartmentalmodelFactory;
 import compartmentalmodel.CompartmentalmodelPackage;
 import compartmentalmodel.StratumSpecificRate;
+import compartmentalmodel.SupplyFunction;
+import compartmentalmodel.SupplyFunctionType;
 
 /**
  * <!-- begin-user-doc -->
@@ -106,6 +109,13 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass supplyFunctionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass compartmentalModelEClass = null;
 
 	/**
@@ -114,6 +124,20 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	private EEnum parameterTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum supplyFunctionTypeEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum junctionRuleTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -233,6 +257,26 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	@Override
 	public EReference getCompartment_Product() {
 		return (EReference)compartmentEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EReference getCompartment_SupplyFunction() {
+		return (EReference)compartmentEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCompartment_JunctionRule() {
+		return (EAttribute)compartmentEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -702,6 +746,76 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
+	public EClass getSupplyFunction() {
+		return supplyFunctionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSupplyFunction_Type() {
+		return (EAttribute)supplyFunctionEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSupplyFunction_MaxDensity() {
+		return (EAttribute)supplyFunctionEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSupplyFunction_CriticalDensity() {
+		return (EAttribute)supplyFunctionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSupplyFunction_MaxThroughput() {
+		return (EAttribute)supplyFunctionEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSupplyFunction_MaxDemand() {
+		return (EAttribute)supplyFunctionEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getSupplyFunction_IsSourceNode() {
+		return (EAttribute)supplyFunctionEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getCompartmentalModel() {
 		return compartmentalModelEClass;
 	}
@@ -812,6 +926,26 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
+	public EEnum getSupplyFunctionType() {
+		return supplyFunctionTypeEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EEnum getJunctionRuleType() {
+		return junctionRuleTypeEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CompartmentalmodelFactory getCompartmentalmodelFactory() {
 		return (CompartmentalmodelFactory)getEFactoryInstance();
 	}
@@ -841,6 +975,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		createEReference(compartmentEClass, COMPARTMENT__OUTGOING_FLOWS);
 		createEAttribute(compartmentEClass, COMPARTMENT__SECONDARY_NAME);
 		createEReference(compartmentEClass, COMPARTMENT__PRODUCT);
+		createEReference(compartmentEClass, COMPARTMENT__SUPPLY_FUNCTION);
+		createEAttribute(compartmentEClass, COMPARTMENT__JUNCTION_RULE);
 
 		flowEClass = createEClass(FLOW);
 		createEAttribute(flowEClass, FLOW__DESCRIPTION);
@@ -897,6 +1033,14 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		createEAttribute(parameterEClass, PARAMETER__DESCRIPTION);
 		createEAttribute(parameterEClass, PARAMETER__UNIT);
 
+		supplyFunctionEClass = createEClass(SUPPLY_FUNCTION);
+		createEAttribute(supplyFunctionEClass, SUPPLY_FUNCTION__TYPE);
+		createEAttribute(supplyFunctionEClass, SUPPLY_FUNCTION__MAX_DENSITY);
+		createEAttribute(supplyFunctionEClass, SUPPLY_FUNCTION__CRITICAL_DENSITY);
+		createEAttribute(supplyFunctionEClass, SUPPLY_FUNCTION__MAX_THROUGHPUT);
+		createEAttribute(supplyFunctionEClass, SUPPLY_FUNCTION__MAX_DEMAND);
+		createEAttribute(supplyFunctionEClass, SUPPLY_FUNCTION__IS_SOURCE_NODE);
+
 		compartmentalModelEClass = createEClass(COMPARTMENTAL_MODEL);
 		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__COMPARTMENTS);
 		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__BIRTH_SOURCES);
@@ -910,6 +1054,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 
 		// Create enums
 		parameterTypeEEnum = createEEnum(PARAMETER_TYPE);
+		supplyFunctionTypeEEnum = createEEnum(SUPPLY_FUNCTION_TYPE);
+		junctionRuleTypeEEnum = createEEnum(JUNCTION_RULE_TYPE);
 	}
 
 	/**
@@ -950,6 +1096,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		initEReference(getCompartment_OutgoingFlows(), this.getFlow(), null, "outgoingFlows", null, 0, -1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCompartment_SecondaryName(), ecorePackage.getEString(), "SecondaryName", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getCompartment_Product(), this.getProduct(), null, "product", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCompartment_SupplyFunction(), this.getSupplyFunction(), null, "supplyFunction", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCompartment_JunctionRule(), this.getJunctionRuleType(), "junctionRule", null, 0, 1, Compartment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(flowEClass, Flow.class, "Flow", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFlow_Description(), ecorePackage.getEString(), "description", null, 0, 1, Flow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1006,6 +1154,14 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		initEAttribute(getParameter_Description(), ecorePackage.getEString(), "description", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParameter_Unit(), ecorePackage.getEString(), "unit", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(supplyFunctionEClass, SupplyFunction.class, "SupplyFunction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSupplyFunction_Type(), this.getSupplyFunctionType(), "type", null, 0, 1, SupplyFunction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSupplyFunction_MaxDensity(), ecorePackage.getEDouble(), "maxDensity", null, 0, 1, SupplyFunction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSupplyFunction_CriticalDensity(), ecorePackage.getEDouble(), "criticalDensity", null, 0, 1, SupplyFunction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSupplyFunction_MaxThroughput(), ecorePackage.getEDouble(), "maxThroughput", null, 0, 1, SupplyFunction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSupplyFunction_MaxDemand(), ecorePackage.getEDouble(), "maxDemand", null, 0, 1, SupplyFunction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSupplyFunction_IsSourceNode(), ecorePackage.getEBoolean(), "isSourceNode", "false", 0, 1, SupplyFunction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(compartmentalModelEClass, CompartmentalModel.class, "CompartmentalModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCompartmentalModel_Compartments(), this.getCompartment(), null, "compartments", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartmentalModel_BirthSources(), this.getBirthSource(), null, "birthSources", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1022,6 +1178,17 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		addEEnumLiteral(parameterTypeEEnum, ParameterType.CONSTANT);
 		addEEnumLiteral(parameterTypeEEnum, ParameterType.VARIABLE);
 		addEEnumLiteral(parameterTypeEEnum, ParameterType.EXPRESSION);
+
+		initEEnum(supplyFunctionTypeEEnum, SupplyFunctionType.class, "SupplyFunctionType");
+		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.NONE);
+		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.TRIANGULAR);
+		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.LINEAR);
+		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.CUSTOM);
+
+		initEEnum(junctionRuleTypeEEnum, JunctionRuleType.class, "JunctionRuleType");
+		addEEnumLiteral(junctionRuleTypeEEnum, JunctionRuleType.NONE);
+		addEEnumLiteral(junctionRuleTypeEEnum, JunctionRuleType.PPFIFO);
+		addEEnumLiteral(junctionRuleTypeEEnum, JunctionRuleType.CUSTOM);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -11,12 +11,25 @@
       <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//ParameterType/VARIABLE"/>
       <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//ParameterType/EXPRESSION"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="compartmental.ecore#//SupplyFunctionType">
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/TRIANGULAR"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/LINEAR"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/CUSTOM"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="compartmental.ecore#//JunctionRuleType">
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//JunctionRuleType/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//JunctionRuleType/PPFIFO"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//JunctionRuleType/CUSTOM"/>
+    </genEnums>
     <genClasses ecoreClass="compartmental.ecore#//Compartment">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/PrimaryName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/population"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//Compartment/outgoingFlows"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/SecondaryName"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//Compartment/product"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//Compartment/supplyFunction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Compartment/junctionRule"/>
     </genClasses>
     <genClasses image="false" ecoreClass="compartmental.ecore#//Flow">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Flow/description"/>
@@ -72,6 +85,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/expression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/description"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//Parameter/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="compartmental.ecore#//SupplyFunction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//SupplyFunction/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//SupplyFunction/maxDensity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//SupplyFunction/criticalDensity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//SupplyFunction/maxThroughput"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//SupplyFunction/maxDemand"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//SupplyFunction/isSourceNode"/>
     </genClasses>
     <genClasses ecoreClass="compartmental.ecore#//CompartmentalModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/compartments"/>

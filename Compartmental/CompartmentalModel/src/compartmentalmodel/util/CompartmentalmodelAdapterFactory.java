@@ -108,6 +108,10 @@ public class CompartmentalmodelAdapterFactory extends AdapterFactoryImpl {
 				return createParameterAdapter();
 			}
 			@Override
+			public Adapter caseSupplyFunction(SupplyFunction object) {
+				return createSupplyFunctionAdapter();
+			}
+			@Override
 			public Adapter caseCompartmentalModel(CompartmentalModel object) {
 				return createCompartmentalModelAdapter();
 			}
@@ -268,6 +272,20 @@ public class CompartmentalmodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createParameterAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link compartmentalmodel.SupplyFunction <em>Supply Function</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see compartmentalmodel.SupplyFunction
+	 * @generated
+	 */
+	public Adapter createSupplyFunctionAdapter() {
 		return null;
 	}
 

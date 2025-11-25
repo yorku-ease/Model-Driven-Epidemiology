@@ -66,6 +66,7 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 			case CompartmentalmodelPackage.GROUP: return createGroup();
 			case CompartmentalmodelPackage.PRODUCT: return createProduct();
 			case CompartmentalmodelPackage.PARAMETER: return createParameter();
+			case CompartmentalmodelPackage.SUPPLY_FUNCTION: return createSupplyFunction();
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL: return createCompartmentalModel();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -82,6 +83,10 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 		switch (eDataType.getClassifierID()) {
 			case CompartmentalmodelPackage.PARAMETER_TYPE:
 				return createParameterTypeFromString(eDataType, initialValue);
+			case CompartmentalmodelPackage.SUPPLY_FUNCTION_TYPE:
+				return createSupplyFunctionTypeFromString(eDataType, initialValue);
+			case CompartmentalmodelPackage.JUNCTION_RULE_TYPE:
+				return createJunctionRuleTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -97,6 +102,10 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 		switch (eDataType.getClassifierID()) {
 			case CompartmentalmodelPackage.PARAMETER_TYPE:
 				return convertParameterTypeToString(eDataType, instanceValue);
+			case CompartmentalmodelPackage.SUPPLY_FUNCTION_TYPE:
+				return convertSupplyFunctionTypeToString(eDataType, instanceValue);
+			case CompartmentalmodelPackage.JUNCTION_RULE_TYPE:
+				return convertJunctionRuleTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -207,6 +216,17 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 	 * @generated
 	 */
 	@Override
+	public SupplyFunction createSupplyFunction() {
+		SupplyFunctionImpl supplyFunction = new SupplyFunctionImpl();
+		return supplyFunction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CompartmentalModel createCompartmentalModel() {
 		CompartmentalModelImpl compartmentalModel = new CompartmentalModelImpl();
 		return compartmentalModel;
@@ -229,6 +249,46 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 	 * @generated
 	 */
 	public String convertParameterTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SupplyFunctionType createSupplyFunctionTypeFromString(EDataType eDataType, String initialValue) {
+		SupplyFunctionType result = SupplyFunctionType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertSupplyFunctionTypeToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public JunctionRuleType createJunctionRuleTypeFromString(EDataType eDataType, String initialValue) {
+		JunctionRuleType result = JunctionRuleType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertJunctionRuleTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

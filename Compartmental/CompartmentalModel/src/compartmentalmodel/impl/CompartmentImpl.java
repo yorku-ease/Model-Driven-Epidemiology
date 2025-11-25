@@ -17,7 +17,9 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import compartmentalmodel.Compartment;
 import compartmentalmodel.Flow;
+import compartmentalmodel.JunctionRuleType;
 import compartmentalmodel.Product;
+import compartmentalmodel.SupplyFunction;
 import compartmentalmodel.CompartmentalmodelPackage;
 
 /**
@@ -33,6 +35,8 @@ import compartmentalmodel.CompartmentalmodelPackage;
  *   <li>{@link compartmentalmodel.impl.CompartmentImpl#getOutgoingFlows <em>Outgoing Flows</em>}</li>
  *   <li>{@link compartmentalmodel.impl.CompartmentImpl#getSecondaryName <em>Secondary Name</em>}</li>
  *   <li>{@link compartmentalmodel.impl.CompartmentImpl#getProduct <em>Product</em>}</li>
+ *   <li>{@link compartmentalmodel.impl.CompartmentImpl#getSupplyFunction <em>Supply Function</em>}</li>
+ *   <li>{@link compartmentalmodel.impl.CompartmentImpl#getJunctionRule <em>Junction Rule</em>}</li>
  * </ul>
  *
  * @generated
@@ -117,6 +121,36 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @ordered
 	 */
 	protected Product product;
+
+	/**
+	 * The cached value of the '{@link #getSupplyFunction() <em>Supply Function</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSupplyFunction()
+	 * @generated
+	 * @ordered
+	 */
+	protected SupplyFunction supplyFunction;
+
+	/**
+	 * The default value of the '{@link #getJunctionRule() <em>Junction Rule</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJunctionRule()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final JunctionRuleType JUNCTION_RULE_EDEFAULT = JunctionRuleType.NONE;
+
+	/**
+	 * The cached value of the '{@link #getJunctionRule() <em>Junction Rule</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJunctionRule()
+	 * @generated
+	 * @ordered
+	 */
+	protected JunctionRuleType junctionRule = JUNCTION_RULE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -265,10 +299,80 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 	 * @generated
 	 */
 	@Override
+	public SupplyFunction getSupplyFunction() {
+		return supplyFunction;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetSupplyFunction(SupplyFunction newSupplyFunction, NotificationChain msgs) {
+		SupplyFunction oldSupplyFunction = supplyFunction;
+		supplyFunction = newSupplyFunction;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION, oldSupplyFunction, newSupplyFunction);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setSupplyFunction(SupplyFunction newSupplyFunction) {
+		if (newSupplyFunction != supplyFunction) {
+			NotificationChain msgs = null;
+			if (supplyFunction != null)
+				msgs = ((InternalEObject)supplyFunction).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION, null, msgs);
+			if (newSupplyFunction != null)
+				msgs = ((InternalEObject)newSupplyFunction).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION, null, msgs);
+			msgs = basicSetSupplyFunction(newSupplyFunction, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION, newSupplyFunction, newSupplyFunction));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public JunctionRuleType getJunctionRule() {
+		return junctionRule;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setJunctionRule(JunctionRuleType newJunctionRule) {
+		JunctionRuleType oldJunctionRule = junctionRule;
+		junctionRule = newJunctionRule == null ? JUNCTION_RULE_EDEFAULT : newJunctionRule;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CompartmentalmodelPackage.COMPARTMENT__JUNCTION_RULE, oldJunctionRule, junctionRule));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case CompartmentalmodelPackage.COMPARTMENT__OUTGOING_FLOWS:
 				return ((InternalEList<?>)getOutgoingFlows()).basicRemove(otherEnd, msgs);
+			case CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION:
+				return basicSetSupplyFunction(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -292,6 +396,10 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			case CompartmentalmodelPackage.COMPARTMENT__PRODUCT:
 				if (resolve) return getProduct();
 				return basicGetProduct();
+			case CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION:
+				return getSupplyFunction();
+			case CompartmentalmodelPackage.COMPARTMENT__JUNCTION_RULE:
+				return getJunctionRule();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -321,6 +429,12 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			case CompartmentalmodelPackage.COMPARTMENT__PRODUCT:
 				setProduct((Product)newValue);
 				return;
+			case CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION:
+				setSupplyFunction((SupplyFunction)newValue);
+				return;
+			case CompartmentalmodelPackage.COMPARTMENT__JUNCTION_RULE:
+				setJunctionRule((JunctionRuleType)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -348,6 +462,12 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 			case CompartmentalmodelPackage.COMPARTMENT__PRODUCT:
 				setProduct((Product)null);
 				return;
+			case CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION:
+				setSupplyFunction((SupplyFunction)null);
+				return;
+			case CompartmentalmodelPackage.COMPARTMENT__JUNCTION_RULE:
+				setJunctionRule(JUNCTION_RULE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -370,6 +490,10 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 				return SECONDARY_NAME_EDEFAULT == null ? secondaryName != null : !SECONDARY_NAME_EDEFAULT.equals(secondaryName);
 			case CompartmentalmodelPackage.COMPARTMENT__PRODUCT:
 				return product != null;
+			case CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION:
+				return supplyFunction != null;
+			case CompartmentalmodelPackage.COMPARTMENT__JUNCTION_RULE:
+				return junctionRule != JUNCTION_RULE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -390,6 +514,8 @@ public class CompartmentImpl extends MinimalEObjectImpl.Container implements Com
 		result.append(population);
 		result.append(", SecondaryName: ");
 		result.append(secondaryName);
+		result.append(", junctionRule: ");
+		result.append(junctionRule);
 		result.append(')');
 		return result.toString();
 	}

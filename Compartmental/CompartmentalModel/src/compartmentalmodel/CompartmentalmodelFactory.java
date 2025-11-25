@@ -103,6 +103,15 @@ public interface CompartmentalmodelFactory extends EFactory {
 	Parameter createParameter();
 
 	/**
+	 * Returns a new object of class '<em>Supply Function</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Supply Function</em>'.
+	 * @generated
+	 */
+	SupplyFunction createSupplyFunction();
+
+	/**
 	 * Returns a new object of class '<em>Compartmental Model</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

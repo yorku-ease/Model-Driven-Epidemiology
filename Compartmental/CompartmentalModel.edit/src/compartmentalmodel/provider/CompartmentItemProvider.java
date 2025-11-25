@@ -66,6 +66,7 @@ public class CompartmentItemProvider
 			addPopulationPropertyDescriptor(object);
 			addSecondaryNamePropertyDescriptor(object);
 			addProductPropertyDescriptor(object);
+			addJunctionRulePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -159,6 +160,28 @@ public class CompartmentItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Junction Rule feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addJunctionRulePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Compartment_junctionRule_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Compartment_junctionRule_feature", "_UI_Compartment_type"),
+				 CompartmentalmodelPackage.Literals.COMPARTMENT__JUNCTION_RULE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -171,6 +194,7 @@ public class CompartmentItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENT__OUTGOING_FLOWS);
+			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENT__SUPPLY_FUNCTION);
 		}
 		return childrenFeatures;
 	}
@@ -229,9 +253,11 @@ public class CompartmentItemProvider
 			case CompartmentalmodelPackage.COMPARTMENT__PRIMARY_NAME:
 			case CompartmentalmodelPackage.COMPARTMENT__POPULATION:
 			case CompartmentalmodelPackage.COMPARTMENT__SECONDARY_NAME:
+			case CompartmentalmodelPackage.COMPARTMENT__JUNCTION_RULE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case CompartmentalmodelPackage.COMPARTMENT__OUTGOING_FLOWS:
+			case CompartmentalmodelPackage.COMPARTMENT__SUPPLY_FUNCTION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -258,6 +284,11 @@ public class CompartmentItemProvider
 			(createChildParameter
 				(CompartmentalmodelPackage.Literals.COMPARTMENT__OUTGOING_FLOWS,
 				 CompartmentalmodelFactory.eINSTANCE.createContactFlow()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(CompartmentalmodelPackage.Literals.COMPARTMENT__SUPPLY_FUNCTION,
+				 CompartmentalmodelFactory.eINSTANCE.createSupplyFunction()));
 	}
 
 	/**
