@@ -9,10 +9,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-import compartmentalmodel.BirthSource;
 import compartmentalmodel.Compartment;
 import compartmentalmodel.ContactFlow;
-import compartmentalmodel.DeathSink;
+import compartmentalmodel.ExternalSink;
+import compartmentalmodel.ExternalSource;
 import compartmentalmodel.Flow;
 import compartmentalmodel.Group;
 import compartmentalmodel.JunctionRuleType;
@@ -67,14 +67,14 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass birthSourceEClass = null;
+	private EClass externalSourceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass deathSinkEClass = null;
+	private EClass externalSinkEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -415,8 +415,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EClass getBirthSource() {
-		return birthSourceEClass;
+	public EClass getExternalSource() {
+		return externalSourceEClass;
 	}
 
 	/**
@@ -425,8 +425,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBirthSource_Name() {
-		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(0);
+	public EAttribute getExternalSource_Name() {
+		return (EAttribute)externalSourceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -435,8 +435,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBirthSource_Rate() {
-		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(1);
+	public EAttribute getExternalSource_Rate() {
+		return (EAttribute)externalSourceEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -445,8 +445,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EReference getBirthSource_RateParameter() {
-		return (EReference)birthSourceEClass.getEStructuralFeatures().get(2);
+	public EReference getExternalSource_RateParameter() {
+		return (EReference)externalSourceEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -455,8 +455,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EReference getBirthSource_TargetCompartment() {
-		return (EReference)birthSourceEClass.getEStructuralFeatures().get(3);
+	public EReference getExternalSource_TargetCompartment() {
+		return (EReference)externalSourceEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -465,8 +465,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBirthSource_TargetStratum() {
-		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(4);
+	public EAttribute getExternalSource_TargetStratum() {
+		return (EAttribute)externalSourceEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -475,8 +475,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getBirthSource_FixedRate() {
-		return (EAttribute)birthSourceEClass.getEStructuralFeatures().get(5);
+	public EAttribute getExternalSource_FixedRate() {
+		return (EAttribute)externalSourceEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -485,8 +485,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EClass getDeathSink() {
-		return deathSinkEClass;
+	public EClass getExternalSink() {
+		return externalSinkEClass;
 	}
 
 	/**
@@ -495,8 +495,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDeathSink_Name() {
-		return (EAttribute)deathSinkEClass.getEStructuralFeatures().get(0);
+	public EAttribute getExternalSink_Name() {
+		return (EAttribute)externalSinkEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -505,8 +505,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDeathSink_Rate() {
-		return (EAttribute)deathSinkEClass.getEStructuralFeatures().get(1);
+	public EAttribute getExternalSink_Rate() {
+		return (EAttribute)externalSinkEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -515,8 +515,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EReference getDeathSink_RateParameter() {
-		return (EReference)deathSinkEClass.getEStructuralFeatures().get(2);
+	public EReference getExternalSink_RateParameter() {
+		return (EReference)externalSinkEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -525,10 +525,9 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EReference getDeathSink_SourceCompartment() {
-		return (EReference)deathSinkEClass.getEStructuralFeatures().get(3);
+	public EReference getExternalSink_SourceCompartment() {
+		return (EReference)externalSinkEClass.getEStructuralFeatures().get(3);
 	}
-
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -536,8 +535,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDeathSink_SourceStratum() {
-		return (EAttribute)deathSinkEClass.getEStructuralFeatures().get(4);
+	public EAttribute getExternalSink_SourceStratum() {
+		return (EAttribute)externalSinkEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -836,7 +835,7 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EReference getCompartmentalModel_BirthSources() {
+	public EReference getCompartmentalModel_ExternalSources() {
 		return (EReference)compartmentalModelEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -846,7 +845,7 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public EReference getCompartmentalModel_DeathSinks() {
+	public EReference getCompartmentalModel_ExternalSinks() {
 		return (EReference)compartmentalModelEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -994,20 +993,20 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		createEAttribute(contactFlowEClass, CONTACT_FLOW__CONTACT_PARAMETERS);
 		createEReference(contactFlowEClass, CONTACT_FLOW__STRATUM_SPECIFIC_RATES);
 
-		birthSourceEClass = createEClass(BIRTH_SOURCE);
-		createEAttribute(birthSourceEClass, BIRTH_SOURCE__NAME);
-		createEAttribute(birthSourceEClass, BIRTH_SOURCE__RATE);
-		createEReference(birthSourceEClass, BIRTH_SOURCE__RATE_PARAMETER);
-		createEReference(birthSourceEClass, BIRTH_SOURCE__TARGET_COMPARTMENT);
-		createEAttribute(birthSourceEClass, BIRTH_SOURCE__TARGET_STRATUM);
-		createEAttribute(birthSourceEClass, BIRTH_SOURCE__FIXED_RATE);
+		externalSourceEClass = createEClass(EXTERNAL_SOURCE);
+		createEAttribute(externalSourceEClass, EXTERNAL_SOURCE__NAME);
+		createEAttribute(externalSourceEClass, EXTERNAL_SOURCE__RATE);
+		createEReference(externalSourceEClass, EXTERNAL_SOURCE__RATE_PARAMETER);
+		createEReference(externalSourceEClass, EXTERNAL_SOURCE__TARGET_COMPARTMENT);
+		createEAttribute(externalSourceEClass, EXTERNAL_SOURCE__TARGET_STRATUM);
+		createEAttribute(externalSourceEClass, EXTERNAL_SOURCE__FIXED_RATE);
 
-		deathSinkEClass = createEClass(DEATH_SINK);
-		createEAttribute(deathSinkEClass, DEATH_SINK__NAME);
-		createEAttribute(deathSinkEClass, DEATH_SINK__RATE);
-		createEReference(deathSinkEClass, DEATH_SINK__RATE_PARAMETER);
-		createEReference(deathSinkEClass, DEATH_SINK__SOURCE_COMPARTMENT);
-		createEAttribute(deathSinkEClass, DEATH_SINK__SOURCE_STRATUM);
+		externalSinkEClass = createEClass(EXTERNAL_SINK);
+		createEAttribute(externalSinkEClass, EXTERNAL_SINK__NAME);
+		createEAttribute(externalSinkEClass, EXTERNAL_SINK__RATE);
+		createEReference(externalSinkEClass, EXTERNAL_SINK__RATE_PARAMETER);
+		createEReference(externalSinkEClass, EXTERNAL_SINK__SOURCE_COMPARTMENT);
+		createEAttribute(externalSinkEClass, EXTERNAL_SINK__SOURCE_STRATUM);
 
 		stratumSpecificRateEClass = createEClass(STRATUM_SPECIFIC_RATE);
 		createEAttribute(stratumSpecificRateEClass, STRATUM_SPECIFIC_RATE__STRATUM);
@@ -1043,8 +1042,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 
 		compartmentalModelEClass = createEClass(COMPARTMENTAL_MODEL);
 		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__COMPARTMENTS);
-		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__BIRTH_SOURCES);
-		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__DEATH_SINKS);
+		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__EXTERNAL_SOURCES);
+		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__EXTERNAL_SINKS);
 		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__GROUPS);
 		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__PRODUCTS);
 		createEReference(compartmentalModelEClass, COMPARTMENTAL_MODEL__PARAMETERS);
@@ -1115,20 +1114,20 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		initEAttribute(getContactFlow_ContactParameters(), ecorePackage.getEString(), "contactParameters", null, 0, 1, ContactFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContactFlow_StratumSpecificRates(), this.getStratumSpecificRate(), null, "stratumSpecificRates", null, 0, -1, ContactFlow.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(birthSourceEClass, BirthSource.class, "BirthSource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBirthSource_Name(), ecorePackage.getEString(), "name", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBirthSource_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBirthSource_RateParameter(), this.getParameter(), null, "rateParameter", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBirthSource_TargetCompartment(), this.getCompartment(), null, "targetCompartment", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBirthSource_TargetStratum(), ecorePackage.getEString(), "targetStratum", null, 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getBirthSource_FixedRate(), ecorePackage.getEBoolean(), "fixedRate", "false", 0, 1, BirthSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(externalSourceEClass, ExternalSource.class, "ExternalSource", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getExternalSource_Name(), ecorePackage.getEString(), "name", null, 0, 1, ExternalSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExternalSource_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, ExternalSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExternalSource_RateParameter(), this.getParameter(), null, "rateParameter", null, 0, 1, ExternalSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExternalSource_TargetCompartment(), this.getCompartment(), null, "targetCompartment", null, 0, 1, ExternalSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExternalSource_TargetStratum(), ecorePackage.getEString(), "targetStratum", null, 0, 1, ExternalSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExternalSource_FixedRate(), ecorePackage.getEBoolean(), "fixedRate", "false", 0, 1, ExternalSource.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(deathSinkEClass, DeathSink.class, "DeathSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDeathSink_Name(), ecorePackage.getEString(), "name", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDeathSink_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDeathSink_RateParameter(), this.getParameter(), null, "rateParameter", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDeathSink_SourceCompartment(), this.getCompartment(), null, "sourceCompartment", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDeathSink_SourceStratum(), ecorePackage.getEString(), "sourceStratum", null, 0, 1, DeathSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(externalSinkEClass, ExternalSink.class, "ExternalSink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getExternalSink_Name(), ecorePackage.getEString(), "name", null, 0, 1, ExternalSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExternalSink_Rate(), ecorePackage.getEDouble(), "rate", null, 0, 1, ExternalSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExternalSink_RateParameter(), this.getParameter(), null, "rateParameter", null, 0, 1, ExternalSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExternalSink_SourceCompartment(), this.getCompartment(), null, "sourceCompartment", null, 0, 1, ExternalSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExternalSink_SourceStratum(), ecorePackage.getEString(), "sourceStratum", null, 0, 1, ExternalSink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(stratumSpecificRateEClass, StratumSpecificRate.class, "StratumSpecificRate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStratumSpecificRate_Stratum(), ecorePackage.getEString(), "stratum", null, 0, 1, StratumSpecificRate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1164,8 +1163,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 
 		initEClass(compartmentalModelEClass, CompartmentalModel.class, "CompartmentalModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCompartmentalModel_Compartments(), this.getCompartment(), null, "compartments", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCompartmentalModel_BirthSources(), this.getBirthSource(), null, "birthSources", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getCompartmentalModel_DeathSinks(), this.getDeathSink(), null, "deathSinks", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCompartmentalModel_ExternalSources(), this.getExternalSource(), null, "externalSources", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCompartmentalModel_ExternalSinks(), this.getExternalSink(), null, "externalSinks", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartmentalModel_Groups(), this.getGroup(), null, "groups", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartmentalModel_Products(), this.getProduct(), null, "products", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCompartmentalModel_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, CompartmentalModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1184,6 +1183,8 @@ public class CompartmentalmodelPackageImpl extends EPackageImpl implements Compa
 		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.TRIANGULAR);
 		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.LINEAR);
 		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.CUSTOM);
+		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.TRM_MAK);
+		addEEnumLiteral(supplyFunctionTypeEEnum, SupplyFunctionType.TRM_CAPACITATED);
 
 		initEEnum(junctionRuleTypeEEnum, JunctionRuleType.class, "JunctionRuleType");
 		addEEnumLiteral(junctionRuleTypeEEnum, JunctionRuleType.NONE);

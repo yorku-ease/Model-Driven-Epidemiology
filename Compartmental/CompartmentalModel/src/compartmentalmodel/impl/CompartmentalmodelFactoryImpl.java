@@ -60,8 +60,8 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 			case CompartmentalmodelPackage.COMPARTMENT: return createCompartment();
 			case CompartmentalmodelPackage.RATE_FLOW: return createRateFlow();
 			case CompartmentalmodelPackage.CONTACT_FLOW: return createContactFlow();
-			case CompartmentalmodelPackage.BIRTH_SOURCE: return createBirthSource();
-			case CompartmentalmodelPackage.DEATH_SINK: return createDeathSink();
+			case CompartmentalmodelPackage.EXTERNAL_SOURCE: return createExternalSource();
+			case CompartmentalmodelPackage.EXTERNAL_SINK: return createExternalSink();
 			case CompartmentalmodelPackage.STRATUM_SPECIFIC_RATE: return createStratumSpecificRate();
 			case CompartmentalmodelPackage.GROUP: return createGroup();
 			case CompartmentalmodelPackage.PRODUCT: return createProduct();
@@ -150,9 +150,9 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public BirthSource createBirthSource() {
-		BirthSourceImpl birthSource = new BirthSourceImpl();
-		return birthSource;
+	public ExternalSource createExternalSource() {
+		ExternalSourceImpl externalSource = new ExternalSourceImpl();
+		return externalSource;
 	}
 
 	/**
@@ -161,9 +161,9 @@ public class CompartmentalmodelFactoryImpl extends EFactoryImpl implements Compa
 	 * @generated
 	 */
 	@Override
-	public DeathSink createDeathSink() {
-		DeathSinkImpl deathSink = new DeathSinkImpl();
-		return deathSink;
+	public ExternalSink createExternalSink() {
+		ExternalSinkImpl externalSink = new ExternalSinkImpl();
+		return externalSink;
 	}
 
 	/**

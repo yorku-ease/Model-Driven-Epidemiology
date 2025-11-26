@@ -84,12 +84,12 @@ public class CompartmentalmodelAdapterFactory extends AdapterFactoryImpl {
 				return createContactFlowAdapter();
 			}
 			@Override
-			public Adapter caseBirthSource(BirthSource object) {
-				return createBirthSourceAdapter();
+			public Adapter caseExternalSource(ExternalSource object) {
+				return createExternalSourceAdapter();
 			}
 			@Override
-			public Adapter caseDeathSink(DeathSink object) {
-				return createDeathSinkAdapter();
+			public Adapter caseExternalSink(ExternalSink object) {
+				return createExternalSinkAdapter();
 			}
 			@Override
 			public Adapter caseStratumSpecificRate(StratumSpecificRate object) {
@@ -192,30 +192,30 @@ public class CompartmentalmodelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link compartmentalmodel.BirthSource <em>Birth Source</em>}'.
+	 * Creates a new adapter for an object of class '{@link compartmentalmodel.ExternalSource <em>External Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see compartmentalmodel.BirthSource
+	 * @see compartmentalmodel.ExternalSource
 	 * @generated
 	 */
-	public Adapter createBirthSourceAdapter() {
+	public Adapter createExternalSourceAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link compartmentalmodel.DeathSink <em>Death Sink</em>}'.
+	 * Creates a new adapter for an object of class '{@link compartmentalmodel.ExternalSink <em>External Sink</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see compartmentalmodel.DeathSink
+	 * @see compartmentalmodel.ExternalSink
 	 * @generated
 	 */
-	public Adapter createDeathSinkAdapter() {
+	public Adapter createExternalSinkAdapter() {
 		return null;
 	}
 

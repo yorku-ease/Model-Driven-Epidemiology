@@ -141,49 +141,49 @@ public class CompartmentalmodelItemProviderAdapterFactory extends Compartmentalm
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link compartmentalmodel.BirthSource} instances.
+	 * This keeps track of the one adapter used for all {@link compartmentalmodel.ExternalSource} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected BirthSourceItemProvider birthSourceItemProvider;
+	protected ExternalSourceItemProvider externalSourceItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link compartmentalmodel.BirthSource}.
+	 * This creates an adapter for a {@link compartmentalmodel.ExternalSource}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createBirthSourceAdapter() {
-		if (birthSourceItemProvider == null) {
-			birthSourceItemProvider = new BirthSourceItemProvider(this);
+	public Adapter createExternalSourceAdapter() {
+		if (externalSourceItemProvider == null) {
+			externalSourceItemProvider = new ExternalSourceItemProvider(this);
 		}
 
-		return birthSourceItemProvider;
+		return externalSourceItemProvider;
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link compartmentalmodel.DeathSink} instances.
+	 * This keeps track of the one adapter used for all {@link compartmentalmodel.ExternalSink} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected DeathSinkItemProvider deathSinkItemProvider;
+	protected ExternalSinkItemProvider externalSinkItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link compartmentalmodel.DeathSink}.
+	 * This creates an adapter for a {@link compartmentalmodel.ExternalSink}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createDeathSinkAdapter() {
-		if (deathSinkItemProvider == null) {
-			deathSinkItemProvider = new DeathSinkItemProvider(this);
+	public Adapter createExternalSinkAdapter() {
+		if (externalSinkItemProvider == null) {
+			externalSinkItemProvider = new ExternalSinkItemProvider(this);
 		}
 
-		return deathSinkItemProvider;
+		return externalSinkItemProvider;
 	}
 
 	/**
@@ -432,8 +432,8 @@ public class CompartmentalmodelItemProviderAdapterFactory extends Compartmentalm
 		if (compartmentItemProvider != null) compartmentItemProvider.dispose();
 		if (rateFlowItemProvider != null) rateFlowItemProvider.dispose();
 		if (contactFlowItemProvider != null) contactFlowItemProvider.dispose();
-		if (birthSourceItemProvider != null) birthSourceItemProvider.dispose();
-		if (deathSinkItemProvider != null) deathSinkItemProvider.dispose();
+		if (externalSourceItemProvider != null) externalSourceItemProvider.dispose();
+		if (externalSinkItemProvider != null) externalSinkItemProvider.dispose();
 		if (stratumSpecificRateItemProvider != null) stratumSpecificRateItemProvider.dispose();
 		if (groupItemProvider != null) groupItemProvider.dispose();
 		if (productItemProvider != null) productItemProvider.dispose();

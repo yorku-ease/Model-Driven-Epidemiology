@@ -92,15 +92,15 @@ public class CompartmentalmodelSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CompartmentalmodelPackage.BIRTH_SOURCE: {
-				BirthSource birthSource = (BirthSource)theEObject;
-				T result = caseBirthSource(birthSource);
+			case CompartmentalmodelPackage.EXTERNAL_SOURCE: {
+				ExternalSource externalSource = (ExternalSource)theEObject;
+				T result = caseExternalSource(externalSource);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case CompartmentalmodelPackage.DEATH_SINK: {
-				DeathSink deathSink = (DeathSink)theEObject;
-				T result = caseDeathSink(deathSink);
+			case CompartmentalmodelPackage.EXTERNAL_SINK: {
+				ExternalSink externalSink = (ExternalSink)theEObject;
+				T result = caseExternalSink(externalSink);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -205,32 +205,32 @@ public class CompartmentalmodelSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Birth Source</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>External Source</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Birth Source</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>External Source</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseBirthSource(BirthSource object) {
+	public T caseExternalSource(ExternalSource object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Death Sink</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>External Sink</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Death Sink</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>External Sink</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseDeathSink(DeathSink object) {
+	public T caseExternalSink(ExternalSink object) {
 		return null;
 	}
 

@@ -71,7 +71,29 @@ public enum SupplyFunctionType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	CUSTOM(3, "CUSTOM", "CUSTOM");
+	CUSTOM(3, "CUSTOM", "CUSTOM"), /**
+	 * The '<em><b>TRM MAK</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Traffic Reaction Model with Mass Action Kinetic decomposition: g(ρ, ν) = ω·ρ·ν where ν = ρ^max - ρ. Uses parameter ω (omega) for reaction rate. Kinetic/compartmental interpretation of traffic flow (Pereira et al. 2024).
+	 * <!-- end-model-doc -->
+	 * @see #TRM_MAK_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	TRM_MAK(4, "TRM_MAK", "TRM_MAK"), /**
+	 * The '<em><b>TRM CAPACITATED</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Traffic Reaction Model with Capacitated decomposition: g(ρ, ν) = D(ρ)·Q(ρ^max - ν)/Φ^max. Multiplicative coupling of demand and supply. Optional parameter C for capacity drop (Pereira et al. 2024).
+	 * <!-- end-model-doc -->
+	 * @see #TRM_CAPACITATED_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	TRM_CAPACITATED(5, "TRM_CAPACITATED", "TRM_CAPACITATED");
 
 	/**
 	 * The '<em><b>NONE</b></em>' literal value.
@@ -130,6 +152,34 @@ public enum SupplyFunctionType implements Enumerator {
 	public static final int CUSTOM_VALUE = 3;
 
 	/**
+	 * The '<em><b>TRM MAK</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Traffic Reaction Model with Mass Action Kinetic decomposition: g(ρ, ν) = ω·ρ·ν where ν = ρ^max - ρ. Uses parameter ω (omega) for reaction rate. Kinetic/compartmental interpretation of traffic flow (Pereira et al. 2024).
+	 * <!-- end-model-doc -->
+	 * @see #TRM_MAK
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TRM_MAK_VALUE = 4;
+
+	/**
+	 * The '<em><b>TRM CAPACITATED</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Traffic Reaction Model with Capacitated decomposition: g(ρ, ν) = D(ρ)·Q(ρ^max - ν)/Φ^max. Multiplicative coupling of demand and supply. Optional parameter C for capacity drop (Pereira et al. 2024).
+	 * <!-- end-model-doc -->
+	 * @see #TRM_CAPACITATED
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int TRM_CAPACITATED_VALUE = 5;
+
+	/**
 	 * An array of all the '<em><b>Supply Function Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -141,6 +191,8 @@ public enum SupplyFunctionType implements Enumerator {
 			TRIANGULAR,
 			LINEAR,
 			CUSTOM,
+			TRM_MAK,
+			TRM_CAPACITATED,
 		};
 
 	/**
@@ -201,6 +253,8 @@ public enum SupplyFunctionType implements Enumerator {
 			case TRIANGULAR_VALUE: return TRIANGULAR;
 			case LINEAR_VALUE: return LINEAR;
 			case CUSTOM_VALUE: return CUSTOM;
+			case TRM_MAK_VALUE: return TRM_MAK;
+			case TRM_CAPACITATED_VALUE: return TRM_CAPACITATED;
 		}
 		return null;
 	}

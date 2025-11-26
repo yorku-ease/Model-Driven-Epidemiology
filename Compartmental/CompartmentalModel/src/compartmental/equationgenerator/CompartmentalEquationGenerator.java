@@ -16,10 +16,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import compartmentalmodel.StratumSpecificRate;
-import compartmentalmodel.BirthSource;
+import compartmentalmodel.ExternalSource;
 import compartmentalmodel.Compartment;
 import compartmentalmodel.ContactFlow;
-import compartmentalmodel.DeathSink;
+import compartmentalmodel.ExternalSink;
 import compartmentalmodel.Flow;
 import compartmentalmodel.Group;
 import compartmentalmodel.Parameter;
@@ -159,10 +159,10 @@ public class CompartmentalEquationGenerator {
             }
 
             // Birth sources flowing into this compartment
-            for (BirthSource birthSource : model.getBirthSources()) {
-                if (birthSource.getTargetCompartment() == compartment) {
-                    String birthRateExpr = getBirthRateExpression(birthSource);
-                    if (isFixedRateBirthSource(birthSource)) {
+            for (ExternalSource externalSource : model.getExternalSources()) {
+                if (externalSource.getTargetCompartment() == compartment) {
+                    String birthRateExpr = getExternalSourceRateExpression(externalSource);
+                    if (isFixedRateExternalSource(externalSource)) {
                         equation.append("+ ").append(birthRateExpr).append(" ");
                     } else {
                         equation.append("+ ").append(birthRateExpr).append(" * ").append(model.getTotalPopulation()).append(" ");
@@ -192,9 +192,9 @@ public class CompartmentalEquationGenerator {
             }
 
             // Death sinks flowing out of this compartment
-            for (DeathSink deathSink : model.getDeathSinks()) {
-                if (deathSink.getSourceCompartment() == compartment) {
-                    String deathRateExpr = getDeathRateExpression(deathSink);
+            for (ExternalSink externalSink : model.getExternalSinks()) {
+                if (externalSink.getSourceCompartment() == compartment) {
+                    String deathRateExpr = getExternalSinkRateExpression(externalSink);
                     equation.append("- ").append(deathRateExpr).append(" * ").append(displayName).append(" ");
                 }
             }
@@ -306,14 +306,14 @@ public class CompartmentalEquationGenerator {
         }
 
         // Birth sources flowing into this compartment (only for matching strata)
-        for (BirthSource birthSource : model.getBirthSources()) {
-            if (birthSource.getTargetCompartment() == compartment) {
+        for (ExternalSource externalSource : model.getExternalSources()) {
+            if (externalSource.getTargetCompartment() == compartment) {
                 // Check if this birth source applies to the current stratum
-                if (isBirthSourceApplicableToStratum(birthSource, stratum)) {
-                    String birthRateExpr = getBirthRateExpression(birthSource);
+                if (isExternalSourceApplicableToStratum(externalSource, stratum)) {
+                    String birthRateExpr = getExternalSourceRateExpression(externalSource);
 
                     // Check if this is a fixed rate or population-based rate
-                    if (isFixedRateBirthSource(birthSource)) {
+                    if (isFixedRateExternalSource(externalSource)) {
                         // Fixed rate - don't multiply by population
                         equation.append("+ ").append(birthRateExpr).append(" ");
                     } else {
@@ -363,11 +363,11 @@ public class CompartmentalEquationGenerator {
         }
 
         // Death sinks flowing out of this compartment (with stratum matching)
-        for (DeathSink deathSink : model.getDeathSinks()) {
-            if (deathSink.getSourceCompartment() == compartment) {
+        for (ExternalSink externalSink : model.getExternalSinks()) {
+            if (externalSink.getSourceCompartment() == compartment) {
                 // Check if death sink applies to this stratum
-                if (isDeathSinkApplicableToStratum(deathSink, stratum)) {
-                    String deathRateExpr = getDeathRateExpression(deathSink);
+                if (isExternalSinkApplicableToStratum(externalSink, stratum)) {
+                    String deathRateExpr = getExternalSinkRateExpression(externalSink);
                     equation.append("- ").append(deathRateExpr).append(" * ").append(displayName).append(" ");
                 }
             }
@@ -515,14 +515,14 @@ public class CompartmentalEquationGenerator {
      * Check if a birth source applies to the given stratum.
      * Uses the targetStratum attribute if available, otherwise applies to all.
      */
-    private static boolean isBirthSourceApplicableToStratum(BirthSource birthSource, String stratum) {
+    private static boolean isExternalSourceApplicableToStratum(ExternalSource externalSource, String stratum) {
         // If no stratum specified, birth source applies to non-stratified compartments
         if (stratum.isEmpty()) {
             return true;
         }
 
         // Extract targetStratum from EMF object using reflection
-        String targetStratum = birthSource.getTargetStratum();
+        String targetStratum = externalSource.getTargetStratum();
 
         if (targetStratum != null && !targetStratum.isEmpty()) {
             // Exact match for Cartesian products (e.g., "0-17,Male")
@@ -537,14 +537,14 @@ public class CompartmentalEquationGenerator {
      * Check if a death sink applies to the given stratum.
      * Uses the sourceStratum attribute if available, otherwise applies to all.
      */
-    private static boolean isDeathSinkApplicableToStratum(DeathSink deathSink, String stratum) {
+    private static boolean isExternalSinkApplicableToStratum(ExternalSink externalSink, String stratum) {
         // If no stratum specified, death sink applies to non-stratified compartments
         if (stratum.isEmpty()) {
             return true;
         }
 
         // Extract sourceStratum from death sink
-        String sourceStratum = deathSink.getSourceStratum();
+        String sourceStratum = externalSink.getSourceStratum();
 
         if (sourceStratum != null && !sourceStratum.isEmpty()) {
             // Exact match for Cartesian products (e.g., "0-17,Male")
@@ -560,10 +560,10 @@ public class CompartmentalEquationGenerator {
      * Check if a birth source uses fixed rate (not population-based)
      * Tries to extract fixedRate attribute from EMF object
      */
-    private static boolean isFixedRateBirthSource(BirthSource birthSource) {
+    private static boolean isFixedRateExternalSource(ExternalSource externalSource) {
         try {
             // Try reflection to get the fixedRate attribute
-            Object eObject = birthSource;
+            Object eObject = externalSource;
             if (eObject instanceof org.eclipse.emf.ecore.EObject) {
                 org.eclipse.emf.ecore.EObject eo = (org.eclipse.emf.ecore.EObject) eObject;
                 org.eclipse.emf.ecore.EClass eClass = eo.eClass();
@@ -580,7 +580,7 @@ public class CompartmentalEquationGenerator {
             }
         } catch (Exception e) {
             System.out.println("Warning: Could not extract fixedRate from birth source '" + 
-                             birthSource.getName() + "'. Consider regenerating EMF classes.");
+                             externalSource.getName() + "'. Consider regenerating EMF classes.");
         }
         
         // Default to population-based (legacy behavior) if no fixedRate attribute found
@@ -666,12 +666,12 @@ public class CompartmentalEquationGenerator {
     /**
      * Get birth rate as symbolic parameter name or numeric value.
      */
-    private static String getBirthRateExpression(BirthSource birthSource) {
-        Parameter param = birthSource.getRateParameter();
+    private static String getExternalSourceRateExpression(ExternalSource externalSource) {
+        Parameter param = externalSource.getRateParameter();
         if (param != null) {
             return getParameterRepresentation(param);
-        } else if (birthSource.getRate() != 0.0) {
-            return String.valueOf(birthSource.getRate());
+        } else if (externalSource.getRate() != 0.0) {
+            return String.valueOf(externalSource.getRate());
         } else {
             return "UNKNOWN_BIRTH_RATE";
         }
@@ -680,12 +680,12 @@ public class CompartmentalEquationGenerator {
     /**
      * Get death rate as symbolic parameter name or numeric value.
      */
-    private static String getDeathRateExpression(DeathSink deathSink) {
-        Parameter param = deathSink.getRateParameter();
+    private static String getExternalSinkRateExpression(ExternalSink externalSink) {
+        Parameter param = externalSink.getRateParameter();
         if (param != null) {
             return getParameterRepresentation(param);
-        } else if (deathSink.getRate() != 0.0) {
-            return String.valueOf(deathSink.getRate());
+        } else if (externalSink.getRate() != 0.0) {
+            return String.valueOf(externalSink.getRate());
         } else {
             return "UNKNOWN_DEATH_RATE";
         }

@@ -108,8 +108,8 @@ The SEIR model is defined in `compartmental.ecore` and includes:
 - **Flow Types**:
   - `RateFlow`: Rate-based transitions (e.g., recovery, progression)
   - `ContactFlow`: Contact-based transmission between compartments
-  - `BirthSource`: Population inflows (recruitment, births)
-  - `DeathSink`: Population outflows (mortality)
+  - `ExternalSource`: External inflows (births/recruitment, onramps, material input)
+  - `ExternalSink`: External outflows (deaths, offramps, waste output)
 
 ### Parametric Modeling 🆕
 - **`Parameter`** - Named parameters with three types:
@@ -120,7 +120,7 @@ The SEIR model is defined in `compartmental.ecore` and includes:
 - **Parameter References**: All flows can reference parameters instead of using numeric values:
   - `rateParameter` in RateFlow
   - `contactRateParameter` in ContactFlow
-  - `rateParameter` in BirthSource/DeathSink
+  - `rateParameter` in ExternalSource/ExternalSink
   - `rateParameter` and `multiplierParameter` in StratumSpecificRate
 
 ### Stratification Components
@@ -191,7 +191,7 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
   </compartments>
   <compartments PrimaryName="Recovered" population="0"/>
 
-  <deathSinks name="Natural_Death" rate="0.00005" sourceCompartment="//@compartments.0"/>
+  <externalSinks name="Natural_Death" rate="0.00005" sourceCompartment="//@compartments.0"/>
 </seir:CompartmentalModel>
 ```
 
@@ -226,9 +226,9 @@ If it's showing as `self.rate` literally, check that AQL interpreter is selected
   </compartments>
   <compartments PrimaryName="Recovered" population="0"/>
 
-  <deathSinks name="Natural_Death"
-              rateParameter="//@parameters.2"
-              sourceCompartment="//@compartments.0"/>
+  <externalSinks name="Natural_Death"
+                 rateParameter="//@parameters.2"
+                 sourceCompartment="//@compartments.0"/>
 </seir:CompartmentalModel>
 ```
 
@@ -507,23 +507,23 @@ The system now supports population stratification. Example from `covid.compartme
 
 This creates separate compartments for each age group (Susceptible_0-17, Susceptible_18-64, Susceptible_65+) with different transmission rates.
 
-### Birth Sources and Death Sinks with Stratification
+### External Sources and Sinks with Stratification
 
-**Birth Sources** target specific population strata:
+**External Sources** (births, onramps, inputs) target specific population strata:
 ```xml
-<birthSources name="Population Birth" rate="3.0E-5"
-              targetCompartment="//@compartments.0"
-              targetStratum="0-17"/>
+<externalSources name="Population Birth" rate="3.0E-5"
+                 targetCompartment="//@compartments.0"
+                 targetStratum="0-17"/>
 ```
 
-**Death Sinks** handle natural mortality by stratum:
+**External Sinks** (deaths, offramps, outputs) handle outflows by stratum:
 ```xml
-<deathSinks name="Child Natural Death (0-17)" rate="0.0000005"
-            sourceCompartment="//@compartments.0"
-            sourceStratum="0-17"/>
-<deathSinks name="Adult Natural Death (18-64)" rate="0.00002"
-            sourceCompartment="//@compartments.0"
-            sourceStratum="18-64"/>
+<externalSinks name="Child Natural Death (0-17)" rate="0.0000005"
+               sourceCompartment="//@compartments.0"
+               sourceStratum="0-17"/>
+<externalSinks name="Adult Natural Death (18-64)" rate="0.00002"
+               sourceCompartment="//@compartments.0"
+               sourceStratum="18-64"/>
 ```
 
 **Disease-Induced Deaths** flow to death compartments:

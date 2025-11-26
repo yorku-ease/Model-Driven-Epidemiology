@@ -18,39 +18,11 @@
       </defaultLayer>
       <additionalLayers name="Default" activeByDefault="true">
         <nodeMappings name="CompartmentNode" semanticCandidatesExpression="aql:self.compartments" domainClass="compartmentalmodel.Compartment">
-          <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\nρ=' + self.population.toString() + (if self.supplyFunction &lt;&gt; null then '\n[' + self.supplyFunction.type.toString() + ']' else '' endif)" labelPosition="node" resizeKind="NSEW" width="12" height="6">
+          <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + if self.supplyFunction &lt;&gt; null then '\n[' + self.supplyFunction.type.toString() + ']' else '' endif" labelPosition="node" resizeKind="NSEW" width="12" height="6">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
           </style>
-          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRIANGULAR' and self.supplyFunction.isSourceNode">
-            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="5" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[' + self.supplyFunction.type.toString() + '-SRC]' + '\nΦ_max=' + self.supplyFunction.maxDemand.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="7">
-              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_purple']"/>
-              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-            </style>
-          </conditionnalStyles>
-          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRIANGULAR' and not self.supplyFunction.isSourceNode">
-            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[' + self.supplyFunction.type.toString() + ']' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
-              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
-              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-            </style>
-          </conditionnalStyles>
-          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRM_MAK'">
-            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="6" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[TRM-MAK]' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
-              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
-              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-            </style>
-          </conditionnalStyles>
-          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRM_CAPACITATED'">
-            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="6" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[TRM-CAPACITATED]' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
-              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
-              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-            </style>
-          </conditionnalStyles>
           <conditionnalStyles predicateExpression="aql: self.PrimaryName.startsWith('A') or self.PrimaryName.startsWith('a')">
             <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="10" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName" labelPosition="node" resizeKind="NSEW" width="12" height="6">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
@@ -233,6 +205,34 @@
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             </style>
           </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRIANGULAR' and self.supplyFunction.isSourceNode">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="5" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[' + self.supplyFunction.type.toString() + '-SRC]' + '\nΦ_max=' + self.supplyFunction.maxDemand.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="7">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_purple']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRIANGULAR' and not self.supplyFunction.isSourceNode">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="4" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[' + self.supplyFunction.type.toString() + ']' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRM_MAK'">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="6" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[TRM-MAK]' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="aql: self.supplyFunction &lt;&gt; null and self.supplyFunction.type.toString() = 'TRM_CAPACITATED'">
+            <style xsi:type="style:SquareDescription" borderSizeComputationExpression="6" labelSize="9" labelExpression="aql:self.PrimaryName + ' ' + self.SecondaryName + '\n' + 'ρ=' + self.population.toString() + '\n[TRM-CAPACITATED]' + '\nρ_max=' + self.supplyFunction.maxDensity.toString() + ', Φ=' + self.supplyFunction.maxThroughput.toString()" labelPosition="node" resizeKind="NSEW" width="12" height="8">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_red']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </conditionnalStyles>
         </nodeMappings>
         <nodeMappings name="ExternalSourceNode" semanticCandidatesExpression="aql:self.externalSources" domainClass="compartmentalmodel.ExternalSource">
           <style xsi:type="style:EllipseNodeDescription" borderSizeComputationExpression="2" labelSize="10" labelExpression="aql:self.name + '\\n' + if self.rateParameter->notEmpty() then self.rateParameter.name else self.rate.toString() endif" labelPosition="node" resizeKind="NSEW" width="8" height="8">
@@ -285,6 +285,7 @@
       </additionalLayers>
       <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
     </ownedRepresentations>
+    
     <ownedJavaExtensions qualifiedClassName="CompartmentalModel.design.Services"/>
   </ownedViewpoints>
 </description:Group>

@@ -14,10 +14,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import compartmentalmodel.BirthSource;
+import compartmentalmodel.ExternalSource;
 import compartmentalmodel.Compartment;
 import compartmentalmodel.ContactFlow;
-import compartmentalmodel.DeathSink;
+import compartmentalmodel.ExternalSink;
 import compartmentalmodel.Flow;
 import compartmentalmodel.Group;
 import compartmentalmodel.RateFlow;
@@ -34,22 +34,22 @@ public class DynamicDiagramGenerator {
         String modelFile;
         
         if (args.length == 0) {
-            // No arguments provided - look for covid.compartmentalmodel in current directory
+            // No arguments provided - look for covid.compmodel in current directory
         	Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter the name of the .compartmentalmodel file (e.g. covid.compartmentalmodel): ");
+            System.out.print("Enter the name of the .compmodel file (e.g. covid.compmodel): ");
             String fileName = scanner.nextLine().trim();
             scanner.close();
 
             modelFile = System.getProperty("user.dir") + "/" + fileName;
-            System.out.println("No arguments provided. Looking for covid.compartmentalmodel in current directory...");
+            System.out.println("No arguments provided. Looking for covid.compmodel in current directory...");
         } else if (args.length == 1) {
             // Use provided argument
             modelFile = args[0];
         } else {
-            System.out.println("Usage: java DynamicDiagramGenerator [model-file.compartmentalmodel]");
+            System.out.println("Usage: java DynamicDiagramGenerator [model-file.compmodel]");
             System.out.println("Examples:");
-            System.out.println("  java DynamicDiagramGenerator                    (looks for covid.compartmentalmodel)");
-            System.out.println("  java DynamicDiagramGenerator covid.compartmentalmodel    (uses specified file)");
+            System.out.println("  java DynamicDiagramGenerator                    (looks for covid.compmodel)");
+            System.out.println("  java DynamicDiagramGenerator covid.compmodel    (uses specified file)");
             System.out.println("");
             System.out.println("This utility automatically:");
             System.out.println("  1. Detects all groups in your model");
@@ -116,8 +116,8 @@ public class DynamicDiagramGenerator {
                 System.out.println("  ✓ Saved: " + outputFile);
                 System.out.println("    📊 " + compartments + " compartments (" + stratifiedCompartments + " stratified)");
                 System.out.println("    🔄 " + countFlows(groupModel) + " flows");
-                System.out.println("    📈 " + groupModel.getBirthSources().size() + " birth sources");
-                System.out.println("    📉 " + groupModel.getDeathSinks().size() + " death sinks");
+                System.out.println("    📈 " + groupModel.getExternalSources().size() + " external sources");
+                System.out.println("    📉 " + groupModel.getExternalSinks().size() + " external sinks");
             }
 
             System.out.println("\n🎉 SUCCESS! Generated " + cartesianProduct.size() + " group-specific models.");
@@ -276,33 +276,33 @@ public class DynamicDiagramGenerator {
     }
     
     private static void updateLabels(CompartmentalModel model, String groupValue) {
-        // Filter birth sources to only include those relevant to this group combination
-        List<BirthSource> relevantBirthSources = new ArrayList<BirthSource>();
-        for (int i = 0; i < model.getBirthSources().size(); i++) {
-            BirthSource source = model.getBirthSources().get(i);
-            // Keep birth source if it belongs to this group combination or has no stratum specified
+        // Filter external sources to only include those relevant to this group combination
+        List<ExternalSource> relevantExternalSources = new ArrayList<ExternalSource>();
+        for (int i = 0; i < model.getExternalSources().size(); i++) {
+            ExternalSource source = model.getExternalSources().get(i);
+            // Keep external source if it belongs to this group combination or has no stratum specified
             if (source.getTargetStratum() == null ||
                 groupValue.equals(source.getTargetStratum()) ||
                 isStratumMatch(groupValue, source.getTargetStratum())) {
-                relevantBirthSources.add(source);
+                relevantExternalSources.add(source);
             }
         }
-        model.getBirthSources().clear();
-        model.getBirthSources().addAll(relevantBirthSources);
+        model.getExternalSources().clear();
+        model.getExternalSources().addAll(relevantExternalSources);
 
-        // Filter death sinks to only include those relevant to this group combination
-        List<DeathSink> relevantDeathSinks = new ArrayList<DeathSink>();
-        for (int i = 0; i < model.getDeathSinks().size(); i++) {
-            DeathSink sink = model.getDeathSinks().get(i);
-            // Keep death sink if it belongs to this group combination or has no stratum specified
+        // Filter external sinks to only include those relevant to this group combination
+        List<ExternalSink> relevantExternalSinks = new ArrayList<ExternalSink>();
+        for (int i = 0; i < model.getExternalSinks().size(); i++) {
+            ExternalSink sink = model.getExternalSinks().get(i);
+            // Keep external sink if it belongs to this group combination or has no stratum specified
             if (sink.getSourceStratum() == null ||
                 groupValue.equals(sink.getSourceStratum()) ||
                 isStratumMatch(groupValue, sink.getSourceStratum())) {
-                relevantDeathSinks.add(sink);
+                relevantExternalSinks.add(sink);
             }
         }
-        model.getDeathSinks().clear();
-        model.getDeathSinks().addAll(relevantDeathSinks);
+        model.getExternalSinks().clear();
+        model.getExternalSinks().addAll(relevantExternalSinks);
     }
 
     /**
@@ -320,7 +320,7 @@ public class DynamicDiagramGenerator {
     private static String generateFileName(String inputFile, String groupValue) {
         // Create safe filename
         String safeGroupValue = groupValue.replaceAll("[^a-zA-Z0-9]", "_");
-        return inputFile.replace(".compartmentalmodel", "_" + safeGroupValue + ".compartmentalmodel");
+        return inputFile.replace(".compmodel", "_" + safeGroupValue + ".compmodel");
     }
     
     private static int countStratifiedCompartments(CompartmentalModel model) {
@@ -344,10 +344,10 @@ public class DynamicDiagramGenerator {
     private static CompartmentalModel loadModel(String filePath) throws IOException {
         // Register the Compartmental model package
         compartmentalmodel.CompartmentalmodelPackage.eINSTANCE.eClass();
-        
+
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-            .put("compartmentalmodel", new XMIResourceFactoryImpl());
+            .put("compmodel", new XMIResourceFactoryImpl());
         
         // Register the package URI
         resourceSet.getPackageRegistry().put(
@@ -368,7 +368,7 @@ public class DynamicDiagramGenerator {
     private static void saveModel(CompartmentalModel model, String filePath) throws IOException {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-            .put("compartmentalmodel", new XMIResourceFactoryImpl());
+            .put("compmodel", new XMIResourceFactoryImpl());
         
         URI uri = URI.createFileURI(filePath);
         Resource resource = resourceSet.createResource(uri);

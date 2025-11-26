@@ -362,14 +362,14 @@ public interface CompartmentalmodelPackage extends EPackage {
 	int CONTACT_FLOW_OPERATION_COUNT = FLOW_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link compartmentalmodel.impl.BirthSourceImpl <em>Birth Source</em>}' class.
+	 * The meta object id for the '{@link compartmentalmodel.impl.ExternalSourceImpl <em>External Source</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see compartmentalmodel.impl.BirthSourceImpl
-	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getBirthSource()
+	 * @see compartmentalmodel.impl.ExternalSourceImpl
+	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getExternalSource()
 	 * @generated
 	 */
-	int BIRTH_SOURCE = 4;
+	int EXTERNAL_SOURCE = 4;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -378,7 +378,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__NAME = 0;
+	int EXTERNAL_SOURCE__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Rate</b></em>' attribute.
@@ -387,7 +387,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__RATE = 1;
+	int EXTERNAL_SOURCE__RATE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Rate Parameter</b></em>' reference.
@@ -396,7 +396,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__RATE_PARAMETER = 2;
+	int EXTERNAL_SOURCE__RATE_PARAMETER = 2;
 
 	/**
 	 * The feature id for the '<em><b>Target Compartment</b></em>' reference.
@@ -405,7 +405,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__TARGET_COMPARTMENT = 3;
+	int EXTERNAL_SOURCE__TARGET_COMPARTMENT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Target Stratum</b></em>' attribute.
@@ -414,7 +414,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__TARGET_STRATUM = 4;
+	int EXTERNAL_SOURCE__TARGET_STRATUM = 4;
 
 	/**
 	 * The feature id for the '<em><b>Fixed Rate</b></em>' attribute.
@@ -423,35 +423,35 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE__FIXED_RATE = 5;
+	int EXTERNAL_SOURCE__FIXED_RATE = 5;
 
 	/**
-	 * The number of structural features of the '<em>Birth Source</em>' class.
+	 * The number of structural features of the '<em>External Source</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE_FEATURE_COUNT = 6;
+	int EXTERNAL_SOURCE_FEATURE_COUNT = 6;
 
 	/**
-	 * The number of operations of the '<em>Birth Source</em>' class.
+	 * The number of operations of the '<em>External Source</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BIRTH_SOURCE_OPERATION_COUNT = 0;
+	int EXTERNAL_SOURCE_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link compartmentalmodel.impl.DeathSinkImpl <em>Death Sink</em>}' class.
+	 * The meta object id for the '{@link compartmentalmodel.impl.ExternalSinkImpl <em>External Sink</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see compartmentalmodel.impl.DeathSinkImpl
-	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getDeathSink()
+	 * @see compartmentalmodel.impl.ExternalSinkImpl
+	 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getExternalSink()
 	 * @generated
 	 */
-	int DEATH_SINK = 5;
+	int EXTERNAL_SINK = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -460,7 +460,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__NAME = 0;
+	int EXTERNAL_SINK__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Rate</b></em>' attribute.
@@ -469,7 +469,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__RATE = 1;
+	int EXTERNAL_SINK__RATE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Rate Parameter</b></em>' reference.
@@ -478,7 +478,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__RATE_PARAMETER = 2;
+	int EXTERNAL_SINK__RATE_PARAMETER = 2;
 
 	/**
 	 * The feature id for the '<em><b>Source Compartment</b></em>' reference.
@@ -487,8 +487,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__SOURCE_COMPARTMENT = 3;
-
+	int EXTERNAL_SINK__SOURCE_COMPARTMENT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Source Stratum</b></em>' attribute.
@@ -497,25 +496,25 @@ public interface CompartmentalmodelPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK__SOURCE_STRATUM = 4;
+	int EXTERNAL_SINK__SOURCE_STRATUM = 4;
 
 	/**
-	 * The number of structural features of the '<em>Death Sink</em>' class.
+	 * The number of structural features of the '<em>External Sink</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK_FEATURE_COUNT = 5;
+	int EXTERNAL_SINK_FEATURE_COUNT = 5;
 
 	/**
-	 * The number of operations of the '<em>Death Sink</em>' class.
+	 * The number of operations of the '<em>External Sink</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DEATH_SINK_OPERATION_COUNT = 0;
+	int EXTERNAL_SINK_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link compartmentalmodel.impl.StratumSpecificRateImpl <em>Stratum Specific Rate</em>}' class.
@@ -875,22 +874,22 @@ public interface CompartmentalmodelPackage extends EPackage {
 	int COMPARTMENTAL_MODEL__COMPARTMENTS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Birth Sources</b></em>' containment reference list.
+	 * The feature id for the '<em><b>External Sources</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENTAL_MODEL__BIRTH_SOURCES = 1;
+	int COMPARTMENTAL_MODEL__EXTERNAL_SOURCES = 1;
 
 	/**
-	 * The feature id for the '<em><b>Death Sinks</b></em>' containment reference list.
+	 * The feature id for the '<em><b>External Sinks</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPARTMENTAL_MODEL__DEATH_SINKS = 2;
+	int COMPARTMENTAL_MODEL__EXTERNAL_SINKS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Groups</b></em>' containment reference list.
@@ -1225,146 +1224,145 @@ public interface CompartmentalmodelPackage extends EPackage {
 	EReference getContactFlow_StratumSpecificRates();
 
 	/**
-	 * Returns the meta object for class '{@link compartmentalmodel.BirthSource <em>Birth Source</em>}'.
+	 * Returns the meta object for class '{@link compartmentalmodel.ExternalSource <em>External Source</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Birth Source</em>'.
-	 * @see compartmentalmodel.BirthSource
+	 * @return the meta object for class '<em>External Source</em>'.
+	 * @see compartmentalmodel.ExternalSource
 	 * @generated
 	 */
-	EClass getBirthSource();
+	EClass getExternalSource();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.BirthSource#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSource#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see compartmentalmodel.BirthSource#getName()
-	 * @see #getBirthSource()
+	 * @see compartmentalmodel.ExternalSource#getName()
+	 * @see #getExternalSource()
 	 * @generated
 	 */
-	EAttribute getBirthSource_Name();
+	EAttribute getExternalSource_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.BirthSource#getRate <em>Rate</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSource#getRate <em>Rate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Rate</em>'.
-	 * @see compartmentalmodel.BirthSource#getRate()
-	 * @see #getBirthSource()
+	 * @see compartmentalmodel.ExternalSource#getRate()
+	 * @see #getExternalSource()
 	 * @generated
 	 */
-	EAttribute getBirthSource_Rate();
+	EAttribute getExternalSource_Rate();
 
 	/**
-	 * Returns the meta object for the reference '{@link compartmentalmodel.BirthSource#getRateParameter <em>Rate Parameter</em>}'.
+	 * Returns the meta object for the reference '{@link compartmentalmodel.ExternalSource#getRateParameter <em>Rate Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Rate Parameter</em>'.
-	 * @see compartmentalmodel.BirthSource#getRateParameter()
-	 * @see #getBirthSource()
+	 * @see compartmentalmodel.ExternalSource#getRateParameter()
+	 * @see #getExternalSource()
 	 * @generated
 	 */
-	EReference getBirthSource_RateParameter();
+	EReference getExternalSource_RateParameter();
 
 	/**
-	 * Returns the meta object for the reference '{@link compartmentalmodel.BirthSource#getTargetCompartment <em>Target Compartment</em>}'.
+	 * Returns the meta object for the reference '{@link compartmentalmodel.ExternalSource#getTargetCompartment <em>Target Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Target Compartment</em>'.
-	 * @see compartmentalmodel.BirthSource#getTargetCompartment()
-	 * @see #getBirthSource()
+	 * @see compartmentalmodel.ExternalSource#getTargetCompartment()
+	 * @see #getExternalSource()
 	 * @generated
 	 */
-	EReference getBirthSource_TargetCompartment();
+	EReference getExternalSource_TargetCompartment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.BirthSource#getTargetStratum <em>Target Stratum</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSource#getTargetStratum <em>Target Stratum</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Target Stratum</em>'.
-	 * @see compartmentalmodel.BirthSource#getTargetStratum()
-	 * @see #getBirthSource()
+	 * @see compartmentalmodel.ExternalSource#getTargetStratum()
+	 * @see #getExternalSource()
 	 * @generated
 	 */
-	EAttribute getBirthSource_TargetStratum();
+	EAttribute getExternalSource_TargetStratum();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.BirthSource#isFixedRate <em>Fixed Rate</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSource#isFixedRate <em>Fixed Rate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Fixed Rate</em>'.
-	 * @see compartmentalmodel.BirthSource#isFixedRate()
-	 * @see #getBirthSource()
+	 * @see compartmentalmodel.ExternalSource#isFixedRate()
+	 * @see #getExternalSource()
 	 * @generated
 	 */
-	EAttribute getBirthSource_FixedRate();
+	EAttribute getExternalSource_FixedRate();
 
 	/**
-	 * Returns the meta object for class '{@link compartmentalmodel.DeathSink <em>Death Sink</em>}'.
+	 * Returns the meta object for class '{@link compartmentalmodel.ExternalSink <em>External Sink</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Death Sink</em>'.
-	 * @see compartmentalmodel.DeathSink
+	 * @return the meta object for class '<em>External Sink</em>'.
+	 * @see compartmentalmodel.ExternalSink
 	 * @generated
 	 */
-	EClass getDeathSink();
+	EClass getExternalSink();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.DeathSink#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSink#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see compartmentalmodel.DeathSink#getName()
-	 * @see #getDeathSink()
+	 * @see compartmentalmodel.ExternalSink#getName()
+	 * @see #getExternalSink()
 	 * @generated
 	 */
-	EAttribute getDeathSink_Name();
+	EAttribute getExternalSink_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.DeathSink#getRate <em>Rate</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSink#getRate <em>Rate</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Rate</em>'.
-	 * @see compartmentalmodel.DeathSink#getRate()
-	 * @see #getDeathSink()
+	 * @see compartmentalmodel.ExternalSink#getRate()
+	 * @see #getExternalSink()
 	 * @generated
 	 */
-	EAttribute getDeathSink_Rate();
+	EAttribute getExternalSink_Rate();
 
 	/**
-	 * Returns the meta object for the reference '{@link compartmentalmodel.DeathSink#getRateParameter <em>Rate Parameter</em>}'.
+	 * Returns the meta object for the reference '{@link compartmentalmodel.ExternalSink#getRateParameter <em>Rate Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Rate Parameter</em>'.
-	 * @see compartmentalmodel.DeathSink#getRateParameter()
-	 * @see #getDeathSink()
+	 * @see compartmentalmodel.ExternalSink#getRateParameter()
+	 * @see #getExternalSink()
 	 * @generated
 	 */
-	EReference getDeathSink_RateParameter();
+	EReference getExternalSink_RateParameter();
 
 	/**
-	 * Returns the meta object for the reference '{@link compartmentalmodel.DeathSink#getSourceCompartment <em>Source Compartment</em>}'.
+	 * Returns the meta object for the reference '{@link compartmentalmodel.ExternalSink#getSourceCompartment <em>Source Compartment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Source Compartment</em>'.
-	 * @see compartmentalmodel.DeathSink#getSourceCompartment()
-	 * @see #getDeathSink()
+	 * @see compartmentalmodel.ExternalSink#getSourceCompartment()
+	 * @see #getExternalSink()
 	 * @generated
 	 */
-	EReference getDeathSink_SourceCompartment();
-
+	EReference getExternalSink_SourceCompartment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link compartmentalmodel.DeathSink#getSourceStratum <em>Source Stratum</em>}'.
+	 * Returns the meta object for the attribute '{@link compartmentalmodel.ExternalSink#getSourceStratum <em>Source Stratum</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Source Stratum</em>'.
-	 * @see compartmentalmodel.DeathSink#getSourceStratum()
-	 * @see #getDeathSink()
+	 * @see compartmentalmodel.ExternalSink#getSourceStratum()
+	 * @see #getExternalSink()
 	 * @generated
 	 */
-	EAttribute getDeathSink_SourceStratum();
+	EAttribute getExternalSink_SourceStratum();
 
 	/**
 	 * Returns the meta object for class '{@link compartmentalmodel.StratumSpecificRate <em>Stratum Specific Rate</em>}'.
@@ -1453,26 +1451,26 @@ public interface CompartmentalmodelPackage extends EPackage {
 	EReference getCompartmentalModel_Compartments();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link compartmentalmodel.CompartmentalModel#getBirthSources <em>Birth Sources</em>}'.
+	 * Returns the meta object for the containment reference list '{@link compartmentalmodel.CompartmentalModel#getExternalSources <em>External Sources</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Birth Sources</em>'.
-	 * @see compartmentalmodel.CompartmentalModel#getBirthSources()
+	 * @return the meta object for the containment reference list '<em>External Sources</em>'.
+	 * @see compartmentalmodel.CompartmentalModel#getExternalSources()
 	 * @see #getCompartmentalModel()
 	 * @generated
 	 */
-	EReference getCompartmentalModel_BirthSources();
+	EReference getCompartmentalModel_ExternalSources();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link compartmentalmodel.CompartmentalModel#getDeathSinks <em>Death Sinks</em>}'.
+	 * Returns the meta object for the containment reference list '{@link compartmentalmodel.CompartmentalModel#getExternalSinks <em>External Sinks</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Death Sinks</em>'.
-	 * @see compartmentalmodel.CompartmentalModel#getDeathSinks()
+	 * @return the meta object for the containment reference list '<em>External Sinks</em>'.
+	 * @see compartmentalmodel.CompartmentalModel#getExternalSinks()
 	 * @see #getCompartmentalModel()
 	 * @generated
 	 */
-	EReference getCompartmentalModel_DeathSinks();
+	EReference getCompartmentalModel_ExternalSinks();
 
 	/**
 	 * Returns the meta object for the attribute '{@link compartmentalmodel.CompartmentalModel#getTotalPopulation <em>Total Population</em>}'.
@@ -1998,14 +1996,14 @@ public interface CompartmentalmodelPackage extends EPackage {
 		EReference CONTACT_FLOW__STRATUM_SPECIFIC_RATES = eINSTANCE.getContactFlow_StratumSpecificRates();
 
 		/**
-		 * The meta object literal for the '{@link compartmentalmodel.impl.BirthSourceImpl <em>Birth Source</em>}' class.
+		 * The meta object literal for the '{@link compartmentalmodel.impl.ExternalSourceImpl <em>External Source</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see compartmentalmodel.impl.BirthSourceImpl
-		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getBirthSource()
+		 * @see compartmentalmodel.impl.ExternalSourceImpl
+		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getExternalSource()
 		 * @generated
 		 */
-		EClass BIRTH_SOURCE = eINSTANCE.getBirthSource();
+		EClass EXTERNAL_SOURCE = eINSTANCE.getExternalSource();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2013,7 +2011,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute BIRTH_SOURCE__NAME = eINSTANCE.getBirthSource_Name();
+		EAttribute EXTERNAL_SOURCE__NAME = eINSTANCE.getExternalSource_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Rate</b></em>' attribute feature.
@@ -2021,7 +2019,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute BIRTH_SOURCE__RATE = eINSTANCE.getBirthSource_Rate();
+		EAttribute EXTERNAL_SOURCE__RATE = eINSTANCE.getExternalSource_Rate();
 
 		/**
 		 * The meta object literal for the '<em><b>Rate Parameter</b></em>' reference feature.
@@ -2029,7 +2027,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference BIRTH_SOURCE__RATE_PARAMETER = eINSTANCE.getBirthSource_RateParameter();
+		EReference EXTERNAL_SOURCE__RATE_PARAMETER = eINSTANCE.getExternalSource_RateParameter();
 
 		/**
 		 * The meta object literal for the '<em><b>Target Compartment</b></em>' reference feature.
@@ -2037,7 +2035,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference BIRTH_SOURCE__TARGET_COMPARTMENT = eINSTANCE.getBirthSource_TargetCompartment();
+		EReference EXTERNAL_SOURCE__TARGET_COMPARTMENT = eINSTANCE.getExternalSource_TargetCompartment();
 
 		/**
 		 * The meta object literal for the '<em><b>Target Stratum</b></em>' attribute feature.
@@ -2045,7 +2043,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute BIRTH_SOURCE__TARGET_STRATUM = eINSTANCE.getBirthSource_TargetStratum();
+		EAttribute EXTERNAL_SOURCE__TARGET_STRATUM = eINSTANCE.getExternalSource_TargetStratum();
 
 		/**
 		 * The meta object literal for the '<em><b>Fixed Rate</b></em>' attribute feature.
@@ -2053,17 +2051,17 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute BIRTH_SOURCE__FIXED_RATE = eINSTANCE.getBirthSource_FixedRate();
+		EAttribute EXTERNAL_SOURCE__FIXED_RATE = eINSTANCE.getExternalSource_FixedRate();
 
 		/**
-		 * The meta object literal for the '{@link compartmentalmodel.impl.DeathSinkImpl <em>Death Sink</em>}' class.
+		 * The meta object literal for the '{@link compartmentalmodel.impl.ExternalSinkImpl <em>External Sink</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see compartmentalmodel.impl.DeathSinkImpl
-		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getDeathSink()
+		 * @see compartmentalmodel.impl.ExternalSinkImpl
+		 * @see compartmentalmodel.impl.CompartmentalmodelPackageImpl#getExternalSink()
 		 * @generated
 		 */
-		EClass DEATH_SINK = eINSTANCE.getDeathSink();
+		EClass EXTERNAL_SINK = eINSTANCE.getExternalSink();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2071,7 +2069,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute DEATH_SINK__NAME = eINSTANCE.getDeathSink_Name();
+		EAttribute EXTERNAL_SINK__NAME = eINSTANCE.getExternalSink_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Rate</b></em>' attribute feature.
@@ -2079,7 +2077,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute DEATH_SINK__RATE = eINSTANCE.getDeathSink_Rate();
+		EAttribute EXTERNAL_SINK__RATE = eINSTANCE.getExternalSink_Rate();
 
 		/**
 		 * The meta object literal for the '<em><b>Rate Parameter</b></em>' reference feature.
@@ -2087,7 +2085,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DEATH_SINK__RATE_PARAMETER = eINSTANCE.getDeathSink_RateParameter();
+		EReference EXTERNAL_SINK__RATE_PARAMETER = eINSTANCE.getExternalSink_RateParameter();
 
 		/**
 		 * The meta object literal for the '<em><b>Source Compartment</b></em>' reference feature.
@@ -2095,8 +2093,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DEATH_SINK__SOURCE_COMPARTMENT = eINSTANCE.getDeathSink_SourceCompartment();
-
+		EReference EXTERNAL_SINK__SOURCE_COMPARTMENT = eINSTANCE.getExternalSink_SourceCompartment();
 
 		/**
 		 * The meta object literal for the '<em><b>Source Stratum</b></em>' attribute feature.
@@ -2104,7 +2101,7 @@ public interface CompartmentalmodelPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute DEATH_SINK__SOURCE_STRATUM = eINSTANCE.getDeathSink_SourceStratum();
+		EAttribute EXTERNAL_SINK__SOURCE_STRATUM = eINSTANCE.getExternalSink_SourceStratum();
 
 		/**
 		 * The meta object literal for the '{@link compartmentalmodel.impl.StratumSpecificRateImpl <em>Stratum Specific Rate</em>}' class.
@@ -2381,20 +2378,20 @@ public interface CompartmentalmodelPackage extends EPackage {
 		EReference COMPARTMENTAL_MODEL__COMPARTMENTS = eINSTANCE.getCompartmentalModel_Compartments();
 
 		/**
-		 * The meta object literal for the '<em><b>Birth Sources</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>External Sources</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference COMPARTMENTAL_MODEL__BIRTH_SOURCES = eINSTANCE.getCompartmentalModel_BirthSources();
+		EReference COMPARTMENTAL_MODEL__EXTERNAL_SOURCES = eINSTANCE.getCompartmentalModel_ExternalSources();
 
 		/**
-		 * The meta object literal for the '<em><b>Death Sinks</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>External Sinks</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference COMPARTMENTAL_MODEL__DEATH_SINKS = eINSTANCE.getCompartmentalModel_DeathSinks();
+		EReference COMPARTMENTAL_MODEL__EXTERNAL_SINKS = eINSTANCE.getCompartmentalModel_ExternalSinks();
 
 		/**
 		 * The meta object literal for the '<em><b>Groups</b></em>' containment reference list feature.

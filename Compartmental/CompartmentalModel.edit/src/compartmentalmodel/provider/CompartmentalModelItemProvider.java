@@ -149,8 +149,8 @@ public class CompartmentalModelItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__COMPARTMENTS);
-			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__BIRTH_SOURCES);
-			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__DEATH_SINKS);
+			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES);
+			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__EXTERNAL_SINKS);
 			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__GROUPS);
 			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__PRODUCTS);
 			childrenFeatures.add(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__PARAMETERS);
@@ -213,8 +213,8 @@ public class CompartmentalModelItemProvider
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__COMPARTMENTS:
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES:
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS:
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES:
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS:
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GROUPS:
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__PRODUCTS:
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__PARAMETERS:
@@ -242,13 +242,13 @@ public class CompartmentalModelItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__BIRTH_SOURCES,
-				 CompartmentalmodelFactory.eINSTANCE.createBirthSource()));
+				(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES,
+				 CompartmentalmodelFactory.eINSTANCE.createExternalSource()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__DEATH_SINKS,
-				 CompartmentalmodelFactory.eINSTANCE.createDeathSink()));
+				(CompartmentalmodelPackage.Literals.COMPARTMENTAL_MODEL__EXTERNAL_SINKS,
+				 CompartmentalmodelFactory.eINSTANCE.createExternalSink()));
 
 		newChildDescriptors.add
 			(createChildParameter

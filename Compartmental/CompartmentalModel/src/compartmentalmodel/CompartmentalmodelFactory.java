@@ -49,22 +49,22 @@ public interface CompartmentalmodelFactory extends EFactory {
 	ContactFlow createContactFlow();
 
 	/**
-	 * Returns a new object of class '<em>Birth Source</em>'.
+	 * Returns a new object of class '<em>External Source</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Birth Source</em>'.
+	 * @return a new object of class '<em>External Source</em>'.
 	 * @generated
 	 */
-	BirthSource createBirthSource();
+	ExternalSource createExternalSource();
 
 	/**
-	 * Returns a new object of class '<em>Death Sink</em>'.
+	 * Returns a new object of class '<em>External Sink</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Death Sink</em>'.
+	 * @return a new object of class '<em>External Sink</em>'.
 	 * @generated
 	 */
-	DeathSink createDeathSink();
+	ExternalSink createExternalSink();
 
 	/**
 	 * Returns a new object of class '<em>Stratum Specific Rate</em>'.

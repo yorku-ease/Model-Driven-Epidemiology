@@ -85,7 +85,10 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BirthSource">
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalSource">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="External inflow into a compartment. Examples: births (disease), onramps (traffic), material input (manufacturing), packet generators (networks)."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
@@ -94,7 +97,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fixedRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DeathSink">
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalSink">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="External outflow from a compartment. Examples: deaths (disease), offramps (traffic), waste output (manufacturing), packet drops (networks)."/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rateParameter" eType="#//Parameter"/>
@@ -272,16 +278,16 @@
         <details key="documentation" value="Population compartments representing disease states (e.g., Susceptible, Exposed, Infectious, Recovered) or vector states (e.g., Susceptible Mosquitoes, Infected Mosquitoes)."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="birthSources" upperBound="-1"
-        eType="#//BirthSource" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="externalSources" upperBound="-1"
+        eType="#//ExternalSource" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Population inflows representing births, recruitment, immigration, or vaccination entry into specific compartments."/>
+        <details key="documentation" value="External inflows into compartments. Examples: births/recruitment (disease), onramps (traffic), material input (manufacturing), packet generators (networks)."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="deathSinks" upperBound="-1"
-        eType="#//DeathSink" containment="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="externalSinks" upperBound="-1"
+        eType="#//ExternalSink" containment="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="Population outflows representing natural mortality, disease-induced deaths, or emigration from specific compartments."/>
+        <details key="documentation" value="External outflows from compartments. Examples: deaths (disease), offramps (traffic), waste output (manufacturing), packet drops (networks)."/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="groups" upperBound="-1"

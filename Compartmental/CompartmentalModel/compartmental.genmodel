@@ -16,6 +16,8 @@
       <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/TRIANGULAR"/>
       <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/LINEAR"/>
       <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/CUSTOM"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/TRM_MAK"/>
+      <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//SupplyFunctionType/TRM_CAPACITATED"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="compartmental.ecore#//JunctionRuleType">
       <genEnumLiterals ecoreEnumLiteral="compartmental.ecore#//JunctionRuleType/NONE"/>
@@ -47,20 +49,20 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ContactFlow/contactParameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//ContactFlow/stratumSpecificRates"/>
     </genClasses>
-    <genClasses ecoreClass="compartmental.ecore#//BirthSource">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//BirthSource/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//BirthSource/rate"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//BirthSource/rateParameter"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//BirthSource/targetCompartment"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//BirthSource/targetStratum"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//BirthSource/fixedRate"/>
+    <genClasses ecoreClass="compartmental.ecore#//ExternalSource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSource/rateParameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSource/targetCompartment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/targetStratum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSource/fixedRate"/>
     </genClasses>
-    <genClasses ecoreClass="compartmental.ecore#//DeathSink">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//DeathSink/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//DeathSink/rate"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//DeathSink/rateParameter"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//DeathSink/sourceCompartment"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//DeathSink/sourceStratum"/>
+    <genClasses ecoreClass="compartmental.ecore#//ExternalSink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSink/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSink/rate"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSink/rateParameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference compartmental.ecore#//ExternalSink/sourceCompartment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//ExternalSink/sourceStratum"/>
     </genClasses>
     <genClasses ecoreClass="compartmental.ecore#//StratumSpecificRate">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute compartmental.ecore#//StratumSpecificRate/stratum"/>
@@ -96,8 +98,8 @@
     </genClasses>
     <genClasses ecoreClass="compartmental.ecore#//CompartmentalModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/compartments"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/birthSources"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/deathSinks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/externalSources"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/externalSinks"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/groups"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/products"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference compartmental.ecore#//CompartmentalModel/parameters"/>

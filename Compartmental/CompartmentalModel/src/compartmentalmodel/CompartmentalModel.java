@@ -19,8 +19,8 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link compartmentalmodel.CompartmentalModel#getCompartments <em>Compartments</em>}</li>
- *   <li>{@link compartmentalmodel.CompartmentalModel#getBirthSources <em>Birth Sources</em>}</li>
- *   <li>{@link compartmentalmodel.CompartmentalModel#getDeathSinks <em>Death Sinks</em>}</li>
+ *   <li>{@link compartmentalmodel.CompartmentalModel#getExternalSources <em>External Sources</em>}</li>
+ *   <li>{@link compartmentalmodel.CompartmentalModel#getExternalSinks <em>External Sinks</em>}</li>
  *   <li>{@link compartmentalmodel.CompartmentalModel#getGroups <em>Groups</em>}</li>
  *   <li>{@link compartmentalmodel.CompartmentalModel#getProducts <em>Products</em>}</li>
  *   <li>{@link compartmentalmodel.CompartmentalModel#getParameters <em>Parameters</em>}</li>
@@ -50,34 +50,34 @@ public interface CompartmentalModel extends EObject {
 	EList<Compartment> getCompartments();
 
 	/**
-	 * Returns the value of the '<em><b>Birth Sources</b></em>' containment reference list.
-	 * The list contents are of type {@link compartmentalmodel.BirthSource}.
+	 * Returns the value of the '<em><b>External Sources</b></em>' containment reference list.
+	 * The list contents are of type {@link compartmentalmodel.ExternalSource}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Population inflows representing births, recruitment, immigration, or vaccination entry into specific compartments.
+	 * External inflows into compartments. Examples: births/recruitment (disease), onramps (traffic), material input (manufacturing), packet generators (networks).
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Birth Sources</em>' containment reference list.
-	 * @see compartmentalmodel.CompartmentalmodelPackage#getCompartmentalModel_BirthSources()
+	 * @return the value of the '<em>External Sources</em>' containment reference list.
+	 * @see compartmentalmodel.CompartmentalmodelPackage#getCompartmentalModel_ExternalSources()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<BirthSource> getBirthSources();
+	EList<ExternalSource> getExternalSources();
 
 	/**
-	 * Returns the value of the '<em><b>Death Sinks</b></em>' containment reference list.
-	 * The list contents are of type {@link compartmentalmodel.DeathSink}.
+	 * Returns the value of the '<em><b>External Sinks</b></em>' containment reference list.
+	 * The list contents are of type {@link compartmentalmodel.ExternalSink}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Population outflows representing natural mortality, disease-induced deaths, or emigration from specific compartments.
+	 * External outflows from compartments. Examples: deaths (disease), offramps (traffic), waste output (manufacturing), packet drops (networks).
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>Death Sinks</em>' containment reference list.
-	 * @see compartmentalmodel.CompartmentalmodelPackage#getCompartmentalModel_DeathSinks()
+	 * @return the value of the '<em>External Sinks</em>' containment reference list.
+	 * @see compartmentalmodel.CompartmentalmodelPackage#getCompartmentalModel_ExternalSinks()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<DeathSink> getDeathSinks();
+	EList<ExternalSink> getExternalSinks();
 
 	/**
 	 * Returns the value of the '<em><b>Groups</b></em>' containment reference list.

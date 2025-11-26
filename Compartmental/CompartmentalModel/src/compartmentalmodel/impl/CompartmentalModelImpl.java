@@ -14,9 +14,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import compartmentalmodel.BirthSource;
 import compartmentalmodel.Compartment;
-import compartmentalmodel.DeathSink;
+import compartmentalmodel.ExternalSink;
+import compartmentalmodel.ExternalSource;
 import compartmentalmodel.Group;
 import compartmentalmodel.Parameter;
 import compartmentalmodel.Product;
@@ -32,8 +32,8 @@ import compartmentalmodel.CompartmentalmodelPackage;
  * </p>
  * <ul>
  *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getCompartments <em>Compartments</em>}</li>
- *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getBirthSources <em>Birth Sources</em>}</li>
- *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getDeathSinks <em>Death Sinks</em>}</li>
+ *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getExternalSources <em>External Sources</em>}</li>
+ *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getExternalSinks <em>External Sinks</em>}</li>
  *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getGroups <em>Groups</em>}</li>
  *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getProducts <em>Products</em>}</li>
  *   <li>{@link compartmentalmodel.impl.CompartmentalModelImpl#getParameters <em>Parameters</em>}</li>
@@ -56,23 +56,25 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	protected EList<Compartment> compartments;
 
 	/**
-	 * The cached value of the '{@link #getBirthSources() <em>Birth Sources</em>}' containment reference list.
+	 * The cached value of the '{@link #getExternalSources() <em>External Sources</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getBirthSources()
+	 * @see #getExternalSources()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<BirthSource> birthSources;
+	protected EList<ExternalSource> externalSources;
+
 	/**
-	 * The cached value of the '{@link #getDeathSinks() <em>Death Sinks</em>}' containment reference list.
+	 * The cached value of the '{@link #getExternalSinks() <em>External Sinks</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getDeathSinks()
+	 * @see #getExternalSinks()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<DeathSink> deathSinks;
+	protected EList<ExternalSink> externalSinks;
+
 	/**
 	 * The cached value of the '{@link #getGroups() <em>Groups</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -196,11 +198,11 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 */
 	@Override
-	public EList<BirthSource> getBirthSources() {
-		if (birthSources == null) {
-			birthSources = new EObjectContainmentEList<BirthSource>(BirthSource.class, this, CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES);
+	public EList<ExternalSource> getExternalSources() {
+		if (externalSources == null) {
+			externalSources = new EObjectContainmentEList<ExternalSource>(ExternalSource.class, this, CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES);
 		}
-		return birthSources;
+		return externalSources;
 	}
 
 	/**
@@ -209,11 +211,11 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 	 * @generated
 	 */
 	@Override
-	public EList<DeathSink> getDeathSinks() {
-		if (deathSinks == null) {
-			deathSinks = new EObjectContainmentEList<DeathSink>(DeathSink.class, this, CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS);
+	public EList<ExternalSink> getExternalSinks() {
+		if (externalSinks == null) {
+			externalSinks = new EObjectContainmentEList<ExternalSink>(ExternalSink.class, this, CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS);
 		}
-		return deathSinks;
+		return externalSinks;
 	}
 
 	/**
@@ -334,10 +336,10 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 		switch (featureID) {
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__COMPARTMENTS:
 				return ((InternalEList<?>)getCompartments()).basicRemove(otherEnd, msgs);
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES:
-				return ((InternalEList<?>)getBirthSources()).basicRemove(otherEnd, msgs);
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS:
-				return ((InternalEList<?>)getDeathSinks()).basicRemove(otherEnd, msgs);
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES:
+				return ((InternalEList<?>)getExternalSources()).basicRemove(otherEnd, msgs);
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS:
+				return ((InternalEList<?>)getExternalSinks()).basicRemove(otherEnd, msgs);
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GROUPS:
 				return ((InternalEList<?>)getGroups()).basicRemove(otherEnd, msgs);
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__PRODUCTS:
@@ -358,10 +360,10 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 		switch (featureID) {
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__COMPARTMENTS:
 				return getCompartments();
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES:
-				return getBirthSources();
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS:
-				return getDeathSinks();
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES:
+				return getExternalSources();
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS:
+				return getExternalSinks();
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GROUPS:
 				return getGroups();
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__PRODUCTS:
@@ -391,13 +393,13 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 				getCompartments().clear();
 				getCompartments().addAll((Collection<? extends Compartment>)newValue);
 				return;
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES:
-				getBirthSources().clear();
-				getBirthSources().addAll((Collection<? extends BirthSource>)newValue);
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES:
+				getExternalSources().clear();
+				getExternalSources().addAll((Collection<? extends ExternalSource>)newValue);
 				return;
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS:
-				getDeathSinks().clear();
-				getDeathSinks().addAll((Collection<? extends DeathSink>)newValue);
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS:
+				getExternalSinks().clear();
+				getExternalSinks().addAll((Collection<? extends ExternalSink>)newValue);
 				return;
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GROUPS:
 				getGroups().clear();
@@ -435,11 +437,11 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__COMPARTMENTS:
 				getCompartments().clear();
 				return;
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES:
-				getBirthSources().clear();
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES:
+				getExternalSources().clear();
 				return;
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS:
-				getDeathSinks().clear();
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS:
+				getExternalSinks().clear();
 				return;
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GROUPS:
 				getGroups().clear();
@@ -473,10 +475,10 @@ public class CompartmentalModelImpl extends MinimalEObjectImpl.Container impleme
 		switch (featureID) {
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__COMPARTMENTS:
 				return compartments != null && !compartments.isEmpty();
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__BIRTH_SOURCES:
-				return birthSources != null && !birthSources.isEmpty();
-			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__DEATH_SINKS:
-				return deathSinks != null && !deathSinks.isEmpty();
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SOURCES:
+				return externalSources != null && !externalSources.isEmpty();
+			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__EXTERNAL_SINKS:
+				return externalSinks != null && !externalSinks.isEmpty();
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__GROUPS:
 				return groups != null && !groups.isEmpty();
 			case CompartmentalmodelPackage.COMPARTMENTAL_MODEL__PRODUCTS:
