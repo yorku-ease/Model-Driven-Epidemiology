@@ -71,7 +71,6 @@ public class CompareRunner {
     private static SEIRModel load(String path) {
         ResourceSet rs = new ResourceSetImpl();
 
-        // Register factory + package (THIS is critical and correct)
         rs.getResourceFactoryRegistry()
           .getExtensionToFactoryMap()
           .put("seirmodel", new XMIResourceFactoryImpl());
