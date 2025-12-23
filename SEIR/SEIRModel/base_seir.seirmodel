@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="14800000">
+  <compartments PrimaryName="Susceptible" population="10000000">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Exposure" target="//@compartments.1" contactCompartment="//@compartments.2" contactParameters=""/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="2000">
+    <outgoingFlows xsi:type="seir:RateFlow" description="to Infectious" target="//@compartments.2"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="500">
+    <outgoingFlows xsi:type="seir:RateFlow" description="to Recovery" target="//@compartments.3"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="2490"/>
+  <birthSources/>
+  <deathSinks/>
+</seir:SEIRModel>
