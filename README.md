@@ -1,10 +1,39 @@
-# EpiMDE: Compartmental Model-Driven Engineering Framework
+# Model-Driven Epidemiology
 
-EpiMDE is a comprehensive framework for building, analyzing, and simulating compartmental models using Model-Driven Engineering (MDE) principles. Built on Eclipse Modeling Framework (EMF) and Sirius, it supports both graphical and textual model editing with a focus on symbolic/parametric modeling.
+A comprehensive framework for building, analyzing, and simulating compartmental models using Model-Driven Engineering (MDE) principles, with tools for automated model analysis and extraction from scientific papers.
+
+## Project Components
+
+### 1. EpiMDE Framework (Compartmental/)
+
+EpiMDE is a Model-Driven Engineering framework built on Eclipse Modeling Framework (EMF) and Sirius. It supports both graphical and textual model editing with a focus on symbolic/parametric modeling.
 
 **Version 3.1** extends support beyond epidemiology to **flow networks** including traffic systems (classical and kinetic), queue networks, and other capacity-constrained flow systems.
 
-## Key Features
+**Key capabilities:**
+- Graphical and textual model editing
+- Symbolic/parametric modeling
+- Population stratification
+- Automatic equation generation
+- Python simulation
+- Traffic network modeling (NEW!)
+
+### 2. Model Analysis Tools (phase1/)
+
+A complete suite of Python tools for analyzing compartmental models, extracting patterns, and building taxonomies:
+
+- **Model Analysis** - Analyze existing .compartmentalmodel files
+- **Extraction Protocols** - Systematic rules for extracting models from papers
+- **Taxonomies** - Classification systems for compartments, flows, and parameters
+- **Gap Analysis** - Identify missing model components
+- **Pattern Library** - Common modeling patterns across diseases
+- **Uncertainty Analysis** - Parameter confidence and sensitivity analysis
+
+See `phase1/README.md` for complete documentation.
+
+---
+
+## EpiMDE Key Features
 
 - **Flow Network Modeling** 🚀 **NEW in Version 3.0-3.1!**
   - **Classical Traffic Networks**: Highway traffic with supply-demand dynamics and ramp metering (Coogan & Arcak 2015)
@@ -55,43 +84,62 @@ EpiMDE is a comprehensive framework for building, analyzing, and simulating comp
 ## 📁 Project Structure
 
 ```
-SEIR/
-├── CompartmentalModel/                 # Core model plugin
-│   ├── compartmental.ecore            # Ecore metamodel definition
-│   ├── compartmental.genmodel         # EMF GenModel
-│   ├── seir.aird             # Sirius representation instance
-│   ├── covid.compartmentalmodel       # COVID-19 stratified model example
-│   ├── HIV.compartmentalmodel         # HIV model example
-│   ├── covid_*.compartmentalmodel     # Age-specific COVID models
-│   ├── simulation/           # Python simulation tools
-│   │   └── simulation.py     # Numerical integration script
-│   └── src/                  # Generated Java source
-│       ├── compartmentalmodel/        # Core model classes
-│       └── seir/             # Utilities and equation generator
-├── org.seir.targetplatform/   # Target platform project
-│   └── seir.target           # Eclipse target definition
-├── CompartmentalModel.design/          # Sirius graphical definition
-│   └── description/CompartmentalModel.odesign
-├── CompartmentalModel.edit/            # EMF edit plugin
-├── CompartmentalModel.editor/          # EMF editor plugin
-└── CompartmentalModel.tests/           # Unit tests
+Model-Driven-Epidemiology/
+├── README.md                           # This file - Project overview
+│
+├── Compartmental/                      # EpiMDE Eclipse workspace
+│   ├── CompartmentalModel/             # Core model plugin
+│   │   ├── compartmental.ecore         # Ecore metamodel definition
+│   │   ├── covid.compartmentalmodel    # COVID-19 model
+│   │   ├── malaria.compartmentalmodel  # Malaria model
+│   │   ├── HIV.compartmentalmodel      # HIV model
+│   │   ├── traffic.compmodel           # Traffic flow network
+│   │   ├── simulation/                 # Python simulation tools
+│   │   └── src/                        # Java source code
+│   ├── org.compartmental.targetplatform/
+│   ├── CompartmentalModel.design/      # Sirius graphical editor
+│   ├── CompartmentalModel.edit/
+│   ├── CompartmentalModel.editor/
+│   └── CompartmentalModel.tests/
+│
+└── phase1/                             # Model analysis tools
+    ├── README.md                       # Phase 1 documentation
+    ├── run_phase1.py                   # Main runner script
+    ├── analysis/                       # Analysis scripts (10 tasks)
+    ├── reports/                        # Generated reports
+    ├── papers/                         # Paper collection
+    └── utils/                          # Utility functions
 ```
 
 ---
 
-## 🚀 Setup Instructions
+## 🚀 Quick Start
 
-### 1. Install Required Eclipse
+### Using Model Analysis Tools (phase1/)
+
+Run the complete analysis pipeline:
+```bash
+cd phase1
+python3 run_phase1.py
+```
+
+This will analyze all models and generate reports in `phase1/reports/`.
+
+For details, see `phase1/README.md`.
+
+### Using EpiMDE Framework (Compartmental/)
+
+#### 1. Install Required Eclipse
 - **Eclipse Modeling** package
 - OR install features:
   - EMF SDK
   - Sirius (from update site)
 
-### 2. Import Projects
-Use `File > Import > Existing Projects into Workspace`, and import all 6+ projects listed above.
+#### 2. Import Projects
+Use `File > Import > Existing Projects into Workspace`, and import all projects from `Compartmental/` directory.
 
-### 3. Setup Target Platform
-- Open `seir.target` in Eclipse
+#### 3. Setup Target Platform
+- Open `org.compartmental.targetplatform/seir.target` in Eclipse
 - Click **"Set as Active Target Platform"**
 
 This will resolve dependencies like EMF, Sirius, and required runtimes.

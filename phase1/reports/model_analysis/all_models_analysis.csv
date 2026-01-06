@@ -1,0 +1,81 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,Category,Values,ParameterType,Value,Unit
+COVID-19,Compartment,Susceptible,,14700000,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Exposed,,5000,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Exposed,quarantined,1000,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Infectious,presymptomatic,3000,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Infectious,"presymptomatic, isolated",1000,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Infectious,mild to moderate,8000,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Infectious,severe,2000,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Infectious,"mild to moderate, isolated",4000,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Infectious,"severe, isolated",800,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Isolated,,6000,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Recovered,,50000,True,0.0,None,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Admitted to hospital,,1500,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,ICU,,400,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,Admitted to hospital,post-ICU,200,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+COVID-19,Compartment,COVID Deaths,,100,True,0.0,None,Model file,Certain,,,,,,,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,0.00001,True,Exposure (community transmission),,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Exposed (quarantined),RateFlow,0.000002,True,Exposure with quarantine measures,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Infectious (presymptomatic),RateFlow,0.4,True,Progression to presymptomatic infectious,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,"Infectious (presymptomatic, isolated)",RateFlow,0.4,True,Progression to presymptomatic isolated,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Infectious (mild to moderate),RateFlow,0.85,True,Mild to moderate symptoms,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Infectious (severe),RateFlow,0.15,True,Severe symptoms,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,"Infectious (mild to moderate, isolated)",RateFlow,0.85,True,Mild to moderate isolated,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,"Infectious (severe, isolated)",RateFlow,0.15,True,Severe isolated,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Isolated,RateFlow,0.5,False,Detection and isolation,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.167,False,Recovery,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Admitted to hospital,RateFlow,0.167,False,Hospital admission,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.167,False,Recovery,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Admitted to hospital,RateFlow,0.167,False,Hospital admission,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.167,False,Recovery,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.74,True,Recovery from hospital,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,ICU,RateFlow,0.26,True,ICU admission,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Admitted to hospital (post-ICU),RateFlow,0.6,True,Recovery to post-ICU,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,COVID Deaths,RateFlow,0.4,True,Death from COVID,,,,,
+COVID-19,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.048,False,Recovery post-ICU,,,,,
+COVID-19,Stratification,AgeGroup,,,,,,Model file,Certain,,,,,,Age-based population stratification with realistic COVID-19 characteristics,Group,"0-17, 18-64, 65+",,,
+COVID-19,Stratification,AgeStratification,,,,,,Model file,Certain,,,,,,Age-based compartment stratification,Product,//@groups.0,,,
+Malaria,Compartment,Susceptible Humans population,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+Malaria,Compartment,Exposed Humans Population,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+Malaria,Compartment,Infected Humans Population,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+Malaria,Compartment,Recovered Humans Population,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+Malaria,Compartment,Susceptible Mosquitoes Population,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+Malaria,Compartment,Exposed Mosquitoes Population,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+Malaria,Compartment,Infected Mosquitoes Population,,0,False,0.0,None,Model file,Certain,,,,,,,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Exposed Humans Population,RateFlow,//@parameters.2,False,Force of infection: beta1 * a(T) * Iv / Nh.,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Infected Humans Population,RateFlow,//@parameters.8,False,,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Recovered Humans Population,RateFlow,//@parameters.9,False,,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Susceptible Humans population,RateFlow,//@parameters.3,False,,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes Population,RateFlow,//@parameters.1,False,Force of infection: beta2 * a(T) * Ih / Nh.,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Infected Mosquitoes Population,RateFlow,//@parameters.14,False,,,,,,
+Malaria,Parameter,αₕ,,,,,,Model file,Certain,,,,,,Recruitment rate of human populations,,,CONSTANT,15129,people/time
+Malaria,Parameter,β₂a(T),,,,,,Model file,Certain,,,,,,Combined contact rate,,,EXPRESSION,β₂ * a(T),1/time
+Malaria,Parameter,β₁a(T),,,,,,Model file,Certain,,,,,,Combined contact rate,,,EXPRESSION,β₁ * a(T),1/time
+Malaria,Parameter,q,,,,,,Model file,Certain,,,,,,Progression rate of Rh to Sh,,,CONSTANT,0.98765,1/time
+Malaria,Parameter,β₁,,,,,,Model file,Certain,,,,,,Probability of transmission (human),,,CONSTANT,0.9969,dimensionless
+Malaria,Parameter,μₕ,,,,,,Model file,Certain,,,,,,Natural mortality rate of human population,,,CONSTANT,0.001384,1/time
+Malaria,Parameter,a(T),,,,,,Model file,Certain,,,,,,Mosquito biting rate,,,EXPRESSION,0.000203 * T * (T - 11.7) * sqrt(42.3 - T),bites/person/time
+Malaria,Parameter,μᵥ(T),,,,,,Model file,Certain,,,,,,Mortality rate of adult mosquitoes,,,EXPRESSION,1/((-0.03*T*T) + (1.31*T) - 4.4),1/time
+Malaria,Parameter,ρₕ,,,,,,Model file,Certain,,,,,,Progression rate Eh to Ih,,,CONSTANT,0.001995,1/time
+Malaria,Parameter,γₕ,,,,,,Model file,Certain,,,,,,Recovery rate Ih to Rh,,,CONSTANT,0.120342,1/time
+Malaria,Parameter,μₕ+δ,,,,,,Model file,Certain,,,,,,Disease-induced death rate,,,EXPRESSION,μₕ + 0.017325,1/time
+Malaria,Parameter,"θᵥ(T,R)",,,,,,Model file,Certain,,,,,,Mosquito recruitment rate,,,EXPRESSION,(200 * exp(-0.00554 * T + 0.06737) * 4 * R * (50 - R) * 6.75e-5) / (2 + (1 / (0.00554 * T - 0.056737))) * (1 - Nᵥ / K) * Nᵥ,mosquitoes/time
+Malaria,Parameter,Nᵥ,,,,,,Model file,Certain,,,,,,Approx. Mosquito population,,,CONSTANT,80000,mosquitoes
+Malaria,Parameter,β₂,,,,,,Model file,Certain,,,,,,Probability of transmission (mosquito),,,CONSTANT,0.9917,dimensionless
+Malaria,Parameter,Λₘ(T),,,,,,Model file,Certain,,,,,,Progression rate Ev to Iv,,,EXPRESSION,1 / (exp(μᵥ(T)) * (111/(T - 16))),1/time
+Malaria,Parameter,K,,,,,,Model file,Certain,,,,,,Mosquito carrying capacity,,,CONSTANT,100000,mosquitoes
+Malaria,Parameter,T,,,,,,Model file,Certain,,,,,,Temperature,,,VARIABLE,,°C
+HIV,Compartment,Susceptible,,363613,True,3.0,RateFlow,Model file,Certain,,,,,,,,,,,
+HIV,Compartment,Infectious,Untreated Infected,114,True,2.0,RateFlow,Model file,Certain,,,,,,,,,,,
+HIV,Compartment,Treated,with ART,107,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+HIV,Compartment,Infectious,living with AIDS,47,True,1.0,RateFlow,Model file,Certain,,,,,,,,,,,
+HIV,Compartment,HIV Deaths,,0,True,0.0,None,Model file,Certain,,,,,,,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,Infectious (Untreated Infected),RateFlow,0.09636435643564358,True,Transmission from infected homosexual men,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,Infectious (Untreated Infected),RateFlow,2.526315789473684E-6,True,Transmission from infected women,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,Infectious (Untreated Infected),RateFlow,1.355124355907057E-5,True,Transmission from infected heterosexual men,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,Treated (with ART),RateFlow,0.29997,True,Initial treatment of infected individuals,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,Infectious (living with AIDS),RateFlow,0.03333,True,Progression to AIDS for untreated individuals,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,Infectious (living with AIDS),RateFlow,0.018,True,Progression to AIDS for treated individuals,,,,,
+HIV,Flow,,,,,,,Model file,Certain,,HIV Deaths,RateFlow,0.3333,True,Death from AIDS,,,,,
+HIV,Stratification,SexualBehavior,,,,,,Model file,Certain,,,,,,,Group,"Homosexual Men, Women, Heterosexual Men",,,
+HIV,Stratification,SexualBehaviorProduct,,,,,,Model file,Certain,,,,,,Stratification by sexual behavior,Product,//@groups.0,,,

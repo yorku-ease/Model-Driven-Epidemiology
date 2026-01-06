@@ -125,9 +125,11 @@ class ModelAnalyzer:
                 'Confidence': 'Certain',  # Will be updated manually
                 'Notes': ''
             })
-        
-        return pd.DataFrame(rows)
-    
+
+        if HAS_PANDAS:
+            return pd.DataFrame(rows)
+        return rows
+
     def analyze_stratification(self):
         """Analyze stratification (groups and products)"""
         rows = []
@@ -159,9 +161,11 @@ class ModelAnalyzer:
                 'Confidence': 'Certain',
                 'Notes': ''
             })
-        
-        return pd.DataFrame(rows)
-    
+
+        if HAS_PANDAS:
+            return pd.DataFrame(rows)
+        return rows
+
     def generate_summary(self) -> dict:
         """Generate summary statistics"""
         return {

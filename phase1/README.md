@@ -66,22 +66,27 @@ python3 analysis/pattern_analyzer.py
 ```
 phase1/
 ├── README.md                 # This file
-├── requirements.txt          # Python dependencies (optional)
+├── PHASE1_OUTPUTS.md         # ★ What Phase 2 needs (READ THIS!)
+├── requirements.txt          # Python dependencies
 ├── run_phase1.py            # Main runner (executes all tasks)
 │
-├── analysis/                # Analysis scripts (10 tasks)
-│   ├── model_analyzer.py    # Task 1.1
-│   ├── protocol_builder.py  # Task 1.2
-│   ├── required_optional.py # Task 1.3
-│   ├── taxonomy_builder.py  # Task 1.4
-│   ├── gap_analyzer.py      # Task 2.1
-│   ├── uncertainty_analyzer.py # Task 2.2
-│   ├── sensitivity_analysis.py # Task 2.3
-│   ├── paper_collection.py  # Task 3.1
-│   ├── manual_extraction.py # Task 3.2
-│   ├── pattern_analyzer.py  # Task 3.3
+├── analysis/                # ★ CORE: Analysis scripts (10 tasks)
+│   ├── model_analyzer.py    # Task 1.1 - Analyze models
+│   ├── protocol_builder.py  # Task 1.2 - Extraction protocol
+│   ├── required_optional.py # Task 1.3 - Required/Optional rules
+│   ├── taxonomy_builder.py  # Task 1.4 - Taxonomies
+│   ├── gap_analyzer.py      # Task 2.1 - Gap analysis
+│   ├── uncertainty_analyzer.py # Task 2.2 - Uncertainty
+│   ├── sensitivity_analysis.py # Task 2.3 - Sensitivity
+│   ├── paper_collection.py  # Task 3.1 - Paper collection
+│   ├── manual_extraction.py # Task 3.2 - Extraction templates
+│   └── pattern_analyzer.py  # Task 3.3 - Pattern library
+│
+├── scripts/                 # Setup scripts (one-time use)
+│   ├── README.md            # Script documentation
 │   ├── add_papers.py        # Add papers to collection
-│   └── update_paper_links.py # Update paper URLs
+│   ├── update_paper_links.py # Update paper metadata
+│   └── organize_papers.sh   # Organize papers by disease
 │
 ├── utils/                   # Utility functions
 │   └── xml_parser.py        # XML parser for .compmodel files
@@ -90,17 +95,25 @@ phase1/
 │   ├── epimde/             # Original papers (COVID, Malaria, HIV)
 │   └── new papers/         # Additional papers (Influenza, TB, Dengue, etc.)
 │
-└── reports/                 # Generated reports
-    ├── model_analysis/      # Task 1.1 outputs
-    ├── protocols/           # Tasks 1.2, 1.3 outputs
-    ├── taxonomies/          # Task 1.4 outputs
-    ├── gap_reports/         # Task 2.1 outputs
-    ├── uncertainty/         # Task 2.2 outputs
-    ├── sensitivity/         # Task 2.3 outputs
-    ├── paper_collection/    # Task 3.1 outputs
-    ├── manual_extraction/   # Task 3.2 outputs
-    └── patterns/            # Task 3.3 outputs
+├── reports/                 # ★ OUTPUTS: Phase 2 needs these!
+│   ├── protocols/           # Extraction rules
+│   ├── taxonomies/          # Classification system
+│   ├── patterns/            # Common patterns
+│   ├── model_analysis/      # Ground truth
+│   ├── gap_reports/         # Gap analysis examples
+│   ├── manual_extraction/   # Template format
+│   ├── uncertainty/         # Parameter ranges
+│   ├── sensitivity/         # Sensitivity examples
+│   └── paper_collection/    # Paper database
+│
+└── venv/                    # Virtual environment
 ```
+
+**Key:**
+- ★ = Important for Phase 2
+- `analysis/` = Scripts that generate outputs
+- `scripts/` = Helper scripts for setup (run once)
+- `reports/` = Outputs that Phase 2 will use
 
 ## 📊 Generated Reports
 

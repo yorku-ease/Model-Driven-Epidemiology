@@ -1,0 +1,361 @@
+{
+  "modelName": "Malaria",
+  "summary": {
+    "modelName": "Malaria",
+    "totalPopulation": "10933352",
+    "numCompartments": 7,
+    "numParameters": 17,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 2,
+    "numExternalSinks": 7,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": true
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "10933352",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.6",
+            "description": "Force of infection: beta1 * a(T) * Iv / Nh.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed Humans Population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infected Humans Population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered Humans Population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Susceptible Mosquitoes Population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.2",
+            "description": "Force of infection: beta2 * a(T) * Ih / Nh.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Exposed Mosquitoes Population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Infected Mosquitoes Population",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "αₕ",
+        "type": "CONSTANT",
+        "expression": "15129",
+        "description": "Recruitment rate of human populations",
+        "unit": "people/time"
+      },
+      {
+        "index": 1,
+        "name": "β₂a(T)",
+        "type": "EXPRESSION",
+        "expression": "β₂ * a(T)",
+        "description": "Combined contact rate",
+        "unit": "1/time"
+      },
+      {
+        "index": 2,
+        "name": "β₁a(T)",
+        "type": "EXPRESSION",
+        "expression": "β₁ * a(T)",
+        "description": "Combined contact rate",
+        "unit": "1/time"
+      },
+      {
+        "index": 3,
+        "name": "q",
+        "type": "CONSTANT",
+        "expression": "0.98765",
+        "description": "Progression rate of Rh to Sh",
+        "unit": "1/time"
+      },
+      {
+        "index": 4,
+        "name": "β₁",
+        "type": "CONSTANT",
+        "expression": "0.9969",
+        "description": "Probability of transmission (human)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "μₕ",
+        "type": "CONSTANT",
+        "expression": "0.001384",
+        "description": "Natural mortality rate of human population",
+        "unit": "1/time"
+      },
+      {
+        "index": 6,
+        "name": "a(T)",
+        "type": "EXPRESSION",
+        "expression": "0.000203 * T * (T - 11.7) * sqrt(42.3 - T)",
+        "description": "Mosquito biting rate",
+        "unit": "bites/person/time"
+      },
+      {
+        "index": 7,
+        "name": "μᵥ(T)",
+        "type": "EXPRESSION",
+        "expression": "1/((-0.03*T*T) + (1.31*T) - 4.4)",
+        "description": "Mortality rate of adult mosquitoes",
+        "unit": "1/time"
+      },
+      {
+        "index": 8,
+        "name": "ρₕ",
+        "type": "CONSTANT",
+        "expression": "0.001995",
+        "description": "Progression rate Eh to Ih",
+        "unit": "1/time"
+      },
+      {
+        "index": 9,
+        "name": "γₕ",
+        "type": "CONSTANT",
+        "expression": "0.120342",
+        "description": "Recovery rate Ih to Rh",
+        "unit": "1/time"
+      },
+      {
+        "index": 10,
+        "name": "μₕ+δ",
+        "type": "EXPRESSION",
+        "expression": "μₕ + 0.017325",
+        "description": "Disease-induced death rate",
+        "unit": "1/time"
+      },
+      {
+        "index": 11,
+        "name": "θᵥ(T,R)",
+        "type": "EXPRESSION",
+        "expression": "(200 * exp(-0.00554 * T + 0.06737) * 4 * R * (50 - R) * 6.75e-5) / (2 + (1 / (0.00554 * T - 0.056737))) * (1 - Nᵥ / K) * Nᵥ",
+        "description": "Mosquito recruitment rate",
+        "unit": "mosquitoes/time"
+      },
+      {
+        "index": 12,
+        "name": "Nᵥ",
+        "type": "CONSTANT",
+        "expression": "80000",
+        "description": "Approx. Mosquito population",
+        "unit": "mosquitoes"
+      },
+      {
+        "index": 13,
+        "name": "β₂",
+        "type": "CONSTANT",
+        "expression": "0.9917",
+        "description": "Probability of transmission (mosquito)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 14,
+        "name": "Λₘ(T)",
+        "type": "EXPRESSION",
+        "expression": "1 / (exp(μᵥ(T)) * (111/(T - 16)))",
+        "description": "Progression rate Ev to Iv",
+        "unit": "1/time"
+      },
+      {
+        "index": 15,
+        "name": "K",
+        "type": "CONSTANT",
+        "expression": "100000",
+        "description": "Mosquito carrying capacity",
+        "unit": "mosquitoes"
+      },
+      {
+        "index": 16,
+        "name": "T",
+        "type": "VARIABLE",
+        "expression": "",
+        "description": "Temperature",
+        "unit": "°C"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Humans",
+        "rate": "",
+        "rateParameter": "//@parameters.0",
+        "targetCompartment": "//@compartments.0",
+        "targetStratum": ""
+      },
+      {
+        "name": "Mosquitoes",
+        "rate": "",
+        "rateParameter": "//@parameters.11",
+        "targetCompartment": "//@compartments.4",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": [
+      {
+        "name": "Natural_Death_SH",
+        "rate": "",
+        "rateParameter": "//@parameters.5",
+        "sourceCompartment": "//@compartments.0",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_Death_EH",
+        "rate": "",
+        "rateParameter": "//@parameters.5",
+        "sourceCompartment": "//@compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Death_IH",
+        "rate": "",
+        "rateParameter": "//@parameters.10",
+        "sourceCompartment": "//@compartments.2",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_Death_RH",
+        "rate": "",
+        "rateParameter": "//@parameters.5",
+        "sourceCompartment": "//@compartments.3",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_Death_SM",
+        "rate": "",
+        "rateParameter": "//@parameters.7",
+        "sourceCompartment": "//@compartments.4",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_Death_EM",
+        "rate": "",
+        "rateParameter": "//@parameters.7",
+        "sourceCompartment": "//@compartments.5",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_Death_IM",
+        "rate": "",
+        "rateParameter": "//@parameters.7",
+        "sourceCompartment": "//@compartments.6",
+        "sourceStratum": ""
+      }
+    ]
+  }
+}
