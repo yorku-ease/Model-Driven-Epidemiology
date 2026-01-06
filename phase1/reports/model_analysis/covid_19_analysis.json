@@ -1,0 +1,591 @@
+{
+  "modelName": "COVID-19",
+  "summary": {
+    "modelName": "COVID-19",
+    "totalPopulation": "14800000",
+    "numCompartments": 15,
+    "numParameters": 0,
+    "numGroups": 1,
+    "numProducts": 1,
+    "numExternalSources": 1,
+    "numExternalSinks": 0,
+    "hasStratification": true,
+    "hasParameters": false,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "14800000",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "14700000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.00001",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.3",
+            "description": "Exposure (community transmission)",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.000006",
+                "multiplier": "0.7"
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.000015",
+                "multiplier": "1.0"
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.000008",
+                "multiplier": "1.3"
+              }
+            ]
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.000002",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.3",
+            "description": "Exposure with quarantine measures",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.000001",
+                "multiplier": "0.7"
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.000003",
+                "multiplier": "1.0"
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.0000015",
+                "multiplier": "1.3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "5000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.4",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression to presymptomatic infectious",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.5",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.4",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.3",
+                "multiplier": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Exposed",
+        "secondaryName": "quarantined",
+        "population": "1000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.4",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression to presymptomatic isolated",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.5",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.4",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.3",
+                "multiplier": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious",
+        "secondaryName": "presymptomatic",
+        "population": "3000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.85",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Mild to moderate symptoms",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.99",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.97",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.65",
+                "multiplier": ""
+              }
+            ]
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "0.15",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Severe symptoms",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.01",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.03",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.35",
+                "multiplier": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious",
+        "secondaryName": "presymptomatic, isolated",
+        "population": "1000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "0.85",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Mild to moderate isolated",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.99",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.97",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.65",
+                "multiplier": ""
+              }
+            ]
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "0.15",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Severe isolated",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.01",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.03",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.35",
+                "multiplier": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Infectious",
+        "secondaryName": "mild to moderate",
+        "population": "8000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "0.5",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Detection and isolation",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "0.167",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Infectious",
+        "secondaryName": "severe",
+        "population": "2000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "0.167",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospital admission",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Infectious",
+        "secondaryName": "mild to moderate, isolated",
+        "population": "4000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "0.167",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Infectious",
+        "secondaryName": "severe, isolated",
+        "population": "800",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "0.167",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospital admission",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Isolated",
+        "secondaryName": "",
+        "population": "6000",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "0.167",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "50000",
+        "product": "//@products.0",
+        "outgoingFlows": []
+      },
+      {
+        "index": 11,
+        "primaryName": "Admitted to hospital",
+        "secondaryName": "",
+        "population": "1500",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "0.74",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from hospital",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.90",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.80",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.60",
+                "multiplier": ""
+              }
+            ]
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.12",
+            "rate": "0.26",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "ICU admission",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.26",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.26",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.26",
+                "multiplier": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 12,
+        "primaryName": "ICU",
+        "secondaryName": "",
+        "population": "400",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.13",
+            "rate": "0.6",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery to post-ICU",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.85",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.70",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.45",
+                "multiplier": ""
+              }
+            ]
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.14",
+            "rate": "0.4",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death from COVID",
+            "stratumSpecificRates": [
+              {
+                "stratum": "0-17",
+                "rate": "0.0",
+                "multiplier": ""
+              },
+              {
+                "stratum": "18-64",
+                "rate": "0.20",
+                "multiplier": ""
+              },
+              {
+                "stratum": "65+",
+                "rate": "0.58",
+                "multiplier": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "primaryName": "Admitted to hospital",
+        "secondaryName": "post-ICU",
+        "population": "200",
+        "product": "//@products.0",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "0.048",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery post-ICU",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 14,
+        "primaryName": "COVID Deaths",
+        "secondaryName": "",
+        "population": "100",
+        "product": "//@products.0",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [],
+    "groups": [
+      {
+        "index": 0,
+        "name": "AgeGroup",
+        "description": "Age-based population stratification with realistic COVID-19 characteristics",
+        "values": [
+          "0-17",
+          "18-64",
+          "65+"
+        ]
+      }
+    ],
+    "products": [
+      {
+        "index": 0,
+        "name": "AgeStratification",
+        "description": "Age-based compartment stratification",
+        "groups": "//@groups.0"
+      }
+    ],
+    "externalSources": [
+      {
+        "name": "Population Birth",
+        "rate": "3.0E-5",
+        "rateParameter": "",
+        "targetCompartment": "//@compartments.0",
+        "targetStratum": "0-17"
+      }
+    ],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "instructions": {
+    "description": "Manual extraction template for epidemiological models",
+    "usage": "Fill in this template when manually extracting a model from a paper",
+    "fields": {
+      "paper": "Paper metadata (title, authors, year, disease)",
+      "model": "Extracted model structure (compartments, flows, parameters)",
+      "gaps": "Missing or uncertain information"
+    }
+  },
+  "template": {
+    "paper": {
+      "title": "",
+      "authors": "",
+      "year": 0,
+      "disease": "",
+      "doi": "",
+      "url": ""
+    },
+    "model": {
+      "compartments": [],
+      "flows": [],
+      "parameters": [],
+      "stratification": {
+        "groups": []
+      },
+      "initialConditions": {},
+      "totalPopulation": 0
+    },
+    "gaps": []
+  },
+  "examples": {
+    "compartment": {
+      "name": "Susceptible",
+      "description": "Individuals not yet exposed to disease",
+      "initial_pop": 14700000,
+      "secondary_name": ""
+    },
+    "flow": {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious_presymptomatic",
+      "rate": "beta_base",
+      "description": "Infection transmission"
+    },
+    "parameter": {
+      "name": "beta_base",
+      "value": 1e-05,
+      "unit": "per day",
+      "source": "Table 1, page 4",
+      "uncertainty": "±20%",
+      "type": "CONSTANT"
+    },
+    "gap": {
+      "type": "missing_parameter",
+      "description": "Natural death rate not specified",
+      "severity": "low"
+    }
+  }
+}

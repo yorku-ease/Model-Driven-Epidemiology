@@ -1,0 +1,112 @@
+{
+  "modelName": "Malaria",
+  "analysisDate": "1767670997.1366704",
+  "totalGaps": 7,
+  "gaps": {
+    "structuralGaps": [
+      {
+        "gap": "Missing Asymptomatic Carriers (AH)",
+        "description": "Asymptomatic individuals who contribute to transmission",
+        "whyItMatters": "Asymptomatic carriers can significantly contribute to malaria transmission",
+        "foundIn": [
+          "Akowe et al. (2025) - mentions asymptomatic carriers",
+          "Multiple malaria modeling papers include asymptomatic compartments"
+        ],
+        "howToAdd": "Add compartment: IH → AH with proportion p_asymp",
+        "severity": "medium",
+        "suggestedAction": "Review literature for asymptomatic proportion values (typically 0.2-0.5)"
+      },
+      {
+        "gap": "Missing Severe Disease Compartment",
+        "description": "Compartment for individuals with severe malaria",
+        "whyItMatters": "Severe malaria has different mortality and treatment rates",
+        "foundIn": [
+          "WHO malaria modeling guidelines",
+          "Age-stratified models often include severe cases"
+        ],
+        "howToAdd": "Add compartment: IH → Severe with age-specific rates",
+        "severity": "low",
+        "suggestedAction": "Only add if modeling severe outcomes explicitly"
+      },
+      {
+        "gap": "Missing Drug Resistance Compartment",
+        "description": "Compartment for drug-resistant infections",
+        "whyItMatters": "Drug resistance is a major concern in malaria",
+        "foundIn": [
+          "Models studying treatment efficacy",
+          "Models of drug resistance evolution"
+        ],
+        "howToAdd": "Add compartment for resistant strains if modeling resistance",
+        "severity": "low",
+        "suggestedAction": "Only add if paper focuses on drug resistance"
+      }
+    ],
+    "parameterGaps": [
+      {
+        "gap": "Missing Asymptomatic Proportion (p_asymp)",
+        "description": "Parameter for proportion of infections that are asymptomatic",
+        "currentValue": "Not in model",
+        "foundInLiterature": "0.2-0.5 (varies by region and study)",
+        "uncertainty": "Medium (range varies across studies)",
+        "severity": "medium",
+        "suggestedValue": "0.3 (mid-range estimate)",
+        "suggestedRange": [
+          0.2,
+          0.5
+        ],
+        "sources": [
+          "Akowe et al. (2025) - may have region-specific values",
+          "WHO malaria epidemiology reports"
+        ]
+      },
+      {
+        "gap": "Missing Bed Net Coverage Parameter",
+        "description": "Parameter for insecticide-treated bed net coverage",
+        "currentValue": "Not in model",
+        "foundInLiterature": "Varies by region (0.0-0.8)",
+        "uncertainty": "High (varies significantly by location)",
+        "severity": "low",
+        "note": "Only needed if modeling interventions",
+        "suggestedValue": "0.5 (example value)",
+        "suggestedRange": [
+          0.0,
+          0.8
+        ]
+      }
+    ],
+    "stratificationGaps": [
+      {
+        "gap": "Missing Age Stratification",
+        "description": "No age groups defined in model",
+        "whyItMatters": "Children <5 years have higher malaria risk and different severity",
+        "foundIn": [
+          "Most modern malaria models include age stratification",
+          "WHO guidelines recommend age-specific modeling for malaria"
+        ],
+        "howToAdd": "Create age groups: <5, 5-14, 15-64, 65+",
+        "severity": "high",
+        "suggestedAction": "Review paper to see if age stratification is mentioned",
+        "note": "Only required if paper mentions age groups"
+      }
+    ],
+    "interventionGaps": [
+      {
+        "gap": "No Intervention Compartments",
+        "description": "Model does not include vaccination or bed net interventions",
+        "whyItMatters": "Interventions are key for malaria control",
+        "foundIn": [
+          "Many malaria models include intervention compartments",
+          "Models studying control strategies"
+        ],
+        "howToAdd": "Add compartments for vaccinated or protected populations",
+        "severity": "low",
+        "note": "Only required if paper is about interventions"
+      }
+    ]
+  },
+  "summary": {
+    "criticalGaps": 0,
+    "mediumGaps": 2,
+    "lowGaps": 3
+  }
+}
