@@ -2,6 +2,17 @@
 
 Structured taxonomies for compartmental epidemiological models.
 
+## ⚠️ IMPORTANT NOTE
+
+**This taxonomy contains EXAMPLE categories and samples.** 
+
+- New papers may contain compartments, flows, parameters, or stratification types **NOT listed here**
+- Parameter values shown are **EXAMPLE values only** - actual values vary by disease, model, and paper
+- This taxonomy is **extensible** and should be updated as new model types are encountered
+- **Always extract what the paper actually describes**, even if it's not in this taxonomy
+
+Use these as reference examples, but don't limit extraction to only what's listed here.
+
 ## Compartment Types
 
 Taxonomy of compartment types found in epidemiological models
@@ -9,6 +20,8 @@ Taxonomy of compartment types found in epidemiological models
 ### Disease States
 
 Core disease progression compartments
+
+**Note:** These are common examples. Papers may use different names or additional disease state compartments.
 
 **Examples:**
 
@@ -116,6 +129,8 @@ Transmission flows that depend on contact between compartments
 
 Fixed rate transitions between compartments
 
+**Note:** "Fixed rate" means the rate parameter is constant (not dependent on other compartments), not that all rates have the same value. Each rate can have different values.
+
 **Examples:**
 
 - E → I: Exposed to Infectious (incubation/progression)
@@ -185,11 +200,13 @@ Taxonomy of parameter types in compartmental models
 
 Fixed values with names
 
-**Examples:**
+**Note:** Values shown are **EXAMPLE values only** - actual parameter values vary significantly by disease, population, and model context. Always extract the actual values from the paper.
 
-- **β**: Transmission rate
-- **γ**: Recovery rate
-- **μ**: Natural death rate
+**Examples (with sample values):**
+
+- **β**: Transmission rate (example: 0.9969 per day - **actual values vary**)
+- **γ**: Recovery rate (example: 0.1 per day - **actual values vary**)
+- **μ**: Natural death rate (example: 0.0002 per day - **actual values vary**)
 
 **Required:** True
 
@@ -221,7 +238,10 @@ Computed from other parameters/compartments
 
 Taxonomy of population stratification types
 
-**Note:** Stratification is CONDITIONAL - only if paper mentions it
+**Note:** 
+- Stratification is CONDITIONAL - only if paper mentions it
+- These are common examples - papers may use different stratification schemes or categories not listed here
+- Papers may define custom stratification categories
 
 ### Age
 

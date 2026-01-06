@@ -33,15 +33,6 @@ python3 run_phase1.py
 # Task 1.1: Analyze models
 python3 analysis/model_analyzer.py
 
-# Task 1.2: Build extraction protocol
-python3 analysis/protocol_builder.py
-
-# Task 1.3: Define required vs optional
-python3 analysis/required_optional.py
-
-# Task 1.4: Build taxonomies
-python3 analysis/taxonomy_builder.py
-
 # Task 2.1: Analyze gaps
 python3 analysis/gap_analyzer.py
 
@@ -53,13 +44,9 @@ python3 analysis/sensitivity_analysis.py
 
 # Task 3.1: Build paper collection
 python3 analysis/paper_collection.py
-
-# Task 3.2: Create extraction templates
-python3 analysis/manual_extraction.py
-
-# Task 3.3: Analyze patterns
-python3 analysis/pattern_analyzer.py
 ```
+
+**Note:** Static outputs (protocols, taxonomies, patterns, templates) are already generated in `reports/` and don't need regeneration. Only dynamic analysis scripts remain.
 
 ## 📁 Project Structure
 
@@ -70,17 +57,12 @@ phase1/
 ├── requirements.txt          # Python dependencies
 ├── run_phase1.py            # Main runner (executes all tasks)
 │
-├── analysis/                # ★ CORE: Analysis scripts (10 tasks)
-│   ├── model_analyzer.py    # Task 1.1 - Analyze models
-│   ├── protocol_builder.py  # Task 1.2 - Extraction protocol
-│   ├── required_optional.py # Task 1.3 - Required/Optional rules
-│   ├── taxonomy_builder.py  # Task 1.4 - Taxonomies
+├── analysis/                # ★ CORE: Dynamic analysis scripts
+│   ├── model_analyzer.py    # Task 1.1 - Analyze models from .compmodel files
 │   ├── gap_analyzer.py      # Task 2.1 - Gap analysis
-│   ├── uncertainty_analyzer.py # Task 2.2 - Uncertainty
-│   ├── sensitivity_analysis.py # Task 2.3 - Sensitivity
-│   ├── paper_collection.py  # Task 3.1 - Paper collection
-│   ├── manual_extraction.py # Task 3.2 - Extraction templates
-│   └── pattern_analyzer.py  # Task 3.3 - Pattern library
+│   ├── uncertainty_analyzer.py # Task 2.2 - Parameter uncertainty
+│   ├── sensitivity_analysis.py # Task 2.3 - Sensitivity analysis
+│   └── paper_collection.py  # Task 3.1 - Paper collection management
 │
 ├── scripts/                 # Setup scripts (one-time use)
 │   ├── README.md            # Script documentation
@@ -111,9 +93,10 @@ phase1/
 
 **Key:**
 - ★ = Important for Phase 2
-- `analysis/` = Scripts that generate outputs
+- `analysis/` = Dynamic scripts that analyze models (run when needed)
 - `scripts/` = Helper scripts for setup (run once)
-- `reports/` = Outputs that Phase 2 will use
+- `reports/` = All outputs (static definitions + dynamic analysis results)
+- **Note:** Static generators (protocols, taxonomies, patterns, templates) were removed - outputs are already in `reports/`
 
 ## 📊 Generated Reports
 
