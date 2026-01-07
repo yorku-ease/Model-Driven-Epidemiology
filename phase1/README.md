@@ -1,164 +1,353 @@
-# Phase 1: Structure First - Model Analysis and Documentation
+# Phase 1: Model Analysis and Documentation
 
-Complete implementation of Phase 1 from the roadmap. All 10 tasks completed.
+This directory contains a complete suite of Python tools for analyzing compartmental epidemiological models. Phase 1 focuses on understanding existing models, extracting patterns, building taxonomies, and creating frameworks for systematic model analysis.
 
-## 📋 What Was Done
+## Overview
 
-### Task 1: Structure First (Foundation)
-- **1.1**: Model Analysis - Analyzed COVID-19, Malaria, and HIV models
-- **1.2**: Extraction Protocol - 8-step protocol for extracting models from papers
-- **1.3**: Required vs Optional - Rules for what's required vs conditional
-- **1.4**: Taxonomies - Complete taxonomies for compartments, flows, parameters, stratification
+Phase 1 performs deep analysis of three existing compartmental models (COVID-19, Malaria, HIV) to:
+1. Extract all model components (compartments, flows, parameters)
+2. Identify gaps and missing elements
+3. Quantify parameter uncertainty
+4. Analyze parameter sensitivity
+5. Build reusable taxonomies and patterns
 
-### Task 2: Gaps and Uncertainty
-- **2.1**: Gap Analysis - Identified missing components in Malaria model
-- **2.2**: Uncertainty Quantification - Parameter uncertainty database for all models
-- **2.3**: Sensitivity Analysis - Example sensitivity analysis framework
+---
 
-### Task 3: Paper Collection and Patterns
-- **3.1**: Paper Collection - Framework for organizing papers (14 papers, 10 diseases)
-- **3.2**: Manual Extraction Templates - JSON templates for manual extraction
-- **3.3**: Pattern Analysis - Library of 5 common model patterns
+## Quick Start
 
-## 🚀 Quick Start
+### Run All Analysis Tasks
 
-### Run All Tasks
 ```bash
 cd phase1
 python3 run_phase1.py
 ```
 
+This executes all 5 analysis tasks in sequence and generates all reports.
+
 ### Run Individual Tasks
+
 ```bash
-# Task 1.1: Analyze models
+# Task 1.1: Analyze model structure
 python3 analysis/model_analyzer.py
 
-# Task 2.1: Analyze gaps
+# Task 2.1: Identify gaps in models
 python3 analysis/gap_analyzer.py
 
-# Task 2.2: Quantify uncertainty
+# Task 2.2: Quantify parameter uncertainty
 python3 analysis/uncertainty_analyzer.py
 
-# Task 2.3: Sensitivity analysis
+# Task 2.3: Analyze parameter sensitivity
 python3 analysis/sensitivity_analysis.py
 
-# Task 3.1: Build paper collection
+# Task 3.1: Manage paper collection
 python3 analysis/paper_collection.py
 ```
 
-**Note:** Static outputs (protocols, taxonomies, patterns, templates) are already generated in `reports/` and don't need regeneration. Only dynamic analysis scripts remain.
+---
 
-## 📁 Project Structure
+## What Phase 1 Does
 
+### Task 1.1: Model Analysis
+
+**Script:** `analysis/model_analyzer.py`
+
+**Purpose:** Analyzes the structure of existing `.compmodel` files to extract all components.
+
+**What it analyzes:**
+- **Compartments**: All population states (Susceptible, Infected, etc.)
+- **Flows**: Transitions between compartments (ContactFlow, RateFlow, etc.)
+- **Parameters**: Symbolic parameters (transmission rates, recovery rates, etc.)
+- **Groups**: Stratification groups (age groups, risk groups, etc.)
+- **Products**: Cartesian products for multi-dimensional stratification
+- **Initial Conditions**: Starting population in each compartment
+- **External Sources/Sinks**: Births, deaths, immigration, emigration
+
+**Models analyzed:**
+- **COVID-19** (`Compartmental/CompartmentalModel/covid.compmodel`)
+  - 15 compartments with age stratification (0-17, 18-64, 65+)
+  - Focus on hospitalization and ICU dynamics
+  - No natural deaths (only COVID-induced deaths)
+
+- **Malaria** (`Compartmental/CompartmentalModel/malaria.compmodel`)
+  - 7 compartments: Human (SH, VH, EH1, EH2, IH, TH, RH) + 3 Mosquito (SM, EM, IM)
+  - 17 symbolic parameters (first fully parametric model)
+  - Dual transmission: vector-borne + non-vector (blood transfusion, congenital)
+  - Vaccination dynamics with waning immunity
+
+- **HIV** (`Compartmental/CompartmentalModel/HIV.compmodel`)
+  - 5 compartments stratified by sexual behavior (Homosexual Men, Women, Heterosexual Men)
+  - Complex transmission including bisexual contacts
+  - Natural and AIDS-induced deaths
+
+**Outputs:**
+- `reports/model_analysis/covid_19_analysis.json` - Complete COVID-19 breakdown
+- `reports/model_analysis/malaria_analysis.json` - Complete Malaria breakdown
+- `reports/model_analysis/hiv_analysis.json` - Complete HIV breakdown
+- `reports/model_analysis/all_models_analysis.json` - Combined analysis
+- `reports/model_analysis/summary_report.txt` - Quick summary statistics
+
+**Why this matters:**
+These analyses serve as "ground truth" for validating automated extraction tools. They document exactly what's in each model with full detail.
+
+---
+
+### Task 2.1: Gap Analysis
+
+**Script:** `analysis/gap_analyzer.py`
+
+**Purpose:** Systematically identifies missing components in models by comparing them to literature expectations and comprehensive disease modeling practices.
+
+**What it identifies:**
+- **Structural Gaps**: Missing compartments (e.g., asymptomatic states, chronic stages)
+- **Parameter Gaps**: Missing parameters (e.g., seasonality, age-specific rates)
+- **Stratification Gaps**: Missing population stratification (e.g., age groups, location)
+- **Intervention Gaps**: Missing interventions (e.g., vaccination, treatment protocols)
+
+**Gap Classification:**
+- **Critical**: Essential for model validity (e.g., missing key transmission parameter)
+- **Medium**: Important but model can function without (e.g., demographic stratification)
+- **Low**: Optional enhancements (e.g., seasonal variation, spatial dynamics)
+
+**Outputs:**
+- `reports/gap_reports/covid_19_gap_analysis.json` - COVID-19 gaps
+- `reports/gap_reports/malaria_gap_analysis.json` - Malaria gaps
+- `reports/gap_reports/hiv_gap_analysis.json` - HIV gaps
+
+**Example gaps found:**
+- **Malaria**: Missing mosquito lifecycle stages, no spatial dynamics, missing seasonality
+- **COVID-19**: No asymptomatic compartment, simplified hospital progression
+- **HIV**: No drug resistance modeling, simplified treatment dynamics
+
+**Why this matters:**
+Gap analysis helps identify what information is missing when extracting models from papers, and how critical those gaps are.
+
+---
+
+### Task 2.2: Uncertainty Quantification
+
+**Script:** `analysis/uncertainty_analyzer.py`
+
+**Purpose:** Documents all parameters and creates a framework for quantifying uncertainty in parameter values.
+
+**What it tracks:**
+- **Parameter Name**: Symbolic name (e.g., `beta`, `gamma`, `mu`)
+- **Current Value**: Value used in the model
+- **Confidence Level**: High, Medium, Low, Unknown
+- **Literature Range**: Template for documenting ranges from multiple papers
+- **Units**: Time units (per day, per year, etc.)
+- **Source**: Where the value comes from (paper, estimate, calibration)
+
+**Confidence Levels:**
+- **High**: Value from multiple papers, narrow range, well-established
+- **Medium**: Value from single paper or wider range
+- **Low**: Rough estimate, wide range, context-dependent
+- **Unknown**: No source documented, needs investigation
+
+**Outputs:**
+- `reports/uncertainty/covid_19_uncertainty.json` - COVID-19 parameters
+- `reports/uncertainty/malaria_uncertainty.json` - Malaria parameters (10 tracked)
+- `reports/uncertainty/hiv_uncertainty.json` - HIV parameters
+- `reports/uncertainty/all_models_uncertainty.json` - Combined database
+
+**Example (Malaria model):**
+```json
+{
+  "parameter": "pi",
+  "name": "pi (human birth rate)",
+  "current_value": "0.012",
+  "confidence": "Unknown",
+  "literature_range": {
+    "min": null,
+    "max": null,
+    "typical": null,
+    "papers": []
+  },
+  "unit": "per day",
+  "notes": "From model definition"
+}
 ```
-phase1/
-├── README.md                 # This file
-├── PHASE1_OUTPUTS.md         # ★ What Phase 2 needs (READ THIS!)
-├── requirements.txt          # Python dependencies
-├── run_phase1.py            # Main runner (executes all tasks)
-│
-├── analysis/                # ★ CORE: Dynamic analysis scripts
-│   ├── model_analyzer.py    # Task 1.1 - Analyze models from .compmodel files
-│   ├── gap_analyzer.py      # Task 2.1 - Gap analysis
-│   ├── uncertainty_analyzer.py # Task 2.2 - Parameter uncertainty
-│   ├── sensitivity_analysis.py # Task 2.3 - Sensitivity analysis
-│   └── paper_collection.py  # Task 3.1 - Paper collection management
-│
-├── scripts/                 # Setup scripts (one-time use)
-│   ├── README.md            # Script documentation
-│   ├── add_papers.py        # Add papers to collection
-│   ├── update_paper_links.py # Update paper metadata
-│   └── organize_papers.sh   # Organize papers by disease
-│
-├── utils/                   # Utility functions
-│   └── xml_parser.py        # XML parser for .compmodel files
-│
-├── papers/                  # Paper collection
-│   ├── epimde/             # Original papers (COVID, Malaria, HIV)
-│   └── new papers/         # Additional papers (Influenza, TB, Dengue, etc.)
-│
-├── reports/                 # ★ OUTPUTS: Phase 2 needs these!
-│   ├── protocols/           # Extraction rules
-│   ├── taxonomies/          # Classification system
-│   ├── patterns/            # Common patterns
-│   ├── model_analysis/      # Ground truth
-│   ├── gap_reports/         # Gap analysis examples
-│   ├── manual_extraction/   # Template format
-│   ├── uncertainty/         # Parameter ranges
-│   ├── sensitivity/         # Sensitivity examples
-│   └── paper_collection/    # Paper database
-│
-└── venv/                    # Virtual environment
+
+**Why this matters:**
+Understanding parameter uncertainty is crucial for evaluating model predictions and identifying which parameters need better estimates from literature.
+
+---
+
+### Task 2.3: Sensitivity Analysis
+
+**Script:** `analysis/sensitivity_analysis.py`
+
+**Purpose:** Analyzes how sensitive model outputs are to changes in input parameters.
+
+**What it calculates:**
+- **Sensitivity Score**: How much output changes when parameter changes
+- **Parameter Ranking**: Which parameters have the biggest impact
+- **Impact Categories**:
+  - Peak infections
+  - Time to peak
+  - Total cases
+  - Disease prevalence
+
+**Method:**
+- Varies each parameter by ±10%, ±20%, ±50%
+- Simulates model with varied parameters
+- Measures change in key outputs
+- Ranks parameters by sensitivity score
+
+**Outputs:**
+- `reports/sensitivity/covid_19_sensitivity_analysis.json` - COVID-19 sensitivity
+- `reports/sensitivity/malaria_sensitivity_analysis.json` - Malaria sensitivity
+- `reports/sensitivity/hiv_sensitivity_analysis.json` - HIV sensitivity
+
+**Note:** Currently generates framework. Full sensitivity requires numeric parameters (only Malaria has them - 17 parameters).
+
+**Why this matters:**
+Identifies which parameters need the most accurate estimates - high-sensitivity parameters have large impact on predictions.
+
+---
+
+### Task 3.1: Paper Collection Management
+
+**Script:** `analysis/paper_collection.py`
+
+**Purpose:** Maintains a structured database of epidemiological papers with metadata.
+
+**What it tracks:**
+- **Paper ID**: Unique identifier (e.g., `malaria_2025_1`)
+- **Title, Authors, Year**: Basic metadata
+- **Disease**: Which disease the paper models
+- **PDF Path**: Location of paper file
+- **Notes**: Key observations about the paper
+- **Extracted Model**: Link to extracted model (if available)
+- **Gaps**: Documented gaps in the model
+
+**Current Collection:**
+- 3 papers: COVID-19, Malaria, HIV
+- Framework supports unlimited papers
+- Organized by disease categories
+
+**Outputs:**
+- `reports/paper_collection/paper_collection.json` - Collection index
+- `data/papers/collection_index.json` - Paper database
+- `data/papers/{paper_id}/metadata.json` - Individual paper metadata
+
+**Why this matters:**
+Provides organized access to papers for training AI extraction tools and validating results.
+
+---
+
+## Static Outputs (Already Generated)
+
+These outputs define standards and don't need regeneration:
+
+### Extraction Protocol
+**Location:** `reports/protocols/extraction_protocol.json` (+ .md)
+
+**Content:** 8-step protocol for extracting models from papers
+1. Identify model type
+2. Extract basic structure
+3. Extract compartments
+4. Classify flows
+5. Extract parameters
+6. Identify stratification
+7. Extract initial conditions
+8. Document gaps
+
+**Why this matters:** Provides systematic rules for manual and automated extraction.
+
+---
+
+### Required vs Optional Rules
+**Location:** `reports/protocols/required_optional.json` (+ .md)
+
+**Content:** Clear definitions of what's always required vs conditionally required
+
+**Always Required:**
+- At least 2 compartments
+- At least 1 flow
+- Rates or parameters for all flows
+- Total population
+
+**Conditionally Required:**
+- Parameters (if model uses symbolic notation)
+- Stratification (if paper mentions age/risk groups)
+- Vector compartments (for vector-borne diseases)
+- External sources/sinks (if births/deaths modeled)
+
+**Why this matters:** Helps validate extracted models - can detect incomplete extractions.
+
+---
+
+### Taxonomies
+**Location:** `reports/taxonomies/taxonomies.json` (+ .md)
+
+**Content:** Classification system for model components
+
+**Classifications:**
+- **Compartment Types**: Disease States, Healthcare, Vectors, Demographics, Treatment
+- **Flow Types**: ContactFlow, RateFlow, ExternalSource, ExternalSink
+- **Parameter Types**: CONSTANT, VARIABLE, EXPRESSION
+- **Stratification Types**: Age, Gender, Risk, Location, Vaccination Status
+
+**Note:** These are examples based on COVID/Malaria/HIV - not exhaustive lists.
+
+**Why this matters:** Helps categorize components during extraction and analysis.
+
+---
+
+### Pattern Library
+**Location:** `reports/patterns/pattern_library.json` (+ .md)
+
+**Content:** Common modeling patterns across diseases
+
+**5 Patterns Identified:**
+1. **Standard SEIR**: Basic susceptible-exposed-infectious-recovered
+2. **SEIR with Hospitalization**: Adds hospital and ICU compartments
+3. **Vector-Borne (Malaria)**: Human + mosquito compartments
+4. **With Treatment**: Adds treatment and recovery pathways
+5. **Stratified Model**: Population divided by age/risk/behavior
+
+**Why this matters:** Recognizing patterns helps identify model structure faster.
+
+---
+
+### Extraction Templates
+**Location:** `reports/manual_extraction/extraction_template.json`
+
+**Content:** JSON template for manually extracting models from papers
+
+**Includes fields for:**
+- Basic information (paper, disease, date)
+- Compartments (name, population, type)
+- Flows (source, target, type, rate)
+- Parameters (name, value, unit, description)
+- Stratification (groups, dimensions)
+- Initial conditions
+- Gaps identified
+
+**Example:** `extraction_example.json` shows completed template for COVID-19
+
+**Why this matters:** Provides standard format for manual extraction, usable as training data for AI.
+
+---
+
+
+## Technical Details
+
+### XML Parsing
+Models are stored as XML files with `.compmodel` extension. The `utils/xml_parser.py` module provides `CompModelParser` class for parsing:
+
+```python
+from utils.xml_parser import CompModelParser
+
+parser = CompModelParser('path/to/model.compmodel')
+info = parser.get_model_info()
 ```
 
-**Key:**
-- ★ = Important for Phase 2
-- `analysis/` = Dynamic scripts that analyze models (run when needed)
-- `scripts/` = Helper scripts for setup (run once)
-- `reports/` = All outputs (static definitions + dynamic analysis results)
-- **Note:** Static generators (protocols, taxonomies, patterns, templates) were removed - outputs are already in `reports/`
+### Model File Locations
+Models are in the parent `Compartmental/CompartmentalModel/` directory:
+- `../Compartmental/CompartmentalModel/covid.compmodel`
+- `../Compartmental/CompartmentalModel/malaria.compmodel`
+- `../Compartmental/CompartmentalModel/HIV.compmodel`
 
-## 📊 Generated Reports
 
-All reports are in `reports/` directory:
-- **JSON files**: Structured data (machine-readable)
-- **Markdown files**: Human-readable documentation
-
-Key reports:
-- `reports/protocols/extraction_protocol.md` - 8-step extraction protocol
-- `reports/taxonomies/taxonomies.md` - Complete taxonomies
-- `reports/gap_reports/malaria_gap_analysis.md` - Gap analysis
-- `reports/patterns/pattern_library.md` - Pattern library
-
-## 🔧 Dependencies
-
-**Required:** None! All scripts work with Python 3.7+ standard library.
-
-**Optional (for enhanced features):**
-- `pandas` - For Excel/CSV export
-- `numpy` - For advanced sensitivity calculations
-
-To install:
-```bash
-pip install -r requirements.txt
-```
-
-## 📚 Paper Collection
-
-The collection includes **14 papers** covering **10 diseases**:
-- COVID-19 (1), Malaria (1), HIV (1)
-- Influenza (2), Tuberculosis (2), Dengue (2), Ebola (2)
-- Measles (1), Cholera (1), Zika (1)
-
-Papers are in `papers/` directory. Collection index: `reports/paper_collection/paper_collection.json`
-
-## ✅ Key Deliverables
-
-1. **Model Analysis Tools** - Complete analysis of all models
-2. **Extraction Protocol** - 8-step protocol for extracting models from papers
-3. **Required/Optional Definitions** - Clear rules for validation
-4. **Taxonomies** - Complete classification system
-5. **Gap Analysis** - Systematic gap identification
-6. **Uncertainty Database** - Parameter confidence framework
-7. **Sensitivity Analysis** - Parameter impact analysis
-8. **Paper Collection** - Organized paper framework
-9. **Extraction Templates** - JSON templates for manual extraction
-10. **Pattern Library** - Common model patterns
-
-## 🎯 Next Steps
-
-Phase 1 is complete. Ready for **Phase 2: Build Simple AI Components**.
-
-The foundation provides:
-- Clear protocols for extraction
-- Taxonomies for validation
-- Required/optional rules for gap detection
-- Pattern library for reference
-- Uncertainty framework for evaluation
-
-## 💡 Tips
-
-- View Markdown reports for human-readable documentation
-- Use JSON reports for programmatic access
-- Check `reports/protocols/` for extraction guidelines
-- Review `reports/patterns/` for common model structures
+---

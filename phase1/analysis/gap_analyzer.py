@@ -24,6 +24,18 @@ class GapAnalyzer:
         self.data = self.parser.extract_all()
         self.gaps = []
     
+    def analyze_gaps(self) -> Dict[str, Any]:
+        """Analyze gaps in model based on model type"""
+        if self.model_name.lower() == 'malaria':
+            return self.analyze_malaria_gaps()
+        elif self.model_name.lower() == 'covid-19':
+            return self.analyze_covid_gaps()
+        elif self.model_name.lower() == 'hiv':
+            return self.analyze_hiv_gaps()
+        else:
+            # Generic gap analysis
+            return self.analyze_generic_gaps()
+    
     def analyze_malaria_gaps(self) -> Dict[str, Any]:
         """Analyze gaps specific to malaria model"""
         gaps = {
@@ -176,17 +188,149 @@ class GapAnalyzer:
         
         return gaps
     
+    def analyze_covid_gaps(self) -> Dict[str, Any]:
+        """Analyze gaps specific to COVID-19 model"""
+        gaps = {
+            'structuralGaps': [],
+            'parameterGaps': [],
+            'stratificationGaps': [],
+            'interventionGaps': []
+        }
+        
+        compartments = [c['primaryName'].lower() for c in self.data['compartments']]
+        parameters = {p['name']: p for p in self.data['parameters']}
+        groups = self.data['groups']
+        
+        # Structural gaps - check for common COVID-19 compartments
+        if not any('hospital' in c or 'icu' in c for c in compartments):
+            gaps['structuralGaps'].append({
+                'gap': 'Missing Healthcare System Compartments',
+                'description': 'No hospital or ICU compartments',
+                'whyItMatters': 'COVID-19 models often track healthcare burden',
+                'foundIn': ['Most COVID-19 models include healthcare compartments'],
+                'howToAdd': 'Add Hospital and ICU compartments',
+                'severity': 'low',
+                'note': 'Already present - this is just a check'
+            })
+        
+        # Parameter gaps - COVID-19 has rates in flows, not parameters
+        if len(parameters) == 0:
+            gaps['parameterGaps'].append({
+                'gap': 'No Explicit Parameters Defined',
+                'description': 'Rates are hardcoded in flows, not defined as parameters',
+                'currentValue': 'Rates embedded in flow definitions',
+                'whyItMatters': 'Makes sensitivity analysis and uncertainty quantification difficult',
+                'severity': 'medium',
+                'suggestedAction': 'Extract rates from flows and define as parameters'
+            })
+        
+        # Check if age stratification exists
+        has_age_groups = any('age' in g['name'].lower() for g in groups)
+        if not has_age_groups:
+            gaps['stratificationGaps'].append({
+                'gap': 'Missing Age Stratification',
+                'description': 'Age groups may not be properly defined',
+                'whyItMatters': 'COVID-19 severity varies significantly by age',
+                'severity': 'low',
+                'note': 'Model appears to have age stratification already'
+            })
+        
+        return gaps
+    
+    def analyze_hiv_gaps(self) -> Dict[str, Any]:
+        """Analyze gaps specific to HIV model"""
+        gaps = {
+            'structuralGaps': [],
+            'parameterGaps': [],
+            'stratificationGaps': [],
+            'interventionGaps': []
+        }
+        
+        compartments = [c['primaryName'].lower() for c in self.data['compartments']]
+        parameters = {p['name']: p for p in self.data['parameters']}
+        groups = self.data['groups']
+        
+        # Check for treatment compartments
+        has_treatment = any('treatment' in c or 'treated' in c or 'art' in c for c in compartments)
+        if not has_treatment:
+            gaps['structuralGaps'].append({
+                'gap': 'Missing Treatment Compartment',
+                'description': 'No compartment for individuals on treatment',
+                'whyItMatters': 'HIV models often track treatment status separately',
+                'foundIn': ['Most HIV models include treatment compartments'],
+                'howToAdd': 'Add treated compartment',
+                'severity': 'low',
+                'note': 'Model appears to have treatment already'
+            })
+        
+        # Parameter gaps - HIV has rates in flows
+        if len(parameters) == 0:
+            gaps['parameterGaps'].append({
+                'gap': 'No Explicit Parameters Defined',
+                'description': 'Rates are hardcoded in flows with stratum-specific values',
+                'currentValue': 'Rates embedded in flow definitions',
+                'whyItMatters': 'Makes sensitivity analysis and uncertainty quantification difficult',
+                'severity': 'medium',
+                'suggestedAction': 'Extract rates from flows and define as parameters by risk group'
+            })
+        
+        # Check risk group stratification
+        has_risk_groups = any('risk' in g['name'].lower() or 'behavior' in g['name'].lower() 
+                             for g in groups)
+        if not has_risk_groups:
+            gaps['stratificationGaps'].append({
+                'gap': 'Missing Risk Group Stratification',
+                'description': 'Risk groups may not be properly defined',
+                'whyItMatters': 'HIV transmission varies significantly by risk behavior',
+                'severity': 'low',
+                'note': 'Model appears to have sexual behavior stratification already'
+            })
+        
+        # Intervention gaps
+        has_prep = any('prep' in c.lower() or 'pre-exposure' in c.lower() for c in compartments)
+        if not has_prep:
+            gaps['interventionGaps'].append({
+                'gap': 'Missing PrEP Intervention Compartment',
+                'description': 'No compartment for PrEP users',
+                'whyItMatters': 'PrEP is important for HIV prevention',
+                'severity': 'low',
+                'note': 'Only needed if paper is about PrEP'
+            })
+        
+        return gaps
+    
+    def analyze_generic_gaps(self) -> Dict[str, Any]:
+        """Generic gap analysis for unknown model types"""
+        gaps = {
+            'structuralGaps': [],
+            'parameterGaps': [],
+            'stratificationGaps': [],
+            'interventionGaps': []
+        }
+        
+        compartments = [c['primaryName'].lower() for c in self.data['compartments']]
+        parameters = {p['name']: p for p in self.data['parameters']}
+        
+        # Basic checks
+        if len(compartments) < 2:
+            gaps['structuralGaps'].append({
+                'gap': 'Insufficient Compartments',
+                'description': 'Model has fewer than 2 compartments',
+                'severity': 'high'
+            })
+        
+        if len(parameters) == 0:
+            gaps['parameterGaps'].append({
+                'gap': 'No Parameters Defined',
+                'description': 'Model has no explicit parameters',
+                'severity': 'medium'
+            })
+        
+        return gaps
+    
     def generate_gap_report(self) -> Dict[str, Any]:
         """Generate comprehensive gap report"""
-        if self.model_name.lower() == 'malaria':
-            gaps = self.analyze_malaria_gaps()
-        else:
-            gaps = {
-                'structuralGaps': [],
-                'parameterGaps': [],
-                'stratificationGaps': [],
-                'interventionGaps': []
-            }
+        gaps = self.analyze_gaps()
         
         report = {
             'modelName': self.model_name,
@@ -217,97 +361,47 @@ class GapAnalyzer:
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(report, f, indent=2, ensure_ascii=False)
     
-    def export_markdown(self, output_path: str):
-        """Export gap report to Markdown"""
-        report = self.generate_gap_report()
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(f"# Gap Analysis Report: {report['modelName']}\n\n")
-            f.write(f"**Analysis Date:** {report['analysisDate']}\n\n")
-            f.write(f"**Total Gaps Found:** {report['totalGaps']}\n\n")
-            
-            f.write("## Summary\n\n")
-            f.write(f"- **Critical Gaps (High Severity):** {report['summary']['criticalGaps']}\n")
-            f.write(f"- **Medium Gaps:** {report['summary']['mediumGaps']}\n")
-            f.write(f"- **Low Gaps:** {report['summary']['lowGaps']}\n\n")
-            
-            # Structural Gaps
-            if report['gaps']['structuralGaps']:
-                f.write("## Structural Gaps\n\n")
-                for gap in report['gaps']['structuralGaps']:
-                    f.write(f"### {gap['gap']}\n\n")
-                    f.write(f"**Description:** {gap['description']}\n\n")
-                    f.write(f"**Why It Matters:** {gap['whyItMatters']}\n\n")
-                    f.write(f"**Severity:** {gap['severity'].upper()}\n\n")
-                    f.write("**Found In:**\n")
-                    for source in gap['foundIn']:
-                        f.write(f"- {source}\n")
-                    f.write("\n")
-                    f.write(f"**How to Add:** {gap['howToAdd']}\n\n")
-                    if 'suggestedAction' in gap:
-                        f.write(f"**Suggested Action:** {gap['suggestedAction']}\n\n")
-            
-            # Parameter Gaps
-            if report['gaps']['parameterGaps']:
-                f.write("## Parameter Gaps\n\n")
-                for gap in report['gaps']['parameterGaps']:
-                    f.write(f"### {gap['gap']}\n\n")
-                    f.write(f"**Description:** {gap['description']}\n\n")
-                    f.write(f"**Current Value:** {gap['currentValue']}\n\n")
-                    if 'foundInLiterature' in gap:
-                        f.write(f"**Found in Literature:** {gap['foundInLiterature']}\n\n")
-                    f.write(f"**Uncertainty:** {gap['uncertainty']}\n\n")
-                    f.write(f"**Severity:** {gap['severity'].upper()}\n\n")
-                    if 'suggestedValue' in gap:
-                        f.write(f"**Suggested Value:** {gap['suggestedValue']}\n\n")
-                    if 'suggestedRange' in gap:
-                        f.write(f"**Suggested Range:** {gap['suggestedRange']}\n\n")
-                    if 'sources' in gap:
-                        f.write("**Sources:**\n")
-                        for source in gap['sources']:
-                            f.write(f"- {source}\n")
-                        f.write("\n")
-            
-            # Stratification Gaps
-            if report['gaps']['stratificationGaps']:
-                f.write("## Stratification Gaps\n\n")
-                for gap in report['gaps']['stratificationGaps']:
-                    f.write(f"### {gap['gap']}\n\n")
-                    f.write(f"**Description:** {gap['description']}\n\n")
-                    f.write(f"**Why It Matters:** {gap['whyItMatters']}\n\n")
-                    f.write(f"**Severity:** {gap['severity'].upper()}\n\n")
-                    if 'note' in gap:
-                        f.write(f"**Note:** {gap['note']}\n\n")
 
 
 def main():
-    """Main function to analyze gaps"""
+    """Main function to analyze gaps for all models"""
     base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
     output_dir = Path(__file__).parent.parent / 'reports' / 'gap_reports'
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Focus on malaria model for Task 2.1
-    malaria_path = base_path / 'malaria.compmodel'
-    
-    if not malaria_path.exists():
-        print(f"Warning: {malaria_path} not found")
-        return
+    # Analyze all 3 models
+    models = {
+        'COVID-19': base_path / 'covid.compmodel',
+        'Malaria': base_path / 'malaria.compmodel',
+        'HIV': base_path / 'HIV.compmodel'
+    }
     
     print("=" * 80)
-    print("TASK 2.1: DEEP DIVE INTO MALARIA MODEL GAPS")
+    print("TASK 2.1: GAP ANALYSIS FOR ALL MODELS")
     print("=" * 80)
     
-    analyzer = GapAnalyzer(str(malaria_path), 'Malaria')
+    for model_name, model_path in models.items():
+        if not model_path.exists():
+            print(f"\n⚠ Warning: {model_path} not found, skipping {model_name}")
+            continue
+        
+        print(f"\n{'=' * 80}")
+        print(f"Analyzing: {model_name}")
+        print('=' * 80)
+        
+        try:
+            analyzer = GapAnalyzer(str(model_path), model_name)
+            
+            # Export JSON
+            json_filename = f"{model_name.lower().replace('-', '_')}_gap_analysis.json"
+            json_path = output_dir / json_filename
+            analyzer.export_gap_report(str(json_path))
+            print(f"✓ Gap report exported to: {json_path}")
+        except Exception as e:
+            print(f"✗ Error analyzing {model_name}: {e}")
+            import traceback
+            traceback.print_exc()
     
-    # Export JSON
-    json_path = output_dir / 'malaria_gap_analysis.json'
-    analyzer.export_gap_report(str(json_path))
-    print(f"✓ Gap report exported to: {json_path}")
-    
-    # Export Markdown
-    md_path = output_dir / 'malaria_gap_analysis.md'
-    analyzer.export_markdown(str(md_path))
-    print(f"✓ Gap report exported to: {md_path}")
     
     report = analyzer.generate_gap_report()
     print(f"\nTotal gaps found: {report['totalGaps']}")

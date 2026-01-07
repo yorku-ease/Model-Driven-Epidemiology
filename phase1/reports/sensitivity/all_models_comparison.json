@@ -1,0 +1,117 @@
+{
+  "analysisDate": "2026-01-06",
+  "models": {
+    "COVID-19": {
+      "status": "needs_refactoring",
+      "canAnalyze": false,
+      "numParameters": 0,
+      "keyRates": [
+        {
+          "type": "transmission",
+          "value": "0.00001",
+          "location": "flow",
+          "description": "Community transmission rate"
+        },
+        {
+          "type": "transmission",
+          "value": "0.000002",
+          "location": "flow",
+          "description": "Quarantine transmission rate"
+        },
+        {
+          "type": "progression",
+          "value": "0.4",
+          "location": "flow",
+          "description": "Exposed to Infectious progression"
+        }
+      ],
+      "complexity": {
+        "compartments": 15,
+        "hasStratification": true,
+        "stratificationType": "Age",
+        "numGroups": 3
+      }
+    },
+    "Malaria": {
+      "status": "ready",
+      "canAnalyze": true,
+      "numParameters": 17,
+      "keyParameters": [
+        {
+          "parameter": "β₁",
+          "value": "0.9969",
+          "type": "transmission",
+          "expectedSensitivity": "high",
+          "priority": 1
+        },
+        {
+          "parameter": "γₕ",
+          "value": "0.120342",
+          "type": "recovery",
+          "expectedSensitivity": "medium",
+          "priority": 2
+        },
+        {
+          "parameter": "ρₕ",
+          "value": "0.001995",
+          "type": "progression",
+          "expectedSensitivity": "medium",
+          "priority": 3
+        }
+      ],
+      "complexity": {
+        "compartments": 7,
+        "hasStratification": false,
+        "hasVectors": true,
+        "hasTemperatureDependent": true
+      }
+    },
+    "HIV": {
+      "status": "needs_refactoring",
+      "canAnalyze": false,
+      "numParameters": 0,
+      "keyRates": [
+        {
+          "type": "transmission",
+          "value": "0.096",
+          "stratum": "Homosexual Men",
+          "location": "flow"
+        },
+        {
+          "type": "transmission",
+          "value": "0.0011",
+          "stratum": "Women",
+          "location": "flow"
+        },
+        {
+          "type": "transmission",
+          "value": "0.0078",
+          "stratum": "Heterosexual Men",
+          "location": "flow"
+        }
+      ],
+      "complexity": {
+        "compartments": 5,
+        "hasStratification": true,
+        "stratificationType": "Sexual Behavior",
+        "numGroups": 3
+      }
+    }
+  },
+  "summary": {
+    "readyForAnalysis": 1,
+    "needsRefactoring": 2,
+    "totalParameters": 17,
+    "modelsWithParameters": 1
+  },
+  "recommendations": {
+    "immediate": [
+      "Run sensitivity analysis on Malaria (17 parameters available)"
+    ],
+    "refactoring": [
+      "Extract rates from COVID-19 flows as parameters",
+      "Extract rates from HIV flows as parameters"
+    ]
+  }
+}
+

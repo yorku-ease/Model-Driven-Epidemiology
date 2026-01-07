@@ -1,11 +1,11 @@
 """
-Task 2.3: Example Uncertainty Analysis
+Task 2.3: Sensitivity Analysis
 
-Pick one model (COVID-19) and run sensitivity analysis:
-1. Identify key parameter: β (transmission rate)
+Run sensitivity analysis for all models (COVID-19, Malaria, HIV):
+1. Identify key parameters (β, γ, σ, etc.)
 2. Run simulation with different parameter values
 3. Compare: Peak infections, time to peak, total cases
-4. Create plots showing the range
+4. Generate sensitivity reports for each model
 """
 import json
 from pathlib import Path
@@ -273,87 +273,62 @@ class SensitivityAnalyzer:
         
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(report, f, indent=2, ensure_ascii=False)
-    
-    def export_markdown(self, output_path: str):
-        """Export sensitivity report to Markdown"""
-        report = self.generate_sensitivity_report()
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(f"# Sensitivity Analysis Report: {report['modelName']}\n\n")
-            
-            if 'message' in report:
-                f.write(f"{report['message']}\n\n")
-                f.write(f"**Note:** {report['note']}\n")
-                return
-            
-            f.write("## Key Parameters Identified\n\n")
-            for param in report['keyParameters']:
-                f.write(f"- **{param['parameter']}** ({param['type']}): {param['description']}\n")
-            f.write("\n")
-            
-            sens = report['sensitivityAnalysis']
-            f.write(f"## Sensitivity Analysis: {sens['parameterName']}\n\n")
-            f.write(f"**Baseline Value:** {sens['baselineValue']}\n\n")
-            
-            f.write("### Results\n\n")
-            f.write("| Parameter Value | Variation % | Peak Infections | Peak Time (days) | Total Cases |\n")
-            f.write("|-----------------|-------------|----------------|------------------|-------------|\n")
-            for result in sens['results']:
-                f.write(f"| {result['parameterValue']:.6f} | {result['variationPercent']:.1f}% | "
-                       f"{result['peakInfections']:.2f} | {result['peakTime']:.1f} | "
-                       f"{result['totalCases']:.2f} |\n")
-            f.write("\n")
-            
-            f.write("### Summary\n\n")
-            f.write(f"- **Peak Infections Range:** {sens['summary']['peakRange'][0]:.2f} - {sens['summary']['peakRange'][1]:.2f}\n")
-            f.write(f"- **Peak Time Range:** {sens['summary']['timeRange'][0]:.1f} - {sens['summary']['timeRange'][1]:.1f} days\n")
-            f.write(f"- **Total Cases Range:** {sens['summary']['casesRange'][0]:.2f} - {sens['summary']['casesRange'][1]:.2f}\n\n")
-            
-            f.write("### Interpretation\n\n")
-            f.write(f"**Parameter:** {report['interpretation']['parameter']}\n\n")
-            f.write(f"**Impact:** {report['interpretation']['impact']}\n\n")
-            f.write(f"**Recommendation:** {report['interpretation']['recommendation']}\n")
 
 
 def main():
-    """Main function to run sensitivity analysis"""
+    """Main function to run sensitivity analysis for all models"""
     base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
     output_dir = Path(__file__).parent.parent / 'reports' / 'sensitivity'
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Focus on COVID-19 for Task 2.3
-    covid_path = base_path / 'covid.compmodel'
-    
-    if not covid_path.exists():
-        print(f"Warning: {covid_path} not found")
-        return
+    # Analyze all 3 models
+    models = [
+        ('covid.compmodel', 'COVID-19'),
+        ('malaria.compmodel', 'Malaria'),
+        ('HIV.compmodel', 'HIV')
+    ]
     
     print("=" * 80)
-    print("TASK 2.3: EXAMPLE UNCERTAINTY ANALYSIS (SENSITIVITY ANALYSIS)")
+    print("TASK 2.3: SENSITIVITY ANALYSIS FOR ALL MODELS")
     print("=" * 80)
     
-    analyzer = SensitivityAnalyzer(str(covid_path), 'COVID-19')
-    
-    # Export JSON
-    json_path = output_dir / 'covid_sensitivity_analysis.json'
-    analyzer.export_sensitivity_report(str(json_path))
-    print(f"✓ Sensitivity report exported to: {json_path}")
-    
-    # Export Markdown
-    md_path = output_dir / 'covid_sensitivity_analysis.md'
-    analyzer.export_markdown(str(md_path))
-    print(f"✓ Sensitivity report exported to: {md_path}")
-    
-    report = analyzer.generate_sensitivity_report()
-    if 'sensitivityAnalysis' in report:
-        sens = report['sensitivityAnalysis']
-        print(f"\nParameter analyzed: {sens['parameterName']}")
-        print(f"Baseline value: {sens['baselineValue']}")
-        print(f"Peak infections range: {sens['summary']['peakRange'][0]:.2f} - {sens['summary']['peakRange'][1]:.2f}")
-        print(f"Peak time range: {sens['summary']['timeRange'][0]:.1f} - {sens['summary']['timeRange'][1]:.1f} days")
+    for model_file, model_name in models:
+        model_path = base_path / model_file
+        
+        if not model_path.exists():
+            print(f"\n⚠ Warning: {model_path} not found, skipping {model_name}")
+            continue
+        
+        print(f"\n{'=' * 80}")
+        print(f"Analyzing: {model_name}")
+        print('=' * 80)
+        
+        try:
+            analyzer = SensitivityAnalyzer(str(model_path), model_name)
+            
+            # Export JSON
+            json_filename = f"{model_name.lower().replace('-', '_')}_sensitivity_analysis.json"
+            json_path = output_dir / json_filename
+            analyzer.export_sensitivity_report(str(json_path))
+            print(f"✓ Sensitivity report exported to: {json_path}")
+            
+            report = analyzer.generate_sensitivity_report()
+            if 'sensitivityAnalysis' in report:
+                sens = report['sensitivityAnalysis']
+                print(f"\nParameter analyzed: {sens['parameterName']}")
+                print(f"Baseline value: {sens['baselineValue']}")
+                print(f"Peak infections range: {sens['summary']['peakRange'][0]:.2f} - {sens['summary']['peakRange'][1]:.2f}")
+                print(f"Peak time range: {sens['summary']['timeRange'][0]:.1f} - {sens['summary']['timeRange'][1]:.1f} days")
+            else:
+                print(f"⚠ No key parameters identified for {model_name}")
+                
+        except Exception as e:
+            print(f"✗ Error analyzing {model_name}: {e}")
+            import traceback
+            traceback.print_exc()
     
     print("\n" + "=" * 80)
-    print("SENSITIVITY ANALYSIS COMPLETE")
+    print("SENSITIVITY ANALYSIS COMPLETE FOR ALL MODELS")
     print("=" * 80)
 
 

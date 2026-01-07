@@ -232,30 +232,6 @@ class UncertaintyAnalyzer:
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(db, f, indent=2, ensure_ascii=False)
     
-    def export_csv_format(self, output_path: str):
-        """Export in CSV-like format for spreadsheet"""
-        db = self.generate_uncertainty_database()
-        
-        rows = []
-        for param in db['parameters']:
-            range_info = param.get('rangeInLiterature', {})
-            rows.append({
-                'Model': db['modelName'],
-                'Parameter': param['parameter'],
-                'Your_Value': param['yourValue'],
-                'Min': range_info.get('min', ''),
-                'Max': range_info.get('max', ''),
-                'Mean': range_info.get('mean', ''),
-                'Std': range_info.get('std', ''),
-                'Source_Papers': ', '.join([p['author'] for p in param.get('papers', [])]),
-                'Confidence': param['confidence'],
-                'Unit': param.get('unit', ''),
-                'Description': param.get('description', '')
-            })
-        
-        # Export as JSON (can be converted to CSV)
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(rows, f, indent=2, ensure_ascii=False)
 
 
 def main():
@@ -289,10 +265,6 @@ def main():
         analyzer.export_uncertainty_database(str(json_path))
         print(f"✓ Uncertainty database exported to: {json_path}")
         
-        # Export CSV format
-        csv_path = output_dir / f"{model_name.lower().replace('-', '_')}_uncertainty.csv.json"
-        analyzer.export_csv_format(str(csv_path))
-        print(f"✓ CSV format exported to: {csv_path}")
         
         db = analyzer.generate_uncertainty_database()
         print(f"  Parameters analyzed: {db['parametersWithUncertainty']}")
