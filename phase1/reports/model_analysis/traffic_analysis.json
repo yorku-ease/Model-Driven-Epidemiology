@@ -1,0 +1,300 @@
+{
+  "modelName": "Traffic",
+  "summary": {
+    "modelName": "Traffic",
+    "totalPopulation": null,
+    "numCompartments": 5,
+    "numParameters": 18,
+    "numGroups": 1,
+    "numProducts": 0,
+    "numExternalSources": 2,
+    "numExternalSinks": 0,
+    "hasStratification": true,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Onramp1",
+        "secondaryName": "Link 1",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.10",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Traffic flow from Onramp 1 to Link 2 (split ratio β_12 = 0.5)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Traffic flow from Onramp 1 to Link 3 (split ratio β_13 = 0.5)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Link2",
+        "secondaryName": "Ordinary",
+        "population": "37.5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.12",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Traffic flow from Link 2 to Link 5 (split ratio β_25 = 1.0)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Link3",
+        "secondaryName": "Ordinary",
+        "population": "37.5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.13",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Traffic flow from Link 3 to Link 5 (split ratio β_35 = 1.0)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Onramp4",
+        "secondaryName": "Link 4",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Traffic flow from Onramp 4 to Link 5 (split ratio β_45 = 1.0)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Link5",
+        "secondaryName": "Ordinary",
+        "population": "90",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "ρ_jam_2",
+        "type": "CONSTANT",
+        "expression": "360",
+        "description": "Jam density for link 2",
+        "unit": "vehicles"
+      },
+      {
+        "index": 1,
+        "name": "ρ_jam_3",
+        "type": "CONSTANT",
+        "expression": "360",
+        "description": "Jam density for link 3",
+        "unit": "vehicles"
+      },
+      {
+        "index": 2,
+        "name": "ρ_jam_5",
+        "type": "CONSTANT",
+        "expression": "360",
+        "description": "Jam density for link 5",
+        "unit": "vehicles"
+      },
+      {
+        "index": 3,
+        "name": "ρ_crit_2",
+        "type": "CONSTANT",
+        "expression": "90",
+        "description": "Critical density for link 2",
+        "unit": "vehicles"
+      },
+      {
+        "index": 4,
+        "name": "ρ_crit_3",
+        "type": "CONSTANT",
+        "expression": "90",
+        "description": "Critical density for link 3",
+        "unit": "vehicles"
+      },
+      {
+        "index": 5,
+        "name": "ρ_crit_5",
+        "type": "CONSTANT",
+        "expression": "90",
+        "description": "Critical density for link 5",
+        "unit": "vehicles"
+      },
+      {
+        "index": 6,
+        "name": "Φ_crit_2",
+        "type": "CONSTANT",
+        "expression": "3000",
+        "description": "Critical flow for link 2",
+        "unit": "vehicles/hour"
+      },
+      {
+        "index": 7,
+        "name": "Φ_crit_3",
+        "type": "CONSTANT",
+        "expression": "3000",
+        "description": "Critical flow for link 3",
+        "unit": "vehicles/hour"
+      },
+      {
+        "index": 8,
+        "name": "Φ_crit_5",
+        "type": "CONSTANT",
+        "expression": "4000",
+        "description": "Critical flow for link 5",
+        "unit": "vehicles/hour"
+      },
+      {
+        "index": 9,
+        "name": "Φ_max_1",
+        "type": "CONSTANT",
+        "expression": "3000",
+        "description": "Maximum demand for onramp 1",
+        "unit": "vehicles/hour"
+      },
+      {
+        "index": 10,
+        "name": "Φ_max_4",
+        "type": "CONSTANT",
+        "expression": "6000",
+        "description": "Maximum demand for onramp 4",
+        "unit": "vehicles/hour"
+      },
+      {
+        "index": 11,
+        "name": "β_12",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Split ratio: link 1 to link 2",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "β_13",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Split ratio: link 1 to link 3",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "β_25",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Split ratio: link 2 to link 5",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 14,
+        "name": "β_35",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Split ratio: link 3 to link 5",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 15,
+        "name": "β_45",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Split ratio: link 4 to link 5",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 16,
+        "name": "d_1",
+        "type": "CONSTANT",
+        "expression": "2500",
+        "description": "Input demand for onramp 1",
+        "unit": "vehicles/hour"
+      },
+      {
+        "index": 17,
+        "name": "d_4",
+        "type": "CONSTANT",
+        "expression": "2500",
+        "description": "Input demand for onramp 4",
+        "unit": "vehicles/hour"
+      }
+    ],
+    "groups": [
+      {
+        "index": 0,
+        "name": "LinkType",
+        "description": "Type of traffic link",
+        "values": [
+          "Onramp",
+          "Ordinary"
+        ]
+      }
+    ],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Demand at Onramp 1",
+        "rate": "",
+        "rateParameter": "//@parameters.15",
+        "targetCompartment": "//@compartments.0",
+        "targetStratum": ""
+      },
+      {
+        "name": "Demand at Onramp 4",
+        "rate": "",
+        "rateParameter": "//@parameters.16",
+        "targetCompartment": "//@compartments.3",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": []
+  }
+}

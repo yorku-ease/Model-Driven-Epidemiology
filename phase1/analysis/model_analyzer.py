@@ -218,55 +218,165 @@ class ModelAnalyzer:
             return compartments_data + flows_data + parameters_data + stratification_data
 
 
-def main():
-    """Main function to analyze all models"""
-    # Paths to model files
-    base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
-    output_dir = Path(__file__).parent.parent / 'reports' / 'model_analysis'
-    output_dir.mkdir(parents=True, exist_ok=True)
+def find_compmodel_files(directory: Path) -> list:
+    """
+    Find all .compmodel files in a directory.
     
-    models = {
-        'COVID-19': base_path / 'covid.compmodel',
-        'Malaria': base_path / 'malaria.compmodel',
-        'HIV': base_path / 'HIV.compmodel'
-    }
+    Args:
+        directory: Directory to search
+        
+    Returns:
+        List of (model_name, file_path) tuples
+    """
+    models = []
+    
+    if not directory.exists():
+        return models
+    
+    # Find all .compmodel files
+    for file_path in directory.glob('*.compmodel'):
+        # Extract model name from filename (remove extension, capitalize)
+        model_name = file_path.stem
+        # Convert to readable name (e.g., "covid" -> "COVID-19", "HIV" -> "HIV")
+        # Handle common patterns
+        if model_name.lower() == 'covid':
+            model_name = 'COVID-19'
+        elif model_name.lower() == 'hiv':
+            model_name = 'HIV'
+        else:
+            # Capitalize first letter of each word
+            model_name = ' '.join(word.capitalize() for word in model_name.replace('_', ' ').replace('-', ' ').split())
+        
+        models.append((model_name, file_path))
+    
+    return models
+
+
+def main():
+    """
+    Main function to analyze all models in a directory.
+    Automatically discovers .compmodel files and processes them.
+    """
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description='Analyze compartmental models and extract structured information',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Analyze all models in default directory
+  python3 model_analyzer.py
+
+  # Analyze models in specific directory
+  python3 model_analyzer.py --model-dir /path/to/models
+
+  # Analyze specific model file
+  python3 model_analyzer.py --model-file model.compmodel --model-name "Model Name"
+        """
+    )
+    
+    parser.add_argument('--model-dir', 
+                       help='Directory containing .compmodel files (default: Compartmental/CompartmentalModel)')
+    parser.add_argument('--model-file', 
+                       help='Single model file to analyze (overrides --model-dir)')
+    parser.add_argument('--model-name', 
+                       help='Name for the model (required if --model-file specified)')
+    parser.add_argument('--output-dir',
+                       help='Output directory for reports (default: reports/model_analysis)')
+    
+    args = parser.parse_args()
+    
+    # Determine model directory
+    if args.model_file:
+        # Single file mode
+        model_path = Path(args.model_file)
+        if not model_path.exists():
+            print(f"Error: Model file not found: {model_path}")
+            return
+        
+        if not args.model_name:
+            print("Error: --model-name is required when using --model-file")
+            return
+        
+        models = [(args.model_name, model_path)]
+        model_dir = model_path.parent
+    else:
+        # Directory mode - find all .compmodel files
+        if args.model_dir:
+            model_dir = Path(args.model_dir)
+        else:
+            # Default: Compartmental/CompartmentalModel
+            model_dir = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
+        
+        models = find_compmodel_files(model_dir)
+        
+        if not models:
+            print(f"No .compmodel files found in: {model_dir}")
+            print("\nTo analyze a specific file, use:")
+            print("  python3 model_analyzer.py --model-file <file.compmodel> --model-name '<Model Name>'")
+            return
+    
+    # Determine output directory
+    if args.output_dir:
+        output_dir = Path(args.output_dir)
+    else:
+        output_dir = Path(__file__).parent.parent / 'reports' / 'model_analysis'
+    output_dir.mkdir(parents=True, exist_ok=True)
     
     all_analyses = []
     all_dataframes = []
     
     print("=" * 80)
-    print("TASK 1.1: ANALYZING CURRENT MODELS")
+    print("TASK 1.1: ANALYZING MODELS")
     print("=" * 80)
+    print(f"Model directory: {model_dir}")
+    print(f"Found {len(models)} model(s) to analyze")
+    print()
     
-    for model_name, model_path in models.items():
+    for model_name, model_path in models:
         if not model_path.exists():
             print(f"Warning: {model_path} not found, skipping {model_name}")
             continue
         
         print(f"\nAnalyzing {model_name}...")
-        analyzer = ModelAnalyzer(str(model_path), model_name)
+        print(f"  File: {model_path}")
         
-        # Generate summary
-        summary = analyzer.generate_summary()
-        print(f"  Compartments: {summary['numCompartments']}")
-        print(f"  Parameters: {summary['numParameters']}")
-        print(f"  Has Stratification: {summary['hasStratification']}")
-        print(f"  Has Vector Compartments: {summary['hasVectorCompartments']}")
-        print(f"  Has Temperature Dependent: {summary['hasTemperatureDependent']}")
-        
-        # Export JSON
-        json_path = output_dir / f"{model_name.lower().replace('-', '_')}_analysis.json"
-        analyzer.export_to_json(str(json_path))
-        print(f"  Exported JSON to: {json_path}")
-        
-        # Export DataFrame
-        df = analyzer.export_to_dataframe()
-        all_dataframes.append(df)
-        all_analyses.append({
-            'model': model_name,
-            'summary': summary,
-            'dataframe': df
-        })
+        try:
+            analyzer = ModelAnalyzer(str(model_path), model_name)
+            
+            # Generate summary
+            summary = analyzer.generate_summary()
+            print(f"  Compartments: {summary['numCompartments']}")
+            print(f"  Parameters: {summary['numParameters']}")
+            print(f"  Groups: {summary['numGroups']}")
+            print(f"  Has Stratification: {summary['hasStratification']}")
+            print(f"  Has Vector Compartments: {summary['hasVectorCompartments']}")
+            print(f"  Has Temperature Dependent: {summary['hasTemperatureDependent']}")
+            
+            # Export JSON
+            json_filename = f"{model_name.lower().replace(' ', '_').replace('-', '_')}_analysis.json"
+            json_path = output_dir / json_filename
+            analyzer.export_to_json(str(json_path))
+            print(f"  ✓ Exported JSON to: {json_path}")
+            
+            # Export DataFrame
+            df = analyzer.export_to_dataframe()
+            all_dataframes.append(df)
+            all_analyses.append({
+                'model': model_name,
+                'summary': summary,
+                'dataframe': df
+            })
+            
+        except Exception as e:
+            print(f"  ✗ Error analyzing {model_name}: {e}")
+            import traceback
+            traceback.print_exc()
+            continue
+    
+    if not all_analyses:
+        print("\nNo models were successfully analyzed.")
+        return
     
     # Combine all DataFrames
     if all_dataframes:
@@ -313,6 +423,7 @@ def main():
     print("\n" + "=" * 80)
     print("ANALYSIS COMPLETE")
     print("=" * 80)
+    print(f"\nAnalyzed {len(all_analyses)} model(s) successfully")
 
 
 if __name__ == '__main__':
