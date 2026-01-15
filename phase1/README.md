@@ -1154,13 +1154,6 @@ multi_result = analyzer.multi_parameter_sensitivity(
   - Multi-species models with intricate initialization requirements
 - Recommend: For complex expression-based models, ensure all dependent variables are defined
 
-### Recommendations
-
-1. **Use paper-driven gap analysis** for all gap analysis (no hardcoded rules needed)
-2. Minimal generic checks used only as fallback when no paper is provided
-3. **Sensitivity analysis now uses actual model dynamics** - works for most compartmental models
-4. For models with expression parameters, define environmental variables (T=28°C for malaria, etc.)
-
 ---
 
 ## Technical Details
