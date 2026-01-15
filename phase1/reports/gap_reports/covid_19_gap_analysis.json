@@ -1,25 +1,94 @@
 {
   "modelName": "COVID-19",
-  "analysisDate": "2026-01-13T17:40:58.672124",
-  "paperPromises": null,
-  "totalGaps": 1,
+  "analysisDate": "2026-01-14T19:12:07.927367",
+  "paperPromises": {
+    "compartments": [
+      "Severe",
+      "ICU",
+      "Exposed",
+      "Susceptible",
+      "Infectious",
+      "Recovered",
+      "Asymptomatic"
+    ],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [
+      "contact_rate",
+      "mortality_rate"
+    ],
+    "interventions": [
+      "quarantine",
+      "contact_tracing",
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "Pattern-based extraction from paper text. Found 7 compartments, 1 stratifications, 2 parameters, 3 interventions."
+  },
+  "totalGaps": 7,
   "gaps": {
-    "structuralGaps": [],
+    "structuralGaps": [
+      {
+        "gap": "Missing Promised Compartment: Severe",
+        "description": "Paper promises Severe compartment but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "howToAdd": "Add compartment: Severe"
+      },
+      {
+        "gap": "Missing Promised Compartment: Asymptomatic",
+        "description": "Paper promises Asymptomatic compartment but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "howToAdd": "Add compartment: Asymptomatic"
+      }
+    ],
     "parameterGaps": [
       {
-        "gap": "Explicit Parameters",
-        "description": "Rates should be defined as explicit parameters, not hardcoded in flows",
-        "severity": "medium",
-        "promisedByPaper": false
+        "gap": "Missing Promised Parameter: contact_rate",
+        "description": "Paper promises contact_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract contact_rate from flows or add as explicit parameter"
+      },
+      {
+        "gap": "Missing Promised Parameter: mortality_rate",
+        "description": "Paper promises mortality_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract mortality_rate from flows or add as explicit parameter"
       }
     ],
     "stratificationGaps": [],
-    "interventionGaps": []
+    "interventionGaps": [
+      {
+        "gap": "Missing Promised Intervention: quarantine",
+        "description": "Paper promises quarantine intervention but model does not include it",
+        "promisedByPaper": true,
+        "severity": "medium",
+        "howToAdd": "Add intervention: quarantine"
+      },
+      {
+        "gap": "Missing Promised Intervention: contact_tracing",
+        "description": "Paper promises contact_tracing intervention but model does not include it",
+        "promisedByPaper": true,
+        "severity": "medium",
+        "howToAdd": "Add intervention: contact_tracing"
+      },
+      {
+        "gap": "Missing Promised Intervention: vaccination",
+        "description": "Paper promises vaccination intervention but model does not include it",
+        "promisedByPaper": true,
+        "severity": "medium",
+        "howToAdd": "Add intervention: vaccination"
+      }
+    ]
   },
   "summary": {
-    "criticalGaps": 0,
-    "mediumGaps": 1,
+    "criticalGaps": 4,
+    "mediumGaps": 0,
     "lowGaps": 0,
-    "promisedByPaper": 0
+    "promisedByPaper": 7
   }
 }

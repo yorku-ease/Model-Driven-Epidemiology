@@ -208,10 +208,13 @@ class SensitivityAnalyzer:
         return flow_params[:10]  # Top 10 flow-based parameters
     
     def simulate_simple_seir(self, beta: float, gamma: float, sigma: float = 0.2,
-                            initial_s: float = 9900, initial_e: float = 50,
-                            initial_i: float = 50, initial_r: float = 0,
-                            days: int = 100, dt: float = 0.1) -> Dict[str, Any]:
-        """Simple SEIR simulation for sensitivity analysis"""
+                            initial_s: float = 99000, initial_e: float = 500,
+                            initial_i: float = 500, initial_r: float = 0,
+                            days: int = 200, dt: float = 0.1) -> Dict[str, Any]:
+        """
+        Simple SEIR simulation for sensitivity analysis.
+        Uses realistic population scale and longer simulation time.
+        """
         n = initial_s + initial_e + initial_i + initial_r
         
         if HAS_NUMPY:
@@ -384,8 +387,9 @@ class SensitivityAnalyzer:
             for param_name in param_names:
                 # Baseline simulation
                 baseline_result = self._run_simulation_with_params(start_values)
-                baseline_output = baseline_result['peakInfections']
-                
+                # Use totalCases as the primary output (more stable than peakInfections for endemic models)
+                baseline_output = baseline_result['totalCases']
+
                 # Perturbed simulation
                 perturbed_values = start_values.copy()
                 # Move to next level
@@ -396,10 +400,10 @@ class SensitivityAnalyzer:
                 else:
                     perturbed_val = current_val + step if current_val + step <= parameters[param_name][1] else current_val - step
                 perturbed_values[param_name] = perturbed_val
-                
+
                 perturbed_result = self._run_simulation_with_params(perturbed_values)
-                perturbed_output = perturbed_result['peakInfections']
-                
+                perturbed_output = perturbed_result['totalCases']
+
                 # Calculate elementary effect
                 delta = perturbed_val - current_val
                 if abs(delta) > 1e-10:
@@ -513,13 +517,18 @@ class SensitivityAnalyzer:
         return self._analyze_multi_parameter_results(results, parameters)
     
     def _run_simulation_with_params(self, param_values: Dict[str, float]) -> Dict[str, Any]:
-        """Run simulation with given parameter values"""
-        # Extract parameters (default to SEIR if not found)
-        beta = param_values.get('beta', param_values.get('transmission_rate', 0.00001))
-        gamma = param_values.get('gamma', param_values.get('recovery_rate', 0.1))
-        sigma = param_values.get('sigma', param_values.get('progression_rate', 0.2))
-        
-        return self.simulate_simple_seir(beta=beta, gamma=gamma, sigma=sigma)
+        """
+        Run simulation with given parameter values using actual model structure.
+        Uses GenericModelSimulator to simulate the actual compartmental model.
+        """
+        sys.path.insert(0, str(Path(__file__).parent.parent / 'utils'))
+        from generic_simulator import GenericModelSimulator
+
+        # Create simulator with actual model structure
+        simulator = GenericModelSimulator(str(self.model_path))
+
+        # Run simulation with the provided parameters
+        return simulator.simulate(param_values, days=200, dt=0.1)
     
     def _analyze_multi_parameter_results(self, results: List[Dict[str, Any]], 
                                         parameters: Dict[str, Tuple[float, float]]) -> Dict[str, Any]:
@@ -586,27 +595,46 @@ class SensitivityAnalyzer:
             'results': results[:10]  # Include first 10 results as examples
         }
     
-    def generate_sensitivity_report(self, method: str = 'morris', 
-                                   variation_range: float = 0.2) -> Dict[str, Any]:
-        """Generate comprehensive sensitivity analysis report using specified method"""
+    def generate_sensitivity_report(self, method: str = 'morris',
+                                   variation_range: float = 0.5) -> Dict[str, Any]:
+        """
+        Generate comprehensive sensitivity analysis report using specified method.
+
+        Args:
+            method: Sensitivity method ('morris', 'random', 'grid', 'sobol')
+            variation_range: Relative variation range (default 0.5 = ±50%)
+        """
         key_params = self.identify_key_parameters()
-        
+
         if not key_params:
             return {
                 'modelName': self.model_name,
                 'message': 'No key parameters identified for sensitivity analysis',
                 'note': 'This model may have rates embedded in flows rather than explicit parameters'
             }
-        
+
         # Prepare parameters for analysis
         parameters = {}
-        for param in key_params[:3]:  # Limit to first 3 parameters
+        for param in key_params[:5]:  # Analyze top 5 parameters (was 3)
             if param['currentValue'] is not None and param['currentValue'] > 0:
                 baseline = param['currentValue']
-                min_val = baseline * (1 - variation_range)
-                max_val = baseline * (1 + variation_range)
+
+                # For very small parameters (< 0.001), use larger variation range
+                # This helps detect sensitivity in transmission rates which are often very small
+                effective_range = variation_range
+                if baseline < 0.001:
+                    effective_range = 2.0  # ±200% for very small parameters
+                elif baseline < 0.01:
+                    effective_range = 1.0  # ±100% for small parameters
+
+                min_val = baseline * (1 - effective_range)
+                max_val = baseline * (1 + effective_range)
+
+                # Ensure min is positive
+                min_val = max(baseline * 0.1, min_val)
+
                 parameters[param['parameter']] = (min_val, max_val)
-        
+
         if not parameters:
             return {
                 'modelName': self.model_name,
@@ -671,27 +699,28 @@ Examples:
     
     parser.add_argument('--method', choices=['morris', 'random', 'grid', 'sobol'],
                        default='morris', help='Sensitivity analysis method (default: morris)')
-    parser.add_argument('--variation', type=float, default=0.2,
-                       help='Variation range as fraction (default: 0.2 = ±20%%)')
-    
+    parser.add_argument('--variation', type=float, default=0.5,
+                       help='Variation range as fraction (default: 0.5 = ±50%%, auto-scaled for small parameters)')
+
     args = parser.parse_args()
-    
+
     base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
     output_dir = Path(__file__).parent.parent / 'reports' / 'sensitivity'
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Analyze all 3 models
     models = [
         ('covid.compmodel', 'COVID-19'),
         ('malaria.compmodel', 'Malaria'),
         ('HIV.compmodel', 'HIV')
     ]
-    
+
     print("=" * 80)
     print("TASK 2.3: ENHANCED SENSITIVITY ANALYSIS")
     print("=" * 80)
     print(f"Method: {args.method.upper()}")
     print(f"Variation range: ±{args.variation*100}%")
+    print("Note: Very small parameters (< 0.001) automatically use ±200% range")
     print()
     
     for model_file, model_name in models:

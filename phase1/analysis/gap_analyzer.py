@@ -1,14 +1,14 @@
 """
 Task 2.1: Deep Dive into Model Gaps
 
-Analyze what's missing in models compared to paper promises and literature.
-Phase 2-ready: accepts paper promises and performs generic gap analysis.
-Supports both Phase 1 (disease-specific rules) and Phase 2 (paper-driven) modes.
+Analyze what's missing in models compared to paper promises.
+Phase 2: Paper-driven gap analysis (recommended - requires paper promises).
+Falls back to minimal generic checks if no paper provided.
 """
 import json
 import os
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Set
+from typing import Dict, List, Any, Optional, Set, Tuple
 import sys
 from datetime import datetime
 
@@ -309,61 +309,37 @@ class GapAnalyzer:
         
         return gaps
     
-    def _load_disease_specific_rules(self) -> List[GapRule]:
+    def _load_generic_rules(self) -> List[GapRule]:
         """
-        Load disease-specific rules for Phase 1 compatibility.
-        In Phase 2, rules should come from paper analysis or config files.
+        Load minimal generic rules (fallback when no paper provided).
+        These are basic best-practice checks, not disease-specific.
+        For proper gap analysis, use Phase 2 with paper promises.
         """
-        model_lower = self.model_name.lower()
-        rules = []
-        
-        if 'malaria' in model_lower:
-            rules.extend([
-                GapRule('compartment', 'Asymptomatic Carriers', 
-                       'Asymptomatic individuals who contribute to transmission',
-                       severity='medium', keywords=['asymptomatic', 'ah']),
-                GapRule('stratification', 'Age Groups',
-                       'Age stratification for children <5 years',
-                       severity='high', keywords=['age']),
-                GapRule('parameter', 'Asymptomatic Proportion',
-                       'Parameter for proportion of infections that are asymptomatic',
-                       severity='medium', keywords=['asymptomatic', 'p_asymp']),
-            ])
-        elif 'covid' in model_lower or 'covid-19' in model_lower:
-            rules.extend([
-                GapRule('parameter', 'Explicit Parameters',
-                       'Rates should be defined as explicit parameters, not hardcoded in flows',
-                       severity='medium', 
-                       condition=lambda d: len(d['parameters']) == 0),
-            ])
-        elif 'hiv' in model_lower:
-            rules.extend([
-                GapRule('parameter', 'Explicit Parameters',
-                       'Rates should be defined as explicit parameters, not hardcoded in flows',
-                       severity='medium',
-                       condition=lambda d: len(d['parameters']) == 0),
-                GapRule('intervention', 'PrEP Compartment',
-                       'PrEP intervention compartment',
-                       severity='low', keywords=['prep', 'pre-exposure']),
-            ])
-        
+        rules = [
+            # Basic check: explicit parameters are better than hardcoded rates
+            GapRule('parameter', 'Explicit Parameters',
+                   'Rates should be defined as explicit parameters, not hardcoded in flows',
+                   severity='low',  # Low severity - this is a best practice, not a gap
+                   condition=lambda d: len(d['parameters']) == 0),
+        ]
         return rules
     
     def analyze_gaps(self) -> Dict[str, Any]:
         """
         Main gap analysis method.
-        - If paper_promises provided: use generic comparison (Phase 2) - ONLY paper promises, no general rules
-        - Otherwise: use disease-specific rules (Phase 1)
+        - If paper_promises provided: use paper-driven comparison (Phase 2) - ONLY paper promises
+        - Otherwise: use minimal generic rules (basic best-practice checks only)
         
-        Phase 2 is faithful to paper: only flags gaps that paper promises, doesn't add literature-based components.
+        Phase 2 is recommended: only flags gaps that paper promises, doesn't add literature-based components.
+        Without paper promises, gap analysis is limited to basic checks.
         """
         if self.paper_promises:
             # Phase 2: Compare to paper promises ONLY (faithful to paper)
-            # Don't add general rules - only flag what paper actually promises
             gaps = self.analyze_gaps_generic(self.paper_promises)
         else:
-            # Phase 1: Use disease-specific rules (literature-based expectations)
-            rules = self._load_disease_specific_rules()
+            # Fallback: Minimal generic rules (basic best-practice checks)
+            # Note: For meaningful gap analysis, provide paper promises (Phase 2)
+            rules = self._load_generic_rules()
             gaps = self.analyze_gaps_with_rules(rules)
         
         return gaps
@@ -460,7 +436,8 @@ def analyze_gaps_with_paper(
         extractor = PaperPromiseExtractor(use_llm=use_llm, llm_api_key=llm_api_key)
         promises = extractor.extract_from_text(paper_text)
     else:
-        print("Warning: No paper provided. Using disease-specific rules (Phase 1 mode).")
+        print("Warning: No paper provided. Gap analysis will be limited to basic checks.")
+        print("For comprehensive gap analysis, provide paper (use Phase 2 mode).")
     
     # Step 2: Analyze gaps
     print("\n" + "=" * 80)
@@ -503,22 +480,19 @@ def analyze_gaps_with_paper(
 
 def main():
     """
-    Main function supporting both Phase 1 and Phase 2 modes.
+    Main function for gap analysis.
     
-    Phase 1: Analyze all models with disease-specific rules (default)
-    Phase 2: Analyze single model with paper promises (use --paper-pdf or --paper-text)
+    Phase 2 (recommended): Analyze model with paper promises (use --paper-pdf or --paper-text)
+    Fallback: Analyze all models with minimal generic checks (limited without paper)
     """
     import argparse
     
     parser = argparse.ArgumentParser(
-        description='Gap Analysis: Phase 1 (rules-based) or Phase 2 (paper-driven)',
+        description='Gap Analysis: Paper-driven (Phase 2, recommended) or basic checks (fallback)',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Phase 1: Analyze all models with disease-specific rules
-  python3 gap_analyzer.py
-
-  # Phase 2: Analyze single model with paper PDF
+  # Phase 2 (recommended): Analyze model with paper PDF
   python3 gap_analyzer.py --model Compartmental/CompartmentalModel/covid.compmodel \\
                           --name "COVID-19" \\
                           --paper-pdf papers/epimde/covid.pdf
@@ -526,6 +500,9 @@ Examples:
   # Phase 2: With LLM extraction
   python3 gap_analyzer.py --model model.compmodel --name "Model" \\
                           --paper-pdf paper.pdf --use-llm --api-key sk-...
+
+  # Fallback: Basic checks without paper (limited)
+  python3 gap_analyzer.py
         """
     )
     
@@ -571,38 +548,159 @@ Examples:
         
         return
     
-    # Phase 1 mode: analyze all models with disease-specific rules
+    # Analyze all models, automatically using papers and .compmodel files from papers directory
     base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
+    papers_base_dir = Path(__file__).parent.parent / 'papers'
     output_dir = Path(__file__).parent.parent / 'reports' / 'gap_reports'
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    models = {
-        'COVID-19': base_path / 'covid.compmodel',
-        'Malaria': base_path / 'malaria.compmodel',
-        'HIV': base_path / 'HIV.compmodel'
-    }
+    def find_model_and_paper(model_name: str) -> Tuple[Optional[Path], Optional[Path]]:
+        """
+        Find both .compmodel file and paper PDF for a model.
+        Prioritizes files in papers directory, falls back to Compartmental/CompartmentalModel.
+        """
+        # Normalize model name for searching
+        model_lower = model_name.lower().replace('-', '_').replace(' ', '_')
+        model_simple = model_lower.replace('_', '')  # Remove underscores
+        
+        # Try to find .compmodel in papers directory first
+        compmodel_paths = [
+            papers_base_dir / 'epimde' / f"{model_lower}.compmodel",
+            papers_base_dir / 'epimde' / f"{model_name.lower()}.compmodel",
+            papers_base_dir / 'epimde' / f"{model_simple}.compmodel",
+        ]
+        
+        # Special cases
+        if 'covid' in model_lower or 'covid-19' in model_lower:
+            compmodel_paths.extend([
+                papers_base_dir / 'epimde' / 'covid.compmodel',
+            ])
+        elif 'hiv' in model_lower:
+            compmodel_paths.extend([
+                papers_base_dir / 'epimde' / 'HIV.compmodel',
+                papers_base_dir / 'epimde' / 'hiv.compmodel',
+            ])
+        
+        model_path = None
+        for path in compmodel_paths:
+            if path.exists():
+                model_path = path
+                break
+        
+        # If not found in papers, try default location
+        if not model_path:
+            default_paths = [
+                base_path / f"{model_lower}.compmodel",
+                base_path / f"{model_name.lower()}.compmodel",
+                base_path / f"{model_simple}.compmodel",
+            ]
+            if 'covid' in model_lower:
+                default_paths.append(base_path / 'covid.compmodel')
+            elif 'hiv' in model_lower:
+                default_paths.extend([base_path / 'HIV.compmodel', base_path / 'hiv.compmodel'])
+            
+            for path in default_paths:
+                if path.exists():
+                    model_path = path
+                    break
+        
+        # Find paper PDF (in same directory as model if found in papers, or search)
+        paper_path = None
+        if model_path and 'papers' in str(model_path):
+            # Model is in papers directory, look for PDF in same directory
+            model_dir = model_path.parent
+            paper_candidates = [
+                model_dir / f"{model_path.stem}.pdf",
+                model_dir / f"{model_lower}.pdf",
+                model_dir / f"{model_simple}.pdf",
+            ]
+            if 'covid' in model_lower:
+                paper_candidates.append(model_dir / 'covid.pdf')
+            
+            for candidate in paper_candidates:
+                if candidate.exists():
+                    paper_path = candidate
+                    break
+        
+        # If paper not found yet, search papers directory
+        if not paper_path:
+            paper_candidates = [
+                papers_base_dir / 'epimde' / f"{model_lower}.pdf",
+                papers_base_dir / 'epimde' / f"{model_name.lower()}.pdf",
+                papers_base_dir / 'epimde' / f"{model_simple}.pdf",
+            ]
+            if 'covid' in model_lower:
+                paper_candidates.append(papers_base_dir / 'epimde' / 'covid.pdf')
+            
+            for candidate in paper_candidates:
+                if candidate.exists():
+                    paper_path = candidate
+                    break
+            
+            # Search recursively if still not found
+            if not paper_path:
+                search_names = [model_lower, model_name.lower(), model_simple]
+                for name in search_names:
+                    for pdf_file in papers_base_dir.rglob(f"{name}.pdf"):
+                        if pdf_file.is_file():
+                            paper_path = pdf_file
+                            break
+                    if paper_path:
+                        break
+        
+        return model_path, paper_path
+    
+    # Find models and papers
+    models = {}
+    for model_name in ['COVID-19', 'Malaria', 'HIV']:
+        model_path, paper_path = find_model_and_paper(model_name)
+        if model_path:
+            models[model_name] = (model_path, paper_path)
     
     print("=" * 80)
     print("TASK 2.1: GAP ANALYSIS FOR ALL MODELS")
-    print("Phase 1 Mode: Using disease-specific rules (no paper promises)")
+    print("Using papers and .compmodel files")
     print("=" * 80)
-    print("\nTo use Phase 2 mode (with paper), use:")
-    print("  python3 gap_analyzer.py --model <model.compmodel> --name '<Model Name>' --paper-pdf <paper.pdf>")
     
     all_reports = {}
     
-    for model_name, model_path in models.items():
+    for model_name, (model_path, paper_path) in models.items():
         if not model_path.exists():
             print(f"\n⚠ Warning: {model_path} not found, skipping {model_name}")
             continue
         
         print(f"\n{'=' * 80}")
         print(f"Analyzing: {model_name}")
+        print(f"  Model: {model_path}")
+        print(f"  Paper: {paper_path}")
         print('=' * 80)
         
         try:
-            # Phase 1: No paper promises, uses disease-specific rules
-            analyzer = GapAnalyzer(str(model_path), model_name, paper_promises=None)
+            # Try to use paper if available
+            promises = None
+            if paper_path and paper_path.exists():
+                print(f"\n✓ Found paper: {paper_path}")
+                print("Extracting promises from paper...")
+                try:
+                    if not HAS_PAPER_EXTRACTOR:
+                        print("⚠ Paper promise extractor not available. Using pattern-based extraction.")
+                    extractor = PaperPromiseExtractor(use_llm=False)  # Use pattern-based by default
+                    promises = extractor.extract_from_pdf(str(paper_path))
+                    print(f"✓ Extracted promises:")
+                    print(f"  - Compartments: {list(promises.compartments)}")
+                    print(f"  - Stratifications: {list(promises.stratifications)}")
+                    print(f"  - Parameters: {list(promises.parameters)}")
+                    print(f"  - Interventions: {list(promises.interventions)}")
+                except Exception as e:
+                    print(f"⚠ Error extracting promises from paper: {e}")
+                    print("Falling back to minimal generic checks...")
+                    promises = None
+            else:
+                print(f"⚠ Paper not found: {paper_path}")
+                print("Using minimal generic checks (limited gap analysis)")
+            
+            # Analyze gaps (with paper promises if available)
+            analyzer = GapAnalyzer(str(model_path), model_name, paper_promises=promises)
             
             # Export JSON
             json_filename = f"{model_name.lower().replace('-', '_')}_gap_analysis.json"

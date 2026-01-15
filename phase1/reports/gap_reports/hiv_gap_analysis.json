@@ -1,32 +1,83 @@
 {
   "modelName": "HIV",
-  "analysisDate": "2026-01-13T17:40:58.673253",
-  "paperPromises": null,
-  "totalGaps": 2,
+  "analysisDate": "2026-01-14T19:12:13.159337",
+  "paperPromises": {
+    "compartments": [
+      "Infectious",
+      "Susceptible",
+      "Exposed"
+    ],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [
+      "mortality_rate"
+    ],
+    "interventions": [
+      "prep",
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "Pattern-based extraction from paper text. Found 3 compartments, 1 stratifications, 1 parameters, 3 interventions."
+  },
+  "totalGaps": 6,
   "gaps": {
-    "structuralGaps": [],
-    "parameterGaps": [
+    "structuralGaps": [
       {
-        "gap": "Explicit Parameters",
-        "description": "Rates should be defined as explicit parameters, not hardcoded in flows",
-        "severity": "medium",
-        "promisedByPaper": false
+        "gap": "Missing Promised Compartment: Exposed",
+        "description": "Paper promises Exposed compartment but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "howToAdd": "Add compartment: Exposed"
       }
     ],
-    "stratificationGaps": [],
+    "parameterGaps": [
+      {
+        "gap": "Missing Promised Parameter: mortality_rate",
+        "description": "Paper promises mortality_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract mortality_rate from flows or add as explicit parameter"
+      }
+    ],
+    "stratificationGaps": [
+      {
+        "gap": "Missing Promised Stratification: age",
+        "description": "Paper promises age stratification but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "howToAdd": "Add stratification dimension: age"
+      }
+    ],
     "interventionGaps": [
       {
-        "gap": "PrEP Compartment",
-        "description": "PrEP intervention compartment",
-        "severity": "low",
-        "promisedByPaper": false
+        "gap": "Missing Promised Intervention: prep",
+        "description": "Paper promises prep intervention but model does not include it",
+        "promisedByPaper": true,
+        "severity": "medium",
+        "howToAdd": "Add intervention: prep"
+      },
+      {
+        "gap": "Missing Promised Intervention: vaccination",
+        "description": "Paper promises vaccination intervention but model does not include it",
+        "promisedByPaper": true,
+        "severity": "medium",
+        "howToAdd": "Add intervention: vaccination"
+      },
+      {
+        "gap": "Missing Promised Intervention: treatment",
+        "description": "Paper promises treatment intervention but model does not include it",
+        "promisedByPaper": true,
+        "severity": "medium",
+        "howToAdd": "Add intervention: treatment"
       }
     ]
   },
   "summary": {
-    "criticalGaps": 0,
-    "mediumGaps": 1,
+    "criticalGaps": 2,
+    "mediumGaps": 0,
     "lowGaps": 0,
-    "promisedByPaper": 0
+    "promisedByPaper": 6
   }
 }
