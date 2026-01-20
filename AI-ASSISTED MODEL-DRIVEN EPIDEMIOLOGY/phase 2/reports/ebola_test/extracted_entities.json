@@ -1,0 +1,356 @@
+{
+  "compartments": [
+    {
+      "raw_text": "susceptible (S)",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "susceptible (S)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are not infected and can become infected."
+    },
+    {
+      "raw_text": "non-symptomatic infected (E)",
+      "normalized_name": "Non-symptomatic Infected",
+      "page_number": 0,
+      "text_span": "non-symptomatic infected (E)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infected but do not show symptoms."
+    },
+    {
+      "raw_text": "infectious living (I)",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "infectious living (I)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infected and can transmit the disease."
+    },
+    {
+      "raw_text": "infectious deceased (D)",
+      "normalized_name": "Infectious Deceased",
+      "page_number": 0,
+      "text_span": "infectious deceased (D)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have died from the disease but can still infect others."
+    },
+    {
+      "raw_text": "recovered (R)",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "recovered (R)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the disease and are immune."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Non-symptomatic Infected",
+      "target": "Susceptible",
+      "raw_text": "e progresses to t",
+      "page_number": 1,
+      "text_span": "e progresses to t",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Non-symptomatic Infected",
+      "raw_text": "They may be infected either by an infectious individual or corpse and become non-symptomatic infected (E).",
+      "page_number": 0,
+      "text_span": "They may be infected either by an infectious individual or corpse and become non-symptomatic infected (E).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible individuals become infected through contact with infected individuals or corpses."
+    },
+    {
+      "source": "Non-symptomatic Infected",
+      "target": "Infectious",
+      "raw_text": "Non-symptomatic infected individuals become infectious (I), or they can die from an unrelated cause and exit the system.",
+      "page_number": 0,
+      "text_span": "Non-symptomatic infected individuals become infectious (I), or they can die from an unrelated cause and exit the system.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Non-symptomatic infected individuals become infectious and symptomatic."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I) or through recovery (at rate \u03b3I) joining the recovered (R) compartment.",
+      "page_number": 0,
+      "text_span": "Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I) or through recovery (at rate \u03b3I) joining the recovered (R) compartment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious individuals recover from the disease."
+    },
+    {
+      "source": "Infectious",
+      "target": "Infectious Deceased",
+      "raw_text": "Infectious individuals can recover (R) from the disease or they may die at the background death rate (\u03b1I) joining the infectious deceased (D).",
+      "page_number": 0,
+      "text_span": "Infectious individuals can recover (R) from the disease or they may die at the background death rate (\u03b1I) joining the infectious deceased (D).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious individuals may die from the disease and become infectious deceased."
+    },
+    {
+      "source": "Infectious Deceased",
+      "target": "Susceptible",
+      "raw_text": "The infected deceased (D) are included in the denominator for the rate of infections since they are interacting with susceptible individuals.",
+      "page_number": 0,
+      "text_span": "The infected deceased (D) are included in the denominator for the rate of infections since they are interacting with susceptible individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Infectious deceased bodies can infect susceptible individuals."
+    },
+    {
+      "source": "Recovered",
+      "target": "Infectious Deceased",
+      "raw_text": "Recovered individuals can no longer be infected; they die at the background death rate.",
+      "page_number": 0,
+      "text_span": "Recovered individuals can no longer be infected; they die at the background death rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Recovered individuals can die at the background death rate."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u00b5",
+      "normalized_name": "\u00b5",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u00b5 0",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3",
+      "normalized_name": "\u03b3",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b3 0",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b2",
+      "normalized_name": "\u03b2",
+      "value": ".",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b2 = .",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b1",
+      "normalized_name": "\u03b1",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b1 0",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03c9\u03b1",
+      "normalized_name": "\u03c9\u03b1",
+      "value": "0.",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03c9\u03b1=0.",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "n",
+      "normalized_name": "n",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "n=0",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "whenR0",
+      "normalized_name": "whenR0",
+      "value": "1",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "whenR0=1",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "ThehorizontallineindicatedthethresholdR0",
+      "normalized_name": "ThehorizontallineindicatedthethresholdR0",
+      "value": "1.",
+      "unit": null,
+      "description": null,
+      "page_number": 5,
+      "text_span": "ThehorizontallineindicatedthethresholdR0=1.",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "lieunderneathR0",
+      "normalized_name": "lieunderneathR0",
+      "value": "1.",
+      "unit": null,
+      "description": null,
+      "page_number": 5,
+      "text_span": "lieunderneathR0=1.",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "valueslieunderneaththethresholdR",
+      "normalized_name": "valueslieunderneaththethresholdR",
+      "value": "1",
+      "unit": null,
+      "description": null,
+      "page_number": 5,
+      "text_span": "valueslieunderneaththethresholdR = 1",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "valuesarenowfoundbelowthethresholdR",
+      "normalized_name": "valuesarenowfoundbelowthethresholdR",
+      "value": "1.",
+      "unit": null,
+      "description": null,
+      "page_number": 5,
+      "text_span": "valuesarenowfoundbelowthethresholdR =1.",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "underneathR0",
+      "normalized_name": "underneathR0",
+      "value": "1.",
+      "unit": null,
+      "description": null,
+      "page_number": 6,
+      "text_span": "underneathR0=1.",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "ofthevalueslieunderneathR0",
+      "normalized_name": "ofthevalueslieunderneathR0",
+      "value": "1.",
+      "unit": null,
+      "description": null,
+      "page_number": 6,
+      "text_span": "ofthevalueslieunderneathR0 =1.",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 3,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "contact_tracing",
+      "page_number": 1,
+      "text_span": "contact_tracing mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 6,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 7,
+    "num_parameters": 13,
+    "num_stratifications": 2,
+    "num_interventions": 4
+  }
+}
