@@ -1,1 +1,1 @@
-"""Evaluation modules: Quality checks, metrics"""
+"""Evaluation modules: Quality checks, metrics, final report generation"""

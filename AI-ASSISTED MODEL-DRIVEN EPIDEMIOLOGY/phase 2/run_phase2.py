@@ -14,6 +14,7 @@ from src.analysis.gap_analyzer import GapAnalyzer
 from src.analysis.gap_filler import GapFiller
 from src.evaluation.quality_checks import QualityChecker
 from src.evaluation.evaluator import Evaluator
+from src.evaluation.final_report_generator import FinalReportGenerator
 from src.utils.llm_client import LLMClient
 
 
@@ -280,21 +281,30 @@ Examples:
         print(f"    - Gold standard comparison: Available")
     print()
     
+    # Generate Final Comprehensive Report
+    print("Generating Final Comprehensive Report...")
+    report_generator = FinalReportGenerator()
+    
+    model_name = Path(args.paper).stem.replace('_', ' ').title()
+    final_report = report_generator.generate_final_report(output_dir, model_name)
+    
+    # Save final report
+    report_generator.save_final_report(final_report, output_dir / "phase2_final_report.json")
+    
+    print(f"  ✓ Final report saved: phase2_final_report.json")
+    print()
+    
     print("=" * 80)
     print("Phase 2 Complete! All Steps 1-9 Finished!")
     print("=" * 80)
     print(f"\nResults saved to: {output_dir}")
-    print("\nGenerated files:")
-    print("  - paper_text.json")
-    print("  - paper_sections.json")
-    print("  - paper_promises.json")
-    print("  - extracted_entities.json")
-    print("  - model_draft.compmodel")
-    print("  - traceability.json")
-    print("  - phase2_gap_report.json")
-    print("  - gap_fill_suggestions.json")
-    print("  - quality_checks.json")
-    print("  - evaluation_report.json")
+    print("\nMain Output:")
+    print(f"  - model_draft.compmodel (Generated model)")
+    print(f"  - phase2_final_report.json (Comprehensive report with all results)")
+    print("\nDetailed Files (for reference):")
+    print("  - paper_text.json, paper_promises.json, extracted_entities.json")
+    print("  - traceability.json, phase2_gap_report.json, gap_fill_suggestions.json")
+    print("  - quality_checks.json, evaluation_report.json")
     
     return 0
 
