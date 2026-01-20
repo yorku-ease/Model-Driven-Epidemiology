@@ -1,5 +1,9 @@
 {
   "compartmental_metamodel": {
+    "epidemiology_only_schema": {
+      "recommended_for_phase2_prompts_and_validation": "phase1/metamodel_epidemiology.json",
+      "why": "The full metamodel includes traffic/TRM constructs; Phase 2 paper-to-epidemiology extraction should use the epidemiology-only schema to avoid confusion."
+    },
     "version": "3.1",
     "description": "EpiMDE Compartmental Metamodel - Unified framework for epidemiological models, classical traffic networks, and Traffic Reaction Model (TRM) with parametric (symbolic) modeling support",
     "changelog": {
@@ -21,59 +25,118 @@
           "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
           "xmlns:seir": "http://example.com/seirmodel"
         },
-        "optional_attributes": ["totalPopulation", "globalBirthRate", "globalDeathRate"]
+        "optional_attributes": [
+          "totalPopulation",
+          "globalBirthRate",
+          "globalDeathRate"
+        ]
       },
       "parameters": {
         "element": "parameters",
-        "required_attributes": ["name"],
-        "optional_attributes": ["type", "expression", "description", "unit"],
+        "required_attributes": [
+          "name"
+        ],
+        "optional_attributes": [
+          "type",
+          "expression",
+          "description",
+          "unit"
+        ],
         "description": "Named parameters for symbolic/parametric modeling. Enables separation of model structure from parameter values.",
         "attributes": {
           "name": {
             "description": "Parameter identifier. Supports Unicode including Greek letters (α, β, γ, δ, μ, ρ, θ, λ) and subscripts (ₕ, ᵥ, ₁, ₂)",
-            "examples": ["β₁", "μₕ", "a(T)", "β₂a(T)", "θᵥ(T,R)", "γₕ"]
+            "examples": [
+              "β₁",
+              "μₕ",
+              "a(T)",
+              "β₂a(T)",
+              "θᵥ(T,R)",
+              "γₕ"
+            ]
           },
           "type": {
             "description": "Parameter type: CONSTANT (default), VARIABLE, or EXPRESSION",
-            "values": ["CONSTANT", "VARIABLE", "EXPRESSION"],
+            "values": [
+              "CONSTANT",
+              "VARIABLE",
+              "EXPRESSION"
+            ],
             "default": "CONSTANT"
           },
           "expression": {
             "description": "For CONSTANT/VARIABLE: numeric value. For EXPRESSION: mathematical formula referencing other parameters/compartments",
-            "examples": ["0.001384", "0.000203 * T * (T - 11.7) * sqrt(42.3 - T)", "β₂ * a(T)", "μₕ + 0.017325"]
+            "examples": [
+              "0.001384",
+              "0.000203 * T * (T - 11.7) * sqrt(42.3 - T)",
+              "β₂ * a(T)",
+              "μₕ + 0.017325"
+            ]
           },
           "description": {
             "description": "Human-readable explanation of the parameter",
-            "examples": ["Natural mortality rate of human population", "Mosquito biting rate", "Recovery rate Ih to Rh"]
+            "examples": [
+              "Natural mortality rate of human population",
+              "Mosquito biting rate",
+              "Recovery rate Ih to Rh"
+            ]
           },
           "unit": {
             "description": "Physical unit of measurement. Supports Unicode symbols.",
-            "examples": ["per day", "1/time", "dimensionless", "°C", "bites/person/time"]
+            "examples": [
+              "per day",
+              "1/time",
+              "dimensionless",
+              "°C",
+              "bites/person/time"
+            ]
           }
         },
         "parameter_types": {
           "CONSTANT": {
             "description": "Fixed value with a name, used for model parameters that don't change during simulation",
-            "use_cases": ["Natural death rates", "Recovery rates", "Transmission probabilities"],
+            "use_cases": [
+              "Natural death rates",
+              "Recovery rates",
+              "Transmission probabilities"
+            ],
             "example": "<parameters name=\"μₕ\" expression=\"0.001384\" description=\"Natural mortality rate\" unit=\"1/time\"/>"
           },
           "VARIABLE": {
             "description": "Placeholder for values provided at simulation time, such as environmental conditions or intervention levels",
-            "use_cases": ["Temperature", "Rainfall", "Intervention effectiveness"],
+            "use_cases": [
+              "Temperature",
+              "Rainfall",
+              "Intervention effectiveness"
+            ],
             "example": "<parameters name=\"T\" type=\"VARIABLE\" description=\"Temperature\" unit=\"°C\"/>"
           },
           "EXPRESSION": {
             "description": "Computed value defined as a mathematical expression referencing other parameters and/or compartments",
-            "use_cases": ["Combined rates", "Temperature-dependent rates", "Death rates with disease mortality"],
+            "use_cases": [
+              "Combined rates",
+              "Temperature-dependent rates",
+              "Death rates with disease mortality"
+            ],
             "example": "<parameters name=\"β₂a(T)\" type=\"EXPRESSION\" expression=\"β₂ * a(T)\" description=\"Combined contact rate\" unit=\"1/time\"/>"
           }
         }
       },
       "compartments": {
         "element": "compartments",
-        "required_attributes": ["PrimaryName"],
-        "optional_attributes": ["SecondaryName", "population", "product", "junctionRule"],
-        "child_elements": ["outgoingFlows", "supplyFunction"],
+        "required_attributes": [
+          "PrimaryName"
+        ],
+        "optional_attributes": [
+          "SecondaryName",
+          "population",
+          "product",
+          "junctionRule"
+        ],
+        "child_elements": [
+          "outgoingFlows",
+          "supplyFunction"
+        ],
         "constraints": {
           "product": "Reference to product using format '//@products.X'",
           "junctionRule": "Optional. For traffic models use PPFIFO. For disease models use NONE (default)."
@@ -81,11 +144,22 @@
         "attributes": {
           "PrimaryName": {
             "description": "Main identifier for the compartment",
-            "examples": ["Susceptible", "Exposed", "Infectious", "Onramp1", "Link2"]
+            "examples": [
+              "Susceptible",
+              "Exposed",
+              "Infectious",
+              "Onramp1",
+              "Link2"
+            ]
           },
           "SecondaryName": {
             "description": "Additional descriptor for stratification or link type",
-            "examples": ["Adults", "Children", "Ordinary", "Onramp"]
+            "examples": [
+              "Adults",
+              "Children",
+              "Ordinary",
+              "Onramp"
+            ]
           },
           "population": {
             "description": "Initial population count (disease models) or initial density (traffic models)",
@@ -93,27 +167,51 @@
           },
           "junctionRule": {
             "description": "Junction rule type for traffic models. NONE for disease models (default), PPFIFO for traffic networks.",
-            "values": ["NONE", "PPFIFO", "CUSTOM"],
+            "values": [
+              "NONE",
+              "PPFIFO",
+              "CUSTOM"
+            ],
             "default": "NONE"
           }
         }
       },
       "supplyFunction": {
         "element": "supplyFunction",
-        "required_attributes": ["type"],
-        "optional_attributes": ["isSourceNode", "maxDensity", "criticalDensity", "maxThroughput", "maxDemand"],
+        "required_attributes": [
+          "type"
+        ],
+        "optional_attributes": [
+          "isSourceNode",
+          "maxDensity",
+          "criticalDensity",
+          "maxThroughput",
+          "maxDemand"
+        ],
         "description": "Flow network supply and demand functions based on capacity constraints. Supports classical traffic models (Coogan & Arcak 2015) and Traffic Reaction Model (TRM) with kinetic decompositions (Pereira et al. 2024). Generalizable to traffic networks, queue systems, pipeline networks, etc. Only present for flow-constrained models. Disease models do not have this element.",
         "attributes": {
           "type": {
             "description": "Type of supply/demand function",
-            "values": ["NONE", "TRIANGULAR", "LINEAR", "CUSTOM", "TRM_MAK", "TRM_CAPACITATED"],
+            "values": [
+              "NONE",
+              "TRIANGULAR",
+              "LINEAR",
+              "CUSTOM",
+              "TRM_MAK",
+              "TRM_CAPACITATED"
+            ],
             "default": "NONE"
           },
           "isSourceNode": {
             "description": "Boolean indicating if this is a source/entry node with external input (true) or constrained internal node (false)",
-            "values": ["true", "false"],
+            "values": [
+              "true",
+              "false"
+            ],
             "default": "false",
-            "examples": ["Onramps in traffic, generators in systems, entry queues in networks"]
+            "examples": [
+              "Onramps in traffic, generators in systems, entry queues in networks"
+            ]
           },
           "maxDensity": {
             "description": "Maximum density/capacity - saturation point (constrained nodes only)",
@@ -134,7 +232,7 @@
             "description": "Maximum demand/output rate - upper bound on outflow (source nodes only)",
             "unit": "entities/time",
             "traffic_example": "Φ^max - max vehicles per hour from onramp"
-          },
+          }
         },
         "examples": {
           "source_node": "<supplyFunction type=\"TRIANGULAR\" isSourceNode=\"true\" maxDemand=\"3000\"/>",
@@ -145,9 +243,16 @@
       },
       "outgoingFlows": {
         "abstract_element": "outgoingFlows",
-        "concrete_types": ["RateFlow", "ContactFlow"],
-        "common_required_attributes": ["target"],
-        "common_optional_attributes": ["description"],
+        "concrete_types": [
+          "RateFlow",
+          "ContactFlow"
+        ],
+        "common_required_attributes": [
+          "target"
+        ],
+        "common_optional_attributes": [
+          "description"
+        ],
         "constraints": {
           "target": "Must be 0-based index in format '//@compartments.X'"
         }
@@ -157,16 +262,26 @@
         "xsi_type": "seir:RateFlow",
         "modeling_modes": {
           "numeric": {
-            "required_attributes": ["rate", "target"],
+            "required_attributes": [
+              "rate",
+              "target"
+            ],
             "description": "Use numeric rate attribute directly"
           },
           "parametric": {
-            "required_attributes": ["rateParameter", "target"],
+            "required_attributes": [
+              "rateParameter",
+              "target"
+            ],
             "description": "Reference a Parameter by index. Parameter takes precedence over numeric rate."
           }
         },
-        "optional_attributes": ["description"],
-        "child_elements": ["stratumSpecificRates"],
+        "optional_attributes": [
+          "description"
+        ],
+        "child_elements": [
+          "stratumSpecificRates"
+        ],
         "attributes": {
           "rate": {
             "description": "Numeric rate value. For parametric models, set to 0.0 and use rateParameter instead.",
@@ -187,16 +302,29 @@
         "xsi_type": "seir:ContactFlow",
         "modeling_modes": {
           "numeric": {
-            "required_attributes": ["contactRate", "contactCompartment", "target"],
+            "required_attributes": [
+              "contactRate",
+              "contactCompartment",
+              "target"
+            ],
             "description": "Use numeric contactRate attribute directly"
           },
           "parametric": {
-            "required_attributes": ["contactRateParameter", "contactCompartment", "target"],
+            "required_attributes": [
+              "contactRateParameter",
+              "contactCompartment",
+              "target"
+            ],
             "description": "Reference a Parameter by index. Parameter takes precedence over numeric contactRate."
           }
         },
-        "optional_attributes": ["description", "contactParameters"],
-        "child_elements": ["stratumSpecificRates"],
+        "optional_attributes": [
+          "description",
+          "contactParameters"
+        ],
+        "child_elements": [
+          "stratumSpecificRates"
+        ],
         "attributes": {
           "contactRate": {
             "description": "Numeric contact/transmission rate. For parametric models, set to 0.0 and use contactRateParameter instead.",
@@ -220,12 +348,22 @@
         "element": "stratumSpecificRates",
         "modeling_modes": {
           "numeric": {
-            "required_attributes": ["stratum", "rate"],
-            "optional_attributes": ["multiplier"]
+            "required_attributes": [
+              "stratum",
+              "rate"
+            ],
+            "optional_attributes": [
+              "multiplier"
+            ]
           },
           "parametric": {
-            "required_attributes": ["stratum"],
-            "optional_attributes": ["rateParameter", "multiplierParameter"]
+            "required_attributes": [
+              "stratum"
+            ],
+            "optional_attributes": [
+              "rateParameter",
+              "multiplierParameter"
+            ]
           }
         },
         "attributes": {
@@ -245,13 +383,24 @@
         "element": "birthSources",
         "modeling_modes": {
           "numeric": {
-            "required_attributes": ["name", "rate", "targetCompartment"]
+            "required_attributes": [
+              "name",
+              "rate",
+              "targetCompartment"
+            ]
           },
           "parametric": {
-            "required_attributes": ["name", "rateParameter", "targetCompartment"]
+            "required_attributes": [
+              "name",
+              "rateParameter",
+              "targetCompartment"
+            ]
           }
         },
-        "optional_attributes": ["targetStratum", "fixedRate"],
+        "optional_attributes": [
+          "targetStratum",
+          "fixedRate"
+        ],
         "attributes": {
           "rate": "Numeric birth rate",
           "rateParameter": "Reference to Parameter for birth rate. Format: '//@parameters.X'"
@@ -271,13 +420,23 @@
         "element": "deathSinks",
         "modeling_modes": {
           "numeric": {
-            "required_attributes": ["name", "rate", "sourceCompartment"]
+            "required_attributes": [
+              "name",
+              "rate",
+              "sourceCompartment"
+            ]
           },
           "parametric": {
-            "required_attributes": ["name", "rateParameter", "sourceCompartment"]
+            "required_attributes": [
+              "name",
+              "rateParameter",
+              "sourceCompartment"
+            ]
           }
         },
-        "optional_attributes": ["sourceStratum"],
+        "optional_attributes": [
+          "sourceStratum"
+        ],
         "attributes": {
           "rate": "Numeric death rate",
           "rateParameter": "Reference to Parameter for death rate. Format: '//@parameters.X'"
@@ -294,18 +453,30 @@
       },
       "groups": {
         "element": "groups",
-        "required_attributes": ["name"],
-        "optional_attributes": ["description"],
-        "child_elements": ["values"],
+        "required_attributes": [
+          "name"
+        ],
+        "optional_attributes": [
+          "description"
+        ],
+        "child_elements": [
+          "values"
+        ],
         "constraints": {
           "values": "Array of string values representing the group stratification levels"
         }
       },
       "products": {
         "element": "products",
-        "required_attributes": ["name"],
-        "optional_attributes": ["description"],
-        "child_elements": ["groups"],
+        "required_attributes": [
+          "name"
+        ],
+        "optional_attributes": [
+          "description"
+        ],
+        "child_elements": [
+          "groups"
+        ],
         "constraints": {
           "groups": "Reference to groups using format '//@groups.X'"
         }
@@ -445,10 +616,23 @@
         "description": "Age-based or demographic stratification using Groups and Products",
         "stratum_specific_rates": "Different rates can be specified for each stratum within a flow. Supports both numeric and parametric approaches.",
         "examples": {
-          "age_groups": ["0-17", "18-64", "65+"],
-          "demographic_groups": ["Male", "Female"],
-          "risk_groups": ["High Risk", "Low Risk"],
-          "vaccination_groups": ["Vaccinated", "Unvaccinated"]
+          "age_groups": [
+            "0-17",
+            "18-64",
+            "65+"
+          ],
+          "demographic_groups": [
+            "Male",
+            "Female"
+          ],
+          "risk_groups": [
+            "High Risk",
+            "Low Risk"
+          ],
+          "vaccination_groups": [
+            "Vaccinated",
+            "Unvaccinated"
+          ]
         }
       }
     },
@@ -510,13 +694,23 @@
               "description": "Entry points with unbounded storage (e.g., onramps in traffic, generators in systems)",
               "demand": "Φ^out(ρ) = min(max(ρ, maxDemand), maxDemand)",
               "supply": "Φ^in(ρ) = ∞",
-              "attributes": ["type", "isSourceNode=true", "maxDemand"]
+              "attributes": [
+                "type",
+                "isSourceNode=true",
+                "maxDemand"
+              ]
             },
             "constrained_nodes": {
               "description": "Internal nodes with capacity constraints (e.g., road segments in traffic, pipes in flow networks)",
               "demand": "Φ^out(ρ) = min((maxThroughput/criticalDensity)*ρ, maxThroughput) for ρ ≤ criticalDensity; maxThroughput for ρ > criticalDensity",
               "supply": "Φ^in(ρ) = maxThroughput for ρ ≤ criticalDensity; (maxThroughput/(maxDensity-criticalDensity))*(maxDensity-ρ) for ρ > criticalDensity",
-              "attributes": ["type", "isSourceNode=false", "maxDensity", "criticalDensity", "maxThroughput"]
+              "attributes": [
+                "type",
+                "isSourceNode=false",
+                "maxDensity",
+                "criticalDensity",
+                "maxThroughput"
+              ]
             }
           },
           "JunctionRule": {
@@ -617,7 +811,9 @@
             "name": "Mass Action Kinetic decomposition",
             "ecore_status": "SUPPORTED - Available in Ecore metamodel",
             "flux_formula": "g(ρ, ν) = ωρν",
-            "parameters": ["omega (ω): reaction rate constant (simulation layer only)"],
+            "parameters": [
+              "omega (ω): reaction rate constant (simulation layer only)"
+            ],
             "characteristics": [
               "Inspired by chemical reaction kinetics",
               "Bilinear in ρ and ν",
@@ -634,7 +830,10 @@
             "name": "Godunov decomposition",
             "ecore_status": "NOT IN ECORE - Simulation layer only",
             "flux_formula": "g(ρ, ν) = min(D(ρ), Q(ρ_max - ν))",
-            "parameters": ["D(ρ): demand function", "Q(ν): supply function"],
+            "parameters": [
+              "D(ρ): demand function",
+              "Q(ν): supply function"
+            ],
             "characteristics": [
               "Equivalent to classical Godunov scheme",
               "Natural supply-demand interpretation",
@@ -653,7 +852,11 @@
             "name": "Capacitated decomposition",
             "ecore_status": "SUPPORTED - Available in Ecore metamodel",
             "flux_formula": "g(ρ, ν) = D(ρ)Q(ρ_max - ν)/f_max",
-            "parameters": ["D(ρ): demand function", "Q(ν): supply function", "f_max: maximum flux"],
+            "parameters": [
+              "D(ρ): demand function",
+              "Q(ν): supply function",
+              "f_max: maximum flux"
+            ],
             "characteristics": [
               "Multiplicative coupling of demand and supply",
               "Smooth variation of flux",
@@ -718,7 +921,11 @@
         "model_structure": {
           "compartments": {
             "description": "Road segments as compartments with supplyFunction element",
-            "required_attributes": ["PrimaryName", "population (initial density)", "junctionRule"],
+            "required_attributes": [
+              "PrimaryName",
+              "population (initial density)",
+              "junctionRule"
+            ],
             "supply_function_type": "TRM_MAK or TRM_CAPACITATED (Ecore), GODUNOV available in simulation",
             "note": "Dual variable tracking available in simulation layer"
           },
@@ -925,6 +1132,10 @@
         "αₕ": "alpha_h (human recruitment)",
         "Λₘ": "Lambda_m (mosquito progression)"
       }
+    },
+    "json_version": {
+      "file": "phase1/metamodel.json",
+      "description": "This metamodel is also available as properly formatted JSON for programmatic access. Both .txt and .json contain identical content."
     }
   }
 }

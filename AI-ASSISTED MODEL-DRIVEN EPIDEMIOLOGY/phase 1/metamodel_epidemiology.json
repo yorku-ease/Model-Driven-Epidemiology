@@ -1,0 +1,408 @@
+{
+    "epimde_compartmental_metamodel": {
+        "version": "3.1-epi-only",
+        "derived_from": [
+            "phase1/metamodel.txt",
+            "phase1/metamodel.json"
+        ],
+        "purpose": "Epidemiology-only metamodel for EpiMDE (.compmodel/.compartmental XML). Use this for LLM prompting and Phase 2 validation to avoid traffic/TRM confusion.",
+        "notes": [
+            "This file intentionally excludes all traffic-network / TRM constructs (e.g., supplyFunction, junctionRule, PPFIFO, TRM_* types, densities/throughputs).",
+            "The full unified metamodel (including traffic/TRM) is available in both phase1/metamodel.txt and phase1/metamodel.json (JSON format, properly formatted)."
+        ],
+        "structure": {
+            "xml_declaration": {
+                "version": "1.0",
+                "encoding": "UTF-8"
+            },
+            "root_element": {
+                "tag": "seir:SEIRModel",
+                "attributes": {
+                    "xmi:version": "2.0",
+                    "xmlns:xmi": "http://www.omg.org/XMI",
+                    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                    "xmlns:seir": "http://example.com/seirmodel"
+                },
+                "optional_attributes": [
+                    "totalPopulation",
+                    "globalBirthRate",
+                    "globalDeathRate"
+                ]
+            },
+            "parameters": {
+                "element": "parameters",
+                "required_attributes": [
+                    "name"
+                ],
+                "optional_attributes": [
+                    "type",
+                    "expression",
+                    "description",
+                    "unit"
+                ],
+                "description": "Named parameters for symbolic/parametric modeling (supports Unicode).",
+                "attributes": {
+                    "name": {
+                        "description": "Parameter identifier. Supports Unicode including Greek letters and subscripts.",
+                        "examples": [
+                            "\u03b2\u2081",
+                            "\u03bc\u2095",
+                            "a(T)",
+                            "\u03b2\u2082a(T)",
+                            "\u03b8\u1d65(T,R)",
+                            "\u03b3\u2095"
+                        ]
+                    },
+                    "type": {
+                        "description": "Parameter type",
+                        "values": [
+                            "CONSTANT",
+                            "VARIABLE",
+                            "EXPRESSION"
+                        ],
+                        "default": "CONSTANT"
+                    },
+                    "expression": {
+                        "description": "For CONSTANT/VARIABLE: numeric value. For EXPRESSION: mathematical formula referencing other parameters/compartments.",
+                        "examples": [
+                            "0.001384",
+                            "0.000203 * T * (T - 11.7) * sqrt(42.3 - T)",
+                            "\u03b2\u2082 * a(T)",
+                            "\u03bc\u2095 + 0.017325"
+                        ]
+                    },
+                    "description": {
+                        "description": "Human-readable explanation of the parameter"
+                    },
+                    "unit": {
+                        "description": "Physical unit of measurement (Unicode allowed).",
+                        "examples": [
+                            "per day",
+                            "1/time",
+                            "dimensionless",
+                            "\u00b0C",
+                            "bites/person/time"
+                        ]
+                    }
+                }
+            },
+            "compartments": {
+                "element": "compartments",
+                "required_attributes": [
+                    "PrimaryName"
+                ],
+                "optional_attributes": [
+                    "SecondaryName",
+                    "population"
+                ],
+                "child_elements": [
+                    "outgoingFlows"
+                ],
+                "attributes": {
+                    "PrimaryName": {
+                        "description": "Main identifier for the compartment",
+                        "examples": [
+                            "Susceptible",
+                            "Exposed",
+                            "Infectious",
+                            "Recovered",
+                            "Hospitalized",
+                            "ICU"
+                        ]
+                    },
+                    "SecondaryName": {
+                        "description": "Additional descriptor (stratification or sub-state)",
+                        "examples": [
+                            "Adults",
+                            "Children",
+                            "with ART",
+                            "living with AIDS",
+                            "Quarantined"
+                        ]
+                    },
+                    "population": {
+                        "description": "Initial population count",
+                        "constraint": "Must be float/decimal value"
+                    }
+                }
+            },
+            "outgoingFlows": {
+                "abstract_element": "outgoingFlows",
+                "concrete_types": [
+                    "RateFlow",
+                    "ContactFlow"
+                ],
+                "common_required_attributes": [
+                    "target"
+                ],
+                "common_optional_attributes": [
+                    "description"
+                ],
+                "constraints": {
+                    "target": "Must be 0-based index in format '//@compartments.X'"
+                }
+            },
+            "RateFlow": {
+                "element": "outgoingFlows",
+                "xsi_type": "seir:RateFlow",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "rate",
+                            "target"
+                        ],
+                        "description": "Use numeric rate attribute directly"
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "rateParameter",
+                            "target"
+                        ],
+                        "description": "Reference a Parameter by index (preferred for explicit parameters)"
+                    }
+                },
+                "optional_attributes": [
+                    "description"
+                ],
+                "child_elements": [
+                    "stratumSpecificRates"
+                ],
+                "attributes": {
+                    "rate": {
+                        "description": "Numeric rate value (float). For parametric models, set to 0.0 and use rateParameter.",
+                        "constraint": "Must be float/decimal value"
+                    },
+                    "rateParameter": {
+                        "description": "Reference to a Parameter defining this flow's rate. Format: '//@parameters.X' (0-based).",
+                        "constraint": "Must reference existing parameter"
+                    }
+                }
+            },
+            "ContactFlow": {
+                "element": "outgoingFlows",
+                "xsi_type": "seir:ContactFlow",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "contactRate",
+                            "contactCompartment",
+                            "target"
+                        ],
+                        "description": "Use numeric contactRate attribute directly"
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "contactRateParameter",
+                            "contactCompartment",
+                            "target"
+                        ],
+                        "description": "Reference a Parameter by index (preferred for explicit parameters)"
+                    }
+                },
+                "optional_attributes": [
+                    "description",
+                    "contactParameters"
+                ],
+                "child_elements": [
+                    "stratumSpecificRates"
+                ],
+                "attributes": {
+                    "contactRate": {
+                        "description": "Numeric contact/transmission rate (float). For parametric models, set to 0.0 and use contactRateParameter.",
+                        "constraint": "Must be float/decimal value"
+                    },
+                    "contactRateParameter": {
+                        "description": "Reference to a Parameter defining this flow's contact rate. Format: '//@parameters.X' (0-based).",
+                        "constraint": "Must reference existing parameter"
+                    },
+                    "contactCompartment": {
+                        "description": "Reference to compartment influencing transmission (usually Infectious or Infectious Mosquitoes).",
+                        "constraint": "Must reference existing compartment using format '//@compartments.X'"
+                    }
+                }
+            },
+            "stratumSpecificRates": {
+                "element": "stratumSpecificRates",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "stratum",
+                            "rate"
+                        ],
+                        "optional_attributes": [
+                            "multiplier"
+                        ]
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "stratum"
+                        ],
+                        "optional_attributes": [
+                            "rateParameter",
+                            "multiplierParameter"
+                        ]
+                    }
+                },
+                "attributes": {
+                    "stratum": "String identifying the stratum level (e.g., age group)",
+                    "rate": "Numeric rate value for this stratum",
+                    "rateParameter": "Reference to Parameter for this stratum's rate (//@parameters.X)",
+                    "multiplier": "Numeric multiplier applied to base rate (defaults to 1.0)",
+                    "multiplierParameter": "Reference to Parameter for multiplier (//@parameters.X)"
+                }
+            },
+            "birthSources": {
+                "element": "birthSources",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "name",
+                            "rate",
+                            "targetCompartment"
+                        ]
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "name",
+                            "rateParameter",
+                            "targetCompartment"
+                        ]
+                    }
+                },
+                "optional_attributes": [
+                    "targetStratum",
+                    "fixedRate"
+                ],
+                "attributes": {
+                    "rate": "Numeric birth rate",
+                    "rateParameter": "Reference to Parameter for birth rate (//@parameters.X)",
+                    "targetCompartment": "Reference to compartment (//@compartments.X)",
+                    "fixedRate": "Boolean, defaults to false"
+                }
+            },
+            "deathSinks": {
+                "element": "deathSinks",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "name",
+                            "rate",
+                            "sourceCompartment"
+                        ]
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "name",
+                            "rateParameter",
+                            "sourceCompartment"
+                        ]
+                    }
+                },
+                "optional_attributes": [
+                    "sourceStratum"
+                ],
+                "attributes": {
+                    "rate": "Numeric death rate",
+                    "rateParameter": "Reference to Parameter for death rate (//@parameters.X)",
+                    "sourceCompartment": "Reference to compartment (//@compartments.X)"
+                }
+            },
+            "groups": {
+                "element": "groups",
+                "required_attributes": [
+                    "name"
+                ],
+                "optional_attributes": [
+                    "description"
+                ],
+                "child_elements": [
+                    "values"
+                ],
+                "constraints": {
+                    "values": "Array of string values representing the group stratification levels (e.g., age bands)"
+                }
+            },
+            "products": {
+                "element": "products",
+                "required_attributes": [
+                    "name"
+                ],
+                "optional_attributes": [
+                    "description"
+                ],
+                "child_elements": [
+                    "groups"
+                ],
+                "constraints": {
+                    "groups": "Reference to groups using format '//@groups.X'"
+                }
+            }
+        },
+        "compartment_types": {
+            "epidemiological_states": [
+                "Susceptible",
+                "Exposed",
+                "Infectious",
+                "Recovered",
+                "Deceased",
+                "Dead",
+                "Removed"
+            ],
+            "treatment_states": [
+                "Vaccinated",
+                "Treated",
+                "Hospitalized",
+                "Quarantined",
+                "Isolated"
+            ],
+            "vector_states": [
+                "Susceptible Mosquitoes",
+                "Exposed Mosquitoes",
+                "Infectious Mosquitoes"
+            ],
+            "severity_modifiers": [
+                "Asymptomatic",
+                "Symptomatic",
+                "Mild",
+                "Moderate",
+                "Severe",
+                "Critical"
+            ],
+            "location_modifiers": [
+                "ICU",
+                "Hospital",
+                "Home",
+                "Community"
+            ]
+        },
+        "secondary_name_patterns": {
+            "demographic_groups": [
+                "Homosexual Men",
+                "Heterosexual Men",
+                "Women",
+                "Children",
+                "Adults",
+                "Elderly"
+            ],
+            "disease_progression": [
+                "presymptomatic",
+                "mild to moderate",
+                "severe",
+                "pre-ICU",
+                "post-ICU"
+            ],
+            "intervention_status": [
+                "isolated",
+                "quarantined",
+                "with ART",
+                "living with AIDS"
+            ],
+            "vaccination_status": [
+                "Vaccinated",
+                "Unvaccinated",
+                "First dose",
+                "Second dose"
+            ]
+        }
+    }
+}
