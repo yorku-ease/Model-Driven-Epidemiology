@@ -32,7 +32,7 @@ phase 2/
 │
 ├── data/
 │   ├── papers/                ← Put your PDF papers here
-│   └── baseline_models/       ← Baseline models for comparison
+│   └── baseline_models/       ← Baseline .compmodel files for evaluation (auto-detected)
 │
 └── reports/                   ← Output directory (auto-generated)
     └── [paper_name]/
@@ -423,14 +423,16 @@ Suggest how to fill this gap and return JSON:
 
 ### Step 9: Evaluation
 
-**Input:** All previous outputs
+**Input:** All previous outputs, optionally baseline model (`.compmodel` file)
 
 **Process:**
 - Calculates quality metrics:
   - Traceability coverage (% items with evidence)
   - Faithfulness (% items paper-backed)
   - Gap metrics (total, by severity)
-  - Precision/recall (if gold standard provided)
+  - Precision/recall (if baseline/gold standard provided)
+- **Auto-detects baseline models:** If a baseline `.compmodel` file exists in `data/baseline_models/` matching the paper name, it's automatically used for comparison
+- Converts baseline `.compmodel` to gold standard format for precision/recall calculation
 
 **No LLM used** - Pure metric calculation
 
@@ -548,7 +550,29 @@ Suggests fills from:
 - **Traceability Coverage:** % of items with evidence
 - **Faithfulness:** % of items paper-backed
 - **Gap Metrics:** Total gaps by severity
-- **Extraction Quality:** Precision/recall (if gold standard available)
+- **Extraction Quality:** Precision/recall (if baseline/gold standard available)
+
+### Baseline Model Evaluation
+
+Phase 2 automatically uses baseline `.compmodel` files for evaluation if they exist:
+
+1. **Auto-detection:** When you run Phase 2, it looks for baseline models in `data/baseline_models/` that match your paper name
+   - Example: If processing `EbolaSensitivity.pdf`, it looks for `ebola*.compmodel` files
+   - If found, automatically uses them for precision/recall calculation
+
+2. **Manual specification:** You can also explicitly provide a baseline:
+   ```bash
+   python run_phase2.py --paper data/papers/your_paper.pdf \
+       --output reports/your_paper \
+       --gold-standard data/baseline_models/your_baseline.compmodel
+   ```
+
+3. **What gets compared:**
+   - **Compartments:** Extracted vs baseline compartments
+   - **Parameters:** Extracted vs baseline parameters
+   - **Metrics:** Precision, recall, F1 score, true positives, false positives, false negatives
+
+4. **Output:** Results appear in `evaluation_report.json` under `gold_standard_comparison`
 
 ## Output Files
 
@@ -634,7 +658,8 @@ python run_phase2.py \
 - `--api-key-file`: Path to API key file (default: `.api_key.txt`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
 - `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
-- `--gold-standard`: Path to gold standard JSON (for evaluation)
+- `--gold-standard`: Path to gold standard JSON or .compmodel file (for evaluation)
+- `--baseline-models-dir`: Directory with baseline .compmodel files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
 
 ## Limitations
@@ -649,7 +674,7 @@ python run_phase2.py \
 2. Review `model_draft.compmodel` - The extracted model
 3. Check `phase2_final_report.json` - Comprehensive results
 4. Review gaps and suggestions
-5. Compare with baseline models if available
+5. Compare with baseline models if available (auto-detected from `data/baseline_models/`)
 
 ## Support
 

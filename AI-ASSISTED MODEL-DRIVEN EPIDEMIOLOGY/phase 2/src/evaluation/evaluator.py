@@ -5,6 +5,7 @@ compares to gold standard for precision/recall.
 """
 
 import json
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
@@ -17,19 +18,83 @@ class Evaluator:
         Initialize evaluator.
         
         Args:
-            gold_standard_path: Path to gold standard JSON (optional)
+            gold_standard_path: Path to gold standard JSON or .compmodel file (optional)
         """
         self.gold_standard = None
         if gold_standard_path:
             self._load_gold_standard(gold_standard_path)
     
     def _load_gold_standard(self, gold_path: str):
-        """Load gold standard for comparison"""
+        """Load gold standard for comparison (supports both JSON and .compmodel files)"""
+        gold_path_obj = Path(gold_path)
+        if not gold_path_obj.exists():
+            print(f"Warning: Gold standard file not found: {gold_path}")
+            return
+        
         try:
-            with open(gold_path, 'r') as f:
-                self.gold_standard = json.load(f)
+            # Check if it's a .compmodel file
+            if gold_path_obj.suffix == '.compmodel':
+                self.gold_standard = self._convert_compmodel_to_gold_standard(gold_path)
+            else:
+                # Assume it's JSON
+                with open(gold_path, 'r') as f:
+                    self.gold_standard = json.load(f)
         except Exception as e:
             print(f"Warning: Failed to load gold standard: {e}")
+    
+    def _convert_compmodel_to_gold_standard(self, compmodel_path: str) -> Dict[str, Any]:
+        """
+        Convert .compmodel XML file to gold standard JSON format.
+        
+        Args:
+            compmodel_path: Path to .compmodel file
+            
+        Returns:
+            Dictionary in gold standard format
+        """
+        try:
+            tree = ET.parse(compmodel_path)
+            root = tree.getroot()
+            
+            # Extract compartments
+            compartments = []
+            for comp in root.findall('.//{http://example.com/compartmentalmodel}compartments'):
+                comp_name = comp.get('PrimaryName', '')
+                if comp_name:
+                    compartments.append(comp_name)
+            
+            # Also try without namespace (for compatibility)
+            if not compartments:
+                for comp in root.findall('.//compartments'):
+                    comp_name = comp.get('PrimaryName', '')
+                    if comp_name:
+                        compartments.append(comp_name)
+            
+            # Extract parameters
+            parameters = []
+            for param in root.findall('.//{http://example.com/compartmentalmodel}parameters'):
+                param_name = param.get('name', '')
+                if param_name and param_name.lower() not in ['none', 'n/a', '']:
+                    parameters.append(param_name)
+            
+            # Also try without namespace (for compatibility)
+            if not parameters:
+                for param in root.findall('.//parameters'):
+                    param_name = param.get('name', '')
+                    if param_name and param_name.lower() not in ['none', 'n/a', '']:
+                        parameters.append(param_name)
+            
+            return {
+                "gold_entities": {
+                    "compartments": compartments,
+                    "parameters": parameters
+                },
+                "source": str(compmodel_path),
+                "source_type": "compmodel"
+            }
+        except Exception as e:
+            print(f"Warning: Failed to parse .compmodel file {compmodel_path}: {e}")
+            return {"gold_entities": {"compartments": [], "parameters": []}}
     
     def evaluate(self, extracted_entities: Dict[str, Any],
                  traceability: Dict[str, Any],

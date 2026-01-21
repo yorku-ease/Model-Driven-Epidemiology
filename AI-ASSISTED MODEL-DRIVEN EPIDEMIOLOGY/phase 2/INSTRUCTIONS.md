@@ -822,7 +822,8 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
 
 **What You Provide:**
 - (Automatic) Uses all previous outputs
-- (Optional) `--gold-standard` for comparison
+- (Optional) `--gold-standard` for comparison (JSON or .compmodel file)
+- (Automatic) Baseline models in `data/baseline_models/` are auto-detected if they match the paper name
 
 **What Happens:**
 1. Calculates traceability coverage:
@@ -831,8 +832,11 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
    - % of items paper-backed
 3. Analyzes gaps:
    - Total gaps, by severity
-4. Optionally compares to gold standard:
-   - Precision/recall if gold standard provided
+4. Optionally compares to baseline/gold standard:
+   - **Auto-detection:** If a baseline `.compmodel` file exists in `data/baseline_models/` with a name matching the paper (e.g., `ebola_salem_smith.compmodel` for `EbolaSensitivity.pdf`), it's automatically used
+   - Converts baseline `.compmodel` to gold standard format
+   - Calculates precision/recall for compartments and parameters
+   - Shows true positives, false positives, false negatives
 
 **No LLM used** - Pure metric calculation
 
@@ -849,9 +853,22 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
       "medium_gaps": 2
     },
     "gold_standard_comparison": {
-      "precision": 0.85,
-      "recall": 0.90,
-      "f1_score": 0.87
+      "compartments": {
+        "precision": 0.85,
+        "recall": 0.90,
+        "f1": 0.87,
+        "tp": 4,
+        "fp": 1,
+        "fn": 0
+      },
+      "parameters": {
+        "precision": 0.80,
+        "recall": 0.88,
+        "f1": 0.84,
+        "tp": 8,
+        "fp": 2,
+        "fn": 1
+      }
     }
   }
   ```
@@ -930,7 +947,8 @@ python run_phase2.py --help
 - `--api-key-file`: Path to API key file (default: `.api_key.txt`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
 - `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
-- `--gold-standard`: Path to gold standard JSON (for evaluation)
+- `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation)
+- `--baseline-models-dir`: Directory with baseline `.compmodel` files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
 
 ---

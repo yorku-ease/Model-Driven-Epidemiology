@@ -57,7 +57,10 @@ Examples:
                        default='../phase 1/reports/model_analysis',
                        help='Directory with Phase 1 model analysis JSONs (for gap filling)')
     parser.add_argument('--gold-standard', type=str,
-                       help='Path to gold standard JSON (for evaluation)')
+                       help='Path to gold standard JSON or .compmodel file (for evaluation)')
+    parser.add_argument('--baseline-models-dir', type=str,
+                       default='data/baseline_models',
+                       help='Directory with baseline .compmodel files (auto-detected for evaluation)')
     
     args = parser.parse_args()
     
@@ -268,7 +271,24 @@ Examples:
     
     # Step 9: Evaluation
     print("Step 9: Evaluating Extraction Quality...")
-    evaluator = Evaluator(gold_standard_path=args.gold_standard)
+    
+    # Auto-detect baseline model if not explicitly provided
+    gold_standard_path = args.gold_standard
+    if not gold_standard_path:
+        # Try to find baseline model matching paper name
+        baseline_dir = Path(args.baseline_models_dir)
+        if baseline_dir.exists():
+            paper_stem = Path(args.paper).stem.lower()
+            # Look for matching baseline model
+            for baseline_file in baseline_dir.glob("*.compmodel"):
+                baseline_stem = baseline_file.stem.lower()
+                # Check if paper name matches baseline name (fuzzy match)
+                if paper_stem in baseline_stem or baseline_stem in paper_stem:
+                    gold_standard_path = str(baseline_file)
+                    print(f"  Auto-detected baseline model: {baseline_file.name}")
+                    break
+    
+    evaluator = Evaluator(gold_standard_path=gold_standard_path)
     
     evaluation = evaluator.evaluate(
         extracted_entities,
@@ -287,7 +307,12 @@ Examples:
     gap_analysis = evaluation.get('gap_analysis', {})
     print(f"    - Total gaps: {gap_analysis.get('total_gaps', 0)}")
     if evaluation.get('gold_standard_comparison'):
-        print(f"    - Gold standard comparison: Available")
+        gs_comp = evaluation['gold_standard_comparison']
+        comp_metrics = gs_comp.get('compartments', {})
+        param_metrics = gs_comp.get('parameters', {})
+        print(f"    - Baseline comparison:")
+        print(f"      * Compartments: Precision={comp_metrics.get('precision', 0):.2f}, Recall={comp_metrics.get('recall', 0):.2f}, F1={comp_metrics.get('f1', 0):.2f}")
+        print(f"      * Parameters: Precision={param_metrics.get('precision', 0):.2f}, Recall={param_metrics.get('recall', 0):.2f}, F1={param_metrics.get('f1', 0):.2f}")
     print()
     
     # Generate Final Comprehensive Report
