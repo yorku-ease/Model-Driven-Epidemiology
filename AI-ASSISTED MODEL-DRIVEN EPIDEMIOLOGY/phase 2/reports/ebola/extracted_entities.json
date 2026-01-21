@@ -1,10 +1,10 @@
 {
   "compartments": [
     {
-      "raw_text": "susceptible (S)",
+      "raw_text": "Susceptible (S)",
       "normalized_name": "Susceptible",
       "page_number": 0,
-      "text_span": "susceptible (S)",
+      "text_span": "Susceptible (S)",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true,
@@ -12,13 +12,13 @@
     },
     {
       "raw_text": "non-symptomatic infected (E)",
-      "normalized_name": "Non-symptomatic Infected",
+      "normalized_name": "Non-Symptomatic Infected",
       "page_number": 0,
       "text_span": "non-symptomatic infected (E)",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true,
-      "description": "Individuals who are infected but do not show symptoms."
+      "description": "Individuals who are infected but not yet symptomatic."
     },
     {
       "raw_text": "infectious living (I)",
@@ -28,7 +28,7 @@
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true,
-      "description": "Individuals who are infected and can transmit the disease."
+      "description": "Individuals who are currently infectious and can transmit the virus."
     },
     {
       "raw_text": "infectious deceased (D)",
@@ -53,7 +53,7 @@
   ],
   "flows": [
     {
-      "source": "Non-symptomatic Infected",
+      "source": "Non-Symptomatic Infected",
       "target": "Susceptible",
       "raw_text": "e progresses to t",
       "page_number": 1,
@@ -65,18 +65,18 @@
     },
     {
       "source": "Susceptible",
-      "target": "Non-symptomatic Infected",
-      "raw_text": "Susceptible individuals may be infected either by an infectious individual or corpse and become non-symptomatic infected (E).",
+      "target": "Non-Symptomatic Infected",
+      "raw_text": "they maybe infected either by an infectious individual or corpse and become non-symptomatic infected (E).",
       "page_number": 0,
-      "text_span": "Susceptible individuals may be infected either by an infectious individual or corpse and become non-symptomatic infected (E).",
+      "text_span": "they maybe infected either by an infectious individual or corpse and become non-symptomatic infected (E).",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true,
       "flow_type": "ContactFlow",
-      "description": "Susceptible individuals become infected through contact with infected individuals or corpses."
+      "description": "Susceptible individuals become non-symptomatic infected through contact with infected individuals or corpses."
     },
     {
-      "source": "Non-symptomatic Infected",
+      "source": "Non-Symptomatic Infected",
       "target": "Infectious",
       "raw_text": "Non-symptomatic infected individuals become infectious (I), or they can die from an unrelated cause and exit the system.",
       "page_number": 0,
@@ -102,9 +102,9 @@
     {
       "source": "Infectious",
       "target": "Infectious Deceased",
-      "raw_text": "Infectious individuals die at the background death rate (\u03b1I) and become infectious dead bodies (D).",
+      "raw_text": "Infectious individuals can recover (R) from the disease or they may die at the background death rate.",
       "page_number": 0,
-      "text_span": "Infectious individuals die at the background death rate (\u03b1I) and become infectious dead bodies (D).",
+      "text_span": "Infectious individuals can recover (R) from the disease or they may die at the background death rate.",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true,
@@ -121,19 +121,7 @@
       "confidence": "high",
       "paper_backed": true,
       "flow_type": "ContactFlow",
-      "description": "Infectious dead bodies can infect susceptible individuals."
-    },
-    {
-      "source": "Recovered",
-      "target": "Infectious Deceased",
-      "raw_text": "Recovered individuals can no longer be infected; they die at the background death rate.",
-      "page_number": 0,
-      "text_span": "Recovered individuals can no longer be infected; they die at the background death rate.",
-      "extraction_method": "llm",
-      "confidence": "high",
-      "paper_backed": true,
-      "flow_type": "RateFlow",
-      "description": "Recovered individuals die at the background death rate."
+      "description": "Infectious deceased individuals infect susceptible individuals."
     }
   ],
   "parameters": [
@@ -174,85 +162,85 @@
       "paper_backed": true
     },
     {
-      "raw_text": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u22121 [16]",
+      "raw_text": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u207b\u00b9 [16]",
       "normalized_name": "\u03b3",
       "value": 0.5,
-      "unit": "weeks^-1",
+      "unit": "weeks\u207b\u00b9",
       "description": "recovery rate",
       "page_number": 0,
-      "text_span": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u22121 [16]",
+      "text_span": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u207b\u00b9 [16]",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
     },
     {
-      "raw_text": "\u03bc background death rate 0\u20130.001 1/50 years\u22121 [10]",
+      "raw_text": "\u03bc background death rate 0\u20130.001 1/50 years\u207b\u00b9 [10]",
       "normalized_name": "\u03bc",
       "value": "1/50",
-      "unit": "years^-1",
+      "unit": "years\u207b\u00b9",
       "description": "background death rate",
       "page_number": 0,
-      "text_span": "\u03bc background death rate 0\u20130.001 1/50 years\u22121 [10]",
+      "text_span": "\u03bc background death rate 0\u20130.001 1/50 years\u207b\u00b9 [10]",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
     },
     {
-      "raw_text": "\u039b birth rate 0\u20131 1000\u03bc people years\u22121 [10]",
+      "raw_text": "\u039b birth rate 0\u20131 1000\u03bc people years\u207b\u00b9 [10]",
       "normalized_name": "\u039b",
       "value": "1000\u03bc",
-      "unit": "people years^-1",
+      "unit": "people years\u207b\u00b9",
       "description": "birth rate",
       "page_number": 0,
-      "text_span": "\u039b birth rate 0\u20131 1000\u03bc people years\u22121 [10]",
+      "text_span": "\u039b birth rate 0\u20131 1000\u03bc people years\u207b\u00b9 [10]",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
     },
     {
-      "raw_text": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u22121 [22]",
+      "raw_text": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u207b\u00b9 [22]",
       "normalized_name": "\u03b8",
       "value": 1,
-      "unit": "weeks^-1",
+      "unit": "weeks\u207b\u00b9",
       "description": "safe burial rate",
       "page_number": 0,
-      "text_span": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u22121 [22]",
+      "text_span": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u207b\u00b9 [22]",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
     },
     {
-      "raw_text": "c contact rate with infectious individuals 0\u20135 variable people weeks\u22121 -",
+      "raw_text": "c contact rate with infectious individuals 0\u20135 variable people weeks\u207b\u00b9 -",
       "normalized_name": "c_I",
       "value": "variable",
-      "unit": "people weeks^-1",
+      "unit": "people weeks\u207b\u00b9",
       "description": "contact rate with infectious individuals",
       "page_number": 0,
-      "text_span": "c contact rate with infectious individuals 0\u20135 variable people weeks\u22121 -",
+      "text_span": "c contact rate with infectious individuals 0\u20135 variable people weeks\u207b\u00b9 -",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
     },
     {
-      "raw_text": "c contact rate with infectious dead bodies 0\u20135 variable people weeks\u22121 -",
+      "raw_text": "c contact rate with infectious dead bodies 0\u20135 variable people weeks\u207b\u00b9 -",
       "normalized_name": "c_D",
       "value": "variable",
-      "unit": "people weeks^-1",
+      "unit": "people weeks\u207b\u00b9",
       "description": "contact rate with infectious dead bodies",
       "page_number": 0,
-      "text_span": "c contact rate with infectious dead bodies 0\u20135 variable people weeks\u22121 -",
+      "text_span": "c contact rate with infectious dead bodies 0\u20135 variable people weeks\u207b\u00b9 -",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
     },
     {
-      "raw_text": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u22121 [1]",
+      "raw_text": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u207b\u00b9 [1]",
       "normalized_name": "\u03c9",
       "value": 1,
-      "unit": "weeks^-1",
+      "unit": "weeks\u207b\u00b9",
       "description": "rate at which infected individuals become infectious",
       "page_number": 0,
-      "text_span": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u22121 [1]",
+      "text_span": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u207b\u00b9 [1]",
       "extraction_method": "llm",
       "confidence": "high",
       "paper_backed": true
@@ -312,7 +300,7 @@
   ],
   "extraction_summary": {
     "num_compartments": 5,
-    "num_flows": 7,
+    "num_flows": 6,
     "num_parameters": 10,
     "num_stratifications": 2,
     "num_interventions": 4

@@ -3,7 +3,7 @@
   "summary": {
     "extraction": {
       "compartments": 5,
-      "flows": 7,
+      "flows": 6,
       "parameters": 10,
       "stratifications": 2,
       "interventions": 4
@@ -44,7 +44,7 @@
       "safe burial"
     ],
     "model_type": "SEIR",
-    "description": "The paper promises to model the dynamics of an Ebola outbreak using an SEIR compartmental model with a focus on the impact of various interventions such as vaccination and quarantine.",
+    "description": "The paper promises to model the dynamics of an Ebola outbreak in a village using an SEIR model with a compartment for infectious deceased individuals, analyzing the effects of various interventions on disease transmission.",
     "extraction_method": "llm"
   },
   "extracted_entities": {
@@ -55,7 +55,7 @@
         "method": "llm"
       },
       {
-        "name": "Non-symptomatic Infected",
+        "name": "Non-Symptomatic Infected",
         "confidence": "high",
         "method": "llm"
       },
@@ -77,7 +77,7 @@
     ],
     "flows": [
       {
-        "source": "Non-symptomatic Infected",
+        "source": "Non-Symptomatic Infected",
         "target": "Susceptible",
         "type": "RateFlow",
         "confidence": "medium",
@@ -85,13 +85,13 @@
       },
       {
         "source": "Susceptible",
-        "target": "Non-symptomatic Infected",
+        "target": "Non-Symptomatic Infected",
         "type": "ContactFlow",
         "confidence": "high",
         "method": "llm"
       },
       {
-        "source": "Non-symptomatic Infected",
+        "source": "Non-Symptomatic Infected",
         "target": "Infectious",
         "type": "RateFlow",
         "confidence": "high",
@@ -115,13 +115,6 @@
         "source": "Infectious Deceased",
         "target": "Susceptible",
         "type": "ContactFlow",
-        "confidence": "high",
-        "method": "llm"
-      },
-      {
-        "source": "Recovered",
-        "target": "Infectious Deceased",
-        "type": "RateFlow",
         "confidence": "high",
         "method": "llm"
       }
@@ -151,49 +144,49 @@
       {
         "name": "\u03b3",
         "value": 0.5,
-        "unit": "weeks^-1",
+        "unit": "weeks\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       },
       {
         "name": "\u03bc",
         "value": "1/50",
-        "unit": "years^-1",
+        "unit": "years\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       },
       {
         "name": "\u039b",
         "value": "1000\u03bc",
-        "unit": "people years^-1",
+        "unit": "people years\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       },
       {
         "name": "\u03b8",
         "value": 1,
-        "unit": "weeks^-1",
+        "unit": "weeks\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       },
       {
         "name": "c_I",
         "value": "variable",
-        "unit": "people weeks^-1",
+        "unit": "people weeks\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       },
       {
         "name": "c_D",
         "value": "variable",
-        "unit": "people weeks^-1",
+        "unit": "people weeks\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       },
       {
         "name": "\u03c9",
         "value": 1,
-        "unit": "weeks^-1",
+        "unit": "weeks\u207b\u00b9",
         "confidence": "high",
         "method": "llm"
       }
@@ -201,16 +194,16 @@
   },
   "model_structure": {
     "compartments": 5,
-    "flows": 7,
+    "flows": 6,
     "parameters": 10,
     "stratifications": 2,
     "interventions": 4
   },
   "traceability": {
-    "total_items": 28,
-    "items_with_evidence": 28,
+    "total_items": 27,
+    "items_with_evidence": 27,
     "coverage_percentage": 100.0,
-    "paper_backed_items": 28,
+    "paper_backed_items": 27,
     "faithfulness_percentage": 100.0
   },
   "gap_analysis": {
@@ -275,12 +268,12 @@
   },
   "evaluation": {
     "traceability_coverage": {
-      "total_items": 28,
-      "items_with_evidence": 28,
+      "total_items": 27,
+      "items_with_evidence": 27,
       "coverage_percentage": 100.0
     },
     "faithfulness": {
-      "paper_backed_items": 28,
+      "paper_backed_items": 27,
       "faithfulness_percentage": 100.0
     },
     "gap_analysis": {

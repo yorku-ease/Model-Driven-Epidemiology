@@ -1,5 +1,23 @@
 # Phase 2: Step-by-Step Instructions
 
+## ✨ Recent Improvements
+
+Phase 2 now includes **enhanced LLM integration** with automatic loading of:
+- **Metamodel schema** - LLM understands valid compartment/parameter types
+- **Phase 1 examples** - LLM learns from successful model patterns
+- **LLM model refinement** - Analyzes draft models for improvements
+- **Better XML formatting** - .compmodel files now properly formatted
+
+These improvements are **automatic** - just run Phase 2 normally and you'll see:
+```
+Using metamodel: ../phase 1/metamodel_epidemiology.json
+Using example models for context: ../phase 1/papers/epimde
+```
+
+See README.md for full details on the improvements.
+
+---
+
 ## What You Need to Do
 
 ### Step 1: Set Up API Key
@@ -121,6 +139,7 @@ ls reports/your_paper_name/
 - Extracts parameters with evidence (value, unit, description)
 - Extracts stratifications and interventions
 - Uses both pattern matching and LLM
+- **✨ NEW:** LLM prompts now include metamodel schema and Phase 1 examples for better extraction
 
 **Input:** Paper text, pages, tables  
 **Output:** `extracted_entities.json`
@@ -143,6 +162,8 @@ ls reports/your_paper_name/
 - Creates compartments from extracted entities
 - Creates flows (RateFlow/ContactFlow) and links to parameters
 - Creates parameters from extracted entities
+- **✨ NEW:** LLM analyzes draft model for improvements
+- **✨ NEW:** XML output properly formatted with indentation (no longer all on one line!)
 - Validates XML structure
 
 **Input:** Extracted entities  
@@ -207,6 +228,7 @@ ls reports/your_paper_name/
 - For each gap, searches paper text for weak signals
 - Searches prior models (Phase 1 analysis) for similar gaps
 - Uses LLM for domain knowledge suggestions
+- **✨ NEW:** LLM prompts now include metamodel context and prior model examples
 - Generates suggestions with source and confidence
 
 **Input:** Gap analysis, paper text, prior models  

@@ -14,24 +14,18 @@ from src.utils.llm_client import LLMClient
 class EntityExtractor:
     """Extract model entities from paper text with evidence"""
     
-    def __init__(self, llm_client: Optional[LLMClient] = None, metamodel_path: Optional[str] = None,
-                 example_models_path: Optional[str] = None):
+    def __init__(self, llm_client: Optional[LLMClient] = None, metamodel_path: Optional[str] = None):
         """
         Initialize entity extractor.
-
+        
         Args:
             llm_client: LLM client instance
             metamodel_path: Path to epidemiology metamodel JSON
-            example_models_path: Path to directory with Phase 1 example .compmodel files
         """
         self.llm_client = llm_client or LLMClient()
         self.metamodel = None
         if metamodel_path:
             self._load_metamodel(metamodel_path)
-
-        self.example_models = []
-        if example_models_path:
-            self._load_example_models(example_models_path)
     
     def _load_metamodel(self, metamodel_path: str):
         """Load metamodel for normalization"""
@@ -40,46 +34,7 @@ class EntityExtractor:
                 self.metamodel = json.load(f)
         except Exception as e:
             print(f"Warning: Failed to load metamodel: {e}")
-
-    def _load_example_models(self, example_models_path: str):
-        """Load example .compmodel files from Phase 1 for context"""
-        import xml.etree.ElementTree as ET
-        example_path = Path(example_models_path)
-        if not example_path.exists():
-            return
-
-        for compmodel_file in example_path.glob("*.compmodel"):
-            try:
-                with open(compmodel_file, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    # Parse XML to extract compartments, parameters, and flows as examples
-                    tree = ET.fromstring(content)
-
-                    # Extract compartments
-                    compartments = []
-                    for comp in tree.findall('.//{http://example.com/compartmentalmodel}compartments'):
-                        compartments.append({
-                            'name': comp.get('PrimaryName', ''),
-                            'population': comp.get('population', '0')
-                        })
-
-                    # Extract parameters
-                    parameters = []
-                    for param in tree.findall('.//{http://example.com/compartmentalmodel}parameters'):
-                        parameters.append({
-                            'name': param.get('name', ''),
-                            'value': param.get('expression', ''),
-                            'description': param.get('description', '')
-                        })
-
-                    self.example_models.append({
-                        'name': compmodel_file.stem,
-                        'compartments': compartments,
-                        'parameters': parameters
-                    })
-            except Exception as e:
-                print(f"Warning: Failed to load example {compmodel_file}: {e}")
-
+    
     def _normalize_compartment_name(self, name: str) -> str:
         """Normalize compartment name to canonical form"""
         name = name.strip()
@@ -158,36 +113,10 @@ class EntityExtractor:
         return compartments
     
     def _extract_compartments_llm(self, paper_text: str) -> List[Dict[str, Any]]:
-        """Extract compartments using LLM with metamodel and Phase 1 examples"""
+        """Extract compartments using LLM"""
         truncated_text = paper_text[:30000]  # Limit for prompt
-
-        # Build metamodel context
-        metamodel_context = ""
-        if self.metamodel:
-            compartment_types = self.metamodel.get('epimde_compartmental_metamodel', {}).get('compartment_types', [])
-            if compartment_types:
-                metamodel_context = f"""
-Standard compartment types from metamodel:
-{', '.join(compartment_types)}
-"""
-
-        # Build Phase 1 examples context
-        examples_context = ""
-        if self.example_models:
-            examples_list = []
-            for model in self.example_models[:3]:  # Use up to 3 examples
-                comp_names = [c['name'] for c in model.get('compartments', []) if c['name']]
-                if comp_names:
-                    examples_list.append(f"  {model['name']}: {', '.join(comp_names[:6])}")
-
-            if examples_list:
-                examples_context = f"""
-Examples from successful Phase 1 models:
-{chr(10).join(examples_list)}
-"""
-
+        
         prompt = f"""Extract compartment names from this epidemiological modeling paper.
-{metamodel_context}{examples_context}
 Return a JSON array of compartments, each with:
 - "name": compartment name (normalized, e.g., "Susceptible", "Infectious")
 - "description": brief description from paper
@@ -317,43 +246,16 @@ Return ONLY valid JSON array."""
         return flows
     
     def _extract_flows_llm(self, paper_text: str, compartments: List[Dict]) -> List[Dict[str, Any]]:
-        """Extract flows using LLM with metamodel and Phase 1 examples"""
+        """Extract flows using LLM"""
         truncated_text = paper_text[:40000]  # Limit for prompt
-
+        
         comp_names = [c['normalized_name'] for c in compartments]
         comp_list = ", ".join(comp_names)
-
-        # Build metamodel context
-        metamodel_context = ""
-        if self.metamodel:
-            flow_types = self.metamodel.get('epimde_compartmental_metamodel', {}).get('flow_types', [])
-            if flow_types:
-                metamodel_context = f"""
-Flow types from metamodel:
-{', '.join(flow_types)}
-"""
-
-        # Build Phase 1 examples context for flows
-        examples_context = ""
-        if self.example_models:
-            examples_list = []
-            for model in self.example_models[:2]:  # Use up to 2 examples
-                comp_names_ex = [c['name'] for c in model.get('compartments', []) if c['name']]
-                if comp_names_ex:
-                    # Show example flow patterns
-                    flow_pattern = " → ".join(comp_names_ex[:4])
-                    examples_list.append(f"  {model['name']}: {flow_pattern}")
-
-            if examples_list:
-                examples_context = f"""
-Example flow patterns from Phase 1 models:
-{chr(10).join(examples_list)}
-"""
-
+        
         prompt = f"""Extract flows (transitions) between compartments from this epidemiological modeling paper.
 
 Available compartments: {comp_list}
-{metamodel_context}{examples_context}
+
 Return a JSON array of flows, each with:
 - "source": source compartment name (must match one of the available compartments)
 - "target": target compartment name (must match one of the available compartments)
@@ -581,49 +483,11 @@ Return ONLY valid JSON array."""
         return parameters
 
     def _extract_parameters_llm(self, paper_text: str) -> List[Dict[str, Any]]:
-        """Extract parameters using LLM with metamodel and Phase 1 examples"""
+        """Extract parameters using LLM"""
         truncated_text = paper_text[:30000]  # Limit for prompt
 
-        # Build metamodel context
-        metamodel_context = ""
-        if self.metamodel:
-            parameter_types = self.metamodel.get('epimde_compartmental_metamodel', {}).get('parameter_types', [])
-            if parameter_types:
-                metamodel_context = f"""
-Parameter types from metamodel:
-{', '.join(parameter_types)}
-"""
-
-        # Build Phase 1 examples context for parameters
-        examples_context = ""
-        if self.example_models:
-            examples_list = []
-            for model in self.example_models[:3]:  # Use up to 3 examples
-                params = model.get('parameters', [])
-                if params:
-                    param_examples = []
-                    for p in params[:5]:  # Show up to 5 parameters per model
-                        name = p.get('name', '')
-                        value = p.get('value', '')
-                        desc = p.get('description', '')
-                        if name:
-                            if value and desc:
-                                param_examples.append(f"{name}={value} ({desc})")
-                            elif value:
-                                param_examples.append(f"{name}={value}")
-                            else:
-                                param_examples.append(name)
-                    if param_examples:
-                        examples_list.append(f"  {model['name']}: {'; '.join(param_examples)}")
-
-            if examples_list:
-                examples_context = f"""
-Example parameters from Phase 1 models:
-{chr(10).join(examples_list)}
-"""
-
         prompt = f"""Extract model parameters from this epidemiological modeling paper.
-{metamodel_context}{examples_context}
+
 Return a JSON array of parameters, each with:
 - "name": parameter symbol or name (e.g., "β", "α", "γ", "μ", "contact_rate")
 - "value": numerical value if specified

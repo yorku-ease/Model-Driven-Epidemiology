@@ -123,11 +123,20 @@ Examples:
     
     # Step 3: Entity Extraction
     print("Step 3: Extracting Entities with Evidence...")
+    # Load example models path for entity extraction context
+    example_models_path_entity = None
+    if args.phase1_dir:
+        phase1_models_path = Path(args.phase1_dir) / "papers" / "epimde"
+        if phase1_models_path.exists():
+            example_models_path_entity = str(phase1_models_path)
+            print(f"  Using example models for context: {example_models_path_entity}")
+
     entity_extractor = EntityExtractor(
         llm_client=llm_client,
-        metamodel_path=metamodel_path
+        metamodel_path=metamodel_path,
+        example_models_path=example_models_path_entity
     )
-    
+
     entities = entity_extractor.extract_all(pdf_data)
     
     # Save entities

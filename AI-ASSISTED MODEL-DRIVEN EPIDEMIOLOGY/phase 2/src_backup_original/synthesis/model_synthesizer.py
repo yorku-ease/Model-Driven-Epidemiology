@@ -45,18 +45,19 @@ class ModelSynthesizer:
             XML string of .compmodel file
         """
         # Create root element
-        root = Element('compartmental:CompartmentalModel')
+        root = Element('seir:SEIRModel')
         root.set('xmlns:xmi', 'http://www.omg.org/XMI')
         root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        root.set('xmlns:compartmental', 'http://example.com/compartmentalmodel')
+        root.set('xmlns:seir', 'http://example.com/seirmodel')
         root.set('xmi:version', '2.0')
 
-        # Create parameters as direct children (no wrapper element)
+        # Create parameters section
+        parameters_elem = SubElement(root, 'parameters')
         param_index_map = {}
         param_name_map = {}  # Map normalized names to indices
 
         for idx, param in enumerate(entities.get('parameters', [])):
-            param_elem = SubElement(root, 'parameters')
+            param_elem = SubElement(parameters_elem, 'parameters')
             param_name = param.get('normalized_name', f'param_{idx}')
             param_elem.set('name', param_name)
 
@@ -77,19 +78,18 @@ class ModelSynthesizer:
             param_name_lower = param_name.lower().replace('_', ' ').replace('-', ' ')
             param_name_map[param_name_lower] = idx
 
-        # Create compartments as direct children (no wrapper element)
+        # Create compartments section
+        compartments_elem = SubElement(root, 'compartments')
         comp_index_map = {}
-        compartment_elements = []  # Keep track of created compartment elements
 
         for idx, comp in enumerate(entities.get('compartments', [])):
-            comp_elem = SubElement(root, 'compartments')
+            comp_elem = SubElement(compartments_elem, 'compartments')
             comp_elem.set('PrimaryName', comp.get('normalized_name', f'Compartment_{idx}'))
 
             # Set initial population (default 0 if not specified)
             comp_elem.set('population', '0')
 
             comp_index_map[comp['normalized_name']] = idx
-            compartment_elements.append(comp_elem)  # Store for later reference
 
         # Helper function to find matching parameter for a flow
         def find_matching_parameter(flow, source_comp, target_comp, parameters):
@@ -203,9 +203,10 @@ class ModelSynthesizer:
 
             return None
 
-        # Create flows with parameter links (flows are direct children of compartments)
+        # Create flows with parameter links
         for comp_idx, comp in enumerate(entities.get('compartments', [])):
-            comp_elem = compartment_elements[comp_idx]
+            comp_elem = compartments_elem[comp_idx]
+            outgoing_flows_elem = SubElement(comp_elem, 'outgoingFlows')
 
             # Find flows from this compartment
             source_name = comp['normalized_name']
@@ -224,8 +225,8 @@ class ModelSynthesizer:
                 )
 
                 if flow_type == 'ContactFlow':
-                    flow_elem = SubElement(comp_elem, 'outgoingFlows')
-                    flow_elem.set('xsi:type', 'compartmental:ContactFlow')
+                    flow_elem = SubElement(outgoing_flows_elem, 'outgoingFlows')
+                    flow_elem.set('xsi:type', 'seir:ContactFlow')
 
                     # Set contact compartment (usually the source of infection)
                     # For ContactFlow, contact compartment is typically Infectious or Deceased
@@ -240,8 +241,8 @@ class ModelSynthesizer:
                     else:
                         flow_elem.set('contactRate', '0.0')  # Placeholder
                 else:
-                    flow_elem = SubElement(comp_elem, 'outgoingFlows')
-                    flow_elem.set('xsi:type', 'compartmental:RateFlow')
+                    flow_elem = SubElement(outgoing_flows_elem, 'outgoingFlows')
+                    flow_elem.set('xsi:type', 'seir:RateFlow')
 
                     # Link to parameter if found
                     if matching_param and matching_param in param_index_map:

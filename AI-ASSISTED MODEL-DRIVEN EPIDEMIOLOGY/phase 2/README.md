@@ -96,6 +96,42 @@ Phase 2 runs 9 steps automatically:
 **Process:** Combines everything into one comprehensive report  
 **Output:** `phase2_final_report.json` ← **Main report to check**
 
+## Recent Improvements ✨
+
+Phase 2 now includes **enhanced LLM integration** for higher quality extraction:
+
+### 🎯 Metamodel-Guided Extraction
+- LLM prompts now include metamodel schema (compartment types, flow types, parameter types)
+- Helps LLM understand the target model structure
+- Reduces hallucinations and improves accuracy
+
+### 📚 Phase 1 Example Learning
+- Loads successful Phase 1 .compmodel files as examples
+- LLM sees concrete examples of:
+  - Compartment naming patterns (e.g., "Susceptible, Infectious, Recovered")
+  - Parameter definitions (e.g., "β=0.5 (transmission rate)")
+  - Flow patterns between compartments
+- Follows proven patterns from validated models
+
+### 🤖 LLM Model Refinement
+- After rule-based generation, LLM analyzes draft model
+- Checks for:
+  - Missing flows based on epidemiological patterns
+  - Proper parameter-flow linkages
+  - Consistency with similar models
+- Provides suggestions for improvements
+
+### 📝 Improved XML Formatting
+- .compmodel files now properly formatted with indentation
+- Each element on its own line (was previously all on one line)
+- Much more readable and easier to debug
+
+### 🎓 Context-Aware Gap Filling
+- Gap suggestions now include:
+  - Metamodel context (valid types and structures)
+  - Examples from prior models
+  - More specific and actionable recommendations
+
 ## Key Features
 
 ### Evidence-Based Extraction
@@ -162,6 +198,24 @@ See `requirements.txt`. Main dependencies:
 ```bash
 export OPENAI_API_KEY="sk-your-api-key-here"
 ```
+
+### Automatic Enhancement Loading
+
+The LLM improvements are **automatically active** when you run Phase 2. The pipeline will:
+
+1. **Auto-load metamodel** from `../phase 1/metamodel_epidemiology.json`
+2. **Auto-load Phase 1 examples** from `../phase 1/papers/epimde/*.compmodel`
+3. **Use enhanced prompts** for entity extraction
+4. **Apply LLM refinement** during model synthesis
+5. **Format XML** output automatically
+
+You'll see console messages like:
+```
+Using metamodel: ../phase 1/metamodel_epidemiology.json
+Using example models for context: ../phase 1/papers/epimde
+```
+
+If these files aren't found, the pipeline still works but without the enhancements (falls back to pattern-based extraction).
 
 ## Limitations
 
