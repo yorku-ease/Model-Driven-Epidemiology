@@ -2,7 +2,7 @@
 
 ## Overview
 
-Phase 2 automatically extracts compartmental epidemiological models from scientific papers. Given a paper PDF, it extracts the model structure, generates a `.compmodel` file, identifies gaps, suggests gap fills, and evaluates the quality.
+Phase 2 automatically extracts compartmental epidemiological models from scientific paper PDFs. Given a paper, it extracts the model structure, generates a `.compmodel` file, identifies gaps, suggests gap fills, and evaluates the quality.
 
 **What it does:**
 - Reads PDF papers
@@ -20,22 +20,21 @@ Phase 2 automatically extracts compartmental epidemiological models from scienti
 phase 2/
 ├── .api_key.txt              ← Your OpenAI API key goes here
 ├── run_phase2.py             ← Main script to run
-├── requirements.txt          ← Python dependencies
-├── README.md                 ← This file (explains everything)
-├── INSTRUCTIONS.md           ← Step-by-step how to run
+├── README.md                  ← This file (comprehensive guide)
+├── INSTRUCTIONS.md            ← Step-by-step how to run
 │
-├── src/                      ← Source code (organized by function)
-│   ├── extraction/           ← PDF processing & entity extraction
-│   ├── synthesis/            ← Model generation & traceability
-│   ├── analysis/             ← Gap analysis & gap filling
-│   ├── evaluation/           ← Quality checks & final report
-│   └── utils/                ← LLM client utilities
+├── src/                       ← Source code (organized by function)
+│   ├── extraction/            ← PDF processing & entity extraction
+│   ├── synthesis/             ← Model generation & traceability
+│   ├── analysis/              ← Gap analysis & gap filling
+│   ├── evaluation/            ← Quality checks & final report
+│   └── utils/                 ← LLM client utilities
 │
 ├── data/
-│   ├── papers/               ← Put your PDF papers here
-│   └── baseline_models/      ← Baseline models for comparison
+│   ├── papers/                ← Put your PDF papers here
+│   └── baseline_models/       ← Baseline models for comparison
 │
-└── reports/                  ← Output directory (auto-generated)
+└── reports/                   ← Output directory (auto-generated)
     └── [paper_name]/
         ├── model_draft.compmodel      ← Main output: extracted model
         ├── phase2_final_report.json   ← Comprehensive report
@@ -44,86 +43,483 @@ phase 2/
 
 ## How It Works: The 9-Step Pipeline
 
-Phase 2 runs 9 steps automatically:
+Phase 2 runs 9 steps automatically. Each step has specific inputs, processes, and outputs:
 
 ### Step 1: PDF Pipeline
-**Input:** PDF file  
-**Process:** Extracts text, cleans it, detects sections, extracts tables  
-**Output:** `paper_text.json`, `paper_sections.json`
+
+**Input:** PDF file (e.g., `data/papers/EbolaSensitivity.pdf`)
+
+**Process:**
+- Extracts text from PDF using `pdfplumber` library
+- Cleans text (removes headers/footers, fixes hyphenation)
+- Detects sections (Abstract, Methods, Model, Results, etc.)
+- Extracts tables from PDF
+
+**Output:**
+- `paper_text.json` - Cleaned text with page numbers
+  ```json
+  {
+    "full_text": "...",
+    "pages": [
+      {"page_number": 1, "text": "..."},
+      ...
+    ]
+  }
+  ```
+- `paper_sections.json` - Detected sections and extracted tables
+  ```json
+  {
+    "sections": [
+      {"title": "Abstract", "start_page": 1, "end_page": 1},
+      {"title": "Methods", "start_page": 2, "end_page": 5},
+      ...
+    ],
+    "tables": [...]
+  }
+  ```
+
+**No LLM used** - Pure PDF processing
+
+---
 
 ### Step 2: Paper Promises Extraction
-**Input:** Cleaned paper text  
-**Process:** Identifies what the paper promises to model (compartments, parameters, etc.)  
-**Output:** `paper_promises.json`
+
+**Input:** Cleaned paper text from Step 1
+
+**Process:**
+- **Pattern-based:** Searches for phrases like "we model", "our model includes", "age-stratified"
+- **LLM-based (if available):** Sends paper text to LLM with extraction prompt
+
+**LLM Usage (if API key available):**
+
+**LLM Input:**
+```
+System Message: "You are a scientific paper analyzer. Return only valid JSON."
+
+User Message:
+"Extract what this paper promises to model. Analyze the following paper text:
+
+[Paper text from Step 1]
+
+Extract and return JSON with:
+- compartments: List of compartments the paper promises to model
+- parameters: List of parameters the paper promises to model
+- stratifications: List of stratifications (age, gender, etc.) the paper promises
+- interventions: List of interventions the paper promises to model
+- model_type: Type of model (SEIR, SIR, etc.)
+
+Return only valid JSON."
+```
+
+**LLM Output:**
+```json
+{
+  "compartments": ["Susceptible", "Exposed", "Infectious", "Recovered"],
+  "parameters": ["β", "γ", "μ"],
+  "stratifications": ["age"],
+  "interventions": [],
+  "model_type": "SEIR"
+}
+```
+
+**Output:** `paper_promises.json` - What the paper promises to model
+
+**Fallback:** If LLM unavailable, uses pattern-based extraction (less accurate)
+
+---
 
 ### Step 3: Entity Extraction
-**Input:** Paper text, pages, tables  
-**Process:** Extracts compartments, flows, parameters, stratifications, interventions with evidence  
-**Output:** `extracted_entities.json`
+
+**Input:** Paper text, pages, tables from Step 1
+
+**Process:**
+- Extracts compartments, flows, parameters, stratifications, interventions
+- Uses **both** pattern matching and LLM
+- Records evidence (text span, page number, confidence, extraction method)
+
+**LLM Usage (always used if API key available):**
+
+#### For Compartments:
+
+**LLM Input:**
+```
+System Message: "You are a scientific paper analyzer. Return only valid JSON."
+
+User Message:
+"Extract all compartments mentioned in this epidemiological model paper.
+
+Metamodel Schema (valid compartment types):
+{
+  "compartment_types": ["Susceptible", "Exposed", "Infectious", "Recovered", ...]
+}
+
+Example compartments from validated models:
+- Susceptible (S)
+- Exposed (E) 
+- Infectious (I)
+- Recovered (R)
+
+Paper text:
+[Relevant sections from paper]
+
+Extract compartments and return JSON array:
+[
+  {
+    "name": "Compartment name",
+    "description": "What this compartment represents",
+    "text_span": "Exact text from paper mentioning this compartment"
+  },
+  ...
+]"
+```
+
+**LLM Output:**
+```json
+[
+  {
+    "name": "Susceptible",
+    "description": "Individuals who can be infected",
+    "text_span": "Susceptible individuals (S) can become infected..."
+  },
+  ...
+]
+```
+
+**What LLM sees:**
+- Metamodel schema (valid compartment types from `metamodel_epidemiology.json`)
+- Example compartments from Phase 1 models (e.g., "Susceptible", "Infectious", "Recovered")
+- Paper text sections mentioning compartments
+
+#### For Flows:
+
+**LLM Input:**
+```
+"Extract all flows between compartments.
+
+Flow types from metamodel:
+- RateFlow: Direct transitions (e.g., E → I at rate ω)
+- ContactFlow: Contact-based transmission (e.g., S → E via contact with I)
+
+Extracted compartments: [list from previous step]
+
+Paper text:
+[Relevant sections]
+
+Extract flows and return JSON array:
+[
+  {
+    "source": "Source compartment name",
+    "target": "Target compartment name",
+    "type": "RateFlow" or "ContactFlow",
+    "description": "Description of the flow",
+    "text_span": "Exact text from paper"
+  },
+  ...
+]"
+```
+
+**LLM Output:**
+```json
+[
+  {
+    "source": "Susceptible",
+    "target": "Exposed",
+    "type": "ContactFlow",
+    "description": "Infection through contact with infectious individuals",
+    "text_span": "Susceptible individuals become exposed at rate βI"
+  },
+  ...
+]
+```
+
+#### For Parameters:
+
+**LLM Input:**
+```
+"Extract all parameters with their values, units, and descriptions.
+
+Parameter types from metamodel:
+- Transmission rates (β)
+- Recovery rates (γ)
+- Death rates (μ, α)
+- Progression rates (ω, ρ)
+- Contact rates (c_I, c_D)
+
+Paper text and tables:
+[Relevant sections and extracted tables]
+
+Extract parameters and return JSON array:
+[
+  {
+    "name": "Parameter name (e.g., β, γ)",
+    "value": "Parameter value if given",
+    "unit": "Unit (e.g., days^-1, weeks^-1)",
+    "description": "What this parameter represents",
+    "text_span": "Exact text from paper"
+  },
+  ...
+]"
+```
+
+**LLM Output:**
+```json
+[
+  {
+    "name": "β",
+    "value": "0.5",
+    "unit": "days^-1",
+    "description": "Transmission rate",
+    "text_span": "The transmission rate β = 0.5 days^-1"
+  },
+  ...
+]
+```
+
+**Output:** `extracted_entities.json` with:
+- All compartments with evidence (text span, page, confidence, extraction method)
+- All flows with evidence
+- All parameters with evidence
+- Stratifications and interventions
+- Extraction summary (counts)
+
+**Fallback:** If LLM unavailable, uses pattern-based extraction (less accurate, may miss complex flows)
+
+---
 
 ### Step 4: Model Synthesis
-**Input:** Extracted entities  
-**Process:** Generates `.compmodel` XML file from entities  
-**Output:** `model_draft.compmodel`
+
+**Input:** Extracted entities from Step 3
+
+**Process:**
+- Maps entities to `.compmodel` XML structure
+- Creates compartments from extracted entities
+- Creates flows (RateFlow/ContactFlow) and links to parameters using semantic matching
+  - Recovery flows → γ parameter
+  - Disease death flows → α parameter
+  - Transmission flows → β or contact rate parameters
+- Creates parameters from extracted entities
+- Validates XML structure
+
+**No LLM used** - Pure rule-based XML generation
+
+**Output:** `model_draft.compmodel` (XML file)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel ...>
+  <parameters name="β" expression="0.5" .../>
+  <compartments PrimaryName="Susceptible" ...>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" 
+                   contactRateParameter="//@parameters.0" .../>
+  </compartments>
+  ...
+</compartmental:CompartmentalModel>
+```
+
+---
 
 ### Step 5: Traceability
-**Input:** Extracted entities, model structure  
-**Process:** Maps every model element to paper evidence  
-**Output:** `traceability.json`
+
+**Input:** Extracted entities, model structure
+
+**Process:**
+- Maps every model element to paper evidence
+- Links compartments, flows, parameters to text spans
+- Calculates coverage metrics (% items with evidence)
+- Calculates faithfulness metrics (% items paper-backed)
+
+**No LLM used** - Pure mapping and calculation
+
+**Output:** `traceability.json` with evidence mapping and metrics
+
+---
 
 ### Step 6: Gap Analysis
-**Input:** Paper promises, extracted entities  
-**Process:** Compares promises vs extracted model, finds missing items  
-**Output:** `phase2_gap_report.json`
+
+**Input:** Paper promises (Step 2), extracted entities (Step 3)
+
+**Process:**
+- Compares promises vs extracted model
+- Finds missing compartments (promised but not extracted)
+- Finds missing parameters (promised but not extracted)
+- Finds missing stratifications and interventions
+- Categorizes by severity (critical/high/medium)
+
+**No LLM used** - Pure comparison
+
+**Output:** `phase2_gap_report.json` with missing items
+
+---
 
 ### Step 7: Gap Filler
-**Input:** Gap analysis, paper text, prior models  
-**Process:** Suggests how to fill gaps from paper/prior models/domain knowledge  
-**Output:** `gap_fill_suggestions.json`
+
+**Input:** Gap analysis, paper text, prior models (Phase 1)
+
+**Process:**
+- For each gap, suggests how to fill it from three sources:
+  1. **Paper text re-examination** - Searches for weak signals
+  2. **Prior models** - How similar Phase 1 models handle gaps
+  3. **Domain knowledge (LLM)** - LLM-based suggestions
+
+**LLM Usage (for domain knowledge suggestions):**
+
+**LLM Input:**
+```
+System Message: "You are an epidemiological modeling expert. Return only valid JSON."
+
+User Message:
+"Suggest how to fill this gap in an epidemiological model.
+
+Gap: [Missing compartment/parameter/stratification]
+
+Paper context:
+[Relevant paper text sections]
+
+Metamodel schema:
+[Valid types from metamodel_epidemiology.json]
+
+Examples from prior models:
+[How similar models handle this]
+
+Suggest how to fill this gap and return JSON:
+{
+  "element": "Suggested element (compartment/parameter name)",
+  "source": "domain_knowledge",
+  "confidence": "high/medium/low",
+  "rationale": "Why this suggestion makes epidemiological sense"
+}"
+```
+
+**LLM Output:**
+```json
+{
+  "element": "Age stratification",
+  "source": "domain_knowledge",
+  "confidence": "high",
+  "rationale": "Age is a common stratification in epidemiological models as transmission and severity vary by age"
+}
+```
+
+**Output:** `gap_fill_suggestions.json` with suggestions for each gap
+
+**Fallback:** If LLM unavailable, only uses paper text and prior models (no domain knowledge suggestions)
+
+---
 
 ### Step 8: Quality Checks
-**Input:** Generated model  
-**Process:** Runs Phase 1 analyzers (model analysis, uncertainty, sensitivity)  
-**Output:** `quality_checks.json`
+
+**Input:** Generated model from Step 4
+
+**Process:**
+- Runs Phase 1 analyzers on extracted model:
+  - Model analysis (structure, counts)
+  - Uncertainty analysis (parameter uncertainty)
+  - Sensitivity analysis (may not be runnable)
+
+**No LLM used** - Uses Phase 1 analyzers
+
+**Output:** `quality_checks.json` with Phase 1 analysis results
+
+---
 
 ### Step 9: Evaluation
-**Input:** All previous outputs  
-**Process:** Calculates quality metrics (coverage, faithfulness, gaps)  
-**Output:** `evaluation_report.json`
+
+**Input:** All previous outputs
+
+**Process:**
+- Calculates quality metrics:
+  - Traceability coverage (% items with evidence)
+  - Faithfulness (% items paper-backed)
+  - Gap metrics (total, by severity)
+  - Precision/recall (if gold standard provided)
+
+**No LLM used** - Pure metric calculation
+
+**Output:** `evaluation_report.json` with quality metrics
+
+---
 
 ### Final Step: Final Report Generation
-**Input:** All outputs  
-**Process:** Combines everything into one comprehensive report  
+
+**Input:** All outputs from Steps 1-9
+
+**Process:**
+- Combines everything into one comprehensive report
+- Generates executive summary
+
+**No LLM used** - Pure aggregation
+
 **Output:** `phase2_final_report.json` ← **Main report to check**
 
-## Recent Improvements ✨
+---
 
-Phase 2 includes **enhanced LLM integration** for higher quality extraction:
+## LLM Integration Details
 
-### 🎯 Metamodel-Guided Extraction
-- LLM prompts include metamodel schema (compartment types, flow types, parameter types)
-- Helps LLM understand the target model structure
-- Reduces hallucinations and improves accuracy
+### When LLM is Used
 
-### 📚 Phase 1 Example Learning (Entity Extraction)
-- Entity extractor loads successful Phase 1 .compmodel files as examples
-- LLM sees concrete examples of:
-  - Compartment naming patterns (e.g., "Susceptible, Infectious, Recovered")
-  - Parameter definitions (e.g., "β=0.5 (transmission rate)")
-  - Flow patterns between compartments
-- Follows proven patterns from validated models
+LLM is used in **3 steps** of Phase 2:
 
-### 🏗️ Simplified Model Synthesis
-- Streamlined XML generation using ElementTree
-- Direct mapping from extracted entities to .compmodel structure
-- Clean, readable XML output with proper formatting
-- Automatic parameter-flow linking based on semantic matching
+1. **Step 2: Paper Promises Extraction** (optional, falls back to patterns)
+2. **Step 3: Entity Extraction** (always used if API key available)
+3. **Step 7: Gap Filling** (for domain knowledge suggestions only)
 
-### 🎓 Context-Aware Gap Filling
-- Gap suggestions include:
-  - Metamodel context (valid types and structures)
-  - Examples from prior models
-  - More specific and actionable recommendations
+### LLM Configuration
+
+- **Model:** `gpt-4o-mini` (default, can be changed in code)
+- **Temperature:** `0.3` (low for consistency)
+- **Max Tokens:** `2000` (sufficient for most extractions)
+- **Output Format:** Always JSON
+
+### LLM Input Structure
+
+**System Message (always):**
+```
+"You are a scientific paper analyzer. Return only valid JSON."
+```
+
+**User Message Contains:**
+- Paper text (relevant sections)
+- Metamodel schema (for Step 3 and Step 7)
+- Phase 1 example models (for Step 3 and Step 7)
+- Specific extraction prompt
+- JSON schema for expected output
+
+### LLM Output Format
+
+All LLM outputs are **JSON**:
+- Compartments: `[{"name": "...", "description": "...", "text_span": "..."}]`
+- Flows: `[{"source": "...", "target": "...", "type": "...", "description": "..."}]`
+- Parameters: `[{"name": "...", "value": "...", "unit": "...", "description": "..."}]`
+- Gap suggestions: `[{"element": "...", "source": "...", "confidence": "...", "rationale": "..."}]`
+
+### LLM Fallback Behavior
+
+If LLM is unavailable (no API key, network error, etc.):
+- **Step 2:** Falls back to pattern-based extraction
+- **Step 3:** Falls back to pattern-based extraction (less accurate, may miss complex flows)
+- **Step 7:** Only uses paper text and prior models (no domain knowledge suggestions)
+
+### Automatic Context Loading
+
+Phase 2 automatically loads context to improve LLM extraction:
+
+1. **Metamodel** from `../phase 1/metamodel_epidemiology.json`
+   - Tells LLM valid model structures
+   - Includes compartment types, flow types, parameter types
+   - Epidemiology-only (excludes traffic/TRM to avoid confusion)
+
+2. **Phase 1 examples** from `../phase 1/papers/epimde/*.compmodel`
+   - Shows LLM proven patterns
+   - Examples of compartment naming, parameter definitions, flow patterns
+
+3. **Enhanced prompts** - Include metamodel and examples in LLM prompts
+
+You'll see console messages like:
+```
+Using metamodel: ../phase 1/metamodel_epidemiology.json
+Using example models for context: ../phase 1/papers/epimde
+```
+
+If these files aren't found, the pipeline still works but with reduced accuracy (falls back to pattern-based extraction only).
 
 ## Key Features
 
@@ -173,18 +569,36 @@ Suggests fills from:
 10. `quality_checks.json` - Phase 1 analyzer results
 11. `evaluation_report.json` - Quality metrics
 
-## Dependencies
+## Setup
 
-See `requirements.txt`. Main dependencies:
+### 1. Install Dependencies
+
+All dependencies are unified in the parent directory:
+
+```bash
+cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
+pip install -r requirements.txt
+```
+
+**Or use virtual environment:**
+```bash
+cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Key Dependencies:**
 - `pdfplumber` - PDF text extraction
 - `openai` - LLM API client
 - `lxml` - XML processing
+- `pandas`, `numpy` - Data processing
 
-## Configuration
+### 2. Set Up API Key
 
-### API Key Setup
+**File:** `phase 2/.api_key.txt`
+
 1. Open `.api_key.txt`
-2. Add your OpenAI API key on a new line
+2. Add your OpenAI API key on a new line (without quotes)
 3. Save
 
 **Alternative:** Set environment variable:
@@ -192,22 +606,36 @@ See `requirements.txt`. Main dependencies:
 export OPENAI_API_KEY="sk-your-api-key-here"
 ```
 
-### Automatic Enhancement Loading
+## Running Phase 2
 
-The LLM improvements are **automatically active** when you run Phase 2. The pipeline will:
-
-1. **Auto-load metamodel** from `../phase 1/metamodel_epidemiology.json`
-2. **Auto-load Phase 1 examples** for entity extraction from `../phase 1/papers/epimde/*.compmodel`
-3. **Use enhanced prompts** for entity extraction with metamodel and examples
-4. **Generate clean XML** with proper formatting
-
-You'll see console messages like:
-```
-Using metamodel: ../phase 1/metamodel_epidemiology.json
-Using example models for context: ../phase 1/papers/epimde
+**Basic Command:**
+```bash
+cd "phase 2"
+python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name
 ```
 
-If these files aren't found, the pipeline still works but without the enhancements (falls back to pattern-based extraction).
+**Full Command (with all options):**
+```bash
+python run_phase2.py \
+    --paper data/papers/your_paper.pdf \
+    --output reports/your_paper_name \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+## Command Line Options
+
+**Required:**
+- `--paper`: Path to PDF paper file
+- `--output`: Output directory for results
+
+**Optional:**
+- `--metamodel`: Path to epidemiology metamodel JSON (default: `../phase 1/metamodel_epidemiology.json`)
+- `--api-key-file`: Path to API key file (default: `.api_key.txt`)
+- `--phase1-dir`: Path to Phase 1 directory (for quality checks)
+- `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
+- `--gold-standard`: Path to gold standard JSON (for evaluation)
+- `--no-llm`: Disable LLM, use pattern-based extraction only
 
 ## Limitations
 
@@ -225,6 +653,6 @@ If these files aren't found, the pipeline still works but without the enhancemen
 
 ## Support
 
-- **`INSTRUCTIONS.md`** - Step-by-step guide with inputs/outputs
+- **`INSTRUCTIONS.md`** - Step-by-step guide with detailed inputs/outputs
 - Check error messages in terminal output
 - Review generated JSON files for details
