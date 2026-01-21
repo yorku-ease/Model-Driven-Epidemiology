@@ -2,11 +2,11 @@
 
 ## ✨ Recent Improvements
 
-Phase 2 now includes **enhanced LLM integration** with automatic loading of:
+Phase 2 includes **enhanced LLM integration** with automatic loading of:
 - **Metamodel schema** - LLM understands valid compartment/parameter types
-- **Phase 1 examples** - LLM learns from successful model patterns
-- **LLM model refinement** - Analyzes draft models for improvements
-- **Better XML formatting** - .compmodel files now properly formatted
+- **Phase 1 examples** - LLM learns from successful model patterns during entity extraction
+- **Simplified model synthesis** - Streamlined XML generation with clean formatting
+- **Better XML formatting** - .compmodel files properly formatted and readable
 
 These improvements are **automatic** - just run Phase 2 normally and you'll see:
 ```
@@ -160,10 +160,9 @@ ls reports/your_paper_name/
 **What Happens:**
 - Maps extracted entities to `.compmodel` XML structure
 - Creates compartments from extracted entities
-- Creates flows (RateFlow/ContactFlow) and links to parameters
+- Creates flows (RateFlow/ContactFlow) and links to parameters using semantic matching
 - Creates parameters from extracted entities
-- **✨ NEW:** LLM analyzes draft model for improvements
-- **✨ NEW:** XML output properly formatted with indentation (no longer all on one line!)
+- **✨ Simplified approach:** Direct XML generation with clean formatting
 - Validates XML structure
 
 **Input:** Extracted entities  
@@ -173,7 +172,7 @@ ls reports/your_paper_name/
 - Compartments with initial populations
 - Flows with parameter links (rateParameter/contactRateParameter)
 - Parameters with values, units, descriptions
-- Valid XML structure
+- Valid XML structure with proper formatting
 
 **Progress:** "✓ Model XML is valid, ✓ Saved model to: ..."
 
