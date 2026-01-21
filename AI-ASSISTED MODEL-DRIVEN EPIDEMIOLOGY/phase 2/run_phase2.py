@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Optional
 
@@ -279,11 +280,26 @@ Examples:
         baseline_dir = Path(args.baseline_models_dir)
         if baseline_dir.exists():
             paper_stem = Path(args.paper).stem.lower()
+            # Extract keywords from paper name (split by common separators and camelCase)
+            paper_normalized = re.sub(r'[_\-\s]+', ' ', paper_stem)
+            # Split on camelCase boundaries (lowercase followed by uppercase) and numbers
+            paper_keywords = set(re.split(r'[_\-\s]+|(?<=[a-z])(?=[A-Z0-9])|(?<=[0-9])(?=[A-Za-z])', paper_normalized))
+            paper_keywords = {k.lower() for k in paper_keywords if k.strip()}
+            
             # Look for matching baseline model
             for baseline_file in baseline_dir.glob("*.compmodel"):
                 baseline_stem = baseline_file.stem.lower()
+                baseline_normalized = re.sub(r'[_\-\s]+', ' ', baseline_stem)
+                baseline_keywords = set(re.split(r'[_\-\s]+|(?<=[a-z])(?=[A-Z0-9])|(?<=[0-9])(?=[A-Za-z])', baseline_normalized))
+                baseline_keywords = {k.lower() for k in baseline_keywords if k.strip()}
+                
                 # Check if paper name matches baseline name (fuzzy match)
-                if paper_stem in baseline_stem or baseline_stem in paper_stem:
+                # Match if: (1) one contains the other, (2) they share common keywords, or (3) common disease names match
+                common_diseases = ['ebola', 'covid', 'malaria', 'hiv', 'flu', 'tuberculosis', 'tb']
+                has_common_disease = any(disease in paper_stem and disease in baseline_stem for disease in common_diseases)
+                
+                if (paper_stem in baseline_stem or baseline_stem in paper_stem or 
+                    len(paper_keywords & baseline_keywords) > 0 or has_common_disease):
                     gold_standard_path = str(baseline_file)
                     print(f"  Auto-detected baseline model: {baseline_file.name}")
                     break
