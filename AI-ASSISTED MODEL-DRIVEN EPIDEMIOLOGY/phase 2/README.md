@@ -613,21 +613,48 @@ pip install -r requirements.txt
 
 **Key Dependencies:**
 - `pdfplumber` - PDF text extraction
-- `openai` - LLM API client
+- `openai` - OpenAI API client (optional, if using OpenAI)
+- `google-generativeai` - Google Gemini API client (optional, if using Gemini)
 - `lxml` - XML processing
 - `pandas`, `numpy` - Data processing
 
 ### 2. Set Up API Key
 
+You can use either **OpenAI** or **Google Gemini** as your LLM provider.
+
+#### Option A: OpenAI (Default)
+
 **File:** `phase 2/.api_key.txt`
 
 1. Open `.api_key.txt`
 2. Add your OpenAI API key on a new line (without quotes)
+   - Or use format: `openai:sk-your-api-key-here` (if file contains multiple keys)
 3. Save
 
 **Alternative:** Set environment variable:
 ```bash
 export OPENAI_API_KEY="sk-your-api-key-here"
+```
+
+#### Option B: Google Gemini
+
+**File:** `phase 2/.api_key.txt`
+
+1. Get your Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Open `.api_key.txt`
+3. Add your Gemini API key on a new line (without quotes)
+   - Or use format: `gemini:AIza...` (if file contains multiple keys)
+4. Save
+
+**Alternative:** Set environment variable:
+```bash
+export GEMINI_API_KEY="AIza-your-api-key-here"
+```
+
+**Note:** If your `.api_key.txt` file contains both keys, use the format:
+```
+openai:sk-...
+gemini:AIza...
 ```
 
 ## Running Phase 2
@@ -643,6 +670,17 @@ python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_pa
 python run_phase2.py \
     --paper data/papers/your_paper.pdf \
     --output reports/your_paper_name \
+    --llm-provider openai \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+**Using Gemini instead:**
+```bash
+python run_phase2.py \
+    --paper data/papers/your_paper.pdf \
+    --output reports/your_paper_name \
+    --llm-provider gemini \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
 ```
@@ -656,6 +694,7 @@ python run_phase2.py \
 **Optional:**
 - `--metamodel`: Path to epidemiology metamodel JSON (default: `../phase 1/metamodel_epidemiology.json`)
 - `--api-key-file`: Path to API key file (default: `.api_key.txt`)
+- `--llm-provider`: LLM provider to use - `openai` or `gemini` (default: `openai`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
 - `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
 - `--gold-standard`: Path to gold standard JSON or .compmodel file (for evaluation)

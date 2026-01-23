@@ -46,7 +46,11 @@ Examples:
                        help='Path to epidemiology metamodel JSON (for LLM prompts)')
     parser.add_argument('--api-key-file', type=str,
                        default='.api_key.txt',
-                       help='Path to file containing OpenAI API key')
+                       help='Path to file containing API key (OpenAI or Gemini)')
+    parser.add_argument('--llm-provider', type=str,
+                       choices=['openai', 'gemini'],
+                       default='openai',
+                       help='LLM provider to use: openai or gemini (default: openai)')
     parser.add_argument('--use-llm', action='store_true', default=True,
                        help='Use LLM for extraction (default: True)')
     parser.add_argument('--no-llm', dest='use_llm', action='store_false',
@@ -79,7 +83,10 @@ Examples:
     print("=" * 80)
     print(f"Paper: {paper_path}")
     print(f"Output: {output_dir}")
-    print(f"LLM: {'Enabled' if args.use_llm else 'Disabled (pattern-based only)'}")
+    if args.use_llm:
+        print(f"LLM: Enabled ({args.llm_provider})")
+    else:
+        print(f"LLM: Disabled (pattern-based only)")
     print()
     
     # Step 1: PDF Pipeline
@@ -93,7 +100,7 @@ Examples:
     
     # Step 2: Paper Promises Extraction
     print("Step 2: Extracting Paper Promises...")
-    llm_client = LLMClient(api_key_file=args.api_key_file)
+    llm_client = LLMClient(api_key_file=args.api_key_file, provider=args.llm_provider)
     
     metamodel_path = None
     if Path(args.metamodel).exists():

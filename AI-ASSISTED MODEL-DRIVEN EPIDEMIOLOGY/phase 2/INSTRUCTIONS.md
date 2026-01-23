@@ -16,11 +16,16 @@ Complete guide to running Phase 2 with detailed inputs and outputs for each step
 
 ### Step 1: Set Up API Key
 
+You can use either **OpenAI** or **Google Gemini** as your LLM provider.
+
 **File:** `phase 2/.api_key.txt`
 
-1. Open `.api_key.txt` in the `phase 2` directory
-2. Add your OpenAI API key on a new line (without quotes)
-3. Save the file
+#### Option A: OpenAI (Default)
+
+1. Get your OpenAI API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Open `.api_key.txt` in the `phase 2` directory
+3. Add your OpenAI API key on a new line (without quotes)
+4. Save the file
 
 Example:
 ```
@@ -30,6 +35,29 @@ sk-your-actual-api-key-here
 **Alternative:** Set environment variable:
 ```bash
 export OPENAI_API_KEY="sk-your-api-key-here"
+```
+
+#### Option B: Google Gemini
+
+1. Get your Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Open `.api_key.txt` in the `phase 2` directory
+3. Add your Gemini API key on a new line (without quotes)
+4. Save the file
+
+Example:
+```
+AIza-your-actual-api-key-here
+```
+
+**Alternative:** Set environment variable:
+```bash
+export GEMINI_API_KEY="AIza-your-api-key-here"
+```
+
+**Note:** If your `.api_key.txt` file contains both keys, use the format:
+```
+openai:sk-...
+gemini:AIza...
 ```
 
 **What happens if you skip this:**
@@ -945,6 +973,7 @@ python run_phase2.py --help
 **Optional:**
 - `--metamodel`: Path to epidemiology metamodel JSON (default: `../phase 1/metamodel_epidemiology.json`)
 - `--api-key-file`: Path to API key file (default: `.api_key.txt`)
+- `--llm-provider`: LLM provider to use - `openai` or `gemini` (default: `openai`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
 - `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
 - `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation)
@@ -992,7 +1021,8 @@ pip install pdfplumber
 
 ### "LLM not available"
 - Check `.api_key.txt` has your API key
-- Or set `OPENAI_API_KEY` environment variable
+- Or set `OPENAI_API_KEY` or `GEMINI_API_KEY` environment variable
+- Use `--llm-provider gemini` to use Gemini instead of OpenAI
 - Phase 2 will still run but with reduced accuracy
 
 ### "Phase 1 analyzer not found"
