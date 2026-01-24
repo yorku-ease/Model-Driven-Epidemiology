@@ -1,0 +1,222 @@
+{
+  "modelName": "Ebolasensitivity",
+  "summary": {
+    "modelName": "Ebolasensitivity",
+    "totalPopulation": null,
+    "numCompartments": 5,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.1",
+            "description": "Susceptible individuals become non-symptomatic infected",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Non-symptomatic infected individuals become infectious",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Infectious individuals recover from the disease",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Infectious individuals die from the disease",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious Deceased",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.0",
+            "description": "Infectious dead bodies infect susceptible individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": ".",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "α",
+        "type": "CONSTANT",
+        "expression": "0.",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "n",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "recovery rate",
+        "unit": "weeks−1"
+      },
+      {
+        "index": 4,
+        "name": "µ",
+        "type": "CONSTANT",
+        "expression": "1/50",
+        "description": "background death rate",
+        "unit": "years−1"
+      },
+      {
+        "index": 5,
+        "name": "Λ",
+        "type": "CONSTANT",
+        "expression": "1000µ",
+        "description": "birth rate",
+        "unit": "people years−1"
+      },
+      {
+        "index": 6,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "safe burial rate",
+        "unit": "weeks−1"
+      },
+      {
+        "index": 7,
+        "name": "cI",
+        "type": "CONSTANT",
+        "expression": "variable",
+        "description": "contact rate with infectious individuals",
+        "unit": "people weeks−1"
+      },
+      {
+        "index": 8,
+        "name": "cD",
+        "type": "CONSTANT",
+        "expression": "variable",
+        "description": "contact rate with infectious dead bodies",
+        "unit": "people weeks−1"
+      },
+      {
+        "index": 9,
+        "name": "ω",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "rate at which infected individuals become infectious",
+        "unit": "weeks−1"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

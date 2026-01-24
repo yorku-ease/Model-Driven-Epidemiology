@@ -984,11 +984,67 @@ python run_phase2.py --help
 
 ## Example Workflow
 
+### Running with OpenAI (Default)
+
+```bash
+# 1. Activate virtual environment
+cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
+source venv/bin/activate
+
+# 2. Set up API key (if not already done)
+echo "sk-your-openai-key" > "phase 2/.api_key.txt"
+
+# 3. Navigate to phase 2
+cd "phase 2"
+
+# 4. Run Phase 2 with OpenAI
+python3 run_phase2.py \
+    --paper data/papers/EbolaSensitivity.pdf \
+    --output reports/ebola \
+    --llm-provider openai \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+
+# 5. Check results
+cat reports/ebola/evaluation_report.json
+cat reports/ebola/phase2_final_report.json
+cat reports/ebola/model_draft.compmodel
+```
+
+### Running with Gemini
+
+```bash
+# 1. Activate virtual environment
+cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
+source venv/bin/activate
+
+# 2. Set up API key (if not already done)
+echo "AIza-your-gemini-key" > "phase 2/.api_key.txt"
+
+# 3. Navigate to phase 2
+cd "phase 2"
+
+# 4. Run Phase 2 with Gemini
+python3 run_phase2.py \
+    --paper data/papers/EbolaSensitivity.pdf \
+    --output reports/ebola \
+    --llm-provider gemini \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+
+# 5. Check results
+cat reports/ebola/evaluation_report.json
+cat reports/ebola/phase2_final_report.json
+cat reports/ebola/model_draft.compmodel
+```
+
+### Basic Example (Your Own Paper)
+
 ```bash
 # 1. Set up API key
 echo "sk-your-api-key" > phase\ 2/.api_key.txt
 
-# 2. Install dependencies
+# 2. Install dependencies (if needed)
 cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
 source venv/bin/activate
 pip install -r requirements.txt
@@ -997,16 +1053,20 @@ pip install -r requirements.txt
 cd "phase 2"
 cp your_paper.pdf data/papers/
 
-# 4. Run Phase 2
-python run_phase2.py \
+# 4. Run Phase 2 (OpenAI - default)
+python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
     --output reports/your_paper
 
+# Or with Gemini:
+python3 run_phase2.py \
+    --paper data/papers/your_paper.pdf \
+    --output reports/your_paper \
+    --llm-provider gemini
+
 # 5. Check main results
 cat reports/your_paper/phase2_final_report.json | head -50
-# or open in a text editor
-
-# 6. Check the extracted model
+cat reports/your_paper/evaluation_report.json
 cat reports/your_paper/model_draft.compmodel
 ```
 

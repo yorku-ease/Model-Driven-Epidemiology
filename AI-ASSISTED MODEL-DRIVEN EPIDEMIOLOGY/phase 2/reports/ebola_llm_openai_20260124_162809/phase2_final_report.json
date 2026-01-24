@@ -1,0 +1,423 @@
+{
+  "paper_name": "Ebolasensitivity",
+  "summary": {
+    "extraction": {
+      "compartments": 5,
+      "flows": 6,
+      "parameters": 10,
+      "stratifications": 2,
+      "interventions": 4
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 4,
+      "critical_gaps": 0,
+      "high_gaps": 4,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [
+      "Susceptible",
+      "Exposed",
+      "Infectious",
+      "Recovered",
+      "Deceased"
+    ],
+    "stratifications": [],
+    "parameters": [
+      "disease death rate",
+      "recovery rate",
+      "background death rate",
+      "birth rate",
+      "safe burial rate",
+      "contact rate with infectious individuals",
+      "contact rate with infectious dead bodies",
+      "transmission probability",
+      "rate at which infected individuals become infectious"
+    ],
+    "interventions": [
+      "vaccination",
+      "quarantine"
+    ],
+    "model_type": "SEIR",
+    "description": "A mathematical model of Ebola Virus Disease with a focus on the dynamics of an outbreak and the effectiveness of interventions.",
+    "extraction_method": "llm"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Deceased",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Exposed",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Infectious Deceased",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Deceased",
+        "target": "Susceptible",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2",
+        "value": ".",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "\u03b1",
+        "value": "0.",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "n",
+        "value": "0",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "\u03b3",
+        "value": "0.5",
+        "unit": "weeks\u22121",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u00b5",
+        "value": "1/50",
+        "unit": "years\u22121",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u039b",
+        "value": "1000\u00b5",
+        "unit": "people years\u22121",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b8",
+        "value": "1",
+        "unit": "weeks\u22121",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "cI",
+        "value": "variable",
+        "unit": "people weeks\u22121",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "cD",
+        "value": "variable",
+        "unit": "people weeks\u22121",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c9",
+        "value": "1",
+        "unit": "weeks\u22121",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 5,
+    "flows": 6,
+    "parameters": 10,
+    "stratifications": 2,
+    "interventions": 4
+  },
+  "traceability": {
+    "total_items": 27,
+    "items_with_evidence": 27,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 27,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 4,
+      "critical_gaps": 0,
+      "high_gaps": 4,
+      "medium_gaps": 0,
+      "promised_items": {
+        "compartments": 5,
+        "parameters": 9,
+        "stratifications": 0,
+        "interventions": 2
+      },
+      "extracted_items": {
+        "compartments": 5,
+        "parameters": 10,
+        "stratifications": 2,
+        "interventions": 4
+      }
+    },
+    "missing_compartments": [],
+    "missing_parameters": [
+      {
+        "promised": "disease death rate",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "recovery rate",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "birth rate",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "safe burial rate",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 4,
+    "total_suggestions": 7,
+    "suggestions_by_source": {
+      "paper_span": 3,
+      "prior_model": 0,
+      "domain_knowledge": 4
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 27,
+      "items_with_evidence": 27,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 27,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 4,
+      "critical_gaps": 0,
+      "high_gaps": 4,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 4,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Infectious Deceased",
+            "gold": "InfectiousDeceased",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious",
+            "gold": "Infectious",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed",
+            "gold": "Exposed",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0.8,
+        "recall": 0.7272727272727273,
+        "f1": 0.761904761904762,
+        "tp": 8,
+        "fp": 2,
+        "fn": 3,
+        "matches": [
+          {
+            "extracted": "\u03b8",
+            "gold": "\u03b8",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "cI",
+            "gold": "c_I",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b1",
+            "gold": "\u03b1",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b2",
+            "gold": "\u03b2",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "cD",
+            "gold": "c_D",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b3",
+            "gold": "\u03b3",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u039b",
+            "gold": "\u039b",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03c9",
+            "gold": "\u03c9",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "\u00b5",
+          "n"
+        ],
+        "unmatched_gold": [
+          "\u03bc",
+          "\u03b2c_I",
+          "\u03b2c_D"
+        ]
+      },
+      "flows": {
+        "precision": 0.5,
+        "recall": 0.75,
+        "f1": 0.6,
+        "tp": 3,
+        "fp": 3,
+        "fn": 1,
+        "matches": [
+          "Exposed->Infectious",
+          "Susceptible->Exposed",
+          "Infectious->Recovered"
+        ],
+        "unmatched_extracted": [
+          "Infectious->Infectious Deceased",
+          "Exposed->Susceptible",
+          "Infectious Deceased->Susceptible"
+        ],
+        "unmatched_gold": [
+          "Infectious->InfectiousDeceased"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "failed",
+    "sensitivity_analysis": "not_runnable"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

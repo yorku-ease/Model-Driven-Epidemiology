@@ -1,0 +1,308 @@
+{
+  "compartments": [
+    {
+      "raw_text": "susceptible (S)",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "susceptible (S)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are not infected and can contract the disease."
+    },
+    {
+      "raw_text": "non-symptomatic infected (E)",
+      "normalized_name": "Exposed",
+      "page_number": 0,
+      "text_span": "non-symptomatic infected (E)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Non-symptomatic infected individuals who are in the incubation period."
+    },
+    {
+      "raw_text": "infectious living (I)",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "infectious living (I)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are symptomatic and capable of transmitting the disease."
+    },
+    {
+      "raw_text": "recovered (R)",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "recovered (R)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the disease and are immune."
+    },
+    {
+      "raw_text": "infectious deceased (D)",
+      "normalized_name": "Infectious Deceased",
+      "page_number": 0,
+      "text_span": "infectious deceased (D)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have died from the disease but can still infect others."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Exposed",
+      "target": "Susceptible",
+      "raw_text": "e progresses to t",
+      "page_number": 1,
+      "text_span": "e progresses to t",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "raw_text": "they maybeinfectedeitherbyaninfectiousindividualorcorpseandbecome non-symptomaticinfected(E)",
+      "page_number": 0,
+      "text_span": "they maybeinfectedeitherbyaninfectiousindividualorcorpseandbecome non-symptomaticinfected(E)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible individuals become non-symptomatic infected"
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "raw_text": "Non-symptomaticinfectedindividualsbecomeinfectious(I)",
+      "page_number": 0,
+      "text_span": "Non-symptomaticinfectedindividualsbecomeinfectious(I)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Non-symptomatic infected individuals become infectious"
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "Infectiousindividualscanrecover(R)fromthedisease",
+      "page_number": 0,
+      "text_span": "Infectiousindividualscanrecover(R)fromthedisease",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious individuals recover from the disease"
+    },
+    {
+      "source": "Infectious",
+      "target": "Infectious Deceased",
+      "raw_text": "Infected individuals become symptomatic at rate (\u03c9E). Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected(E), infectious living(I), infectious deceased(D) and recovered(R)",
+      "page_number": 0,
+      "text_span": "Infected individuals become symptomatic at rate (\u03c9E). Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected(E), infectious living(I), infectious deceased(D) and recovered(R)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious individuals die from the disease"
+    },
+    {
+      "source": "Infectious Deceased",
+      "target": "Susceptible",
+      "raw_text": "The infected deceased (D) represents the dead bodies of previously infected individuals who are still capable of infectingsusceptible individuals",
+      "page_number": 0,
+      "text_span": "The infected deceased (D) represents the dead bodies of previously infected individuals who are still capable of infectingsusceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Infectious dead bodies infect susceptible individuals"
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u03b2",
+      "normalized_name": "\u03b2",
+      "value": ".",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b2 = .",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b1",
+      "normalized_name": "\u03b1",
+      "value": "0.",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b1=0.",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "n",
+      "normalized_name": "n",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "n=0",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3 recoveryrate 0.5\u20131 0.5 weeks\u22121 [16]",
+      "normalized_name": "\u03b3",
+      "value": "0.5",
+      "unit": "weeks\u22121",
+      "description": "recovery rate",
+      "page_number": 0,
+      "text_span": "\u03b3 recoveryrate 0.5\u20131 0.5 weeks\u22121 [16]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u00b5 backgrounddeathrate 0\u20130.001 1/50 years\u22121 [10]",
+      "normalized_name": "\u00b5",
+      "value": "1/50",
+      "unit": "years\u22121",
+      "description": "background death rate",
+      "page_number": 0,
+      "text_span": "\u00b5 backgrounddeathrate 0\u20130.001 1/50 years\u22121 [10]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u039b birthrate 0\u20131 1000\u00b5 peopleyears\u22121 [10]",
+      "normalized_name": "\u039b",
+      "value": "1000\u00b5",
+      "unit": "people years\u22121",
+      "description": "birth rate",
+      "page_number": 0,
+      "text_span": "\u039b birthrate 0\u20131 1000\u00b5 peopleyears\u22121 [10]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b8 safeburialrate 0.33\u20137 1 weeks\u22121 [22]",
+      "normalized_name": "\u03b8",
+      "value": "1",
+      "unit": "weeks\u22121",
+      "description": "safe burial rate",
+      "page_number": 0,
+      "text_span": "\u03b8 safeburialrate 0.33\u20137 1 weeks\u22121 [22]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "c contactratewithinfectiousindividuals 0\u20135 variable peopleweeks\u22121 - I",
+      "normalized_name": "cI",
+      "value": "variable",
+      "unit": "people weeks\u22121",
+      "description": "contact rate with infectious individuals",
+      "page_number": 0,
+      "text_span": "c contactratewithinfectiousindividuals 0\u20135 variable peopleweeks\u22121 - I",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "c contactratewithinfectiousdeadbodies 0\u20135 variable peopleweeks\u22121 - D",
+      "normalized_name": "cD",
+      "value": "variable",
+      "unit": "people weeks\u22121",
+      "description": "contact rate with infectious dead bodies",
+      "page_number": 0,
+      "text_span": "c contactratewithinfectiousdeadbodies 0\u20135 variable peopleweeks\u22121 - D",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03c9 rateatwhichinfectedindividualsbecominginfectious 0.33\u20133 1 weeks\u22121 [1]",
+      "normalized_name": "\u03c9",
+      "value": "1",
+      "unit": "weeks\u22121",
+      "description": "rate at which infected individuals become infectious",
+      "page_number": 0,
+      "text_span": "\u03c9 rateatwhichinfectedindividualsbecominginfectious 0.33\u20133 1 weeks\u22121 [1]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 3,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "contact_tracing",
+      "page_number": 1,
+      "text_span": "contact_tracing mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 6,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 6,
+    "num_parameters": 10,
+    "num_stratifications": 2,
+    "num_interventions": 4
+  }
+}

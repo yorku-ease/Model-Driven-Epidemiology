@@ -3,6 +3,7 @@
 import argparse
 import json
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
@@ -26,21 +27,35 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Process single paper
-  python run_phase2.py --paper EbolaSensitivity.pdf --output reports/ebola
+  # Process paper with auto-generated folder name (recommended)
+  python run_phase2.py --paper EbolaSensitivity.pdf
+  # Creates: reports/ebola_llm_openai_20240123_143022/
+  
+  # Process with Gemini instead of OpenAI
+  python run_phase2.py --paper EbolaSensitivity.pdf --llm-provider gemini
+  # Creates: reports/ebola_llm_gemini_20240123_143022/
+  
+  # Process without LLM (pattern-based only)
+  python run_phase2.py --paper EbolaSensitivity.pdf --no-llm
+  # Creates: reports/ebola_pattern_20240123_143022/
+  
+  # Process with custom output folder (override auto-generation)
+  python run_phase2.py --paper EbolaSensitivity.pdf --output reports/my_custom_folder
   
   # Process with custom API key file
-  python run_phase2.py --paper EbolaSensitivity.pdf --output reports/ebola --api-key-file .api_key.txt
+  python run_phase2.py --paper EbolaSensitivity.pdf --api-key-file .api_key.txt
   
   # Process with metamodel for LLM prompts
-  python run_phase2.py --paper EbolaSensitivity.pdf --output reports/ebola --metamodel ../phase 1/metamodel_epidemiology.json
+  python run_phase2.py --paper EbolaSensitivity.pdf --metamodel ../phase 1/metamodel_epidemiology.json
         """
     )
     
     parser.add_argument('--paper', type=str, required=True,
                        help='Path to PDF paper file')
-    parser.add_argument('--output', type=str, required=True,
-                       help='Output directory for results')
+    parser.add_argument('--output', type=str,
+                       help='Base directory for output (folder name will be {disease}_{method}_{timestamp})')
+    parser.add_argument('--output-base-dir', type=str, default='reports',
+                       help='Base directory when --output not provided (default: reports)')
     parser.add_argument('--metamodel', type=str,
                        default='../phase 1/metamodel_epidemiology.json',
                        help='Path to epidemiology metamodel JSON (for LLM prompts)')
@@ -75,7 +90,71 @@ Examples:
         print(f"Error: Paper file not found: {paper_path}")
         return 1
     
-    output_dir = Path(args.output)
+    # Always generate folder name in format: {disease}_{method}_{timestamp}
+    # Extract disease name from paper filename
+    paper_stem = paper_path.stem.lower()
+    
+    # Common disease names to look for
+    disease_keywords = {
+        'ebola': 'ebola',
+        'covid': 'covid',
+        'sars-cov': 'covid',
+        'coronavirus': 'covid',
+        'malaria': 'malaria',
+        'hiv': 'hiv',
+        'aids': 'hiv',
+        'tuberculosis': 'tuberculosis',
+        'tb': 'tuberculosis',
+        'flu': 'flu',
+        'influenza': 'flu',
+        'dengue': 'dengue',
+        'cholera': 'cholera',
+        'measles': 'measles',
+        'mumps': 'mumps',
+        'rubella': 'rubella',
+        'zika': 'zika',
+        'yellow fever': 'yellowfever',
+        'yellowfever': 'yellowfever'
+    }
+    
+    # Try to find disease name in paper filename
+    disease_name = 'unknown'
+    for keyword, disease in disease_keywords.items():
+        if keyword in paper_stem:
+            disease_name = disease
+            break
+    
+    # If not found, try to extract from paper stem (take first meaningful word)
+    if disease_name == 'unknown':
+        # Remove common prefixes/suffixes
+        cleaned = re.sub(r'^(paper|model|analysis|study|thesis|dissertation|report|document)[_\-\s]*', '', paper_stem)
+        cleaned = re.sub(r'[_\-\s]+(paper|model|analysis|study|thesis|dissertation|report|document)$', '', cleaned)
+        # Take first word or first 10 chars
+        first_word = cleaned.split()[0] if cleaned.split() else paper_stem[:10]
+        disease_name = re.sub(r'[^a-z0-9]', '', first_word.lower())[:15]  # Limit length
+    
+    # Determine method
+    method = 'llm' if args.use_llm else 'pattern'
+    if args.use_llm:
+        method = f"{method}_{args.llm_provider}"  # e.g., "llm_gemini" or "llm_openai"
+    
+    # Generate timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # Create folder name in format: {disease}_{method}_{timestamp}
+    folder_name = f"{disease_name}_{method}_{timestamp}"
+    
+    # Determine base directory
+    if args.output:
+        # If output is provided, use it as the parent directory
+        base_dir = Path(args.output)
+    else:
+        # Use default base directory
+        base_dir = Path(args.output_base_dir)
+    
+    # Always create folder with the generated name
+    output_dir = base_dir / folder_name
+    
     output_dir.mkdir(parents=True, exist_ok=True)
     
     print("=" * 80)

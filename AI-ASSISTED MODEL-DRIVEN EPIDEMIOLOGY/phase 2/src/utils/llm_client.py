@@ -1,6 +1,7 @@
 """LLM client wrapper for OpenAI and Gemini APIs"""
 
 import os
+import re
 from pathlib import Path
 from typing import Optional, Dict, Any, Literal
 import json
@@ -92,7 +93,8 @@ class LLMClient:
         return None
     
     def extract_with_llm(self, prompt: str, model: Optional[str] = None, 
-                        temperature: float = 0.3, max_tokens: int = 2000) -> Dict[str, Any]:
+                        temperature: float = 0.3, max_tokens: int = 2000, 
+                        retry_count: int = 0) -> Dict[str, Any]:
         """
         Extract structured data using LLM.
         
@@ -114,33 +116,110 @@ class LLMClient:
             if self.provider == "openai":
                 model = "gpt-4o-mini"
             elif self.provider == "gemini":
-                model = "gemini-2.5-pro"
+                # Use Flash by default - Pro is often blocked by safety filters for scientific content
+                model = "gemini-2.5-flash"
+        
+        # Use identical system instruction for both providers to ensure fair comparison
+        system_instruction = """You are a scientific paper analyzer. You must return ONLY valid JSON.
+CRITICAL RULES:
+- No explanations, no markdown code blocks, no extra text before or after
+- Begin directly with '{' or '[' and end with '}' or ']'
+- Do NOT use ```json or ``` markers
+- Invalid JSON will cause errors
+- Return pure JSON only"""
         
         try:
             if self.provider == "openai":
-                response = self.client.chat.completions.create(
-                    model=model,
-                    messages=[
-                        {"role": "system", "content": "You are a scientific paper analyzer. Return only valid JSON."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=temperature,
-                    max_tokens=max_tokens
-                )
+                # Check if prompt asks for array or object
+                # If prompt mentions "array" or starts with "Return a JSON array", don't use json_object format
+                # (json_object format only works for objects, not arrays)
+                use_json_object = "array" not in prompt.lower() and "json array" not in prompt.lower()
+                
+                # Use the same system instruction for fair comparison
+                messages = [
+                    {"role": "system", "content": system_instruction},
+                    {"role": "user", "content": prompt}
+                ]
+                
+                # Only use response_format for JSON objects (not arrays)
+                if use_json_object:
+                    response = self.client.chat.completions.create(
+                        model=model,
+                        messages=messages,
+                        temperature=temperature,
+                        max_tokens=max_tokens,
+                        response_format={"type": "json_object"}
+                    )
+                else:
+                    # For arrays, rely on prompt instructions only
+                    response = self.client.chat.completions.create(
+                        model=model,
+                        messages=messages,
+                        temperature=temperature,
+                        max_tokens=max_tokens
+                    )
                 result_text = response.choices[0].message.content.strip()
                 
             elif self.provider == "gemini":
-                # Gemini uses a different API structure
-                full_prompt = f"You are a scientific paper analyzer. Return only valid JSON.\n\n{prompt}"
+                # Use the same system instruction prepended to prompt (Gemini doesn't have separate system messages)
+                full_prompt = f"{system_instruction}\n\n{prompt}"
+                
                 gen_model = self.client.GenerativeModel(model)
                 response = gen_model.generate_content(
                     full_prompt,
                     generation_config={
                         "temperature": temperature,
                         "max_output_tokens": max_tokens,
-                    }
+                    },
+                    safety_settings=[
+                        {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                        {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                        {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+                        {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+                    ]
                 )
-                result_text = response.text.strip()
+                # Handle Gemini response - check for blocked content
+                if hasattr(response, 'candidates') and response.candidates:
+                    candidate = response.candidates[0]
+                    # Check finish reason (2 = SAFETY, 3 = RECITATION, etc.)
+                    if hasattr(candidate, 'finish_reason'):
+                        if candidate.finish_reason == 2:  # SAFETY
+                            # Try to get the text anyway, or use flash model as fallback
+                            if hasattr(candidate, 'content') and candidate.content:
+                                if hasattr(candidate.content, 'parts') and candidate.content.parts:
+                                    result_text = ''.join([part.text for part in candidate.content.parts if hasattr(part, 'text')]).strip()
+                                else:
+                                    # Safety blocked - try flash model as fallback
+                                    print(f"⚠️  Gemini Pro blocked by safety filters. Trying Flash model...")
+                                    if model != "gemini-2.5-flash":
+                                        return self.extract_with_llm(prompt, model="gemini-2.5-flash", temperature=temperature, max_tokens=max_tokens, retry_count=retry_count)
+                                    raise ValueError("Gemini content blocked by safety filters and Flash also unavailable")
+                            else:
+                                raise ValueError("Gemini content blocked by safety filters")
+                        elif candidate.finish_reason == 3:  # RECITATION
+                            raise ValueError("Gemini blocked content due to recitation policy")
+                
+                # Try to get text from response
+                try:
+                    result_text = response.text.strip()
+                except AttributeError:
+                    # Fallback: try to extract from candidates
+                    if hasattr(response, 'candidates') and response.candidates:
+                        candidate = response.candidates[0]
+                        if hasattr(candidate, 'content') and candidate.content:
+                            if hasattr(candidate.content, 'parts') and candidate.content.parts:
+                                result_text = ''.join([part.text for part in candidate.content.parts if hasattr(part, 'text')]).strip()
+                            else:
+                                # Check for blocked content
+                                if hasattr(response, 'prompt_feedback'):
+                                    raise ValueError(f"Gemini blocked content: {response.prompt_feedback}")
+                                raise ValueError("Gemini returned empty response")
+                        else:
+                            raise ValueError("Gemini returned empty response")
+                    else:
+                        if hasattr(response, 'prompt_feedback'):
+                            raise ValueError(f"Gemini blocked content: {response.prompt_feedback}")
+                        raise ValueError("Gemini returned empty response")
             else:
                 raise ValueError(f"Unknown provider: {self.provider}")
             
@@ -150,17 +229,90 @@ class LLMClient:
             elif "```" in result_text:
                 result_text = result_text.split("```")[1].split("```")[0].strip()
             
-            # Parse JSON
+            # Parse JSON with automatic repair for common issues
             try:
-                return json.loads(result_text)
+                parsed = json.loads(result_text)
+                # If we expected an array but got an object (or vice versa), log a warning
+                if isinstance(parsed, dict) and "array" in prompt.lower():
+                    print(f"Warning: Expected JSON array but got object. Response keys: {list(parsed.keys())[:5]}")
+                elif isinstance(parsed, list) and "object" in prompt.lower() and "array" not in prompt.lower():
+                    print(f"Warning: Expected JSON object but got array with {len(parsed)} items")
+                return parsed
             except json.JSONDecodeError as e:
+                # Try to repair common JSON issues
+                repaired = self._repair_json(result_text)
+                if repaired:
+                    try:
+                        parsed = json.loads(repaired)
+                        print(f"✓ Repaired JSON (fixed missing commas or other issues)")
+                        return parsed
+                    except json.JSONDecodeError:
+                        pass
+                
                 print(f"Warning: Failed to parse LLM response as JSON: {e}")
-                print(f"Response text: {result_text[:500]}")
-                return {"error": "Failed to parse JSON", "raw_response": result_text}
+                print(f"Response text (first 500 chars): {result_text[:500]}")
+                # Try to extract JSON if it's wrapped in text
+                if "```json" in result_text:
+                    try:
+                        json_part = result_text.split("```json")[1].split("```")[0].strip()
+                        repaired = self._repair_json(json_part)
+                        if repaired:
+                            return json.loads(repaired)
+                        return json.loads(json_part)
+                    except:
+                        pass
+                return {"error": "Failed to parse JSON", "raw_response": result_text[:1000]}
         
         except Exception as e:
+            error_str = str(e)
+            # Check if it's a quota error (429) and we haven't retried too much
+            if "429" in error_str or "quota" in error_str.lower():
+                if retry_count < 2:  # Retry up to 2 times
+                    import time
+                    wait_time = 5 * (retry_count + 1)  # Wait 5, 10 seconds
+                    print(f"⚠️  Quota error detected. Waiting {wait_time}s before retry {retry_count + 1}...")
+                    time.sleep(wait_time)
+                    return self.extract_with_llm(prompt, model, temperature, max_tokens, retry_count + 1)
+                else:
+                    print(f"❌ Error: API quota exceeded after retries.")
+                    print(f"   Please check your quota.")
+                    print(f"   The system will fall back to pattern-based extraction (limited accuracy).")
             print(f"Error calling LLM ({self.provider}): {e}")
             raise
+    
+    def _repair_json(self, text: str) -> Optional[str]:
+        """
+        Attempt to repair common JSON issues:
+        - Missing commas between array elements: }{ -> },{
+        - Missing commas between object properties
+        - Trailing commas
+        """
+        if not text or not text.strip():
+            return None
+        
+        repaired = text.strip()
+        
+        # Fix missing commas between array elements: }{ -> },{
+        # But be careful not to break valid JSON like "key":"value"
+        # Pattern: } followed by { (missing comma between objects in array)
+        # Replace }{ with },{ but only when it's clearly between objects (not inside strings)
+        # This is a simple heuristic - look for }{ that's not inside quotes
+        repaired = re.sub(r'\}\s*\{', '},{', repaired)
+        
+        # Fix trailing commas before } or ]
+        repaired = re.sub(r',\s*}', '}', repaired)
+        repaired = re.sub(r',\s*]', ']', repaired)
+        
+        # Fix missing commas after closing braces/quotes before opening braces
+        # Pattern: "value" followed by { (missing comma)
+        repaired = re.sub(r'"\s*\{', '",{', repaired)
+        repaired = re.sub(r"'\s*\{", "',{", repaired)
+        
+        # Fix missing commas between array elements that are objects
+        # More specific: }{ at the start of array elements
+        # This handles cases like: [{"a":1}{"b":2}] -> [{"a":1},{"b":2}]
+        
+        return repaired if repaired != text else None
     
     def is_available(self) -> bool:
         """Check if LLM is available"""

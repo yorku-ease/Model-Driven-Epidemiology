@@ -229,26 +229,58 @@ class GapFiller:
         """Use LLM for domain knowledge suggestions"""
         suggestions = []
         
+        separator = "\n" + "*" * 80 + "\n"
         if gap_type == "missing_compartments":
-            prompt = f"""Suggest a compartmental model compartment for: {item}
+            prompt = f"""{separator}
+TASK: Suggest a compartmental model compartment for: {item}
+{separator}
+CRITICAL OUTPUT FORMAT:
+- Return ONLY a valid JSON object
+- No explanations, no markdown, no code blocks
+- Begin directly with '{{' and end with '}}'
+- Do NOT use ```json or ``` markers
+- Invalid JSON will cause errors
+{separator}
+REQUIRED JSON STRUCTURE:
+{{
+  "name": "suggested compartment name",
+  "description": "brief description",
+  "population": 0
+}}
 
-Return a JSON object with:
-- "name": suggested compartment name
-- "description": brief description
-- "population": suggested initial population (default 0)
-
-Return ONLY valid JSON."""
+SUGGESTION RULES:
+- Use standard epidemiological compartment names
+- Provide a brief, clear description
+- Default population should be 0
+{separator}
+Return ONLY valid JSON object starting with '{{' and ending with '}}'."""
         
         elif gap_type == "missing_parameters":
-            prompt = f"""Suggest a parameter for epidemiological modeling: {item}
+            prompt = f"""{separator}
+TASK: Suggest a parameter for epidemiological modeling: {item}
+{separator}
+CRITICAL OUTPUT FORMAT:
+- Return ONLY a valid JSON object
+- No explanations, no markdown, no code blocks
+- Begin directly with '{{' and end with '}}'
+- Do NOT use ```json or ``` markers
+- Invalid JSON will cause errors
+{separator}
+REQUIRED JSON STRUCTURE:
+{{
+  "name": "suggested parameter name",
+  "value": "suggested default value or range",
+  "unit": "suggested unit",
+  "description": "brief description"
+}}
 
-Return a JSON object with:
-- "name": suggested parameter name
-- "value": suggested default value or range
-- "unit": suggested unit
-- "description": brief description
-
-Return ONLY valid JSON."""
+SUGGESTION RULES:
+- Use standard parameter names (Greek letters preferred: α, β, γ, μ, etc.)
+- Provide reasonable default value or range
+- Include appropriate unit if applicable
+- Provide clear description of parameter meaning
+{separator}
+Return ONLY valid JSON object starting with '{{' and ending with '}}'."""
         
         else:
             return suggestions  # Not implemented for other types

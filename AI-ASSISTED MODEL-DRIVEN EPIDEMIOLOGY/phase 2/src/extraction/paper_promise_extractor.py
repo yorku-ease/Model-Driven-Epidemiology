@@ -114,13 +114,12 @@ class PaperPromiseExtractor:
             print("LLM not available, falling back to pattern-based extraction")
             return self.extract_with_patterns(paper_text)
         
-        # Truncate text if too long
-        max_chars = 50000  # ~12k tokens
-        truncated_text = paper_text[:max_chars]
-        if len(paper_text) > max_chars:
-            truncated_text += "\n[... text truncated ...]"
+        # Handle long papers: split into chunks if > 30k tokens (~120k chars)
+        # Quality degrades over 32k tokens, so we split for better results
+        max_chars_per_chunk = 60000  # ~15k tokens per chunk (safe limit)
+        paper_length = len(paper_text)
         
-        # Build prompt
+        # Build prompt template
         metamodel_schema = ""
         if self.metamodel:
             # Include relevant parts of metamodel
@@ -129,9 +128,41 @@ Use this schema for compartmental models:
 {json.dumps(self.metamodel.get('epimde_compartmental_metamodel', {}).get('compartment_types', {}), indent=2)}
 """
         
-        prompt = f"""You are analyzing a scientific paper about epidemiological modeling.
-Extract what the paper PROMISES to model. Return ONLY a JSON object with this structure:
+        # Provider-specific prompt optimization
+        use_detailed_prompt = self.llm_client.provider == "gemini"
+        
+        # Build base prompt (will be filled with paper text)
+        separator = "\n" + "*" * 80 + "\n"
+        def build_prompt(paper_chunk_text: str) -> str:
+            if use_detailed_prompt:
+                # Detailed prompt for Gemini
+                return f"""{separator}
+TASK: Extract what the paper PROMISES to model from this epidemiological modeling paper.
+{separator}
+CRITICAL OUTPUT FORMAT:
+- Return ONLY a valid JSON object
+- No explanations, no markdown, no code blocks
+- Begin directly with '{{' and end with '}}'
+- Do NOT use ```json or ``` markers
+- Invalid JSON will cause errors
+- Each field must be properly formatted JSON
 
+{metamodel_schema}
+{separator}
+YOUR TASK:
+You are an expert in epidemiological modeling. Extract what the paper EXPLICITLY promises or describes to model.
+
+HOW TO IDENTIFY PROMISES:
+1. Look for model descriptions: "we model X compartments", "the model includes..."
+2. Look for compartment lists: "compartments: S, E, I, R"
+3. Look for model type statements: "SEIR model", "SIR model", "vector-borne model"
+4. Look for stratification mentions: "age-stratified", "stratified by age/gender/risk"
+5. Look for intervention descriptions: "vaccination", "treatment", "quarantine"
+6. Look for parameter mentions: "parameters include β, γ, μ"
+7. Check abstract and introduction sections
+8. Look for model setup or methodology sections
+
+REQUIRED JSON STRUCTURE:
 {{
   "compartments": ["list", "of", "compartment", "names", "promised"],
   "stratifications": ["list", "of", "stratification", "dimensions", "e.g.", "age", "risk_group"],
@@ -141,16 +172,121 @@ Extract what the paper PROMISES to model. Return ONLY a JSON object with this st
   "description": "brief description of what the paper promises to model"
 }}
 
+EXTRACTION RULES - BE PRECISE:
+- Focus ONLY on what is EXPLICITLY stated in the paper
+- Don't infer or add things not mentioned
+- If something is not mentioned, use an empty list []
+- Be precise and only include what is explicitly stated
+- Extract model type from paper (SEIR, SIR, SEIRS, Vector-Borne, etc.)
+- Identify stratification dimensions if mentioned (age, gender, risk_group, etc.)
+- List interventions if discussed (vaccination, treatment, quarantine, etc.)
+- Extract compartment names if explicitly listed
+- Extract parameter names if mentioned
+
+{separator}
+PAPER TEXT:
+{paper_chunk_text}
+{separator}
+Return ONLY valid JSON object starting with '{{' and ending with '}}'."""
+            else:
+                # Concise prompt for OpenAI
+                return f"""{separator}
+TASK: Extract what the paper PROMISES to model from this epidemiological modeling paper.
+{separator}
+OUTPUT FORMAT: Return ONLY a valid JSON object. No markdown, no explanations. Start with '{{' and end with '}}'.
+
 {metamodel_schema}
+{separator}
+EXTRACTION INSTRUCTIONS:
+Identify what the paper explicitly promises to model:
+- Compartments: Look for "we model X compartments", compartment lists
+- Model type: Look for "SEIR", "SIR", "vector-borne" mentions
+- Stratifications: Look for "age-stratified", "stratified by..."
+- Interventions: Look for "vaccination", "treatment", "quarantine"
+- Parameters: Look for parameter mentions or lists
 
-Focus on what the paper EXPLICITLY promises or describes. Don't infer or add things not mentioned.
-If something is not mentioned, use an empty list.
+REQUIRED JSON STRUCTURE:
+{{
+  "compartments": ["list", "of", "compartment", "names"],
+  "stratifications": ["list", "of", "stratification", "dimensions"],
+  "parameters": ["list", "of", "parameter", "names"],
+  "interventions": ["list", "of", "interventions"],
+  "model_type": "SEIR" or "SIR" etc.,
+  "description": "brief description"
+}}
 
-Paper text:
-{truncated_text[:50000]}"""
+Focus ONLY on what is explicitly stated. Use empty lists [] if not mentioned.
+
+{separator}
+PAPER TEXT:
+{paper_chunk_text}
+{separator}
+Return ONLY valid JSON object: {{"compartments": [...], "stratifications": [...], "parameters": [...], "interventions": [...], "model_type": "...", "description": "..."}}"""
+        
+        # If paper is very long, split into chunks and merge results
+        if paper_length > max_chars_per_chunk * 2:  # Split if > 2 chunks worth
+            print(f"  Paper is long ({paper_length} chars). Splitting into chunks for better extraction...")
+            chunks = []
+            for i in range(0, paper_length, max_chars_per_chunk):
+                chunk = paper_text[i:i + max_chars_per_chunk]
+                if i + max_chars_per_chunk < paper_length:
+                    chunk += "\n[... continued in next chunk ...]"
+                chunks.append(chunk)
+            
+            # Extract from each chunk and merge
+            all_results = []
+            for idx, chunk in enumerate(chunks):
+                prompt = build_prompt(chunk)
+                try:
+                    chunk_result = self.llm_client.extract_with_llm(prompt, max_tokens=4000)
+                    if isinstance(chunk_result, dict):
+                        all_results.append(chunk_result)
+                except Exception as e:
+                    print(f"  Warning: Chunk {idx+1} extraction failed: {e}")
+            
+            # Merge results from all chunks
+            if all_results:
+                merged = {
+                    "compartments": [],
+                    "stratifications": [],
+                    "parameters": [],
+                    "interventions": [],
+                    "model_type": "",
+                    "description": ""
+                }
+                for result in all_results:
+                    merged["compartments"].extend(result.get("compartments", []))
+                    merged["stratifications"].extend(result.get("stratifications", []))
+                    merged["parameters"].extend(result.get("parameters", []))
+                    merged["interventions"].extend(result.get("interventions", []))
+                    # Use first non-empty model_type and description
+                    if not merged["model_type"] and result.get("model_type"):
+                        merged["model_type"] = result.get("model_type", "")
+                    if not merged["description"] and result.get("description"):
+                        merged["description"] = result.get("description", "")
+                
+                # Deduplicate
+                merged["compartments"] = list(set(merged["compartments"]))
+                merged["stratifications"] = list(set(merged["stratifications"]))
+                merged["parameters"] = list(set(merged["parameters"]))
+                merged["interventions"] = list(set(merged["interventions"]))
+                merged["extraction_method"] = "llm"
+                return merged
+            else:
+                # Fallback if all chunks failed
+                print("  All chunks failed, falling back to pattern extraction...")
+                return self.extract_with_patterns(paper_text)
+        else:
+            # Single chunk - use full text or truncate if still too long
+            truncated_text = paper_text[:max_chars_per_chunk]
+            if paper_length > max_chars_per_chunk:
+                truncated_text += "\n[... text truncated ...]"
+            
+            prompt = build_prompt(truncated_text)
         
         try:
-            result = self.llm_client.extract_with_llm(prompt)
+            # Use higher max_tokens for paper promises (can have long descriptions)
+            result = self.llm_client.extract_with_llm(prompt, max_tokens=4000)
             result["extraction_method"] = "llm"
             return result
         except Exception as e:

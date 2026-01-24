@@ -659,30 +659,57 @@ gemini:AIza...
 
 ## Running Phase 2
 
-**Basic Command:**
+### Quick Start
+
+**1. Activate Virtual Environment:**
 ```bash
+cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
+source venv/bin/activate
 cd "phase 2"
-python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name
 ```
 
-**Full Command (with all options):**
+**2. Run with OpenAI (Default):**
 ```bash
-python run_phase2.py \
-    --paper data/papers/your_paper.pdf \
-    --output reports/your_paper_name \
+python3 run_phase2.py \
+    --paper data/papers/EbolaSensitivity.pdf \
+    --output reports/ebola \
     --llm-provider openai \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
 ```
 
-**Using Gemini instead:**
+**3. Run with Gemini:**
 ```bash
-python run_phase2.py \
-    --paper data/papers/your_paper.pdf \
-    --output reports/your_paper_name \
+python3 run_phase2.py \
+    --paper data/papers/EbolaSensitivity.pdf \
+    --output reports/ebola \
     --llm-provider gemini \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+**4. Check Results:**
+```bash
+# Evaluation report
+cat reports/ebola/evaluation_report.json
+
+# Comprehensive report
+cat reports/ebola/phase2_final_report.json
+
+# Generated model
+cat reports/ebola/model_draft.compmodel
+```
+
+### Basic Command (Minimal Options)
+
+**With OpenAI:**
+```bash
+python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name
+```
+
+**With Gemini:**
+```bash
+python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name --llm-provider gemini
 ```
 
 ## Command Line Options
