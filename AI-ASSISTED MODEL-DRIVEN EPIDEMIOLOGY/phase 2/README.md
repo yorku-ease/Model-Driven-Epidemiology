@@ -18,7 +18,7 @@ Phase 2 automatically extracts compartmental epidemiological models from scienti
 
 ```
 phase 2/
-├── .api_key.txt              ← Your OpenAI API key goes here
+├── .api_key.txt              ← Your OpenAI or Gemini API key goes here
 ├── run_phase2.py             ← Main script to run
 ├── README.md                  ← This file (comprehensive guide)
 ├── INSTRUCTIONS.md            ← Step-by-step how to run
@@ -35,7 +35,7 @@ phase 2/
 │   └── baseline_models/       ← Baseline .compmodel files for evaluation (auto-detected)
 │
 └── reports/                   ← Output directory (auto-generated)
-    └── [paper_name]/
+    └── {disease}_{method}_{timestamp}/
         ├── model_draft.compmodel      ← Main output: extracted model
         ├── phase2_final_report.json   ← Comprehensive report
         └── [10 detailed JSON files]   ← Detailed results for reference
@@ -413,7 +413,7 @@ Suggest how to fill this gap and return JSON:
 - Runs Phase 1 analyzers on extracted model:
   - Model analysis (structure, counts)
   - Uncertainty analysis (parameter uncertainty)
-  - Sensitivity analysis (may not be runnable)
+  - Sensitivity analysis (simulation-based; may fail if the extracted model cannot be simulated)
 
 **No LLM used** - Uses Phase 1 analyzers
 
@@ -562,8 +562,8 @@ Phase 2 automatically uses baseline `.compmodel` files for evaluation if they ex
 
 2. **Manual specification:** You can also explicitly provide a baseline:
    ```bash
-   python run_phase2.py --paper data/papers/your_paper.pdf \
-       --output reports/your_paper \
+   python3 run_phase2.py --paper data/papers/your_paper.pdf \
+       --output reports \
        --gold-standard data/baseline_models/your_baseline.compmodel
    ```
 
@@ -672,7 +672,7 @@ cd "phase 2"
 ```bash
 python3 run_phase2.py \
     --paper data/papers/EbolaSensitivity.pdf \
-    --output reports/ebola \
+    --output reports \
     --llm-provider openai \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
@@ -682,41 +682,35 @@ python3 run_phase2.py \
 ```bash
 python3 run_phase2.py \
     --paper data/papers/EbolaSensitivity.pdf \
-    --output reports/ebola \
+    --output reports \
     --llm-provider gemini \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
 ```
 
 **4. Check Results:**
-```bash
-# Evaluation report
-cat reports/ebola/evaluation_report.json
-
-# Comprehensive report
-cat reports/ebola/phase2_final_report.json
-
-# Generated model
-cat reports/ebola/model_draft.compmodel
-```
+- The run prints the created output folder path (under `reports/`)
+- Main files to open:
+  - `model_draft.compmodel`
+  - `phase2_final_report.json`
 
 ### Basic Command (Minimal Options)
 
 **With OpenAI:**
 ```bash
-python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name
+python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports
 ```
 
 **With Gemini:**
 ```bash
-python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name --llm-provider gemini
+python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports --llm-provider gemini
 ```
 
 ## Command Line Options
 
 **Required:**
 - `--paper`: Path to PDF paper file
-- `--output`: Output directory for results
+- `--output`: Base directory for results (folder name is auto-generated as `{disease}_{method}_{timestamp}`)
 
 **Optional:**
 - `--metamodel`: Path to epidemiology metamodel JSON (default: `../phase 1/metamodel_epidemiology.json`)
@@ -727,12 +721,17 @@ python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_p
 - `--gold-standard`: Path to gold standard JSON or .compmodel file (for evaluation)
 - `--baseline-models-dir`: Directory with baseline .compmodel files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
+- `--output-base-dir`: Base directory used when `--output` is not provided (default: `reports`)
+- `--llm-compartments-chars`: Max characters of paper text sent to LLM for compartment extraction (default: `50000`)
+- `--llm-flows-chars`: Max characters of paper text sent to LLM for flow extraction (default: `80000`)
+- `--llm-parameters-chars`: Max characters of paper text sent to LLM for parameter extraction (default: `80000`)
+- `--flow-fuzzy-threshold`: Fuzzy threshold for snapping flow endpoints to known compartments (default: `0.78`)
 
 ## Limitations
 
 1. **Parameter Values:** Some parameters may have placeholder values if not explicitly stated in paper
 2. **Flow Extraction:** May miss some flows depending on paper format
-3. **Quality Checks:** Phase 1 analyzers may not work if incompatible
+3. **Quality Checks:** Phase 1 analyzers may fail if an extracted model cannot be simulated (e.g., missing numeric values or unsupported constructs)
 
 ## Next Steps
 

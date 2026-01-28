@@ -7,8 +7,8 @@ Complete guide to running Phase 2 with detailed inputs and outputs for each step
 1. **Set up API key** → `.api_key.txt`
 2. **Install dependencies** → `pip install -r ../requirements.txt`
 3. **Put paper in** → `data/papers/`
-4. **Run** → `python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper`
-5. **Check results** → `reports/your_paper/phase2_final_report.json`
+4. **Run** → `python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports`
+5. **Check results** → open the printed output folder and check `phase2_final_report.json`
 
 ---
 
@@ -106,14 +106,14 @@ cp your_paper.pdf data/papers/
 
 **Basic Command:**
 ```bash
-python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper_name
+python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports
 ```
 
 **Full Command (with all options):**
 ```bash
-python run_phase2.py \
+python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
-    --output reports/your_paper_name \
+    --output reports \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
 ```
@@ -122,10 +122,14 @@ python run_phase2.py \
 
 ### Step 5: Check Results
 
-Results are in `reports/your_paper_name/`:
+Results are in a newly created folder under `reports/` with the format:
+
+- `{disease}_{method}_{timestamp}`
+
+The exact output folder path is printed in the console.
 
 ```bash
-ls reports/your_paper_name/
+ls reports/
 ```
 
 **Main Files to Check:**
@@ -555,7 +559,7 @@ Step 3: Extracting Entities with Evidence...
 ```
 Step 4: Synthesizing Model (.compmodel)...
   ✓ Model XML is valid
-  ✓ Saved model to: reports/your_paper/model_draft.compmodel
+  ✓ Saved model to: reports/{disease}_{method}_{timestamp}/model_draft.compmodel
 ```
 
 ---
@@ -806,7 +810,8 @@ Step 7: Generating Gap Fill Suggestions...
    - Identifies missing values
    - Notes parameter sources
 3. Attempts sensitivity analysis:
-   - May not be runnable if model structure incompatible
+   - Simulation-based analysis
+   - May fail if the extracted model cannot be simulated (e.g., missing numeric values or unsupported constructs)
 
 **No LLM used** - Uses Phase 1 analyzers
 
@@ -963,12 +968,12 @@ Generating Final Comprehensive Report...
 ## Command Line Options
 
 ```bash
-python run_phase2.py --help
+python3 run_phase2.py --help
 ```
 
 **Required:**
 - `--paper`: Path to PDF paper file
-- `--output`: Output directory for results
+- `--output`: Base directory for results (folder name is auto-generated as `{disease}_{method}_{timestamp}`)
 
 **Optional:**
 - `--metamodel`: Path to epidemiology metamodel JSON (default: `../phase 1/metamodel_epidemiology.json`)
@@ -979,6 +984,11 @@ python run_phase2.py --help
 - `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation)
 - `--baseline-models-dir`: Directory with baseline `.compmodel` files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
+- `--output-base-dir`: Base directory used when `--output` is not provided (default: `reports`)
+- `--llm-compartments-chars`: Max characters of paper text sent to LLM for compartment extraction (default: `50000`)
+- `--llm-flows-chars`: Max characters of paper text sent to LLM for flow extraction (default: `80000`)
+- `--llm-parameters-chars`: Max characters of paper text sent to LLM for parameter extraction (default: `80000`)
+- `--flow-fuzzy-threshold`: Fuzzy threshold for snapping flow endpoints to known compartments (default: `0.78`)
 
 ---
 
@@ -1000,15 +1010,17 @@ cd "phase 2"
 # 4. Run Phase 2 with OpenAI
 python3 run_phase2.py \
     --paper data/papers/EbolaSensitivity.pdf \
-    --output reports/ebola \
+    --output reports \
     --llm-provider openai \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
 
 # 5. Check results
-cat reports/ebola/evaluation_report.json
-cat reports/ebola/phase2_final_report.json
-cat reports/ebola/model_draft.compmodel
+# The run prints the exact output folder path under reports/
+# Open the folder and check:
+# - phase2_final_report.json
+# - evaluation_report.json
+# - model_draft.compmodel
 ```
 
 ### Running with Gemini
@@ -1027,15 +1039,17 @@ cd "phase 2"
 # 4. Run Phase 2 with Gemini
 python3 run_phase2.py \
     --paper data/papers/EbolaSensitivity.pdf \
-    --output reports/ebola \
+    --output reports \
     --llm-provider gemini \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
 
 # 5. Check results
-cat reports/ebola/evaluation_report.json
-cat reports/ebola/phase2_final_report.json
-cat reports/ebola/model_draft.compmodel
+# The run prints the exact output folder path under reports/
+# Open the folder and check:
+# - phase2_final_report.json
+# - evaluation_report.json
+# - model_draft.compmodel
 ```
 
 ### Basic Example (Your Own Paper)
@@ -1056,18 +1070,20 @@ cp your_paper.pdf data/papers/
 # 4. Run Phase 2 (OpenAI - default)
 python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
-    --output reports/your_paper
+    --output reports
 
 # Or with Gemini:
 python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
-    --output reports/your_paper \
+    --output reports \
     --llm-provider gemini
 
 # 5. Check main results
-cat reports/your_paper/phase2_final_report.json | head -50
-cat reports/your_paper/evaluation_report.json
-cat reports/your_paper/model_draft.compmodel
+# The run prints the exact output folder path under reports/
+# Open the folder and check:
+# - phase2_final_report.json
+# - evaluation_report.json
+# - model_draft.compmodel
 ```
 
 ---

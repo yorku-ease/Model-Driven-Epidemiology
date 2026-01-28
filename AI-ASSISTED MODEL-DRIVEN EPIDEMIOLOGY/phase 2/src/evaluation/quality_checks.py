@@ -102,6 +102,62 @@ class QualityChecker:
             print(f"Warning: Failed to run uncertainty analyzer: {e}")
         
         return None
+
+    def run_sensitivity_analyzer(self, compmodel_path: str, model_name: str) -> Optional[Dict[str, Any]]:
+        """
+        Run Phase 1 sensitivity analysis.
+
+        Returns:
+            Sensitivity analysis results or None if failed
+        """
+        if not self.phase1_dir:
+            print("Warning: Phase 1 directory not specified, skipping sensitivity analysis")
+            return None
+
+        analyzer_path = self.phase1_dir / "analysis" / "sensitivity_analysis.py"
+        if not analyzer_path.exists():
+            print(f"Warning: Sensitivity analyzer not found at {analyzer_path}")
+            return None
+
+        try:
+            # Use Morris method by default (recommended in Phase 1 script)
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(analyzer_path),
+                    "--model-file",
+                    compmodel_path,
+                    "--model-name",
+                    model_name,
+                    "--output-dir",
+                    str(Path(compmodel_path).parent),
+                    "--method",
+                    "morris",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=300,
+            )
+
+            if result.returncode == 0:
+                output_dir = Path(compmodel_path).parent
+                json_path = (
+                    output_dir
+                    / f"{model_name.lower().replace('-', '_')}_sensitivity_morris.json"
+                )
+                if json_path.exists():
+                    with open(json_path, "r") as f:
+                        return json.load(f)
+                else:
+                    # If the script ran but produced a different message, log stderr/stdout
+                    if result.stderr:
+                        print(f"Warning: Sensitivity analyzer stderr: {result.stderr}")
+            else:
+                print(f"Warning: Sensitivity analyzer failed: {result.stderr}")
+        except Exception as e:
+            print(f"Warning: Failed to run sensitivity analyzer: {e}")
+
+        return None
     
     def check_model_quality(self, compmodel_path: str, model_name: str) -> Dict[str, Any]:
         """
@@ -127,12 +183,10 @@ class QualityChecker:
         results["uncertainty_analysis"] = uncertainty_analysis
         results["status"]["uncertainty_analysis"] = "completed" if uncertainty_analysis else "failed"
         
-        # Sensitivity analysis (marked as not runnable for now)
-        results["sensitivity_analysis"] = {
-            "status": "not_runnable_yet",
-            "reason": "Model may need parameter values and initial conditions to be runnable"
-        }
-        results["status"]["sensitivity_analysis"] = "not_runnable"
+        # Sensitivity analysis (now integrated via Phase 1 sensitivity_analysis.py)
+        sensitivity_analysis = self.run_sensitivity_analyzer(compmodel_path, model_name)
+        results["sensitivity_analysis"] = sensitivity_analysis
+        results["status"]["sensitivity_analysis"] = "completed" if sensitivity_analysis else "failed"
         
         return results
     

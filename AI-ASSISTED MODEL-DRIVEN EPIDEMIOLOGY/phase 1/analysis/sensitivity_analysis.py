@@ -672,11 +672,17 @@ class SensitivityAnalyzer:
 
 
 def main():
-    """Main function to run sensitivity analysis for all models"""
+    """Main function to run sensitivity analysis.
+
+    Supports two modes:
+    1) Phase 1 batch mode: no --model-file argument → analyze all built-in models.
+    2) Phase 2 single-model mode: with --model-file/--model-name/--output-dir →
+       analyze a single model and write JSON where Phase 2 expects it.
+    """
     import argparse
-    
+
     parser = argparse.ArgumentParser(
-        description='Enhanced sensitivity analysis with multiple methods',
+        description="Enhanced sensitivity analysis with multiple methods",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Methods:
@@ -696,23 +702,122 @@ Examples:
   python3 sensitivity_analysis.py --method grid
         """
     )
-    
-    parser.add_argument('--method', choices=['morris', 'random', 'grid', 'sobol'],
-                       default='morris', help='Sensitivity analysis method (default: morris)')
-    parser.add_argument('--variation', type=float, default=0.5,
-                       help='Variation range as fraction (default: 0.5 = ±50%%, auto-scaled for small parameters)')
+
+    parser.add_argument(
+        "--method",
+        choices=["morris", "random", "grid", "sobol"],
+        default="morris",
+        help="Sensitivity analysis method (default: morris)",
+    )
+    parser.add_argument(
+        "--variation",
+        type=float,
+        default=0.5,
+        help="Variation range as fraction (default: 0.5 = ±50%%, auto-scaled for small parameters)",
+    )
+    parser.add_argument(
+        "--model-file",
+        dest="model_file",
+        type=str,
+        help="Path to a single .compmodel model file (Phase 2 integration)",
+    )
+    parser.add_argument(
+        "--model-name",
+        dest="model_name",
+        type=str,
+        help="Logical model name (used in report)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        dest="output_dir",
+        type=str,
+        help="Directory to write sensitivity JSON report (Phase 2 integration)",
+    )
 
     args = parser.parse_args()
 
-    base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
-    output_dir = Path(__file__).parent.parent / 'reports' / 'sensitivity'
+    # Phase 2 single-model mode
+    if args.model_file:
+        model_path = Path(args.model_file)
+        if not model_path.exists():
+            print(f"Error: model file not found: {model_path}")
+            sys.exit(1)
+
+        model_name = args.model_name or model_path.stem
+
+        if args.output_dir:
+            output_dir = Path(args.output_dir)
+        else:
+            # Default to Phase 1 reports directory if not provided
+            output_dir = Path(__file__).parent.parent / "reports" / "sensitivity"
+
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        print("=" * 80)
+        print("TASK 2.3: ENHANCED SENSITIVITY ANALYSIS (Single Model)")
+        print("=" * 80)
+        print(f"Method: {args.method.upper()}")
+        print(f"Variation range: ±{args.variation*100}%")
+        print("Note: Very small parameters (< 0.001) automatically use ±200% range")
+        print()
+
+        print(f"\nAnalyzing: {model_name} from {model_path}")
+        try:
+            analyzer = SensitivityAnalyzer(str(model_path), model_name)
+
+            json_filename = f"{model_name.lower().replace('-', '_')}_sensitivity_{args.method}.json"
+            json_path = output_dir / json_filename
+            analyzer.export_sensitivity_report(str(json_path), method=args.method)
+            print(f"✓ Sensitivity report exported to: {json_path}")
+
+            report = analyzer.generate_sensitivity_report(
+                method=args.method, variation_range=args.variation
+            )
+
+            if "sensitivityAnalysis" in report:
+                sens = report["sensitivityAnalysis"]
+                if args.method == "morris" and "sensitivity_indices" in sens:
+                    print(f"\nSensitivity Indices (Morris Method):")
+                    for param, indices in sens["sensitivity_indices"].items():
+                        print(f"  {param}:")
+                        print(f"    μ* (importance): {indices['mu_star']:.4f}")
+                        print(f"    σ (non-linearity): {indices['sigma']:.4f}")
+                elif "statistics" in sens:
+                    stats = sens["statistics"]
+                    print("\nOutput Statistics:")
+                    print(
+                        f"  Peak Infections: {stats['peakInfections']['mean']:.2f} "
+                        f"(range: {stats['peakInfections']['min']:.2f} - {stats['peakInfections']['max']:.2f})"
+                    )
+                    print(
+                        f"  Peak Time: {stats['peakTime']['mean']:.1f} days "
+                        f"(range: {stats['peakTime']['min']:.1f} - {stats['peakTime']['max']:.1f})"
+                    )
+            else:
+                print(f"⚠ {report.get('message', 'No sensitivity analysis performed')}")
+
+        except Exception as e:
+            print(f"✗ Error analyzing {model_name}: {e}")
+            import traceback
+
+            traceback.print_exc()
+
+        print("\n" + "=" * 80)
+        print("SENSITIVITY ANALYSIS COMPLETE")
+        print("=" * 80)
+        print(f"\nReport saved to: {output_dir}")
+        return
+
+    # Original Phase 1 batch mode (no model-file argument)
+    base_path = Path(__file__).parent.parent.parent / "Compartmental" / "CompartmentalModel"
+    output_dir = Path(__file__).parent.parent / "reports" / "sensitivity"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Analyze all 3 models
     models = [
-        ('covid.compmodel', 'COVID-19'),
-        ('malaria.compmodel', 'Malaria'),
-        ('HIV.compmodel', 'HIV')
+        ("covid.compmodel", "COVID-19"),
+        ("malaria.compmodel", "Malaria"),
+        ("HIV.compmodel", "HIV"),
     ]
 
     print("=" * 80)
@@ -722,52 +827,59 @@ Examples:
     print(f"Variation range: ±{args.variation*100}%")
     print("Note: Very small parameters (< 0.001) automatically use ±200% range")
     print()
-    
+
     for model_file, model_name in models:
         model_path = base_path / model_file
-        
+
         if not model_path.exists():
             print(f"\n⚠ Warning: {model_path} not found, skipping {model_name}")
             continue
-        
+
         print(f"\n{'=' * 80}")
         print(f"Analyzing: {model_name}")
-        print('=' * 80)
-        
+        print("=" * 80)
+
         try:
             analyzer = SensitivityAnalyzer(str(model_path), model_name)
-            
+
             # Export JSON
             json_filename = f"{model_name.lower().replace('-', '_')}_sensitivity_{args.method}.json"
             json_path = output_dir / json_filename
             analyzer.export_sensitivity_report(str(json_path), method=args.method)
             print(f"✓ Sensitivity report exported to: {json_path}")
-            
-            report = analyzer.generate_sensitivity_report(method=args.method, variation_range=args.variation)
-            
-            if 'sensitivityAnalysis' in report:
-                sens = report['sensitivityAnalysis']
-                if args.method == 'morris' and 'sensitivity_indices' in sens:
+
+            report = analyzer.generate_sensitivity_report(
+                method=args.method, variation_range=args.variation
+            )
+
+            if "sensitivityAnalysis" in report:
+                sens = report["sensitivityAnalysis"]
+                if args.method == "morris" and "sensitivity_indices" in sens:
                     print(f"\nSensitivity Indices (Morris Method):")
-                    for param, indices in sens['sensitivity_indices'].items():
+                    for param, indices in sens["sensitivity_indices"].items():
                         print(f"  {param}:")
                         print(f"    μ* (importance): {indices['mu_star']:.4f}")
                         print(f"    σ (non-linearity): {indices['sigma']:.4f}")
-                elif 'statistics' in sens:
-                    stats = sens['statistics']
-                    print(f"\nOutput Statistics:")
-                    print(f"  Peak Infections: {stats['peakInfections']['mean']:.2f} "
-                          f"(range: {stats['peakInfections']['min']:.2f} - {stats['peakInfections']['max']:.2f})")
-                    print(f"  Peak Time: {stats['peakTime']['mean']:.1f} days "
-                          f"(range: {stats['peakTime']['min']:.1f} - {stats['peakTime']['max']:.1f})")
+                elif "statistics" in sens:
+                    stats = sens["statistics"]
+                    print("\nOutput Statistics:")
+                    print(
+                        f"  Peak Infections: {stats['peakInfections']['mean']:.2f} "
+                        f"(range: {stats['peakInfections']['min']:.2f} - {stats['peakInfections']['max']:.2f})"
+                    )
+                    print(
+                        f"  Peak Time: {stats['peakTime']['mean']:.1f} days "
+                        f"(range: {stats['peakTime']['min']:.1f} - {stats['peakTime']['max']:.1f})"
+                    )
             else:
                 print(f"⚠ {report.get('message', 'No sensitivity analysis performed')}")
-                
+
         except Exception as e:
             print(f"✗ Error analyzing {model_name}: {e}")
             import traceback
+
             traceback.print_exc()
-    
+
     print("\n" + "=" * 80)
     print("SENSITIVITY ANALYSIS COMPLETE")
     print("=" * 80)

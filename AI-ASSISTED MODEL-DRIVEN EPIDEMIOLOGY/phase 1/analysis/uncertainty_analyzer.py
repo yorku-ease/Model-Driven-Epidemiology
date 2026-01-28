@@ -235,52 +235,126 @@ class UncertaintyAnalyzer:
 
 
 def main():
-    """Main function to analyze uncertainty"""
-    base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
-    output_dir = Path(__file__).parent.parent / 'reports' / 'uncertainty'
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    models = {
-        'COVID-19': base_path / 'covid.compmodel',
-        'Malaria': base_path / 'malaria.compmodel',
-        'HIV': base_path / 'HIV.compmodel'
-    }
-    
-    print("=" * 80)
-    print("TASK 2.2: QUANTIFY UNCERTAINTY IN EXISTING PARAMETERS")
-    print("=" * 80)
-    
-    all_uncertainty = []
-    
-    for model_name, model_path in models.items():
+    """Main function to analyze uncertainty.
+
+    Supports two modes:
+    1) Phase 1 batch mode (no CLI model arguments): analyze built-in models and
+       write results under the Phase 1 reports directory (original behavior).
+    2) Phase 2 single-model mode: when --model-file/--model-name/--output-dir
+       are provided, analyze that single model and write JSON next to the
+       Phase 2 model, so Phase 2 can pick it up.
+    """
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Uncertainty analysis for compartmental models",
+        add_help=True,
+    )
+    parser.add_argument(
+        "--model-file",
+        dest="model_file",
+        type=str,
+        help="Path to a single .compmodel file to analyze (Phase 2 integration)",
+    )
+    parser.add_argument(
+        "--model-name",
+        dest="model_name",
+        type=str,
+        help="Logical model name (used in output filename)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        dest="output_dir",
+        type=str,
+        help="Directory to write uncertainty JSON to (Phase 2 integration)",
+    )
+
+    args, _ = parser.parse_known_args()
+
+    # Phase 2 single-model mode
+    if args.model_file:
+        model_path = Path(args.model_file)
         if not model_path.exists():
-            print(f"Warning: {model_path} not found, skipping {model_name}")
-            continue
-        
-        print(f"\nAnalyzing {model_name}...")
+            print(f"Error: model file not found: {model_path}")
+            sys.exit(1)
+
+        model_name = args.model_name or model_path.stem
+
+        if args.output_dir:
+            output_dir = Path(args.output_dir)
+        else:
+            # Default to Phase 1 reports directory if not provided
+            output_dir = Path(__file__).parent.parent / "reports" / "uncertainty"
+
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        print("=" * 80)
+        print("TASK 2.2: QUANTIFY UNCERTAINTY IN EXISTING PARAMETERS (Single Model)")
+        print("=" * 80)
+        print(f"\nAnalyzing {model_name} from {model_path} ...")
+
         analyzer = UncertaintyAnalyzer(str(model_path), model_name)
-        
-        # Export JSON
+
         json_path = output_dir / f"{model_name.lower().replace('-', '_')}_uncertainty.json"
         analyzer.export_uncertainty_database(str(json_path))
         print(f"✓ Uncertainty database exported to: {json_path}")
-        
-        
+
         db = analyzer.generate_uncertainty_database()
         print(f"  Parameters analyzed: {db['parametersWithUncertainty']}")
         print(f"  High confidence: {db['summary']['highConfidence']}")
         print(f"  Medium confidence: {db['summary']['mediumConfidence']}")
         print(f"  Low confidence: {db['summary']['lowConfidence']}")
-        
-        all_uncertainty.extend(db['parameters'])
-    
+
+        print("\n" + "=" * 80)
+        print("UNCERTAINTY ANALYSIS COMPLETE")
+        print("=" * 80)
+        return
+
+    # Original Phase 1 batch mode (no model-file argument)
+    base_path = Path(__file__).parent.parent.parent / "Compartmental" / "CompartmentalModel"
+    output_dir = Path(__file__).parent.parent / "reports" / "uncertainty"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    models = {
+        "COVID-19": base_path / "covid.compmodel",
+        "Malaria": base_path / "malaria.compmodel",
+        "HIV": base_path / "HIV.compmodel",
+    }
+
+    print("=" * 80)
+    print("TASK 2.2: QUANTIFY UNCERTAINTY IN EXISTING PARAMETERS")
+    print("=" * 80)
+
+    all_uncertainty = []
+
+    for model_name, model_path in models.items():
+        if not model_path.exists():
+            print(f"Warning: {model_path} not found, skipping {model_name}")
+            continue
+
+        print(f"\nAnalyzing {model_name}...")
+        analyzer = UncertaintyAnalyzer(str(model_path), model_name)
+
+        # Export JSON
+        json_path = output_dir / f"{model_name.lower().replace('-', '_')}_uncertainty.json"
+        analyzer.export_uncertainty_database(str(json_path))
+        print(f"✓ Uncertainty database exported to: {json_path}")
+
+        db = analyzer.generate_uncertainty_database()
+        print(f"  Parameters analyzed: {db['parametersWithUncertainty']}")
+        print(f"  High confidence: {db['summary']['highConfidence']}")
+        print(f"  Medium confidence: {db['summary']['mediumConfidence']}")
+        print(f"  Low confidence: {db['summary']['lowConfidence']}")
+
+        all_uncertainty.extend(db["parameters"])
+
     # Export combined database
     if all_uncertainty:
-        combined_path = output_dir / 'all_models_uncertainty.json'
-        with open(combined_path, 'w', encoding='utf-8') as f:
+        combined_path = output_dir / "all_models_uncertainty.json"
+        with open(combined_path, "w", encoding="utf-8") as f:
             json.dump(all_uncertainty, f, indent=2, ensure_ascii=False)
         print(f"\n✓ Combined uncertainty database exported to: {combined_path}")
-    
+
     print("\n" + "=" * 80)
     print("UNCERTAINTY ANALYSIS COMPLETE")
     print("=" * 80)

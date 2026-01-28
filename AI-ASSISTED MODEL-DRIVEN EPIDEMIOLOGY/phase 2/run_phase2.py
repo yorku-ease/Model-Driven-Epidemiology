@@ -81,6 +81,16 @@ Examples:
     parser.add_argument('--baseline-models-dir', type=str,
                        default='data/baseline_models',
                        help='Directory with baseline .compmodel files (auto-detected for evaluation)')
+
+    # LLM context sizing (helps equation-heavy papers)
+    parser.add_argument('--llm-compartments-chars', type=int, default=50000,
+                       help='Max characters of paper text sent to LLM for compartment extraction (default: 50000)')
+    parser.add_argument('--llm-flows-chars', type=int, default=80000,
+                       help='Max characters of paper text sent to LLM for flow extraction (default: 80000)')
+    parser.add_argument('--llm-parameters-chars', type=int, default=80000,
+                       help='Max characters of paper text sent to LLM for parameter extraction (default: 80000)')
+    parser.add_argument('--flow-fuzzy-threshold', type=float, default=0.78,
+                       help='Fuzzy similarity threshold for snapping flow endpoints to known compartments (default: 0.78)')
     
     args = parser.parse_args()
     
@@ -224,7 +234,11 @@ Examples:
     entity_extractor = EntityExtractor(
         llm_client=llm_client,
         metamodel_path=metamodel_path,
-        example_models_path=example_models_path_entity
+        example_models_path=example_models_path_entity,
+        llm_compartments_chars=args.llm_compartments_chars,
+        llm_flows_chars=args.llm_flows_chars,
+        llm_parameters_chars=args.llm_parameters_chars,
+        flow_fuzzy_threshold=args.flow_fuzzy_threshold,
     )
 
     entities = entity_extractor.extract_all(pdf_data)

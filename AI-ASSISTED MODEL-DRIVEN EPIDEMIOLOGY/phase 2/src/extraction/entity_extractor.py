@@ -8,6 +8,7 @@ import json
 import re
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from difflib import SequenceMatcher
 from src.utils.llm_client import LLMClient
 
 
@@ -15,7 +16,11 @@ class EntityExtractor:
     """Extract model entities from paper text with evidence"""
     
     def __init__(self, llm_client: Optional[LLMClient] = None, metamodel_path: Optional[str] = None,
-                 example_models_path: Optional[str] = None):
+                 example_models_path: Optional[str] = None,
+                 llm_compartments_chars: int = 50000,
+                 llm_flows_chars: int = 80000,
+                 llm_parameters_chars: int = 80000,
+                 flow_fuzzy_threshold: float = 0.78):
         """
         Initialize entity extractor.
 
@@ -23,6 +28,10 @@ class EntityExtractor:
             llm_client: LLM client instance
             metamodel_path: Path to epidemiology metamodel JSON
             example_models_path: Path to directory with Phase 1 example .compmodel files
+            llm_compartments_chars: Max characters of paper text to provide to LLM for compartments
+            llm_flows_chars: Max characters of paper text to provide to LLM for flows
+            llm_parameters_chars: Max characters of paper text to provide to LLM for parameters
+            flow_fuzzy_threshold: Similarity threshold used to snap LLM flow endpoints to known compartments
         """
         self.llm_client = llm_client or LLMClient()
         self.metamodel = None
@@ -32,6 +41,230 @@ class EntityExtractor:
         self.example_models = []
         if example_models_path:
             self._load_example_models(example_models_path)
+
+        self.llm_compartments_chars = int(llm_compartments_chars) if llm_compartments_chars else 50000
+        self.llm_flows_chars = int(llm_flows_chars) if llm_flows_chars else 80000
+        self.llm_parameters_chars = int(llm_parameters_chars) if llm_parameters_chars else 80000
+        self.flow_fuzzy_threshold = float(flow_fuzzy_threshold) if flow_fuzzy_threshold else 0.78
+
+    def _best_fuzzy_match(self, needle: str, haystack: List[str], threshold: float) -> Optional[str]:
+        """Return best fuzzy match from haystack for needle (or None)."""
+        if not needle:
+            return None
+        needle_norm = needle.strip().lower()
+        best = None
+        best_sim = 0.0
+        for cand in haystack:
+            cand_norm = (cand or "").strip().lower()
+            if not cand_norm:
+                continue
+            if needle_norm == cand_norm:
+                return cand
+            sim = SequenceMatcher(None, needle_norm, cand_norm).ratio()
+            # Prefer substring containment for abbreviations like "Sus" vs "Susceptible"
+            if needle_norm in cand_norm or cand_norm in needle_norm:
+                sim = max(sim, 0.90)
+            if sim > best_sim:
+                best_sim = sim
+                best = cand
+        return best if best is not None and best_sim >= threshold else None
+
+    def _build_compartment_alias_map(self, compartments: List[Dict[str, Any]]) -> Dict[str, str]:
+        """Build alias map for common compartment abbreviations (S/E/I/R/D etc.)."""
+        comp_names = [c.get("normalized_name", "") for c in compartments if c.get("normalized_name")]
+        alias: Dict[str, str] = {}
+
+        # From explicit "(X)" patterns in evidence spans
+        for comp in compartments:
+            comp_name = comp.get("normalized_name", "")
+            text_span = comp.get("text_span", "") or ""
+            m = re.search(r"\(([A-Za-z])\)", text_span)
+            if m and comp_name:
+                alias[m.group(1).upper()] = comp_name
+
+        # Common epidemiology conventions
+        canonical = {n.lower(): n for n in comp_names}
+        for letter, default_name in [
+            ("S", "Susceptible"),
+            ("E", "Exposed"),
+            ("I", "Infectious"),
+            ("R", "Recovered"),
+            ("D", "Dead"),
+        ]:
+            if letter not in alias and default_name.lower() in canonical:
+                alias[letter] = canonical[default_name.lower()]
+
+        # Fallback: map first letter if it is unique among compartments
+        letter_to_names: Dict[str, List[str]] = {}
+        for n in comp_names:
+            if n:
+                letter_to_names.setdefault(n[0].upper(), []).append(n)
+        for letter, names in letter_to_names.items():
+            if letter not in alias and len(names) == 1:
+                alias[letter] = names[0]
+
+        return alias
+
+    def _clean_and_validate_flows(self, flows: List[Dict[str, Any]], compartments: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Post-process flows to:
+        - Snap source/target to known compartment names (case-insensitive + alias + fuzzy)
+        - Drop flows with unresolved endpoints
+        - Deduplicate after normalization
+        """
+        comp_names = [c.get("normalized_name", "") for c in compartments if c.get("normalized_name")]
+        comp_set = set(comp_names)
+        comp_lower_to_canonical = {n.lower(): n for n in comp_names}
+        alias_map = self._build_compartment_alias_map(compartments)
+
+        cleaned: List[Dict[str, Any]] = []
+        seen = set()
+
+        def resolve_endpoint(x: str) -> Optional[str]:
+            if not x:
+                return None
+            x = x.strip()
+
+            # Exact case-insensitive
+            if x.lower() in comp_lower_to_canonical:
+                return comp_lower_to_canonical[x.lower()]
+
+            # Alias single-letter or known abbrev
+            if len(x) == 1 and x.upper() in alias_map:
+                return alias_map[x.upper()]
+
+            # Try to extract single-letter from forms like "S(t)" or "I0"
+            m = re.match(r"^([A-Za-z])(?:\W|$)", x)
+            if m and m.group(1).upper() in alias_map:
+                return alias_map[m.group(1).upper()]
+
+            # Fuzzy match
+            return self._best_fuzzy_match(x, comp_names, threshold=self.flow_fuzzy_threshold)
+
+        dropped = 0
+        for flow in flows:
+            src_raw = (flow.get("source") or "").strip()
+            tgt_raw = (flow.get("target") or "").strip()
+            src = resolve_endpoint(src_raw)
+            tgt = resolve_endpoint(tgt_raw)
+
+            if not src or not tgt:
+                dropped += 1
+                continue
+            if src not in comp_set or tgt not in comp_set:
+                dropped += 1
+                continue
+            if src == tgt:
+                # self-loops are rarely meaningful in these models; drop to reduce noise
+                dropped += 1
+                continue
+
+            key = f"{src}->{tgt}"
+            if key in seen:
+                continue
+            seen.add(key)
+
+            flow["source"] = src
+            flow["target"] = tgt
+            # Normalize flow_type if present
+            ft = (flow.get("flow_type") or "").strip()
+            if ft:
+                if ft.lower() in ["contactflow", "contact_flow", "infection", "transmission"]:
+                    flow["flow_type"] = "ContactFlow"
+                elif ft.lower() in ["rateflow", "rate_flow", "progression", "recovery", "death", "treatment"]:
+                    flow["flow_type"] = "RateFlow"
+
+            cleaned.append(flow)
+
+        if dropped:
+            print(f"  ✓ Flow post-processing: kept {len(cleaned)} flows, dropped {dropped} inconsistent/unmatched flows")
+        return cleaned
+
+    def _clean_and_filter_parameters(self, parameters: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Post-process parameters to reduce obvious false positives.
+
+        Goal: improve precision (drop junk like DOI/artid/project IDs) while keeping
+        epidemiology-relevant symbols (Greek letters, R0, N, rates).
+        """
+        if not parameters:
+            return parameters
+
+        # Common junk / metadata tokens that show up in PDFs
+        blacklist_substrings = [
+            "doi", "http", "www", "artid", "pmid", "issn", "isbn", "copyright",
+            "license", "creativecommons", "publisher", "partnerid", "project", "htaproject",
+            "received", "accepted", "published", "email", "address",
+        ]
+
+        # Allowlist for common meaningful multi-char parameters
+        allowlist_exact = {
+            "r0", "re", "rn", "rt", "n", "dt", "δt", "delta_t", "deltat", "t0",
+        }
+
+        # Keep Greek-ish symbols and common epi parameter tokens
+        keep_tokens = ["beta", "gamma", "sigma", "mu", "lambda", "rho", "theta", "alpha", "nu", "pi", "omega"]
+        greek_chars = set("αβγδεζηθικλμνξοπρστυφχψω")
+
+        cleaned: List[Dict[str, Any]] = []
+        seen = set()
+        dropped = 0
+
+        for p in parameters:
+            name = (p.get("normalized_name") or p.get("raw_text") or "").strip()
+            if not name:
+                dropped += 1
+                continue
+
+            name_norm = name.strip()
+            name_low = name_norm.lower()
+
+            # Drop obvious metadata/noise
+            if any(bad in name_low for bad in blacklist_substrings):
+                dropped += 1
+                continue
+
+            # Drop very long names that are unlikely to be parameters (unless they contain Greek)
+            if len(name_norm) > 25 and not any(ch in greek_chars for ch in name_norm):
+                dropped += 1
+                continue
+
+            # If it contains spaces, it's usually not a parameter symbol (keep only a few known cases)
+            if " " in name_norm and name_low not in allowlist_exact:
+                dropped += 1
+                continue
+
+            # Keep if exact allowlist
+            keep = name_low in allowlist_exact
+
+            # Keep if it has any Greek character (covers β, σ², βc_I, etc.)
+            if not keep and any(ch in greek_chars for ch in name_norm):
+                keep = True
+
+            # Keep if it looks like a short symbolic token (letters/digits/_^)
+            if not keep and re.match(r"^[A-Za-z][A-Za-z0-9_^\-]{0,15}$", name_norm):
+                # But avoid common single-letter junk already filtered earlier
+                keep = True
+
+            # Keep if it contains common epi parameter words (beta/gamma/etc.)
+            if not keep and any(tok in name_low for tok in keep_tokens):
+                keep = True
+
+            if not keep:
+                dropped += 1
+                continue
+
+            key = name_norm
+            if key in seen:
+                continue
+            seen.add(key)
+
+            p["normalized_name"] = name_norm
+            cleaned.append(p)
+
+        if dropped:
+            print(f"  ✓ Parameter post-processing: kept {len(cleaned)} parameters, dropped {dropped} likely-noise parameters")
+        return cleaned
     
     def _load_metamodel(self, metamodel_path: str):
         """Load metamodel for normalization"""
@@ -160,7 +393,7 @@ class EntityExtractor:
     def _extract_compartments_llm(self, paper_text: str) -> List[Dict[str, Any]]:
         """Extract compartments using LLM with metamodel and Phase 1 examples"""
         # Use more text for compartments - they're usually defined early in the paper
-        truncated_text = paper_text[:50000]  # Increased limit for better extraction
+        truncated_text = paper_text[: self.llm_compartments_chars]
         
         # Provider-specific prompt optimization: OpenAI works better with concise prompts,
         # while Gemini benefits from detailed instructions
@@ -440,7 +673,7 @@ Return ONLY valid JSON array: [{{"name": "...", "description": "...", "text_span
     
     def _extract_flows_llm(self, paper_text: str, compartments: List[Dict]) -> List[Dict[str, Any]]:
         """Extract flows using LLM with metamodel and Phase 1 examples"""
-        truncated_text = paper_text[:40000]  # Limit for prompt
+        truncated_text = paper_text[: self.llm_flows_chars]
         
         # Provider-specific prompt optimization
         use_detailed_prompt = self.llm_client.provider == "gemini"
@@ -832,7 +1065,7 @@ Return ONLY valid JSON array: [{{"source": "...", "target": "...", "description"
 
     def _extract_parameters_llm(self, paper_text: str) -> List[Dict[str, Any]]:
         """Extract parameters using LLM with metamodel and Phase 1 examples"""
-        truncated_text = paper_text[:30000]  # Limit for prompt
+        truncated_text = paper_text[: self.llm_parameters_chars]
         
         # Provider-specific prompt optimization
         use_detailed_prompt = self.llm_client.provider == "gemini"
@@ -1095,7 +1328,9 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
         # Extract in order (compartments needed for flows)
         compartments = self.extract_compartments(paper_text, pages_data)
         flows = self.extract_flows(paper_text, pages_data, compartments)
+        flows = self._clean_and_validate_flows(flows, compartments)
         parameters = self.extract_parameters(paper_text, pages_data, tables)
+        parameters = self._clean_and_filter_parameters(parameters)
         stratifications = self.extract_stratifications(paper_text, pages_data)
         interventions = self.extract_interventions(paper_text, pages_data)
         

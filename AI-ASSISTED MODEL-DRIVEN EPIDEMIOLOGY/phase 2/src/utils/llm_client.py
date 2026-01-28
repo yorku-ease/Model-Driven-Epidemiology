@@ -286,32 +286,89 @@ CRITICAL RULES:
         - Missing commas between array elements: }{ -> },{
         - Missing commas between object properties
         - Trailing commas
+        - Unescaped quotes in strings (especially in text_span fields)
+        - Unescaped newlines in strings
         """
         if not text or not text.strip():
             return None
         
         repaired = text.strip()
         
+        # First, fix unescaped quotes and newlines in string values using a state machine
+        # This is more reliable than regex for handling nested quotes
+        try:
+            result = []
+            i = 0
+            in_string = False
+            escape_next = False
+            
+            while i < len(repaired):
+                char = repaired[i]
+                
+                if escape_next:
+                    # Previous char was backslash, this char is escaped
+                    result.append(char)
+                    escape_next = False
+                    i += 1
+                    continue
+                
+                if char == '\\':
+                    # Escape character
+                    result.append(char)
+                    escape_next = True
+                    i += 1
+                    continue
+                
+                if char == '"' and not escape_next:
+                    # Toggle string state
+                    in_string = not in_string
+                    result.append(char)
+                    i += 1
+                    continue
+                
+                if in_string:
+                    # We're inside a string - escape special characters
+                    if char == '\n':
+                        # Unescaped newline - escape it
+                        result.append('\\n')
+                    elif char == '\r':
+                        # Unescaped carriage return - escape it
+                        result.append('\\r')
+                    elif char == '\t':
+                        # Unescaped tab - escape it
+                        result.append('\\t')
+                    elif char == '"':
+                        # Unescaped quote inside string - escape it
+                        result.append('\\"')
+                    elif char == '\\':
+                        # Backslash - will be handled by escape_next logic
+                        result.append(char)
+                        escape_next = True
+                    else:
+                        result.append(char)
+                else:
+                    # Outside string - keep as is
+                    result.append(char)
+                
+                i += 1
+            
+            repaired = ''.join(result)
+        except Exception:
+            # If state machine fails, fall back to simpler regex-based approach
+            # This is a less reliable fallback
+            pass
+        
         # Fix missing commas between array elements: }{ -> },{
-        # But be careful not to break valid JSON like "key":"value"
-        # Pattern: } followed by { (missing comma between objects in array)
-        # Replace }{ with },{ but only when it's clearly between objects (not inside strings)
-        # This is a simple heuristic - look for }{ that's not inside quotes
         repaired = re.sub(r'\}\s*\{', '},{', repaired)
         
         # Fix trailing commas before } or ]
         repaired = re.sub(r',\s*}', '}', repaired)
         repaired = re.sub(r',\s*]', ']', repaired)
-        
+
         # Fix missing commas after closing braces/quotes before opening braces
-        # Pattern: "value" followed by { (missing comma)
         repaired = re.sub(r'"\s*\{', '",{', repaired)
         repaired = re.sub(r"'\s*\{", "',{", repaired)
-        
-        # Fix missing commas between array elements that are objects
-        # More specific: }{ at the start of array elements
-        # This handles cases like: [{"a":1}{"b":2}] -> [{"a":1},{"b":2}]
-        
+
         return repaired if repaired != text else None
     
     def is_available(self) -> bool:

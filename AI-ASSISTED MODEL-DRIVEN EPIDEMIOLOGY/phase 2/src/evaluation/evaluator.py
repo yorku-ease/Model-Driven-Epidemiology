@@ -54,8 +54,32 @@ class Evaluator:
             Dictionary in gold standard format
         """
         try:
-            tree = ET.parse(compmodel_path)
-            root = tree.getroot()
+            # Parse XML with proper namespace handling
+            # Some .compmodel files may have namespace issues, so we'll handle them gracefully
+            parser = ET.XMLParser()
+            try:
+                tree = ET.parse(compmodel_path, parser=parser)
+                root = tree.getroot()
+            except ET.ParseError as e:
+                # Try to fix common XML namespace issues
+                if "unbound prefix" in str(e) or "prefix" in str(e).lower():
+                    # Read file and fix namespace declarations
+                    with open(compmodel_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    
+                    # Ensure xsi namespace is declared if used
+                    if 'xsi:type' in content and 'xmlns:xsi' not in content:
+                        # Add xsi namespace declaration
+                        content = content.replace(
+                            'xmlns:compartmental=',
+                            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental=',
+                            1
+                        )
+                    
+                    # Parse the fixed content
+                    root = ET.fromstring(content)
+                else:
+                    raise
             
             # Extract compartments
             compartments = []
@@ -205,12 +229,19 @@ class Evaluator:
         This handles:
         - Case insensitivity
         - Common synonyms (Infected vs Infectious, etc.)
-        - Greek letter variations (β vs beta, etc.)
+        - Greek letter variations (β vs beta, etc.) - bidirectional
+        - Parameter semantic synonyms (beta = transmission_rate = contact_rate)
         - Plural/singular variations
         - Common typos and spacing
+        - Unicode normalization
         """
         if not name:
             return ""
+        
+        import unicodedata
+        
+        # Normalize Unicode (handles different representations of same characters)
+        name = unicodedata.normalize('NFKD', name)
         
         name = name.strip().lower()
         
@@ -218,39 +249,80 @@ class Evaluator:
         name = name.replace('compartment', '').replace('state', '').replace('class', '')
         name = name.strip()
         
-        # Common synonyms mapping
-        synonyms = {
-            'infected': 'infectious',
-            'exposed': 'exposed',
-            'susceptible': 'susceptible',
-            'recovered': 'recovered',
-            'removed': 'recovered',
-            'dead': 'dead',
-            'deceased': 'dead',
-            'death': 'dead',
-            'hospitalized': 'hospitalized',
-            'quarantined': 'quarantined',
-            'vaccinated': 'vaccinated',
-            'treated': 'treated',
-            # Greek letters
-            'alpha': 'α', 'beta': 'β', 'gamma': 'γ', 'delta': 'δ',
-            'mu': 'μ', 'nu': 'ν', 'rho': 'ρ', 'theta': 'θ', 'lambda': 'λ',
-            'sigma': 'σ', 'omega': 'ω', 'pi': 'π', 'tau': 'τ',
-            # Parameter synonyms
-            'transmission_rate': 'transmissionrate',
-            'recovery_rate': 'recoveryrate',
-            'death_rate': 'deathrate',
-            'birth_rate': 'birthrate',
-            'contact_rate': 'contactrate',
+        # Greek letter mapping (bidirectional: both β→beta and beta→β)
+        # First, convert Greek letters to their names
+        greek_to_name = {
+            'α': 'alpha', 'β': 'beta', 'γ': 'gamma', 'δ': 'delta',
+            'ε': 'epsilon', 'ζ': 'zeta', 'η': 'eta', 'θ': 'theta',
+            'ι': 'iota', 'κ': 'kappa', 'λ': 'lambda', 'μ': 'mu',
+            'ν': 'nu', 'ξ': 'xi', 'ο': 'omicron', 'π': 'pi',
+            'ρ': 'rho', 'σ': 'sigma', 'τ': 'tau', 'υ': 'upsilon',
+            'φ': 'phi', 'χ': 'chi', 'ψ': 'psi', 'ω': 'omega'
         }
         
-        # Check for synonyms
-        for key, value in synonyms.items():
-            if key in name:
-                name = name.replace(key, value)
+        # Replace Greek letters with their names
+        for greek_char, greek_name in greek_to_name.items():
+            name = name.replace(greek_char, greek_name)
         
-        # Remove spaces, underscores, hyphens for comparison
-        name = name.replace(' ', '').replace('_', '').replace('-', '')
+        # Compartment synonyms (map to canonical forms)
+        compartment_synonyms = {
+            'infected': 'infectious',
+            'removed': 'recovered',
+            'deceased': 'dead',
+            'death': 'dead',
+        }
+        
+        # Parameter semantic synonym groups (all map to same canonical form)
+        # Group 1: Transmission parameters
+        transmission_synonyms = ['beta', 'transmission', 'transmissionrate', 'contact', 
+                                'contactrate', 'infectious', 'infectionrate', 'spread']
+        # Group 2: Recovery parameters
+        recovery_synonyms = ['gamma', 'recovery', 'recoveryrate', 'cure', 'cure rate']
+        # Group 3: Death/Mortality parameters
+        death_synonyms = ['mu', 'death', 'deathrate', 'mortality', 'mortalityrate', 'die']
+        # Group 4: Progression/Incubation parameters
+        progression_synonyms = ['sigma', 'progression', 'progressionrate', 'incubation', 
+                                'incubationrate', 'latent', 'latentrate']
+        # Group 5: Birth parameters
+        birth_synonyms = ['birth', 'birthrate', 'recruitment', 'recruitmentrate']
+        # Group 6: Natural death (vs disease death)
+        natural_death_synonyms = ['mu_h', 'naturaldeath', 'naturaldeathrate', 'baseline_mortality']
+        
+        # Check if name contains any synonym from each group and normalize to canonical form
+        name_lower = name.lower()
+        
+        # Check compartment synonyms first
+        for synonym, canonical in compartment_synonyms.items():
+            if synonym in name_lower:
+                name = name.replace(synonym, canonical)
+                break
+        
+        # Check parameter synonym groups
+        if any(syn in name_lower for syn in transmission_synonyms):
+            name = name.replace('beta', 'transmission').replace('transmissionrate', 'transmission')
+            name = name.replace('contact', 'transmission').replace('contactrate', 'transmission')
+            name = name.replace('infectious', 'transmission').replace('infectionrate', 'transmission')
+            name = name.replace('spread', 'transmission')
+        elif any(syn in name_lower for syn in recovery_synonyms):
+            name = name.replace('gamma', 'recovery').replace('recoveryrate', 'recovery')
+            name = name.replace('cure', 'recovery')
+        elif any(syn in name_lower for syn in death_synonyms):
+            name = name.replace('mu', 'death').replace('deathrate', 'death')
+            name = name.replace('mortality', 'death').replace('mortalityrate', 'death')
+            name = name.replace('die', 'death')
+        elif any(syn in name_lower for syn in progression_synonyms):
+            name = name.replace('sigma', 'progression').replace('progressionrate', 'progression')
+            name = name.replace('incubation', 'progression').replace('incubationrate', 'progression')
+            name = name.replace('latent', 'progression').replace('latentrate', 'progression')
+        elif any(syn in name_lower for syn in birth_synonyms):
+            name = name.replace('birthrate', 'birth').replace('recruitment', 'birth')
+            name = name.replace('recruitmentrate', 'birth')
+        elif any(syn in name_lower for syn in natural_death_synonyms):
+            name = name.replace('mu_h', 'naturaldeath').replace('naturaldeathrate', 'naturaldeath')
+            name = name.replace('baseline_mortality', 'naturaldeath')
+        
+        # Remove spaces, underscores, hyphens, dots for comparison
+        name = name.replace(' ', '').replace('_', '').replace('-', '').replace('.', '')
         
         # Remove plural 's' at the end (simple heuristic)
         if name.endswith('s') and len(name) > 3:
@@ -362,10 +434,56 @@ class Evaluator:
         param_matches, param_unmatched_ext, param_unmatched_gold = self._match_entities_fuzzy(
             extracted_params, gold_params, threshold=0.75
         )
-        # For flows, use exact matching on "source->target" format (fuzzy matching not needed)
-        flow_tp = len(extracted_flows & gold_flows)
-        flow_fp = len(extracted_flows - gold_flows)
-        flow_fn = len(gold_flows - extracted_flows)
+        
+        # Build mapping from extracted to gold compartment names (for flow matching)
+        comp_extracted_to_gold = {ext: gold for ext, gold, _ in comp_matches}
+        # Also add exact matches for compartments that matched exactly
+        for ext_comp in extracted_comps:
+            if ext_comp in gold_comps:
+                comp_extracted_to_gold[ext_comp] = ext_comp
+        
+        # For flows, use fuzzy-matched compartment names
+        # Convert extracted flows using matched compartment names
+        normalized_extracted_flows = set()
+        for flow_str in extracted_flows:
+            if '->' in flow_str:
+                source, target = flow_str.split('->', 1)
+                # Use gold standard name if we have a match, otherwise use original
+                norm_source = comp_extracted_to_gold.get(source.strip(), source.strip())
+                norm_target = comp_extracted_to_gold.get(target.strip(), target.strip())
+                normalized_extracted_flows.add(f"{norm_source}->{norm_target}")
+            else:
+                normalized_extracted_flows.add(flow_str)
+        
+        # Match flows using normalized names
+        flow_tp = len(normalized_extracted_flows & gold_flows)
+        flow_fp = len(normalized_extracted_flows - gold_flows)
+        flow_fn = len(gold_flows - normalized_extracted_flows)
+        
+        # Also try fuzzy matching for flows that didn't match exactly
+        # (in case compartment names still don't match after normalization)
+        unmatched_extracted_flows = normalized_extracted_flows - gold_flows
+        unmatched_gold_flows = gold_flows - normalized_extracted_flows
+        
+        # Try to fuzzy match remaining flows
+        flow_fuzzy_matches = set()
+        for ext_flow in list(unmatched_extracted_flows):
+            ext_source, ext_target = ext_flow.split('->', 1) if '->' in ext_flow else ('', '')
+            for gold_flow in list(unmatched_gold_flows):
+                gold_source, gold_target = gold_flow.split('->', 1) if '->' in gold_flow else ('', '')
+                # Check if both source and target match (fuzzy)
+                source_match, source_sim = self._fuzzy_match(ext_source.strip(), gold_source.strip(), threshold=0.75)
+                target_match, target_sim = self._fuzzy_match(ext_target.strip(), gold_target.strip(), threshold=0.75)
+                if source_match and target_match:
+                    flow_fuzzy_matches.add((ext_flow, gold_flow, (source_sim + target_sim) / 2))
+                    unmatched_extracted_flows.remove(ext_flow)
+                    unmatched_gold_flows.remove(gold_flow)
+                    break
+        
+        # Update flow metrics with fuzzy matches
+        flow_tp += len(flow_fuzzy_matches)
+        flow_fp = len(unmatched_extracted_flows)
+        flow_fn = len(unmatched_gold_flows)
         
         # Calculate metrics
         comp_tp = len(comp_matches)
@@ -394,8 +512,14 @@ class Evaluator:
             {"extracted": ext, "gold": gold, "similarity": sim}
             for ext, gold, sim in param_matches
         ]
-        # Flow matches (exact match on "source->target")
-        flow_matches = list(extracted_flows & gold_flows)
+        # Flow matches (exact + fuzzy matches)
+        flow_matches = list(normalized_extracted_flows & gold_flows)
+        # Add fuzzy matches
+        flow_match_details = [{"extracted": ext, "gold": gold, "similarity": sim} 
+                              for ext, gold, sim in flow_fuzzy_matches]
+        # Add exact matches
+        for flow in flow_matches:
+            flow_match_details.append({"extracted": flow, "gold": flow, "similarity": 1.0})
         
         return {
             "compartments": {
@@ -427,9 +551,9 @@ class Evaluator:
                 "tp": flow_tp,
                 "fp": flow_fp,
                 "fn": flow_fn,
-                "matches": flow_matches,
-                "unmatched_extracted": list(extracted_flows - gold_flows),
-                "unmatched_gold": list(gold_flows - extracted_flows)
+                "matches": flow_match_details,
+                "unmatched_extracted": list(unmatched_extracted_flows),
+                "unmatched_gold": list(unmatched_gold_flows)
             },
             "matching_method": "fuzzy",
             "similarity_threshold": 0.75
