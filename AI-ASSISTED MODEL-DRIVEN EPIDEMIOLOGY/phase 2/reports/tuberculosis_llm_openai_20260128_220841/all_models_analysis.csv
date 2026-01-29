@@ -1,0 +1,18 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Tuberculosis,Compartment,"Numerical experiments, and finally, in Section 5, we provide incorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Vaccinated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Recovered,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Vaccinated,RateFlow,0.0,False,Transition from susceptible to vaccinated due to vaccination,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Transmission from susceptible to infectious due to contact with infectious individuals,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,Transition from vaccinated back to susceptible due to waning immunity,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.3,False,Transition from infectious to recovered due to recovery,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.3,False,Reinfection of recovered individuals by infectious individuals,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.3,False,Transition from recovered back to susceptible due to waning immunity,,,
+Tuberculosis,Parameter,β,,,,,,Model file,Certain,,,,,,Probability of successful infection rate,CONSTANT,"[0.01,5]",year×human
+Tuberculosis,Parameter,ε,,,,,,Model file,Certain,,,,,,Correction parameter for reinfection term,CONSTANT,"[0,1]",
+Tuberculosis,Parameter,θ,,,,,,Model file,Certain,,,,,,Vaccine wane rate,CONSTANT,"[0.067,0.1]",day
+Tuberculosis,Parameter,γ,,,,,,Model file,Certain,,,,,,Recovery rate,CONSTANT,"[0.5,2]",year
+Tuberculosis,Parameter,δ,,,,,,Model file,Certain,,,,,,Dropout rate due to waning immunity,CONSTANT,"[0.003,0.02]",day
+Tuberculosis,Parameter,μ,,,,,,Model file,Certain,,,,,,Natural death rate,CONSTANT,1,human

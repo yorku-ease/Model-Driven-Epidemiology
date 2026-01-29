@@ -1,0 +1,31 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed 1,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed 2,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious 1,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious 2,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,ICU,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed 1,RateFlow,//@parameters.3,False,Susceptible individuals become infected and move to the first exposed compartment.,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.4,False,,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.5,False,,,,
+Influenza,Parameter,σ,,,,,,Model file,Certain,,,,,,,CONSTANT,0.2,
+Influenza,Parameter,w,,,,,,Model file,Certain,,,,,,,CONSTANT,3,
+Influenza,Parameter,eid,,,,,,Model file,Certain,,,,,,,CONSTANT,2,
+Influenza,Parameter,δt,,,,,,Model file,Certain,,,,,,Length of discrete time intervals for the SEIR model.,CONSTANT,0.25,day
+Influenza,Parameter,dL,,,,,,Model file,Certain,,,,,,"Average incubation period, derived from the rate of becoming infectious σ.",CONSTANT,2/σ,days
+Influenza,Parameter,γ,,,,,,Model file,Certain,,,,,,"Rate of recovery, representing the daily rate of transition through infectious compartments.",CONSTANT,0.5797,1/day
+Influenza,Parameter,dI,,,,,,Model file,Certain,,,,,,"Average infectious period, derived from the recovery rate γ.",CONSTANT,2/γ,days
+Influenza,Parameter,λ(t),,,,,,Model file,Certain,,,,,,Time-varying rate at which a person becomes infected.,CONSTANT,0.0,1/day
+Influenza,Parameter,β,,,,,,Model file,Certain,,,,,,"The constant transmission rate, defined as the rate at which new infections take place given a contact.",CONSTANT,0 to 1.25,
+Influenza,Parameter,ψ,,,,,,Model file,Certain,,,,,,"Exponential Growth Rate (EGR), an unknown parameter with a uniform prior distribution.",CONSTANT,"Unif(0,0.39)",
+Influenza,Parameter,π,,,,,,Model file,Certain,,,,,,"The proportion of the population who is initially susceptible, an unknown parameter with a uniform prior distribution.",CONSTANT,"Unif(0,1)",
+Influenza,Parameter,λ0,,,,,,Model file,Certain,,,,,,"The initial infection rate, an unknown parameter with a uniform prior distribution.",CONSTANT,"Unif(0,0.000241)",1/day
+Influenza,Parameter,Itot0,,,,,,Model file,Certain,,,,,,"The initial total number of infectious people, assumed to be within a specified range.",CONSTANT,"1 to 10,000",people
+Influenza,Parameter,R0,,,,,,Model file,Certain,,,,,,"The basic reproduction number, the average number of successful transmissions per infectious person in a fully susceptible population.",CONSTANT,1 to 4,
+Influenza,Parameter,Rn,,,,,,Model file,Certain,,,,,,"The effective reproduction number, the average number of successful transmissions per infectious person in a partially susceptible population.",CONSTANT,0.0,
+Influenza,Parameter,pICU,,,,,,Model file,Certain,,,,,,"Probability of ICU admission given infection, an unknown parameter with a uniform prior distribution.",CONSTANT,"Unif(0,1)",
+Influenza,Parameter,σ²ICU|E,,,,,,Model file,Certain,,,,,,"Variance of time from infection to ICU admission, a known parameter.",CONSTANT,18.24,days^2
+Influenza,Parameter,η,,,,,,Model file,Certain,,,,,,"Over-dispersion parameter for the Negative Binomial distribution of weekly ICU admissions, an unknown parameter with a uniform prior.",CONSTANT,"Unif(1,100)",

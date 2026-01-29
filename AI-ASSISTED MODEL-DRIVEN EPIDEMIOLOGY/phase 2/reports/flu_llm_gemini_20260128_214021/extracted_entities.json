@@ -1,0 +1,383 @@
+{
+  "compartments": [
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The compartment representing the portion of the population that is susceptible to the virus."
+    },
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "normalized_name": "Exposed",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The compartment representing the portion of the population that has been infected but is not yet infectious."
+    },
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The compartment representing the portion of the population that is infectious and can transmit the virus."
+    },
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious (I(t)) and Removed (R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The compartment representing the portion of the population that is no longer infectious."
+    },
+    {
+      "raw_text": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "normalized_name": "Exposed 1",
+      "page_number": 0,
+      "text_span": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The first of two sub-compartments for the Exposed state, used to create a more flexible incubation period."
+    },
+    {
+      "raw_text": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "normalized_name": "Exposed 2",
+      "page_number": 0,
+      "text_span": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The second of two sub-compartments for the Exposed state, used to create a more flexible incubation period."
+    },
+    {
+      "raw_text": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "normalized_name": "Infectious 1",
+      "page_number": 0,
+      "text_span": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The first of two sub-compartments for the Infectious state, used to create a more flexible infectious period."
+    },
+    {
+      "raw_text": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "normalized_name": "Infectious 2",
+      "page_number": 0,
+      "text_span": "To allow more flexibility for the time spent in E and I, we divide the E and I compartments into two sub-compartments (E1(t), E2(t) and I1(t), I2(t) respectively) [13].",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The second of two sub-compartments for the Infectious state, used to create a more flexible infectious period."
+    },
+    {
+      "raw_text": "Routinely collected ICU/HDU admissions data are linked to the transmission model through an observational model [30] which is represented in the bottom part of Figure 2.",
+      "normalized_name": "ICU",
+      "page_number": 0,
+      "text_span": "Routinely collected ICU/HDU admissions data are linked to the transmission model through an observational model [30] which is represented in the bottom part of Figure 2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "An observational state representing individuals admitted to ICU/HDU, linked to the transmission model."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "raw_text": "from E to I",
+      "page_number": 5,
+      "text_span": "from E to I",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "from I to R",
+      "page_number": 5,
+      "text_span": "from I to R",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "raw_text": "S(t+\u03b4t)=S(t)\u2212\u03bb(t)\u03b4t\u00b7S(t)",
+      "page_number": 0,
+      "text_span": "S(t+\u03b4t)=S(t)\u2212\u03bb(t)\u03b4t\u00b7S(t)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible individuals become infected and move to the first exposed compartment."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u03c3",
+      "normalized_name": "\u03c3",
+      "value": "0.2",
+      "unit": null,
+      "description": null,
+      "page_number": 9,
+      "text_span": "\u03c3 =0.2",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "w",
+      "normalized_name": "w",
+      "value": "3",
+      "unit": null,
+      "description": null,
+      "page_number": 10,
+      "text_span": "w = 3",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "eid",
+      "normalized_name": "eid",
+      "value": "2",
+      "unit": null,
+      "description": null,
+      "page_number": 18,
+      "text_span": "eid=\n2",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "We assume a discrete-time deterministic SEIR-type model (see Figure 2), with time divided into intervals of length \u03b4t of a quarter of a day, i.e. every interval elapses from t to t+\u03b4t.",
+      "normalized_name": "\u03b4t",
+      "value": 0.25,
+      "unit": "day",
+      "description": "Length of discrete time intervals for the SEIR model.",
+      "page_number": 0,
+      "text_span": "We assume a discrete-time deterministic SEIR-type model (see Figure 2), with time divided into intervals of length \u03b4t of a quarter of a day, i.e. every interval elapses from t to t+\u03b4t.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "leading to an average incubation period dL = 2/\u03c3 days;",
+      "normalized_name": "dL",
+      "value": "2/\u03c3",
+      "unit": "days",
+      "description": "Average incubation period, derived from the rate of becoming infectious \u03c3.",
+      "page_number": 0,
+      "text_span": "leading to an average incubation period dL = 2/\u03c3 days;",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3 is the daily rate of transition from the compartment I1 to I2 and from I2 to R",
+      "normalized_name": "\u03b3",
+      "value": 0.5797,
+      "unit": "1/day",
+      "description": "Rate of recovery, representing the daily rate of transition through infectious compartments.",
+      "page_number": 0,
+      "text_span": "\u03b3 is the daily rate of transition from the compartment I1 to I2 and from I2 to R",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "leading to an average infectious period dI = 2/\u03b3 days;",
+      "normalized_name": "dI",
+      "value": "2/\u03b3",
+      "unit": "days",
+      "description": "Average infectious period, derived from the recovery rate \u03b3.",
+      "page_number": 0,
+      "text_span": "leading to an average infectious period dI = 2/\u03b3 days;",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bb(t) is the rate at which a person becomes infected, assumed to be proportional to the number of infectious people at time t and the constant transmission rate \u03b2",
+      "normalized_name": "\u03bb(t)",
+      "value": null,
+      "unit": "1/day",
+      "description": "Time-varying rate at which a person becomes infected.",
+      "page_number": 0,
+      "text_span": "\u03bb(t) is the rate at which a person becomes infected, assumed to be proportional to the number of infectious people at time t and the constant transmission rate \u03b2",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "To derive the prior distributions for \u03bb0 and \u03c8 we assumed an initial total number of infectious people 1 \u2264 Itot0 \u2264 10,000 and a transmission rate 0 \u2264 \u03b2 \u2264 1.25, leading to a basic reproduction number 1 \u2264 R0 \u2264 4.",
+      "normalized_name": "\u03b2",
+      "value": "0 to 1.25",
+      "unit": null,
+      "description": "The constant transmission rate, defined as the rate at which new infections take place given a contact.",
+      "page_number": 0,
+      "text_span": "To derive the prior distributions for \u03bb0 and \u03c8 we assumed an initial total number of infectious people 1 \u2264 Itot0 \u2264 10,000 and a transmission rate 0 \u2264 \u03b2 \u2264 1.25, leading to a basic reproduction number 1 \u2264 R0 \u2264 4.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Exponential growth rate \u03c8 \u223c Unif(0,0.39)",
+      "normalized_name": "\u03c8",
+      "value": "Unif(0,0.39)",
+      "unit": null,
+      "description": "Exponential Growth Rate (EGR), an unknown parameter with a uniform prior distribution.",
+      "page_number": 0,
+      "text_span": "Exponential growth rate \u03c8 \u223c Unif(0,0.39)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Susceptibility \u03c0 \u223c Unif(0,1)",
+      "normalized_name": "\u03c0",
+      "value": "Unif(0,1)",
+      "unit": null,
+      "description": "The proportion of the population who is initially susceptible, an unknown parameter with a uniform prior distribution.",
+      "page_number": 0,
+      "text_span": "Susceptibility \u03c0 \u223c Unif(0,1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Initial infection rate \u03bb0 \u223c Unif(0,0.000241)",
+      "normalized_name": "\u03bb0",
+      "value": "Unif(0,0.000241)",
+      "unit": "1/day",
+      "description": "The initial infection rate, an unknown parameter with a uniform prior distribution.",
+      "page_number": 0,
+      "text_span": "Initial infection rate \u03bb0 \u223c Unif(0,0.000241)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "To derive the prior distributions for \u03bb0 and \u03c8 we assumed an initial total number of infectious people 1 \u2264 Itot0 \u2264 10,000",
+      "normalized_name": "Itot0",
+      "value": "1 to 10,000",
+      "unit": "people",
+      "description": "The initial total number of infectious people, assumed to be within a specified range.",
+      "page_number": 0,
+      "text_span": "To derive the prior distributions for \u03bb0 and \u03c8 we assumed an initial total number of infectious people 1 \u2264 Itot0 \u2264 10,000",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "To derive the prior distributions for \u03bb0 and \u03c8 we assumed... a basic reproduction number 1 \u2264 R0 \u2264 4.",
+      "normalized_name": "R0",
+      "value": "1 to 4",
+      "unit": null,
+      "description": "The basic reproduction number, the average number of successful transmissions per infectious person in a fully susceptible population.",
+      "page_number": 0,
+      "text_span": "To derive the prior distributions for \u03bb0 and \u03c8 we assumed... a basic reproduction number 1 \u2264 R0 \u2264 4.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "the effective reproduction number Rn that is the average number of successful transmissions per infectious person in partially susceptible population.",
+      "normalized_name": "Rn",
+      "value": null,
+      "unit": null,
+      "description": "The effective reproduction number, the average number of successful transmissions per infectious person in a partially susceptible population.",
+      "page_number": 0,
+      "text_span": "the effective reproduction number Rn that is the average number of successful transmissions per infectious person in partially susceptible population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Probability of ICU admission given infection pICU \u223c Unif(0,1)",
+      "normalized_name": "pICU",
+      "value": "Unif(0,1)",
+      "unit": null,
+      "description": "Probability of ICU admission given infection, an unknown parameter with a uniform prior distribution.",
+      "page_number": 0,
+      "text_span": "Probability of ICU admission given infection pICU \u223c Unif(0,1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Variance of time from infection to ICU admission \u03c3\u00b2ICU|E 18.24",
+      "normalized_name": "\u03c3\u00b2ICU|E",
+      "value": 18.24,
+      "unit": "days^2",
+      "description": "Variance of time from infection to ICU admission, a known parameter.",
+      "page_number": 0,
+      "text_span": "Variance of time from infection to ICU admission \u03c3\u00b2ICU|E 18.24",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Over-dispersion \u03b7 \u223c Unif(1,100)",
+      "normalized_name": "\u03b7",
+      "value": "Unif(1,100)",
+      "unit": null,
+      "description": "Over-dispersion parameter for the Negative Binomial distribution of weekly ICU admissions, an unknown parameter with a uniform prior.",
+      "page_number": 0,
+      "text_span": "Over-dispersion \u03b7 \u223c Unif(1,100)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 13,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 9,
+    "num_flows": 3,
+    "num_parameters": 18,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

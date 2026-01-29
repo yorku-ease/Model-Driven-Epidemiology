@@ -1,0 +1,17 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebolasensitivity,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious Deceased,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.2,False,New susceptible individuals enter the population at a constant birth/immigration rate.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,,,,
+Ebolasensitivity,Parameter,β,,,,,,Model file,Certain,,,,,,,CONSTANT,.,
+Ebolasensitivity,Parameter,α,,,,,,Model file,Certain,,,,,,,CONSTANT,0.,
+Ebolasensitivity,Parameter,n,,,,,,Model file,Certain,,,,,,,CONSTANT,0,
+Ebolasensitivity,Parameter,c_I,,,,,,Model file,Certain,,,,,,contact rate with infectious individuals,CONSTANT,variable,people weeks-1
+Ebolasensitivity,Parameter,c_D,,,,,,Model file,Certain,,,,,,contact rate with infectious dead bodies,CONSTANT,variable,people weeks-1
+Ebolasensitivity,Parameter,ω,,,,,,Model file,Certain,,,,,,rate at which infected individuals becoming infectious,CONSTANT,1,weeks-1
+Ebolasensitivity,Parameter,γ,,,,,,Model file,Certain,,,,,,recovery rate,CONSTANT,0.5,weeks-1
+Ebolasensitivity,Parameter,θ,,,,,,Model file,Certain,,,,,,safe burial rate,CONSTANT,1,weeks-1
+Ebolasensitivity,Parameter,R0,,,,,,Model file,Certain,,,,,,eradication threshold,CONSTANT,(βc_I ωθ + βc_D ωα) / (θ(ωα + ωγ + µα + µγ)),

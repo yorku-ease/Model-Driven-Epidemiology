@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 from difflib import SequenceMatcher
 from src.utils.llm_client import LLMClient
+from src.extraction.text_windows import build_text_window, format_tables_for_prompt
 
 
 class EntityExtractor:
@@ -154,10 +155,7 @@ class EntityExtractor:
             if src not in comp_set or tgt not in comp_set:
                 dropped += 1
                 continue
-            if src == tgt:
-                # self-loops are rarely meaningful in these models; drop to reduce noise
-                dropped += 1
-                continue
+            # Keep self-loops if they appear; some baseline models include them (e.g., stage holding flows)
 
             key = f"{src}->{tgt}"
             if key in seen:
@@ -382,7 +380,27 @@ class EntityExtractor:
         
         # LLM-based extraction if available
         if self.llm_client.is_available():
-            llm_compartments = self._extract_compartments_llm(paper_text)
+            # Build a focused window for compartments (equations + "divided into compartments")
+            try:
+                window_text = build_text_window(
+                    pages_data,
+                    include_patterns=[
+                        r"\bcompartment",
+                        r"\bdivided into\b",
+                        r"\bS\s*\(t\)|\bE\s*\(t\)|\bI\s*\(t\)|\bR\s*\(t\)",
+                        r"d[a-z]\s*\/\s*dt|d[a-z]\s*/\s*dt",
+                        r"\binitial condition|\bS\(0\)|\bE\(0\)|\bI\(0\)|\bR\(0\)",
+                    ],
+                    title="COMPARTMENTS WINDOW (model definition/equations)",
+                    max_chars=self.llm_compartments_chars,
+                    pad=1,
+                    max_pages=8,
+                    fallback_first_pages=4,
+                )
+            except Exception:
+                window_text = paper_text
+
+            llm_compartments = self._extract_compartments_llm(window_text)
             for comp in llm_compartments:
                 if comp['normalized_name'] not in seen:
                     seen.add(comp['normalized_name'])
@@ -392,7 +410,8 @@ class EntityExtractor:
     
     def _extract_compartments_llm(self, paper_text: str) -> List[Dict[str, Any]]:
         """Extract compartments using LLM with metamodel and Phase 1 examples"""
-        # Use more text for compartments - they're usually defined early in the paper
+        # Use a smaller, model-focused window instead of dumping full paper.
+        # If the caller already passed a window, this is just a final cap.
         truncated_text = paper_text[: self.llm_compartments_chars]
         
         # Provider-specific prompt optimization: OpenAI works better with concise prompts,
@@ -660,7 +679,27 @@ Return ONLY valid JSON array: [{{"name": "...", "description": "...", "text_span
         
         # LLM-based extraction if available (always try to get more flows)
         if self.llm_client.is_available():
-            llm_flows = self._extract_flows_llm(paper_text, compartments)
+            # Focus on equations/diagram pages for flow extraction
+            try:
+                flow_window = build_text_window(
+                    pages_data,
+                    include_patterns=[
+                        r"d[a-z]\s*\/\s*dt|d[a-z]\s*/\s*dt",
+                        r"\bS\s*\(t\)|\bE\s*\(t\)|\bI\s*\(t\)|\bR\s*\(t\)",
+                        r"\b→\b|->|from\s+\w+\s+to\s+\w+",
+                        r"\bequation\b|\bflow\b|\btransition\b|\bprogress\b|\brecover\b|\bdeath\b|\binfect",
+                        r"\bfigure\b|\bdiagram\b",
+                    ],
+                    title="FLOWS WINDOW (equations/diagram/transitions)",
+                    max_chars=self.llm_flows_chars,
+                    pad=1,
+                    max_pages=8,
+                    fallback_first_pages=4,
+                )
+            except Exception:
+                flow_window = paper_text
+
+            llm_flows = self._extract_flows_llm(flow_window, compartments)
             # Add LLM flows that aren't duplicates
             existing_flow_keys = {f"{f['source']}->{f['target']}" for f in flows}
             for llm_flow in llm_flows:
@@ -727,7 +766,12 @@ AVAILABLE COMPARTMENTS: {comp_list}
 {metamodel_context}{examples_context}
 {separator}
 YOUR TASK:
-You are an expert in epidemiological compartmental modeling. Extract EVERY flow (transition) between compartments mentioned in this paper.
+You are an expert in epidemiological compartmental modeling.
+You MUST extract EVERY flow (transition) between compartments that is implied by:
+- any model equation (dS/dt, S(t+Δt), etc.)
+- any text description ("from X to Y", "X → Y", "X moves to Y")
+- any diagram/table caption that describes transitions.
+Missing a flow is considered an error.
 
 HOW TO IDENTIFY FLOWS:
 1. Look for explicit flow descriptions: "from X to Y", "X → Y", "X transitions to Y"
@@ -756,8 +800,8 @@ FLOW TYPE RULES:
 - Match source/target to available compartments exactly (case-sensitive)
 
 EXTRACTION RULES - BE THOROUGH:
-- Extract ALL flows mentioned, even if briefly
-- Match compartment names exactly to available compartments: {comp_list}
+- Extract ALL flows mentioned or implied, even if briefly
+- Use ONLY these compartment names for source/target (map symbols like S(t), E1(t) to the closest compartment): {comp_list}
 - Include exact text quotes as evidence
 - Be comprehensive - missing flows will cause model errors
 - If unsure about flow type, use RateFlow for progression/recovery/death, ContactFlow for transmission
@@ -783,6 +827,8 @@ Identify all flows by looking for:
 - Differential equations ("dX/dt = ... + Y" indicates flow from Y to X)
 - Transmission flows ("Susceptible becomes Infectious")
 - Progression/recovery/death flows
+
+You MUST extract all transitions implied by equations and any diagram/table descriptions. Missing a flow is an error.
 
 REQUIRED JSON STRUCTURE:
 Each object must have: "source", "target", "description", "text_span", "flow_type"
@@ -1047,7 +1093,44 @@ Return ONLY valid JSON array: [{{"source": "...", "target": "...", "description"
 
         # Use LLM to extract parameters if available
         if self.llm_client.is_available():
-            llm_params = self._extract_parameters_llm(paper_text)
+            # Build a focused window for parameters and include extracted tables as structured text
+            try:
+                param_window = build_text_window(
+                    pages_data,
+                    include_patterns=[
+                        r"\bparameter\b",
+                        r"\bvalue\b",
+                        r"\btable\b",
+                        r"[αβγδμρσθλ]\s*[=:]",
+                        r"\bR0\b|\bR_0\b|\breproduction number\b",
+                        r"\bestimat|\bfit\b|\bcalibrat",
+                    ],
+                    title="PARAMETERS WINDOW (tables/definitions/equations)",
+                    max_chars=min(self.llm_parameters_chars, 20000),
+                    pad=1,
+                    max_pages=8,
+                    fallback_first_pages=4,
+                )
+            except Exception:
+                param_window = paper_text[: min(self.llm_parameters_chars, 20000)]
+
+            tables_text = ""
+            try:
+                tables_text = format_tables_for_prompt(
+                    tables,
+                    title="EXTRACTED TABLES (compact)",
+                    max_tables=3,
+                    max_rows=12,
+                    max_chars=12000,
+                )
+            except Exception:
+                tables_text = ""
+
+            llm_input = param_window
+            if tables_text:
+                llm_input = f"{param_window}\n\n{tables_text}"
+
+            llm_params = self._extract_parameters_llm(llm_input)
             for param in llm_params:
                 param_name = param.get('normalized_name', '')
                 # Filter out common non-parameters even from LLM
@@ -1321,9 +1404,9 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
         Returns:
             Dictionary with all extracted entities
         """
-        paper_text = pdf_data['full_text']
-        pages_data = pdf_data['raw_pages']
-        tables = pdf_data['tables']
+        paper_text = pdf_data.get('full_text', '')
+        pages_data = pdf_data.get('raw_pages') or pdf_data.get('pages') or []
+        tables = pdf_data.get('tables', [])
         
         # Extract in order (compartments needed for flows)
         compartments = self.extract_compartments(paper_text, pages_data)

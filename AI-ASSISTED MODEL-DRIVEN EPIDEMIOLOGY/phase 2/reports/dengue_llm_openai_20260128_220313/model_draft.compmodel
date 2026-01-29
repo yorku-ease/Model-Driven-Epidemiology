@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="i" expression="1" type="CONSTANT"/>
+  <parameters name="Y" expression="0" type="CONSTANT"/>
+  <parameters name="j" expression="1" type="CONSTANT"/>
+  <parameters name="ds" expression="1" type="CONSTANT"/>
+  <parameters name="μ" expression="0.005" type="CONSTANT"/>
+  <parameters name="σ" expression="0.007" type="CONSTANT"/>
+  <parameters name="β" expression="18" type="CONSTANT"/>
+  <parameters name="γ" expression="0.5" type="CONSTANT"/>
+  <parameters name="ρ" expression="0.5" type="CONSTANT"/>
+  <parameters name="k" expression="0.6" type="CONSTANT"/>
+  <parameters name="R" expression="1.684" type="CONSTANT"/>
+  <parameters name="h" expression="0" type="CONSTANT"/>
+  <parameters name="da" expression="0" type="CONSTANT"/>
+  <parameters name="arXiv" expression="2111" type="CONSTANT"/>
+  <parameters name="μh" expression="0.0" type="CONSTANT" description="natural death rate of the human hosts"/>
+  <parameters name="μv" expression="0.0" type="CONSTANT" description="natural death rate of the mosquitoes"/>
+  <parameters name="γ1(a)" expression="0.0" type="CONSTANT" description="age-specific recovery rate of symptomatic infectious hosts"/>
+  <parameters name="γ2(a)" expression="0.0" type="CONSTANT" description="age-specific recovery rate of asymptomatic infectious hosts"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible human individuals become exposed through bites by infected mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Exposed individuals become asymptomatic infectious after an age-dependent latent period."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Exposed individuals become symptomatic infectious after an age-dependent latent period."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.0" target="//@compartments.3" description="Asymptomatic individuals can be reinfected through mosquito bites and become symptomatic infectious."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Asymptomatic individuals recover at a specific rate."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Symptomatic individuals recover at a specific rate."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.0" target="//@compartments.6" description="Susceptible mosquitoes become infected through bites from asymptomatically or symptomatically infectious human hosts."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

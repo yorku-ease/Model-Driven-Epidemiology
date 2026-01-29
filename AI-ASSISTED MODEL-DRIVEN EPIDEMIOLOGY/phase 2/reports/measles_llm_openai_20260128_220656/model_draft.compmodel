@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="range" expression="10e14" type="CONSTANT"/>
+  <parameters name="β" expression="0.00188" type="CONSTANT" description="Transmission rate in children" unit="per week"/>
+  <parameters name="h_A" expression="0" type="CONSTANT" description="Rate of adult vaccination" unit="dimensionless"/>
+  <parameters name="h_U" expression="3 × 10^-6" type="CONSTANT" description="Rate of being immune from un-monitored vaccination" unit="per week"/>
+  <parameters name="h_M" expression="0.0167" type="CONSTANT" description="Rate of being immune from monitored vaccination" unit="per week"/>
+  <parameters name="x_U" expression="0.0087" type="CONSTANT" description="Un-monitored vaccination rate" unit="dimensionless"/>
+  <parameters name="x_M" expression="4.777 × 10^-6" type="CONSTANT" description="Monitored vaccination rate" unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.1" target="//@compartments.4" description="Transmission of measles from susceptible individuals to infectious individuals"/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.1" target="//@compartments.4" description="Transmission of measles from un-monitored vaccinated individuals to infectious individuals"/>
+  </compartments>
+  <compartments PrimaryName="Monitored Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.1" target="//@compartments.4" description="Transmission of measles from monitored vaccinated individuals to infectious individuals"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Progression from exposed to infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.5" description="Recovery from infectious to immune"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.0" description="Natural death of infectious individuals"/>
+  </compartments>
+  <compartments PrimaryName="Immune" population="0"/>
+  <compartments PrimaryName="Vaccinated" population="0"/>
+</compartmental:CompartmentalModel>

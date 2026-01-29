@@ -22,6 +22,16 @@ class LLMClient:
         """
         self.provider = provider.lower()
         self.api_key = self._load_api_key(api_key, api_key_file, provider)
+        # Guard against accidentally using the wrong provider's key (common when storing both)
+        if self.api_key:
+            if self.provider == "openai" and self.api_key.strip().startswith("AIza"):
+                print("Warning: .api_key.txt appears to contain a Gemini key (AIza...) but provider is openai. "
+                      "Use 'openai:sk-...' or set OPENAI_API_KEY. Falling back to pattern-based extraction.")
+                self.api_key = None
+            if self.provider == "gemini" and self.api_key.strip().startswith("sk-"):
+                print("Warning: .api_key.txt appears to contain an OpenAI key (sk-...) but provider is gemini. "
+                      "Use 'gemini:AIza...' or set GEMINI_API_KEY. Falling back to pattern-based extraction.")
+                self.api_key = None
         self.client = None
         self.available = False
         
@@ -111,13 +121,14 @@ class LLMClient:
             provider_pkg = "openai" if self.provider == "openai" else "google-generativeai"
             raise RuntimeError(f"LLM not available. Check API key and {provider_pkg} package installation.")
         
-        # Set default model if not provided
+        # Set default model if not provided; allow environment variable overrides
         if model is None:
             if self.provider == "openai":
-                model = "gpt-4o-mini"
+                # e.g. export OPENAI_MODEL=gpt-4.1-mini
+                model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
             elif self.provider == "gemini":
-                # Use Flash by default - Pro is often blocked by safety filters for scientific content
-                model = "gemini-2.5-flash"
+                # e.g. export GEMINI_MODEL=gemini-2.5-flash or gemini-2.5-pro
+                model = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
         
         # Use identical system instruction for both providers to ensure fair comparison
         system_instruction = """You are a scientific paper analyzer. You must return ONLY valid JSON.
@@ -259,8 +270,17 @@ CRITICAL RULES:
                         if repaired:
                             return json.loads(repaired)
                         return json.loads(json_part)
-                    except:
+                    except Exception:
                         pass
+
+                # As a last resort for Gemini array prompts, try to salvage objects one by one
+                expects_array = "array" in prompt.lower()
+                if self.provider == "gemini" and expects_array:
+                    salvaged = self._salvage_json_array(result_text)
+                    if salvaged:
+                        print(f"✓ Salvaged {len(salvaged)} items from partially broken JSON array")
+                        return salvaged
+
                 return {"error": "Failed to parse JSON", "raw_response": result_text[:1000]}
         
         except Exception as e:
@@ -368,8 +388,70 @@ CRITICAL RULES:
         # Fix missing commas after closing braces/quotes before opening braces
         repaired = re.sub(r'"\s*\{', '",{', repaired)
         repaired = re.sub(r"'\s*\{", "',{", repaired)
-
+        
         return repaired if repaired != text else None
+
+    def _salvage_json_array(self, text: str) -> Optional[list]:
+        """
+        Salvage best-effort JSON array from text by parsing objects one by one.
+
+        This is mainly used for Gemini when it returns a mostly-correct JSON array
+        where only the last object (or a few) are malformed. We try to extract
+        each top-level {...} block and parse it independently, ignoring failures.
+        """
+        if not text:
+            return None
+
+        # Remove any surrounding code fences that might still be present
+        stripped = text.strip()
+        if stripped.startswith("```"):
+            # Drop first fence and anything before the next fence
+            parts = stripped.split("```")
+            if len(parts) >= 3:
+                stripped = parts[2].strip()
+
+        objects = []
+        buf = []
+        depth = 0
+        in_string = False
+        escape_next = False
+
+        for ch in stripped:
+            if escape_next:
+                buf.append(ch)
+                escape_next = False
+                continue
+            if ch == "\\":
+                buf.append(ch)
+                escape_next = True
+                continue
+            if ch == '"' and not escape_next:
+                in_string = not in_string
+                buf.append(ch)
+                continue
+            if not in_string:
+                if ch == "{":
+                    depth += 1
+                elif ch == "}":
+                    depth -= 1
+            if depth > 0 or (depth == 0 and ch == "}"):
+                buf.append(ch)
+            # When depth returns to zero and we have a buffer, try to parse it
+            if depth == 0 and buf:
+                candidate = "".join(buf).strip()
+                buf = []
+                if not candidate:
+                    continue
+                try:
+                    repaired_obj = self._repair_json(candidate) or candidate
+                    parsed = json.loads(repaired_obj)
+                    if isinstance(parsed, dict):
+                        objects.append(parsed)
+                except Exception:
+                    # Ignore this candidate and continue
+                    continue
+
+        return objects or None
     
     def is_available(self) -> bool:
         """Check if LLM is available"""

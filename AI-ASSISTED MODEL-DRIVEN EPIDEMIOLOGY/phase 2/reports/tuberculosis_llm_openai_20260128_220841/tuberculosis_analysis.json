@@ -1,0 +1,190 @@
+{
+  "modelName": "Tuberculosis",
+  "summary": {
+    "modelName": "Tuberculosis",
+    "totalPopulation": null,
+    "numCompartments": 5,
+    "numParameters": 6,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Numerical experiments, and finally, in Section 5, we provide incorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 1,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Transition from susceptible to vaccinated due to vaccination",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.3",
+            "description": "Transmission from susceptible to infectious due to contact with infectious individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Vaccinated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Transition from vaccinated back to susceptible due to waning immunity",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Transition from infectious to recovered due to recovery",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.3",
+            "description": "Reinfection of recovered individuals by infectious individuals",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Transition from recovered back to susceptible due to waning immunity",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "[0.01,5]",
+        "description": "Probability of successful infection rate",
+        "unit": "year×human"
+      },
+      {
+        "index": 1,
+        "name": "ε",
+        "type": "CONSTANT",
+        "expression": "[0,1]",
+        "description": "Correction parameter for reinfection term",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "[0.067,0.1]",
+        "description": "Vaccine wane rate",
+        "unit": "day"
+      },
+      {
+        "index": 3,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "[0.5,2]",
+        "description": "Recovery rate",
+        "unit": "year"
+      },
+      {
+        "index": 4,
+        "name": "δ",
+        "type": "CONSTANT",
+        "expression": "[0.003,0.02]",
+        "description": "Dropout rate due to waning immunity",
+        "unit": "day"
+      },
+      {
+        "index": 5,
+        "name": "μ",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Natural death rate",
+        "unit": "human"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

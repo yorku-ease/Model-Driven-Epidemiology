@@ -1,0 +1,285 @@
+{
+  "compartments": [
+    {
+      "raw_text": "the group of children is divided into six distinct compartments: SC (Susceptible)",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "the group of children is divided into six distinct compartments: SC (Susceptible)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are not infected with measles and are at risk of infection."
+    },
+    {
+      "raw_text": "the group of children is divided into six distinct compartments: UV C (Un-monitored Vaccinated)",
+      "normalized_name": "Un-monitored Vaccinated",
+      "page_number": 0,
+      "text_span": "the group of children is divided into six distinct compartments: UV C (Un-monitored Vaccinated)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Children who have been vaccinated but are not enrolled in a monitored vaccination program."
+    },
+    {
+      "raw_text": "the group of children is divided into six distinct compartments: MV C (Monitored Vaccinated)",
+      "normalized_name": "Monitored Vaccinated",
+      "page_number": 0,
+      "text_span": "the group of children is divided into six distinct compartments: MV C (Monitored Vaccinated)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Children who are vaccinated under a monitored program ensuring timely immunization."
+    },
+    {
+      "raw_text": "the group of children is divided into six distinct compartments: E C (Exposed)",
+      "normalized_name": "Exposed",
+      "page_number": 0,
+      "text_span": "the group of children is divided into six distinct compartments: E C (Exposed)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been exposed to measles but are not yet infectious."
+    },
+    {
+      "raw_text": "the group of children is divided into six distinct compartments: I C (Infectious)",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "the group of children is divided into six distinct compartments: I C (Infectious)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are currently infected with measles and can transmit the virus."
+    },
+    {
+      "raw_text": "the group of children is divided into six distinct compartments: I m C (Immune)",
+      "normalized_name": "Immune",
+      "page_number": 0,
+      "text_span": "the group of children is divided into six distinct compartments: I m C (Immune)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from measles and are no longer susceptible to infection."
+    },
+    {
+      "raw_text": "Similarly, the adult age group is divided into six subgroups: V A (Vaccinated)",
+      "normalized_name": "Vaccinated",
+      "page_number": 0,
+      "text_span": "Similarly, the adult age group is divided into six subgroups: V A (Vaccinated)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Adults who are vaccinated under a monitored program."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "raw_text": "dS_C = L - (m + x + x + j)S_C - b(I_C + I_A)S_C",
+      "page_number": 0,
+      "text_span": "dS_C = L - (m + x + x + j)S_C - b(I_C + I_A)S_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Transmission of measles from susceptible individuals to infectious individuals"
+    },
+    {
+      "source": "Un-monitored Vaccinated",
+      "target": "Infectious",
+      "raw_text": "dUV_C = x_S - e b(I_C + I_A)UV_C - (m + h + j)UV_C",
+      "page_number": 0,
+      "text_span": "dUV_C = x_S - e b(I_C + I_A)UV_C - (m + h + j)UV_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Transmission of measles from un-monitored vaccinated individuals to infectious individuals"
+    },
+    {
+      "source": "Monitored Vaccinated",
+      "target": "Infectious",
+      "raw_text": "dMV_C = x_S - (m + h)MV_C",
+      "page_number": 0,
+      "text_span": "dMV_C = x_S - (m + h)MV_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Transmission of measles from monitored vaccinated individuals to infectious individuals"
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "raw_text": "dI_C = dE_C - (g + d + m + j)I_C",
+      "page_number": 0,
+      "text_span": "dI_C = dE_C - (g + d + m + j)I_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Progression from exposed to infectious"
+    },
+    {
+      "source": "Infectious",
+      "target": "Immune",
+      "raw_text": "dI_mC = gI_C + hMV_C - (m + j)I_mC",
+      "page_number": 0,
+      "text_span": "dI_mC = gI_C + hMV_C - (m + j)I_mC",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Recovery from infectious to immune"
+    },
+    {
+      "source": "Infectious",
+      "target": "Susceptible",
+      "raw_text": "dI_C = dE_C - (g + d + m + j)I_C",
+      "page_number": 0,
+      "text_span": "dI_C = dE_C - (g + d + m + j)I_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Natural death of infectious individuals"
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "range",
+      "normalized_name": "range",
+      "value": "10e14",
+      "unit": null,
+      "description": null,
+      "page_number": 11,
+      "text_span": "range:10e14",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "the transmission rate in children (b C = 0.00188) is higher than in adults (b A = 1.00 \u00d7 10^-5)",
+      "normalized_name": "\u03b2",
+      "value": "0.00188",
+      "unit": "per week",
+      "description": "Transmission rate in children",
+      "page_number": 0,
+      "text_span": "the transmission rate in children (b C = 0.00188) is higher than in adults (b A = 1.00 \u00d7 10^-5)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "we took both the rate of adult vaccination (x A) and the rate of being immune through adult vaccination (h A) as zero.",
+      "normalized_name": "h_A",
+      "value": "0",
+      "unit": "dimensionless",
+      "description": "Rate of adult vaccination",
+      "page_number": 0,
+      "text_span": "we took both the rate of adult vaccination (x A) and the rate of being immune through adult vaccination (h A) as zero.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "the rate of being immune from un-monitored vaccination (h U) is 3 \u00d7 10^-6.",
+      "normalized_name": "h_U",
+      "value": "3 \u00d7 10^-6",
+      "unit": "per week",
+      "description": "Rate of being immune from un-monitored vaccination",
+      "page_number": 0,
+      "text_span": "the rate of being immune from un-monitored vaccination (h U) is 3 \u00d7 10^-6.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "the rate of being immune from monitored vaccination (h M) is 0.0167.",
+      "normalized_name": "h_M",
+      "value": "0.0167",
+      "unit": "per week",
+      "description": "Rate of being immune from monitored vaccination",
+      "page_number": 0,
+      "text_span": "the rate of being immune from monitored vaccination (h M) is 0.0167.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "we obtained the un-monitored vaccination rate (x U = 0.0087) is less than the monitored vaccination rate.",
+      "normalized_name": "x_U",
+      "value": "0.0087",
+      "unit": "dimensionless",
+      "description": "Un-monitored vaccination rate",
+      "page_number": 0,
+      "text_span": "we obtained the un-monitored vaccination rate (x U = 0.0087) is less than the monitored vaccination rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "we obtained the monitored vaccination rate (x M = 4.777 \u00d7 10^-6) is less than the un-monitored vaccination rate.",
+      "normalized_name": "x_M",
+      "value": "4.777 \u00d7 10^-6",
+      "unit": "dimensionless",
+      "description": "Monitored vaccination rate",
+      "page_number": 0,
+      "text_span": "we obtained the monitored vaccination rate (x M = 4.777 \u00d7 10^-6) is less than the un-monitored vaccination rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 7,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 19,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 19,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 6,
+    "num_parameters": 7,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

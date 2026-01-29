@@ -104,18 +104,99 @@ cp your_paper.pdf data/papers/
 
 ### Step 4: Run Phase 2
 
-**Basic Command:**
+#### 4.1 Basic Command (default provider)
+
 ```bash
 python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports
 ```
 
-**Full Command (with all options):**
+#### 4.2 Run with OpenAI (ChatGPT)
+
+Make sure you have an OpenAI key configured (see Step 1).
+
+**Single paper:**
+
 ```bash
 python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
     --output reports \
+    --llm-provider openai \
     --phase1-dir "../phase 1" \
     --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+**All papers in `data/papers/`:**
+
+```bash
+for paper in data/papers/*.pdf; do
+  python3 run_phase2.py \
+      --paper "$paper" \
+      --output reports \
+      --llm-provider openai \
+      --phase1-dir "../phase 1" \
+      --prior-models-dir "../phase 1/reports/model_analysis"
+done
+```
+
+#### 4.3 Run with Google Gemini – Pro vs Flash
+
+Make sure you have a Gemini key configured (see Step 1).  
+You select **Pro** vs **Flash** with the `GEMINI_MODEL` environment variable.
+
+**Gemini 2.5 Pro – single paper:**
+
+```bash
+export GEMINI_MODEL="gemini-2.5-pro"
+
+python3 run_phase2.py \
+    --paper data/papers/your_paper.pdf \
+    --output reports \
+    --llm-provider gemini \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+**Gemini 2.5 Pro – all papers:**
+
+```bash
+export GEMINI_MODEL="gemini-2.5-pro"
+
+for paper in data/papers/*.pdf; do
+  python3 run_phase2.py \
+      --paper "$paper" \
+      --output reports \
+      --llm-provider gemini \
+      --phase1-dir "../phase 1" \
+      --prior-models-dir "../phase 1/reports/model_analysis"
+done
+```
+
+**Gemini 2.5 Flash – single paper:**
+
+```bash
+export GEMINI_MODEL="gemini-2.5-flash"
+
+python3 run_phase2.py \
+    --paper data/papers/your_paper.pdf \
+    --output reports \
+    --llm-provider gemini \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+**Gemini 2.5 Flash – all papers:**
+
+```bash
+export GEMINI_MODEL="gemini-2.5-flash"
+
+for paper in data/papers/*.pdf; do
+  python3 run_phase2.py \
+      --paper "$paper" \
+      --output reports \
+      --llm-provider gemini \
+      --phase1-dir "../phase 1" \
+      --prior-models-dir "../phase 1/reports/model_analysis"
+done
 ```
 
 ---

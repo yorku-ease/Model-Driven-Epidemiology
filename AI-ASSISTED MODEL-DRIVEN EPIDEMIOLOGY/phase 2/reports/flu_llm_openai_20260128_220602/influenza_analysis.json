@@ -1,0 +1,188 @@
+{
+  "modelName": "Influenza",
+  "summary": {
+    "modelName": "Influenza",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 11,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.2",
+            "description": "Transmission of infection from susceptible individuals to infectious individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "w",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "eid",
+        "type": "CONSTANT",
+        "expression": "2",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "unknown",
+        "description": "transmission rate",
+        "unit": "unitless"
+      },
+      {
+        "index": 4,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5797",
+        "description": "rate of recovery",
+        "unit": "day^-1"
+      },
+      {
+        "index": 5,
+        "name": "σ²",
+        "type": "CONSTANT",
+        "expression": "18.24",
+        "description": "variance of time from infection to ICU admission",
+        "unit": "days²"
+      },
+      {
+        "index": 6,
+        "name": "π",
+        "type": "CONSTANT",
+        "expression": "unknown",
+        "description": "susceptibility",
+        "unit": "unitless"
+      },
+      {
+        "index": 7,
+        "name": "λ",
+        "type": "CONSTANT",
+        "expression": "unknown",
+        "description": "initial infection rate",
+        "unit": "unitless"
+      },
+      {
+        "index": 8,
+        "name": "ψ",
+        "type": "CONSTANT",
+        "expression": "unknown",
+        "description": "exponential growth rate",
+        "unit": "unitless"
+      },
+      {
+        "index": 9,
+        "name": "η",
+        "type": "CONSTANT",
+        "expression": "unknown",
+        "description": "over-dispersion",
+        "unit": "unitless"
+      },
+      {
+        "index": 10,
+        "name": "p_ICU",
+        "type": "CONSTANT",
+        "expression": "unknown",
+        "description": "probability of ICU admission given infection",
+        "unit": "unitless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

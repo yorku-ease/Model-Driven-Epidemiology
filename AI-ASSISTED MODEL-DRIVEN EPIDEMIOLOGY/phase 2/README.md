@@ -82,6 +82,117 @@ Phase 2 runs 9 steps automatically. Each step has specific inputs, processes, an
 
 ---
 
+## Running with Different LLM Providers and Models
+
+Phase 2 supports both **OpenAI** and **Google Gemini**. You choose the provider with `--llm-provider` and can control the exact model with environment variables.
+
+### OpenAI (ChatGPT)
+
+- **Provider flag**: `--llm-provider openai`
+- **API key**: `OPENAI_API_KEY` env var or `openai:sk-...` in `.api_key.txt`
+- **Default model**: `gpt-4o-mini` (can be overridden)
+
+Override the OpenAI model:
+
+```bash
+export OPENAI_API_KEY="sk-..."         # or use .api_key.txt
+export OPENAI_MODEL="gpt-4.1-mini"     # optional override
+```
+
+Run on a single paper:
+
+```bash
+python3 run_phase2.py \
+  --paper data/papers/EbolaSensitivity.pdf \
+  --output reports \
+  --llm-provider openai \
+  --phase1-dir "../phase 1" \
+  --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+Run on **all papers** in `data/papers/`:
+
+```bash
+for paper in data/papers/*.pdf; do
+  python3 run_phase2.py \
+    --paper "$paper" \
+    --output reports \
+    --llm-provider openai \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+done
+```
+
+### Google Gemini (Pro and Flash)
+
+- **Provider flag**: `--llm-provider gemini`
+- **API key**: `GEMINI_API_KEY` env var or `gemini:AIza...` in `.api_key.txt`
+- **Default model**: `gemini-2.5-pro` (can be overridden)
+
+You can switch between **Gemini 2.5 Pro** and **Gemini 2.5 Flash** using the `GEMINI_MODEL` environment variable.
+
+#### Gemini 2.5 Pro – single paper
+
+```bash
+export GEMINI_API_KEY="AIza-..."          # or use .api_key.txt with gemini: prefix
+export GEMINI_MODEL="gemini-2.5-pro"
+
+python3 run_phase2.py \
+  --paper data/papers/EbolaSensitivity.pdf \
+  --output reports \
+  --llm-provider gemini \
+  --phase1-dir "../phase 1" \
+  --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+#### Gemini 2.5 Pro – all papers
+
+```bash
+export GEMINI_API_KEY="AIza-..."
+export GEMINI_MODEL="gemini-2.5-pro"
+
+for paper in data/papers/*.pdf; do
+  python3 run_phase2.py \
+    --paper "$paper" \
+    --output reports \
+    --llm-provider gemini \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+done
+```
+
+#### Gemini 2.5 Flash – single paper
+
+```bash
+export GEMINI_API_KEY="AIza-..."
+export GEMINI_MODEL="gemini-2.5-flash"
+
+python3 run_phase2.py \
+  --paper data/papers/EbolaSensitivity.pdf \
+  --output reports \
+  --llm-provider gemini \
+  --phase1-dir "../phase 1" \
+  --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+#### Gemini 2.5 Flash – all papers
+
+```bash
+export GEMINI_API_KEY="AIza-..."
+export GEMINI_MODEL="gemini-2.5-flash"
+
+for paper in data/papers/*.pdf; do
+  python3 run_phase2.py \
+    --paper "$paper" \
+    --output reports \
+    --llm-provider gemini \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+done
+```
+
+---
+
 ### Step 2: Paper Promises Extraction
 
 **Input:** Cleaned paper text from Step 1

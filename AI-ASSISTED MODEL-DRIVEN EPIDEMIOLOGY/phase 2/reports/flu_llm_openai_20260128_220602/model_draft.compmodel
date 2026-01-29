@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="σ" expression="0.2" type="CONSTANT"/>
+  <parameters name="w" expression="3" type="CONSTANT"/>
+  <parameters name="eid" expression="2" type="CONSTANT"/>
+  <parameters name="β" expression="unknown" type="CONSTANT" description="transmission rate" unit="unitless"/>
+  <parameters name="γ" expression="0.5797" type="CONSTANT" description="rate of recovery" unit="day^-1"/>
+  <parameters name="σ²" expression="18.24" type="CONSTANT" description="variance of time from infection to ICU admission" unit="days²"/>
+  <parameters name="π" expression="unknown" type="CONSTANT" description="susceptibility" unit="unitless"/>
+  <parameters name="λ" expression="unknown" type="CONSTANT" description="initial infection rate" unit="unitless"/>
+  <parameters name="ψ" expression="unknown" type="CONSTANT" description="exponential growth rate" unit="unitless"/>
+  <parameters name="η" expression="unknown" type="CONSTANT" description="over-dispersion" unit="unitless"/>
+  <parameters name="p_ICU" expression="unknown" type="CONSTANT" description="probability of ICU admission given infection" unit="unitless"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.3" target="//@compartments.2" description="Transmission of infection from susceptible individuals to infectious individuals"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.3"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

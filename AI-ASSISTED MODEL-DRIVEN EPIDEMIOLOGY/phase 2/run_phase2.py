@@ -10,6 +10,7 @@ from typing import Optional
 from src.extraction.pdf_pipeline import PDFPipeline
 from src.extraction.paper_promise_extractor import PaperPromiseExtractor
 from src.extraction.entity_extractor import EntityExtractor
+from src.extraction.text_windows import build_text_window
 from src.synthesis.model_synthesizer import ModelSynthesizer
 from src.synthesis.traceability import TraceabilityMapper
 from src.analysis.gap_analyzer import GapAnalyzer
@@ -200,11 +201,34 @@ Examples:
         llm_client=llm_client,
         metamodel_path=metamodel_path
     )
-    
-    promises = promise_extractor.extract(
-        pdf_data['full_text'],
-        use_llm=args.use_llm
-    )
+
+    # Build a smaller, model-focused text window for LLM (avoid dumping full paper)
+    promise_text = pdf_data.get("full_text", "")
+    try:
+        pages_for_window = pdf_data.get("raw_pages") or pdf_data.get("pages") or []
+        if pages_for_window:
+            promise_text = build_text_window(
+                pages_for_window,
+                include_patterns=[
+                    r"\bmodel\b",
+                    r"\bcompartment",
+                    r"\bseir\b|\bsir\b|\bsis\b",
+                    r"\bparameter",
+                    r"\bstratif",
+                    r"\bvaccin|\btreat|\bintervention|\bcontrol",
+                    r"\bequation|\bdifferential|\bd\/dt|d[a-z]\s*\/\s*dt",
+                ],
+                title="PROMISES WINDOW (abstract/intro/model/parameters hints)",
+                max_chars=25000,
+                pad=1,
+                max_pages=8,
+                fallback_first_pages=4,
+            )
+    except Exception:
+        # Fall back to full_text if anything goes wrong
+        promise_text = pdf_data.get("full_text", "")
+
+    promises = promise_extractor.extract(promise_text, use_llm=args.use_llm)
     
     # Save promises
     promise_extractor.save_promises(
@@ -426,9 +450,12 @@ Examples:
         gs_comp = evaluation['gold_standard_comparison']
         comp_metrics = gs_comp.get('compartments', {})
         param_metrics = gs_comp.get('parameters', {})
+        flow_metrics = gs_comp.get('flows', {})
         print(f"    - Baseline comparison:")
         print(f"      * Compartments: Precision={comp_metrics.get('precision', 0):.2f}, Recall={comp_metrics.get('recall', 0):.2f}, F1={comp_metrics.get('f1', 0):.2f}")
         print(f"      * Parameters: Precision={param_metrics.get('precision', 0):.2f}, Recall={param_metrics.get('recall', 0):.2f}, F1={param_metrics.get('f1', 0):.2f}")
+        if flow_metrics:
+            print(f"      * Flows: Precision={flow_metrics.get('precision', 0):.2f}, Recall={flow_metrics.get('recall', 0):.2f}, F1={flow_metrics.get('f1', 0):.2f}")
     print()
     
     # Generate Final Comprehensive Report
