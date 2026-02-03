@@ -1,0 +1,415 @@
+{
+  "paper_name": "Cholera",
+  "summary": {
+    "extraction": {
+      "compartments": 6,
+      "flows": 6,
+      "parameters": 9,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 5,
+      "critical_gaps": 0,
+      "high_gaps": 1,
+      "medium_gaps": 4
+    },
+    "model_type": "SIR"
+  },
+  "paper_promises": {
+    "compartments": [
+      "Susceptible",
+      "Infectious",
+      "Recovered"
+    ],
+    "stratifications": [],
+    "parameters": [
+      "\u03b2",
+      "B",
+      "\u03ba",
+      "\u03b3",
+      "\u03b4",
+      "\u03be"
+    ],
+    "interventions": [
+      "oral rehydration therapy",
+      "antibiotics",
+      "oral cholera vaccine",
+      "water, sanitation and hygiene"
+    ],
+    "model_type": "SIR",
+    "description": "The paper models cholera transmission dynamics using an ordinary differential equation model, focusing on the impact of interventions like oral rehydration therapy, antibiotics, oral cholera vaccine, and water, sanitation, and hygiene measures. It adapts a basic SIR model to incorporate cholera-specific dynamics such as water contamination and asymptomatic infections.",
+    "extraction_method": "llm"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Hyperinfectious Bacteria",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Hyperinfectious Bacteria",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hyperinfectious Bacteria",
+        "target": "Susceptible",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "R",
+        "value": "2",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "etal",
+        "value": "5",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "\u03b2",
+        "value": null,
+        "unit": "days^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": null,
+        "unit": "days^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b4",
+        "value": null,
+        "unit": "days^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03be",
+        "value": null,
+        "unit": "cells * mL^-1 * person^-1 * day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03ba",
+        "value": null,
+        "unit": "cells/mL",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R0",
+        "value": null,
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "RE",
+        "value": null,
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 6,
+    "flows": 6,
+    "parameters": 9,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 26,
+    "items_with_evidence": 26,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 26,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 5,
+      "critical_gaps": 0,
+      "high_gaps": 1,
+      "medium_gaps": 4,
+      "promised_items": {
+        "compartments": 3,
+        "parameters": 6,
+        "stratifications": 0,
+        "interventions": 4
+      },
+      "extracted_items": {
+        "compartments": 6,
+        "parameters": 9,
+        "stratifications": 2,
+        "interventions": 3
+      }
+    },
+    "missing_compartments": [],
+    "missing_parameters": [
+      {
+        "promised": "b",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_stratifications": [],
+    "missing_interventions": [
+      {
+        "promised": "oral rehydration therapy",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "antibiotics",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "oral cholera vaccine",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "water, sanitation and hygiene",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ]
+  },
+  "gap_suggestions": {
+    "total_gaps": 5,
+    "total_suggestions": 6,
+    "suggestions_by_source": {
+      "paper_span": 5,
+      "prior_model": 0,
+      "domain_knowledge": 1
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 26,
+      "items_with_evidence": 26,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 26,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 5,
+      "critical_gaps": 0,
+      "high_gaps": 1,
+      "medium_gaps": 4,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 1,
+        "missing_stratifications": 0,
+        "missing_interventions": 4
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.5,
+        "recall": 0.75,
+        "f1": 0.6,
+        "tp": 3,
+        "fp": 3,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Hyperinfectious Bacteria",
+            "gold": "Infectious",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Asymptomatic",
+          "Vaccinated",
+          "Infectious"
+        ],
+        "unmatched_gold": [
+          "Chollerae bacterial concentration"
+        ]
+      },
+      "parameters": {
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1": 0.8,
+        "tp": 6,
+        "fp": 3,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "\u03ba",
+            "gold": "\u03ba",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b2",
+            "gold": "\u03b2 * \u03ba",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "\u03b3",
+            "gold": "\u03b3",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03be",
+            "gold": "\u03be",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "R",
+            "gold": "\u03b2",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "\u03b4",
+            "gold": "\u03b4",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "etal",
+          "RE",
+          "R0"
+        ],
+        "unmatched_gold": []
+      },
+      "flows": {
+        "precision": 0.3333333333333333,
+        "recall": 0.6666666666666666,
+        "f1": 0.4444444444444444,
+        "tp": 2,
+        "fp": 4,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Infectious->Recovered humans",
+            "gold": "Infectious->Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible->Infectious",
+            "gold": "Susceptible->Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Susceptible->Vaccinated",
+          "Infectious->Susceptible",
+          "Vaccinated->Susceptible",
+          "Infectious->Infectious"
+        ],
+        "unmatched_gold": [
+          "Infectious->Chollerae bacterial concentration"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

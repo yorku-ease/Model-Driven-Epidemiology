@@ -1,0 +1,247 @@
+{
+  "modelName": "Zika",
+  "summary": {
+    "modelName": "Zika",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 11,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.1",
+            "description": "Susceptible humans become exposed due to bites from infectious mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Exposed humans progress to the infectious stage.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Infectious humans recover from the infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.5",
+            "description": "Susceptible mosquitoes become exposed after biting infectious humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Exposed Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Exposed mosquitoes progress to the infectious stage.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Reference",
+        "type": "CONSTANT",
+        "expression": "1.",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Transmission rate from mosquito bites",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "α_H",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Inverse incubation time of ZIKV for human",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Recovery rate of an infectious individual",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "λ",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Human population growth rate",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "μ_V",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Mortality rate of adult vectors",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "τ_i",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Reciprocal of the development time of vectors in stage i",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "μ_i",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Mortality rate of vectors in stage i",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "κ",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Mortality rate of larvae caused by limited carrying capacity",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "e_V",
+        "type": "CONSTANT",
+        "expression": "80",
+        "description": "Number of eggs laid per female mosquito per unit time",
+        "unit": "per day"
+      },
+      {
+        "index": 10,
+        "name": "1/γ",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "Egg development time",
+        "unit": "days"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

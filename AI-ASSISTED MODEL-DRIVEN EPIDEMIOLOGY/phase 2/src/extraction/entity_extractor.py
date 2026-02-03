@@ -5,12 +5,55 @@ from paper text with evidence (text span, page number, confidence).
 """
 
 import json
+import os
 import re
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from difflib import SequenceMatcher
 from src.utils.llm_client import LLMClient
 from src.extraction.text_windows import build_text_window, format_tables_for_prompt
+
+# JSON schemas for Gemini structured output (guarantees valid JSON; improves compartments/flows/params extraction)
+GEMINI_COMPARTMENT_SCHEMA: Dict[str, Any] = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string", "description": "Compartment name"},
+            "description": {"type": "string", "description": "Brief description from paper"},
+            "text_span": {"type": "string", "description": "Exact quote showing where compartment is mentioned"},
+        },
+        "required": ["name", "description", "text_span"],
+    },
+}
+GEMINI_FLOW_SCHEMA: Dict[str, Any] = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "source": {"type": "string", "description": "Source compartment name"},
+            "target": {"type": "string", "description": "Target compartment name"},
+            "description": {"type": "string", "description": "Brief description of the flow"},
+            "text_span": {"type": "string", "description": "Exact quote showing where flow is described"},
+            "flow_type": {"type": "string", "description": "RateFlow or ContactFlow", "enum": ["RateFlow", "ContactFlow"]},
+        },
+        "required": ["source", "target", "description", "text_span", "flow_type"],
+    },
+}
+GEMINI_PARAMETER_SCHEMA: Dict[str, Any] = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string", "description": "Parameter symbol or name"},
+            "value": {"type": "string", "description": "Numerical value if specified"},
+            "unit": {"type": "string", "description": "Unit if specified"},
+            "description": {"type": "string", "description": "Brief description from paper"},
+            "text_span": {"type": "string", "description": "Exact quote showing where parameter is defined"},
+        },
+        "required": ["name", "description", "text_span"],
+    },
+}
 
 
 class EntityExtractor:
@@ -21,7 +64,9 @@ class EntityExtractor:
                  llm_compartments_chars: int = 50000,
                  llm_flows_chars: int = 80000,
                  llm_parameters_chars: int = 80000,
-                 flow_fuzzy_threshold: float = 0.78):
+                 flow_fuzzy_threshold: float = 0.78,
+                 paper_type: Optional[Dict[str, bool]] = None,
+                 experiment: Optional[str] = None):
         """
         Initialize entity extractor.
 
@@ -33,6 +78,8 @@ class EntityExtractor:
             llm_flows_chars: Max characters of paper text to provide to LLM for flows
             llm_parameters_chars: Max characters of paper text to provide to LLM for parameters
             flow_fuzzy_threshold: Similarity threshold used to snap LLM flow endpoints to known compartments
+            paper_type: Optional {"vector_borne": bool, "climate": bool} to tailor prompts (vector/climate hints)
+            experiment: Optional variant string (e.g. "B", "C", "B+C") for A/B testing; from PHASE2_EXPERIMENT
         """
         self.llm_client = llm_client or LLMClient()
         self.metamodel = None
@@ -47,6 +94,15 @@ class EntityExtractor:
         self.llm_flows_chars = int(llm_flows_chars) if llm_flows_chars else 80000
         self.llm_parameters_chars = int(llm_parameters_chars) if llm_parameters_chars else 80000
         self.flow_fuzzy_threshold = float(flow_fuzzy_threshold) if flow_fuzzy_threshold else 0.78
+        self.paper_type = paper_type or {}
+        # Best variant from experiments: B+C (short flow text_span + exact compartment names). Kept as default.
+        self.experiment = (experiment or os.environ.get("PHASE2_EXPERIMENT", "B+C") or "B+C").strip().upper()
+
+    def _normalize_flow_compartment_name(self, name: str) -> str:
+        """Strip trailing parenthetical like (E1), (I2) so 'Exposed (E1)' matches 'Exposed'."""
+        if not name:
+            return name
+        return re.sub(r"\s*\([A-Za-z0-9_]+\)\s*$", "", name.strip()).strip() or name.strip()
 
     def _best_fuzzy_match(self, needle: str, haystack: List[str], threshold: float) -> Optional[str]:
         """Return best fuzzy match from haystack for needle (or None)."""
@@ -337,9 +393,14 @@ class EntityExtractor:
         # Capitalize first letter
         return name[0].upper() + name[1:] if name else name
     
-    def extract_compartments(self, paper_text: str, pages_data: List[Dict]) -> List[Dict[str, Any]]:
+    def extract_compartments(self, paper_text: str, pages_data: List[Dict],
+                            paper_promises: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
         """
         Extract compartments with evidence.
+        
+        Args:
+            paper_promises: Optional Step 2 promises; if provided, LLM is instructed to only include
+                promised compartments when there is direct evidence (reduces hallucination).
         
         Returns:
             List of compartment entities with evidence
@@ -400,7 +461,7 @@ class EntityExtractor:
             except Exception:
                 window_text = paper_text
 
-            llm_compartments = self._extract_compartments_llm(window_text)
+            llm_compartments = self._extract_compartments_llm(window_text, paper_promises=paper_promises)
             for comp in llm_compartments:
                 if comp['normalized_name'] not in seen:
                     seen.add(comp['normalized_name'])
@@ -408,15 +469,43 @@ class EntityExtractor:
         
         return compartments
     
-    def _extract_compartments_llm(self, paper_text: str) -> List[Dict[str, Any]]:
-        """Extract compartments using LLM with metamodel and Phase 1 examples"""
-        # Use a smaller, model-focused window instead of dumping full paper.
-        # If the caller already passed a window, this is just a final cap.
+    def _extract_compartments_llm(self, paper_text: str,
+                                  paper_promises: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """Extract compartments using LLM with metamodel and Phase 1 examples.
+        If paper_promises is provided, the prompt instructs to only include promised
+        compartments when there is direct evidence (reduces hallucination from Step 2)."""
         truncated_text = paper_text[: self.llm_compartments_chars]
         
-        # Provider-specific prompt optimization: OpenAI works better with concise prompts,
-        # while Gemini benefits from detailed instructions
-        use_detailed_prompt = self.llm_client.provider == "gemini"
+        # Use detailed prompts for both providers so extraction quality is comparable
+        use_detailed_prompt = True
+
+        # Paper-type hints (vector-borne / climate) for tailored prompts
+        paper_type_context = ""
+        if self.paper_type.get("vector_borne"):
+            paper_type_context = """
+This paper appears to describe a VECTOR-BORNE model (e.g. mosquito, dengue, Zika, malaria). Look for BOTH human compartments (Susceptible humans, Exposed humans, Infectious humans, Recovered humans) AND vector/life-stage compartments (Susceptible mosquitoes, Infectious mosquitoes, Eggs, Larvae, Pupae, Susceptible female adults, Exposed female adults, Infectious female adults) if there is direct evidence in the text. Only include those for which you find a clear quote.
+"""
+        if self.paper_type.get("climate"):
+            paper_type_context += """
+Consider CLIMATE or ENVIRONMENTAL drivers if mentioned (e.g. temperature, rainfall, seasonality, humidity). Include compartments or parameters related to these only if explicitly evidenced.
+"""
+
+        # Optional: promised compartments from Step 2 — only include if evidence found
+        promised_context = ""
+        if paper_promises:
+            promised_comps = paper_promises.get("compartments", [])
+            if isinstance(promised_comps, list) and promised_comps:
+                names = []
+                for c in promised_comps:
+                    if isinstance(c, str):
+                        names.append(c)
+                    elif isinstance(c, dict) and c.get("name"):
+                        names.append(c["name"])
+                if names:
+                    promised_context = f"""
+PROMISED COMPARTMENTS (from a prior pass): {", ".join(names[:20])}
+Only include these if you find direct evidence in the paper text below. If you find no supporting quote for a promised compartment, do NOT include it. Omit any promised item that lacks evidence.
+"""
 
         # Build metamodel context
         metamodel_context = ""
@@ -458,10 +547,10 @@ CRITICAL OUTPUT FORMAT:
 - Invalid JSON will cause errors
 - Each object must be properly formatted JSON
 
-{metamodel_context}{examples_context}
+{paper_type_context}{promised_context}{metamodel_context}{examples_context}
 {separator}
 YOUR TASK:
-You are an expert in epidemiological compartmental modeling. Your job is to identify EVERY compartment mentioned in this paper. Missing even one compartment will cause the model to be incomplete and incorrect.
+You are an expert in epidemiological compartmental modeling. Your job is to identify every compartment that is clearly mentioned in this paper (with evidence). Do not add compartments that lack supporting quotes. Missing even one compartment will cause the model to be incomplete and incorrect.
 
 COMPARTMENTS TO LOOK FOR:
 - Standard SEIR compartments: Susceptible (S), Exposed (E), Infectious (I), Recovered (R)
@@ -490,8 +579,16 @@ Each compartment object MUST have these exact fields:
   "text_span": "Exact quote showing where this compartment is mentioned"
 }}
 
-EXTRACTION RULES - BE THOROUGH AND SYSTEMATIC:
-- Extract ALL compartments mentioned, even if briefly or only mentioned once
+EVIDENCE RULE - CRITICAL:
+- Only include a compartment if you find clear, direct evidence (exact quote) in the paper text below.
+- If you cannot find a supporting quote for a compartment, do NOT include it. Prefer omitting over inventing.
+- Do not infer or assume compartments that are not explicitly stated or clearly implied in the text.
+- Reject any compartment for which there is not enough evidence; it is better to have false negatives than hallucinations.
+
+CHAIN-OF-THOUGHT (reason step by step): First list the compartment names you find in the text; for each note the exact quote that defines it; then output the JSON array. This reduces omissions and spurious entries.
+
+EXTRACTION RULES - BE THOROUGH BUT EVIDENCE-BASED:
+- Extract compartments that are clearly mentioned or defined; do not add compartments that are only implied or guessed
 - If a compartment is mentioned multiple times, use the most detailed description for the description field
 - For text_span, use the FIRST or MOST DEFINITIVE mention (where it's clearly defined)
 - Normalize names to standard epidemiological terms:
@@ -504,8 +601,8 @@ EXTRACTION RULES - BE THOROUGH AND SYSTEMATIC:
   * "Quarantined" or "Q" → "Quarantined"
 - Include the EXACT text quote (text_span) showing where each compartment is defined or mentioned
 - Be comprehensive - missing compartments will cause model errors
-- If unsure whether something is a compartment, include it (better to over-extract than miss)
-- Count compartments: If paper says "5 compartments" or "SEIR model", ensure you extract exactly that many
+- Only include a compartment if you have a clear text_span quote from the paper; if no quote, omit it
+- Count compartments: If paper says "5 compartments" or "SEIR model", ensure you extract exactly that many (only if each has evidence)
 - Check for secondary names: Some compartments have primary and secondary names (e.g., "Infectious, Untreated")
 
 COMMON COMPARTMENT PATTERNS TO SEARCH FOR:
@@ -538,15 +635,20 @@ TASK: Extract all compartment names from this epidemiological modeling paper.
 {separator}
 OUTPUT FORMAT: Return ONLY a valid JSON array. No markdown, no explanations. Start with '[' and end with ']'.
 
-{metamodel_context}{examples_context}
+{paper_type_context}{promised_context}{metamodel_context}{examples_context}
 {separator}
+EVIDENCE RULE: Only include a compartment if you find clear, direct evidence (exact quote) in the paper. If you cannot find a supporting quote, do NOT include it. Prefer false negatives over inventing entities.
+
+REASON STEP BY STEP: First list compartment names you find; for each cite the exact quote; then output the JSON array.
+
 EXTRACTION INSTRUCTIONS:
-Identify all compartments by looking for:
+Identify compartments by looking for:
 - Compartment definitions ("compartment X", "state X", "group X")
 - State variables in equations ("S(t)", "I(t)", "dS/dt", "dI/dt")
 - Model descriptions ("the model includes compartments: X, Y, Z")
 - Compartment lists in tables
 - Initial conditions ("S(0) = ...", "I(0) = ...")
+Only output compartments for which you have a clear text_span quote. Reject if no evidence.
 
 REQUIRED JSON STRUCTURE:
 Each object must have: "name", "description", "text_span"
@@ -573,7 +675,12 @@ Return ONLY valid JSON array: [{{"name": "...", "description": "...", "text_span
         
         try:
             # Use higher max_tokens for compartments (text_span can be long)
-            result = self.llm_client.extract_with_llm(prompt, max_tokens=4000)
+            # When supported (Gemini), use structured output + lower temperature for more reliable extraction
+            kwargs = {"max_tokens": 4000}
+            if self.llm_client.provider == "gemini":
+                kwargs["response_schema"] = GEMINI_COMPARTMENT_SCHEMA
+                kwargs["temperature"] = 0.2
+            result = self.llm_client.extract_with_llm(prompt, **kwargs)
             if isinstance(result, list):
                 return [
                     {
@@ -714,11 +821,17 @@ Return ONLY valid JSON array: [{{"name": "...", "description": "...", "text_span
         """Extract flows using LLM with metamodel and Phase 1 examples"""
         truncated_text = paper_text[: self.llm_flows_chars]
         
-        # Provider-specific prompt optimization
-        use_detailed_prompt = self.llm_client.provider == "gemini"
+        use_detailed_prompt = True  # same quality instructions for both providers
 
         comp_names = [c['normalized_name'] for c in compartments]
         comp_list = ", ".join(comp_names)
+
+        # Paper-type hints for flows
+        paper_type_context = ""
+        if self.paper_type.get("vector_borne"):
+            paper_type_context = """
+This paper appears to describe a VECTOR-BORNE model. Look for flows between HUMAN compartments (e.g. Susceptible humans -> Exposed humans) AND vector/life-stage flows (e.g. Eggs -> Larvae -> Pupae -> Susceptible female adults, and human-vector transmission flows). Only include flows for which you find clear evidence.
+"""
 
         # Build metamodel context
         metamodel_context = ""
@@ -747,6 +860,14 @@ Example flow patterns from Phase 1 models:
 {chr(10).join(examples_list)}
 """
 
+        # Experiment variants: B = short text_span + more tokens, C = exact compartment names only
+        flow_format_extra = ""
+        if "B" in self.experiment:
+            flow_format_extra = "\n- Keep each text_span to at most 200 characters (one or two sentences) to avoid broken JSON.\n"
+        if "C" in self.experiment:
+            flow_format_extra += f"\nCRITICAL: Use ONLY these exact compartment names for source and target (no parentheticals like (E1) or (I2)): {comp_list}\n"
+        flow_max_tokens = 6000 if "B" in self.experiment else 4000
+
         separator = "\n" + "*" * 80 + "\n"
         
         if use_detailed_prompt:
@@ -763,7 +884,7 @@ CRITICAL OUTPUT FORMAT:
 - Each object must be properly formatted JSON
 
 AVAILABLE COMPARTMENTS: {comp_list}
-{metamodel_context}{examples_context}
+{paper_type_context}{metamodel_context}{examples_context}
 {separator}
 YOUR TASK:
 You are an expert in epidemiological compartmental modeling.
@@ -793,24 +914,31 @@ Each flow object MUST have these exact fields:
   "text_span": "Exact quote showing where this flow is described",
   "flow_type": "RateFlow" or "ContactFlow"
 }}
-
+{flow_format_extra}
 FLOW TYPE RULES:
 - RateFlow: progression (E→I), recovery (I→R), death (I→D), treatment (I→T)
 - ContactFlow: transmission/infection (S→E, S→I) involving contact between compartments
 - Match source/target to available compartments exactly (case-sensitive)
 
-EXTRACTION RULES - BE THOROUGH:
-- Extract ALL flows mentioned or implied, even if briefly
+EVIDENCE RULE - CRITICAL:
+- Only include a flow if you find clear, direct evidence (exact quote) in the paper text below.
+- If you cannot find a supporting quote for a flow, do NOT include it. Prefer omitting over inventing.
+- Do not infer or assume flows that are not explicitly stated or clearly implied (e.g. in equations or diagram descriptions).
+- Reject any flow for which there is not enough evidence.
+
+REASON STEP BY STEP: First list each flow you find (source -> target) with the quote that describes it; then output the JSON array. This reduces missed or invented flows.
+
+EXTRACTION RULES - BE THOROUGH BUT EVIDENCE-BASED:
+- Extract flows that are clearly mentioned or implied by equations/diagrams; do not add flows that are only guessed
 - Use ONLY these compartment names for source/target (map symbols like S(t), E1(t) to the closest compartment): {comp_list}
-- Include exact text quotes as evidence
-- Be comprehensive - missing flows will cause model errors
+- Include exact text quotes as evidence for each flow; if no quote, omit the flow
 - If unsure about flow type, use RateFlow for progression/recovery/death, ContactFlow for transmission
 
 {separator}
 PAPER TEXT:
 {truncated_text}
 {separator}
-Return ONLY valid JSON array starting with '[' and ending with ']'. Extract ALL flows mentioned in the paper."""
+Return ONLY valid JSON array starting with '[' and ending with ']'. Extract flows for which you have clear evidence."""
         else:
             # Concise prompt for OpenAI
             prompt = f"""{separator}
@@ -819,16 +947,19 @@ TASK: Extract flows (transitions) between compartments from this epidemiological
 OUTPUT FORMAT: Return ONLY a valid JSON array. No markdown, no explanations. Start with '[' and end with ']'.
 
 AVAILABLE COMPARTMENTS: {comp_list}
-{metamodel_context}{examples_context}
+{paper_type_context}{metamodel_context}{examples_context}
 {separator}
+EVIDENCE RULE: Only include a flow if you find clear, direct evidence (exact quote) in the paper. If you cannot find a supporting quote, do NOT include it. Prefer false negatives over inventing.
+
+REASON STEP BY STEP: First list each flow (source -> target) with the quote; then output the JSON array.
+
 EXTRACTION INSTRUCTIONS:
-Identify all flows by looking for:
+Identify flows by looking for:
 - Flow descriptions ("from X to Y", "X → Y", "X transitions to Y")
 - Differential equations ("dX/dt = ... + Y" indicates flow from Y to X)
 - Transmission flows ("Susceptible becomes Infectious")
 - Progression/recovery/death flows
-
-You MUST extract all transitions implied by equations and any diagram/table descriptions. Missing a flow is an error.
+Only output flows for which you have a clear text_span quote. Reject if no evidence.
 
 REQUIRED JSON STRUCTURE:
 Each object must have: "source", "target", "description", "text_span", "flow_type"
@@ -845,7 +976,7 @@ FLOW TYPES:
 - ContactFlow: transmission, infection
 
 Match source/target to available compartments exactly: {comp_list}
-
+{flow_format_extra}
 {separator}
 PAPER TEXT:
 {truncated_text}
@@ -853,40 +984,41 @@ PAPER TEXT:
 Return ONLY valid JSON array: [{{"source": "...", "target": "...", "description": "...", "text_span": "...", "flow_type": "..."}}, ...]"""
         
         try:
-            # Use higher max_tokens for flows (text_span can be long)
-            result = self.llm_client.extract_with_llm(prompt, max_tokens=4000)
+            kwargs = {"max_tokens": flow_max_tokens}
+            if self.llm_client.provider == "gemini":
+                kwargs["response_schema"] = GEMINI_FLOW_SCHEMA
+                kwargs["temperature"] = 0.2
+            result = self.llm_client.extract_with_llm(prompt, **kwargs)
             if isinstance(result, list):
                 flows = []
                 unmatched = []
                 for item in result:
                     source = item.get('source', '').strip()
                     target = item.get('target', '').strip()
+                    # Normalize so "Exposed (E1)" matches "Exposed"
+                    source_norm = self._normalize_flow_compartment_name(source)
+                    target_norm = self._normalize_flow_compartment_name(target)
                     
-                    if not source or not target:
+                    if not source_norm or not target_norm:
                         unmatched.append(f"Missing source/target: {item}")
                         continue
                     
-                    # Try exact match first (case-insensitive)
                     source_comp = None
                     target_comp = None
-                    
                     for c in compartments:
                         comp_name = c['normalized_name']
-                        # Exact match (case-insensitive)
-                        if source.lower() == comp_name.lower():
+                        if source_norm.lower() == comp_name.lower():
                             source_comp = comp_name
-                        if target.lower() == comp_name.lower():
+                        if target_norm.lower() == comp_name.lower():
                             target_comp = comp_name
-                    
-                    # If no exact match, try substring match (more lenient)
                     if not source_comp:
                         source_comp = next((c['normalized_name'] for c in compartments 
-                                          if source.lower() in c['normalized_name'].lower() or 
-                                             c['normalized_name'].lower() in source.lower()), None)
+                                          if source_norm.lower() in c['normalized_name'].lower() or 
+                                             c['normalized_name'].lower() in source_norm.lower()), None)
                     if not target_comp:
                         target_comp = next((c['normalized_name'] for c in compartments 
-                                          if target.lower() in c['normalized_name'].lower() or 
-                                             c['normalized_name'].lower() in target.lower()), None)
+                                          if target_norm.lower() in c['normalized_name'].lower() or 
+                                             c['normalized_name'].lower() in target_norm.lower()), None)
                     
                     if source_comp and target_comp:
                         flows.append({
@@ -912,11 +1044,31 @@ Return ONLY valid JSON array: [{{"source": "...", "target": "...", "description"
                         print(f"  Unmatched flows: {unmatched[:3]}")  # Show first 3
                 return flows
             elif isinstance(result, dict):
-                # Check if it's an error response
-                if 'error' in result:
+                # Check if it's an error response - try to salvage flow objects from raw JSON
+                if 'error' in result and 'raw_response' in result:
+                    raw = result.get('raw_response', '')
+                    salvaged = self.llm_client.try_salvage_array(raw)
+                    if salvaged:
+                        flows = []
+                        for item in salvaged:
+                            if not isinstance(item, dict):
+                                continue
+                            source = self._normalize_flow_compartment_name(item.get('source', '').strip())
+                            target = self._normalize_flow_compartment_name(item.get('target', '').strip())
+                            if not source or not target:
+                                continue
+                            source_comp = next((c['normalized_name'] for c in compartments if source.lower() == c['normalized_name'].lower()), None) or next((c['normalized_name'] for c in compartments if source.lower() in c['normalized_name'].lower() or c['normalized_name'].lower() in source.lower()), None)
+                            target_comp = next((c['normalized_name'] for c in compartments if target.lower() == c['normalized_name'].lower()), None) or next((c['normalized_name'] for c in compartments if target.lower() in c['normalized_name'].lower() or c['normalized_name'].lower() in target.lower()), None)
+                            if source_comp and target_comp:
+                                flows.append({"source": source_comp, "target": target_comp, "raw_text": item.get('text_span', ''), "page_number": 0, "text_span": item.get('text_span', ''), "extraction_method": "llm", "confidence": "high", "paper_backed": True, "flow_type": item.get('flow_type', 'RateFlow'), "description": item.get('description', '')})
+                        if flows:
+                            print(f"  ✓ Salvaged {len(flows)} flows from broken JSON")
+                            return flows
                     print(f"  ⚠ LLM flow extraction error: {result.get('error')}")
-                    if 'raw_response' in result:
-                        print(f"  Raw response preview: {result['raw_response'][:200]}...")
+                    if raw:
+                        print(f"  Raw response preview: {raw[:200]}...")
+                elif 'error' in result:
+                    print(f"  ⚠ LLM flow extraction error: {result.get('error')}")
                 else:
                     print(f"  ⚠ LLM returned dict instead of array. Keys: {list(result.keys())}")
             else:
@@ -1150,8 +1302,18 @@ Return ONLY valid JSON array: [{{"source": "...", "target": "...", "description"
         """Extract parameters using LLM with metamodel and Phase 1 examples"""
         truncated_text = paper_text[: self.llm_parameters_chars]
         
-        # Provider-specific prompt optimization
-        use_detailed_prompt = self.llm_client.provider == "gemini"
+        use_detailed_prompt = True  # same quality instructions for both providers
+
+        # Paper-type hints for parameters
+        paper_type_context = ""
+        if self.paper_type.get("vector_borne"):
+            paper_type_context = """
+This paper appears to describe a VECTOR-BORNE model. Look for human parameters (transmission, recovery, mortality) AND vector/life-stage parameters (biting rate, egg/larval/pupal development rates, vector mortality, vector incubation). Only include parameters with clear evidence.
+"""
+        if self.paper_type.get("climate"):
+            paper_type_context += """
+Consider CLIMATE/ENVIRONMENTAL parameters if mentioned (e.g. temperature, rainfall, seasonality). Include only if explicitly defined in the text.
+"""
 
         # Build metamodel context
         metamodel_context = ""
@@ -1206,7 +1368,7 @@ CRITICAL OUTPUT FORMAT:
 - Invalid JSON will cause errors
 - Each object must be properly formatted JSON
 
-{metamodel_context}{examples_context}
+{paper_type_context}{metamodel_context}{examples_context}
 {separator}
 YOUR TASK:
 You are an expert in epidemiological modeling. Extract EVERY parameter mentioned in this paper.
@@ -1231,14 +1393,19 @@ Each parameter object MUST have these exact fields:
   "text_span": "Exact quote showing where parameter is defined (include full context)"
 }}
 
-EXTRACTION RULES - BE THOROUGH:
-- Extract ALL parameters mentioned, even if value is not given
-- Focus on Greek letters (α, β, γ, δ, μ, ρ, σ, θ, λ, etc.) representing rates
-- Include Latin letter parameters (R, N, etc.) if they represent model constants
-- Extract rate parameters: transmission rate, recovery rate, death rate, birth rate
-- Include contact rates, probabilities, and other model constants
-- Include exact text quotes with full context for text_span
-- Be comprehensive - missing parameters will cause model errors
+EVIDENCE RULE - CRITICAL:
+- Only include a parameter if you find clear, direct evidence (exact quote or table row) in the paper text below.
+- If you cannot find a supporting quote or definition for a parameter, do NOT include it. Prefer omitting over inventing.
+- Do not infer or assume parameters that are not explicitly stated or defined in the text or tables.
+- Reject any parameter for which there is not enough evidence.
+
+REASON STEP BY STEP: First list each parameter you find with its definition or table row; then output the JSON array. This reduces missed or invented parameters.
+
+EXTRACTION RULES - BE THOROUGH BUT EVIDENCE-BASED:
+- Extract parameters that are clearly defined or listed; do not add parameters that are only implied or guessed
+- Focus on Greek letters (α, β, γ, δ, μ, ρ, σ, θ, λ, etc.) representing rates when they appear in the text/tables
+- Include Latin letter parameters (R, N, etc.) only if the paper explicitly defines them as model constants
+- Include exact text quotes or table references for text_span; if no quote, omit the parameter
 - If value is not specified, use null or omit value field
 
 COMMON PARAMETER TYPES:
@@ -1262,15 +1429,20 @@ TASK: Extract model parameters from this epidemiological modeling paper.
 {separator}
 OUTPUT FORMAT: Return ONLY a valid JSON array. No markdown, no explanations. Start with '[' and end with ']'.
 
-{metamodel_context}{examples_context}
+{paper_type_context}{metamodel_context}{examples_context}
 {separator}
+EVIDENCE RULE: Only include a parameter if you find clear, direct evidence (exact quote or table) in the paper. If you cannot find a supporting quote, do NOT include it. Prefer false negatives over inventing.
+
+REASON STEP BY STEP: First list each parameter with its quote or table reference; then output the JSON array.
+
 EXTRACTION INSTRUCTIONS:
-Identify all parameters by looking for:
+Identify parameters by looking for:
 - Greek letters with values ("β = 0.5", "α = 0.1")
 - Parameter definitions ("transmission rate β", "recovery rate γ")
 - Parameter tables or lists
 - Rate definitions ("rate = 0.3", "contact rate = 0.5")
 - Parameter symbols in equations ("dS/dt = -βSI")
+Only output parameters for which you have a clear text_span quote or table reference. Reject if no evidence.
 
 REQUIRED JSON STRUCTURE:
 Each object must have: "name", "value", "unit", "description", "text_span"
@@ -1282,7 +1454,7 @@ Each object must have: "name", "value", "unit", "description", "text_span"
   "text_span": "Exact quote from paper (include context)"
 }}
 
-EXTRACT ALL parameters mentioned. Focus on Greek letters (α, β, γ, μ, etc.) and rate parameters. Include exact text quotes.
+EXTRACT parameters that have clear evidence. Include exact text quotes. Reject if no evidence.
 
 {separator}
 PAPER TEXT:
@@ -1292,7 +1464,12 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
 
         try:
             # Use higher max_tokens for parameters (text_span can be very long with full context)
-            result = self.llm_client.extract_with_llm(prompt, max_tokens=8000)
+            # When supported (Gemini), use structured output + lower temperature for more reliable extraction
+            kwargs = {"max_tokens": 8000}
+            if self.llm_client.provider == "gemini":
+                kwargs["response_schema"] = GEMINI_PARAMETER_SCHEMA
+                kwargs["temperature"] = 0.2
+            result = self.llm_client.extract_with_llm(prompt, **kwargs)
             if isinstance(result, list):
                 params = []
                 for item in result:
@@ -1394,12 +1571,14 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
         
         return interventions
     
-    def extract_all(self, pdf_data: Dict[str, Any]) -> Dict[str, Any]:
+    def extract_all(self, pdf_data: Dict[str, Any], paper_promises: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Extract all entities from PDF data.
         
         Args:
             pdf_data: Output from PDFPipeline.process_pdf()
+            paper_promises: Optional Step 2 promises (compartments, parameters, etc.); used so Step 3
+                only includes promised items when there is direct evidence (reduces hallucination).
         
         Returns:
             Dictionary with all extracted entities
@@ -1409,7 +1588,7 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
         tables = pdf_data.get('tables', [])
         
         # Extract in order (compartments needed for flows)
-        compartments = self.extract_compartments(paper_text, pages_data)
+        compartments = self.extract_compartments(paper_text, pages_data, paper_promises=paper_promises)
         flows = self.extract_flows(paper_text, pages_data, compartments)
         flows = self._clean_and_validate_flows(flows, compartments)
         parameters = self.extract_parameters(paper_text, pages_data, tables)

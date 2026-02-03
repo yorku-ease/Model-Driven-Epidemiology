@@ -1,0 +1,23 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Tuberculosis,Compartment,"Numerical experiments, and finally, in Section 5, we provide incorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Vaccinated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Recovered,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Vaccinated,RateFlow,0.0,False,Vaccination of susceptible individuals.,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Primary infection of susceptible individuals through contact with infectious individuals.,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.1,False,"Loss of vaccine-induced immunity, making vaccinated individuals susceptible again.",,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.2,False,Recovery of infectious individuals.,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Reinfection of recovered individuals through contact with infectious individuals.,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.3,False,"Waning of natural immunity, making recovered individuals susceptible again.",,,
+Tuberculosis,Parameter,β,,,,,,Model file,Certain,,,,,,Probability of successful infection rate.,CONSTANT,"[0.01, 5]",1/(year*human)
+Tuberculosis,Parameter,θ,,,,,,Model file,Certain,,,,,,Vaccine wane rate.,CONSTANT,"[0.067, 0.1]",1/day
+Tuberculosis,Parameter,γ,,,,,,Model file,Certain,,,,,,Recovery rate.,CONSTANT,"[0.5, 2]",1/year
+Tuberculosis,Parameter,δ,,,,,,Model file,Certain,,,,,,Dropout rate due to waning immunity.,CONSTANT,"[0.003, 0.02]",1/day
+Tuberculosis,Parameter,μ,,,,,,Model file,Certain,,,,,,Natural death rate.,CONSTANT,1 / (65*12),1/month
+Tuberculosis,Parameter,a2,,,,,,Model file,Certain,,,,,,Coefficient for the quadratic term (x3^2) in the polynomial for the endemic equilibrium.,CONSTANT,0.0,
+Tuberculosis,Parameter,a1,,,,,,Model file,Certain,,,,,,Coefficient for the linear term (x3) in the polynomial for the endemic equilibrium.,CONSTANT,0.0,
+Tuberculosis,Parameter,a0,,,,,,Model file,Certain,,,,,,Constant term in the polynomial for the endemic equilibrium.,CONSTANT,0.0,
+Tuberculosis,Parameter,c2,,,,,,Model file,Certain,,,,,,"Coefficient for the quadratic term (x3^2) in the endemic equilibrium polynomial, expressed as a function of the reproduction number ℛc.",CONSTANT,0.0,
+Tuberculosis,Parameter,c1,,,,,,Model file,Certain,,,,,,"Coefficient for the linear term (x3) in the endemic equilibrium polynomial, expressed as a function of the reproduction number ℛc.",CONSTANT,0.0,
+Tuberculosis,Parameter,c0,,,,,,Model file,Certain,,,,,,"Constant term in the endemic equilibrium polynomial, expressed as a function of the reproduction number ℛc.",CONSTANT,0.0,

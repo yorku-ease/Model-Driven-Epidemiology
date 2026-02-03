@@ -128,8 +128,7 @@ Use this schema for compartmental models:
 {json.dumps(self.metamodel.get('epimde_compartmental_metamodel', {}).get('compartment_types', {}), indent=2)}
 """
         
-        # Provider-specific prompt optimization
-        use_detailed_prompt = self.llm_client.provider == "gemini"
+        use_detailed_prompt = True  # same quality for both OpenAI and Gemini
         
         # Build base prompt (will be filled with paper text)
         separator = "\n" + "*" * 80 + "\n"

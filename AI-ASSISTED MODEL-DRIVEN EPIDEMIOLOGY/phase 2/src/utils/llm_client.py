@@ -85,18 +85,32 @@ class LLMClient:
         api_key_path = Path(api_key_file)
         if api_key_path.exists():
             try:
+                openai_key = None
+                gemini_key = None
                 with open(api_key_path, 'r') as f:
                     for line in f:
                         line = line.strip()
-                        # Skip comments and empty lines
-                        if line and not line.startswith('#'):
-                            # If file has provider prefix (e.g., "openai:sk-..." or "gemini:AI...")
-                            if ':' in line and line.split(':')[0].lower() in ['openai', 'gemini']:
-                                prefix, key = line.split(':', 1)
-                                if prefix.lower() == provider:
-                                    return key.strip()
-                            # Otherwise, return first non-comment line (backward compatible)
-                            return line
+                        if not line or line.startswith('#'):
+                            continue
+                        # Prefixed line: "openai:sk-..." or "gemini:AIza..."
+                        if ':' in line and line.split(':')[0].lower() in ['openai', 'gemini']:
+                            prefix, key = line.split(':', 1)
+                            key = key.strip()
+                            if prefix.lower() == 'openai' and key:
+                                openai_key = key
+                            elif prefix.lower() == 'gemini' and key:
+                                gemini_key = key
+                            continue
+                        # No prefix: infer from key shape
+                        if line.startswith("sk-"):
+                            openai_key = line
+                        elif line.startswith("AIza"):
+                            gemini_key = line
+                if provider == "openai":
+                    return openai_key
+                if provider == "gemini":
+                    return gemini_key
+                return None
             except Exception as e:
                 print(f"Warning: Failed to read API key file {api_key_path}: {e}")
         
@@ -104,6 +118,7 @@ class LLMClient:
     
     def extract_with_llm(self, prompt: str, model: Optional[str] = None, 
                         temperature: float = 0.3, max_tokens: int = 2000, 
+                        response_schema: Optional[Dict[str, Any]] = None,
                         retry_count: int = 0) -> Dict[str, Any]:
         """
         Extract structured data using LLM.
@@ -111,11 +126,12 @@ class LLMClient:
         Args:
             prompt: Prompt text
             model: Model name (default: provider-specific)
-            temperature: Temperature (default: 0.3 for consistency)
+            temperature: Temperature (default: 0.3 for consistency; 0.2 used for Gemini when response_schema set)
             max_tokens: Maximum tokens (default: 2000)
+            response_schema: Optional JSON Schema dict for Gemini structured output (guarantees valid JSON)
         
         Returns:
-            Dictionary with response data
+            Dictionary or list with response data (parsed JSON)
         """
         if not self.available:
             provider_pkg = "openai" if self.provider == "openai" else "google-generativeai"
@@ -124,8 +140,8 @@ class LLMClient:
         # Set default model if not provided; allow environment variable overrides
         if model is None:
             if self.provider == "openai":
-                # e.g. export OPENAI_MODEL=gpt-4.1-mini
-                model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+                # Use gpt-4o for quality comparable to Gemini Pro; set OPENAI_MODEL=gpt-4o-mini for faster/cheaper
+                model = os.getenv("OPENAI_MODEL", "gpt-4o")
             elif self.provider == "gemini":
                 # e.g. export GEMINI_MODEL=gemini-2.5-flash or gemini-2.5-pro
                 model = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
@@ -141,25 +157,30 @@ CRITICAL RULES:
         
         try:
             if self.provider == "openai":
-                # Check if prompt asks for array or object
-                # If prompt mentions "array" or starts with "Return a JSON array", don't use json_object format
-                # (json_object format only works for objects, not arrays)
-                use_json_object = "array" not in prompt.lower() and "json array" not in prompt.lower()
-                
                 # Use the same system instruction for fair comparison
                 messages = [
                     {"role": "system", "content": system_instruction},
                     {"role": "user", "content": prompt}
                 ]
-                
-                # Only use response_format for JSON objects (not arrays)
+
+                # IMPORTANT: OpenAI's json_schema structured outputs currently require a root object schema,
+                # but our extraction schemas are arrays. Until we redesign prompts/schema around an object
+                # wrapper, we keep using the previous behavior (json_object for objects, plain JSON mode for arrays).
+                # This avoids 400 errors like:
+                #   "schema must be a JSON Schema of 'type: \"object\"', got 'type: \"array\"'."
+
+                # Check if prompt asks for array or object
+                # If prompt mentions "array" or starts with "Return a JSON array", don't use json_object format
+                # (json_object format only works for objects, not arrays)
+                use_json_object = "array" not in prompt.lower() and "json array" not in prompt.lower()
+
                 if use_json_object:
                     response = self.client.chat.completions.create(
                         model=model,
                         messages=messages,
                         temperature=temperature,
                         max_tokens=max_tokens,
-                        response_format={"type": "json_object"}
+                        response_format={"type": "json_object"},
                     )
                 else:
                     # For arrays, rely on prompt instructions only
@@ -167,21 +188,32 @@ CRITICAL RULES:
                         model=model,
                         messages=messages,
                         temperature=temperature,
-                        max_tokens=max_tokens
+                        max_tokens=max_tokens,
                     )
+
                 result_text = response.choices[0].message.content.strip()
                 
             elif self.provider == "gemini":
                 # Use the same system instruction prepended to prompt (Gemini doesn't have separate system messages)
                 full_prompt = f"{system_instruction}\n\n{prompt}"
-                
+                # For extraction tasks with schema, use lower temperature (best practice for reliability)
+                gemini_temp = 0.2 if response_schema else temperature
+                gen_config = {
+                    "temperature": gemini_temp,
+                    "max_output_tokens": max_tokens,
+                }
+                if response_schema:
+                    # Structured output: guarantees valid JSON matching schema (reduces parse failures and drift)
+                    gen_config = self.client.types.GenerationConfig(
+                        temperature=gemini_temp,
+                        max_output_tokens=max_tokens,
+                        response_mime_type="application/json",
+                        response_schema=response_schema,
+                    )
                 gen_model = self.client.GenerativeModel(model)
                 response = gen_model.generate_content(
                     full_prompt,
-                    generation_config={
-                        "temperature": temperature,
-                        "max_output_tokens": max_tokens,
-                    },
+                    generation_config=gen_config,
                     safety_settings=[
                         {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
                         {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
@@ -203,7 +235,7 @@ CRITICAL RULES:
                                     # Safety blocked - try flash model as fallback
                                     print(f"⚠️  Gemini Pro blocked by safety filters. Trying Flash model...")
                                     if model != "gemini-2.5-flash":
-                                        return self.extract_with_llm(prompt, model="gemini-2.5-flash", temperature=temperature, max_tokens=max_tokens, retry_count=retry_count)
+                                        return self.extract_with_llm(prompt, model="gemini-2.5-flash", temperature=temperature, max_tokens=max_tokens, response_schema=response_schema, retry_count=retry_count)
                                     raise ValueError("Gemini content blocked by safety filters and Flash also unavailable")
                             else:
                                 raise ValueError("Gemini content blocked by safety filters")
@@ -273,9 +305,9 @@ CRITICAL RULES:
                     except Exception:
                         pass
 
-                # As a last resort for Gemini array prompts, try to salvage objects one by one
+                # As a last resort for array prompts, try to salvage objects one by one (both providers)
                 expects_array = "array" in prompt.lower()
-                if self.provider == "gemini" and expects_array:
+                if expects_array:
                     salvaged = self._salvage_json_array(result_text)
                     if salvaged:
                         print(f"✓ Salvaged {len(salvaged)} items from partially broken JSON array")
@@ -292,7 +324,7 @@ CRITICAL RULES:
                     wait_time = 5 * (retry_count + 1)  # Wait 5, 10 seconds
                     print(f"⚠️  Quota error detected. Waiting {wait_time}s before retry {retry_count + 1}...")
                     time.sleep(wait_time)
-                    return self.extract_with_llm(prompt, model, temperature, max_tokens, retry_count + 1)
+                    return self.extract_with_llm(prompt, model, temperature, max_tokens, response_schema=response_schema, retry_count=retry_count + 1)
                 else:
                     print(f"❌ Error: API quota exceeded after retries.")
                     print(f"   Please check your quota.")
@@ -339,35 +371,38 @@ CRITICAL RULES:
                     i += 1
                     continue
                 
+                # Handle double-quote: check in_string first so we can escape inner quotes
                 if char == '"' and not escape_next:
-                    # Toggle string state
-                    in_string = not in_string
-                    result.append(char)
+                    if in_string:
+                        # Look ahead: if next non-space is : , } ] then this " closes the string
+                        j = i + 1
+                        while j < len(repaired) and repaired[j] in ' \t\n\r':
+                            j += 1
+                        if j < len(repaired) and repaired[j] in ':,}]':
+                            result.append(char)
+                            in_string = False
+                        else:
+                            result.append('\\"')  # inner quote LLM forgot to escape (flow text_span)
+                    else:
+                        in_string = True
+                        result.append(char)
                     i += 1
                     continue
                 
                 if in_string:
                     # We're inside a string - escape special characters
                     if char == '\n':
-                        # Unescaped newline - escape it
                         result.append('\\n')
                     elif char == '\r':
-                        # Unescaped carriage return - escape it
                         result.append('\\r')
                     elif char == '\t':
-                        # Unescaped tab - escape it
                         result.append('\\t')
-                    elif char == '"':
-                        # Unescaped quote inside string - escape it
-                        result.append('\\"')
                     elif char == '\\':
-                        # Backslash - will be handled by escape_next logic
                         result.append(char)
                         escape_next = True
                     else:
                         result.append(char)
                 else:
-                    # Outside string - keep as is
                     result.append(char)
                 
                 i += 1
@@ -452,6 +487,12 @@ CRITICAL RULES:
                     continue
 
         return objects or None
+
+    def try_salvage_array(self, raw_text: str):
+        """Try to salvage a JSON array from broken LLM output (e.g. flow/compartment lists). Returns list or None."""
+        if not raw_text:
+            return None
+        return self._salvage_json_array(raw_text)
     
     def is_available(self) -> bool:
         """Check if LLM is available"""

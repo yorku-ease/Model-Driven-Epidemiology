@@ -234,19 +234,43 @@ class Evaluator:
         - Plural/singular variations
         - Common typos and spacing
         - Unicode normalization
+        - "Longer but same meaning": strip trailing population/host suffixes
+          (e.g. "Susceptible humans" vs "Susceptible", "Eggs(non-infectious)" vs "Eggs")
+        - Parameter subscripts: strip trailing _h, _v, _letter for comparison
+          (e.g. beta_h vs beta, gamma_h vs gamma)
         """
         if not name:
             return ""
         
         import unicodedata
+        import re
         
         # Normalize Unicode (handles different representations of same characters)
         name = unicodedata.normalize('NFKD', name)
         
         name = name.strip().lower()
         
-        # Remove common prefixes/suffixes
+        # Remove common prefixes/suffixes (compartment/state/class)
         name = name.replace('compartment', '').replace('state', '').replace('class', '')
+        name = name.strip()
+
+        # Strip trailing "longer but same meaning" phrases (compartment names)
+        # So "susceptible humans" and "susceptible" match; "eggs(non-infectious)" and "eggs" match
+        trailing_phrases = [
+            r'\s+humans?$', r'\s+mosquitoes?$', r'\s+vectors?$', r'\s+adults?$',
+            r'\s+children$', r'\s+juveniles?$', r'\s+larvae?$', r'\s+pupae?$',
+            r'\s+eggs?$', r'\s+female\s*$', r'\s+male\s*$', r'\s+human\s*$',
+            r'\s+mosquito\s*$', r'\s+vector\s*$', r'\s+adult\s*$',
+            r'\s*\([^)]*non-?infectious[^)]*\)\s*$', r'\s*\([^)]*infectious[^)]*\)\s*$',
+            r'\s*\([^)]*logistic[^)]*\)\s*$', r'\s*\([^)]*\)\s*$',  # any parenthetical suffix
+        ]
+        for pat in trailing_phrases:
+            name = re.sub(pat, '', name, flags=re.IGNORECASE)
+        name = name.strip()
+
+        # Parameter subscripts: strip trailing _letter or _digits so beta_h, gamma_h, mu_1 match beta, gamma, mu
+        name = re.sub(r'_[a-z]\b', '', name, flags=re.IGNORECASE)
+        name = re.sub(r'_\d+\b', '', name)
         name = name.strip()
         
         # Greek letter mapping (bidirectional: both β→beta and beta→β)
@@ -461,23 +485,41 @@ class Evaluator:
         flow_fn = len(gold_flows - normalized_extracted_flows)
         
         # Also try fuzzy matching for flows that didn't match exactly
-        # (in case compartment names still don't match after normalization)
+        # (compartment normalization handles "longer but same meaning" e.g. Susceptible humans vs Susceptible)
         unmatched_extracted_flows = normalized_extracted_flows - gold_flows
         unmatched_gold_flows = gold_flows - normalized_extracted_flows
-        
-        # Try to fuzzy match remaining flows
+
+        def _flow_key_normalized(flow_str: str) -> str:
+            """Build a normalized flow key (source->target) for comparison."""
+            if '->' not in flow_str:
+                return flow_str
+            src, tgt = flow_str.split('->', 1)
+            return f"{self._normalize_for_comparison(src)}->{self._normalize_for_comparison(tgt)}"
+
         flow_fuzzy_matches = set()
+        # Try exact match on normalized flow keys (e.g. susceptible->exposed vs susceptible humans->exposed humans)
+        gold_flow_by_norm = {_flow_key_normalized(g): g for g in gold_flows}
+        for ext_flow in list(unmatched_extracted_flows):
+            norm_key = _flow_key_normalized(ext_flow)
+            if norm_key in gold_flow_by_norm:
+                gold_flow = gold_flow_by_norm[norm_key]
+                if gold_flow in unmatched_gold_flows:
+                    flow_fuzzy_matches.add((ext_flow, gold_flow, 1.0))
+                    unmatched_extracted_flows.discard(ext_flow)
+                    unmatched_gold_flows.discard(gold_flow)
+                    del gold_flow_by_norm[norm_key]
+
+        # Try to fuzzy match remaining flows (source/target fuzzy)
         for ext_flow in list(unmatched_extracted_flows):
             ext_source, ext_target = ext_flow.split('->', 1) if '->' in ext_flow else ('', '')
             for gold_flow in list(unmatched_gold_flows):
                 gold_source, gold_target = gold_flow.split('->', 1) if '->' in gold_flow else ('', '')
-                # Check if both source and target match (fuzzy)
                 source_match, source_sim = self._fuzzy_match(ext_source.strip(), gold_source.strip(), threshold=0.75)
                 target_match, target_sim = self._fuzzy_match(ext_target.strip(), gold_target.strip(), threshold=0.75)
                 if source_match and target_match:
                     flow_fuzzy_matches.add((ext_flow, gold_flow, (source_sim + target_sim) / 2))
-                    unmatched_extracted_flows.remove(ext_flow)
-                    unmatched_gold_flows.remove(gold_flow)
+                    unmatched_extracted_flows.discard(ext_flow)
+                    unmatched_gold_flows.discard(gold_flow)
                     break
         
         # Update flow metrics with fuzzy matches

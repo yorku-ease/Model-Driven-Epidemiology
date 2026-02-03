@@ -1,0 +1,312 @@
+{
+  "compartments": [
+    {
+      "raw_text": "model includes numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+      "normalized_name": "Numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+      "page_number": 2,
+      "text_span": "model includes numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A compartment representing the susceptible population, which can be infected with tuberculosis. All newborns are assumed to enter this compartment."
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "normalized_name": "Vaccinated",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A compartment for individuals who have been vaccinated against tuberculosis, moving from the susceptible class. The vaccine offers finite protection."
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A compartment for individuals who are infected with tuberculosis and can transmit the disease to susceptible and recovered individuals."
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible(S), vaccinated(V), infected(I) and recovered(R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A compartment for individuals who have recovered from tuberculosis infection. Individuals in this compartment can be reinfected or return to the susceptible state due to waning immunity."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "raw_text": "we consider a constant vaccination rate u, representing the movement of individuals from the susceptible class to the vaccinated compartment.",
+      "page_number": 0,
+      "text_span": "we consider a constant vaccination rate u, representing the movement of individuals from the susceptible class to the vaccinated compartment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Vaccination of susceptible individuals."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "raw_text": "Given that tuberculosis vaccines offer finite protection, there exists a constant dropout rate (\u03b8) from the vaccinated compartment back to the susceptible compartment.",
+      "page_number": 0,
+      "text_span": "Given that tuberculosis vaccines offer finite protection, there exists a constant dropout rate (\u03b8) from the vaccinated compartment back to the susceptible compartment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Loss of vaccine-induced immunity, making vaccinated individuals susceptible again."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "raw_text": "only susceptible individuals can contract the disease through direct contact with those in the infected compartment, occurring at a constant infection rate \u03b2.",
+      "page_number": 0,
+      "text_span": "only susceptible individuals can contract the disease through direct contact with those in the infected compartment, occurring at a constant infection rate \u03b2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Primary infection of susceptible individuals through contact with infectious individuals."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "Individuals in the infected compartment recover at a constant rate \u03b3.",
+      "page_number": 0,
+      "text_span": "Individuals in the infected compartment recover at a constant rate \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Recovery of infectious individuals."
+    },
+    {
+      "source": "Recovered",
+      "target": "Infectious",
+      "raw_text": "individuals in the recovered compartment may be re-infected by those in the infected compartment, with a rate of \u03b5\u03b2, where \u03b5 serves as a correction parameter ranging between zero and one.",
+      "page_number": 0,
+      "text_span": "individuals in the recovered compartment may be re-infected by those in the infected compartment, with a rate of \u03b5\u03b2, where \u03b5 serves as a correction parameter ranging between zero and one.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Reinfection of recovered individuals through contact with infectious individuals."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "raw_text": "individuals may transition back to the susceptible compartment from the recovered compartment due to waning immunity, occurring at a constant rate \u03b4.",
+      "page_number": 0,
+      "text_span": "individuals may transition back to the susceptible compartment from the recovered compartment due to waning immunity, occurring at a constant rate \u03b4.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Waning of natural immunity, making recovered individuals susceptible again."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u03b2 | Probability of successful infection rate | [0.01, 5] 1/(year*human) | [42\u201345]",
+      "normalized_name": "\u03b2",
+      "value": "[0.01, 5]",
+      "unit": "1/(year*human)",
+      "description": "Probability of successful infection rate.",
+      "page_number": 0,
+      "text_span": "\u03b2 | Probability of successful infection rate | [0.01, 5] 1/(year*human) | [42\u201345]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b8 | Vaccine wane rate | [0.067, 0.1] 1/day | [47\u201350]",
+      "normalized_name": "\u03b8",
+      "value": "[0.067, 0.1]",
+      "unit": "1/day",
+      "description": "Vaccine wane rate.",
+      "page_number": 0,
+      "text_span": "\u03b8 | Vaccine wane rate | [0.067, 0.1] 1/day | [47\u201350]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3 | Recovery rate | [0.5, 2] 1/year | [30, 51]",
+      "normalized_name": "\u03b3",
+      "value": "[0.5, 2]",
+      "unit": "1/year",
+      "description": "Recovery rate.",
+      "page_number": 0,
+      "text_span": "\u03b3 | Recovery rate | [0.5, 2] 1/year | [30, 51]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b4 | Dropout rate due to waning immunity | [0.003, 0.02] 1/day | [30, 52]",
+      "normalized_name": "\u03b4",
+      "value": "[0.003, 0.02]",
+      "unit": "1/day",
+      "description": "Dropout rate due to waning immunity.",
+      "page_number": 0,
+      "text_span": "\u03b4 | Dropout rate due to waning immunity | [0.003, 0.02] 1/day | [30, 52]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bc | Natural death rate | 1 / (65*12) 1/month | Estimated",
+      "normalized_name": "\u03bc",
+      "value": "1 / (65*12)",
+      "unit": "1/month",
+      "description": "Natural death rate.",
+      "page_number": 0,
+      "text_span": "\u03bc | Natural death rate | 1 / (65*12) 1/month | Estimated",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "with \ud835\udc4e2 =\u2212\ud835\udc4f2\ud835\udc52(\ud835\udc51+\ud835\udc5a), ...",
+      "normalized_name": "a2",
+      "value": null,
+      "unit": null,
+      "description": "Coefficient for the quadratic term (x3^2) in the polynomial for the endemic equilibrium.",
+      "page_number": 0,
+      "text_span": "with \ud835\udc4e2 =\u2212\ud835\udc4f2\ud835\udc52(\ud835\udc51+\ud835\udc5a), ...",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "... \ud835\udc4e1 =\ud835\udc4f(\ud835\udc4f\ud835\udc52(\ud835\udc5a+\ud835\udc51)\u2212[\ud835\udc52\ud835\udc5a(\ud835\udc51+\ud835\udc5a+\ud835\udc62)++\ud835\udc50\ud835\udc51+\ud835\udc51+\ud835\udc5a+\ud835\udc5a(\ud835\udc5a+\ud835\udc51+\ud835\udc50)], ...",
+      "normalized_name": "a1",
+      "value": null,
+      "unit": null,
+      "description": "Coefficient for the linear term (x3) in the polynomial for the endemic equilibrium.",
+      "page_number": 0,
+      "text_span": "... \ud835\udc4e1 =\ud835\udc4f(\ud835\udc4f\ud835\udc52(\ud835\udc5a+\ud835\udc51)\u2212[\ud835\udc52\ud835\udc5a(\ud835\udc51+\ud835\udc5a+\ud835\udc62)++\ud835\udc50\ud835\udc51+\ud835\udc51+\ud835\udc5a+\ud835\udc5a(\ud835\udc5a+\ud835\udc51+\ud835\udc50)], ...",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "... and \ud835\udc4e0 =(\ud835\udc50+\ud835\udc5a)[\ud835\udc4f(\ud835\udc5a+\ud835\udc51)\u2212(1+\ud835\udc5a)(\ud835\udc51+\ud835\udc5a+\ud835\udc62)].",
+      "normalized_name": "a0",
+      "value": null,
+      "unit": null,
+      "description": "Constant term in the polynomial for the endemic equilibrium.",
+      "page_number": 0,
+      "text_span": "... and \ud835\udc4e0 =(\ud835\udc50+\ud835\udc5a)[\ud835\udc4f(\ud835\udc5a+\ud835\udc51)\u2212(1+\ud835\udc5a)(\ud835\udc51+\ud835\udc5a+\ud835\udc62)].",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\ud835\udc502 = (1+\ud835\udc5a)2(\ud835\udc51+\ud835\udc5a+\ud835\udc62)2\ud835\udc52 / ((\ud835\udc51+\ud835\udc5a)\u211b\ud835\udc502),",
+      "normalized_name": "c2",
+      "value": null,
+      "unit": null,
+      "description": "Coefficient for the quadratic term (x3^2) in the endemic equilibrium polynomial, expressed as a function of the reproduction number \u211bc.",
+      "page_number": 0,
+      "text_span": "\ud835\udc502 = (1+\ud835\udc5a)2(\ud835\udc51+\ud835\udc5a+\ud835\udc62)2\ud835\udc52 / ((\ud835\udc51+\ud835\udc5a)\u211b\ud835\udc502),",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\ud835\udc501 = (1+\ud835\udc5a)(\ud835\udc51+\ud835\udc5a+\ud835\udc62) / (\ud835\udc51+\ud835\udc5a) \u211b\ud835\udc50 [(\ud835\udc5a+\ud835\udc50+1)(\ud835\udc5a+\ud835\udc51) \u2212 \ud835\udc52(\ud835\udc5a+\ud835\udc51+\ud835\udc62)((\u211b\ud835\udc50 \u22121)\ud835\udc5a+\u211b\ud835\udc50)],",
+      "normalized_name": "c1",
+      "value": null,
+      "unit": null,
+      "description": "Coefficient for the linear term (x3) in the endemic equilibrium polynomial, expressed as a function of the reproduction number \u211bc.",
+      "page_number": 0,
+      "text_span": "\ud835\udc501 = (1+\ud835\udc5a)(\ud835\udc51+\ud835\udc5a+\ud835\udc62) / (\ud835\udc51+\ud835\udc5a) \u211b\ud835\udc50 [(\ud835\udc5a+\ud835\udc50+1)(\ud835\udc5a+\ud835\udc51) \u2212 \ud835\udc52(\ud835\udc5a+\ud835\udc51+\ud835\udc62)((\u211b\ud835\udc50 \u22121)\ud835\udc5a+\u211b\ud835\udc50)],",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\ud835\udc500 = (\ud835\udc5a+1)(\ud835\udc5a+\ud835\udc50)(\ud835\udc5a+\ud835\udc51+\ud835\udc62)(1\u2212\u211b\ud835\udc50).",
+      "normalized_name": "c0",
+      "value": null,
+      "unit": null,
+      "description": "Constant term in the endemic equilibrium polynomial, expressed as a function of the reproduction number \u211bc.",
+      "page_number": 0,
+      "text_span": "\ud835\udc500 = (\ud835\udc5a+1)(\ud835\udc5a+\ud835\udc50)(\ud835\udc5a+\ud835\udc51+\ud835\udc62)(1\u2212\u211b\ud835\udc50).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 4,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 11,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 6,
+    "num_parameters": 11,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

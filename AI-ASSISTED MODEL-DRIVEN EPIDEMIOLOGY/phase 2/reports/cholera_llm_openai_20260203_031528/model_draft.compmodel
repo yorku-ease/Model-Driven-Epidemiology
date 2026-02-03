@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R" expression="2" type="CONSTANT"/>
+  <parameters name="etal" expression="5" type="CONSTANT"/>
+  <parameters name="β" expression="0.0" type="CONSTANT" description="Rate of 'contact' with reservoir water" unit="days^-1"/>
+  <parameters name="γ" expression="0.0" type="CONSTANT" description="Per capita recovery rate" unit="days^-1"/>
+  <parameters name="δ" expression="0.0" type="CONSTANT" description="Cholera lifespan in water reservoir" unit="days^-1"/>
+  <parameters name="ξ" expression="0.0" type="CONSTANT" description="Rate of water contamination by humans" unit="cells * mL^-1 * person^-1 * day^-1"/>
+  <parameters name="κ" expression="0.0" type="CONSTANT" description="Concentration of cholera that yields 50% chance of infection" unit="cells/mL"/>
+  <parameters name="R0" expression="0.0" type="CONSTANT" description="Basic reproduction number"/>
+  <parameters name="RE" expression="0.0" type="CONSTANT" description="Effective reproduction number"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible people become infected/infectious through contact with contaminated water."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Susceptible individuals become immune through vaccination."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Infectious individuals recover and become immune."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRateParameter="//@parameters.0" target="//@compartments.5" description="Infectious people contaminate the water supply with bacteria."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Immunity wanes and vaccinated individuals become susceptible again."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic" population="0"/>
+  <compartments PrimaryName="Hyperinfectious Bacteria" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.0" contactRateParameter="//@parameters.0" target="//@compartments.0" description="Susceptible people are exposed to contaminated water and may become infected."/>
+  </compartments>
+</compartmental:CompartmentalModel>

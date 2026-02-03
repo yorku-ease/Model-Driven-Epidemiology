@@ -1,0 +1,470 @@
+{
+  "compartments": [
+    {
+      "raw_text": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The density of susceptible individuals in the human population at age a and time t."
+    },
+    {
+      "raw_text": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "normalized_name": "Exposed",
+      "page_number": 0,
+      "text_span": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The density of exposed individuals in the human population at age a and time t."
+    },
+    {
+      "raw_text": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "normalized_name": "Asymptomatic Infectious",
+      "page_number": 0,
+      "text_span": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The density of asymptomatic infectious individuals in the human population at age a and time t."
+    },
+    {
+      "raw_text": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "normalized_name": "Symptomatic Infectious",
+      "page_number": 0,
+      "text_span": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The density of symptomatic infectious individuals in the human population at age a and time t."
+    },
+    {
+      "raw_text": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "We divide the human population into the susceptible, exposed, asymptomatic infectious, symptomatic infectious, and recovered individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The density of recovered individuals in the human population at age a and time t."
+    },
+    {
+      "raw_text": "We also divide the vector population into the susceptible and infectious mosquitoes.",
+      "normalized_name": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "We also divide the vector population into the susceptible and infectious mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The portion of the vector population that is susceptible to infection."
+    },
+    {
+      "raw_text": "We also divide the vector population into the susceptible and infectious mosquitoes.",
+      "normalized_name": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "We also divide the vector population into the susceptible and infectious mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The portion of the vector population that is infectious."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Asymptomatic Infectious",
+      "target": "Asymptomatic Infectious",
+      "raw_text": "Y \u2192Y",
+      "page_number": 6,
+      "text_span": "Y \u2192Y",
+      "extraction_method": "pattern_arrow",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Infectious Mosquitoes",
+      "raw_text": "l\n\u2192\ni",
+      "page_number": 12,
+      "text_span": "l\n\u2192\ni",
+      "extraction_method": "pattern_arrow",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Asymptomatic Infectious",
+      "target": "Susceptible",
+      "raw_text": "m\n\u2192\ns",
+      "page_number": 12,
+      "text_span": "m\n\u2192\ns",
+      "extraction_method": "pattern_arrow",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "raw_text": "Susceptible human individuals become exposed through bites by infected mosquitoes. We represent this process by a standard incidence \u03b2h(a)Iv(t)Sh(t)/Nh(t).",
+      "page_number": 0,
+      "text_span": "Susceptible human individuals become exposed through bites by infected mosquitoes. We represent this process by a standard incidence \u03b2h(a)Iv(t)Sh(t)/Nh(t).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible humans become exposed to dengue through bites from infectious mosquitoes."
+    },
+    {
+      "source": "Exposed",
+      "target": "Symptomatic Infectious",
+      "raw_text": "\u2202Ih(a,t)/\u2202a + \u2202Ih(a,t)/\u2202t = \u03c1k(a)Eh(a,t) + \u03c3\u03b2h(a)Iv(t)Ah(a,t)/Nh(t) - (\u03bch + \u03b31(a))Ih(a,t)",
+      "page_number": 0,
+      "text_span": "\u2202Ih(a,t)/\u2202a + \u2202Ih(a,t)/\u2202t = \u03c1k(a)Eh(a,t) + \u03c3\u03b2h(a)Iv(t)Ah(a,t)/Nh(t) - (\u03bch + \u03b31(a))Ih(a,t)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "A fraction of exposed individuals progress to the symptomatic infectious class after a latent period."
+    },
+    {
+      "source": "Exposed",
+      "target": "Asymptomatic Infectious",
+      "raw_text": "We assume that a fraction 1 \u2212 \u03c1 (0 < \u03c1 < 1) of these exposed individuals enter the asymptomatic infectious class.",
+      "page_number": 0,
+      "text_span": "We assume that a fraction 1 \u2212 \u03c1 (0 < \u03c1 < 1) of these exposed individuals enter the asymptomatic infectious class.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "A fraction of exposed individuals progress to the asymptomatic infectious class after a latent period."
+    },
+    {
+      "source": "Symptomatic Infectious",
+      "target": "Recovered",
+      "raw_text": "Symptomatic and asymptomatic individuals recover at rates \u03b31(a) and \u03b32(a), respectively.",
+      "page_number": 0,
+      "text_span": "Symptomatic and asymptomatic individuals recover at rates \u03b31(a) and \u03b32(a), respectively.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Symptomatic infectious individuals recover from the disease at an age-specific rate."
+    },
+    {
+      "source": "Asymptomatic Infectious",
+      "target": "Recovered",
+      "raw_text": "Symptomatic and asymptomatic individuals recover at rates \u03b31(a) and \u03b32(a), respectively.",
+      "page_number": 0,
+      "text_span": "Symptomatic and asymptomatic individuals recover at rates \u03b31(a) and \u03b32(a), respectively.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Asymptomatic infectious individuals recover from the disease at an age-specific rate."
+    },
+    {
+      "source": "Asymptomatic Infectious",
+      "target": "Symptomatic Infectious",
+      "raw_text": "Meanwhile, asymptomatic individuals can be reinfected through mosquito bites with a contact rate \u03c3\u03b2h(a) and become symptomatic infectious, where the factor \u03c3 is introduced to distinguish the contact rates between primary and secondary infections.",
+      "page_number": 0,
+      "text_span": "Meanwhile, asymptomatic individuals can be reinfected through mosquito bites with a contact rate \u03c3\u03b2h(a) and become symptomatic infectious, where the factor \u03c3 is introduced to distinguish the contact rates between primary and secondary infections.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Asymptomatic individuals can be reinfected by infectious mosquitoes and become symptomatic."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "raw_text": "Susceptible mosquitoes become infected through biting asymptomatically or symptomatically infectious human hosts.",
+      "page_number": 0,
+      "text_span": "Susceptible mosquitoes become infected through biting asymptomatically or symptomatically infectious human hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible mosquitoes become infectious after biting infectious humans (symptomatic or asymptomatic)."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "i",
+      "normalized_name": "i",
+      "value": "1",
+      "unit": null,
+      "description": null,
+      "page_number": 6,
+      "text_span": "i=1",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Y",
+      "normalized_name": "Y",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 6,
+      "text_span": "Y : 0",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "j",
+      "normalized_name": "j",
+      "value": "1",
+      "unit": null,
+      "description": null,
+      "page_number": 6,
+      "text_span": "j=1",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "ds",
+      "normalized_name": "ds",
+      "value": "1",
+      "unit": null,
+      "description": null,
+      "page_number": 7,
+      "text_span": "ds=1",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bc",
+      "normalized_name": "\u03bc",
+      "value": "0.005",
+      "unit": null,
+      "description": null,
+      "page_number": 13,
+      "text_span": "\u03bc = 0.005",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03c3",
+      "normalized_name": "\u03c3",
+      "value": "0.007",
+      "unit": null,
+      "description": null,
+      "page_number": 13,
+      "text_span": "\u03c3 = 0.007",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b2",
+      "normalized_name": "\u03b2",
+      "value": "18",
+      "unit": null,
+      "description": null,
+      "page_number": 13,
+      "text_span": "\u03b2 = 18",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3",
+      "normalized_name": "\u03b3",
+      "value": "0.5",
+      "unit": null,
+      "description": null,
+      "page_number": 13,
+      "text_span": "\u03b3 = 0.5",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03c1",
+      "normalized_name": "\u03c1",
+      "value": "0.5",
+      "unit": null,
+      "description": null,
+      "page_number": 13,
+      "text_span": "\u03c1 = 0.5",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "k",
+      "normalized_name": "k",
+      "value": "0.6",
+      "unit": null,
+      "description": null,
+      "page_number": 13,
+      "text_span": "k = 0.6",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "R",
+      "normalized_name": "R",
+      "value": "1.684",
+      "unit": null,
+      "description": null,
+      "page_number": 15,
+      "text_span": "R =1.684",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "h",
+      "normalized_name": "h",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 17,
+      "text_span": "h =0",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "da",
+      "normalized_name": "da",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 23,
+      "text_span": "da=0",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "arXiv",
+      "normalized_name": "arXiv",
+      "value": "2111",
+      "unit": null,
+      "description": null,
+      "page_number": 25,
+      "text_span": "arXiv :2111",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bch The natural death rate of the human hosts",
+      "normalized_name": "\u03bch",
+      "value": null,
+      "unit": null,
+      "description": "The natural death rate of the human hosts",
+      "page_number": 0,
+      "text_span": "\u03bch The natural death rate of the human hosts",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bcv The natural death rate of the mosquitoes",
+      "normalized_name": "\u03bcv",
+      "value": null,
+      "unit": null,
+      "description": "The natural death rate of the mosquitoes",
+      "page_number": 0,
+      "text_span": "\u03bcv The natural death rate of the mosquitoes",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b31(a) The age-specific recovery rate of symptomatic infectious hosts",
+      "normalized_name": "\u03b31(a)",
+      "value": null,
+      "unit": null,
+      "description": "The age-specific recovery rate of symptomatic infectious hosts",
+      "page_number": 0,
+      "text_span": "\u03b31(a) The age-specific recovery rate of symptomatic infectious hosts",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b32(a) The age-specific recovery rate of asymptomatic infectious hosts",
+      "normalized_name": "\u03b32(a)",
+      "value": null,
+      "unit": null,
+      "description": "The age-specific recovery rate of asymptomatic infectious hosts",
+      "page_number": 0,
+      "text_span": "\u03b32(a) The age-specific recovery rate of asymptomatic infectious hosts",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b2v(a) The age-specific transmission rate from infectious hosts to susceptible mosquitoes",
+      "normalized_name": "\u03b2v(a)",
+      "value": null,
+      "unit": null,
+      "description": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes",
+      "page_number": 0,
+      "text_span": "\u03b2v(a) The age-specific transmission rate from infectious hosts to susceptible mosquitoes",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b2h(a) The age-specific transmission rate from infected mosquitoes to susceptible hosts",
+      "normalized_name": "\u03b2h(a)",
+      "value": null,
+      "unit": null,
+      "description": "The age-specific transmission rate from infected mosquitoes to susceptible hosts",
+      "page_number": 0,
+      "text_span": "\u03b2h(a) The age-specific transmission rate from infected mosquitoes to susceptible hosts",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 10,
+    "num_parameters": 20,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import re
 from datetime import datetime
 from pathlib import Path
@@ -11,6 +12,7 @@ from src.extraction.pdf_pipeline import PDFPipeline
 from src.extraction.paper_promise_extractor import PaperPromiseExtractor
 from src.extraction.entity_extractor import EntityExtractor
 from src.extraction.text_windows import build_text_window
+from src.extraction.paper_type import detect_paper_type
 from src.synthesis.model_synthesizer import ModelSynthesizer
 from src.synthesis.traceability import TraceabilityMapper
 from src.analysis.gap_analyzer import GapAnalyzer
@@ -92,7 +94,7 @@ Examples:
                        help='Max characters of paper text sent to LLM for parameter extraction (default: 80000)')
     parser.add_argument('--flow-fuzzy-threshold', type=float, default=0.78,
                        help='Fuzzy similarity threshold for snapping flow endpoints to known compartments (default: 0.78)')
-    
+
     args = parser.parse_args()
     
     # Validate inputs
@@ -173,8 +175,13 @@ Examples:
     print("=" * 80)
     print(f"Paper: {paper_path}")
     print(f"Output: {output_dir}")
+    # Create LLM client once so we can show status and reuse in Steps 2–3
+    llm_client = LLMClient(api_key_file=args.api_key_file, provider=args.llm_provider)
     if args.use_llm:
-        print(f"LLM: Enabled ({args.llm_provider})")
+        if llm_client.available:
+            print(f"LLM: Enabled ({args.llm_provider})")
+        else:
+            print(f"LLM: Disabled — no API key for '{args.llm_provider}'. Put key in .api_key.txt as 'openai:sk-...' or 'gemini:AIza...' (or set OPENAI_API_KEY / GEMINI_API_KEY).")
     else:
         print(f"LLM: Disabled (pattern-based only)")
     print()
@@ -190,8 +197,6 @@ Examples:
     
     # Step 2: Paper Promises Extraction
     print("Step 2: Extracting Paper Promises...")
-    llm_client = LLMClient(api_key_file=args.api_key_file, provider=args.llm_provider)
-    
     metamodel_path = None
     if Path(args.metamodel).exists():
         metamodel_path = args.metamodel
@@ -244,6 +249,11 @@ Examples:
     print(f"    - Model Type: {promises.get('model_type', 'Unknown')}")
     print(f"    - Method: {promises.get('extraction_method', 'unknown')}")
     print()
+
+    # Paper type (vector-borne / climate) auto-detected for prompt tailoring
+    paper_type = detect_paper_type(promise_text or pdf_data.get("full_text", ""), promises)
+    print(f"  Paper type (auto): vector_borne={paper_type.get('vector_borne', False)}, climate={paper_type.get('climate', False)}")
+    print()
     
     # Step 3: Entity Extraction
     print("Step 3: Extracting Entities with Evidence...")
@@ -255,6 +265,7 @@ Examples:
             example_models_path_entity = str(phase1_models_path)
             print(f"  Using example models for context: {example_models_path_entity}")
 
+    experiment = os.environ.get("PHASE2_EXPERIMENT", "").strip()
     entity_extractor = EntityExtractor(
         llm_client=llm_client,
         metamodel_path=metamodel_path,
@@ -263,9 +274,11 @@ Examples:
         llm_flows_chars=args.llm_flows_chars,
         llm_parameters_chars=args.llm_parameters_chars,
         flow_fuzzy_threshold=args.flow_fuzzy_threshold,
+        paper_type=paper_type,
+        experiment=experiment,
     )
 
-    entities = entity_extractor.extract_all(pdf_data)
+    entities = entity_extractor.extract_all(pdf_data, paper_promises=promises)
     
     # Save entities
     entity_extractor.save_entities(

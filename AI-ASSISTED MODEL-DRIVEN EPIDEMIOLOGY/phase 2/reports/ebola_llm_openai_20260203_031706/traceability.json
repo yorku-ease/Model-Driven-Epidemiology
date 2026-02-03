@@ -1,0 +1,323 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Newsusceptible(S)individualsenterthepopulationataconstantbirth/immigrationrate(\u039b).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Newly infected individuals enter the compartment at the same rate susceptible people get infected. Non-symptomatic infected individuals become infectious and symptomatic, thereby leaving the compartment and joining the symptomatic infected compartment at rate \u03c9E.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Infected individuals become symptomatic at rate (\u03c9E). Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I) or through recovery (at rate \u03b3I) joining the recovered (R) compartment.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Thenumberofrecoveredindividualsincreasesduetorecovery(atrate\u03b3I),anditdecreasesduetobackgrounddeath(atrate\u00b5R).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Deceased": {
+      "evidence": [
+        {
+          "text_span": "The infected deceased compartment (D ) represents the dead bodies of previously infected individuals who are still capable of infecting susceptible individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Exposed -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "e progresses to t",
+          "page_number": 1,
+          "method": "pattern_text",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "Susceptible individuals may die and leave the population at the background death rate (\u00b5S), or they may be infected and enter the non-symptomatic infected compartment (E) at the infection rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Non-symptomatic infected individuals become infectious and symptomatic, thereby leaving the compartment and joining the symptomatic infected compartment at rate \u03c9E.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I) or through recovery (at rate \u03b3I) joining the recovered (R) compartment, where they are immune to infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Infectious Deceased": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Deceased -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "This infection of susceptible individuals by infected dead bodies is represented in Figure 1 by the dotted line connecting the Susceptible (S) and the Infected Deceased (DI) compartments.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "\u03b2 = .",
+          "page_number": 3,
+          "method": "pattern_text",
+          "confidence": "medium",
+          "value": ".",
+          "unit": null
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b1": {
+      "evidence": [
+        {
+          "text_span": "\u03b1=0.",
+          "page_number": 3,
+          "method": "pattern_text",
+          "confidence": "medium",
+          "value": "0.",
+          "unit": null
+        }
+      ],
+      "paper_backed": true
+    },
+    "n": {
+      "evidence": [
+        {
+          "text_span": "n=0",
+          "page_number": 3,
+          "method": "pattern_text",
+          "confidence": "medium",
+          "value": "0",
+          "unit": null
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u22121 [16]",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5",
+          "unit": "weeks^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bc": {
+      "evidence": [
+        {
+          "text_span": "\u00b5 background death rate 0\u20130.001 1/50 years\u22121 [10]",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1/50",
+          "unit": "years^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b8": {
+      "evidence": [
+        {
+          "text_span": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u22121 [22]",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "weeks^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_I": {
+      "evidence": [
+        {
+          "text_span": "c contact rate with infectious individuals 0\u20135 variable people weeks\u22121 -",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "variable",
+          "unit": "people weeks^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_D": {
+      "evidence": [
+        {
+          "text_span": "c contact rate with infectious dead bodies 0\u20135 variable people weeks\u22121 -",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "variable",
+          "unit": "people weeks^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c9": {
+      "evidence": [
+        {
+          "text_span": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u22121 [1]",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "weeks^-1"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 3,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "contact_tracing": {
+      "evidence": [
+        {
+          "text_span": "contact_tracing mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 6,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 26,
+    "items_with_evidence": 26,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 26,
+    "faithfulness_percentage": 100.0
+  }
+}

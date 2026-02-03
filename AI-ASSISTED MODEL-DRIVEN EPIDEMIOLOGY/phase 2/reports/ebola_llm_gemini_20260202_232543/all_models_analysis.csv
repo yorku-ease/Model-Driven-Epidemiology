@@ -1,0 +1,19 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebolasensitivity,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Non-symptomatic infected,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious living,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious deceased,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Non-symptomatic infected,RateFlow,//@parameters.2,False,Infection of susceptible individuals through contact with living infectious individuals.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Infectious living,RateFlow,//@parameters.2,False,Non-symptomatic infected individuals become infectious and symptomatic.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.2,False,Infectious individuals recover from the disease and become immune.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Infectious deceased,RateFlow,//@parameters.1,False,Infectious individuals die from the disease and become infectious corpses.,,,
+Ebolasensitivity,Parameter,β,,,,,,Model file,Certain,,,,,,,CONSTANT,.,
+Ebolasensitivity,Parameter,α,,,,,,Model file,Certain,,,,,,,CONSTANT,0.,
+Ebolasensitivity,Parameter,n,,,,,,Model file,Certain,,,,,,,CONSTANT,0,
+Ebolasensitivity,Parameter,γ,,,,,,Model file,Certain,,,,,,recovery rate,CONSTANT,0.5,weeks−1
+Ebolasensitivity,Parameter,θ,,,,,,Model file,Certain,,,,,,safe burial rate,CONSTANT,1,weeks−1
+Ebolasensitivity,Parameter,cI,,,,,,Model file,Certain,,,,,,contact rate with infectious individuals,CONSTANT,variable,people weeks−1
+Ebolasensitivity,Parameter,cD,,,,,,Model file,Certain,,,,,,contact rate with infectious dead bodies,CONSTANT,variable,people weeks−1
+Ebolasensitivity,Parameter,ω,,,,,,Model file,Certain,,,,,,rate at which infected individuals becoming infectious,CONSTANT,1,weeks−1

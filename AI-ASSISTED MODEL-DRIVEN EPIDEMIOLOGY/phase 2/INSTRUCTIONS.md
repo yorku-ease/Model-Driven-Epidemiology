@@ -362,9 +362,11 @@ Step 2: Extracting Paper Promises...
 ### Step 3: Entity Extraction
 
 **What You Provide:**
-- (Automatic) Uses `paper_text.json`, `paper_sections.json` from Step 1
+- (Automatic) Uses `paper_text.json`, `paper_sections.json` from Step 1; Step 2 promises are passed so only evidenced items are kept.
 
 **What Happens:**
+- **Evidence rule:** The LLM is instructed to include only entities with clear, direct evidence in the paper. Entities without a supporting quote are omitted (prefer false negatives over hallucination). Promised items from Step 2 are only included when evidence is found.
+- **Equations:** Equation-heavy sections (differential equations, state variables S(t), I(t), dS/dt) are used for context. The LLM uses equations and diagram descriptions to identify compartments, flows, and parameters; the model is not built solely from equations to avoid misinterpretation.
 
 **For Each Entity Type (Compartments, Flows, Parameters):**
 
@@ -1070,6 +1072,8 @@ python3 run_phase2.py --help
 - `--llm-flows-chars`: Max characters of paper text sent to LLM for flow extraction (default: `80000`)
 - `--llm-parameters-chars`: Max characters of paper text sent to LLM for parameter extraction (default: `80000`)
 - `--flow-fuzzy-threshold`: Fuzzy threshold for snapping flow endpoints to known compartments (default: `0.78`)
+
+Paper type (vector-borne / climate) is always **auto-detected** from the paper text and Step 2 promises; no option to set it manually.
 
 ---
 

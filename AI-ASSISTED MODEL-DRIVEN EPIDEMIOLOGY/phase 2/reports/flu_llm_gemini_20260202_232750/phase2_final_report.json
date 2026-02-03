@@ -1,0 +1,526 @@
+{
+  "paper_name": "Influenza",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 6,
+      "parameters": 17,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 11,
+      "critical_gaps": 1,
+      "high_gaps": 10,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [
+      "Susceptible",
+      "Exposed",
+      "Infectious",
+      "Removed"
+    ],
+    "stratifications": [],
+    "parameters": [
+      "S(t)",
+      "E(t)",
+      "I(t)",
+      "R(t)",
+      "E1(t)",
+      "E2(t)",
+      "I1(t)",
+      "I2(t)",
+      "\u03c3",
+      "\u03b3",
+      "\u03bb(t)",
+      "\u03b2",
+      "\u03c8",
+      "\u03c0",
+      "\u03bb0",
+      "Itot0",
+      "R0",
+      "Rn",
+      "p_ICU",
+      "\u00b5_ICU|E",
+      "\u03c3^2_ICU|E",
+      "\u03b7",
+      "N"
+    ],
+    "interventions": [],
+    "model_type": "SEIR",
+    "description": "A discrete-time deterministic SEIR-type model to describe the transmission dynamics of influenza. The model divides the Exposed and Infectious compartments into two sub-compartments each. It links the transmission dynamics to routinely collected ICU/HDU admissions data through an observational model.",
+    "extraction_method": "llm"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed 1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed 2",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious 1",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Exposed",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Exposed 1",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed 1",
+        "target": "Exposed 2",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed 2",
+        "target": "Infectious 1",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious 1",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03c3",
+        "value": "0.2",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "w",
+        "value": "3",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "eid",
+        "value": "2",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "\u03b4t",
+        "value": "0.25",
+        "unit": "day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "dL",
+        "value": "2",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "0.5797",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "dI",
+        "value": "3.45",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bb(t)",
+        "value": null,
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2",
+        "value": "0 to 1.25",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c8",
+        "value": "Unif(0,0.39)",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c0",
+        "value": "Unif(0,1)",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bb0",
+        "value": "Unif(0,0.000241)",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R0",
+        "value": "1 to 4",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rn",
+        "value": null,
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "p_ICU",
+        "value": "Unif(0,1)",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c3^2_ICU|E",
+        "value": "18.24",
+        "unit": "days^2",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b7",
+        "value": "Unif(1,100)",
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 6,
+    "parameters": 17,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 33,
+    "items_with_evidence": 33,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 33,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 11,
+      "critical_gaps": 1,
+      "high_gaps": 10,
+      "medium_gaps": 0,
+      "promised_items": {
+        "compartments": 4,
+        "parameters": 23,
+        "stratifications": 0,
+        "interventions": 0
+      },
+      "extracted_items": {
+        "compartments": 7,
+        "parameters": 17,
+        "stratifications": 1,
+        "interventions": 2
+      }
+    },
+    "missing_compartments": [
+      {
+        "promised": "removed",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_parameters": [
+      {
+        "promised": "s(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "e(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "i(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "r(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "e1(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "e2(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "i1(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "i2(t)",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "itot0",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u00b5_icu|e",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 11,
+    "total_suggestions": 16,
+    "suggestions_by_source": {
+      "paper_span": 5,
+      "prior_model": 0,
+      "domain_knowledge": 11
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 33,
+      "items_with_evidence": 33,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 33,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 11,
+      "critical_gaps": 1,
+      "high_gaps": 10,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 1,
+        "missing_parameters": 10,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.5714285714285714,
+        "recall": 1.0,
+        "f1": 0.7272727272727273,
+        "tp": 4,
+        "fp": 3,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed 2",
+            "gold": "Exposed",
+            "similarity": 0.9333333333333333
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Removed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious 1",
+            "gold": "Infectious",
+            "similarity": 0.96
+          }
+        ],
+        "unmatched_extracted": [
+          "Exposed 1",
+          "Infectious",
+          "Exposed"
+        ],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0.17647058823529413,
+        "recall": 1.0,
+        "f1": 0.3,
+        "tp": 3,
+        "fp": 14,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "\u03b2",
+            "gold": "\u03b2",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b3",
+            "gold": "\u03b3",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03c3^2_ICU|E",
+            "gold": "\u03c3",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "\u03c3",
+          "\u03bb0",
+          "\u03b4t",
+          "Rn",
+          "w",
+          "R0",
+          "dL",
+          "\u03b7",
+          "eid",
+          "\u03c0",
+          "p_ICU",
+          "\u03bb(t)",
+          "\u03c8",
+          "dI"
+        ],
+        "unmatched_gold": []
+      },
+      "flows": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible->Exposed 1",
+            "gold": "Susceptible->Exposed",
+            "similarity": 0.9666666666666667
+          },
+          {
+            "extracted": "Exposed 1->Exposed",
+            "gold": "Exposed->Exposed",
+            "similarity": 0.9666666666666667
+          },
+          {
+            "extracted": "Infectious->Infectious",
+            "gold": "Infectious->Infectious",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed->Infectious",
+            "gold": "Exposed->Infectious",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious->Removed",
+            "gold": "Infectious->Removed",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

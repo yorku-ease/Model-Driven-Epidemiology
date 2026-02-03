@@ -1,0 +1,272 @@
+{
+  "compartments": [
+    {
+      "raw_text": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to the Ebola virus."
+    },
+    {
+      "raw_text": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "normalized_name": "Non-symptomatic infected",
+      "page_number": 0,
+      "text_span": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected but are not yet symptomatic or infectious."
+    },
+    {
+      "raw_text": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "normalized_name": "Infectious living",
+      "page_number": 0,
+      "text_span": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Symptomatic, living individuals who can transmit the disease."
+    },
+    {
+      "raw_text": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "normalized_name": "Infectious deceased",
+      "page_number": 0,
+      "text_span": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dead bodies of previously infected individuals who are still capable of infecting susceptible individuals."
+    },
+    {
+      "raw_text": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "Here we propose a compartmental model consisting of five groups of individuals: susceptible (S), non-symptomatic infected (E), infectious living (I), infectious deceased (D_I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the disease and are immune to infection."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Susceptible",
+      "raw_text": "e progresses to t",
+      "page_number": 1,
+      "text_span": "e progresses to t",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Non-symptomatic infected",
+      "raw_text": "Susceptible individuals may die and leave the population at the background death rate (\u00b5S), or they may be infected and enter the non-symptomatic infected compartment (E) at the infection rate...",
+      "page_number": 0,
+      "text_span": "Susceptible individuals may die and leave the population at the background death rate (\u00b5S), or they may be infected and enter the non-symptomatic infected compartment (E) at the infection rate...",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Infection of susceptible individuals through contact with living infectious individuals."
+    },
+    {
+      "source": "Non-symptomatic infected",
+      "target": "Infectious living",
+      "raw_text": "Non-symptomatic infected individuals become infectious and symptomatic, thereby leaving the compartment and joining the symptomatic infected compartment at rate \u03c9E.",
+      "page_number": 0,
+      "text_span": "Non-symptomatic infected individuals become infectious and symptomatic, thereby leaving the compartment and joining the symptomatic infected compartment at rate \u03c9E.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Non-symptomatic infected individuals become infectious and symptomatic."
+    },
+    {
+      "source": "Infectious living",
+      "target": "Recovered",
+      "raw_text": "Symptomatic infectious individuals may leave the compartment ... through recovery (at rate \u03b3I) joining the recovered (R) compartment, where they are immune to infection.",
+      "page_number": 0,
+      "text_span": "Symptomatic infectious individuals may leave the compartment ... through recovery (at rate \u03b3I) joining the recovered (R) compartment, where they are immune to infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious individuals recover from the disease and become immune."
+    },
+    {
+      "source": "Infectious living",
+      "target": "Infectious deceased",
+      "raw_text": "Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I)...",
+      "page_number": 0,
+      "text_span": "Symptomatic infectious individuals may leave the compartment via disease death (at rate \u03b1I)...",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious individuals die from the disease and become infectious corpses."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u03b2",
+      "normalized_name": "\u03b2",
+      "value": ".",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b2 = .",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b1",
+      "normalized_name": "\u03b1",
+      "value": "0.",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "\u03b1=0.",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "n",
+      "normalized_name": "n",
+      "value": "0",
+      "unit": null,
+      "description": null,
+      "page_number": 3,
+      "text_span": "n=0",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u22121 [16]",
+      "normalized_name": "\u03b3",
+      "value": "0.5",
+      "unit": "weeks\u22121",
+      "description": "recovery rate",
+      "page_number": 0,
+      "text_span": "\u03b3 recovery rate 0.5\u20131 0.5 weeks\u22121 [16]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u22121 [22]",
+      "normalized_name": "\u03b8",
+      "value": "1",
+      "unit": "weeks\u22121",
+      "description": "safe burial rate",
+      "page_number": 0,
+      "text_span": "\u03b8 safe burial rate 0.33\u20137 1 weeks\u22121 [22]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "cI contact rate with infectious individuals 0\u20135 variable people weeks\u22121 -",
+      "normalized_name": "cI",
+      "value": "variable",
+      "unit": "people weeks\u22121",
+      "description": "contact rate with infectious individuals",
+      "page_number": 0,
+      "text_span": "cI contact rate with infectious individuals 0\u20135 variable people weeks\u22121 -",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "cD contact rate with infectious dead bodies 0\u20135 variable people weeks\u22121 -",
+      "normalized_name": "cD",
+      "value": "variable",
+      "unit": "people weeks\u22121",
+      "description": "contact rate with infectious dead bodies",
+      "page_number": 0,
+      "text_span": "cD contact rate with infectious dead bodies 0\u20135 variable people weeks\u22121 -",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u22121 [1]",
+      "normalized_name": "\u03c9",
+      "value": "1",
+      "unit": "weeks\u22121",
+      "description": "rate at which infected individuals becoming infectious",
+      "page_number": 0,
+      "text_span": "\u03c9 rate at which infected individuals becoming infectious 0.33\u20133 1 weeks\u22121 [1]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 3,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "contact_tracing",
+      "page_number": 1,
+      "text_span": "contact_tracing mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 6,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 5,
+    "num_parameters": 8,
+    "num_stratifications": 2,
+    "num_interventions": 4
+  }
+}

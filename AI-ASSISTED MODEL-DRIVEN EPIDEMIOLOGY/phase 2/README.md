@@ -14,6 +14,12 @@ Phase 2 automatically extracts compartmental epidemiological models from scienti
 
 **Key Principle:** Faithfulness to the paper - only extracts what papers explicitly describe or promise.
 
+Paper type (vector-borne / climate) is **auto-detected** from text and promises; prompts are tailored accordingly. Prompts use step-by-step reasoning (chain-of-thought style) to reduce omissions and spurious extractions.
+
+**Default extraction variant (B+C):** Flow prompts ask for short `text_span` (≤200 chars) and exact compartment names only (no parentheticals like (E1)); flow extraction uses 6000 max tokens. To use the older baseline, set `PHASE2_EXPERIMENT=` (empty) before running.
+
+**Gemini-specific improvements:** When using `--llm-provider gemini`, the pipeline uses **structured output** (JSON schema) for compartments, flows, and parameters so the model returns valid JSON matching the expected fields. Temperature is set to **0.2** for extraction to improve consistency and reduce parse failures.
+
 ## Project Structure
 
 ```
@@ -90,13 +96,13 @@ Phase 2 supports both **OpenAI** and **Google Gemini**. You choose the provider 
 
 - **Provider flag**: `--llm-provider openai`
 - **API key**: `OPENAI_API_KEY` env var or `openai:sk-...` in `.api_key.txt`
-- **Default model**: `gpt-4o-mini` (can be overridden)
+- **Default model**: `gpt-4o` (set `OPENAI_MODEL=gpt-4o-mini` for cheaper/faster runs)
 
 Override the OpenAI model:
 
 ```bash
 export OPENAI_API_KEY="sk-..."         # or use .api_key.txt
-export OPENAI_MODEL="gpt-4.1-mini"     # optional override
+export OPENAI_MODEL="gpt-4o-mini"      # optional: cheaper/faster (default is gpt-4o)
 ```
 
 Run on a single paper:
@@ -241,12 +247,14 @@ Return only valid JSON."
 
 ### Step 3: Entity Extraction
 
-**Input:** Paper text, pages, tables from Step 1
+**Input:** Paper text, pages, tables from Step 1; optional Step 2 promises (used so only evidenced items are kept).
 
 **Process:**
 - Extracts compartments, flows, parameters, stratifications, interventions
 - Uses **both** pattern matching and LLM
 - Records evidence (text span, page number, confidence, extraction method)
+- **Evidence rule:** The LLM is instructed to include only entities for which there is clear, direct evidence in the paper. If no supporting quote is found, the entity is omitted (prefer false negatives over hallucination). Promised items from Step 2 are only included when evidence is found.
+- **Use of equations:** Equation-heavy sections (differential equations, state variables like S(t), I(t), dS/dt) are selected for context. The LLM is instructed to use equations and diagram descriptions to identify compartments, flows, and parameters. The model is not built solely from equations so that narrative and tables can disambiguate meaning.
 
 **LLM Usage (always used if API key available):**
 
@@ -577,7 +585,7 @@ LLM is used in **3 steps** of Phase 2:
 
 ### LLM Configuration
 
-- **Model:** `gpt-4o-mini` (default, can be changed in code)
+- **Model:** `gpt-4o` (default; use `OPENAI_MODEL=gpt-4o-mini` for cheaper runs)
 - **Temperature:** `0.3` (low for consistency)
 - **Max Tokens:** `2000` (sufficient for most extractions)
 - **Output Format:** Always JSON
@@ -841,7 +849,7 @@ python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports --llm-
 ## Limitations
 
 1. **Parameter Values:** Some parameters may have placeholder values if not explicitly stated in paper
-2. **Flow Extraction:** May miss some flows depending on paper format
+2. **Flow Extraction:** Flows can fail or be undercounted when the LLM returns **invalid JSON**—for example, unescaped double quotes or newlines inside the `text_span` field (e.g. long equation quotes). The pipeline now: (a) **repairs** such JSON (escapes inner quotes and newlines in string values), and (b) **salvages** flow objects one-by-one from broken arrays when full parse fails. If you see "LLM flow extraction error" or very few flows, the raw response was malformed; re-runs or different papers often succeed.
 3. **Quality Checks:** Phase 1 analyzers may fail if an extracted model cannot be simulated (e.g., missing numeric values or unsupported constructs)
 
 ## Next Steps
