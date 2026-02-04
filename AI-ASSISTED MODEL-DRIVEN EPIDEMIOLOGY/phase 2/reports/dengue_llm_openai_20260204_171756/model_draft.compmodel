@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="i" expression="1" type="CONSTANT"/>
+  <parameters name="Y" expression="0" type="CONSTANT"/>
+  <parameters name="j" expression="1" type="CONSTANT"/>
+  <parameters name="ds" expression="1" type="CONSTANT"/>
+  <parameters name="μ" expression="0.005" type="CONSTANT"/>
+  <parameters name="σ" expression="0.007" type="CONSTANT"/>
+  <parameters name="β" expression="18" type="CONSTANT"/>
+  <parameters name="γ" expression="0.5" type="CONSTANT"/>
+  <parameters name="ρ" expression="0.5" type="CONSTANT"/>
+  <parameters name="k" expression="0.6" type="CONSTANT"/>
+  <parameters name="R" expression="1.684" type="CONSTANT"/>
+  <parameters name="h" expression="0" type="CONSTANT"/>
+  <parameters name="da" expression="0" type="CONSTANT"/>
+  <parameters name="arXiv" expression="2111" type="CONSTANT"/>
+  <parameters name="β_h(a)" expression="0.0" type="CONSTANT" description="Age-specific transmission rate from infected mosquitoes to susceptible humans"/>
+  <parameters name="β_v(a)" expression="0.0" type="CONSTANT" description="Age-specific transmission rate from infectious hosts to susceptible mosquitoes"/>
+  <parameters name="γ_1(a)" expression="0.0" type="CONSTANT" description="Age-specific recovery rate of symptomatic infectious hosts"/>
+  <parameters name="γ_2(a)" expression="0.0" type="CONSTANT" description="Age-specific recovery rate of asymptomatic infectious hosts"/>
+  <parameters name="μ_h" expression="0.0" type="CONSTANT" description="Natural death rate of human hosts"/>
+  <parameters name="μ_v" expression="0.0" type="CONSTANT" description="Natural death rate of mosquitoes"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible humans become exposed through bites by infected mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="A fraction of exposed individuals enter the asymptomatic infectious class."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="A fraction of exposed individuals become symptomatic infectious."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Asymptomatic individuals recover at a specific rate."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.0" target="//@compartments.3" description="Asymptomatic individuals can be reinfected and become symptomatic infectious."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Symptomatic individuals recover at a specific rate."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.0" target="//@compartments.6" description="Susceptible mosquitoes become infected through biting infectious human hosts."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

@@ -4,11 +4,12 @@ Complete guide to running Phase 2 with detailed inputs and outputs for each step
 
 ## Quick Start
 
-1. **Set up API key** → `.api_key.txt`
-2. **Install dependencies** → `pip install -r ../requirements.txt`
+1. **Set up API key** → `phase 2/.api_key.txt` (OpenAI or Gemini; see Step 1 below)
+2. **Install dependencies** → From parent dir: `pip install -r requirements.txt` (see Step 2)
 3. **Put paper in** → `data/papers/`
-4. **Run** → `python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports`
-5. **Check results** → open the printed output folder and check `phase2_final_report.json`
+4. **Run** → `python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports` (add `--llm-provider gemini` for Gemini)
+5. **Check results** → Open the printed output folder (e.g. `reports/cholera_llm_openai_20260204_171722`) and check `phase2_final_report.json` and `evaluation_report.json`
+6. **(Optional)** After multiple runs, generate a summary → `python3 build_results_md.py` creates `RESULTS_NEW_RUN.md` with per-disease and average P/R/F1
 
 ---
 
@@ -205,7 +206,7 @@ done
 
 Results are in a newly created folder under `reports/` with the format:
 
-- `{disease}_{method}_{timestamp}`
+- `{disease}_llm_{openai|gemini}_{timestamp}` (e.g. `cholera_llm_openai_20260204_171722`, `dengue_llm_gemini_20260204_165333`)
 
 The exact output folder path is printed in the console.
 
@@ -216,6 +217,7 @@ ls reports/
 **Main Files to Check:**
 - `model_draft.compmodel` - The extracted model (XML)
 - `phase2_final_report.json` - Comprehensive report with all results
+- `evaluation_report.json` - Quality metrics; if a baseline was used, see `gold_standard_comparison` for compartments, parameters, and flows (precision, recall, F1)
 
 ---
 
@@ -951,8 +953,8 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
 4. Optionally compares to baseline/gold standard:
    - **Auto-detection:** If a baseline `.compmodel` file exists in `data/baseline_models/` with a name matching the paper (e.g., `ebola_salem_smith.compmodel` for `EbolaSensitivity.pdf`), it's automatically used
    - Converts baseline `.compmodel` to gold standard format
-   - Calculates precision/recall for compartments and parameters
-   - Shows true positives, false positives, false negatives
+   - Calculates precision/recall/F1 for **compartments**, **parameters**, and **flows**
+   - Shows true positives, false positives, false negatives for each
 
 **No LLM used** - Pure metric calculation
 
@@ -977,14 +979,8 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
         "fp": 1,
         "fn": 0
       },
-      "parameters": {
-        "precision": 0.80,
-        "recall": 0.88,
-        "f1": 0.84,
-        "tp": 8,
-        "fp": 2,
-        "fn": 1
-      }
+      "parameters": { "precision": 0.80, "recall": 0.88, "f1": 0.84, "tp": 8, "fp": 2, "fn": 1 },
+      "flows": { "precision": 0.75, "recall": 0.82, "f1": 0.78, "tp": 6, "fp": 2, "fn": 1 }
     }
   }
   ```
@@ -1064,7 +1060,7 @@ python3 run_phase2.py --help
 - `--llm-provider`: LLM provider to use - `openai` or `gemini` (default: `openai`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
 - `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
-- `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation)
+- `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation; otherwise baseline in `data/baseline_models` is auto-detected)
 - `--baseline-models-dir`: Directory with baseline `.compmodel` files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
 - `--output-base-dir`: Base directory used when `--output` is not provided (default: `reports`)
@@ -1074,6 +1070,8 @@ python3 run_phase2.py --help
 - `--flow-fuzzy-threshold`: Fuzzy threshold for snapping flow endpoints to known compartments (default: `0.78`)
 
 Paper type (vector-borne / climate) is always **auto-detected** from the paper text and Step 2 promises; no option to set it manually.
+
+**Generating a results summary:** After running on multiple papers (and optionally both providers), run `python3 build_results_md.py` in the `phase 2` directory to create `RESULTS_NEW_RUN.md` with per-disease and average precision/recall/F1 for compartments, parameters, and flows (OpenAI and Gemini).
 
 ---
 
@@ -1204,18 +1202,24 @@ pip install pdfplumber
    - Check gap analysis for missing items
    - Review evaluation for quality scores
 
-2. **`model_draft.compmodel`** - The extracted model
+2. **`evaluation_report.json`** - Quality and baseline comparison
+   - Traceability coverage and faithfulness
+   - If a baseline was used: `gold_standard_comparison` has compartments, parameters, and flows (precision, recall, F1)
+
+3. **`model_draft.compmodel`** - The extracted model
    - Open in text editor or XML viewer
    - Check compartments, flows, parameters
    - Verify parameter links (rateParameter/contactRateParameter)
 
-3. **`phase2_gap_report.json`** - What's missing
+4. **`phase2_gap_report.json`** - What's missing
    - Review missing items
    - Check severity levels
 
-4. **`gap_fill_suggestions.json`** - How to fill gaps
+5. **`gap_fill_suggestions.json`** - How to fill gaps
    - Review suggestions for each gap
    - Check source and confidence
+
+6. **`RESULTS_NEW_RUN.md`** - After running `build_results_md.py`, use this for a quick scan of P/R/F1 across diseases and providers (OpenAI vs Gemini).
 
 ---
 
@@ -1225,6 +1229,9 @@ After running Phase 2, you get:
 
 - **1 main output:** `model_draft.compmodel` (the extracted model)
 - **1 comprehensive report:** `phase2_final_report.json` (all results)
-- **9 detailed files:** Individual JSON files for each step (for reference)
+- **Evaluation:** `evaluation_report.json` (traceability, faithfulness, gaps; if baseline used: `gold_standard_comparison` with compartments, parameters, flows P/R/F1)
+- **Other detailed files:** paper_text.json, paper_promises.json, extracted_entities.json, traceability.json, phase2_gap_report.json, gap_fill_suggestions.json, quality_checks.json
 
-**Check `phase2_final_report.json` first** - it contains everything you need!
+**Check `phase2_final_report.json` first** - it contains everything you need. Use `evaluation_report.json` for precision/recall/F1 when a baseline was auto-detected.
+
+**Aggregating multiple runs:** Run `python3 build_results_md.py` to generate `RESULTS_NEW_RUN.md` with per-disease and average P/R/F1 from the latest report in each `reports/{disease}_llm_{openai|gemini}_{timestamp}/` folder.

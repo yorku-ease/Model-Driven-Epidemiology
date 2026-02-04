@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="[0.01,5]" type="CONSTANT" description="Probability of successful infection rate" unit="year×human"/>
+  <parameters name="ε" expression="[0,1]" type="CONSTANT" description="Correction parameter for reinfection term"/>
+  <parameters name="θ" expression="[0.067,0.1]" type="CONSTANT" description="Vaccine wane rate" unit="day"/>
+  <parameters name="γ" expression="[0.5,2]" type="CONSTANT" description="Recovery rate" unit="year"/>
+  <parameters name="δ" expression="[0.003,0.02]" type="CONSTANT" description="Dropout rate due to waning immunity" unit="day"/>
+  <parameters name="μ" expression="1" type="CONSTANT" description="Natural death rate" unit="65×12 month"/>
+  <compartments PrimaryName="Numerical experiments, and finally, in Section 5, we provide
+incorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks" population="0"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Movement of individuals from the susceptible class to the vaccinated compartment at a constant vaccination rate."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.0" target="//@compartments.3" description="Susceptible individuals contract the disease through direct contact with those in the infected compartment, occurring at a constant infection rate."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Individuals transition back to the susceptible compartment from the vaccinated compartment due to waning immunity."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.4" description="Individuals in the infected compartment recover at a constant rate."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.1" description="Individuals may transition back to the susceptible compartment from the recovered compartment due to waning immunity."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.3" target="//@compartments.3" description="Individuals in the recovered compartment may be re-infected by those in the infected compartment."/>
+  </compartments>
+</compartmental:CompartmentalModel>

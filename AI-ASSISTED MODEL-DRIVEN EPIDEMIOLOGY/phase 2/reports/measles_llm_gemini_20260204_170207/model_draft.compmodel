@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="range" expression="10e14" type="CONSTANT"/>
+  <compartments PrimaryName="S_C" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Susceptible children enter the un-monitored vaccination group."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Susceptible children enter the monitored vaccination group."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRate="0.0" target="//@compartments.3" description="Susceptible children become exposed to the disease through contact with infectious individuals."/>
+  </compartments>
+  <compartments PrimaryName="UV_C" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRate="0.0" target="//@compartments.3" description="Un-monitored vaccinated children become exposed due to incomplete vaccine effectiveness."/>
+  </compartments>
+  <compartments PrimaryName="MV_C" population="0"/>
+  <compartments PrimaryName="E_C" population="0"/>
+</compartmental:CompartmentalModel>

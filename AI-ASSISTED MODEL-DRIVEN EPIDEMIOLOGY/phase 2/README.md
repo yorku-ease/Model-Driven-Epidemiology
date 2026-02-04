@@ -25,9 +25,11 @@ Paper type (vector-borne / climate) is **auto-detected** from text and promises;
 ```
 phase 2/
 ├── .api_key.txt              ← Your OpenAI or Gemini API key goes here
-├── run_phase2.py             ← Main script to run
+├── run_phase2.py             ← Main script to run the pipeline
+├── build_results_md.py       ← Script to generate RESULTS_NEW_RUN.md from latest reports
 ├── README.md                  ← This file (comprehensive guide)
 ├── INSTRUCTIONS.md            ← Step-by-step how to run
+├── RESULTS_NEW_RUN.md         ← Generated summary of P/R/F1 per disease & provider (run build_results_md.py)
 │
 ├── src/                       ← Source code (organized by function)
 │   ├── extraction/            ← PDF processing & entity extraction
@@ -41,10 +43,11 @@ phase 2/
 │   └── baseline_models/       ← Baseline .compmodel files for evaluation (auto-detected)
 │
 └── reports/                   ← Output directory (auto-generated)
-    └── {disease}_{method}_{timestamp}/
+    └── {disease}_llm_{openai|gemini}_{timestamp}/
         ├── model_draft.compmodel      ← Main output: extracted model
         ├── phase2_final_report.json   ← Comprehensive report
-        └── [10 detailed JSON files]   ← Detailed results for reference
+        ├── evaluation_report.json     ← Metrics & gold-standard comparison (compartments, parameters, flows)
+        └── [other detailed JSON files] ← paper_text.json, extracted_entities.json, etc.
 ```
 
 ## How It Works: The 9-Step Pipeline
@@ -551,11 +554,11 @@ Suggest how to fill this gap and return JSON:
   - Gap metrics (total, by severity)
   - Precision/recall (if baseline/gold standard provided)
 - **Auto-detects baseline models:** If a baseline `.compmodel` file exists in `data/baseline_models/` matching the paper name, it's automatically used for comparison
-- Converts baseline `.compmodel` to gold standard format for precision/recall calculation
+- Converts baseline `.compmodel` to gold standard format and computes precision/recall/F1 for **compartments**, **parameters**, and **flows**
 
 **No LLM used** - Pure metric calculation
 
-**Output:** `evaluation_report.json` with quality metrics
+**Output:** `evaluation_report.json` with quality metrics and `gold_standard_comparison` (compartments, parameters, flows: precision, recall, F1)
 
 ---
 
@@ -691,7 +694,7 @@ Phase 2 automatically uses baseline `.compmodel` files for evaluation if they ex
    - **Parameters:** Extracted vs baseline parameters
    - **Metrics:** Precision, recall, F1 score, true positives, false positives, false negatives
 
-4. **Output:** Results appear in `evaluation_report.json` under `gold_standard_comparison`
+4. **Output:** Results appear in `evaluation_report.json` under `gold_standard_comparison` (compartments, parameters, flows: precision, recall, F1, tp, fp, fn)
 
 ## Output Files
 
@@ -710,7 +713,17 @@ Phase 2 automatically uses baseline `.compmodel` files for evaluation if they ex
 8. `phase2_gap_report.json` - Missing items
 9. `gap_fill_suggestions.json` - Gap fill suggestions
 10. `quality_checks.json` - Phase 1 analyzer results
-11. `evaluation_report.json` - Quality metrics
+11. `evaluation_report.json` - Quality metrics and gold-standard comparison (compartments, parameters, flows)
+
+### Generating the results summary (markdown)
+
+After running Phase 2 on multiple papers (e.g. all PDFs in `data/papers/`) with one or both providers (OpenAI and Gemini), you can aggregate the latest evaluation results into a single markdown report:
+
+```bash
+python3 build_results_md.py
+```
+
+This reads the most recent `evaluation_report.json` in each `reports/{disease}_llm_{openai|gemini}_{timestamp}/` folder, extracts precision/recall/F1 for compartments, parameters, and flows per disease and provider, and writes **`RESULTS_NEW_RUN.md`** with per-disease tables, averages, and an F1 summary table. Use it to compare runs or document results.
 
 ## Setup
 
@@ -829,7 +842,7 @@ python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports --llm-
 
 **Required:**
 - `--paper`: Path to PDF paper file
-- `--output`: Base directory for results (folder name is auto-generated as `{disease}_{method}_{timestamp}`)
+- `--output`: Base directory for results (optional; folder name is always auto-generated as `{disease}_llm_{openai|gemini}_{timestamp}` when using LLM, e.g. `cholera_llm_openai_20260204_171722`)
 
 **Optional:**
 - `--metamodel`: Path to epidemiology metamodel JSON (default: `../phase 1/metamodel_epidemiology.json`)
@@ -858,7 +871,8 @@ python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports --llm-
 2. Review `model_draft.compmodel` - The extracted model
 3. Check `phase2_final_report.json` - Comprehensive results
 4. Review gaps and suggestions
-5. Compare with baseline models if available (auto-detected from `data/baseline_models/`)
+5. Compare with baseline models if available (auto-detected from `data/baseline_models/`); see `evaluation_report.json` for precision/recall/F1 on compartments, parameters, and flows
+6. (Optional) Run `python3 build_results_md.py` to generate `RESULTS_NEW_RUN.md` with per-disease and average P/R/F1 across the latest runs
 
 ## Support
 

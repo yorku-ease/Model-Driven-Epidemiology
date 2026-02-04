@@ -1,0 +1,240 @@
+{
+  "compartments": [
+    {
+      "raw_text": "model includes numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+      "normalized_name": "Numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+      "page_number": 2,
+      "text_span": "model includes numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "This model divides the population into four compartments, one of which is the susceptible (S) population."
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "normalized_name": "Vaccinated",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "This model divides the population into four compartments, one of which is the vaccinated (V) population."
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "This model divides the population into four compartments, one of which is the infected (I) population."
+    },
+    {
+      "raw_text": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "This model divides the population into four compartments, namely the susceptible (S), vaccinated (V), infected (I) and recovered (R).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "This model divides the population into four compartments, one of which is the recovered (R) population."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "raw_text": "we consider a constant vaccination rate u, representing the movement of individuals from the susceptible class to the vaccinated compartment.",
+      "page_number": 0,
+      "text_span": "we consider a constant vaccination rate u, representing the movement of individuals from the susceptible class to the vaccinated compartment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Vaccination of susceptible individuals."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "raw_text": "Given that tuberculosis vaccines offer finite protection, there exists a constant dropout rate (\u03b8) from the vaccinated compartment back to the susceptible compartment.",
+      "page_number": 0,
+      "text_span": "Given that tuberculosis vaccines offer finite protection, there exists a constant dropout rate (\u03b8) from the vaccinated compartment back to the susceptible compartment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Waning of vaccine-induced immunity, causing individuals to become susceptible again."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "raw_text": "only susceptible individuals can contract the disease through direct contact with those in the infected compartment, occurring at a constant infection rate \u03b2.",
+      "page_number": 0,
+      "text_span": "only susceptible individuals can contract the disease through direct contact with those in the infected compartment, occurring at a constant infection rate \u03b2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Infection of susceptible individuals through contact with infectious individuals."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "Individuals in the infected compartment recover at a constant rate \u03b3.",
+      "page_number": 0,
+      "text_span": "Individuals in the infected compartment recover at a constant rate \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Recovery of infectious individuals."
+    },
+    {
+      "source": "Recovered",
+      "target": "Infectious",
+      "raw_text": "individuals in the recovered compartment may be re-infected by those in the infected compartment, with a rate of \u03f5\u03b2, where \u03f5 serves as a correction parameter",
+      "page_number": 0,
+      "text_span": "individuals in the recovered compartment may be re-infected by those in the infected compartment, with a rate of \u03f5\u03b2, where \u03f5 serves as a correction parameter",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Reinfection of recovered individuals through contact with infectious individuals."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "raw_text": "individuals may transition back to the susceptible compartment from the recovered compartment due to waning immunity, occurring at a constant rate \u03b4.",
+      "page_number": 0,
+      "text_span": "individuals may transition back to the susceptible compartment from the recovered compartment due to waning immunity, occurring at a constant rate \u03b4.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Waning of natural immunity in recovered individuals, causing them to become susceptible again."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u03b2 | Probability of successful infection rate | [0.01,5] | 1/(year*human) | [42\u201345]",
+      "normalized_name": "\u03b2",
+      "value": "[0.01, 5]",
+      "unit": "1/(year*human)",
+      "description": "Probability of successful infection rate.",
+      "page_number": 0,
+      "text_span": "\u03b2 | Probability of successful infection rate | [0.01,5] | 1/(year*human) | [42\u201345]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b8 | Vaccine wane rate | [0.067,0.1] | 1/day | [47\u201350]",
+      "normalized_name": "\u03b8",
+      "value": "[0.067, 0.1]",
+      "unit": "1/day",
+      "description": "Vaccine wane rate, the rate at which vaccine-induced immunity is lost.",
+      "page_number": 0,
+      "text_span": "\u03b8 | Vaccine wane rate | [0.067,0.1] | 1/day | [47\u201350]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b3 | Recovery rate | [0.5,2] | 1/year | [30,51]",
+      "normalized_name": "\u03b3",
+      "value": "[0.5, 2]",
+      "unit": "1/year",
+      "description": "Recovery rate from infection.",
+      "page_number": 0,
+      "text_span": "\u03b3 | Recovery rate | [0.5,2] | 1/year | [30,51]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03b4 | Dropout rate due to waning immunity | [0.003,0.02] | 1/day | [30,52]",
+      "normalized_name": "\u03b4",
+      "value": "[0.003, 0.02]",
+      "unit": "1/day",
+      "description": "Dropout rate due to waning immunity, where recovered individuals become susceptible again.",
+      "page_number": 0,
+      "text_span": "\u03b4 | Dropout rate due to waning immunity | [0.003,0.02] | 1/day | [30,52]",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bc | Natural death rate | 1 / 65x12 month | Estimated",
+      "normalized_name": "\u03bc",
+      "value": "1 / (65*12)",
+      "unit": "1/month",
+      "description": "Natural death rate of the human population.",
+      "page_number": 0,
+      "text_span": "\u03bc | Natural death rate | 1 / 65x12 month | Estimated",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 4,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 11,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 6,
+    "num_parameters": 5,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

@@ -1,0 +1,355 @@
+{
+  "modelName": "Dengue",
+  "summary": {
+    "modelName": "Dengue",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 20,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Susceptible humans become exposed to the virus through bites from infectious mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "A fraction of exposed individuals progress to the asymptomatic infectious stage after a latent period.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "A fraction of exposed individuals progress to the symptomatic infectious stage after a latent period.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Asymptomatic infectious individuals recover from the disease.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.3",
+            "description": "Asymptomatic individuals are reinfected by infectious mosquitoes and become symptomatic.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Symptomatic Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Symptomatic infectious individuals recover from the disease.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.5",
+            "description": "Susceptible mosquitoes become infected by biting infectious humans, moving them out of the susceptible pool.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "i",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "Y",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "j",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "ds",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "μ",
+        "type": "CONSTANT",
+        "expression": "0.005",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "0.007",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "18",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "ρ",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "k",
+        "type": "CONSTANT",
+        "expression": "0.6",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 10,
+        "name": "R",
+        "type": "CONSTANT",
+        "expression": "1.684",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 11,
+        "name": "h",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 12,
+        "name": "da",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 13,
+        "name": "arXiv",
+        "type": "CONSTANT",
+        "expression": "2111",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 14,
+        "name": "μh",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "The natural death rate of the human hosts.",
+        "unit": ""
+      },
+      {
+        "index": 15,
+        "name": "μv",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "The natural death rate of the mosquitoes.",
+        "unit": ""
+      },
+      {
+        "index": 16,
+        "name": "γ1(a)",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "The age-specific recovery rate of symptomatic infectious hosts.",
+        "unit": ""
+      },
+      {
+        "index": 17,
+        "name": "γ2(a)",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "The age-specific recovery rate of asymptomatic infectious hosts.",
+        "unit": ""
+      },
+      {
+        "index": 18,
+        "name": "βv(a)",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes.",
+        "unit": ""
+      },
+      {
+        "index": 19,
+        "name": "βh(a)",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "The age-specific transmission rate from infected mosquitoes to susceptible hosts.",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

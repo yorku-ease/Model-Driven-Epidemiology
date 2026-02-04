@@ -1,0 +1,397 @@
+{
+  "paper_name": "Tuberculosis",
+  "summary": {
+    "extraction": {
+      "compartments": 5,
+      "flows": 6,
+      "parameters": 5,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 8,
+      "critical_gaps": 1,
+      "high_gaps": 7,
+      "medium_gaps": 0
+    },
+    "model_type": "SVIR"
+  },
+  "paper_promises": {
+    "compartments": [
+      "Susceptible",
+      "Vaccinated",
+      "Infected",
+      "Recovered"
+    ],
+    "stratifications": [],
+    "parameters": [
+      "A",
+      "\u03b2",
+      "\ud835\udf16",
+      "u",
+      "\ud835\udf03",
+      "\ud835\udefe",
+      "\ud835\udeff",
+      "\ud835\udf07"
+    ],
+    "interventions": [
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": "SVIR",
+    "description": "A deterministic compartmental model for studying tuberculosis dynamics that incorporates vaccination and reinfection. The model divides the population into four compartments: susceptible (S), vaccinated (V), infected (I), and recovered (R), and considers waning immunity from both vaccination and recovery.",
+    "extraction_method": "llm"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks",
+        "confidence": "medium",
+        "method": "pattern"
+      },
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2",
+        "value": "[0.01, 5]",
+        "unit": "1/(year*human)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b8",
+        "value": "[0.067, 0.1]",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "[0.5, 2]",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b4",
+        "value": "[0.003, 0.02]",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc",
+        "value": "1 / (65*12)",
+        "unit": "1/month",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 5,
+    "flows": 6,
+    "parameters": 5,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 21,
+    "items_with_evidence": 21,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 21,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 8,
+      "critical_gaps": 1,
+      "high_gaps": 7,
+      "medium_gaps": 0,
+      "promised_items": {
+        "compartments": 4,
+        "parameters": 8,
+        "stratifications": 0,
+        "interventions": 2
+      },
+      "extracted_items": {
+        "compartments": 5,
+        "parameters": 5,
+        "stratifications": 2,
+        "interventions": 3
+      }
+    },
+    "missing_compartments": [
+      {
+        "promised": "infected",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_parameters": [
+      {
+        "promised": "a",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\ud835\udf16",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "u",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\ud835\udf03",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\ud835\udefe",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\ud835\udeff",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\ud835\udf07",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 8,
+    "total_suggestions": 16,
+    "suggestions_by_source": {
+      "paper_span": 8,
+      "prior_model": 0,
+      "domain_knowledge": 8
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 21,
+      "items_with_evidence": 21,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 21,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 8,
+      "critical_gaps": 1,
+      "high_gaps": 7,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 1,
+        "missing_parameters": 7,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.6,
+        "recall": 0.75,
+        "f1": 0.6666666666666665,
+        "tp": 3,
+        "fp": 2,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Vaccinated",
+            "gold": "Vaccinated",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Infectious",
+          "Numerical experiments, and finally, in Section 5, we provide\nincorporatingagestructure,vaccination,andtreatmentdynamicswas ourconcludingremarks"
+        ],
+        "unmatched_gold": [
+          "Infected"
+        ]
+      },
+      "parameters": {
+        "precision": 0.8,
+        "recall": 0.4444444444444444,
+        "f1": 0.5714285714285714,
+        "tp": 4,
+        "fp": 1,
+        "fn": 5,
+        "matches": [
+          {
+            "extracted": "\u03bc",
+            "gold": "\u03bc",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b8",
+            "gold": "\u03b8",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b3",
+            "gold": "\u03b3",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b4",
+            "gold": "\u03b4",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "\u03b2"
+        ],
+        "unmatched_gold": [
+          "\u039b",
+          "\u03b1 * \u03c0",
+          "\u03b7",
+          "\u03b1",
+          "\u03c0"
+        ]
+      },
+      "flows": {
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5,
+        "tp": 3,
+        "fp": 3,
+        "fn": 3,
+        "matches": [
+          {
+            "extracted": "Susceptible->Vaccinated",
+            "gold": "Susceptible->Vaccinated",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Vaccinated->Susceptible",
+            "gold": "Vaccinated->Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered->Susceptible",
+            "gold": "Recovered->Susceptible",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Infectious->Recovered",
+          "Recovered->Infectious",
+          "Susceptible->Infectious"
+        ],
+        "unmatched_gold": [
+          "Susceptible->Infected",
+          "Infected->Recovered",
+          "Recovered->Infected"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

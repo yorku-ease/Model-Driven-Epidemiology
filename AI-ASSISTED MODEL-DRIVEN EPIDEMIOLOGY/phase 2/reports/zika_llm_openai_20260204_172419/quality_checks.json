@@ -1,0 +1,560 @@
+{
+  "model_analysis": {
+    "modelName": "Zika",
+    "summary": {
+      "modelName": "Zika",
+      "totalPopulation": null,
+      "numCompartments": 7,
+      "numParameters": 12,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.2",
+              "contactCompartment": "//@compartments.1",
+              "description": "Susceptible humans become exposed due to bites from infectious mosquitoes.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Exposed humans progress to the infectious stage.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infectious humans recover from the disease.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.1",
+              "contactCompartment": "//@compartments.5",
+              "description": "Susceptible mosquitoes become exposed due to bites from infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Exposed mosquitoes progress to the infectious stage.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Reference",
+          "type": "CONSTANT",
+          "expression": "1.",
+          "description": "",
+          "unit": ""
+        },
+        {
+          "index": 1,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Transmission rate from mosquito to human",
+          "unit": ""
+        },
+        {
+          "index": 2,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Recovery rate of an infectious human individual",
+          "unit": ""
+        },
+        {
+          "index": 3,
+          "name": "\u03b1",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Inverse incubation time of ZIKV for human",
+          "unit": ""
+        },
+        {
+          "index": 4,
+          "name": "\u03bb",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Human population growth rate",
+          "unit": ""
+        },
+        {
+          "index": 5,
+          "name": "\u03bc_V",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Mortality rate of adult vectors",
+          "unit": ""
+        },
+        {
+          "index": 6,
+          "name": "\u03c4_1",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Reciprocal of the development time in stage 1",
+          "unit": ""
+        },
+        {
+          "index": 7,
+          "name": "\u03c4_2",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Reciprocal of the development time in stage 2",
+          "unit": ""
+        },
+        {
+          "index": 8,
+          "name": "\u03c4_3",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Reciprocal of the development time in stage 3",
+          "unit": ""
+        },
+        {
+          "index": 9,
+          "name": "e_V",
+          "type": "CONSTANT",
+          "expression": "80",
+          "description": "Number of eggs laid per female mosquito per unit time",
+          "unit": "per day"
+        },
+        {
+          "index": 10,
+          "name": "1/\u03b3",
+          "type": "CONSTANT",
+          "expression": "3",
+          "description": "Egg development time",
+          "unit": "days"
+        },
+        {
+          "index": 11,
+          "name": "\u03ba",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Mortality rate of larvae caused by limited carrying capacity",
+          "unit": ""
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Zika",
+    "totalParameters": 12,
+    "parametersWithUncertainty": 12,
+    "parameters": [
+      {
+        "parameter": "Reference",
+        "yourValue": "1.",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Transmission rate from mosquito to human",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Recovery rate of an infectious human individual",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b1",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Inverse incubation time of ZIKV for human",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bb",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Human population growth rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bc_V",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Mortality rate of adult vectors",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c4_1",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Reciprocal of the development time in stage 1",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c4_2",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Reciprocal of the development time in stage 2",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c4_3",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Reciprocal of the development time in stage 3",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "e_V",
+        "yourValue": "80",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Number of eggs laid per female mosquito per unit time",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "1/\u03b3",
+        "yourValue": "3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Egg development time",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03ba",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "",
+        "description": "Mortality rate of larvae caused by limited carrying capacity",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 12
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Zika",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Reference",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "e_V",
+        "type": "other",
+        "currentValue": 80.0,
+        "description": "Number of eggs laid per female mosquito per unit time",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "1/\u03b3",
+        "type": "other",
+        "currentValue": 3.0,
+        "description": "Egg development time",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Reference",
+      "e_V",
+      "1/\u03b3"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Reference",
+        "e_V",
+        "1/\u03b3"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Reference": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "e_V": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "1/\u03b3": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

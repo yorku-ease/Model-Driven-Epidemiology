@@ -1,0 +1,538 @@
+{
+  "paper_name": "Zika",
+  "summary": {
+    "extraction": {
+      "compartments": 10,
+      "flows": 7,
+      "parameters": 2,
+      "stratifications": 0,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 22,
+      "critical_gaps": 0,
+      "high_gaps": 18,
+      "medium_gaps": 4
+    },
+    "model_type": "Vector-Host SEIR (human) / SEI (vector)"
+  },
+  "paper_promises": {
+    "compartments": [
+      "Susceptible (human)",
+      "Exposed (human)",
+      "Infectious (human)",
+      "Recovered (human)",
+      "Egg (vector)",
+      "Larva (vector)",
+      "Pupa (vector)",
+      "Susceptible (vector)",
+      "Exposed (vector)",
+      "Infectious (vector)"
+    ],
+    "stratifications": [],
+    "parameters": [
+      "b",
+      "\u03b2",
+      "M",
+      "\u03b1_H",
+      "\u03b3",
+      "\u03bb",
+      "K_H",
+      "e_V",
+      "\u03b1_V",
+      "\u03c4_1",
+      "\u03bc_1",
+      "\u03c4_2",
+      "\u03bc_2",
+      "\u03c4_3",
+      "\u03bc_3",
+      "\u03bc_V",
+      "q",
+      "K_V",
+      "\u03ba"
+    ],
+    "interventions": [
+      "Reduce biting rate",
+      "Reduce adult female vector population",
+      "Increase adult female vector mortality rate",
+      "Reduce larvae carrying capacity"
+    ],
+    "model_type": "Vector-Host SEIR (human) / SEI (vector)",
+    "description": "A compartmental model for Zika virus with a vector-host structure, based on an SEIR model for the human host and an SEI model for the adult vector. The model incorporates logistic growth in the human population and dynamic growth in the vector population, including explicit life stages for vectors (egg, larva, pupa).",
+    "extraction_method": "llm"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible (human)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed (human)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (human)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered (human)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Egg (vector)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larva (vector)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pupa (vector)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible (vector)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed (vector)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (vector)",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Larva (vector)",
+        "target": "Infectious (human)",
+        "type": "RateFlow",
+        "confidence": "medium",
+        "method": "pattern_arrow"
+      },
+      {
+        "source": "Susceptible (human)",
+        "target": "Exposed (human)",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed (human)",
+        "target": "Infectious (human)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (human)",
+        "target": "Recovered (human)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Egg (vector)",
+        "target": "Larva (vector)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Larva (vector)",
+        "target": "Pupa (vector)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pupa (vector)",
+        "target": "Susceptible (human)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Reference",
+        "value": "1.",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      },
+      {
+        "name": "\u03b2",
+        "value": null,
+        "unit": null,
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 10,
+    "flows": 7,
+    "parameters": 2,
+    "stratifications": 0,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 22,
+    "items_with_evidence": 22,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 22,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 22,
+      "critical_gaps": 0,
+      "high_gaps": 18,
+      "medium_gaps": 4,
+      "promised_items": {
+        "compartments": 10,
+        "parameters": 19,
+        "stratifications": 0,
+        "interventions": 4
+      },
+      "extracted_items": {
+        "compartments": 10,
+        "parameters": 2,
+        "stratifications": 0,
+        "interventions": 3
+      }
+    },
+    "missing_compartments": [],
+    "missing_parameters": [
+      {
+        "promised": "b",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "m",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03b1_h",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03b3",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03bb",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "k_h",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "e_v",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03b1_v",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03c4_1",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03bc_1",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03c4_2",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03bc_2",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03c4_3",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03bc_3",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03bc_v",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "q",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "k_v",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "\u03ba",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_stratifications": [],
+    "missing_interventions": [
+      {
+        "promised": "reduce biting rate",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "reduce adult female vector population",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "increase adult female vector mortality rate",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "reduce larvae carrying capacity",
+        "severity": "medium",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ]
+  },
+  "gap_suggestions": {
+    "total_gaps": 22,
+    "total_suggestions": 24,
+    "suggestions_by_source": {
+      "paper_span": 6,
+      "prior_model": 0,
+      "domain_knowledge": 18
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 22,
+      "items_with_evidence": 22,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 22,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 22,
+      "critical_gaps": 0,
+      "high_gaps": 18,
+      "medium_gaps": 4,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 18,
+        "missing_stratifications": 0,
+        "missing_interventions": 4
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 10,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible (human)",
+            "gold": "Susceptible female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious (human)",
+            "gold": "Infectious female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Pupa (vector)",
+            "gold": "Pupae (non-infectious)",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infectious (vector)",
+            "gold": "Infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed (human)",
+            "gold": "Exposed humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered (human)",
+            "gold": "Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Egg (vector)",
+            "gold": "Eggs(non-infectious)",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible (vector)",
+            "gold": "Susceptible humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Larva (vector)",
+            "gold": "Larvae (non-infectious, logistic)",
+            "similarity": 0.9090909090909091
+          },
+          {
+            "extracted": "Exposed (vector)",
+            "gold": "Exposed female adults",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 1.0,
+        "recall": 0.1111111111111111,
+        "f1": 0.19999999999999998,
+        "tp": 2,
+        "fp": 0,
+        "fn": 16,
+        "matches": [
+          {
+            "extracted": "\u03b2",
+            "gold": "r_h",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Reference",
+            "gold": "f",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": [
+          "\u03b4_l",
+          "1/\u03c4_h",
+          "b_v",
+          "\u03bc2_v",
+          "1/\u03c4_v",
+          "\u03bc1_v",
+          "\u03c43_v",
+          "\u03bc3_v",
+          "\u03bc_h",
+          "\u03bc_a_v",
+          "1/\u03c41_v",
+          "b",
+          "1/\u03c42_v",
+          "\u03b3_h",
+          "\u03c6",
+          "\u03c6 * \u03c43_v"
+        ]
+      },
+      "flows": {
+        "precision": 0.8571428571428571,
+        "recall": 0.75,
+        "f1": 0.7999999999999999,
+        "tp": 6,
+        "fp": 1,
+        "fn": 2,
+        "matches": [
+          {
+            "extracted": "Exposed humans->Infectious female adults",
+            "gold": "Exposed female adults->Infectious female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible female adults->Exposed humans",
+            "gold": "Susceptible humans->Exposed humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious female adults->Recovered humans",
+            "gold": "Infectious humans->Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Eggs(non-infectious)->Larvae (non-infectious, logistic)",
+            "gold": "Eggs(non-infectious)->Larvae (non-infectious, logistic)",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Pupae (non-infectious)->Susceptible female adults",
+            "gold": "Pupae (non-infectious)->Susceptible female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Larvae (non-infectious, logistic)->Pupae (non-infectious)",
+            "gold": "Larvae (non-infectious, logistic)->Pupae (non-infectious)",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Larvae (non-infectious, logistic)->Infectious female adults"
+        ],
+        "unmatched_gold": [
+          "Exposed humans->Infectious humans",
+          "Susceptible female adults->Exposed female adults"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

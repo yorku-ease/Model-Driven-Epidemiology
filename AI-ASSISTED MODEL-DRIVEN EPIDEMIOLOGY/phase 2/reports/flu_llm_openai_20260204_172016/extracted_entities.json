@@ -1,0 +1,271 @@
+{
+  "compartments": [
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have not been exposed to the virus and are at risk of infection."
+    },
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "normalized_name": "Exposed",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been exposed to the virus but are not yet infectious."
+    },
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are currently infected and can transmit the virus to others."
+    },
+    {
+      "raw_text": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "At each t, the whole population of size N is divided into Susceptible (S(t)), Exposed (E(t)), Infectious(I(t)) and Removed(R(t)) compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the infection and are assumed to have immunity."
+    },
+    {
+      "raw_text": "We assume that only a proportion p of the people that become infected are admitted to ICU/HDU.",
+      "normalized_name": "ICU",
+      "page_number": 0,
+      "text_span": "We assume that only a proportion p of the people that become infected are admitted to ICU/HDU.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been admitted to the ICU/HDU due to severe infection."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "raw_text": "from E to I",
+      "page_number": 5,
+      "text_span": "from E to I",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "from I to R",
+      "page_number": 5,
+      "text_span": "from I to R",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "raw_text": "\u03bb(t) is the rate at which a person becomes infected, assumed to be proportional to the number of infectious people at time t and the constant transmission rate \u03b2.",
+      "page_number": 0,
+      "text_span": "\u03bb(t) is the rate at which a person becomes infected, assumed to be proportional to the number of infectious people at time t and the constant transmission rate \u03b2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible individuals become exposed through contact with infectious individuals."
+    },
+    {
+      "source": "Infectious",
+      "target": "ICU",
+      "raw_text": "We assume that only a proportion p of the people that become infected are admitted to ICU/HDU.",
+      "page_number": 0,
+      "text_span": "We assume that only a proportion p of the people that become infected are admitted to ICU/HDU.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "A proportion of infectious individuals are admitted to ICU."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "\u03c3",
+      "normalized_name": "\u03c3",
+      "value": "0.2",
+      "unit": null,
+      "description": null,
+      "page_number": 9,
+      "text_span": "\u03c3 =0.2",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "w",
+      "normalized_name": "w",
+      "value": "3",
+      "unit": null,
+      "description": null,
+      "page_number": 10,
+      "text_span": "w = 3",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "eid",
+      "normalized_name": "eid",
+      "value": "2",
+      "unit": null,
+      "description": null,
+      "page_number": 18,
+      "text_span": "eid=\n2",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "\u03bb(t)=\u03b2 (1) I(t) / N",
+      "normalized_name": "\u03b2",
+      "value": null,
+      "unit": null,
+      "description": "Transmission rate, the rate at which new infections take place given a contact",
+      "page_number": 0,
+      "text_span": "\u03bb(t)=\u03b2 (1) I(t) / N",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Rate of recovery \u03b3 0.5797",
+      "normalized_name": "\u03b3",
+      "value": "0.5797",
+      "unit": null,
+      "description": "Rate of recovery",
+      "page_number": 0,
+      "text_span": "Rate of recovery \u03b3 0.5797",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Susceptibility \u03c0 \u223cUnif(0,1)",
+      "normalized_name": "\u03c0",
+      "value": null,
+      "unit": null,
+      "description": "Susceptibility, proportion of the population who is initially susceptible",
+      "page_number": 0,
+      "text_span": "Susceptibility \u03c0 \u223cUnif(0,1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Initial infection rate \u03bb \u223cUnif(0,0.000241)",
+      "normalized_name": "\u03bb",
+      "value": null,
+      "unit": null,
+      "description": "Initial infection rate",
+      "page_number": 0,
+      "text_span": "Initial infection rate \u03bb \u223cUnif(0,0.000241)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Exponential growth rate \u03c8 \u223cUnif(0,0.39)",
+      "normalized_name": "\u03c8",
+      "value": null,
+      "unit": null,
+      "description": "Exponential growth rate, the rate at which the compartments E, I grow",
+      "page_number": 0,
+      "text_span": "Exponential growth rate \u03c8 \u223cUnif(0,0.39)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Over-dispersion \u03b7 \u223cUnif(1,100)",
+      "normalized_name": "\u03b7",
+      "value": null,
+      "unit": null,
+      "description": "Over-dispersion parameter for the Negative Binomial distribution",
+      "page_number": 0,
+      "text_span": "Over-dispersion \u03b7 \u223cUnif(1,100)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Probability of ICU admission given infection p \u223cUnif(0,1)",
+      "normalized_name": "p_ICU",
+      "value": null,
+      "unit": null,
+      "description": "Probability of ICU admission given infection",
+      "page_number": 0,
+      "text_span": "Probability of ICU admission given infection p \u223cUnif(0,1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Variance of time from infection to ICU admission \u03c32 | 18.24",
+      "normalized_name": "\u03c32_ICU_E",
+      "value": "18.24",
+      "unit": null,
+      "description": "Variance of time from infection to ICU admission",
+      "page_number": 0,
+      "text_span": "Variance of time from infection to ICU admission \u03c32 | 18.24",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 13,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 4,
+    "num_parameters": 11,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}
