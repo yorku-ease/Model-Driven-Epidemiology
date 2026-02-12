@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="π" expression="Unif(0,1)" type="CONSTANT" description="Susceptibility; the proportion of the population that is initially susceptible." unit="dimensionless"/>
+  <parameters name="λ0" expression="Unif(0,0.000241)" type="CONSTANT" description="Initial infection rate." unit="day^-1"/>
+  <parameters name="ψ" expression="Unif(0,0.39)" type="CONSTANT" description="Exponential growth rate (EGR)." unit="day^-1"/>
+  <parameters name="η" expression="Unif(1,100)" type="CONSTANT" description="Over-dispersion parameter for the observation model." unit="dimensionless"/>
+  <parameters name="p_ICU" expression="Unif(0,1)" type="CONSTANT" description="Probability of ICU admission given infection." unit="dimensionless"/>
+  <parameters name="σ" expression="1" type="CONSTANT" description="Rate of becoming infectious (progression through E1 and E2)." unit="day^-1"/>
+  <parameters name="γ" expression="0.5797" type="CONSTANT" description="Rate of recovery (progression through I1 and I2)." unit="day^-1"/>
+  <parameters name="σ^2_ICU|E" expression="18.24" type="CONSTANT" description="Variance of time from infection to ICU admission." unit="days^2"/>
+  <parameters name="N" expression="53,679,750 (2012/13); 54,091,200 (2013/14); 54,551,450 (2014/15)" type="CONSTANT" description="Total population size for each season." unit="persons"/>
+  <parameters name="β" expression="0.0" type="CONSTANT" description="Constant transmission rate at which new infections take place given a contact." unit="day^-1"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.8" target="//@compartments.1" description="Infection of susceptible individuals at a rate λ(t), which is proportional to the number of infectious people I(t) and the transmission rate β."/>
+  </compartments>
+  <compartments PrimaryName="Exposed 1" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.2" description="Progression from the first to the second exposed stage at a daily rate σ."/>
+  </compartments>
+  <compartments PrimaryName="Exposed 2" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.3" description="Progression from the exposed state to the infectious state at a daily rate σ."/>
+  </compartments>
+  <compartments PrimaryName="Infectious 1" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.4" description="Progression from the first to the second infectious stage at a daily rate γ."/>
+  </compartments>
+  <compartments PrimaryName="Infectious 2" population="0"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

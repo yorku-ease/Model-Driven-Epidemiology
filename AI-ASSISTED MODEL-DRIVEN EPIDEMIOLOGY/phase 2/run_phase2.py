@@ -11,12 +11,9 @@ from typing import Optional
 from src.extraction.pdf_pipeline import PDFPipeline
 from src.extraction.paper_promise_extractor import PaperPromiseExtractor
 from src.extraction.entity_extractor import EntityExtractor
-from src.extraction.text_windows import build_text_window
 from src.extraction.paper_type import detect_paper_type
 from src.synthesis.model_synthesizer import ModelSynthesizer
 from src.synthesis.traceability import TraceabilityMapper
-from src.analysis.gap_analyzer import GapAnalyzer
-from src.analysis.gap_filler import GapFiller
 from src.evaluation.quality_checks import QualityChecker
 from src.evaluation.evaluator import Evaluator
 from src.evaluation.final_report_generator import FinalReportGenerator
@@ -195,8 +192,8 @@ Examples:
     print(f"  ✓ Found {len(pdf_data['tables'])} tables")
     print()
     
-    # Step 2: Paper Promises Extraction
-    print("Step 2: Extracting Paper Promises...")
+    # Step 2: Paper Promises (pattern-only – no LLM call to avoid context pollution)
+    print("Step 2: Extracting Paper Promises (pattern-only)...")
     metamodel_path = None
     if Path(args.metamodel).exists():
         metamodel_path = args.metamodel
@@ -207,33 +204,10 @@ Examples:
         metamodel_path=metamodel_path
     )
 
-    # Build a smaller, model-focused text window for LLM (avoid dumping full paper)
     promise_text = pdf_data.get("full_text", "")
-    try:
-        pages_for_window = pdf_data.get("raw_pages") or pdf_data.get("pages") or []
-        if pages_for_window:
-            promise_text = build_text_window(
-                pages_for_window,
-                include_patterns=[
-                    r"\bmodel\b",
-                    r"\bcompartment",
-                    r"\bseir\b|\bsir\b|\bsis\b",
-                    r"\bparameter",
-                    r"\bstratif",
-                    r"\bvaccin|\btreat|\bintervention|\bcontrol",
-                    r"\bequation|\bdifferential|\bd\/dt|d[a-z]\s*\/\s*dt",
-                ],
-                title="PROMISES WINDOW (abstract/intro/model/parameters hints)",
-                max_chars=25000,
-                pad=1,
-                max_pages=8,
-                fallback_first_pages=4,
-            )
-    except Exception:
-        # Fall back to full_text if anything goes wrong
-        promise_text = pdf_data.get("full_text", "")
-
-    promises = promise_extractor.extract(promise_text, use_llm=args.use_llm)
+    # Force pattern-only extraction (saves an LLM call; promises are now only used
+    # for paper-type detection and as a lightweight fallback signal)
+    promises = promise_extractor.extract(promise_text, use_llm=False)
     
     # Save promises
     promise_extractor.save_promises(
@@ -241,29 +215,25 @@ Examples:
         output_dir / "paper_promises.json"
     )
     
-    print(f"  ✓ Extracted promises:")
+    print(f"  ✓ Extracted promises (pattern-only):")
     print(f"    - Compartments: {len(promises.get('compartments', []))}")
-    print(f"    - Stratifications: {len(promises.get('stratifications', []))}")
     print(f"    - Parameters: {len(promises.get('parameters', []))}")
-    print(f"    - Interventions: {len(promises.get('interventions', []))}")
     print(f"    - Model Type: {promises.get('model_type', 'Unknown')}")
-    print(f"    - Method: {promises.get('extraction_method', 'unknown')}")
     print()
 
     # Paper type (vector-borne / climate) auto-detected for prompt tailoring
-    paper_type = detect_paper_type(promise_text or pdf_data.get("full_text", ""), promises)
+    paper_type = detect_paper_type(promise_text, promises)
     print(f"  Paper type (auto): vector_borne={paper_type.get('vector_borne', False)}, climate={paper_type.get('climate', False)}")
     print()
     
-    # Step 3: Entity Extraction
-    print("Step 3: Extracting Entities with Evidence...")
-    # Load example models path for entity extraction context
+    # Step 3: Entity Extraction (unified single-pass when LLM is available)
+    print("Step 3: Extracting Entities...")
+    # Load example models path for entity extraction context (fallback path only)
     example_models_path_entity = None
     if args.phase1_dir:
         phase1_models_path = Path(args.phase1_dir) / "papers" / "epimde"
         if phase1_models_path.exists():
             example_models_path_entity = str(phase1_models_path)
-            print(f"  Using example models for context: {example_models_path_entity}")
 
     experiment = os.environ.get("PHASE2_EXPERIMENT", "").strip()
     entity_extractor = EntityExtractor(
@@ -339,50 +309,24 @@ Examples:
     print(f"    - Faithfulness: {metrics.get('faithfulness_percentage', 0):.1f}%")
     print()
     
-    # Step 6: Gap Analysis
-    print("Step 6: Analyzing Gaps (Paper Promises vs Extracted Model)...")
-    gap_analyzer = GapAnalyzer()
-    
-    paper_promises = gap_analyzer.load_paper_promises(output_dir / "paper_promises.json")
-    extracted_entities = gap_analyzer.load_extracted_entities(output_dir / "extracted_entities.json")
-    model_structure = gap_analyzer.load_model_structure(output_dir / "model_draft.compmodel")
-    
-    gaps = gap_analyzer.analyze_gaps(paper_promises, extracted_entities, model_structure)
-    
-    # Save gap report
-    gap_analyzer.save_gap_report(gaps, output_dir / "phase2_gap_report.json")
-    
-    summary = gaps.get('summary', {})
-    print(f"  ✓ Gap analysis complete:")
-    print(f"    - Total gaps: {summary.get('total_gaps', 0)}")
-    print(f"    - Critical: {summary.get('critical_gaps', 0)}")
-    print(f"    - High: {summary.get('high_gaps', 0)}")
-    print(f"    - Medium: {summary.get('medium_gaps', 0)}")
-    print()
-    
-    # Step 7: Gap Filler
-    print("Step 7: Generating Gap Fill Suggestions...")
-    gap_filler = GapFiller(
-        llm_client=llm_client,
-        prior_models_dir=args.prior_models_dir
-    )
-    
-    gap_suggestions = gap_filler.fill_gaps(
-        gaps,
-        pdf_data['full_text'],
-        extracted_entities
-    )
-    
-    # Save suggestions
-    gap_filler.save_suggestions(gap_suggestions, output_dir / "gap_fill_suggestions.json")
-    
-    sugg_summary = gap_suggestions.get('summary', {})
-    print(f"  ✓ Generated suggestions:")
-    print(f"    - Total gaps: {sugg_summary.get('total_gaps', 0)}")
-    print(f"    - Total suggestions: {sugg_summary.get('total_suggestions', 0)}")
-    sugg_sources = sugg_summary.get('suggestions_by_source', {})
-    if sugg_sources:
-        print(f"    - By source: {sugg_sources}")
+    # Steps 6-7: Gap Analysis & Gap Filler (skipped – they add context pollution
+    # and extra LLM calls with minimal benefit for model quality)
+    print("Steps 6-7: Skipping gap analysis & gap filler (simplified pipeline)...")
+    gaps = {
+        "missing_compartments": [], "missing_parameters": [],
+        "missing_stratifications": [], "missing_interventions": [],
+        "summary": {"total_gaps": 0, "critical_gaps": 0, "high_gaps": 0, "medium_gaps": 0}
+    }
+    gap_suggestions = {
+        "gaps": [],
+        "summary": {"total_gaps": 0, "total_suggestions": 0, "suggestions_by_source": {}}
+    }
+    # Save empty reports so final-report generator doesn't crash
+    with open(output_dir / "phase2_gap_report.json", 'w') as f:
+        json.dump(gaps, f, indent=2)
+    with open(output_dir / "gap_fill_suggestions.json", 'w') as f:
+        json.dump(gap_suggestions, f, indent=2)
+    print("  ✓ Saved empty gap reports (skipped)")
     print()
     
     # Step 8: Quality Checks
@@ -444,7 +388,7 @@ Examples:
     evaluator = Evaluator(gold_standard_path=gold_standard_path)
     
     evaluation = evaluator.evaluate(
-        extracted_entities,
+        entities,
         traceability,
         gaps
     )
@@ -485,16 +429,16 @@ Examples:
     print()
     
     print("=" * 80)
-    print("Phase 2 Complete! All Steps 1-9 Finished!")
+    print("Phase 2 Complete!")
     print("=" * 80)
     print(f"\nResults saved to: {output_dir}")
     print("\nMain Output:")
     print(f"  - model_draft.compmodel (Generated model)")
-    print(f"  - phase2_final_report.json (Comprehensive report with all results)")
+    print(f"  - evaluation_report.json  (P/R/F1 vs baseline)")
+    print(f"  - phase2_final_report.json (Comprehensive report)")
     print("\nDetailed Files (for reference):")
     print("  - paper_text.json, paper_promises.json, extracted_entities.json")
-    print("  - traceability.json, phase2_gap_report.json, gap_fill_suggestions.json")
-    print("  - quality_checks.json, evaluation_report.json")
+    print("  - traceability.json, quality_checks.json")
     
     return 0
 

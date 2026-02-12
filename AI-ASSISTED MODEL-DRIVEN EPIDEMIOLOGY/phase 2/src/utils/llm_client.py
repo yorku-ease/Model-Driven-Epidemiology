@@ -219,7 +219,8 @@ CRITICAL RULES:
                         {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
                         {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
                         {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
-                    ]
+                    ],
+                    request_options={"timeout": 120},  # 2-minute timeout to avoid hanging
                 )
                 # Handle Gemini response - check for blocked content
                 if hasattr(response, 'candidates') and response.candidates:
@@ -316,9 +317,10 @@ CRITICAL RULES:
                 return {"error": "Failed to parse JSON", "raw_response": result_text[:1000]}
         
         except Exception as e:
-            error_str = str(e)
+            error_str = str(e).lower()
+            error_type = type(e).__name__
             # Check if it's a quota error (429) and we haven't retried too much
-            if "429" in error_str or "quota" in error_str.lower():
+            if "429" in str(e) or "quota" in error_str:
                 if retry_count < 2:  # Retry up to 2 times
                     import time
                     wait_time = 5 * (retry_count + 1)  # Wait 5, 10 seconds
@@ -329,6 +331,15 @@ CRITICAL RULES:
                     print(f"❌ Error: API quota exceeded after retries.")
                     print(f"   Please check your quota.")
                     print(f"   The system will fall back to pattern-based extraction (limited accuracy).")
+            # Check for timeout / deadline exceeded errors and retry once
+            elif "deadline" in error_str or "timeout" in error_str or "timed out" in error_str or error_type == "DeadlineExceeded":
+                if retry_count < 1:
+                    import time
+                    print(f"⚠️  API call timed out. Retrying (attempt {retry_count + 1})...")
+                    time.sleep(3)
+                    return self.extract_with_llm(prompt, model, temperature, max_tokens, response_schema=response_schema, retry_count=retry_count + 1)
+                else:
+                    print(f"❌ Error: API call timed out after retry.")
             print(f"Error calling LLM ({self.provider}): {e}")
             raise
     

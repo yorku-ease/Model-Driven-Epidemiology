@@ -195,6 +195,16 @@ class EntityExtractor:
             if m and m.group(1).upper() in alias_map:
                 return alias_map[m.group(1).upper()]
 
+            # Handle subscripted abbreviations: S_h, E_h, I_v, S_v etc.
+            m_sub = re.match(r"^([A-Za-z])_[a-zA-Z0-9]+$", x)
+            if m_sub and m_sub.group(1).upper() in alias_map:
+                return alias_map[m_sub.group(1).upper()]
+
+            # Handle numbered abbreviations: E1, E2, I1, I2 etc.
+            m_num = re.match(r"^([A-Za-z])\d+$", x)
+            if m_num and m_num.group(1).upper() in alias_map:
+                return alias_map[m_num.group(1).upper()]
+
             # Fuzzy match
             return self._best_fuzzy_match(x, comp_names, threshold=self.flow_fuzzy_threshold)
 
@@ -1172,14 +1182,17 @@ Return ONLY valid JSON array: [{{"source": "...", "target": "...", "description"
 
                 if param_name and param_name not in seen:
                     seen.add(param_name)
+                    # Support both PDF pipeline formats: page_number/page, table_number/table_index
+                    page_no = table.get('page_number', table.get('page', 0))
+                    table_no = table.get('table_number', table.get('table_index', 0))
                     parameters.append({
                         "raw_text": param_name,
                         "normalized_name": param_name,
                         "value": param_value,
                         "unit": param_unit if param_unit and param_unit.lower() not in ['none', 'n/a', ''] else None,
                         "description": param_desc if param_desc and param_desc.lower() not in ['none', 'n/a', ''] else None,
-                        "page_number": table.get('page_number', 0),
-                        "text_span": f"Table {table.get('table_number', 0)}, Row {row_idx + 1}",
+                        "page_number": page_no,
+                        "text_span": f"Table {table_no}, Row {row_idx + 1}",
                         "extraction_method": "table",
                         "confidence": "high",
                         "paper_backed": True
@@ -1571,14 +1584,244 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
         
         return interventions
     
+    # ------------------------------------------------------------------ #
+    #  Unified single-pass extraction (preferred when LLM is available)   #
+    # ------------------------------------------------------------------ #
+
+    def _extract_all_unified_llm(self, paper_text: str, pages_data: List[Dict],
+                                 tables: List[Dict]) -> Optional[tuple]:
+        """
+        Extract compartments, flows, and parameters in ONE LLM call.
+
+        Returns (compartments, flows, parameters) lists on success, or None
+        so the caller can fall back to separate extraction.
+        """
+        # ---- build context window ----
+        max_chars = max(self.llm_compartments_chars, self.llm_flows_chars, self.llm_parameters_chars)
+        try:
+            window = build_text_window(
+                pages_data,
+                include_patterns=[
+                    r"\bcompartment|\bstate\b|\bgroup\b|\bclass\b",
+                    r"\bS\s*\(t\)|\bE\s*\(t\)|\bI\s*\(t\)|\bR\s*\(t\)",
+                    r"d[a-z]\s*/\s*dt",
+                    r"\bequation|\bflow|\btransition|\bmodel\b",
+                    r"\bparameter|\brate\b|\bvalue\b|\btable\b",
+                    r"\bfigure\b|\bdiagram\b",
+                ],
+                title="PAPER TEXT (model-relevant sections)",
+                max_chars=max_chars,
+                pad=2,
+                max_pages=14,
+                fallback_first_pages=6,
+            )
+        except Exception:
+            window = paper_text[:max_chars]
+
+        # ---- optional tables ----
+        tables_text = ""
+        if tables:
+            try:
+                tables_text = format_tables_for_prompt(
+                    tables, title="TABLES FROM PAPER", max_tables=5, max_rows=20
+                )
+            except Exception:
+                pass
+
+        # ---- paper-type hint ----
+        paper_type_hint = ""
+        if self.paper_type.get("vector_borne"):
+            paper_type_hint = (
+                "\nNote: This paper describes a VECTOR-BORNE disease model. "
+                "Look for both human AND vector/mosquito compartments and flows.\n"
+            )
+
+        # ---- prompt ----
+        prompt = f"""You are an expert epidemiological modeler.
+From the paper text below, extract the PRIMARY compartmental model as presented
+in the paper's model diagram, flow chart, or system of differential equations.
+
+Return a single JSON object:
+{{
+  "compartments": [{{"name": "...", "description": "..."}}],
+  "flows": [{{"source": "...", "target": "...", "type": "RateFlow or ContactFlow", "description": "..."}}],
+  "parameters": [{{"name": "...", "value": "...", "unit": "...", "description": "..."}}]
+}}
+{paper_type_hint}
+Rules:
+- Compartments: Extract the compartments at the same level of abstraction as the
+  paper's model diagram or differential equations. Use the standard epidemiological names
+  (e.g. "Susceptible", "Exposed", "Infectious", "Recovered").
+  Use full descriptive names — NOT single-letter abbreviations (S, E, I, R),
+  subscripted symbols (S_h, I_v), or numbered variants (E1, I2).
+  If the model has multiple population groups (humans/vectors, children/adults),
+  include compartments for EACH group (e.g. "Susceptible Humans", "Infectious Mosquitoes").
+  If the paper groups sub-states into one compartment (e.g. both symptomatic and
+  asymptomatic into "Infectious"), use the aggregated name from the model diagram.
+- Flows: Every transition arrow in the model.
+  source and target MUST exactly match compartment names from your list above.
+  ContactFlow = transmission/infection (involves contact between groups).
+  RateFlow = all other transitions (recovery, death, vaccination, progression, etc.).
+- Parameters: Model parameters with their symbols, values, and units when available.
+  Include parameters from tables, equations, and text.
+- Extract ONLY what the paper explicitly presents in its model. Do not invent entities
+  or split compartments beyond what the paper's model structure shows.
+
+PAPER TEXT:
+{window}
+
+{tables_text}
+
+Return ONLY valid JSON."""
+
+        try:
+            # Use temperature=0 for deterministic output and high max_tokens to avoid truncation
+            kwargs = {"max_tokens": 16000, "temperature": 0}
+            result = self.llm_client.extract_with_llm(prompt, **kwargs)
+
+            if not isinstance(result, dict) or "compartments" not in result:
+                if isinstance(result, dict) and "error" in result:
+                    print(f"  ⚠ Unified extraction LLM error: {result.get('error')}")
+                else:
+                    print(f"  ⚠ Unified extraction: unexpected response type ({type(result).__name__})")
+                return None
+
+            # ---- parse compartments ----
+            compartments = []
+            for item in result.get("compartments", []):
+                name = (item.get("name") or "").strip()
+                if name:
+                    compartments.append({
+                        "normalized_name": self._normalize_compartment_name(name),
+                        "raw_text": name,
+                        "page_number": 0,
+                        "text_span": item.get("description", ""),
+                        "extraction_method": "llm",
+                        "confidence": "high",
+                        "paper_backed": True,
+                        "description": item.get("description", ""),
+                    })
+
+            # ---- parse flows ----
+            flows = []
+            for item in result.get("flows", []):
+                source = (item.get("source") or "").strip()
+                target = (item.get("target") or "").strip()
+                if source and target:
+                    ft = (item.get("type") or "RateFlow").strip()
+                    if ft.lower() in ("contactflow", "contact"):
+                        ft = "ContactFlow"
+                    else:
+                        ft = "RateFlow"
+                    flows.append({
+                        "source": source,
+                        "target": target,
+                        "flow_type": ft,
+                        "raw_text": item.get("description", ""),
+                        "page_number": 0,
+                        "text_span": item.get("description", ""),
+                        "extraction_method": "llm",
+                        "confidence": "high",
+                        "paper_backed": True,
+                        "description": item.get("description", ""),
+                    })
+
+            # ---- parse parameters ----
+            parameters = []
+            for item in result.get("parameters", []):
+                name = (item.get("name") or "").strip()
+                if name:
+                    parameters.append({
+                        "normalized_name": name,
+                        "raw_text": name,
+                        "value": item.get("value"),
+                        "unit": item.get("unit"),
+                        "page_number": 0,
+                        "text_span": item.get("description", ""),
+                        "extraction_method": "llm",
+                        "confidence": "high",
+                        "paper_backed": True,
+                        "description": item.get("description", ""),
+                    })
+
+            if not compartments:
+                print("  ⚠ Unified extraction returned 0 compartments – falling back")
+                return None
+
+            print(f"  ✓ Unified extraction: {len(compartments)} compartments, "
+                  f"{len(flows)} flows, {len(parameters)} parameters")
+
+            # ---- Quality check: retry once if extraction looks incomplete ----
+            # Truncation or early stopping can cause missing flows/parameters
+            incomplete = (len(flows) < 2 and len(compartments) >= 3) or \
+                         (len(parameters) < 2 and len(compartments) >= 3)
+            if incomplete:
+                print(f"  ⚠ Extraction may be truncated ({len(flows)} flows, "
+                      f"{len(parameters)} params). Retrying with extended output...")
+                try:
+                    retry_kwargs = {"max_tokens": 32000, "temperature": 0}
+                    result2 = self.llm_client.extract_with_llm(prompt, **retry_kwargs)
+                    if isinstance(result2, dict) and "compartments" in result2:
+                        c2 = [i for i in result2.get("compartments", []) if (i.get("name") or "").strip()]
+                        f2 = [i for i in result2.get("flows", []) if (i.get("source") or "").strip() and (i.get("target") or "").strip()]
+                        p2 = [i for i in result2.get("parameters", []) if (i.get("name") or "").strip()]
+                        total2 = len(c2) + len(f2) + len(p2)
+                        total1 = len(compartments) + len(flows) + len(parameters)
+                        if total2 > total1:
+                            print(f"  ✓ Retry produced more entities ({total2} vs {total1}), using retry result")
+                            # Re-parse from result2
+                            compartments = [{
+                                "normalized_name": self._normalize_compartment_name((i.get("name") or "").strip()),
+                                "raw_text": (i.get("name") or "").strip(),
+                                "page_number": 0, "text_span": i.get("description", ""),
+                                "extraction_method": "llm", "confidence": "high",
+                                "paper_backed": True, "description": i.get("description", ""),
+                            } for i in c2]
+                            flows = [{
+                                "source": (i.get("source") or "").strip(),
+                                "target": (i.get("target") or "").strip(),
+                                "flow_type": "ContactFlow" if (i.get("type") or "").lower() in ("contactflow", "contact") else "RateFlow",
+                                "raw_text": i.get("description", ""), "page_number": 0,
+                                "text_span": i.get("description", ""),
+                                "extraction_method": "llm", "confidence": "high",
+                                "paper_backed": True, "description": i.get("description", ""),
+                            } for i in f2]
+                            parameters = [{
+                                "normalized_name": (i.get("name") or "").strip(),
+                                "raw_text": (i.get("name") or "").strip(),
+                                "value": i.get("value"), "unit": i.get("unit"),
+                                "page_number": 0, "text_span": i.get("description", ""),
+                                "extraction_method": "llm", "confidence": "high",
+                                "paper_backed": True, "description": i.get("description", ""),
+                            } for i in p2]
+                            print(f"  ✓ After retry: {len(compartments)} compartments, "
+                                  f"{len(flows)} flows, {len(parameters)} parameters")
+                        else:
+                            print(f"  ✓ Retry did not improve ({total2} vs {total1}), keeping original")
+                except Exception as e2:
+                    print(f"  ⚠ Retry failed: {e2}, keeping original result")
+
+            return compartments, flows, parameters
+
+        except Exception as e:
+            print(f"  ⚠ Unified extraction failed: {e}")
+            return None
+
+    # ------------------------------------------------------------------ #
+    #  Main entry point                                                   #
+    # ------------------------------------------------------------------ #
+
     def extract_all(self, pdf_data: Dict[str, Any], paper_promises: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Extract all entities from PDF data.
+
+        Uses a single unified LLM call when the LLM is available.
+        Falls back to separate per-entity-type extraction (pattern + LLM)
+        when the unified call fails or when no LLM is configured.
         
         Args:
             pdf_data: Output from PDFPipeline.process_pdf()
-            paper_promises: Optional Step 2 promises (compartments, parameters, etc.); used so Step 3
-                only includes promised items when there is direct evidence (reduces hallucination).
+            paper_promises: Optional Step 2 promises (only used in fallback path).
         
         Returns:
             Dictionary with all extracted entities
@@ -1586,13 +1829,27 @@ Return ONLY valid JSON array: [{{"name": "...", "value": "...", "unit": "...", "
         paper_text = pdf_data.get('full_text', '')
         pages_data = pdf_data.get('raw_pages') or pdf_data.get('pages') or []
         tables = pdf_data.get('tables', [])
-        
-        # Extract in order (compartments needed for flows)
-        compartments = self.extract_compartments(paper_text, pages_data, paper_promises=paper_promises)
-        flows = self.extract_flows(paper_text, pages_data, compartments)
+
+        compartments = flows = parameters = None
+
+        # ---- Try unified extraction first (one LLM call) ----
+        if self.llm_client.is_available():
+            unified = self._extract_all_unified_llm(paper_text, pages_data, tables)
+            if unified:
+                compartments, flows, parameters = unified
+
+        # ---- Fallback: separate extraction (3 calls or pattern-only) ----
+        if compartments is None:
+            print("  Using separate extraction (fallback)...")
+            compartments = self.extract_compartments(paper_text, pages_data, paper_promises=paper_promises)
+            flows = self.extract_flows(paper_text, pages_data, compartments)
+            parameters = self.extract_parameters(paper_text, pages_data, tables)
+
+        # ---- Post-processing (lightweight, always applied) ----
         flows = self._clean_and_validate_flows(flows, compartments)
-        parameters = self.extract_parameters(paper_text, pages_data, tables)
         parameters = self._clean_and_filter_parameters(parameters)
+
+        # Stratifications & interventions (pattern-only, no LLM)
         stratifications = self.extract_stratifications(paper_text, pages_data)
         interventions = self.extract_interventions(paper_text, pages_data)
         

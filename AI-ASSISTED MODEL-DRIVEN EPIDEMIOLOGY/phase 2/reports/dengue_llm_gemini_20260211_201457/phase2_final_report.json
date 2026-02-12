@@ -1,0 +1,418 @@
+{
+  "paper_name": "Dengue",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 7,
+      "parameters": 9,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SIR"
+  },
+  "paper_promises": {
+    "compartments": [
+      "S",
+      "Infectious",
+      "E",
+      "I"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": "SIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Symptomatic Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Asymptomatic Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infectious Humans",
+        "target": "Symptomatic Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "B",
+        "value": "250",
+        "unit": "persons/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc_h",
+        "value": "0.005",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc_v",
+        "value": "0.65",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3_1(a)",
+        "value": "0.5",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3_2(a)",
+        "value": "0.5",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2_v(a)",
+        "value": "18",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2_h(a)",
+        "value": "8",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c1",
+        "value": "0.5",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c3",
+        "value": "0.007",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 7,
+    "parameters": 9,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 26,
+    "items_with_evidence": 26,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 26,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 26,
+      "items_with_evidence": 26,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 26,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible Humans",
+            "gold": "Susceptible mosquitoes",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed Humans",
+            "gold": "Exposed humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered Humans",
+            "gold": "Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Symptomatic Infectious Humans",
+            "gold": "Symptomatic infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Asymptomatic Infectious Humans",
+            "gold": "Asymptomatic infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious Mosquitoes",
+            "gold": "Infectious mosquitoes",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Mosquitoes",
+            "gold": "Susceptible humans",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0.7777777777777778,
+        "recall": 0.5384615384615384,
+        "f1": 0.6363636363636364,
+        "tp": 7,
+        "fp": 2,
+        "fn": 6,
+        "matches": [
+          {
+            "extracted": "\u03bc_h",
+            "gold": "\u03bcv",
+            "similarity": 0.9090909090909091
+          },
+          {
+            "extracted": "\u03c3",
+            "gold": "\u03c3",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b3_1(a)",
+            "gold": "\u03b31a",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "\u03bc_v",
+            "gold": "\u03bch",
+            "similarity": 0.9090909090909091
+          },
+          {
+            "extracted": "B",
+            "gold": "B",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03c1",
+            "gold": "\u03c1",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b3_2(a)",
+            "gold": "\u03b32a",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "\u03b2_v(a)",
+          "\u03b2_h(a)"
+        ],
+        "unmatched_gold": [
+          "\u03c3 * k",
+          "k",
+          "ha",
+          "va",
+          "\u03c1 * ha",
+          "(1-\u03c3) * k"
+        ]
+      },
+      "flows": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible humans->Infectious mosquitoes",
+            "gold": "Susceptible mosquitoes->Infectious mosquitoes",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible mosquitoes->Exposed humans",
+            "gold": "Susceptible humans->Exposed humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Asymptomatic infectious humans->Recovered humans",
+            "gold": "Asymptomatic infectious humans->Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Asymptomatic infectious humans->Symptomatic infectious humans",
+            "gold": "Asymptomatic infectious humans->Symptomatic infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Symptomatic infectious humans->Recovered humans",
+            "gold": "Symptomatic infectious humans->Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed humans->Symptomatic infectious humans",
+            "gold": "Exposed humans->Symptomatic infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed humans->Asymptomatic infectious humans",
+            "gold": "Exposed humans->Asymptomatic infectious humans",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

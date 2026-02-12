@@ -12,13 +12,11 @@ Phase 2 automatically extracts compartmental epidemiological models from scienti
 - Suggests how to fill gaps
 - Evaluates extraction quality
 
-**Key Principle:** Faithfulness to the paper - only extracts what papers explicitly describe or promise.
+**Key Principle:** Faithfulness to the paper — only what is explicitly described or promised in the paper is extracted.
 
-Paper type (vector-borne / climate) is **auto-detected** from text and promises; prompts are tailored accordingly. Prompts use step-by-step reasoning (chain-of-thought style) to reduce omissions and spurious extractions.
+Paper type (vector-borne / climate) is **auto-detected** from text and promises, and prompts are tailored accordingly. Entity extraction uses a **single unified LLM call** for compartments, flows, and parameters when an API key is available, so the model sees the full context at once. Step 2 (paper promises) is **pattern-based only** to keep context focused. Evaluation compares extracted entities to baseline `.compmodel` files in `data/baseline_models/` when the paper name matches; precision, recall, and F1 are reported for compartments, parameters, and flows.
 
-**Default extraction variant (B+C):** Flow prompts ask for short `text_span` (≤200 chars) and exact compartment names only (no parentheticals like (E1)); flow extraction uses 6000 max tokens. To use the older baseline, set `PHASE2_EXPERIMENT=` (empty) before running.
-
-**Gemini-specific improvements:** When using `--llm-provider gemini`, the pipeline uses **structured output** (JSON schema) for compartments, flows, and parameters so the model returns valid JSON matching the expected fields. Temperature is set to **0.2** for extraction to improve consistency and reduce parse failures.
+When using `--llm-provider gemini`, the pipeline uses **structured output** (JSON schema) for extraction so the model returns valid JSON. Temperature is set to **0** for deterministic output and a 2-minute timeout applies to avoid hanging.
 
 ## Project Structure
 
@@ -26,10 +24,10 @@ Paper type (vector-borne / climate) is **auto-detected** from text and promises;
 phase 2/
 ├── .api_key.txt              ← Your OpenAI or Gemini API key goes here
 ├── run_phase2.py             ← Main script to run the pipeline
-├── build_results_md.py       ← Script to generate RESULTS_NEW_RUN.md from latest reports
+├── build_results_md.py       ← Script to generate results summary from latest reports
 ├── README.md                  ← This file (comprehensive guide)
 ├── INSTRUCTIONS.md            ← Step-by-step how to run
-├── RESULTS_NEW_RUN.md         ← Generated summary of P/R/F1 per disease & provider (run build_results_md.py)
+├── RESULTS_REPORT.md         ← Evaluation results summary (run build_results_md.py to regenerate)
 │
 ├── src/                       ← Source code (organized by function)
 │   ├── extraction/            ← PDF processing & entity extraction
@@ -207,204 +205,21 @@ done
 **Input:** Cleaned paper text from Step 1
 
 **Process:**
-- **Pattern-based:** Searches for phrases like "we model", "our model includes", "age-stratified"
-- **LLM-based (if available):** Sends paper text to LLM with extraction prompt
+- **Pattern-based only:** Searches for phrases like "we model", "our model includes", "age-stratified", "parameters include", "compartments are"
+- No LLM call in this step so that Step 3 receives focused context
 
-**LLM Usage (if API key available):**
-
-**LLM Input:**
-```
-System Message: "You are a scientific paper analyzer. Return only valid JSON."
-
-User Message:
-"Extract what this paper promises to model. Analyze the following paper text:
-
-[Paper text from Step 1]
-
-Extract and return JSON with:
-- compartments: List of compartments the paper promises to model
-- parameters: List of parameters the paper promises to model
-- stratifications: List of stratifications (age, gender, etc.) the paper promises
-- interventions: List of interventions the paper promises to model
-- model_type: Type of model (SEIR, SIR, etc.)
-
-Return only valid JSON."
-```
-
-**LLM Output:**
-```json
-{
-  "compartments": ["Susceptible", "Exposed", "Infectious", "Recovered"],
-  "parameters": ["β", "γ", "μ"],
-  "stratifications": ["age"],
-  "interventions": [],
-  "model_type": "SEIR"
-}
-```
-
-**Output:** `paper_promises.json` - What the paper promises to model
-
-**Fallback:** If LLM unavailable, uses pattern-based extraction (less accurate)
+**Output:** `paper_promises.json` — compartments, parameters, stratifications, and interventions the paper promises to model
 
 ---
 
 ### Step 3: Entity Extraction
 
-**Input:** Paper text, pages, tables from Step 1; optional Step 2 promises (used so only evidenced items are kept).
+**Input:** Paper text, pages, and tables from Step 1.
 
 **Process:**
-- Extracts compartments, flows, parameters, stratifications, interventions
-- Uses **both** pattern matching and LLM
-- Records evidence (text span, page number, confidence, extraction method)
-- **Evidence rule:** The LLM is instructed to include only entities for which there is clear, direct evidence in the paper. If no supporting quote is found, the entity is omitted (prefer false negatives over hallucination). Promised items from Step 2 are only included when evidence is found.
-- **Use of equations:** Equation-heavy sections (differential equations, state variables like S(t), I(t), dS/dt) are selected for context. The LLM is instructed to use equations and diagram descriptions to identify compartments, flows, and parameters. The model is not built solely from equations so that narrative and tables can disambiguate meaning.
-
-**LLM Usage (always used if API key available):**
-
-#### For Compartments:
-
-**LLM Input:**
-```
-System Message: "You are a scientific paper analyzer. Return only valid JSON."
-
-User Message:
-"Extract all compartments mentioned in this epidemiological model paper.
-
-Metamodel Schema (valid compartment types):
-{
-  "compartment_types": ["Susceptible", "Exposed", "Infectious", "Recovered", ...]
-}
-
-Example compartments from validated models:
-- Susceptible (S)
-- Exposed (E) 
-- Infectious (I)
-- Recovered (R)
-
-Paper text:
-[Relevant sections from paper]
-
-Extract compartments and return JSON array:
-[
-  {
-    "name": "Compartment name",
-    "description": "What this compartment represents",
-    "text_span": "Exact text from paper mentioning this compartment"
-  },
-  ...
-]"
-```
-
-**LLM Output:**
-```json
-[
-  {
-    "name": "Susceptible",
-    "description": "Individuals who can be infected",
-    "text_span": "Susceptible individuals (S) can become infected..."
-  },
-  ...
-]
-```
-
-**What LLM sees:**
-- Metamodel schema (valid compartment types from `metamodel_epidemiology.json`)
-- Example compartments from Phase 1 models (e.g., "Susceptible", "Infectious", "Recovered")
-- Paper text sections mentioning compartments
-
-#### For Flows:
-
-**LLM Input:**
-```
-"Extract all flows between compartments.
-
-Flow types from metamodel:
-- RateFlow: Direct transitions (e.g., E → I at rate ω)
-- ContactFlow: Contact-based transmission (e.g., S → E via contact with I)
-
-Extracted compartments: [list from previous step]
-
-Paper text:
-[Relevant sections]
-
-Extract flows and return JSON array:
-[
-  {
-    "source": "Source compartment name",
-    "target": "Target compartment name",
-    "type": "RateFlow" or "ContactFlow",
-    "description": "Description of the flow",
-    "text_span": "Exact text from paper"
-  },
-  ...
-]"
-```
-
-**LLM Output:**
-```json
-[
-  {
-    "source": "Susceptible",
-    "target": "Exposed",
-    "type": "ContactFlow",
-    "description": "Infection through contact with infectious individuals",
-    "text_span": "Susceptible individuals become exposed at rate βI"
-  },
-  ...
-]
-```
-
-#### For Parameters:
-
-**LLM Input:**
-```
-"Extract all parameters with their values, units, and descriptions.
-
-Parameter types from metamodel:
-- Transmission rates (β)
-- Recovery rates (γ)
-- Death rates (μ, α)
-- Progression rates (ω, ρ)
-- Contact rates (c_I, c_D)
-
-Paper text and tables:
-[Relevant sections and extracted tables]
-
-Extract parameters and return JSON array:
-[
-  {
-    "name": "Parameter name (e.g., β, γ)",
-    "value": "Parameter value if given",
-    "unit": "Unit (e.g., days^-1, weeks^-1)",
-    "description": "What this parameter represents",
-    "text_span": "Exact text from paper"
-  },
-  ...
-]"
-```
-
-**LLM Output:**
-```json
-[
-  {
-    "name": "β",
-    "value": "0.5",
-    "unit": "days^-1",
-    "description": "Transmission rate",
-    "text_span": "The transmission rate β = 0.5 days^-1"
-  },
-  ...
-]
-```
-
-**Output:** `extracted_entities.json` with:
-- All compartments with evidence (text span, page, confidence, extraction method)
-- All flows with evidence
-- All parameters with evidence
-- Stratifications and interventions
-- Extraction summary (counts)
-
-**Fallback:** If LLM unavailable, uses pattern-based extraction (less accurate, may miss complex flows)
+- **Unified single-pass LLM extraction (when API key is available):** One LLM call extracts compartments, flows, and parameters together from a context window built from model-relevant sections (equations, state variables, parameters, tables). The prompt asks for the **primary compartmental model** at the same level of abstraction as the paper’s model diagram or differential equations, with full descriptive names (e.g. "Susceptible", "Infectious") and no single-letter abbreviations. Output is JSON with `compartments`, `flows`, and `parameters`. If the response looks truncated (e.g. very few flows or parameters for a multi-compartment model), the pipeline retries with a higher token limit and keeps the more complete result.
+- **Evidence:** Entities are recorded with description, page, and extraction method. Only what the paper clearly presents is extracted.
+- **Fallback:** If the LLM is unavailable, pattern-based extraction is used (less accurate, especially for flows).
 
 ---
 
@@ -580,18 +395,15 @@ Suggest how to fill this gap and return JSON:
 
 ### When LLM is Used
 
-LLM is used in **3 steps** of Phase 2:
-
-1. **Step 2: Paper Promises Extraction** (optional, falls back to patterns)
-2. **Step 3: Entity Extraction** (always used if API key available)
-3. **Step 7: Gap Filling** (for domain knowledge suggestions only)
+The LLM is used in **Step 3 (Entity Extraction)** when an API key is available. Step 2 uses pattern-based extraction only. Gap analysis (Step 6) and gap filler (Step 7) produce report files; gap-fill suggestions do not call the LLM in the default pipeline.
 
 ### LLM Configuration
 
-- **Model:** `gpt-4o` (default; use `OPENAI_MODEL=gpt-4o-mini` for cheaper runs)
-- **Temperature:** `0.3` (low for consistency)
-- **Max Tokens:** `2000` (sufficient for most extractions)
-- **Output Format:** Always JSON
+- **Model:** `gpt-4o` (OpenAI default); `gemini-2.5-pro` (Gemini default). Override with `OPENAI_MODEL` or `GEMINI_MODEL`.
+- **Temperature:** `0` for extraction (deterministic output).
+- **Max output tokens:** 16000 (retry with 32000 if extraction looks truncated).
+- **Timeout:** 2 minutes per call (Gemini); timeout errors are retried once.
+- **Output format:** JSON (repaired automatically if malformed).
 
 ### LLM Input Structure
 
@@ -715,15 +527,15 @@ Phase 2 automatically uses baseline `.compmodel` files for evaluation if they ex
 10. `quality_checks.json` - Phase 1 analyzer results
 11. `evaluation_report.json` - Quality metrics and gold-standard comparison (compartments, parameters, flows)
 
-### Generating the results summary (markdown)
+### Generating the results summary
 
-After running Phase 2 on multiple papers (e.g. all PDFs in `data/papers/`) with one or both providers (OpenAI and Gemini), you can aggregate the latest evaluation results into a single markdown report:
+After running Phase 2 on multiple papers (e.g. all PDFs in `data/papers/`) with one or both providers (OpenAI and Gemini), aggregate the latest evaluation results into a markdown report:
 
 ```bash
 python3 build_results_md.py
 ```
 
-This reads the most recent `evaluation_report.json` in each `reports/{disease}_llm_{openai|gemini}_{timestamp}/` folder, extracts precision/recall/F1 for compartments, parameters, and flows per disease and provider, and writes **`RESULTS_NEW_RUN.md`** with per-disease tables, averages, and an F1 summary table. Use it to compare runs or document results.
+The script reads the most recent `evaluation_report.json` in each `reports/{disease}_llm_{openai|gemini}_{timestamp}/` folder, extracts precision/recall/F1 for compartments, parameters, and flows per disease and provider, and writes **`RESULTS_REPORT.md`** with per-disease tables, averages, and an F1 summary.
 
 ## Setup
 
@@ -872,7 +684,7 @@ python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports --llm-
 3. Check `phase2_final_report.json` - Comprehensive results
 4. Review gaps and suggestions
 5. Compare with baseline models if available (auto-detected from `data/baseline_models/`); see `evaluation_report.json` for precision/recall/F1 on compartments, parameters, and flows
-6. (Optional) Run `python3 build_results_md.py` to generate `RESULTS_NEW_RUN.md` with per-disease and average P/R/F1 across the latest runs
+6. (Optional) Run `python3 build_results_md.py` to generate `RESULTS_REPORT.md` with per-disease and average P/R/F1 across the latest runs
 
 ## Support
 

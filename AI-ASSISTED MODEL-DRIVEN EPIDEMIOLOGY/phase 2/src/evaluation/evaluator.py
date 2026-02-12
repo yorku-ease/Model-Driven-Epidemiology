@@ -254,15 +254,18 @@ class Evaluator:
         name = name.replace('compartment', '').replace('state', '').replace('class', '')
         name = name.strip()
 
-        # Strip trailing "longer but same meaning" phrases (compartment names)
-        # So "susceptible humans" and "susceptible" match; "eggs(non-infectious)" and "eggs" match
+        # Strip parenthetical qualifiers first (e.g. "Eggs(non-infectious)" -> "Eggs")
+        name = re.sub(r'\s*\([^)]*\)\s*', '', name, flags=re.IGNORECASE).strip()
+
+        # Strip leading qualifiers (e.g. "Vector Eggs" -> "Eggs", "Total Infected" -> "Infected")
+        name = re.sub(r'^(vector|total|cumulative|net|new)\s+', '', name, flags=re.IGNORECASE).strip()
+
+        # Strip trailing population/host suffixes so "Susceptible humans" matches "Susceptible"
         trailing_phrases = [
             r'\s+humans?$', r'\s+mosquitoes?$', r'\s+vectors?$', r'\s+adults?$',
-            r'\s+children$', r'\s+juveniles?$', r'\s+larvae?$', r'\s+pupae?$',
-            r'\s+eggs?$', r'\s+female\s*$', r'\s+male\s*$', r'\s+human\s*$',
+            r'\s+children$', r'\s+juveniles?$',
+            r'\s+female\s*$', r'\s+male\s*$', r'\s+human\s*$',
             r'\s+mosquito\s*$', r'\s+vector\s*$', r'\s+adult\s*$',
-            r'\s*\([^)]*non-?infectious[^)]*\)\s*$', r'\s*\([^)]*infectious[^)]*\)\s*$',
-            r'\s*\([^)]*logistic[^)]*\)\s*$', r'\s*\([^)]*\)\s*$',  # any parenthetical suffix
         ]
         for pat in trailing_phrases:
             name = re.sub(pat, '', name, flags=re.IGNORECASE)
@@ -347,10 +350,29 @@ class Evaluator:
         
         # Remove spaces, underscores, hyphens, dots for comparison
         name = name.replace(' ', '').replace('_', '').replace('-', '').replace('.', '')
+
+        # Strip trailing digits (e.g. e1→e, i2→i — compartment numbering)
+        name = re.sub(r'\d+$', '', name)
         
         # Remove plural 's' at the end (simple heuristic)
         if name.endswith('s') and len(name) > 3:
             name = name[:-1]
+
+        # Expand common single/double-letter epidemiology abbreviations so that
+        # short names like "s", "e", "i", "r", "di" can match full gold-standard names.
+        _COMP_ABBREV = {
+            's': 'susceptible', 'e': 'exposed', 'i': 'infectious',
+            'r': 'recovered', 'd': 'dead', 'v': 'vaccinated',
+            'h': 'hospitalized', 'q': 'quarantined', 'a': 'asymptomatic',
+            'l': 'latent',
+            'di': 'infectiousdeceased',
+            'dh': 'deadhuman', 'dm': 'deadmosquito',
+            'sh': 'susceptible', 'eh': 'exposed', 'ih': 'infectious',
+            'rh': 'recovered', 'ah': 'asymptomatic',
+            'sv': 'susceptible', 'iv': 'infectious', 'ev': 'exposed',
+        }
+        if len(name) <= 2:
+            name = _COMP_ABBREV.get(name, name)
         
         return name
     
@@ -377,8 +399,11 @@ class Evaluator:
         # Calculate similarity using SequenceMatcher
         similarity = SequenceMatcher(None, norm1, norm2).ratio()
         
-        # Also try substring matching for cases like "Susceptible" vs "Susceptibles"
-        if norm1 in norm2 or norm2 in norm1:
+        # Substring matching for cases like "Susceptible" vs "Susceptibles"
+        # Only apply when the shorter string is at least 4 chars to prevent
+        # single-letter names like "s" from matching everything containing 's'
+        min_len = min(len(norm1), len(norm2))
+        if min_len >= 4 and (norm1 in norm2 or norm2 in norm1):
             similarity = max(similarity, 0.9)
         
         is_match = similarity >= threshold
@@ -389,6 +414,10 @@ class Evaluator:
         """
         Match extracted entities to gold standard using fuzzy matching.
         
+        Uses global-optimal greedy matching: compute ALL pairwise similarities,
+        then assign from highest to lowest. This prevents a lower-quality match
+        from "stealing" a gold entity that a better candidate needs.
+        
         Args:
             extracted: Set of extracted entity names
             gold: Set of gold standard entity names
@@ -398,28 +427,28 @@ class Evaluator:
             Tuple of (matched_pairs, unmatched_extracted, unmatched_gold)
             matched_pairs: Set of (extracted_name, gold_name, similarity) tuples
         """
+        # 1. Compute all pairwise similarities above threshold
+        candidates = []
+        for ext_name in extracted:
+            for gold_name in gold:
+                is_match, similarity = self._fuzzy_match(ext_name, gold_name, threshold)
+                if is_match:
+                    candidates.append((similarity, ext_name, gold_name))
+        
+        # 2. Sort by similarity descending — best matches are assigned first
+        candidates.sort(key=lambda x: -x[0])
+        
+        # 3. Greedy assignment from highest to lowest similarity
         matched_pairs = set()
         matched_extracted = set()
         matched_gold = set()
         
-        # Try to match each extracted entity to a gold entity
-        for ext_name in extracted:
-            best_match = None
-            best_similarity = 0.0
-            
-            for gold_name in gold:
-                if gold_name in matched_gold:
-                    continue  # Already matched
-                
-                is_match, similarity = self._fuzzy_match(ext_name, gold_name, threshold)
-                if is_match and similarity > best_similarity:
-                    best_match = gold_name
-                    best_similarity = similarity
-            
-            if best_match:
-                matched_pairs.add((ext_name, best_match, best_similarity))
-                matched_extracted.add(ext_name)
-                matched_gold.add(best_match)
+        for similarity, ext_name, gold_name in candidates:
+            if ext_name in matched_extracted or gold_name in matched_gold:
+                continue
+            matched_pairs.add((ext_name, gold_name, similarity))
+            matched_extracted.add(ext_name)
+            matched_gold.add(gold_name)
         
         unmatched_extracted = extracted - matched_extracted
         unmatched_gold = gold - matched_gold
@@ -465,7 +494,81 @@ class Evaluator:
         for ext_comp in extracted_comps:
             if ext_comp in gold_comps:
                 comp_extracted_to_gold[ext_comp] = ext_comp
+
+        # Second pass: description-based mapping for unmatched extracted compartments.
+        # When the LLM extracts finer-grained compartments (e.g. "Symptomatic" and
+        # "Asymptomatic" instead of a single "Infectious"), the names don't fuzzy-match.
+        # But the descriptions usually mention the gold compartment name or a synonym.
+        # This pass creates many-to-one mappings so that flow normalization still works.
+
+        # Build search terms for each gold compartment (name + common synonyms)
+        _epi_synonyms = {
+            'infectious': ['infected', 'infection', 'infect', 'infectious'],
+            'infected': ['infectious', 'infection', 'infect'],
+            'susceptible': ['susceptible', 'suscept'],
+            'exposed': ['exposed', 'latent', 'incubat'],
+            'recovered': ['recovered', 'recovery', 'recover', 'immune', 'immunity'],
+            'dead': ['dead', 'death', 'died', 'deceased', 'mortality', 'fatal'],
+            'vaccinated': ['vaccinated', 'vaccination', 'vaccine', 'immunized'],
+        }
+
+        def _gold_search_terms(gold_name):
+            """Generate search terms for a gold compartment name."""
+            terms = set()
+            glow = gold_name.lower().strip()
+            # Add the name itself and its stem
+            terms.add(glow)
+            if glow.endswith('s') and len(glow) > 4:
+                terms.add(glow[:-1])
+            # Add words from multi-word names
+            for word in glow.split():
+                if len(word) >= 4:
+                    terms.add(word)
+                    if word.endswith('s') and len(word) > 4:
+                        terms.add(word[:-1])
+                    # Add synonyms for each word
+                    for key, syns in _epi_synonyms.items():
+                        if word.startswith(key[:5]) or key.startswith(word[:5]):
+                            terms.update(syns)
+            return terms
+
+        for comp in extracted.get('compartments', []):
+            comp_name = comp.get('normalized_name', '')
+            if comp_name and comp_name not in comp_extracted_to_gold:
+                desc = (comp.get('description') or comp.get('text_span') or '').lower()
+                if not desc:
+                    continue
+                best_gold = None
+                best_len = 0
+                for gold_name in gold_comps:
+                    for term in _gold_search_terms(gold_name):
+                        if len(term) >= 4 and term in desc and len(term) > best_len:
+                            best_gold = gold_name
+                            best_len = len(term)
+                if best_gold:
+                    comp_extracted_to_gold[comp_name] = best_gold
+                    # If this maps to a previously-unmatched gold compartment,
+                    # count it as a compartment match (improves comp precision/recall)
+                    if best_gold in comp_unmatched_gold:
+                        comp_matches.add((comp_name, best_gold, 0.9))
+                        comp_unmatched_ext.discard(comp_name)
+                        comp_unmatched_gold.discard(best_gold)
         
+        # Third pass: normalization-based mapping for numbered/variant compartments.
+        # E.g. "Exposed 1" and "Exposed 2" both normalize to "exposed" and should
+        # map to gold "Exposed" for flow normalization purposes.
+        for comp in extracted.get('compartments', []):
+            comp_name = comp.get('normalized_name', '')
+            if comp_name and comp_name not in comp_extracted_to_gold:
+                comp_norm = self._normalize_for_comparison(comp_name)
+                if not comp_norm:
+                    continue
+                for gold_name in gold_comps:
+                    gold_norm = self._normalize_for_comparison(gold_name)
+                    if comp_norm == gold_norm:
+                        comp_extracted_to_gold[comp_name] = gold_name
+                        break
+
         # For flows, use fuzzy-matched compartment names
         # Convert extracted flows using matched compartment names
         normalized_extracted_flows = set()

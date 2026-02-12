@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 REPORTS_DIR = Path(__file__).resolve().parent / "reports"
-OUT_MD = Path(__file__).resolve().parent / "RESULTS_NEW_RUN.md"
+OUT_MD = Path(__file__).resolve().parent / "RESULTS_REPORT.md"
 
 DISEASES = [
     "cholera",
@@ -203,7 +203,9 @@ def main():
     g_f = gemini_avg[(2, "f1")]
     lines.append(f"| **Average**   | **{o_c:.2f} / {o_p:.2f} / {o_f:.2f}**     | **{g_c:.2f} / {g_p:.2f} / {g_f:.2f}**     |")
 
-    OUT_MD.write_text("\n".join(lines))
+    title = "# Phase 2 Evaluation Results\n\n"
+    intro = "This report summarizes precision (P), recall (R), and F1 for **compartments**, **parameters**, and **flows** against baseline `.compmodel` gold standards. Each row is the latest run per disease and provider.\n\n---\n\n"
+    OUT_MD.write_text(title + intro + "\n".join(lines))
     print("Wrote", OUT_MD)
 
 
