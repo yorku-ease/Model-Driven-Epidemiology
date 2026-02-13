@@ -55,10 +55,25 @@ AIza-your-actual-api-key-here
 export GEMINI_API_KEY="AIza-your-api-key-here"
 ```
 
-**Note:** If your `.api_key.txt` file contains both keys, use the format:
+#### Option C: Anthropic Claude
+
+1. Get your Claude API key from Anthropic.
+2. Open `.api_key.txt` in the `phase 2` directory
+3. Add your Claude API key on a new line (without quotes), e.g.:
+   ```text
+   claude:sk-ant-your-claude-key
+   ```
+
+**Alternative:** Set environment variable:
+```bash
+export ANTHROPIC_API_KEY="sk-ant-your-claude-key"
 ```
+
+**Note:** If your `.api_key.txt` file contains multiple keys, you can prefix them:
+```text
 openai:sk-...
-gemini:AIza...
+gemini:AIza-...
+claude:sk-ant-...
 ```
 
 **What happens if you skip this:**

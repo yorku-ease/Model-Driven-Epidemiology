@@ -16,7 +16,7 @@ Phase 2 automatically extracts compartmental epidemiological models from scienti
 
 Paper type (vector-borne / climate) is **auto-detected** from text and promises, and prompts are tailored accordingly. Entity extraction uses a **single unified LLM call** for compartments, flows, and parameters when an API key is available, so the model sees the full context at once. Step 2 (paper promises) is **pattern-based only** to keep context focused. Evaluation compares extracted entities to baseline `.compmodel` files in `data/baseline_models/` when the paper name matches; precision, recall, and F1 are reported for compartments, parameters, and flows.
 
-When using `--llm-provider gemini`, the pipeline uses **structured output** (JSON schema) for extraction so the model returns valid JSON. Temperature is set to **0** for deterministic output and a 2-minute timeout applies to avoid hanging.
+When using `--llm-provider gemini`, the pipeline uses **structured output** (JSON schema) for extraction so the model returns valid JSON. Temperature is set to **0** for deterministic output and a 2-minute timeout applies to avoid hanging. When using `--llm-provider claude`, the pipeline calls Anthropic Claude models (default `claude-3-5-sonnet-latest`) with the same JSON-only system instruction.
 
 ## Project Structure
 
@@ -595,10 +595,26 @@ export OPENAI_API_KEY="sk-your-api-key-here"
 export GEMINI_API_KEY="AIza-your-api-key-here"
 ```
 
-**Note:** If your `.api_key.txt` file contains both keys, use the format:
+#### Option C: Anthropic Claude
+
+**File:** `phase 2/.api_key.txt`
+
+1. Get your Claude API key from Anthropic.
+2. Open `.api_key.txt`
+3. Add your Claude API key on a new line (without quotes)
+   - Recommended format (when storing multiple keys): `claude:sk-ant-...`
+4. Save
+
+**Alternative:** Set environment variable:
+```bash
+export ANTHROPIC_API_KEY="sk-ant-your-claude-key"
 ```
+
+**Note:** If your `.api_key.txt` file contains multiple keys, you can use prefixes:
+```text
 openai:sk-...
 gemini:AIza...
+claude:sk-ant-...
 ```
 
 ## Running Phase 2
@@ -632,7 +648,17 @@ python3 run_phase2.py \
     --prior-models-dir "../phase 1/reports/model_analysis"
 ```
 
-**4. Check Results:**
+**4. Run with Claude:**
+```bash
+python3 run_phase2.py \
+    --paper data/papers/EbolaSensitivity.pdf \
+    --output reports \
+    --llm-provider claude \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+```
+
+**5. Check Results:**
 - The run prints the created output folder path (under `reports/`)
 - Main files to open:
   - `model_draft.compmodel`

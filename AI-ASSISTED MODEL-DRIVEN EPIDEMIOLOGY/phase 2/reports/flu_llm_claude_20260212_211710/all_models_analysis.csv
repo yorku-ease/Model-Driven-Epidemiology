@@ -1,0 +1,22 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed First Stage,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed Second Stage,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious First Stage,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious Second Stage,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed First Stage,RateFlow,//@parameters.0,False,Infection of susceptible individuals at force of infection λ(t) = β * I(t)/N,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed Second Stage,RateFlow,//@parameters.1,False,Progression through first exposed sub-compartment at rate σ,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious First Stage,RateFlow,//@parameters.1,False,Progression from exposed to infectious at rate σ,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious Second Stage,RateFlow,//@parameters.2,False,Progression through first infectious sub-compartment at rate γ,,,
+Influenza,Parameter,β,,,,,,Model file,Certain,,,,,,"Transmission rate, the rate at which new infections take place given a contact",CONSTANT,0.0,per day
+Influenza,Parameter,σ,,,,,,Model file,Certain,,,,,,"Daily rate of transition from E1 to E2 and from E2 to I1, leading to average incubation period dL = 2/σ days",CONSTANT,1,per day
+Influenza,Parameter,γ,,,,,,Model file,Certain,,,,,,"Daily rate of transition from I1 to I2 and from I2 to R, leading to average infectious period dI = 2/γ days",CONSTANT,0.5797,per day
+Influenza,Parameter,π,,,,,,Model file,Certain,,,,,,Proportion of the population who are initially susceptible,CONSTANT,0.0,dimensionless
+Influenza,Parameter,λ0,,,,,,Model file,Certain,,,,,,Initial infection rate,CONSTANT,0.0,per day
+Influenza,Parameter,ψ,,,,,,Model file,Certain,,,,,,"Exponential growth rate (EGR) at which compartments E1, E2, I1, and I2 grow initially",CONSTANT,0.0,per day
+Influenza,Parameter,pICU,,,,,,Model file,Certain,,,,,,Probability of ICU/HDU admission given infection,CONSTANT,0.0,dimensionless
+Influenza,Parameter,μICU|E,,,,,,Model file,Certain,,,,,,Mean time from infection to ICU admission,CONSTANT,5.708,days
+Influenza,Parameter,σ²ICU|E,,,,,,Model file,Certain,,,,,,Variance of time from infection to ICU admission,CONSTANT,18.24,days squared
+Influenza,Parameter,η,,,,,,Model file,Certain,,,,,,Over-dispersion parameter of the Negative Binomial observation model,CONSTANT,0.0,dimensionless
+Influenza,Parameter,δt,,,,,,Model file,Certain,,,,,,Discrete time step length (quarter of a day),CONSTANT,0.25,days

@@ -61,11 +61,11 @@ Examples:
                        help='Path to epidemiology metamodel JSON (for LLM prompts)')
     parser.add_argument('--api-key-file', type=str,
                        default='.api_key.txt',
-                       help='Path to file containing API key (OpenAI or Gemini)')
+                       help='Path to file containing API key (OpenAI, Gemini, or Claude)')
     parser.add_argument('--llm-provider', type=str,
-                       choices=['openai', 'gemini'],
+                       choices=['openai', 'gemini', 'claude'],
                        default='openai',
-                       help='LLM provider to use: openai or gemini (default: openai)')
+                       help='LLM provider to use: openai, gemini, or claude (default: openai)')
     parser.add_argument('--use-llm', action='store_true', default=True,
                        help='Use LLM for extraction (default: True)')
     parser.add_argument('--no-llm', dest='use_llm', action='store_false',
@@ -178,7 +178,9 @@ Examples:
         if llm_client.available:
             print(f"LLM: Enabled ({args.llm_provider})")
         else:
-            print(f"LLM: Disabled — no API key for '{args.llm_provider}'. Put key in .api_key.txt as 'openai:sk-...' or 'gemini:AIza...' (or set OPENAI_API_KEY / GEMINI_API_KEY).")
+            print(f"LLM: Disabled — no API key for '{args.llm_provider}'. "
+                  "Put key in .api_key.txt as 'openai:sk-...', 'gemini:AIza...', or 'claude:sk-ant-...' "
+                  "(or set OPENAI_API_KEY / GEMINI_API_KEY / ANTHROPIC_API_KEY).")
     else:
         print(f"LLM: Disabled (pattern-based only)")
     print()

@@ -1,0 +1,38 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Zika,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika,Compartment,Eggs,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Larvae,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Pupae,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Susceptible Vectors,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Exposed Vectors,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Infectious Vectors,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.0,False,"Humans become exposed through bites from infectious vectors, rate βbI_V/(N_H+M) per susceptible human",,,
+Zika,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.16,False,"Exposed humans become infectious after incubation period, rate α_H",,,
+Zika,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.16,False,"Infectious humans recover, rate γ",,,
+Zika,Flow,,,,,,,Model file,Certain,,Larvae,RateFlow,0.0,False,"Eggs develop into larvae, rate τ1",,,
+Zika,Flow,,,,,,,Model file,Certain,,Pupae,RateFlow,0.0,False,"Larvae develop into pupae, rate τ2",,,
+Zika,Flow,,,,,,,Model file,Certain,,Susceptible Vectors,RateFlow,//@parameters.12,False,"Pupae emerge as susceptible female adult vectors, rate qτ3 (q is female percentage)",,,
+Zika,Flow,,,,,,,Model file,Certain,,Exposed Vectors,RateFlow,//@parameters.0,False,"Susceptible vectors become exposed through biting infectious humans, rate βbI_H/(N_H+M) per susceptible vector",,,
+Zika,Flow,,,,,,,Model file,Certain,,Infectious Vectors,RateFlow,//@parameters.16,False,"Exposed vectors become infectious after incubation period, rate α_V",,,
+Zika,Parameter,βb,,,,,,Model file,Certain,,,,,,Number of infectious bites delivered per vector per day (product of transmission probability β and biting rate b),CONSTANT,0.05 - 0.12,per day
+Zika,Parameter,1/α_H,,,,,,Model file,Certain,,,,,,Incubation time of ZIKV in humans,CONSTANT,2 - 4,days
+Zika,Parameter,1/α_V,,,,,,Model file,Certain,,,,,,Incubation time of ZIKV in vectors,CONSTANT,8 - 12,days
+Zika,Parameter,1/γ,,,,,,Model file,Certain,,,,,,Recovery time of infectious humans,CONSTANT,5 - 7,days
+Zika,Parameter,e_V,,,,,,Model file,Certain,,,,,,Number of eggs laid per female mosquito per unit time,CONSTANT,80,per day
+Zika,Parameter,1/τ1,,,,,,Model file,Certain,,,,,,Egg development time,CONSTANT,3,days
+Zika,Parameter,μ1,,,,,,Model file,Certain,,,,,,Egg mortality rate,CONSTANT,0.05,per day
+Zika,Parameter,1/τ2,,,,,,Model file,Certain,,,,,,Larval development time,CONSTANT,9,days
+Zika,Parameter,μ2,,,,,,Model file,Certain,,,,,,Larval mortality rate,CONSTANT,0.025,per day
+Zika,Parameter,1/τ3,,,,,,Model file,Certain,,,,,,Pupal development time,CONSTANT,3,days
+Zika,Parameter,μ3,,,,,,Model file,Certain,,,,,,Pupal mortality rate,CONSTANT,0.0025,per day
+Zika,Parameter,μ_V,,,,,,Model file,Certain,,,,,,Adult vector mortality rate,CONSTANT,0.05,per day
+Zika,Parameter,q,,,,,,Model file,Certain,,,,,,Female adult percentage among adult vectors,CONSTANT,0.68,dimensionless
+Zika,Parameter,κ,,,,,,Model file,Certain,,,,,,Larvae mortality rate due to limited carrying capacity,CONSTANT,1,per day
+Zika,Parameter,K_H,,,,,,Model file,Certain,,,,,,Carrying capacity for human population (Rio de Janeiro State),CONSTANT,30000000,individuals
+Zika,Parameter,K_V,,,,,,Model file,Certain,,,,,,Carrying capacity for larvae,CONSTANT,100000000,individuals
+Zika,Parameter,M,,,,,,Model file,Certain,,,,,,Number of alternative hosts besides humans in the environment,CONSTANT,100000,individuals
+Zika,Parameter,λ,,,,,,Model file,Certain,,,,,,Human population growth rate,CONSTANT,0.00005,per day
+Zika,Parameter,R0,,,,,,Model file,Certain,,,,,,Basic reproduction number estimated from parameters (Rio de Janeiro State),CONSTANT,1.1139,dimensionless
