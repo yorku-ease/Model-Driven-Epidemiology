@@ -1,0 +1,422 @@
+{
+  "model_analysis": {
+    "modelName": "Ebolasensitivity",
+    "summary": {
+      "modelName": "Ebolasensitivity",
+      "totalPopulation": null,
+      "numCompartments": 5,
+      "numParameters": 7,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "S",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.3",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals through contact with infectious living individuals (I).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "E",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.6",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Non-symptomatic infected individuals become infectious and symptomatic at rate \u03c9.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "I",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infectious individuals die from the disease at rate \u03b1.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infectious individuals recover from the disease at rate \u03b3.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "DI",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "R",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03b1",
+          "type": "CONSTANT",
+          "expression": "0.5",
+          "description": "disease death rate",
+          "unit": "weeks^-1"
+        },
+        {
+          "index": 1,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "0.5",
+          "description": "recovery rate",
+          "unit": "weeks^-1"
+        },
+        {
+          "index": 2,
+          "name": "\u03b8",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "safe burial rate",
+          "unit": "weeks^-1"
+        },
+        {
+          "index": 3,
+          "name": "cI",
+          "type": "CONSTANT",
+          "expression": "variable",
+          "description": "contact rate with infectious individuals",
+          "unit": "people weeks^-1"
+        },
+        {
+          "index": 4,
+          "name": "cD",
+          "type": "CONSTANT",
+          "expression": "variable",
+          "description": "contact rate with infectious dead bodies",
+          "unit": "people weeks^-1"
+        },
+        {
+          "index": 5,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "0.75",
+          "description": "transmission probability",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 6,
+          "name": "\u03c9",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "rate at which infected individuals becoming infectious",
+          "unit": "weeks^-1"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Ebolasensitivity",
+    "totalParameters": 7,
+    "parametersWithUncertainty": 7,
+    "parameters": [
+      {
+        "parameter": "\u03b1",
+        "yourValue": "0.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "weeks^-1",
+        "description": "disease death rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "0.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "weeks^-1",
+        "description": "recovery rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b8",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "weeks^-1",
+        "description": "safe burial rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "cI",
+        "yourValue": "variable",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "people weeks^-1",
+        "description": "contact rate with infectious individuals",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "cD",
+        "yourValue": "variable",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "people weeks^-1",
+        "description": "contact rate with infectious dead bodies",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2",
+        "yourValue": "0.75",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "dimensionless",
+        "description": "transmission probability",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c9",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebolasensitivity",
+        "unit": "weeks^-1",
+        "description": "rate at which infected individuals becoming infectious",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 7
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Ebolasensitivity",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\u03b1",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "disease death rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b3",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "recovery rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b8",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "safe burial rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b2",
+        "type": "other",
+        "currentValue": 0.75,
+        "description": "transmission probability",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c9",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "rate at which infected individuals becoming infectious",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\u03b1",
+      "\u03b3",
+      "\u03b8",
+      "\u03b2",
+      "\u03c9"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\u03b1",
+        "\u03b3",
+        "\u03b8",
+        "\u03b2",
+        "\u03c9"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\u03b1": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b3": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b8": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b2": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c9": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

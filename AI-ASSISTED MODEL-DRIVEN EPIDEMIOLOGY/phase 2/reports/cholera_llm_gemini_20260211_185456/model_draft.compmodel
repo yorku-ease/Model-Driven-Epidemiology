@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="10^-5 to 1" type="CONSTANT" description="Rate of 'contact' with reservoir water, representing the maximum infection rate from the environmental reservoir." unit="days^-1"/>
+  <parameters name="γ" expression="1/14 to 1/2.9" type="CONSTANT" description="Per capita recovery rate from cholera infection. The reciprocal (1/γ) is the duration of infection." unit="days^-1"/>
+  <parameters name="δ" expression="1/41 to 1/3" type="CONSTANT" description="Decay or removal rate of cholera bacteria in the water reservoir. The reciprocal (1/δ) is the cholera life span in water." unit="days^-1"/>
+  <parameters name="ξ" expression="0.01 to 10" type="CONSTANT" description="Rate of water contamination by humans shedding V. cholerae into the water reservoir." unit="cells * mL^-1 * person^-1 * day^-1"/>
+  <parameters name="κ" expression="10^5 to 10^6" type="CONSTANT" description="Concentration of cholera bacteria that yields a 50% chance of infection (half-saturation constant)." unit="cells/mL"/>
+  <parameters name="α" expression="Not specified" type="CONSTANT" description="Cholera-related death rate, which can differ for symptomatic and asymptomatic individuals." unit="days^-1"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible individuals through exposure to contaminated water, resulting in an asymptomatic infection."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.0" target="//@compartments.2" description="Infection of susceptible individuals through exposure to contaminated water, resulting in a symptomatic infection."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Vaccination of susceptible individuals, conferring immunity."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Recovery of asymptomatic individuals, who then move to the recovered (immune) class."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.7" description="Cholera-induced mortality among asymptomatic individuals, noted to be at a lower rate than for symptomatic cases."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Shedding of hyperinfectious bacteria into the water reservoir by asymptomatic individuals."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Recovery of symptomatic individuals, who then move to the recovered (immune) class."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.7" description="Cholera-induced mortality among symptomatic individuals."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Shedding of hyperinfectious bacteria into the water reservoir by symptomatic individuals."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.0" description="Waning of infection-conferred immunity, causing recovered individuals to become susceptible again."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Waning of vaccine-conferred immunity, causing vaccinated individuals to become susceptible again."/>
+  </compartments>
+  <compartments PrimaryName="Hyperinfectious Bacteria" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Transition of bacteria from the hyperinfectious state to the less infectious state."/>
+  </compartments>
+  <compartments PrimaryName="Less Infectious Bacteria" population="0"/>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

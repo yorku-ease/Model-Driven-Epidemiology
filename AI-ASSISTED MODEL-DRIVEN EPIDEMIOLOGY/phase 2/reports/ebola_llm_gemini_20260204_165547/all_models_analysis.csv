@@ -1,0 +1,20 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebolasensitivity,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Exposed,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious Deceased,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.2,False,Susceptible individuals become infected through contact with infectious living individuals or infectious deceased individuals and move to the non-symptomatic exposed compartment.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.2,False,Non-symptomatic infected individuals progress to become symptomatic and infectious.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Symptomatic infectious individuals recover from the disease and gain immunity.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Infectious Deceased,RateFlow,//@parameters.1,False,Symptomatic infectious individuals die from the disease and become infectious deceased.,,,
+Ebolasensitivity,Parameter,β,,,,,,Model file,Certain,,,,,,,CONSTANT,.,
+Ebolasensitivity,Parameter,α,,,,,,Model file,Certain,,,,,,,CONSTANT,0.,
+Ebolasensitivity,Parameter,n,,,,,,Model file,Certain,,,,,,,CONSTANT,0,
+Ebolasensitivity,Parameter,γ,,,,,,Model file,Certain,,,,,,recovery rate,CONSTANT,0.5,weeks⁻¹
+Ebolasensitivity,Parameter,θ,,,,,,Model file,Certain,,,,,,safe burial rate,CONSTANT,1,weeks⁻¹
+Ebolasensitivity,Parameter,cI,,,,,,Model file,Certain,,,,,,contact rate with infectious individuals,CONSTANT,variable,people weeks⁻¹
+Ebolasensitivity,Parameter,cD,,,,,,Model file,Certain,,,,,,contact rate with infectious dead bodies,CONSTANT,variable,people weeks⁻¹
+Ebolasensitivity,Parameter,ω,,,,,,Model file,Certain,,,,,,rate at which infected individuals becoming infectious,CONSTANT,1,weeks⁻¹
+Ebolasensitivity,Parameter,R0,,,,,,Model file,Certain,,,,,,"The reproduction number or eradication threshold, representing the average number of susceptible people that one infected individual will infect.",CONSTANT,0.0,

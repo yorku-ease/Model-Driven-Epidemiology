@@ -2,6 +2,8 @@
 
 This report summarizes precision (P), recall (R), and F1 for **compartments**, **parameters**, and **flows** against baseline `.compmodel` gold standards. Each row is the latest run per disease and provider.
 
+For a **before/after comparison** (initial vs improved pipeline) and what was effective in raising results (PDF extractor, section detection, unified LLM, etc.), see **[COMPARISON_REPORT.md](COMPARISON_REPORT.md)**.
+
 ---
 
 ## 1. Per-disease scores (Precision / Recall / F1)

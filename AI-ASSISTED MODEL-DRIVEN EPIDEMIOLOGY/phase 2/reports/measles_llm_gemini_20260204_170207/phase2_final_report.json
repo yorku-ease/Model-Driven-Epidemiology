@@ -1,0 +1,432 @@
+{
+  "paper_name": "Measles",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 4,
+      "parameters": 1,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 21,
+      "critical_gaps": 8,
+      "high_gaps": 13,
+      "medium_gaps": 0
+    },
+    "model_type": "SVEIIm"
+  },
+  "paper_promises": {
+    "compartments": [
+      "S_C",
+      "UV_C",
+      "MV_C",
+      "E_C",
+      "I_C",
+      "I_mC",
+      "S_A",
+      "UV_A",
+      "V_A",
+      "E_A",
+      "I_A",
+      "I_mA"
+    ],
+    "stratifications": [
+      "age group (children 0-15 yrs and adults >15 yrs)"
+    ],
+    "parameters": [
+      "L",
+      "x_U",
+      "x_M",
+      "x_A",
+      "b_C",
+      "b_A",
+      "m",
+      "g",
+      "j",
+      "e",
+      "h_A",
+      "h_U",
+      "h_M",
+      "d",
+      "delta"
+    ],
+    "interventions": [
+      "Un-monitored Vaccination",
+      "Monitored Vaccination",
+      "Adult Vaccination"
+    ],
+    "model_type": "SVEIIm",
+    "description": "A deterministic mathematical model (SVEIIm) to describe the transmission dynamics of measles stratified into two age groups: children (0-15 yrs) and adults (above 15). The model incorporates monitored and un-monitored vaccination for children and a catch-up vaccination program for adults to evaluate the impact of these approaches on measles eradication.",
+    "extraction_method": "llm"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "S_C",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "UV_C",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "MV_C",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "E_C",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "S_C",
+        "target": "UV_C",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "S_C",
+        "target": "MV_C",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "S_C",
+        "target": "E_C",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "UV_C",
+        "target": "E_C",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "range",
+        "value": "10e14",
+        "unit": null,
+        "confidence": "medium",
+        "method": "pattern_text"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 4,
+    "parameters": 1,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 14,
+    "items_with_evidence": 14,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 14,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 21,
+      "critical_gaps": 8,
+      "high_gaps": 13,
+      "medium_gaps": 0,
+      "promised_items": {
+        "compartments": 12,
+        "parameters": 15,
+        "stratifications": 1,
+        "interventions": 3
+      },
+      "extracted_items": {
+        "compartments": 4,
+        "parameters": 1,
+        "stratifications": 2,
+        "interventions": 3
+      }
+    },
+    "missing_compartments": [
+      {
+        "promised": "i_c",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "i_mc",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "s_a",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "uv_a",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "v_a",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "e_a",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "i_a",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "i_ma",
+        "severity": "critical",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_parameters": [
+      {
+        "promised": "l",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "x_u",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "x_m",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "x_a",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "b_c",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "b_a",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "m",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "j",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "h_a",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "h_u",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "h_m",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "d",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      },
+      {
+        "promised": "delta",
+        "severity": "high",
+        "reason": "Promised in paper but not found in extracted model"
+      }
+    ],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 21,
+    "total_suggestions": 26,
+    "suggestions_by_source": {
+      "paper_span": 5,
+      "prior_model": 0,
+      "domain_knowledge": 21
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 14,
+      "items_with_evidence": 14,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 14,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 21,
+      "critical_gaps": 8,
+      "high_gaps": 13,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 8,
+        "missing_parameters": 13,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.5,
+        "recall": 0.16666666666666666,
+        "f1": 0.25,
+        "tp": 2,
+        "fp": 2,
+        "fn": 10,
+        "matches": [
+          {
+            "extracted": "E_C",
+            "gold": "Exposed adults",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "S_C",
+            "gold": "Infectious children",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "UV_C",
+          "MV_C"
+        ],
+        "unmatched_gold": [
+          "Susceptible adults",
+          "Vaccinated Adults",
+          "Immune adults",
+          "Exposed children",
+          "Monitored vaccinated children",
+          "Immune children",
+          "Un-monitored vaccinated adults",
+          "Susceptible children",
+          "Infectious adults",
+          "Un-monitored vaccinated children"
+        ]
+      },
+      "parameters": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 1,
+        "fn": 19,
+        "matches": [],
+        "unmatched_extracted": [
+          "range"
+        ],
+        "unmatched_gold": [
+          "\u03beM",
+          "\u03c6",
+          "\u03b7A",
+          "\u03b5 * \u03b2A",
+          "\u03b5",
+          "\u03b7U",
+          "\u03beU",
+          "\u03b2C",
+          "\u03b5 * \u03b2C",
+          "L",
+          "\u03beA",
+          "\u03b4",
+          "\u03b7M",
+          "q",
+          "d",
+          "\u03b1",
+          "m",
+          "\u03b2A",
+          "\u03b3"
+        ]
+      },
+      "flows": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 4,
+        "fn": 20,
+        "matches": [],
+        "unmatched_extracted": [
+          "Infectious children->Exposed adults",
+          "Infectious children->UV_C",
+          "Infectious children->MV_C",
+          "UV_C->Exposed adults"
+        ],
+        "unmatched_gold": [
+          "Un-monitored vaccinated adults->Exposed adults",
+          "Un-monitored vaccinated children->Immune children",
+          "Vaccinated Adults->Immune adults",
+          "Susceptible adults->Exposed adults",
+          "Exposed children->Exposed adults",
+          "Immune children->Immune adults",
+          "Susceptible children->Un-monitored vaccinated children",
+          "Un-monitored vaccinated children->Un-monitored vaccinated adults",
+          "Susceptible children->Susceptible adults",
+          "Infectious children->Immune children",
+          "Un-monitored vaccinated adults->Immune adults",
+          "Susceptible adults->Vaccinated Adults",
+          "Susceptible children->Monitored vaccinated children",
+          "Infectious children->Infectious adults",
+          "Exposed children->Infectious children",
+          "Exposed adults->Infectious adults",
+          "Monitored vaccinated children->Immune children",
+          "Susceptible children->Exposed children",
+          "Un-monitored vaccinated children->Exposed children",
+          "Infectious adults->Immune adults"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

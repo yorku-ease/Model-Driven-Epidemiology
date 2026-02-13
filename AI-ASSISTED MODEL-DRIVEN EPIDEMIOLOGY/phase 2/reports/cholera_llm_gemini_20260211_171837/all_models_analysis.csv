@@ -1,0 +1,24 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Bacteria in reservoir,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Treated,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Vaccinated,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Health-educated,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Quarantined,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Asymptomatic,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Hyperinfectious Bacteria,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Susceptible people become infected through exposure to contaminated water.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.0,False,Infectious people recover from the disease and become immune.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Bacteria in reservoir,RateFlow,//@parameters.0,False,"Infectious people shed bacteria, contaminating the water supply.",,,
+Cholera,Parameter,R,,,,,,Model file,Certain,,,,,,,CONSTANT,2,
+Cholera,Parameter,R0,,,,,,Model file,Certain,,,,,,"The basic reproduction number, defined as the number of individuals that an infected individual can infect when introduced into a completely susceptible population.",CONSTANT,0.0,
+Cholera,Parameter,λ,,,,,,Model file,Certain,,,,,,The force of infection. The rate of cholera transmission is a product of the force of infection and the size of the susceptible population.,CONSTANT,0.0,
+Cholera,Parameter,β,,,,,,Model file,Certain,,,,,,The rate of “contact” between the susceptible population with contaminated water.,CONSTANT,10-5 to 1,days-1
+Cholera,Parameter,κ,,,,,,Model file,Certain,,,,,,The concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate.,CONSTANT,10^5 to 10^6,cells/mL
+Cholera,Parameter,γ,,,,,,Model file,Certain,,,,,,"The per capita recovery rate, which is the reciprocal of the duration of infection.",CONSTANT,0.0,
+Cholera,Parameter,1/γ,,,,,,Model file,Certain,,,,,,Duration of cholera infection.,CONSTANT,2.9 to 14,days
+Cholera,Parameter,1/δ,,,,,,Model file,Certain,,,,,,Cholera life span in water reservoir.,CONSTANT,3 to 41,days
+Cholera,Parameter,δ,,,,,,Model file,Certain,,,,,,"The decay rate of cholera in the water reservoir, which is the reciprocal of the cholera life span.",CONSTANT,0.0,
+Cholera,Parameter,ξ,,,,,,Model file,Certain,,,,,,The rate of water contamination by infectious people shedding V. cholerae into the water reservoir.,CONSTANT,0.01 to 10,cells * mL-1 * person-1 * day-1

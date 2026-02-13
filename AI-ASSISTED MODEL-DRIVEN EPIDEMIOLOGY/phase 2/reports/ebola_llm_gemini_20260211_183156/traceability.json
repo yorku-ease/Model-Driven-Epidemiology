@@ -1,0 +1,264 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals who can be infected with the disease. New individuals enter this compartment at a constant birth/immigration rate (\u039b) and leave due to background death (\u00b5).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Non-symptomatic infected": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been infected but are not yet infectious or symptomatic. They can leave this compartment by becoming infectious or due to background death (\u00b5).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious living": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are symptomatic and can transmit the disease. They leave this compartment by recovering or by dying from the disease.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious deceased": {
+      "evidence": [
+        {
+          "text_span": "Dead bodies of individuals who died from the disease and are still capable of infecting susceptible individuals. They cease to be infectious at a safe burial rate (\u03b8).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from the disease and are immune to re-infection. They can leave the system due to background death (\u00b5).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Non-symptomatic infected": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals through contact with infectious living individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Non-symptomatic infected -> Infectious living": {
+      "evidence": [
+        {
+          "text_span": "Progression of non-symptomatic infected individuals to the infectious and symptomatic stage.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious living -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of infectious individuals, who then become immune.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious living -> Infectious deceased": {
+      "evidence": [
+        {
+          "text_span": "Death of infectious individuals due to the disease.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03b1": {
+      "evidence": [
+        {
+          "text_span": "disease death rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5",
+          "unit": "weeks\u207b\u00b9"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "recovery rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5",
+          "unit": "weeks\u207b\u00b9"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b8": {
+      "evidence": [
+        {
+          "text_span": "safe burial rate; rate at which dead bodies lose their infectivity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "weeks\u207b\u00b9"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_I": {
+      "evidence": [
+        {
+          "text_span": "contact rate with infectious individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "variable",
+          "unit": "people weeks\u207b\u00b9"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_D": {
+      "evidence": [
+        {
+          "text_span": "contact rate with infectious dead bodies",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "variable",
+          "unit": "people weeks\u207b\u00b9"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "transmission probability",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.75",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c9": {
+      "evidence": [
+        {
+          "text_span": "rate at which infected individuals becoming infectious",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "weeks\u207b\u00b9"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "contact_tracing": {
+      "evidence": [
+        {
+          "text_span": "contact_tracing mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 6,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 21,
+    "items_with_evidence": 21,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 21,
+    "faithfulness_percentage": 100.0
+  }
+}

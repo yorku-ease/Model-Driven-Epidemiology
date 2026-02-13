@@ -1,0 +1,279 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals susceptible to influenza infection, denoted as S(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 1": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the first stage of the latent period after infection, not yet infectious, denoted as E1(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 2": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the second stage of the latent period after infection, not yet infectious, denoted as E2(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 1": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the first stage of the infectious period, capable of transmitting the virus, denoted as I1(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 2": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the second stage of the infectious period, capable of transmitting the virus, denoted as I2(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from infection and are immune or have died, denoted as R(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed 1": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals at a rate \u03bb(t), which is proportional to the number of infectious people I(t) = I1(t) + I2(t) and the transmission rate \u03b2.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 1 -> Exposed 2": {
+      "evidence": [
+        {
+          "text_span": "Progression from the first to the second exposed stage at a daily rate \u03c3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 2 -> Infectious 1": {
+      "evidence": [
+        {
+          "text_span": "Progression from the exposed state to the first infectious stage at a daily rate \u03c3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 1 -> Infectious 2": {
+      "evidence": [
+        {
+          "text_span": "Progression from the first to the second infectious stage at a daily rate \u03b3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03c0": {
+      "evidence": [
+        {
+          "text_span": "Susceptibility; the proportion of the population who is initially susceptible.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inferred, prior Unif(0,1)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bb_0": {
+      "evidence": [
+        {
+          "text_span": "Initial infection rate at time t=0.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inferred, prior Unif(0,0.000241)",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c8": {
+      "evidence": [
+        {
+          "text_span": "Exponential growth rate of the epidemic at its start.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inferred, prior Unif(0,0.39)",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3": {
+      "evidence": [
+        {
+          "text_span": "Rate of becoming infectious; the daily rate of transition through exposed compartments (E1->E2 and E2->I1).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Rate of recovery; the daily rate of transition through infectious compartments (I1->I2 and I2->R).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5797",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N": {
+      "evidence": [
+        {
+          "text_span": "Total population size.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "53,679,750 (for 2012/13 season)",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "p_ICU": {
+      "evidence": [
+        {
+          "text_span": "Probability of ICU admission given infection (observational model parameter).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inferred, prior Unif(0,1)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b7": {
+      "evidence": [
+        {
+          "text_span": "Over-dispersion parameter for the Negative Binomial observation model.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inferred, prior Unif(1,100)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3^2_ICU|E": {
+      "evidence": [
+        {
+          "text_span": "Variance of time from infection to ICU admission (observational model parameter).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "18.24",
+          "unit": "days^2"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 13,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 22,
+    "items_with_evidence": 22,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 22,
+    "faithfulness_percentage": 100.0
+  }
+}

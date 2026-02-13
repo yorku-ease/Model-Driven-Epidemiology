@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Reference" expression="1." type="CONSTANT"/>
+  <parameters name="β" expression="0.0" type="CONSTANT" description="Percentage of bites that transmit ZIKV."/>
+  <compartments PrimaryName="Susceptible (human)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.1" target="//@compartments.1" description="Susceptible humans become exposed to Zika virus after being bitten by infectious mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed (human)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Exposed humans become infectious after an incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (human)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Infectious humans recover from the disease."/>
+  </compartments>
+  <compartments PrimaryName="Recovered (human)" population="0"/>
+  <compartments PrimaryName="Egg (vector)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Vector eggs hatch into larvae."/>
+  </compartments>
+  <compartments PrimaryName="Larva (vector)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Vector larvae develop into pupae."/>
+  </compartments>
+  <compartments PrimaryName="Pupa (vector)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.0" description="Vector pupae emerge as susceptible adult female mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible (vector)" population="0"/>
+  <compartments PrimaryName="Exposed (vector)" population="0"/>
+  <compartments PrimaryName="Infectious (vector)" population="0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,159 @@
+{
+  "compartments": [
+    {
+      "raw_text": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "normalized_name": "S_C",
+      "page_number": 0,
+      "text_span": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible children (0-15 yrs)."
+    },
+    {
+      "raw_text": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "normalized_name": "UV_C",
+      "page_number": 0,
+      "text_span": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Un-monitored Vaccinated children (0-15 yrs), consisting of vaccinated children undergoing routine vaccination without supervision."
+    },
+    {
+      "raw_text": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "normalized_name": "MV_C",
+      "page_number": 0,
+      "text_span": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Monitored Vaccinated children (0-15 yrs), comprising children vaccinated under supervision."
+    },
+    {
+      "raw_text": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "normalized_name": "E_C",
+      "page_number": 0,
+      "text_span": "The group of children is divided into six distinct compartments: SC (Susceptible), UV_C (Un-monitored Vaccinated), MV_C (Monitored Vaccinated), EC (Exposed), IC (Infectious), and ImC (Immune).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed children (0-15 yrs)."
+    }
+  ],
+  "flows": [
+    {
+      "source": "S_C",
+      "target": "UV_C",
+      "raw_text": "dUV_C/dt = x_U S_C \u2212 eb_C(I_C + I_A)UV_C \u2212 (m + h_U + j)UV_C",
+      "page_number": 0,
+      "text_span": "dUV_C/dt = x_U S_C \u2212 eb_C(I_C + I_A)UV_C \u2212 (m + h_U + j)UV_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Susceptible children enter the un-monitored vaccination group."
+    },
+    {
+      "source": "S_C",
+      "target": "MV_C",
+      "raw_text": "dMV_C/dt = x_M S_C \u2212 (m + h_M)MV_C",
+      "page_number": 0,
+      "text_span": "dMV_C/dt = x_M S_C \u2212 (m + h_M)MV_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Susceptible children enter the monitored vaccination group."
+    },
+    {
+      "source": "S_C",
+      "target": "E_C",
+      "raw_text": "dE_C/dt = b_C(I_C + I_A)S_C + b_C e(I_C + I_A)UV_C \u2212 (d + m + j)E_C",
+      "page_number": 0,
+      "text_span": "dE_C/dt = b_C(I_C + I_A)S_C + b_C e(I_C + I_A)UV_C \u2212 (d + m + j)E_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible children become exposed to the disease through contact with infectious individuals."
+    },
+    {
+      "source": "UV_C",
+      "target": "E_C",
+      "raw_text": "dE_C/dt = b_C(I_C + I_A)S_C + b_C e(I_C + I_A)UV_C \u2212 (d + m + j)E_C",
+      "page_number": 0,
+      "text_span": "dE_C/dt = b_C(I_C + I_A)S_C + b_C e(I_C + I_A)UV_C \u2212 (d + m + j)E_C",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Un-monitored vaccinated children become exposed due to incomplete vaccine effectiveness."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "range",
+      "normalized_name": "range",
+      "value": "10e14",
+      "unit": null,
+      "description": null,
+      "page_number": 11,
+      "text_span": "range:10e14",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 7,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 19,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 19,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 4,
+    "num_parameters": 1,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

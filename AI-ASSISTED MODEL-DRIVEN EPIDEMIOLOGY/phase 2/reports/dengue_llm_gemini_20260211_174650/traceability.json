@@ -1,0 +1,323 @@
+{
+  "compartments": {
+    "S_h": {
+      "evidence": [
+        {
+          "text_span": "Density of susceptible human individuals at age a.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "E_h": {
+      "evidence": [
+        {
+          "text_span": "Density of exposed (latent) human individuals at age a.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "I_h": {
+      "evidence": [
+        {
+          "text_span": "Density of symptomatic infectious human individuals at age a.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "A_h": {
+      "evidence": [
+        {
+          "text_span": "Density of asymptomatic infectious human individuals at age a.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R_h": {
+      "evidence": [
+        {
+          "text_span": "Density of recovered human individuals at age a.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "S_v": {
+      "evidence": [
+        {
+          "text_span": "Portion of susceptible mosquitoes (represented as 1-I_v in the scaled model).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "I_v": {
+      "evidence": [
+        {
+          "text_span": "Portion of infectious mosquitoes.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "S_h -> E_h": {
+      "evidence": [
+        {
+          "text_span": "Susceptible humans become exposed through bites by infectious mosquitoes, governed by the age-dependent transmission rate \u03b2_h(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "E_h -> I_h": {
+      "evidence": [
+        {
+          "text_span": "A fraction \u03c1 of exposed individuals become symptomatic infectious at an age-dependent rate k(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "E_h -> A_h": {
+      "evidence": [
+        {
+          "text_span": "A fraction (1-\u03c1) of exposed individuals become asymptomatic infectious at an age-dependent rate k(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "A_h -> I_h": {
+      "evidence": [
+        {
+          "text_span": "Asymptomatic individuals are reinfected by infectious mosquitoes and become symptomatic infectious, governed by the transmission rate \u03c3\u03b2_h(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "I_h -> R_h": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic infectious individuals recover at an age-specific rate \u03b3_1(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "A_h -> R_h": {
+      "evidence": [
+        {
+          "text_span": "Asymptomatic infectious individuals recover at an age-specific rate \u03b3_2(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "S_v -> I_v": {
+      "evidence": [
+        {
+          "text_span": "Susceptible mosquitoes become infected by biting symptomatic or asymptomatic humans, governed by the age-dependent transmission rate \u03b2_v(a).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "B": {
+      "evidence": [
+        {
+          "text_span": "The constant influx rate of the human hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "individuals/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bc_h": {
+      "evidence": [
+        {
+          "text_span": "The natural death rate of the human hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bc_v": {
+      "evidence": [
+        {
+          "text_span": "The natural death rate of the mosquitoes.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3_1(a)": {
+      "evidence": [
+        {
+          "text_span": "The age-specific recovery rate of symptomatic infectious hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3_2(a)": {
+      "evidence": [
+        {
+          "text_span": "The age-specific recovery rate of asymptomatic infectious hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2_v(a)": {
+      "evidence": [
+        {
+          "text_span": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2_h(a)": {
+      "evidence": [
+        {
+          "text_span": "The age-specific transmission rate from infected mosquitoes to susceptible hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c1": {
+      "evidence": [
+        {
+          "text_span": "The probability of exposed hosts transferring to symptomatic infectious hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3": {
+      "evidence": [
+        {
+          "text_span": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Not specified",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 26,
+    "items_with_evidence": 26,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 26,
+    "faithfulness_percentage": 100.0
+  }
+}

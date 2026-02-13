@@ -1,0 +1,20 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed 1,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed 2,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious 1,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious 2,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed 1,RateFlow,//@parameters.8,False,"Infection of susceptible individuals at a rate λ(t), which is proportional to the number of infectious people (I(t) = I1(t) + I2(t)) and the transmission rate β.",,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed 2,RateFlow,//@parameters.5,False,Progression from the first to the second exposed sub-compartment at a daily rate σ.,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious 1,RateFlow,//@parameters.5,False,Progression from the exposed state to the infectious state at a daily rate σ.,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious 2,RateFlow,//@parameters.6,False,Progression from the first to the second infectious sub-compartment at a daily rate γ.,,,
+Influenza,Parameter,π,,,,,,Model file,Certain,,,,,,Susceptibility; the proportion of the population who is initially susceptible.,CONSTANT,Inferred,dimensionless
+Influenza,Parameter,λ_0,,,,,,Model file,Certain,,,,,,Initial infection rate at time t=0.,CONSTANT,Inferred,day^-1
+Influenza,Parameter,ψ,,,,,,Model file,Certain,,,,,,Exponential growth rate at the start of the epidemic.,CONSTANT,Inferred,day^-1
+Influenza,Parameter,η,,,,,,Model file,Certain,,,,,,Over-dispersion parameter for the Negative Binomial observational model.,CONSTANT,Inferred,dimensionless
+Influenza,Parameter,p_ICU,,,,,,Model file,Certain,,,,,,Probability of ICU admission given infection.,CONSTANT,Inferred,dimensionless
+Influenza,Parameter,σ,,,,,,Model file,Certain,,,,,,Rate of becoming infectious; daily rate of transition through each exposed sub-compartment. The total average incubation period is 2/σ days.,CONSTANT,1,day^-1
+Influenza,Parameter,γ,,,,,,Model file,Certain,,,,,,Rate of recovery; daily rate of transition through each infectious sub-compartment. The total average infectious period is 2/γ days.,CONSTANT,0.5797,day^-1
+Influenza,Parameter,σ^2_ICU|E,,,,,,Model file,Certain,,,,,,Variance of time from infection to ICU admission.,CONSTANT,18.24,days^2
+Influenza,Parameter,N,,,,,,Model file,Certain,,,,,,"Total population size, fixed for each season.",CONSTANT,"53,679,750 (for 2012/13)",people

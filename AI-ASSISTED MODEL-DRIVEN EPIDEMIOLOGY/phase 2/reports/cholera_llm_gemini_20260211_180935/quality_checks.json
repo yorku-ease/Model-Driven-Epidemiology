@@ -1,0 +1,337 @@
+{
+  "model_analysis": {
+    "modelName": "Cholera",
+    "summary": {
+      "modelName": "Cholera",
+      "totalPopulation": null,
+      "numCompartments": 7,
+      "numParameters": 5,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals who become asymptomatic carriers, through exposure to contaminated water.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of susceptible individuals who develop symptomatic cholera, through exposure to contaminated water.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful vaccination of susceptible individuals, conferring immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Asymptomatic",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of asymptomatic individuals, who then become immune.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Symptomatic",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of symptomatic individuals, who then become immune.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Waning of immunity acquired from natural infection, returning individuals to the susceptible population.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Vaccinated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Waning of vaccine-induced immunity, returning individuals to the susceptible population.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Hyperinfectious Bacteria",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Transition of bacteria from the hyperinfectious state to the less infectious state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Less Infectious Bacteria",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "10^-5 to 1",
+          "description": "Rate of 'contact' with reservoir water, representing the maximum infection rate from less-infectious bacteria.",
+          "unit": "days-1"
+        },
+        {
+          "index": 1,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "1/14 to 1/2.9",
+          "description": "Per capita recovery rate from cholera infection, reciprocal of the duration of infection (2.9 to 14 days).",
+          "unit": "days-1"
+        },
+        {
+          "index": 2,
+          "name": "\u03b4",
+          "type": "CONSTANT",
+          "expression": "1/41 to 1/3",
+          "description": "Removal rate of cholera bacteria from the water reservoir, reciprocal of the cholera life span in water (3 to 41 days).",
+          "unit": "days-1"
+        },
+        {
+          "index": 3,
+          "name": "\u03be",
+          "type": "CONSTANT",
+          "expression": "0.01 to 10",
+          "description": "Rate of water contamination by an infectious person.",
+          "unit": "cells * mL-1 * person-1 * day-1"
+        },
+        {
+          "index": 4,
+          "name": "\u03ba",
+          "type": "CONSTANT",
+          "expression": "10^5 to 10^6",
+          "description": "Concentration of cholera that yields a 50% chance of infection (half-saturation constant).",
+          "unit": "cells/mL"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Cholera",
+    "totalParameters": 5,
+    "parametersWithUncertainty": 5,
+    "parameters": [
+      {
+        "parameter": "\u03b2",
+        "yourValue": "10^-5 to 1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "days-1",
+        "description": "Rate of 'contact' with reservoir water, representing the maximum infection rate from less-infectious bacteria.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "1/14 to 1/2.9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "days-1",
+        "description": "Per capita recovery rate from cholera infection, reciprocal of the duration of infection (2.9 to 14 days).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b4",
+        "yourValue": "1/41 to 1/3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "days-1",
+        "description": "Removal rate of cholera bacteria from the water reservoir, reciprocal of the cholera life span in water (3 to 41 days).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03be",
+        "yourValue": "0.01 to 10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "cells * mL-1 * person-1 * day-1",
+        "description": "Rate of water contamination by an infectious person.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03ba",
+        "yourValue": "10^5 to 10^6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "cells/mL",
+        "description": "Concentration of cholera that yields a 50% chance of infection (half-saturation constant).",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 5
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Cholera",
+    "message": "No key parameters identified for sensitivity analysis",
+    "note": "This model may have rates embedded in flows rather than explicit parameters"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

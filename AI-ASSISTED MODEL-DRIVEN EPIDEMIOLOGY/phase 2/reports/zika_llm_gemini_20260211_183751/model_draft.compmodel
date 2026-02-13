@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Reference" expression="1." type="CONSTANT"/>
+  <parameters name="β" expression="0.0" type="CONSTANT" description="percentage of bites that transmit ZIKV"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.1" target="//@compartments.1" description="Susceptible humans become exposed to the Zika virus after being bitten by infectious mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Exposed humans progress to the infectious stage after an incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Infectious humans recover from the Zika virus infection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Eggs" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Mosquito eggs hatch into larvae."/>
+  </compartments>
+  <compartments PrimaryName="Larvae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Mosquito larvae develop into pupae."/>
+  </compartments>
+  <compartments PrimaryName="Pupae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.7" description="Mosquito pupae mature into susceptible female adult vectors."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible female adult vectors" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Susceptible female adult mosquitoes lay eggs."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.1" target="//@compartments.8" description="Susceptible female mosquitoes become exposed to the Zika virus after biting an infectious human."/>
+  </compartments>
+  <compartments PrimaryName="Exposed female adult vectors" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Exposed female adult mosquitoes lay eggs."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.9" description="Exposed female mosquitoes become infectious after an incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious female adult vectors" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Infectious female adult mosquitoes lay eggs."/>
+  </compartments>
+</compartmental:CompartmentalModel>

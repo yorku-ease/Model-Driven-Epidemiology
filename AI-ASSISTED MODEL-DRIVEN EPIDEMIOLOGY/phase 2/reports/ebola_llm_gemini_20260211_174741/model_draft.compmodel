@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="α" expression="0.5" type="CONSTANT" description="disease death rate" unit="weeks^-1"/>
+  <parameters name="γ" expression="0.5" type="CONSTANT" description="recovery rate" unit="weeks^-1"/>
+  <parameters name="θ" expression="1" type="CONSTANT" description="safe burial rate" unit="weeks^-1"/>
+  <parameters name="cI" expression="variable" type="CONSTANT" description="contact rate with infectious individuals" unit="people weeks^-1"/>
+  <parameters name="cD" expression="variable" type="CONSTANT" description="contact rate with infectious dead bodies" unit="people weeks^-1"/>
+  <parameters name="β" expression="0.75" type="CONSTANT" description="transmission probability" unit="dimensionless"/>
+  <parameters name="ω" expression="1" type="CONSTANT" description="rate at which infected individuals becoming infectious" unit="weeks^-1"/>
+  <compartments PrimaryName="S" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.3" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious living individuals (I)."/>
+  </compartments>
+  <compartments PrimaryName="E" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.2" description="Non-symptomatic infected individuals become infectious and symptomatic at rate ω."/>
+  </compartments>
+  <compartments PrimaryName="I" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Infectious individuals die from the disease at rate α."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Infectious individuals recover from the disease at rate γ."/>
+  </compartments>
+  <compartments PrimaryName="DI" population="0"/>
+  <compartments PrimaryName="R" population="0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,307 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "S",
+      "raw_text": "S",
+      "page_number": 0,
+      "text_span": "Susceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible individuals"
+    },
+    {
+      "normalized_name": "E1",
+      "raw_text": "E1",
+      "page_number": 0,
+      "text_span": "Exposed individuals, first sub-compartment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed individuals, first sub-compartment"
+    },
+    {
+      "normalized_name": "E2",
+      "raw_text": "E2",
+      "page_number": 0,
+      "text_span": "Exposed individuals, second sub-compartment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed individuals, second sub-compartment"
+    },
+    {
+      "normalized_name": "I1",
+      "raw_text": "I1",
+      "page_number": 0,
+      "text_span": "Infectious individuals, first sub-compartment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious individuals, first sub-compartment"
+    },
+    {
+      "normalized_name": "I2",
+      "raw_text": "I2",
+      "page_number": 0,
+      "text_span": "Infectious individuals, second sub-compartment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious individuals, second sub-compartment"
+    },
+    {
+      "normalized_name": "R",
+      "raw_text": "R",
+      "page_number": 0,
+      "text_span": "Removed individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Removed individuals"
+    }
+  ],
+  "flows": [
+    {
+      "source": "S",
+      "target": "E1",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals. The force of infection is lambda(t) = beta * (I1(t) + I2(t)) / N.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals. The force of infection is lambda(t) = beta * (I1(t) + I2(t)) / N.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals. The force of infection is lambda(t) = beta * (I1(t) + I2(t)) / N."
+    },
+    {
+      "source": "E1",
+      "target": "E2",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of exposed individuals from the first to the second stage at rate sigma.",
+      "page_number": 0,
+      "text_span": "Progression of exposed individuals from the first to the second stage at rate sigma.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of exposed individuals from the first to the second stage at rate sigma."
+    },
+    {
+      "source": "E2",
+      "target": "I1",
+      "flow_type": "RateFlow",
+      "raw_text": "Transition of exposed individuals to the infectious state at rate sigma.",
+      "page_number": 0,
+      "text_span": "Transition of exposed individuals to the infectious state at rate sigma.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transition of exposed individuals to the infectious state at rate sigma."
+    },
+    {
+      "source": "I1",
+      "target": "I2",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of infectious individuals from the first to the second stage at rate gamma.",
+      "page_number": 0,
+      "text_span": "Progression of infectious individuals from the first to the second stage at rate gamma.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of infectious individuals from the first to the second stage at rate gamma."
+    },
+    {
+      "source": "I2",
+      "target": "R",
+      "flow_type": "RateFlow",
+      "raw_text": "Removal of infectious individuals to the removed compartment at rate gamma.",
+      "page_number": 0,
+      "text_span": "Removal of infectious individuals to the removed compartment at rate gamma.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Removal of infectious individuals to the removed compartment at rate gamma."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "N",
+      "raw_text": "N",
+      "value": "53679750 (2012/13), 54091200 (2013/14), 54551450 (2014/15)",
+      "unit": "people",
+      "page_number": 0,
+      "text_span": "Total population size for each season analyzed.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total population size for each season analyzed."
+    },
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": null,
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "The constant transmission rate. The model is re-parametrized in terms of other parameters (psi, lambda_0, pi) and beta is not directly inferred.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The constant transmission rate. The model is re-parametrized in terms of other parameters (psi, lambda_0, pi) and beta is not directly inferred."
+    },
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "1",
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "Rate of becoming infectious (transition rate through E1 and E2). Assumed known. Corresponds to a mean incubation period d_L = 2/sigma days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of becoming infectious (transition rate through E1 and E2). Assumed known. Corresponds to a mean incubation period d_L = 2/sigma days."
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "0.5797",
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "Rate of recovery (transition rate through I1 and I2). Assumed known. Corresponds to a mean infectious period d_I = 2/gamma days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of recovery (transition rate through I1 and I2). Assumed known. Corresponds to a mean infectious period d_I = 2/gamma days."
+    },
+    {
+      "normalized_name": "\u03c0",
+      "raw_text": "\u03c0",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "The proportion of the population who is initially susceptible. Inferred parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion of the population who is initially susceptible. Inferred parameter."
+    },
+    {
+      "normalized_name": "\u03bb_0",
+      "raw_text": "\u03bb_0",
+      "value": null,
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "The initial infection rate. Inferred parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The initial infection rate. Inferred parameter."
+    },
+    {
+      "normalized_name": "\u03c8",
+      "raw_text": "\u03c8",
+      "value": null,
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "The exponential growth rate (EGR) at the start of the epidemic. Inferred parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The exponential growth rate (EGR) at the start of the epidemic. Inferred parameter."
+    },
+    {
+      "normalized_name": "p_ICU",
+      "raw_text": "p_ICU",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Probability of ICU admission given infection. Inferred parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability of ICU admission given infection. Inferred parameter."
+    },
+    {
+      "normalized_name": "\u03b7",
+      "raw_text": "\u03b7",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Over-dispersion parameter for the Negative Binomial observational model. Inferred parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Over-dispersion parameter for the Negative Binomial observational model. Inferred parameter."
+    },
+    {
+      "normalized_name": "\u03c3^2_ICU|E",
+      "raw_text": "\u03c3^2_ICU|E",
+      "value": "18.24",
+      "unit": "days^2",
+      "page_number": 0,
+      "text_span": "Variance of time from infection to ICU admission. Assumed known from previous studies.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Variance of time from infection to ICU admission. Assumed known from previous studies."
+    },
+    {
+      "normalized_name": "R_0",
+      "raw_text": "R_0",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number, the average number of successful transmissions per infectious person in a fully susceptible population. A derived quantity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number, the average number of successful transmissions per infectious person in a fully susceptible population. A derived quantity."
+    },
+    {
+      "normalized_name": "R_n",
+      "raw_text": "R_n",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Effective reproduction number, the average number of successful transmissions per infectious person in a partially susceptible population. A derived quantity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective reproduction number, the average number of successful transmissions per infectious person in a partially susceptible population. A derived quantity."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 13,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 5,
+    "num_parameters": 12,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

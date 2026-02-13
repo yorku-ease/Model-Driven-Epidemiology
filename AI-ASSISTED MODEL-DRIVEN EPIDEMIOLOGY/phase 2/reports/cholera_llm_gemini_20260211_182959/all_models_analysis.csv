@@ -1,0 +1,13 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Cholera bacterial concentration in water reservoir,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Susceptible people are exposed to contaminated water and may become infected.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.0,False,Infectious people recover and become immune.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Cholera bacterial concentration in water reservoir,RateFlow,//@parameters.0,False,Infectious people contaminate the water supply with bacteria.,,,
+Cholera,Parameter,β,,,,,,Model file,Certain,,,,,,Rate of 'contact' with reservoir water.,CONSTANT,10^-5 to 1,days-1
+Cholera,Parameter,1/γ,,,,,,Model file,Certain,,,,,,Duration of cholera infection.,CONSTANT,2.9 to 14,days
+Cholera,Parameter,1/δ,,,,,,Model file,Certain,,,,,,Cholera life span in water reservoir.,CONSTANT,3 to 41,days
+Cholera,Parameter,ξ,,,,,,Model file,Certain,,,,,,"Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir.",CONSTANT,0.01 to 10,cells * mL-1 * person-1 * day-1
+Cholera,Parameter,κ,,,,,,Model file,Certain,,,,,,Concentration of cholera that yields 50% chance of infection.,CONSTANT,10^5 to 10^6,cells/mL

@@ -1,0 +1,267 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "S",
+      "raw_text": "S",
+      "page_number": 0,
+      "text_span": "Susceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible individuals"
+    },
+    {
+      "normalized_name": "V",
+      "raw_text": "V",
+      "page_number": 0,
+      "text_span": "Vaccinated individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccinated individuals"
+    },
+    {
+      "normalized_name": "I",
+      "raw_text": "I",
+      "page_number": 0,
+      "text_span": "Infected individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infected individuals"
+    },
+    {
+      "normalized_name": "R",
+      "raw_text": "R",
+      "page_number": 0,
+      "text_span": "Recovered individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovered individuals"
+    }
+  ],
+  "flows": [
+    {
+      "source": "S",
+      "target": "I",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals through direct contact with infected individuals at a rate \u03b2.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals through direct contact with infected individuals at a rate \u03b2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals through direct contact with infected individuals at a rate \u03b2."
+    },
+    {
+      "source": "R",
+      "target": "S",
+      "flow_type": "RateFlow",
+      "raw_text": "Transition from the recovered to the susceptible compartment due to waning immunity at a constant rate \u03b4.",
+      "page_number": 0,
+      "text_span": "Transition from the recovered to the susceptible compartment due to waning immunity at a constant rate \u03b4.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transition from the recovered to the susceptible compartment due to waning immunity at a constant rate \u03b4."
+    },
+    {
+      "source": "S",
+      "target": "V",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptible individuals at a constant rate u.",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptible individuals at a constant rate u.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptible individuals at a constant rate u."
+    },
+    {
+      "source": "V",
+      "target": "S",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of vaccine protection, moving individuals from vaccinated back to susceptible at a constant rate \u03b8.",
+      "page_number": 0,
+      "text_span": "Waning of vaccine protection, moving individuals from vaccinated back to susceptible at a constant rate \u03b8.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of vaccine protection, moving individuals from vaccinated back to susceptible at a constant rate \u03b8."
+    },
+    {
+      "source": "R",
+      "target": "I",
+      "flow_type": "ContactFlow",
+      "raw_text": "Re-infection of recovered individuals by infected individuals at a rate \u03b5\u03b2.",
+      "page_number": 0,
+      "text_span": "Re-infection of recovered individuals by infected individuals at a rate \u03b5\u03b2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Re-infection of recovered individuals by infected individuals at a rate \u03b5\u03b2."
+    },
+    {
+      "source": "I",
+      "target": "R",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery of infected individuals at a constant rate \u03b3.",
+      "page_number": 0,
+      "text_span": "Recovery of infected individuals at a constant rate \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery of infected individuals at a constant rate \u03b3."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "A",
+      "raw_text": "A",
+      "value": "1000",
+      "unit": "human / (65*12 months)",
+      "page_number": 0,
+      "text_span": "Recruitment rate of human",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recruitment rate of human"
+    },
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "[0.01, 5]",
+      "unit": "1 / (year * human)",
+      "page_number": 0,
+      "text_span": "Probability of successful infection rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability of successful infection rate"
+    },
+    {
+      "normalized_name": "\u03b5",
+      "raw_text": "\u03b5",
+      "value": "[0, 1]",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Correction parameter for reinfection term",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Correction parameter for reinfection term"
+    },
+    {
+      "normalized_name": "u",
+      "raw_text": "u",
+      "value": "[0, 1]",
+      "unit": "1 / day",
+      "page_number": 0,
+      "text_span": "Rate of vaccination",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccination"
+    },
+    {
+      "normalized_name": "\u03b8",
+      "raw_text": "\u03b8",
+      "value": "[0.067, 0.1]",
+      "unit": "1 / day",
+      "page_number": 0,
+      "text_span": "Vaccine wane rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccine wane rate"
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "[0.5, 2]",
+      "unit": "1 / year",
+      "page_number": 0,
+      "text_span": "Recovery rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate"
+    },
+    {
+      "normalized_name": "\u03b4",
+      "raw_text": "\u03b4",
+      "value": "[0.003, 0.02]",
+      "unit": "1 / day",
+      "page_number": 0,
+      "text_span": "Drop out rate due to waning immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Drop out rate due to waning immunity"
+    },
+    {
+      "normalized_name": "\u03bc",
+      "raw_text": "\u03bc",
+      "value": "1 / (65*12)",
+      "unit": "1 / month",
+      "page_number": 0,
+      "text_span": "Natural death rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural death rate"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 4,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 11,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 6,
+    "num_parameters": 8,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

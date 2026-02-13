@@ -1,0 +1,536 @@
+{
+  "paper_name": "Measles",
+  "summary": {
+    "extraction": {
+      "compartments": 12,
+      "flows": 20,
+      "parameters": 0,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [
+      "I",
+      "S",
+      "E",
+      "Susceptible"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "quarantine",
+      "vaccination"
+    ],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Un-monitored Vaccinated Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Monitored Vaccinated Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Immune Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Un-monitored Vaccinated Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Monitored Vaccinated Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Immune Adults",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Children",
+        "target": "Un-monitored Vaccinated Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Children",
+        "target": "Monitored Vaccinated Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Children",
+        "target": "Exposed Children",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Children",
+        "target": "Susceptible Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Adults",
+        "target": "Exposed Adults",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Adults",
+        "target": "Monitored Vaccinated Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Un-monitored Vaccinated Children",
+        "target": "Exposed Children",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Un-monitored Vaccinated Children",
+        "target": "Immune Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Un-monitored Vaccinated Children",
+        "target": "Un-monitored Vaccinated Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Un-monitored Vaccinated Adults",
+        "target": "Exposed Adults",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Un-monitored Vaccinated Adults",
+        "target": "Immune Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Monitored Vaccinated Children",
+        "target": "Immune Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Monitored Vaccinated Adults",
+        "target": "Immune Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Children",
+        "target": "Infectious Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Children",
+        "target": "Exposed Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Adults",
+        "target": "Infectious Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Children",
+        "target": "Immune Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Children",
+        "target": "Infectious Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Adults",
+        "target": "Immune Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Immune Children",
+        "target": "Immune Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": []
+  },
+  "model_structure": {
+    "compartments": 12,
+    "flows": 20,
+    "parameters": 0,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 37,
+    "items_with_evidence": 37,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 37,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 37,
+      "items_with_evidence": 37,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 37,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 12,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Monitored Vaccinated Adults",
+            "gold": "Monitored vaccinated children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Adults",
+            "gold": "Susceptible children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed Children",
+            "gold": "Exposed children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed Adults",
+            "gold": "Exposed adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Immune Adults",
+            "gold": "Immune adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious Adults",
+            "gold": "Infectious children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored Vaccinated Adults",
+            "gold": "Un-monitored vaccinated children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Children",
+            "gold": "Susceptible adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious Children",
+            "gold": "Infectious adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored Vaccinated Children",
+            "gold": "Un-monitored vaccinated adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Monitored Vaccinated Children",
+            "gold": "Vaccinated Adults",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Immune Children",
+            "gold": "Immune children",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 19,
+        "matches": [],
+        "unmatched_extracted": [],
+        "unmatched_gold": [
+          "\u03b2C",
+          "\u03b7A",
+          "\u03beM",
+          "\u03b1",
+          "\u03b5",
+          "\u03beA",
+          "\u03c6",
+          "d",
+          "L",
+          "q",
+          "\u03beU",
+          "\u03b7U",
+          "\u03b4",
+          "\u03b5 * \u03b2A",
+          "\u03b7M",
+          "m",
+          "\u03b3",
+          "\u03b5 * \u03b2C",
+          "\u03b2A"
+        ]
+      },
+      "flows": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 20,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible children->Exposed adults",
+            "gold": "Susceptible adults->Exposed adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed children->Infectious adults",
+            "gold": "Exposed children->Infectious children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored vaccinated adults->Un-monitored vaccinated children",
+            "gold": "Un-monitored vaccinated children->Un-monitored vaccinated adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Monitored vaccinated children->Immune adults",
+            "gold": "Monitored vaccinated children->Immune children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible adults->Exposed children",
+            "gold": "Susceptible children->Exposed children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored vaccinated children->Exposed adults",
+            "gold": "Un-monitored vaccinated adults->Exposed adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed adults->Infectious children",
+            "gold": "Exposed adults->Infectious adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored vaccinated adults->Exposed children",
+            "gold": "Un-monitored vaccinated children->Exposed children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious adults->Immune children",
+            "gold": "Infectious adults->Immune adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible adults->Susceptible children",
+            "gold": "Susceptible children->Susceptible adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious children->Immune adults",
+            "gold": "Infectious children->Immune children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Vaccinated Adults->Immune children",
+            "gold": "Vaccinated Adults->Immune adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored vaccinated children->Immune adults",
+            "gold": "Un-monitored vaccinated children->Immune children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious adults->Infectious children",
+            "gold": "Infectious children->Infectious adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible adults->Un-monitored vaccinated adults",
+            "gold": "Susceptible children->Un-monitored vaccinated children",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Un-monitored vaccinated adults->Immune children",
+            "gold": "Un-monitored vaccinated adults->Immune adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Immune children->Immune adults",
+            "gold": "Immune children->Immune adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed children->Exposed adults",
+            "gold": "Exposed children->Exposed adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible adults->Vaccinated Adults",
+            "gold": "Susceptible adults->Vaccinated Adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible children->Monitored vaccinated children",
+            "gold": "Susceptible children->Monitored vaccinated children",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

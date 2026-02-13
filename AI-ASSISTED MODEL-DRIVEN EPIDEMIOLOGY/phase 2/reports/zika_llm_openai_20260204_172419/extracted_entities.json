@@ -1,0 +1,327 @@
+{
+  "compartments": [
+    {
+      "raw_text": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "normalized_name": "Susceptible",
+      "page_number": 0,
+      "text_span": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible individuals in the human population"
+    },
+    {
+      "raw_text": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "normalized_name": "Exposed",
+      "page_number": 0,
+      "text_span": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed individuals in the human population who have been bitten by an infectious mosquito but are not yet infectious"
+    },
+    {
+      "raw_text": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "normalized_name": "Infectious",
+      "page_number": 0,
+      "text_span": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious individuals in the human population"
+    },
+    {
+      "raw_text": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "normalized_name": "Recovered",
+      "page_number": 0,
+      "text_span": "We use an SEIR (Susceptible, Exposed, Infectious, Recovered) model to describe the disease spread among the human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovered individuals in the human population who have gained immunity"
+    },
+    {
+      "raw_text": "Let V1 and V2 denote the number of susceptible, exposed, and infectious female adults in the environment at time t.",
+      "normalized_name": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Let V1 and V2 denote the number of susceptible, exposed, and infectious female adults in the environment at time t.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible female adult mosquitoes that can bite humans and potentially become exposed"
+    },
+    {
+      "raw_text": "Let V1 and V2 denote the number of susceptible, exposed, and infectious female adults in the environment at time t.",
+      "normalized_name": "Exposed Mosquitoes",
+      "page_number": 0,
+      "text_span": "Let V1 and V2 denote the number of susceptible, exposed, and infectious female adults in the environment at time t.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed female adult mosquitoes that have bitten an infectious human but are not yet infectious"
+    },
+    {
+      "raw_text": "Let V1 and V2 denote the number of susceptible, exposed, and infectious female adults in the environment at time t.",
+      "normalized_name": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Let V1 and V2 denote the number of susceptible, exposed, and infectious female adults in the environment at time t.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious female adult mosquitoes that can transmit the virus to humans"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "raw_text": "l\u2192i",
+      "page_number": 3,
+      "text_span": "l\u2192i",
+      "extraction_method": "pattern_arrow",
+      "confidence": "medium",
+      "paper_backed": true,
+      "flow_type": "RateFlow"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "raw_text": "The transmission from susceptible to infectious in both human and vector population is associated with mosquito bites.",
+      "page_number": 0,
+      "text_span": "The transmission from susceptible to infectious in both human and vector population is associated with mosquito bites.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible humans become exposed due to bites from infectious mosquitoes."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "raw_text": "The transitions between compartments for human can be described by the following system of ordinary differential equations: E_H = S_H - \u03b1_H E_H",
+      "page_number": 0,
+      "text_span": "The transitions between compartments for human can be described by the following system of ordinary differential equations: E_H = S_H - \u03b1_H E_H",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Exposed humans progress to the infectious stage."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "raw_text": "The transitions between compartments for human can be described by the following system of ordinary differential equations: R_H = \u03b3 I_H",
+      "page_number": 0,
+      "text_span": "The transitions between compartments for human can be described by the following system of ordinary differential equations: R_H = \u03b3 I_H",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Infectious humans recover from the disease."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "raw_text": "The exposure rate of a mosquito is \u03b2 b I_H / (N_H + M) S_V",
+      "page_number": 0,
+      "text_span": "The exposure rate of a mosquito is \u03b2 b I_H / (N_H + M) S_V",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "ContactFlow",
+      "description": "Susceptible mosquitoes become exposed due to bites from infectious humans."
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "raw_text": "The transitions between compartments of vectors are described by the following system of ordinary differential equations: I_V = \u03b1_V E_V",
+      "page_number": 0,
+      "text_span": "The transitions between compartments of vectors are described by the following system of ordinary differential equations: I_V = \u03b1_V E_V",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "flow_type": "RateFlow",
+      "description": "Exposed mosquitoes progress to the infectious stage."
+    }
+  ],
+  "parameters": [
+    {
+      "raw_text": "Reference",
+      "normalized_name": "Reference",
+      "value": "1.",
+      "unit": null,
+      "description": null,
+      "page_number": 9,
+      "text_span": "Reference:\n1.",
+      "extraction_method": "pattern_text",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Let \u03b2 represent the percentage of bites that transmit ZIKV.",
+      "normalized_name": "\u03b2",
+      "value": null,
+      "unit": null,
+      "description": "Transmission rate from mosquito to human",
+      "page_number": 0,
+      "text_span": "Let \u03b2 represent the percentage of bites that transmit ZIKV.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Assume the inverse incubation time of ZIKV for human is \u03b1, and the recovery rate of an infectious individual is \u03b3.",
+      "normalized_name": "\u03b3",
+      "value": null,
+      "unit": null,
+      "description": "Recovery rate of an infectious human individual",
+      "page_number": 0,
+      "text_span": "Assume the inverse incubation time of ZIKV for human is \u03b1, and the recovery rate of an infectious individual is \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Assume the inverse incubation time of ZIKV for human is \u03b1.",
+      "normalized_name": "\u03b1",
+      "value": null,
+      "unit": null,
+      "description": "Inverse incubation time of ZIKV for human",
+      "page_number": 0,
+      "text_span": "Assume the inverse incubation time of ZIKV for human is \u03b1.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "The human population growth rate is \u03bb.",
+      "normalized_name": "\u03bb",
+      "value": null,
+      "unit": null,
+      "description": "Human population growth rate",
+      "page_number": 0,
+      "text_span": "The human population growth rate is \u03bb.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Let \u03bc_V denote the mortality rate of adults.",
+      "normalized_name": "\u03bc_V",
+      "value": null,
+      "unit": null,
+      "description": "Mortality rate of adult vectors",
+      "page_number": 0,
+      "text_span": "Let \u03bc_V denote the mortality rate of adults.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Let \u03c4_1 be the reciprocal of the development time in stage 1.",
+      "normalized_name": "\u03c4_1",
+      "value": null,
+      "unit": null,
+      "description": "Reciprocal of the development time in stage 1",
+      "page_number": 0,
+      "text_span": "Let \u03c4_1 be the reciprocal of the development time in stage 1.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Let \u03c4_2 be the reciprocal of the development time in stage 2.",
+      "normalized_name": "\u03c4_2",
+      "value": null,
+      "unit": null,
+      "description": "Reciprocal of the development time in stage 2",
+      "page_number": 0,
+      "text_span": "Let \u03c4_2 be the reciprocal of the development time in stage 2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Let \u03c4_3 be the reciprocal of the development time in stage 3.",
+      "normalized_name": "\u03c4_3",
+      "value": null,
+      "unit": null,
+      "description": "Reciprocal of the development time in stage 3",
+      "page_number": 0,
+      "text_span": "Let \u03c4_3 be the reciprocal of the development time in stage 3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Number of eggs laid per female mosquito per unit time 80 per day.",
+      "normalized_name": "e_V",
+      "value": "80",
+      "unit": "per day",
+      "description": "Number of eggs laid per female mosquito per unit time",
+      "page_number": 0,
+      "text_span": "Number of eggs laid per female mosquito per unit time 80 per day.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "Egg development time 1/\u03b3 3 days.",
+      "normalized_name": "1/\u03b3",
+      "value": "3",
+      "unit": "days",
+      "description": "Egg development time",
+      "page_number": 0,
+      "text_span": "Egg development time 1/\u03b3 3 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    },
+    {
+      "raw_text": "The mortality rate of larvae caused by limited carrying capacity is denoted as \u03ba.",
+      "normalized_name": "\u03ba",
+      "value": null,
+      "unit": null,
+      "description": "Mortality rate of larvae caused by limited carrying capacity",
+      "page_number": 0,
+      "text_span": "The mortality rate of larvae caused by limited carrying capacity is denoted as \u03ba.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true
+    }
+  ],
+  "stratifications": [],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 4,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 4,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 6,
+    "num_parameters": 12,
+    "num_stratifications": 0,
+    "num_interventions": 3
+  }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="B" expression="0.0" type="CONSTANT" description="The constant influx rate of the human hosts." unit="humans/time"/>
+  <parameters name="μ_h" expression="0.0" type="CONSTANT" description="The natural death rate of the human hosts." unit="1/time"/>
+  <parameters name="μ_v" expression="0.0" type="CONSTANT" description="The natural death rate of the mosquitoes." unit="1/time"/>
+  <parameters name="γ_1(a)" expression="0.0" type="CONSTANT" description="The age-specific recovery rate of symptomatic infectious hosts." unit="1/time"/>
+  <parameters name="γ_2(a)" expression="0.0" type="CONSTANT" description="The age-specific recovery rate of asymptomatic infectious hosts." unit="1/time"/>
+  <parameters name="β_v(a)" expression="0.0" type="CONSTANT" description="The age-specific transmission rate from infectious humans to susceptible mosquitoes." unit="1/time"/>
+  <parameters name="β_h(a)" expression="0.0" type="CONSTANT" description="The age-specific transmission rate from infected mosquitoes to susceptible humans." unit="1/time"/>
+  <parameters name="ρ" expression="0.0" type="CONSTANT" description="The probability of exposed hosts transferring to symptomatic infectious hosts." unit="dimensionless"/>
+  <parameters name="σ" expression="0.0" type="CONSTANT" description="The factor characterizing the intensity of reinfection of asymptomatic infectious hosts, and their relative infectiousness to mosquitoes." unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible humans through bites by infectious mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Progression of exposed humans to the symptomatic infectious state at an age-specific rate k(a) with probability ρ."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Progression of exposed humans to the asymptomatic infectious state at an age-specific rate k(a) with probability 1-ρ."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.4" description="Recovery of symptomatic infectious humans at an age-specific rate γ_1(a)."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.4" description="Recovery of asymptomatic infectious humans at an age-specific rate γ_2(a)."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.0" target="//@compartments.2" description="Reinfection of asymptomatic humans by infectious mosquitoes, causing them to become symptomatic infectious."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.0" target="//@compartments.6" description="Infection of susceptible mosquitoes by biting symptomatic or asymptomatic infectious humans."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

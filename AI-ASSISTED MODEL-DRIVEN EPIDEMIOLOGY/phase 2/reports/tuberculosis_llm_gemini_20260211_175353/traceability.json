@@ -1,0 +1,288 @@
+{
+  "compartments": {
+    "S": {
+      "evidence": [
+        {
+          "text_span": "Susceptible individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "V": {
+      "evidence": [
+        {
+          "text_span": "Vaccinated individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "I": {
+      "evidence": [
+        {
+          "text_span": "Infected individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R": {
+      "evidence": [
+        {
+          "text_span": "Recovered individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "S -> I": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals through direct contact with infected individuals at a rate \u03b2.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R -> S": {
+      "evidence": [
+        {
+          "text_span": "Transition from the recovered to the susceptible compartment due to waning immunity at a constant rate \u03b4.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "S -> V": {
+      "evidence": [
+        {
+          "text_span": "Vaccination of susceptible individuals at a constant rate u.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "V -> S": {
+      "evidence": [
+        {
+          "text_span": "Waning of vaccine protection, moving individuals from vaccinated back to susceptible at a constant rate \u03b8.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R -> I": {
+      "evidence": [
+        {
+          "text_span": "Re-infection of recovered individuals by infected individuals at a rate \u03b5\u03b2.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "I -> R": {
+      "evidence": [
+        {
+          "text_span": "Recovery of infected individuals at a constant rate \u03b3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "A": {
+      "evidence": [
+        {
+          "text_span": "Recruitment rate of human",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1000",
+          "unit": "human / (65*12 months)"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "Probability of successful infection rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.01, 5]",
+          "unit": "1 / (year * human)"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b5": {
+      "evidence": [
+        {
+          "text_span": "Correction parameter for reinfection term",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0, 1]",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "u": {
+      "evidence": [
+        {
+          "text_span": "Rate of vaccination",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0, 1]",
+          "unit": "1 / day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b8": {
+      "evidence": [
+        {
+          "text_span": "Vaccine wane rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.067, 0.1]",
+          "unit": "1 / day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Recovery rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.5, 2]",
+          "unit": "1 / year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b4": {
+      "evidence": [
+        {
+          "text_span": "Drop out rate due to waning immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.003, 0.02]",
+          "unit": "1 / day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bc": {
+      "evidence": [
+        {
+          "text_span": "Natural death rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1 / (65*12)",
+          "unit": "1 / month"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 4,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 11,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 23,
+    "items_with_evidence": 23,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 23,
+    "faithfulness_percentage": 100.0
+  }
+}

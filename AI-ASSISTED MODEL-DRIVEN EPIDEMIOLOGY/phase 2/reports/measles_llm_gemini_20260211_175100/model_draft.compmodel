@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="range" expression="10e14" type="CONSTANT"/>
+  <parameters name="x_U" expression="0.0" type="CONSTANT" description="Vaccination rate for un-monitored children."/>
+  <parameters name="x_M" expression="0.0" type="CONSTANT" description="Vaccination rate for monitored children."/>
+  <parameters name="x_A" expression="0.0" type="CONSTANT" description="Vaccination rate for adults."/>
+  <parameters name="b_C" expression="0.0" type="CONSTANT" description="Transmission rate for the children group."/>
+  <parameters name="b_A" expression="0.0" type="CONSTANT" description="Transmission rate for the adult group."/>
+  <parameters name="h_A" expression="0.0" type="CONSTANT" description="Rate at which un-monitored vaccinated adults become immune."/>
+  <parameters name="h_U" expression="0.0" type="CONSTANT" description="Rate at which un-monitored vaccinated children become immune."/>
+  <parameters name="h_M" expression="0.0" type="CONSTANT" description="Rate at which monitored vaccinated children become immune."/>
+  <compartments PrimaryName="I" population="0"/>
+  <compartments PrimaryName="Susceptible Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.3" description="Susceptible children are vaccinated and move to the monitored vaccination group."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Susceptible children are vaccinated and move to the un-monitored vaccination group."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.4" target="//@compartments.4" description="Susceptible children become exposed to measles through contact with infectious individuals."/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Children" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.4" target="//@compartments.4" description="Un-monitored vaccinated children with incomplete immunity become exposed to measles."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.6" description="Children in the un-monitored vaccination group successfully gain immunity from the vaccine."/>
+  </compartments>
+  <compartments PrimaryName="Monitored Vaccinated Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.6" description="Children in the monitored vaccination group successfully gain immunity from the vaccine."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.5" description="Exposed children progress to the infectious stage after the incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.6" description="Infectious children recover from the disease and gain immunity."/>
+  </compartments>
+  <compartments PrimaryName="Immune Children" population="0"/>
+</compartmental:CompartmentalModel>

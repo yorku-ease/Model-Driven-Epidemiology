@@ -1,0 +1,200 @@
+{
+  "modelName": "Influenza",
+  "summary": {
+    "modelName": "Influenza",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 9,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of susceptible individuals at a rate λ(t), which is proportional to the number of infectious people I(t) = I1(t) + I2(t) and the transmission rate β.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed 1",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from the first to the second exposed stage at a daily rate σ.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Exposed 2",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from the exposed state to the first infectious stage at a daily rate σ.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious 1",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from the first to the second infectious stage at a daily rate γ.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious 2",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "π",
+        "type": "CONSTANT",
+        "expression": "Inferred, prior Unif(0,1)",
+        "description": "Susceptibility; the proportion of the population who is initially susceptible.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "λ_0",
+        "type": "CONSTANT",
+        "expression": "Inferred, prior Unif(0,0.000241)",
+        "description": "Initial infection rate at time t=0.",
+        "unit": "1/day"
+      },
+      {
+        "index": 2,
+        "name": "ψ",
+        "type": "CONSTANT",
+        "expression": "Inferred, prior Unif(0,0.39)",
+        "description": "Exponential growth rate of the epidemic at its start.",
+        "unit": "1/day"
+      },
+      {
+        "index": 3,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Rate of becoming infectious; the daily rate of transition through exposed compartments (E1->E2 and E2->I1).",
+        "unit": "1/day"
+      },
+      {
+        "index": 4,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5797",
+        "description": "Rate of recovery; the daily rate of transition through infectious compartments (I1->I2 and I2->R).",
+        "unit": "1/day"
+      },
+      {
+        "index": 5,
+        "name": "N",
+        "type": "CONSTANT",
+        "expression": "53,679,750 (for 2012/13 season)",
+        "description": "Total population size.",
+        "unit": "persons"
+      },
+      {
+        "index": 6,
+        "name": "p_ICU",
+        "type": "CONSTANT",
+        "expression": "Inferred, prior Unif(0,1)",
+        "description": "Probability of ICU admission given infection (observational model parameter).",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "η",
+        "type": "CONSTANT",
+        "expression": "Inferred, prior Unif(1,100)",
+        "description": "Over-dispersion parameter for the Negative Binomial observation model.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 8,
+        "name": "σ^2_ICU|E",
+        "type": "CONSTANT",
+        "expression": "18.24",
+        "description": "Variance of time from infection to ICU admission (observational model parameter).",
+        "unit": "days^2"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

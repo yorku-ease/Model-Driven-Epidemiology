@@ -1,0 +1,305 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "S_h",
+      "raw_text": "S_h",
+      "page_number": 0,
+      "text_span": "Density of susceptible human individuals at age a.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Density of susceptible human individuals at age a."
+    },
+    {
+      "normalized_name": "E_h",
+      "raw_text": "E_h",
+      "page_number": 0,
+      "text_span": "Density of exposed (latent) human individuals at age a.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Density of exposed (latent) human individuals at age a."
+    },
+    {
+      "normalized_name": "I_h",
+      "raw_text": "I_h",
+      "page_number": 0,
+      "text_span": "Density of symptomatic infectious human individuals at age a.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Density of symptomatic infectious human individuals at age a."
+    },
+    {
+      "normalized_name": "A_h",
+      "raw_text": "A_h",
+      "page_number": 0,
+      "text_span": "Density of asymptomatic infectious human individuals at age a.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Density of asymptomatic infectious human individuals at age a."
+    },
+    {
+      "normalized_name": "R_h",
+      "raw_text": "R_h",
+      "page_number": 0,
+      "text_span": "Density of recovered human individuals at age a.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Density of recovered human individuals at age a."
+    },
+    {
+      "normalized_name": "S_v",
+      "raw_text": "S_v",
+      "page_number": 0,
+      "text_span": "Portion of susceptible mosquitoes (represented as 1-I_v in the scaled model).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Portion of susceptible mosquitoes (represented as 1-I_v in the scaled model)."
+    },
+    {
+      "normalized_name": "I_v",
+      "raw_text": "I_v",
+      "page_number": 0,
+      "text_span": "Portion of infectious mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Portion of infectious mosquitoes."
+    }
+  ],
+  "flows": [
+    {
+      "source": "S_h",
+      "target": "E_h",
+      "flow_type": "ContactFlow",
+      "raw_text": "Susceptible humans become exposed through bites by infectious mosquitoes, governed by the age-dependent transmission rate \u03b2_h(a).",
+      "page_number": 0,
+      "text_span": "Susceptible humans become exposed through bites by infectious mosquitoes, governed by the age-dependent transmission rate \u03b2_h(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible humans become exposed through bites by infectious mosquitoes, governed by the age-dependent transmission rate \u03b2_h(a)."
+    },
+    {
+      "source": "E_h",
+      "target": "I_h",
+      "flow_type": "RateFlow",
+      "raw_text": "A fraction \u03c1 of exposed individuals become symptomatic infectious at an age-dependent rate k(a).",
+      "page_number": 0,
+      "text_span": "A fraction \u03c1 of exposed individuals become symptomatic infectious at an age-dependent rate k(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A fraction \u03c1 of exposed individuals become symptomatic infectious at an age-dependent rate k(a)."
+    },
+    {
+      "source": "E_h",
+      "target": "A_h",
+      "flow_type": "RateFlow",
+      "raw_text": "A fraction (1-\u03c1) of exposed individuals become asymptomatic infectious at an age-dependent rate k(a).",
+      "page_number": 0,
+      "text_span": "A fraction (1-\u03c1) of exposed individuals become asymptomatic infectious at an age-dependent rate k(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A fraction (1-\u03c1) of exposed individuals become asymptomatic infectious at an age-dependent rate k(a)."
+    },
+    {
+      "source": "A_h",
+      "target": "I_h",
+      "flow_type": "ContactFlow",
+      "raw_text": "Asymptomatic individuals are reinfected by infectious mosquitoes and become symptomatic infectious, governed by the transmission rate \u03c3\u03b2_h(a).",
+      "page_number": 0,
+      "text_span": "Asymptomatic individuals are reinfected by infectious mosquitoes and become symptomatic infectious, governed by the transmission rate \u03c3\u03b2_h(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Asymptomatic individuals are reinfected by infectious mosquitoes and become symptomatic infectious, governed by the transmission rate \u03c3\u03b2_h(a)."
+    },
+    {
+      "source": "I_h",
+      "target": "R_h",
+      "flow_type": "RateFlow",
+      "raw_text": "Symptomatic infectious individuals recover at an age-specific rate \u03b3_1(a).",
+      "page_number": 0,
+      "text_span": "Symptomatic infectious individuals recover at an age-specific rate \u03b3_1(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Symptomatic infectious individuals recover at an age-specific rate \u03b3_1(a)."
+    },
+    {
+      "source": "A_h",
+      "target": "R_h",
+      "flow_type": "RateFlow",
+      "raw_text": "Asymptomatic infectious individuals recover at an age-specific rate \u03b3_2(a).",
+      "page_number": 0,
+      "text_span": "Asymptomatic infectious individuals recover at an age-specific rate \u03b3_2(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Asymptomatic infectious individuals recover at an age-specific rate \u03b3_2(a)."
+    },
+    {
+      "source": "S_v",
+      "target": "I_v",
+      "flow_type": "ContactFlow",
+      "raw_text": "Susceptible mosquitoes become infected by biting symptomatic or asymptomatic humans, governed by the age-dependent transmission rate \u03b2_v(a).",
+      "page_number": 0,
+      "text_span": "Susceptible mosquitoes become infected by biting symptomatic or asymptomatic humans, governed by the age-dependent transmission rate \u03b2_v(a).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible mosquitoes become infected by biting symptomatic or asymptomatic humans, governed by the age-dependent transmission rate \u03b2_v(a)."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "B",
+      "raw_text": "B",
+      "value": "Not specified",
+      "unit": "individuals/time",
+      "page_number": 0,
+      "text_span": "The constant influx rate of the human hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The constant influx rate of the human hosts."
+    },
+    {
+      "normalized_name": "\u03bc_h",
+      "raw_text": "\u03bc_h",
+      "value": "Not specified",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The natural death rate of the human hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The natural death rate of the human hosts."
+    },
+    {
+      "normalized_name": "\u03bc_v",
+      "raw_text": "\u03bc_v",
+      "value": "Not specified",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The natural death rate of the mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The natural death rate of the mosquitoes."
+    },
+    {
+      "normalized_name": "\u03b3_1(a)",
+      "raw_text": "\u03b3_1(a)",
+      "value": "Not specified",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific recovery rate of symptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific recovery rate of symptomatic infectious hosts."
+    },
+    {
+      "normalized_name": "\u03b3_2(a)",
+      "raw_text": "\u03b3_2(a)",
+      "value": "Not specified",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific recovery rate of asymptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific recovery rate of asymptomatic infectious hosts."
+    },
+    {
+      "normalized_name": "\u03b2_v(a)",
+      "raw_text": "\u03b2_v(a)",
+      "value": "Not specified",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes."
+    },
+    {
+      "normalized_name": "\u03b2_h(a)",
+      "raw_text": "\u03b2_h(a)",
+      "value": "Not specified",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific transmission rate from infected mosquitoes to susceptible hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific transmission rate from infected mosquitoes to susceptible hosts."
+    },
+    {
+      "normalized_name": "\u03c1",
+      "raw_text": "\u03c1",
+      "value": "Not specified",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "The probability of exposed hosts transferring to symptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The probability of exposed hosts transferring to symptomatic infectious hosts."
+    },
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "Not specified",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 7,
+    "num_parameters": 9,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

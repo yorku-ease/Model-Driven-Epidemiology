@@ -1,0 +1,464 @@
+{
+  "model_analysis": {
+    "modelName": "Cholera",
+    "summary": {
+      "modelName": "Cholera",
+      "totalPopulation": null,
+      "numCompartments": 10,
+      "numParameters": 10,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Susceptible people become infected through exposure to contaminated water.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infectious people recover from the disease and become immune.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infectious people shed bacteria, contaminating the water supply.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 3,
+          "primaryName": "Bacteria in reservoir",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "Treated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Vaccinated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 6,
+          "primaryName": "Health-educated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 7,
+          "primaryName": "Quarantined",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 8,
+          "primaryName": "Asymptomatic",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 9,
+          "primaryName": "Hyperinfectious Bacteria",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "R",
+          "type": "CONSTANT",
+          "expression": "2",
+          "description": "",
+          "unit": ""
+        },
+        {
+          "index": 1,
+          "name": "R0",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "The basic reproduction number, defined as the number of individuals that an infected individual can infect when introduced into a completely susceptible population.",
+          "unit": ""
+        },
+        {
+          "index": 2,
+          "name": "\u03bb",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "The force of infection. The rate of cholera transmission is a product of the force of infection and the size of the susceptible population.",
+          "unit": ""
+        },
+        {
+          "index": 3,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "10-5 to 1",
+          "description": "The rate of \u201ccontact\u201d between the susceptible population with contaminated water.",
+          "unit": "days-1"
+        },
+        {
+          "index": 4,
+          "name": "\u03ba",
+          "type": "CONSTANT",
+          "expression": "10^5 to 10^6",
+          "description": "The concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate.",
+          "unit": "cells/mL"
+        },
+        {
+          "index": 5,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "The per capita recovery rate, which is the reciprocal of the duration of infection.",
+          "unit": ""
+        },
+        {
+          "index": 6,
+          "name": "1/\u03b3",
+          "type": "CONSTANT",
+          "expression": "2.9 to 14",
+          "description": "Duration of cholera infection.",
+          "unit": "days"
+        },
+        {
+          "index": 7,
+          "name": "1/\u03b4",
+          "type": "CONSTANT",
+          "expression": "3 to 41",
+          "description": "Cholera life span in water reservoir.",
+          "unit": "days"
+        },
+        {
+          "index": 8,
+          "name": "\u03b4",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "The decay rate of cholera in the water reservoir, which is the reciprocal of the cholera life span.",
+          "unit": ""
+        },
+        {
+          "index": 9,
+          "name": "\u03be",
+          "type": "CONSTANT",
+          "expression": "0.01 to 10",
+          "description": "The rate of water contamination by infectious people shedding V. cholerae into the water reservoir.",
+          "unit": "cells * mL-1 * person-1 * day-1"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Cholera",
+    "totalParameters": 10,
+    "parametersWithUncertainty": 10,
+    "parameters": [
+      {
+        "parameter": "R",
+        "yourValue": "2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "",
+        "description": "",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "R0",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "",
+        "description": "The basic reproduction number, defined as the number of individuals that an infected individual can infect when introduced into a completely susceptible population.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bb",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "",
+        "description": "The force of infection. The rate of cholera transmission is a product of the force of infection and the size of the susceptible population.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2",
+        "yourValue": "10-5 to 1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "days-1",
+        "description": "The rate of \u201ccontact\u201d between the susceptible population with contaminated water.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03ba",
+        "yourValue": "10^5 to 10^6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "cells/mL",
+        "description": "The concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "",
+        "description": "The per capita recovery rate, which is the reciprocal of the duration of infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "1/\u03b3",
+        "yourValue": "2.9 to 14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "days",
+        "description": "Duration of cholera infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "1/\u03b4",
+        "yourValue": "3 to 41",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "days",
+        "description": "Cholera life span in water reservoir.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b4",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "",
+        "description": "The decay rate of cholera in the water reservoir, which is the reciprocal of the cholera life span.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03be",
+        "yourValue": "0.01 to 10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera",
+        "unit": "cells * mL-1 * person-1 * day-1",
+        "description": "The rate of water contamination by infectious people shedding V. cholerae into the water reservoir.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 10
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Cholera",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "R",
+        "type": "other",
+        "currentValue": 2.0,
+        "description": "",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "R"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "R"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "R": {
+          "mu": 0.5943214627786801,
+          "mu_star": 0.5943214627786801,
+          "sigma": 0.027009378268860757,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}
