@@ -47,118 +47,118 @@
 - **Source:** rag
 - **Value:** 0.01 to 10 cells mL^-1 person^-1 day^-1
 - **Description:** Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir
-- **From papers:** p2_cholera_llm_gemini_20260211_201419, p2_cholera_llm_claude_20260212_211525, p2_cholera_llm_openai_20260218_174559
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_cholera_llm_gemini_20260211_201419, p2_tuberculosis_llm_gemini_20260211_202038
 
 ### ξm (missing_parameters)
 - **Source:** rag
 - **Value:** 0.01 to 10 cells mL^-1 person^-1 day^-1
 - **Description:** Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_cholera_llm_openai_20260218_174559, p2_cholera_llm_gemini_20260211_201419
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_measles_llm_gemini_20260211_201815, p2_zika_llm_gemini_20260211_202118
 
 ### βc (missing_parameters)
 - **Source:** rag
 - **Value:** 0.0 
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_cholera_llm_claude_20260212_211525, p2_ebola_llm_gemini_20260211_201558
+- **From papers:** p2_ebola_llm_gemini_20260211_201558, p2_measles_llm_claude_20260212_211744, p2_cholera_llm_claude_20260212_211525
 
 ### βa (missing_parameters)
 - **Source:** rag
 - **Value:** 0.2 dimensionless
 - **Description:** 1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination
-- **From papers:** p2_flu_llm_claude_20260212_211710, p2_malaria_llm_claude_20260218_172126, p1_model_malaria
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_measles_llm_claude_20260212_211744, p1_model_malaria
 
 ### m (missing_parameters)
 - **Source:** rag
 - **Value:** 4.777e-6 per week
 - **Description:** Monitored children vaccination rate
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_zika_llm_claude_20260212_212158, p2_zika_llm_gemini_20260211_202118
+- **From papers:** p2_measles_llm_claude_20260212_211744, p2_zika_llm_gemini_20260211_202118, p2_zika_llm_claude_20260212_212158
 
 ### γ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.120342 1/time
 - **Description:** Recovery rate Ih to Rh
-- **From papers:** p2_flu_llm_claude_20260212_211710, p2_cholera_llm_gemini_20260211_201419, p2_ebola_llm_gemini_20260211_201558
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p1_model_malaria, p2_cholera_llm_claude_20260212_211525
 
 ### φ (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.1 per day
+- **Reasoning:** The parameter φ often represents the rate of waning immunity or loss of immunity in compartmental models. For measles, immunity loss is rare but can occur at a low rate, typically around 0.1 per year, which translates to approximately 0.1 per day when considering daily rates.
 - **Confidence:** LOW
 
 ### ε (missing_parameters)
 - **Source:** rag
 - **Value:** 2.0 
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_malaria_llm_gemini_20260218_173044, p2_tuberculosis_llm_claude_20260212_212137
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_tuberculosis_llm_gemini_20260211_202038, p2_dengue_llm_claude_20260212_211544
 
 ### ηa (missing_parameters)
 - **Source:** rag
 - **Value:** 0.2 dimensionless
 - **Description:** 1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_flu_llm_claude_20260212_211710, p2_hiv_llm_openai_20260218_174815
+- **From papers:** p2_flu_llm_claude_20260212_211710, p2_hiv_llm_gemini_20260218_172812, p2_measles_llm_claude_20260212_211744
 
 ### ηu (missing_parameters)
 - **Source:** rag
 - **Value:** 0.2 dimensionless
 - **Description:** 1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_malaria_llm_claude_20260218_172126, p2_malaria_llm_gemini_20260218_173044
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_hiv_llm_gemini_20260218_172812, p2_measles_llm_claude_20260212_211744
 
 ### ηm (missing_parameters)
 - **Source:** rag
 - **Value:** 0.2 dimensionless
 - **Description:** 1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_flu_llm_claude_20260212_211710, p2_hiv_llm_openai_20260218_174815
+- **From papers:** p2_flu_llm_claude_20260212_211710, p2_hiv_llm_gemini_20260218_172812, p2_measles_llm_claude_20260212_211744
 
 ### δ (missing_parameters)
 - **Source:** rag
 - **Value:** 9.3399e-5 per week
 - **Description:** Disease-induced death rate
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_measles_llm_gemini_20260211_201815, p2_cholera_llm_claude_20260212_211525
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_measles_llm_gemini_20260211_201815, p2_measles_llm_claude_20260212_211744
 
 ### d (missing_parameters)
 - **Source:** rag
 - **Value:** 1.0 
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_cholera_llm_claude_20260212_211525, p2_hiv_llm_openai_20260218_174815
+- **From papers:** p2_hiv_llm_gemini_20260218_172812, p2_measles_llm_claude_20260212_211744, p2_cholera_llm_claude_20260212_211525
 
 ### ξa (missing_parameters)
 - **Source:** rag
 - **Value:** 0.01253 dimensionless
 - **Description:** Fraction of total population in the measles transmission contact network
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_cholera_llm_gemini_20260211_201419, p2_cholera_llm_claude_20260212_211525
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_hiv_llm_gemini_20260218_172812, p2_measles_llm_claude_20260212_211744
 
 ### α (missing_parameters)
 - **Source:** rag
 - **Value:** 0.0 
-- **From papers:** p2_hiv_llm_claude_20260218_171956, p2_ebola_llm_gemini_20260211_201558, p1_model_malaria
+- **From papers:** p2_ebola_llm_gemini_20260211_201558, p1_model_malaria, p2_hiv_llm_claude_20260218_171956
 
 ### q (missing_parameters)
 - **Source:** rag
 - **Value:** 0.15 dimensionless
 - **Description:** Portion of infections recorded
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_baseline_malaria, p2_zika_llm_claude_20260212_212158
+- **From papers:** p2_zika_llm_gemini_20260211_202118, p2_baseline_malaria, p2_measles_llm_claude_20260212_211744
 
 ### l (missing_parameters)
 - **Source:** rag
 - **Value:** 2017.0 
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_hiv_llm_openai_20260218_174815, p1_model_malaria
+- **From papers:** p2_hiv_llm_gemini_20260218_172812, p2_measles_llm_claude_20260212_211744, p1_model_malaria
 
 ### ε * βc (missing_parameters)
 - **Source:** rag
 - **Value:** mu * N persons per week
 - **Description:** Recruitment rate to children group (birth rate balancing death rate)
-- **From papers:** p2_flu_llm_claude_20260212_211710, p2_malaria_llm_claude_20260218_172126, p1_model_malaria
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_measles_llm_claude_20260212_211744, p1_model_malaria
 
 ### ε * βa (missing_parameters)
 - **Source:** rag
 - **Value:** mu * N persons per week
 - **Description:** Recruitment rate to children group (birth rate balancing death rate)
-- **From papers:** p2_flu_llm_claude_20260212_211710, p2_malaria_llm_claude_20260218_172126, p1_model_malaria
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_measles_llm_claude_20260212_211744, p1_model_malaria
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **16**
+- Parameters compared: **17**
 - Exact match (<1% error): **1**
 - Close (<10% error): **0**
 - Approximate (<50% error): **1**
-- Poor (>50% error): **14**
-- **Accuracy (exact+close)**: **6.2%**
+- Poor (>50% error): **15**
+- **Accuracy (exact+close)**: **5.9%**
 - Median relative error: **100.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
@@ -169,7 +169,7 @@
 | βa | 0.2 | 1e-05 | 1999900.0% | poor |
 | m | 4.777e-06 | 0.000268 | 98.22% | poor |
 | γ | 0.120342 | 0.5 | 75.93% | poor |
-| φ | None | 0.00128 | — | no_fill |
+| φ | 0.1 | 0.00128 | 7712.5% | poor |
 | ε | 2.0 | 0.2 | 900.0% | poor |
 | ηa | 0.2 | 0.0 | 100.0% | poor |
 | ηu | 0.2 | 3e-06 | 6666566.67% | poor |

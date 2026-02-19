@@ -30,6 +30,7 @@ def fill_gaps(
     use_rag: bool = True,
     use_inference: bool = True,
     llm_client: Optional[Any] = None,
+    llm_provider: str = "gemini",
 ) -> Dict[str, Any]:
     """
     For each gap, try to fill it:
@@ -71,12 +72,13 @@ def fill_gaps(
                         filled.append(result)
                         continue
 
-                # Tier 2: LLM inference
+                # Tier 2: LLM inference (uses same provider as Phase 2)
                 if use_inference:
                     inferred = infer_parameter_llm(
                         expected, disease_hint,
                         context=paper_text[:800],
                         llm_client=llm_client,
+                        provider=llm_provider,
                     )
                     if inferred.get("value") is not None or inferred.get("reasoning"):
                         result["source"] = "inference"

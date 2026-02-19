@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="αₕ" expression="15129" type="CONSTANT" unit="people/time" description="Recruitment rate of human populations" />
+  <parameters name="q" expression="0.98765" type="CONSTANT" unit="1/time" description="Progression rate of Rh to Sh" />
+  <parameters name="β₁" expression="0.9969" type="CONSTANT" unit="dimensionless" description="Probability of transmission (human)" />
+  <parameters name="μₕ" expression="0.001384" type="CONSTANT" unit="1/time" description="Natural mortality rate of human population" />
+  <parameters name="a(t)" expression="0.000203" type="CONSTANT" unit="bites/person/time" description="Mosquito biting rate" />
+  <parameters name="μᵥ(t)" expression="1" type="CONSTANT" unit="1/time" description="Mortality rate of adult mosquitoes" />
+  <parameters name="ρₕ" expression="0.001995" type="CONSTANT" unit="1/time" description="Progression rate Eh to Ih" />
+  <parameters name="γₕ" expression="0.120342" type="CONSTANT" unit="1/time" description="Recovery rate Ih to Rh" />
+  <parameters name="μₕ+δ" expression="0.017325" type="CONSTANT" unit="1/time" description="Disease-induced death rate" />
+  <parameters name="θᵥ(t,r)" expression="200" type="CONSTANT" unit="mosquitoes/time" description="Mosquito recruitment rate" />
+  <parameters name="nᵥ" expression="80000" type="CONSTANT" unit="mosquitoes" description="Approx. Mosquito population" />
+  <parameters name="λₘ(t)" expression="0.000203" type="CONSTANT" unit="bites/person/time" description="Mosquito biting rate" />
+  <parameters name="k" expression="100000" type="CONSTANT" unit="mosquitoes" description="Mosquito carrying capacity" />
+  <parameters name="t" expression="1.0" type="CONSTANT" />
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Humans become exposed to malaria through contact with infectious mosquitoes." />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRate="0.0" target="//@compartments.3" description="Humans become exposed to malaria through non-vector means such as blood transfusion." />
+  </compartments>
+  <compartments PrimaryName="Vaccinated Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Vaccinated humans become exposed to malaria through contact with infectious mosquitoes." />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRate="0.0" target="//@compartments.3" description="Vaccinated humans become exposed to malaria through non-vector means." />
+  </compartments>
+  <compartments PrimaryName="Vector Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Vector exposed humans progress to become infectious." />
+  </compartments>
+  <compartments PrimaryName="Non-Vector Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Non-vector exposed humans progress to become infectious." />
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Infectious humans receive treatment." />
+  </compartments>
+  <compartments PrimaryName="Treated Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Treated humans recover from malaria." />
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Recovered humans lose immunity and become susceptible again." />
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRate="0.0" target="//@compartments.8" description="Susceptible mosquitoes become exposed to malaria through contact with infectious humans." />
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.9" description="Exposed mosquitoes progress to become infectious." />
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0" />
+</ns0:CompartmentalModel>

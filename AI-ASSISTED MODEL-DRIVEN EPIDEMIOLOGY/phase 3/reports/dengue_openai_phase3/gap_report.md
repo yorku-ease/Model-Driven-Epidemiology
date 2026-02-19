@@ -40,43 +40,43 @@
 - **Source:** rag
 - **Value:** 0.005 per unit time
 - **Description:** The natural death rate of the human hosts
-- **From papers:** p2_dengue_llm_claude_20260212_211544, p2_hiv_llm_claude_20260218_171956, p2_dengue_llm_openai_20260218_174642
+- **From papers:** p2_dengue_llm_claude_20260212_211544, p1_model_malaria, p2_hiv_llm_claude_20260218_171956
 
 ### μv (missing_parameters)
 - **Source:** rag
 - **Value:** 0.65 per unit time
 - **Description:** The natural death rate of the mosquitoes
-- **From papers:** p2_dengue_llm_openai_20260218_174642, p2_zika_llm_claude_20260212_212158, p2_dengue_llm_claude_20260212_211544
+- **From papers:** p2_zika_llm_gemini_20260211_202118, p2_dengue_llm_claude_20260212_211544, p2_zika_llm_claude_20260212_212158
 
 ### ha (missing_parameters)
 - **Source:** rag
 - **Value:** 18 per unit time
 - **Description:** The age-specific transmission rate from infected mosquitoes to susceptible hosts
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_dengue_llm_openai_20260218_174642, p1_model_malaria
+- **From papers:** p2_dengue_llm_claude_20260212_211544, p2_measles_llm_claude_20260212_211744, p1_model_malaria
 
 ### γ1a (missing_parameters)
 - **Source:** rag
 - **Value:** 0.5 per unit time
 - **Description:** The age-specific recovery rate of symptomatic infectious hosts
-- **From papers:** p2_dengue_llm_claude_20260212_211544, p2_dengue_llm_openai_20260218_174642, p2_cholera_llm_openai_20260218_174559
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_dengue_llm_claude_20260212_211544, p1_model_malaria
 
 ### γ2a (missing_parameters)
 - **Source:** rag
 - **Value:** 0.5 per unit time
 - **Description:** The age-specific recovery rate of asymptomatic infectious hosts
-- **From papers:** p2_dengue_llm_claude_20260212_211544, p2_dengue_llm_openai_20260218_174642, p2_cholera_llm_openai_20260218_174559
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_dengue_llm_claude_20260212_211544, p1_model_malaria
 
 ### va (missing_parameters)
 - **Source:** rag
 - **Value:** 8 per unit time
 - **Description:** The age-specific transmission rate from infectious hosts to susceptible mosquitoes
-- **From papers:** p2_dengue_llm_openai_20260218_174642, p2_hiv_llm_openai_20260218_174815, p2_dengue_llm_claude_20260212_211544
+- **From papers:** p2_dengue_llm_claude_20260212_211544, p2_hiv_llm_gemini_20260218_172812, p2_dengue_llm_openai_20260218_174642
 
 ### k (missing_parameters)
 - **Source:** rag
 - **Value:** 100000 mosquitoes
 - **Description:** Mosquito carrying capacity
-- **From papers:** p2_dengue_llm_claude_20260212_211544, p2_cholera_llm_claude_20260212_211525, p2_cholera_llm_gemini_20260211_201419
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_malaria_llm_gemini_20260218_173044, p2_baseline_malaria
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **7**

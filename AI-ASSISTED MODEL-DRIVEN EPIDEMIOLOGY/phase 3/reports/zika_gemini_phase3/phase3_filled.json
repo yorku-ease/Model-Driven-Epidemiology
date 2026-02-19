@@ -16,10 +16,10 @@
         "description": "Progression rate Ev to Iv",
         "sources": [
           "p2_dengue_llm_claude_20260212_211544",
+          "p2_hiv_llm_gemini_20260218_172812",
+          "p1_model_malaria",
           "p2_hiv_llm_claude_20260218_171956",
           "p2_hiv_llm_openai_20260218_174815",
-          "p1_model_malaria",
-          "p2_hiv_llm_gemini_20260218_172812",
           "p2_dengue_llm_gemini_20260211_201457"
         ]
       }
@@ -40,12 +40,12 @@
         "description": "Egg development time",
         "sources": [
           "p2_dengue_llm_claude_20260212_211544",
-          "p2_malaria_llm_claude_20260218_172126",
-          "p2_hiv_llm_openai_20260218_174815",
-          "p2_zika_llm_claude_20260212_212158",
           "p2_zika_llm_gemini_20260211_202118",
-          "p1_model_malaria",
           "p2_hiv_llm_gemini_20260218_172812",
+          "p1_model_malaria",
+          "p2_malaria_llm_claude_20260218_172126",
+          "p2_zika_llm_claude_20260212_212158",
+          "p2_hiv_llm_openai_20260218_174815",
           "p2_dengue_llm_gemini_20260211_201457"
         ]
       }
@@ -66,12 +66,12 @@
         "description": "Larval development time",
         "sources": [
           "p2_dengue_llm_claude_20260212_211544",
-          "p2_malaria_llm_claude_20260218_172126",
-          "p2_hiv_llm_openai_20260218_174815",
-          "p2_zika_llm_claude_20260212_212158",
           "p2_zika_llm_gemini_20260211_202118",
-          "p1_model_malaria",
           "p2_hiv_llm_gemini_20260218_172812",
+          "p1_model_malaria",
+          "p2_malaria_llm_claude_20260218_172126",
+          "p2_zika_llm_claude_20260212_212158",
+          "p2_hiv_llm_openai_20260218_174815",
           "p2_dengue_llm_gemini_20260211_201457"
         ]
       }
@@ -92,11 +92,11 @@
         "description": "Inverse of pupal development time (3 days).",
         "sources": [
           "p2_dengue_llm_claude_20260212_211544",
+          "p2_zika_llm_gemini_20260211_202118",
+          "p2_hiv_llm_gemini_20260218_172812",
+          "p1_model_malaria",
           "p2_malaria_llm_claude_20260218_172126",
           "p2_hiv_llm_openai_20260218_174815",
-          "p2_zika_llm_gemini_20260211_202118",
-          "p1_model_malaria",
-          "p2_hiv_llm_gemini_20260218_172812",
           "p2_dengue_llm_gemini_20260211_201457"
         ]
       }
@@ -116,13 +116,13 @@
         "paper_id": "p1_model_malaria",
         "description": "Progression rate Ev to Iv",
         "sources": [
-          "p2_measles_llm_claude_20260212_211744",
+          "p2_dengue_llm_gemini_20260211_201457",
           "p2_dengue_llm_claude_20260212_211544",
+          "p2_hiv_llm_gemini_20260218_172812",
+          "p1_model_malaria",
           "p2_malaria_llm_claude_20260218_172126",
           "p2_hiv_llm_openai_20260218_174815",
-          "p1_model_malaria",
-          "p2_hiv_llm_gemini_20260218_172812",
-          "p2_dengue_llm_gemini_20260211_201457"
+          "p2_measles_llm_claude_20260212_211744"
         ]
       }
     },
@@ -141,13 +141,13 @@
         "paper_id": "p1_model_malaria",
         "description": "Progression rate Eh to Ih",
         "sources": [
-          "p2_hiv_llm_claude_20260218_171956",
-          "p2_dengue_llm_openai_20260218_174642",
-          "p2_cholera_llm_claude_20260212_211525",
-          "p2_cholera_llm_gemini_20260211_201419",
-          "p1_model_malaria",
           "p2_cholera_llm_openai_20260218_174559",
+          "p2_cholera_llm_claude_20260212_211525",
           "p2_dengue_llm_claude_20260212_211544",
+          "p1_model_malaria",
+          "p2_hiv_llm_claude_20260218_171956",
+          "p2_cholera_llm_gemini_20260211_201419",
+          "p2_dengue_llm_openai_20260218_174642",
           "p2_dengue_llm_gemini_20260211_201457"
         ]
       }
@@ -180,12 +180,14 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "value": 0.1,
+        "unit": "per day",
+        "reasoning": "The parameter \u03c6 often represents the rate of progression or transition between compartments. A typical value for such rates in epidemiological models is around 0.1 per day, assuming a moderate transition speed.",
+        "range_low": 0.05,
+        "range_high": 0.2,
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; verify from literature."
       }
     },
     {
@@ -203,14 +205,14 @@
         "paper_id": "p2_zika_llm_gemini_20260211_202118",
         "description": "Inverse of pupal development time (3 days).",
         "sources": [
-          "p2_malaria_llm_claude_20260218_172126",
-          "p1_model_malaria",
-          "p2_dengue_llm_claude_20260212_211544",
           "p2_hiv_llm_gemini_20260218_172812",
+          "p1_model_malaria",
+          "p2_malaria_llm_claude_20260218_172126",
           "p2_dengue_llm_gemini_20260211_201457",
+          "p2_zika_llm_gemini_20260211_202118",
           "p2_hiv_llm_claude_20260218_171956",
           "p2_dengue_llm_openai_20260218_174642",
-          "p2_zika_llm_gemini_20260211_202118"
+          "p2_dengue_llm_claude_20260212_211544"
         ]
       }
     },

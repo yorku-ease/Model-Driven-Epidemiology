@@ -38,25 +38,25 @@
 - **Source:** rag
 - **Value:** 0.98765 1/time
 - **Description:** Progression rate of Rh to Sh
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126
+- **From papers:** p2_zika_llm_gemini_20260211_202118, p2_baseline_malaria, p1_model_malaria
 
 ### μₕ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.001384 1/time
 - **Description:** Natural mortality rate of human population
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_hiv_llm_claude_20260218_171956, p2_baseline_malaria
+- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p1_model_malaria
 
 ### μᵥ(t) (missing_parameters)
 - **Source:** rag
 - **Value:** 1/((-0.03*T*T) + (1.31*T) - 4.4) 1/time
 - **Description:** Mortality rate of adult mosquitoes
-- **From papers:** p2_dengue_llm_claude_20260212_211544, p1_model_malaria, p2_baseline_malaria
+- **From papers:** p1_model_malaria, p2_baseline_malaria, p2_dengue_llm_claude_20260212_211544
 
 ### k (missing_parameters)
 - **Source:** rag
 - **Value:** 100000 mosquitoes
 - **Description:** Mosquito carrying capacity
-- **From papers:** p2_cholera_llm_claude_20260212_211525, p2_cholera_llm_gemini_20260211_201419, p2_baseline_malaria
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_malaria_llm_gemini_20260218_173044, p2_baseline_malaria
 
 ### infected mosquitoes population (missing_compartments)
 - **Source:** flagged

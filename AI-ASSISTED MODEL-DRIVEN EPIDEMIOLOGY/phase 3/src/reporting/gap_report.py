@@ -279,7 +279,7 @@ def generate_overall_report(
             elif r["total_gaps"] == 0:
                 row_str += " 0 |"
             else:
-                detail = f"{r['total_gaps']} (RAG:{r['rag']} flag:{r['flagged']})"
+                detail = f"{r['total_gaps']} (RAG:{r['rag']} inf:{r['inference']} flag:{r['flagged']})"
                 row_str += f" {detail} |"
         lines.append(row_str)
 
@@ -340,6 +340,25 @@ def generate_overall_report(
             lines.append(f"| {disp} | {r['provider'].capitalize()} | {r['val_compared']} | {r['val_exact']} | {r['val_close']} | {r['val_approx']} | {r['val_poor']} | {acc}% |")
         lines.append("")
 
+        # By-provider summary (aggregate validation and fills per provider)
+        lines.append("### By provider (validation)")
+        lines.append("")
+        lines.append("| Provider | Gaps | RAG | Inference | Flagged | Compared | Exact | Accuracy |")
+        lines.append("|----------|------|-----|-----------|---------|----------|-------|----------|")
+        for prov in providers:
+            prov_rows = [r for r in rows if r["provider"] == prov]
+            tg = sum(r["total_gaps"] for r in prov_rows)
+            rag = sum(r["rag"] for r in prov_rows)
+            inf = sum(r["inference"] for r in prov_rows)
+            fl = sum(r["flagged"] for r in prov_rows)
+            comp = sum(r["val_compared"] for r in prov_rows)
+            ex = sum(r["val_exact"] for r in prov_rows)
+            acc_prov = round(100 * ex / comp, 1) if comp else "—"
+            lines.append(f"| {prov.capitalize()} | {tg} | {rag} | {inf} | {fl} | {comp} | {ex} | {acc_prov}% |")
+        lines.append("")
+        lines.append("Accuracy = exact matches / compared (vs gold standard). RAG supplies most fills; inference is used when RAG finds nothing.")
+        lines.append("")
+
     # Interpretation
     lines.append("## Interpretation")
     lines.append("")
@@ -358,8 +377,13 @@ def generate_overall_report(
                           f"(comp:{r['missing_comp']} param:{r['missing_param']} "
                           f"strat:{r['missing_strat']} interv:{r['missing_interv']})")
     else:
-        lines.append(f"{zero_gap_count}/{len(rows)} reports are gap-free. "
-                      f"The remaining {len(rows)-zero_gap_count} reports have a total of {total_gaps} gaps.")
+        lines.append(f"**{zero_gap_count}/{len(rows)}** reports are gap-free. "
+                      f"The remaining **{len(rows)-zero_gap_count}** reports have a total of **{total_gaps}** gaps.")
+    lines.append("")
+    lines.append("- **Gap counts** depend on the Phase 2 extractor (different LLMs extract different parameters), so totals vary by provider.")
+    lines.append("- **Fills** come from RAG first (paper database lookup); when RAG finds nothing, LLM inference is tried; the rest are flagged for manual review.")
+    lines.append("- **Validation** compares only *filled parameter values* to the gold-standard baseline; compartments/stratifications are not valued, so they are not in the accuracy counts.")
+    lines.append("- For per-disease details, open the corresponding `reports/<disease>_<provider>_phase3/gap_report.md` and `phase3_validation.json`.")
     lines.append("")
 
     content = "\n".join(lines)

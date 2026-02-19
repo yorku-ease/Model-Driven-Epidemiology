@@ -37,31 +37,31 @@
 - **Source:** rag
 - **Value:** 0.01 to 10 cells mL^-1 person^-1 day^-1
 - **Description:** Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir
-- **From papers:** p2_cholera_llm_gemini_20260211_201419, p2_cholera_llm_claude_20260212_211525, p2_cholera_llm_openai_20260218_174559
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_cholera_llm_gemini_20260211_201419, p2_tuberculosis_llm_gemini_20260211_202038
 
 ### ξm (missing_parameters)
 - **Source:** rag
 - **Value:** 0.01 to 10 cells mL^-1 person^-1 day^-1
 - **Description:** Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_cholera_llm_openai_20260218_174559, p2_cholera_llm_gemini_20260211_201419
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p2_measles_llm_gemini_20260211_201815, p2_zika_llm_gemini_20260211_202118
 
 ### φ (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.1 
+- **Reasoning:** The parameter φ often represents the rate of waning immunity or a similar transition rate in compartmental models. For measles, a typical value might be around 0.1 per year, reflecting a slow loss of immunity.
 - **Confidence:** LOW
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **2**
+- Parameters compared: **3**
 - Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **1**
-- Poor (>50% error): **1**
+- Poor (>50% error): **2**
 - **Accuracy (exact+close)**: **0.0%**
-- Median relative error: **20864.36%**
+- Median relative error: **7712.5%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
 | ξu | 0.01 | 0.0087 | 14.94% | approximate |
 | ξm | 0.01 | 4.77e-05 | 20864.36% | poor |
-| φ | None | 0.00128 | — | no_fill |
+| φ | 0.1 | 0.00128 | 7712.5% | poor |

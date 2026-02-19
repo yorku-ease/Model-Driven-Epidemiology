@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="ξu" expression="0.01" type="CONSTANT" unit="cells mL^-1 person^-1 day^-1" description="Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir" />
+  <parameters name="ξm" expression="0.01" type="CONSTANT" unit="cells mL^-1 person^-1 day^-1" description="Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir" />
+  <parameters name="βc" expression="0.0" type="CONSTANT" />
+  <parameters name="βa" expression="0.2" type="CONSTANT" unit="dimensionless" description="1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination" />
+  <parameters name="m" expression="4.777e-6" type="CONSTANT" unit="per week" description="Monitored children vaccination rate" />
+  <parameters name="γ" expression="0.120342" type="CONSTANT" unit="1/time" description="Recovery rate Ih to Rh" />
+  <parameters name="φ" expression="0.1" type="CONSTANT" unit="per day" />
+  <parameters name="ε" expression="2.0" type="CONSTANT" />
+  <parameters name="ηa" expression="0.2" type="CONSTANT" unit="dimensionless" description="1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination" />
+  <parameters name="ηu" expression="0.2" type="CONSTANT" unit="dimensionless" description="1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination" />
+  <parameters name="ηm" expression="0.2" type="CONSTANT" unit="dimensionless" description="1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination" />
+  <parameters name="δ" expression="9.3399e-5" type="CONSTANT" unit="per week" description="Disease-induced death rate" />
+  <parameters name="d" expression="1.0" type="CONSTANT" />
+  <parameters name="ξa" expression="0.01253" type="CONSTANT" unit="dimensionless" description="Fraction of total population in the measles transmission contact network" />
+  <parameters name="α" expression="0.0" type="CONSTANT" />
+  <parameters name="q" expression="0.15" type="CONSTANT" unit="dimensionless" description="Portion of infections recorded" />
+  <parameters name="l" expression="2017.0" type="CONSTANT" />
+  <compartments PrimaryName="Susceptible Children" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRate="0.0" target="//@compartments.3" description="Susceptible children become exposed after contact with infectious individuals." />
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Children" population="0" />
+  <compartments PrimaryName="Monitored Vaccinated Children" population="0" />
+  <compartments PrimaryName="Exposed Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Exposed children progress to the infectious stage." />
+  </compartments>
+  <compartments PrimaryName="Infectious Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Infectious children recover and become immune." />
+  </compartments>
+  <compartments PrimaryName="Immune Children" population="0" />
+  <compartments PrimaryName="Susceptible Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.9" contactRate="0.0" target="//@compartments.9" description="Susceptible adults become exposed after contact with infectious individuals." />
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Adults" population="0" />
+  <compartments PrimaryName="Vaccinated Adults" population="0" />
+  <compartments PrimaryName="Exposed Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.10" description="Exposed adults progress to the infectious stage." />
+  </compartments>
+  <compartments PrimaryName="Infectious Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.11" description="Infectious adults recover and become immune." />
+  </compartments>
+  <compartments PrimaryName="Immune Adults" population="0" />
+</ns0:CompartmentalModel>

@@ -34,7 +34,7 @@
 - **Source:** rag
 - **Value:** Unif(0,1) dimensionless
 - **Description:** Susceptibility; the proportion of the population that is initially susceptible.
-- **From papers:** p2_flu_llm_claude_20260212_211710, p2_hiv_llm_claude_20260218_171956, p2_malaria_llm_claude_20260218_172126
+- **From papers:** p2_hiv_llm_claude_20260218_171956, p2_malaria_llm_gemini_20260218_173044, p2_flu_llm_claude_20260212_211710
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **1**

@@ -1,5 +1,5 @@
 """
-Task 8.2 (part): Intelligent Inference for Missing Parameters
+Intelligent Inference for Missing Parameters
 
 When RAG doesn't find a value, the AI makes an educated guess using:
 1. Transfer learning from similar diseases
@@ -10,22 +10,27 @@ When RAG doesn't find a value, the AI makes an educated guess using:
 All inferred values are marked with LOW confidence for review.
 """
 
+import importlib.util
 import os
-import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-# Phase 2 is sibling of phase 3
-_phase2 = Path(__file__).resolve().parent.parent.parent / "phase 2"
-if _phase2.exists():
-    sys.path.insert(0, str(_phase2))
-try:
-    from src.utils.llm_client import LLMClient
-except ImportError:
-    LLMClient = None  # type: ignore
+# Load LLMClient from Phase 2 using importlib (avoids package name conflict with Phase 3's src/)
+_phase3_root = Path(__file__).resolve().parent.parent.parent
+_phase2 = _phase3_root.parent / "phase 2"
+_llm_client_path = _phase2 / "src" / "utils" / "llm_client.py"
+_api_key_file = _phase2 / ".api_key.txt"
 
+LLMClient = None
+if _llm_client_path.exists():
+    try:
+        spec = importlib.util.spec_from_file_location("llm_client_phase2", _llm_client_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        LLMClient = mod.LLMClient
+    except Exception:
+        pass
 
-# Typical ranges for common parameter names (transfer learning / defaults)
 PARAMETER_DEFAULTS: Dict[str, Dict[str, Any]] = {
     "incubation": {"value": 5.0, "unit": "days", "range": [2, 14], "note": "disease-dependent"},
     "recovery": {"value": 7.0, "unit": "days", "range": [3, 21], "note": "disease-dependent"},
@@ -60,15 +65,17 @@ def infer_parameter_llm(
     disease_hint: str,
     context: str = "",
     llm_client: Optional[Any] = None,
+    provider: str = "gemini",
 ) -> Dict[str, Any]:
     """
-    Use LLM to suggest a plausible value and reasoning (intelligent inference).
+    Use LLM to suggest a plausible value and reasoning.
 
-    Returns dict with value, unit, reasoning, confidence=LOW, source=inference.
+    provider: LLM provider to use (gemini/openai/claude) — auto-detected from
+              the Phase 2 report directory name so it matches the original run.
     """
     if llm_client is None and LLMClient is not None:
-        provider = os.getenv("PHASE3_LLM_PROVIDER", "gemini")
-        llm_client = LLMClient(provider=provider)
+        llm_provider = os.getenv("PHASE3_LLM_PROVIDER", provider)
+        llm_client = LLMClient(provider=llm_provider, api_key_file=str(_api_key_file))
     if llm_client is None or not getattr(llm_client, "available", False):
         return _infer_fallback(parameter_name, disease_hint)
 
@@ -83,21 +90,50 @@ Return ONLY valid JSON in this exact format (no markdown, no explanation outside
 {{"value": <number>, "unit": "<unit string or null>", "reasoning": "<1-2 sentences>", "range_low": <number or null>, "range_high": <number or null>}}
 """
     try:
-        result = llm_client.extract_with_llm(prompt, max_tokens=300, temperature=0.2)
+        import re as _re
+        result = llm_client.extract_with_llm(prompt, max_tokens=500, temperature=0.2)
         if isinstance(result, dict):
-            return {
-                "value": result.get("value"),
-                "unit": result.get("unit"),
-                "reasoning": result.get("reasoning", ""),
-                "range_low": result.get("range_low"),
-                "range_high": result.get("range_high"),
-                "source": "llm_inference",
-                "confidence": "LOW",
-                "warning": "AI-inferred; verify from literature.",
-            }
+            # Successful parse
+            if result.get("value") is not None and "error" not in result:
+                return {
+                    "value": result.get("value"),
+                    "unit": result.get("unit"),
+                    "reasoning": result.get("reasoning", ""),
+                    "range_low": result.get("range_low"),
+                    "range_high": result.get("range_high"),
+                    "source": "llm_inference",
+                    "confidence": "LOW",
+                    "warning": "AI-inferred; verify from literature.",
+                }
+            # Failed JSON parse — try to salvage from raw_response
+            raw = result.get("raw_response", "")
+            if raw:
+                return _salvage_from_raw(raw)
     except Exception:
         pass
     return _infer_fallback(parameter_name, disease_hint)
+
+
+def _salvage_from_raw(raw: str) -> Optional[Dict[str, Any]]:
+    """Extract value from truncated/malformed LLM JSON response."""
+    import re
+    m = re.search(r'"value"\s*:\s*([0-9.eE+-]+)', raw)
+    if not m:
+        return None
+    try:
+        val = float(m.group(1))
+    except ValueError:
+        return None
+    unit_m = re.search(r'"unit"\s*:\s*"([^"]*)"', raw)
+    reason_m = re.search(r'"reasoning"\s*:\s*"([^"]*)"', raw)
+    return {
+        "value": val,
+        "unit": unit_m.group(1) if unit_m else None,
+        "reasoning": reason_m.group(1) if reason_m else "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred (partial response); verify from literature.",
+    }
 
 
 def _infer_fallback(parameter_name: str, disease_hint: str) -> Dict[str, Any]:

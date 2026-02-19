@@ -13,7 +13,10 @@ Usage:
   # Step 2b — run Phase 3 for ALL latest Phase 2 reports at once
   python run_phase3.py --all --output reports
 
-  # Options
+  # Specify LLM provider (overrides auto-detection from report dir name)
+  python run_phase3.py --all --llm-provider gemini --output reports
+
+  # Other options
   python run_phase3.py --all --no-rag --no-inference --output reports
 """
 
@@ -33,9 +36,10 @@ from src.gap_analysis.gap_detector import (
     load_paper_promises,
 )
 from src.gap_analysis.gap_filler_phase3 import fill_gaps
+from src.gap_analysis.model_updater import apply_fills_to_model
 from src.evaluation.guess_evaluator import evaluate_filled_gaps
 from src.rag.paper_database import load_paper_database
-from src.reporting.gap_report import generate_gap_report, generate_overall_report
+from src.reporting.gap_report import generate_gap_report
 
 
 DB_PATH = PHASE3_DIR / "data" / "paper_database"
@@ -128,11 +132,22 @@ def _find_gold_standard(disease: str) -> Optional[Path]:
     return None
 
 
-def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inference: bool):
+def _infer_provider(report_dir: Path) -> str:
+    """Infer LLM provider from report dir name (e.g. cholera_llm_gemini_... -> gemini)."""
+    name = report_dir.name.lower()
+    if "_llm_" in name:
+        return name.split("_llm_")[1].split("_")[0]
+    return "gemini"
+
+
+def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inference: bool,
+                   llm_provider: Optional[str] = None):
     """Run Phase 3 pipeline for a single Phase 2 report directory."""
     disease = infer_disease(report_dir)
+    provider = llm_provider or _infer_provider(report_dir)
     print(f"\n{'─'*60}")
     print(f"  Disease : {disease}")
+    print(f"  Provider: {provider}")
     print(f"  Report  : {report_dir.name}")
     print(f"  Output  : {output_dir}")
 
@@ -186,12 +201,22 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
         paper_text=paper_text,
         use_rag=use_rag,
         use_inference=use_inference,
+        llm_provider=provider,
     )
     filled_path = output_dir / "phase3_filled.json"
     with open(filled_path, "w", encoding="utf-8") as f:
         json.dump(filled, f, indent=2)
     s = filled["summary"]
     print(f"  Filled  : RAG={s.get('rag_count',0)}  Inference={s.get('inference_count',0)}  Flagged={s.get('flagged_count',0)}")
+
+    # 2b) Apply fills to draft model and write model_filled.compmodel
+    if model_path.exists():
+        filled_model_path = output_dir / "model_filled.compmodel"
+        try:
+            n_applied = apply_fills_to_model(Path(model_path), filled, filled_model_path)
+            print(f"  Model   : {filled_model_path.name} ({n_applied} parameters updated/added)")
+        except Exception as e:
+            print(f"  Model   : skip ({e})")
 
     # 3) Validation against gold standard
     validation = evaluate_filled_gaps(filled, gold_standard=gold_rich)
@@ -215,6 +240,10 @@ def main():
     ap.add_argument("--phase2-report", type=str, help="Path to a single Phase 2 report directory")
     ap.add_argument("--all", action="store_true", help="Run for ALL latest Phase 2 reports")
     ap.add_argument("--output", type=str, default="reports", help="Output directory")
+    ap.add_argument("--llm-provider", type=str,
+                    choices=["openai", "gemini", "claude"],
+                    default=None,
+                    help="LLM provider for inference (default: auto-detect from Phase 2 report name)")
     ap.add_argument("--no-rag", action="store_true", help="Skip RAG lookup")
     ap.add_argument("--no-inference", action="store_true", help="Skip LLM inference")
     args = ap.parse_args()
@@ -241,24 +270,19 @@ def main():
             disease = infer_disease(rdir)
             provider = rdir.name.split("_llm_")[1].split("_")[0] if "_llm_" in rdir.name else "unknown"
             out = out_base / f"{disease}_{provider}_phase3"
-            run_for_report(rdir, out, use_rag=not args.no_rag, use_inference=not args.no_inference)
+            run_for_report(rdir, out, use_rag=not args.no_rag, use_inference=not args.no_inference,
+                           llm_provider=args.llm_provider)
 
-        # Generate overall summary report
-        overall_path = out_base / "PHASE3_OVERALL_REPORT.md"
-        db_info = {
-            "num_entries": db.get("num_entries", 0),
-            "num_parameters": db.get("num_parameters", 0),
-            "total_chunks": db.get("total_chunks", 0),
-            "diseases": db.get("diseases", []),
-        }
-        generate_overall_report(out_base, overall_path, db_info=db_info)
-        print(f"\n  Overall report: {overall_path}")
+        # Overall report is created by select_best_model.py (PHASE3_OVERALL_REPORT.md in selected_models/)
+        print(f"\n  Per-report outputs in: {out_base}/<disease>_<provider>_phase3/")
+        print("  Run select_best_model.py to pick one model per disease and generate PHASE3_OVERALL_REPORT.md")
     else:
         rdir = Path(args.phase2_report)
         if not rdir.is_dir():
             print(f"Error: not a directory: {rdir}")
             sys.exit(1)
-        run_for_report(rdir, Path(args.output), use_rag=not args.no_rag, use_inference=not args.no_inference)
+        run_for_report(rdir, Path(args.output), use_rag=not args.no_rag, use_inference=not args.no_inference,
+                       llm_provider=args.llm_provider)
 
     print(f"\n{'='*60}")
     print("Phase 3 complete.")

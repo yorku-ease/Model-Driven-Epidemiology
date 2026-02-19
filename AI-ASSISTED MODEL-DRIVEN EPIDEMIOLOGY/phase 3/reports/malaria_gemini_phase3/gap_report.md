@@ -52,73 +52,73 @@
 - **Source:** rag
 - **Value:** 15129 people/time
 - **Description:** Recruitment rate of human populations
-- **From papers:** p2_hiv_llm_claude_20260218_171956, p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_baseline_malaria, p2_ebola_llm_gemini_20260211_201558
 
 ### β₂a(t) (missing_parameters)
 - **Source:** rag
 - **Value:** β₂ * a(T) 1/time
 - **Description:** Combined contact rate
-- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p2_malaria_llm_gemini_20260218_173044
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_malaria_llm_openai_20260218_174921, p2_baseline_malaria
 
 ### β₁a(t) (missing_parameters)
 - **Source:** rag
 - **Value:** β₂ * a(T) 1/time
 - **Description:** Combined contact rate
-- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p2_malaria_llm_gemini_20260218_173044
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_malaria_llm_openai_20260218_174921, p2_baseline_malaria
 
 ### q (missing_parameters)
 - **Source:** rag
 - **Value:** 0.98765 1/time
 - **Description:** Progression rate of Rh to Sh
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126
+- **From papers:** p2_zika_llm_gemini_20260211_202118, p2_baseline_malaria, p1_model_malaria
 
 ### β₁ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.9969 dimensionless
 - **Description:** Probability of transmission (human)
-- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p2_cholera_llm_claude_20260212_211525
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_malaria_llm_openai_20260218_174921, p2_baseline_malaria
 
 ### μₕ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.001384 1/time
 - **Description:** Natural mortality rate of human population
-- **From papers:** p2_measles_llm_claude_20260212_211744, p2_hiv_llm_claude_20260218_171956, p2_baseline_malaria
+- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p1_model_malaria
 
 ### a(t) (missing_parameters)
 - **Source:** rag
 - **Value:** 0.000203 * T * (T - 11.7) * sqrt(42.3 - T) bites/person/time
 - **Description:** Mosquito biting rate
-- **From papers:** p1_model_malaria, p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126
+- **From papers:** p1_model_malaria, p2_malaria_llm_claude_20260218_172126, p2_baseline_malaria
 
 ### μᵥ(t) (missing_parameters)
 - **Source:** rag
 - **Value:** 1/((-0.03*T*T) + (1.31*T) - 4.4) 1/time
 - **Description:** Mortality rate of adult mosquitoes
-- **From papers:** p2_dengue_llm_claude_20260212_211544, p1_model_malaria, p2_baseline_malaria
+- **From papers:** p1_model_malaria, p2_baseline_malaria, p2_dengue_llm_claude_20260212_211544
 
 ### μₕ+δ (missing_parameters)
 - **Source:** rag
 - **Value:** μₕ + 0.017325 1/time
 - **Description:** Disease-induced death rate
-- **From papers:** p1_model_malaria, p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126
+- **From papers:** p1_model_malaria, p2_malaria_llm_claude_20260218_172126, p2_baseline_malaria
 
 ### nᵥ (missing_parameters)
 - **Source:** rag
 - **Value:** 80000 mosquitoes
 - **Description:** Approx. Mosquito population
-- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p2_malaria_llm_gemini_20260218_173044
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_baseline_malaria, p1_model_malaria
 
 ### β₂ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.9969 dimensionless
 - **Description:** Probability of transmission (human)
-- **From papers:** p2_baseline_malaria, p2_malaria_llm_claude_20260218_172126, p2_cholera_llm_claude_20260212_211525
+- **From papers:** p2_malaria_llm_gemini_20260218_173044, p2_malaria_llm_openai_20260218_174921, p2_baseline_malaria
 
 ### λₘ(t) (missing_parameters)
 - **Source:** rag
 - **Value:** 0.000203 * T * (T - 11.7) * sqrt(42.3 - T) bites/person/time
 - **Description:** Mosquito biting rate
-- **From papers:** p2_malaria_llm_claude_20260218_172126, p2_baseline_malaria, p2_cholera_llm_gemini_20260211_201419
+- **From papers:** p2_cholera_llm_openai_20260218_174559, p1_model_malaria, p2_malaria_llm_claude_20260218_172126
 
 ### susceptible humans population (missing_compartments)
 - **Source:** flagged

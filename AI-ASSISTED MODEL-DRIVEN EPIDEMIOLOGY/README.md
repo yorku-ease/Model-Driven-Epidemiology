@@ -1,415 +1,292 @@
 # AI-Assisted Model-Driven Epidemiology
 
-A comprehensive framework for analyzing, extracting, and synthesizing compartmental epidemiological models from scientific papers using AI assistance.
+A comprehensive framework for analyzing, extracting, and validating compartmental epidemiological models from scientific papers using AI assistance. The framework progresses through three phases: structural analysis of reference models, automated LLM-driven extraction from papers, and RAG-based gap filling with gold-standard validation.
 
 ## Project Overview
 
-This project consists of three phases:
+| Phase | Purpose | Key Technique |
+|-------|---------|---------------|
+| **Phase 1** | Analyze existing `.compmodel` files | Structural analysis, sensitivity analysis |
+| **Phase 2** | Extract models from PDF papers | LLM-driven entity extraction + synthesis |
+| **Phase 3** | Fill gaps and validate results | RAG lookup + LLM inference vs gold standard |
 
-- **Phase 1**: Analysis of existing `.compmodel` files - structural analysis, gap identification, uncertainty quantification, and sensitivity analysis
-- **Phase 2**: Automated extraction of models from PDF papers - uses LLM to extract model components, generates `.compmodel` files, identifies gaps, and suggests improvements
-- **Phase 3**: RAG and gap filling - paper database for parameter lookup, gap detection with required vs optional logic, intelligent inference for missing parameters, and human-readable gap reports (see `phase 3/README.md`)
+## End-to-End Workflow
+
+```
+ Phase 1                    Phase 2                     Phase 3
+┌──────────┐   examples   ┌──────────────┐   models   ┌──────────────────┐
+│ Baseline │ ──────────►  │ PDF → LLM →  │ ────────►  │ Gap Detection    │
+│ .compmodel│             │ .compmodel   │            │ RAG + LLM Fill   │
+│ analysis │              │ extraction   │            │ Gold-Std Validate│
+└──────────┘              └──────────────┘            └──────────────────┘
+     │                          │                            │
+     ▼                          ▼                            ▼
+  reports/                   reports/                     reports/
+  model_analysis.json        model_draft.compmodel        phase3_gaps.json
+  gap_report.json            phase2_final_report.json     phase3_filled.json
+  sensitivity.json           traceability.json            PHASE3_OVERALL_REPORT.md
+```
 
 ## Project Structure
 
 ```
 AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
-├── requirements.txt          ← Unified dependencies (install here)
-├── README.md                 ← This file (project overview)
+├── requirements.txt              ← Unified dependencies
+├── README.md                     ← This file
 │
-├── phase 1/                  ← Model Analysis Phase
-│   ├── analysis/             ← Analyzers (model, gap, uncertainty, sensitivity)
-│   ├── papers/               ← Example .compmodel files and PDFs
-│   ├── metamodel_*.json      ← Model schema definitions
-│   ├── run_phase1.py         ← Main Phase 1 script
-│   └── reports/              ← Phase 1 analysis outputs
+├── phase 1/                      ← Model Analysis
+│   ├── run_phase1.py             ← Main script
+│   ├── analysis/                 ← Analyzers (model, gap, uncertainty, sensitivity)
+│   ├── papers/                   ← Baseline .compmodel files and PDFs
+│   │   └── epimde/               ← Gold-standard models
+│   └── reports/                  ← Analysis outputs
 │
-└── phase 2/                  ← Automated Extraction Phase
-    ├── .api_key.txt          ← OpenAI API key (create this)
-    ├── src/                  ← Source code
-    │   ├── extraction/       ← PDF processing & entity extraction
-    │   ├── synthesis/        ← Model generation
-    │   ├── analysis/          ← Gap analysis & filling
-    │   ├── evaluation/       ← Quality checks
-    │   └── utils/             ← LLM client
-    ├── data/                 ← Input papers and baseline models
-    ├── run_phase2.py         ← Main Phase 2 script
-    └── reports/              ← Phase 2 extraction outputs
+├── phase 2/                      ← Automated Extraction
+│   ├── run_phase2.py             ← Main script
+│   ├── .api_key.txt              ← LLM API key (Gemini/OpenAI/Claude)
+│   ├── src/
+│   │   ├── extraction/           ← PDF processing + entity extraction
+│   │   ├── synthesis/            ← .compmodel generation
+│   │   ├── analysis/             ← Gap analysis + filling
+│   │   ├── evaluation/           ← Quality checks
+│   │   └── utils/                ← LLM client (shared with Phase 3)
+│   ├── data/
+│   │   ├── papers/               ← Input PDFs
+│   │   └── baseline_models/      ← Gold-standard .compmodel for validation
+│   └── reports/                  ← One directory per disease/provider/timestamp
+│
+└── phase 3/                      ← RAG Gap Filling + Validation
+    ├── run_phase3.py             ← Main script
+    ├── build_database.py         ← Build paper database from Phase 1 + 2
+    ├── src/
+    │   ├── rag/                  ← Paper database + parameter lookup
+    │   ├── gap_analysis/         ← Gold-standard comparison + 3-tier filler
+    │   ├── inference/            ← LLM inference engine
+    │   ├── evaluation/           ← Fill accuracy evaluator
+    │   └── reporting/            ← Per-disease + overall Markdown reports
+    ├── data/
+    │   └── paper_database/       ← Searchable index (built by build_database.py)
+    └── reports/                  ← Phase 3 outputs + PHASE3_OVERALL_REPORT.md
 ```
 
 ## Setup
 
 ### 1. Install Dependencies
 
-All dependencies are unified in the root `requirements.txt`:
-
 ```bash
 cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
 pip install -r requirements.txt
 ```
 
-**Key Dependencies:**
-- `pdfplumber` - PDF text extraction (Phase 2)
-- `openai` - LLM API client (Phase 2)
-- `lxml`, `xmltodict` - XML processing (Phase 1 & 2)
-- `pandas`, `numpy` - Data processing
-- `matplotlib`, `seaborn` - Visualization (Phase 1)
-- `scipy` - Sensitivity analysis (Phase 1)
+**Key packages:** `pdfplumber` (PDF extraction), `openai` (LLM API), `google-generativeai` (Gemini), `lxml`/`xmltodict` (XML), `pandas`/`numpy` (data), `matplotlib`/`seaborn` (plotting), `scipy` (sensitivity analysis).
 
-### 2. Set Up API Key (Phase 2 Only)
+### 2. Set Up API Key
 
-For Phase 2 LLM features, create `phase 2/.api_key.txt`:
+Create `phase 2/.api_key.txt` with your LLM API key. Phase 3 reads the same file automatically.
 
 ```bash
-cd "phase 2"
-echo "sk-your-openai-api-key-here" > .api_key.txt
+echo "your-api-key-here" > "phase 2/.api_key.txt"
 ```
 
-**Alternative:** Set environment variable:
-```bash
-export OPENAI_API_KEY="sk-your-api-key-here"
-```
+Supported providers: **Gemini** (default), **OpenAI**, **Claude**.
 
 ## Phase 1: Model Analysis
 
-**Purpose:** Analyze existing `.compmodel` files to understand structure, identify gaps, quantify uncertainty, and perform sensitivity analysis.
+Analyzes existing `.compmodel` files to understand model structure, identify gaps, quantify uncertainty, and run sensitivity analysis.
 
-### What Phase 1 Does
+### What it does
 
-1. **Model Analysis** - Parses `.compmodel` XML, extracts structure (compartments, flows, parameters)
-2. **Gap Analysis** - Identifies missing components based on expected patterns
-3. **Uncertainty Analysis** - Documents parameter values, sources, literature ranges
-4. **Sensitivity Analysis** - Tests how outputs change with parameter variations (Morris, Grid, Random, Sobol methods)
-
-### Inputs
-
-- `.compmodel` XML files (compartmental epidemiological models)
-- Optional: Paper PDFs for context
-
-### Outputs
-
-- `model_analysis.json` - Model structure summary
-- `gap_report.json` - Missing components
-- `uncertainty_analysis.json` - Parameter uncertainty documentation
-- `sensitivity_analysis.json` - Sensitivity results
+1. **Model Analysis** — parses `.compmodel` XML, extracts compartments, flows, parameters
+2. **Gap Analysis** — identifies missing components based on expected patterns
+3. **Uncertainty Analysis** — documents parameter values, sources, literature ranges
+4. **Sensitivity Analysis** — tests output sensitivity to parameter changes (Morris, Grid, Random, Sobol)
 
 ### Running Phase 1
-
-```bash
-cd "phase 1"
-python run_phase1.py --model path/to/model.compmodel --output reports/model_name
-```
-
-## Phase 2: Automated Model Extraction
-
-**Purpose:** Automatically extract compartmental models from scientific paper PDFs using LLM assistance.
-
-### What Phase 2 Does
-
-Phase 2 runs a 9-step pipeline that:
-1. Extracts text from PDF papers
-2. Identifies what the paper promises to model
-3. Extracts model entities (compartments, flows, parameters) with evidence
-4. Generates `.compmodel` XML files
-5. Maps elements to paper evidence (traceability)
-6. Identifies gaps (promised but missing)
-7. Suggests how to fill gaps
-8. Runs quality checks
-9. Evaluates extraction quality
-
-### The 9-Step Pipeline: Detailed Inputs and Outputs
-
-#### Step 1: PDF Pipeline
-**Input:** PDF file  
-**Process:**
-- Extracts text using `pdfplumber`
-- Cleans text (removes headers/footers, fixes hyphenation)
-- Detects sections (Abstract, Methods, Model, Results, etc.)
-- Extracts tables
-
-**Output:**
-- `paper_text.json` - Cleaned text with page numbers
-- `paper_sections.json` - Detected sections and extracted tables
-
----
-
-#### Step 2: Paper Promises Extraction
-**Input:** Cleaned paper text from Step 1  
-**Process:**
-- **Pattern-based:** Searches for phrases like "we model", "our model includes", "age-stratified"
-- **LLM-based (if available):** Sends paper text to LLM with prompt asking what the paper promises to model
-
-**LLM Input:**
-```
-System: "You are a scientific paper analyzer. Extract what the paper promises to model."
-User: "[Paper text] + Extract: compartments, parameters, stratifications, interventions, model type"
-```
-
-**LLM Output:** JSON with:
-- `compartments`: List of promised compartments
-- `parameters`: List of promised parameters
-- `stratifications`: List of promised stratifications
-- `interventions`: List of promised interventions
-- `model_type`: SEIR, SIR, etc.
-
-**Output:** `paper_promises.json`
-
----
-
-#### Step 3: Entity Extraction
-**Input:** Paper text, pages, tables from Step 1  
-**Process:**
-- Extracts compartments, flows, parameters, stratifications, interventions
-- Uses **both** pattern matching and LLM
-- Records evidence (text span, page number, confidence)
-
-**LLM Usage:**
-
-**For Compartments:**
-- **LLM Input:** Paper text + metamodel schema + Phase 1 example models + prompt: "Extract all compartments mentioned in this paper"
-- **LLM Output:** JSON array of compartments with names, descriptions, text spans
-- **What LLM sees:** 
-  - Metamodel schema (valid compartment types)
-  - Example compartments from Phase 1 models (e.g., "Susceptible", "Infectious", "Recovered")
-  - Paper text sections
-
-**For Flows:**
-- **LLM Input:** Paper text + compartments list + prompt: "Extract all flows between compartments"
-- **LLM Output:** JSON array of flows with source, target, type (RateFlow/ContactFlow), description
-- **What LLM sees:**
-  - Extracted compartments
-  - Paper text with flow descriptions
-  - Example flows from Phase 1 models
-
-**For Parameters:**
-- **LLM Input:** Paper text + parameter tables + prompt: "Extract all parameters with values, units, descriptions"
-- **LLM Output:** JSON array of parameters with name, value, unit, description, text span
-- **What LLM sees:**
-  - Extracted tables (if any)
-  - Paper text with parameter definitions
-  - Example parameters from Phase 1 models
-
-**Output:** `extracted_entities.json` with:
-- All entities with evidence (text span, page, confidence, extraction method)
-- Extraction summary (counts)
-
----
-
-#### Step 4: Model Synthesis
-**Input:** Extracted entities from Step 3  
-**Process:**
-- Maps entities to `.compmodel` XML structure
-- Creates compartments, flows, parameters
-- Links flows to parameters using semantic matching (e.g., recovery flows → γ parameter)
-- **No LLM used here** - pure rule-based XML generation
-
-**Output:** `model_draft.compmodel` (XML file)
-
----
-
-#### Step 5: Traceability
-**Input:** Extracted entities, model structure  
-**Process:**
-- Maps every model element to paper evidence
-- Links compartments, flows, parameters to text spans
-- Calculates coverage and faithfulness metrics
-- **No LLM used here** - pure mapping
-
-**Output:** `traceability.json` with evidence mapping and metrics
-
----
-
-#### Step 6: Gap Analysis
-**Input:** Paper promises (Step 2), extracted entities (Step 3)  
-**Process:**
-- Compares promises vs extracted model
-- Finds missing compartments, parameters, stratifications, interventions
-- Categorizes by severity (critical/high/medium)
-- **No LLM used here** - pure comparison
-
-**Output:** `phase2_gap_report.json` with missing items
-
----
-
-#### Step 7: Gap Filler
-**Input:** Gap analysis, paper text, prior models (Phase 1)  
-**Process:**
-- For each gap, suggests how to fill it from three sources:
-  1. **Paper text re-examination** - Searches for weak signals
-  2. **Prior models** - How similar Phase 1 models handle gaps
-  3. **Domain knowledge (LLM)** - LLM-based suggestions
-
-**LLM Usage:**
-- **LLM Input:** Gap description + paper text + metamodel schema + prior model examples + prompt: "Suggest how to fill this gap based on epidemiological knowledge"
-- **LLM Output:** JSON with suggested element, source, confidence, rationale
-- **What LLM sees:**
-  - The specific gap (e.g., "Missing age stratification")
-  - Relevant paper text sections
-  - Metamodel schema (valid types)
-  - Examples from Phase 1 models showing similar features
-
-**Output:** `gap_fill_suggestions.json` with suggestions for each gap
-
----
-
-#### Step 8: Quality Checks
-**Input:** Generated model from Step 4  
-**Process:**
-- Runs Phase 1 analyzers on extracted model
-- Model analysis, uncertainty analysis, sensitivity analysis
-- **No LLM used here** - uses Phase 1 analyzers
-
-**Output:** `quality_checks.json` with Phase 1 analysis results
-
----
-
-#### Step 9: Evaluation
-**Input:** All previous outputs  
-**Process:**
-- Calculates quality metrics:
-  - Traceability coverage (% items with evidence)
-  - Faithfulness (% items paper-backed)
-  - Gap metrics (total, by severity)
-  - Precision/recall (if gold standard provided)
-- **No LLM used here** - pure metric calculation
-
-**Output:** `evaluation_report.json` with quality metrics
-
----
-
-#### Final Step: Final Report Generation
-**Input:** All outputs from Steps 1-9  
-**Process:**
-- Combines everything into one comprehensive report
-- **No LLM used here** - pure aggregation
-
-**Output:** `phase2_final_report.json` ← **Main report to check**
-
----
-
-## LLM Integration Details
-
-### When LLM is Used
-
-LLM is used in **3 steps** of Phase 2:
-
-1. **Step 2: Paper Promises Extraction** (optional, falls back to patterns)
-2. **Step 3: Entity Extraction** (always used if API key available)
-3. **Step 7: Gap Filling** (for domain knowledge suggestions)
-
-### LLM Input Structure
-
-**System Message:**
-```
-"You are a scientific paper analyzer. Return only valid JSON."
-```
-
-**User Message Contains:**
-- Paper text (relevant sections)
-- Metamodel schema (for Step 3 and Step 7)
-- Phase 1 example models (for Step 3 and Step 7)
-- Specific extraction prompt
-- JSON schema for expected output
-
-### LLM Output Format
-
-All LLM outputs are **JSON**:
-- Compartments: `[{"name": "...", "description": "...", "text_span": "..."}]`
-- Flows: `[{"source": "...", "target": "...", "type": "...", "description": "..."}]`
-- Parameters: `[{"name": "...", "value": "...", "unit": "...", "description": "..."}]`
-- Gap suggestions: `[{"element": "...", "source": "...", "confidence": "...", "rationale": "..."}]`
-
-### LLM Configuration
-
-- **Model:** `gpt-4o-mini` (default, can be changed)
-- **Temperature:** `0.3` (low for consistency)
-- **Max Tokens:** `2000` (sufficient for most extractions)
-
-### LLM Fallback Behavior
-
-If LLM is unavailable (no API key, network error, etc.):
-- **Step 2:** Falls back to pattern-based extraction
-- **Step 3:** Falls back to pattern-based extraction (less accurate)
-- **Step 7:** Only uses paper text and prior models (no domain knowledge suggestions)
-
-## Phase 3: RAG and Gap Filling
-
-**Purpose:** Enhance Phase 2 outputs with a paper database (RAG) for parameter lookup and intelligent gap filling (AI inference for missing parameters). Implements required vs optional gap logic and human-readable gap reports. See **`phase 3/README.md`** for details.
-
-```bash
-cd "phase 3"
-python run_phase3.py --phase2-report "../phase 2/reports/<report_dir>" --build-db --output reports/phase3_out
-```
-
----
-
-## Running the Project
-
-### Phase 1: Analyze Existing Models
 
 ```bash
 cd "phase 1"
 python run_phase1.py --model papers/epimde/malaria.compmodel --output reports/malaria
 ```
 
-### Phase 2: Extract from Papers
+### Outputs
+
+- `model_analysis.json` — model structure summary
+- `gap_report.json` — missing components
+- `uncertainty_analysis.json` — parameter uncertainty
+- `sensitivity_analysis.json` — sensitivity results
+
+---
+
+## Phase 2: Automated Model Extraction
+
+Extracts compartmental models from scientific paper PDFs using a 9-step LLM-assisted pipeline.
+
+### The 9-Step Pipeline
+
+| Step | Name | Uses LLM? | Output |
+|------|------|-----------|--------|
+| 1 | PDF text extraction | No | `paper_text.json`, `paper_sections.json` |
+| 2 | Paper promises | Yes (optional) | `paper_promises.json` |
+| 3 | Entity extraction | Yes | `extracted_entities.json` |
+| 4 | Model synthesis | No | `model_draft.compmodel` |
+| 5 | Traceability | No | `traceability.json` |
+| 6 | Gap analysis | No | `phase2_gap_report.json` |
+| 7 | Gap filling | Yes | `gap_fill_suggestions.json` |
+| 8 | Quality checks | No | `quality_checks.json` |
+| 9 | Evaluation | No | `evaluation_report.json` |
+
+The LLM receives paper text, metamodel schemas, and Phase 1 example models as context.
+
+### Running Phase 2
 
 ```bash
 cd "phase 2"
 python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper
 ```
 
-### Phase 3: RAG and Gap Filling
+### LLM integration
+
+- **Steps 2 & 3:** Extract what the paper promises and identify model entities (compartments, flows, parameters) with evidence
+- **Step 7:** Suggest gap fills from domain knowledge
+- **Fallback:** If LLM unavailable, falls back to pattern-based extraction (less accurate)
+- **Temperature:** 0.3 (low for consistency)
+
+---
+
+## Phase 3: Gap Detection, RAG Filling, and Validation
+
+Evaluates Phase 2's extracted models against gold-standard baselines, fills missing parameters using RAG and LLM inference, and measures accuracy.
+
+### Pipeline
+
+```
+Phase 2 report  →  Gap Detection  →  Gap Filling  →  Validation  →  Reports
+(extracted model)  (vs gold std)    (RAG + LLM)    (vs gold std)   (per-disease + overall)
+```
+
+### Gap Filling: 3-tier approach
+
+1. **RAG** — searches indexed paper database (585+ parameters, 894+ text chunks) for matching values
+2. **LLM Inference** — uses the same LLM provider from Phase 2 (auto-detected from report directory name) to suggest plausible values with reasoning
+3. **Flag** — marks for manual review when both tiers fail
+
+### Validation
+
+Every filled value is compared against the gold-standard `.compmodel` value and classified:
+
+| Match | Error |
+|-------|-------|
+| Exact | <1% |
+| Close | <10% |
+| Approximate | <50% |
+| Poor | >50% |
+
+### Running Phase 3
 
 ```bash
 cd "phase 3"
-python run_phase3.py --phase2-report "../phase 2/reports/<report_dir>" --paper-db data/paper_database --build-db --output reports/phase3_out
+
+# Build paper database (once, or when Phase 2 data changes)
+python3 build_database.py
+
+# Run for all diseases at once
+python3 run_phase3.py --all --output reports
 ```
 
-**With all options:**
+### Outputs
+
+- Per-disease: `phase3_gaps.json`, `phase3_filled.json`, `phase3_validation.json`, `gap_report.md`, **`model_filled.compmodel`** (draft with filled parameters applied)
+- Overall: `PHASE3_OVERALL_REPORT.md` with aggregated accuracy metrics
+
+### Best model per disease (optional)
+
+Run Phase 3 with each LLM provider into separate output dirs (`reports/gemini`, `reports/openai`, `reports/claude`), then run the selector to pick one filled model per disease using Phase 2 evaluation and Phase 3 validation (no hardcoded diseases or providers):
+
 ```bash
-python run_phase2.py \
-    --paper data/papers/your_paper.pdf \
-    --output reports/your_paper \
-    --phase1-dir "../phase 1" \
-    --prior-models-dir "../phase 1/reports/model_analysis"
+cd "phase 3"
+python3 select_best_model.py --phase2-reports "../phase 2/reports" \
+  --phase3-roots reports/gemini reports/openai reports/claude --output selected_models
 ```
 
-## Key Outputs
+Result: `selected_models/<disease>/model_filled.compmodel` plus `selection_report.json` and `SELECTION_REPORT.md`. See `phase 3/README.md` for the full workflow.
 
-### Phase 1 Outputs
-- Model structure analysis
-- Gap reports
-- Uncertainty documentation
-- Sensitivity analysis results
+---
 
-### Phase 2 Outputs
-- **`model_draft.compmodel`** - Extracted model (main output)
-- **`phase2_final_report.json`** - Comprehensive report (check this first)
-- Detailed JSON files for each step (for reference)
+## Quick Start (Full Pipeline)
 
-## Understanding the Workflow
+```bash
+cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
+pip install -r requirements.txt
+echo "your-api-key" > "phase 2/.api_key.txt"
 
-1. **Phase 1** analyzes existing models to understand patterns and create examples
-2. **Phase 2** uses those examples + LLM to extract new models from papers
-3. **Phase 2** identifies gaps and suggests improvements
-4. **Phase 2** evaluates quality and generates comprehensive reports
+# Phase 1: Analyze baseline models
+cd "phase 1"
+python run_phase1.py --model papers/epimde/cholera.compmodel --output reports/cholera
+
+# Phase 2: Extract from a new paper
+cd "../phase 2"
+python run_phase2.py --paper data/papers/cholera_paper.pdf --output reports/cholera_llm_gemini
+
+# Phase 3: Build database, detect gaps, fill, validate
+cd "../phase 3"
+python3 build_database.py
+python3 run_phase3.py --all --output reports
+```
+
+## Results
+
+### Phase 3 overall report
+
+After running Phase 3 with `--all`, the main results are in:
+
+- **`phase 3/reports/PHASE3_OVERALL_REPORT.md`**
+
+This report includes:
+
+| Section | What it shows |
+|--------|----------------|
+| **Database** | Size of the RAG index (papers, parameters, chunks). |
+| **Summary** | Number of reports (diseases × providers), gap-free reports, total gaps, and how many gaps were filled by **RAG**, **LLM inference**, or **flagged**. |
+| **Gap counts by disease and provider** | For each (disease, provider), total gaps and fill breakdown (RAG vs flagged). |
+| **Fill validation accuracy** | For each filled parameter, comparison to the gold-standard value: exact (&lt;1% error), close (&lt;10%), approximate (&lt;50%), poor (&gt;50%). Overall accuracy (exact+close) and a per-disease, per-provider table. |
+| **By provider** | Aggregated gaps, RAG/inference/flagged counts, and accuracy for Gemini, OpenAI, and Claude. |
+| **Interpretation** | Short guide to reading the numbers and where to find per-disease details. |
+
+Per-disease reports (which parameters were filled, suggested values, validation table) are in:
+
+- `phase 3/reports/<disease>_<provider>_phase3/gap_report.md`
+- `phase 3/reports/<disease>_<provider>_phase3/phase3_validation.json`
+
+See **`phase 3/README.md`** for a full description of the report and how to interpret it.
+
+### Phase 1 and Phase 2 outputs
+
+- **Phase 1:** `phase 1/reports/<name>/` — model_analysis.json, gap_report.json, uncertainty_analysis.json, sensitivity_analysis.json.
+- **Phase 2:** `phase 2/reports/<disease>_llm_<provider>_<timestamp>/` — model_draft.compmodel, phase2_final_report.json, traceability.json, etc.
+
+---
+
+## Adding a New Disease
+
+No code changes required:
+
+1. Place the PDF in `phase 2/data/papers/`
+2. Optionally add a gold-standard `.compmodel` to `phase 2/data/baseline_models/`
+3. Run Phase 2 for the new paper
+4. Re-run `build_database.py` and `run_phase3.py --all`
 
 ## Key Principles
 
-- **Faithfulness:** Only extract what papers explicitly describe
-- **Evidence-Based:** Every entity has text span and page number
-- **Traceability:** Every model element links back to paper evidence
-- **Gap-Driven:** Identify what's missing and suggest how to fill it
+- **Faithfulness** — only extract what papers explicitly describe
+- **Evidence-Based** — every entity has a text span and page number
+- **Traceability** — every model element links back to paper evidence
+- **Dynamic** — no hardcoded disease names; fully data-driven
+- **Honest Evaluation** — gold standard used only for validation, not filling
+- **Multi-Provider** — works with Gemini, OpenAI, or Claude; Phase 3 auto-matches the Phase 2 provider
 
 ## Documentation
 
-- **`phase 1/README.md`** - Phase 1 details
-- **`phase 2/README.md`** - Phase 2 details
-- **`phase 2/INSTRUCTIONS.md`** - Step-by-step Phase 2 guide
-
-## Support
-
-- Check error messages in terminal output
-- Review generated JSON files for details
-- See individual phase READMEs for specific issues
+- `phase 1/README.md` — Phase 1 details
+- `phase 2/README.md` — Phase 2 details
+- `phase 2/INSTRUCTIONS.md` — step-by-step Phase 2 guide
+- `phase 3/README.md` — Phase 3 details (gap detection, RAG, LLM inference, validation)
