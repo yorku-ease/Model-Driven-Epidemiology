@@ -1,0 +1,23 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Dengue,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Exposed Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Asymptomatic Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Symptomatic Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.0,False,Transmission of dengue from infectious mosquitoes to susceptible humans.,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Humans,RateFlow,//@parameters.3,False,Progression from exposed to asymptomatic infectious state.,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Humans,RateFlow,//@parameters.3,False,Progression from exposed to symptomatic infectious state.,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.3,False,Recovery of asymptomatic infectious humans.,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.3,False,Recovery of symptomatic infectious humans.,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.0,False,Transmission of dengue from infectious humans to susceptible mosquitoes.,,,
+Dengue,Parameter,B,,,,,,Model file,Certain,,,,,,The constant influx rate of the human hosts.,CONSTANT,constant,individuals per time
+Dengue,Parameter,μ_h,,,,,,Model file,Certain,,,,,,The natural death rate of the human hosts.,CONSTANT,0.005,1/time
+Dengue,Parameter,μ_v,,,,,,Model file,Certain,,,,,,The natural death rate of the mosquitoes.,CONSTANT,0.65,1/time
+Dengue,Parameter,γ_1(a),,,,,,Model file,Certain,,,,,,The age-specific recovery rate of symptomatic infectious hosts.,CONSTANT,age-specific,1/time
+Dengue,Parameter,γ_2(a),,,,,,Model file,Certain,,,,,,The age-specific recovery rate of asymptomatic infectious hosts.,CONSTANT,age-specific,1/time
+Dengue,Parameter,β_v(a),,,,,,Model file,Certain,,,,,,The age-specific transmission rate from infectious hosts to susceptible mosquitoes.,CONSTANT,age-specific,1/time
+Dengue,Parameter,β_h(a),,,,,,Model file,Certain,,,,,,The age-specific transmission rate from infected mosquitoes to susceptible hosts.,CONSTANT,age-specific,1/time
+Dengue,Parameter,ρ,,,,,,Model file,Certain,,,,,,The probability of exposed hosts transferring to symptomatic infectious hosts.,CONSTANT,0.5,dimensionless
+Dengue,Parameter,σ,,,,,,Model file,Certain,,,,,,The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.,CONSTANT,0.007,dimensionless

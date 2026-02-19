@@ -8,18 +8,24 @@ OUT_MD = Path(__file__).resolve().parent / "RESULTS_REPORT.md"
 
 DISEASES = [
     "cholera",
+    "covid",
     "dengue",
     "ebola",
     "flu",
+    "hiv",
+    "malaria",
     "measles",
     "tuberculosis",
     "zika",
 ]
 DISEASE_DISPLAY = {
     "cholera": "Cholera",
+    "covid": "COVID-19",
     "dengue": "Dengue",
     "ebola": "Ebola",
     "flu": "Flu",
+    "hiv": "HIV",
+    "malaria": "Malaria",
     "measles": "Measles",
     "tuberculosis": "Tuberculosis",
     "zika": "Zika",
@@ -185,7 +191,7 @@ def main():
         "",
         "---",
         "",
-        "## 2. Averages across 7 diseases",
+        f"## 2. Averages across {len(DISEASES)} diseases",
         "",
         "| Provider  | Metric     | Compartments P / R / F1 (avg) | Parameters P / R / F1 (avg) | Flows P / R / F1 (avg) |",
         "|-----------|------------|--------------------------------|-----------------------------|-------------------------|",
@@ -231,7 +237,12 @@ def main():
     lines.append(f"| **Average**   | **{o_c:.2f} / {o_p:.2f} / {o_f:.2f}**     | **{g_c:.2f} / {g_p:.2f} / {g_f:.2f}**     | **{c_c:.2f} / {c_p:.2f} / {c_f:.2f}**{claude_avg_suffix}     |")
 
     title = "# Phase 2 Evaluation Results\n\n"
-    intro = "This report summarizes precision (P), recall (R), and F1 for **compartments**, **parameters**, and **flows** against baseline `.compmodel` gold standards. Each row is the latest run per disease and provider.\n\n---\n\n"
+    intro = (
+        "This report summarizes precision (P), recall (R), and F1 for **compartments**, **parameters**, and **flows** "
+        "against baseline `.compmodel` gold standards. Each row is the latest run per disease and provider.\n\n"
+        "For a **before/after comparison** (initial vs improved pipeline) and what was effective in raising results "
+        "(PDF extractor, section detection, unified LLM, etc.), see **[COMPARISON_REPORT.md](COMPARISON_REPORT.md)**.\n\n---\n\n"
+    )
     OUT_MD.write_text(title + intro + "\n".join(lines))
     print("Wrote", OUT_MD)
 

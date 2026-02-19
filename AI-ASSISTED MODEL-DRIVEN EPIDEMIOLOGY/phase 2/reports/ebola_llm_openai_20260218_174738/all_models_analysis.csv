@@ -1,0 +1,17 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebolasensitivity,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Non-symptomatic Infected,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious Living,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Infectious Deceased,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Non-symptomatic Infected,RateFlow,//@parameters.0,False,Infection through contact with infectious living or deceased individuals.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Infectious Living,RateFlow,//@parameters.3,False,Progression to symptomatic infectious state.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.5,False,Recovery from the disease.,,,
+Ebolasensitivity,Flow,,,,,,,Model file,Certain,,Infectious Deceased,RateFlow,//@parameters.4,False,Death from the disease.,,,
+Ebolasensitivity,Parameter,β,,,,,,Model file,Certain,,,,,,Transmission probability.,CONSTANT,0.75,-
+Ebolasensitivity,Parameter,cI,,,,,,Model file,Certain,,,,,,Contact rate with infectious individuals.,CONSTANT,variable,people weeks^-1
+Ebolasensitivity,Parameter,cD,,,,,,Model file,Certain,,,,,,Contact rate with infectious dead bodies.,CONSTANT,variable,people weeks^-1
+Ebolasensitivity,Parameter,ω,,,,,,Model file,Certain,,,,,,Rate at which infected individuals become symptomatic.,CONSTANT,1,weeks^-1
+Ebolasensitivity,Parameter,α,,,,,,Model file,Certain,,,,,,Disease death rate.,CONSTANT,0.5,weeks^-1
+Ebolasensitivity,Parameter,γ,,,,,,Model file,Certain,,,,,,Recovery rate.,CONSTANT,0.5,weeks^-1
+Ebolasensitivity,Parameter,θ,,,,,,Model file,Certain,,,,,,Safe burial rate.,CONSTANT,1,weeks^-1

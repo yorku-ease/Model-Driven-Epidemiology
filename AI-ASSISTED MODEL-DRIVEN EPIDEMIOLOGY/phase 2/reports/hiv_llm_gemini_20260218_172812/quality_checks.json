@@ -1,0 +1,771 @@
+{
+  "model_analysis": {
+    "modelName": "Hiv",
+    "summary": {
+      "modelName": "Hiv",
+      "totalPopulation": null,
+      "numCompartments": 8,
+      "numParameters": 15,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Homosexual Men",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible homosexual men through contact with untreated infected homosexual men or untreated infected women.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Untreated Infected Homosexual Men",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Departure from infected class to begin antiretroviral therapy.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Susceptible Women",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.3",
+              "description": "Infection of susceptible women through contact with untreated infected homosexual men or untreated infected heterosexual men.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Untreated Infected Women",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Departure from infected class to begin antiretroviral therapy.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Susceptible Heterosexual Men",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.5",
+              "description": "Infection of susceptible heterosexual men through contact with untreated infected women.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Untreated Infected Heterosexual Men",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Departure from infected class to begin antiretroviral therapy.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Treated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "AIDS development rate in treated individuals due to ART resistance or treatment failure.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "People with AIDS",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "C",
+          "type": "CONSTANT",
+          "expression": "333",
+          "description": "Constant recruitment in susceptible populations",
+          "unit": "Individuals/year"
+        },
+        {
+          "index": 1,
+          "name": "h",
+          "type": "CONSTANT",
+          "expression": "0.48",
+          "description": "Proportion of men",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 2,
+          "name": "c",
+          "type": "CONSTANT",
+          "expression": "0.92",
+          "description": "Proportion of heterosexual men",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 3,
+          "name": "p",
+          "type": "CONSTANT",
+          "expression": "0.90",
+          "description": "Proportion of initially treated individuals",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 4,
+          "name": "l",
+          "type": "CONSTANT",
+          "expression": "0.0129",
+          "description": "Natural mortality rate",
+          "unit": "1/year"
+        },
+        {
+          "index": 5,
+          "name": "d",
+          "type": "CONSTANT",
+          "expression": "0.3333",
+          "description": "Induced disease mortality rate (for people with AIDS)",
+          "unit": "1/year"
+        },
+        {
+          "index": 6,
+          "name": "a",
+          "type": "CONSTANT",
+          "expression": "0.3333",
+          "description": "Departure rate from infected compartments (to treatment)",
+          "unit": "1/year"
+        },
+        {
+          "index": 7,
+          "name": "b_s",
+          "type": "CONSTANT",
+          "expression": "0.02",
+          "description": "Probability of sexual transmission (heterosexual)",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 8,
+          "name": "b_h",
+          "type": "CONSTANT",
+          "expression": "0.44",
+          "description": "Probability of sexual transmission (homosexual)",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 9,
+          "name": "b_hw",
+          "type": "CONSTANT",
+          "expression": "0.018",
+          "description": "Probability of sexual transmission (from infected women to homosexual men)",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 10,
+          "name": "b_hm",
+          "type": "CONSTANT",
+          "expression": "0.25",
+          "description": "Probability of sexual transmission (from infected homosexual men to women)",
+          "unit": "Nondimensional"
+        },
+        {
+          "index": 11,
+          "name": "c_s",
+          "type": "CONSTANT",
+          "expression": "4",
+          "description": "Sexual partner rate (heterosexual)",
+          "unit": "1/year"
+        },
+        {
+          "index": 12,
+          "name": "c_h",
+          "type": "CONSTANT",
+          "expression": "7",
+          "description": "Sexual partner rate (homosexual)",
+          "unit": "1/year"
+        },
+        {
+          "index": 13,
+          "name": "c_hw",
+          "type": "CONSTANT",
+          "expression": "2",
+          "description": "Sexual partner rate (homosexual men with women)",
+          "unit": "1/year"
+        },
+        {
+          "index": 14,
+          "name": "c_hm",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "Sexual partner rate (homosexual men with women)",
+          "unit": "1/year"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Hiv",
+    "totalParameters": 15,
+    "parametersWithUncertainty": 15,
+    "parameters": [
+      {
+        "parameter": "C",
+        "yourValue": "333",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Individuals/year",
+        "description": "Constant recruitment in susceptible populations",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "h",
+        "yourValue": "0.48",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Proportion of men",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c",
+        "yourValue": "0.92",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Proportion of heterosexual men",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "p",
+        "yourValue": "0.90",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Proportion of initially treated individuals",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "l",
+        "yourValue": "0.0129",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Natural mortality rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "d",
+        "yourValue": "0.3333",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Induced disease mortality rate (for people with AIDS)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "a",
+        "yourValue": "0.3333",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Departure rate from infected compartments (to treatment)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_s",
+        "yourValue": "0.02",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Probability of sexual transmission (heterosexual)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_h",
+        "yourValue": "0.44",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Probability of sexual transmission (homosexual)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_hw",
+        "yourValue": "0.018",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Probability of sexual transmission (from infected women to homosexual men)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_hm",
+        "yourValue": "0.25",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "Nondimensional",
+        "description": "Probability of sexual transmission (from infected homosexual men to women)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_s",
+        "yourValue": "4",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Sexual partner rate (heterosexual)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_h",
+        "yourValue": "7",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Sexual partner rate (homosexual)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_hw",
+        "yourValue": "2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Sexual partner rate (homosexual men with women)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_hm",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv",
+        "unit": "1/year",
+        "description": "Sexual partner rate (homosexual men with women)",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 15
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Hiv",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "C",
+        "type": "other",
+        "currentValue": 333.0,
+        "description": "Constant recruitment in susceptible populations",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "h",
+        "type": "other",
+        "currentValue": 0.48,
+        "description": "Proportion of men",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "c",
+        "type": "other",
+        "currentValue": 0.92,
+        "description": "Proportion of heterosexual men",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "p",
+        "type": "other",
+        "currentValue": 0.9,
+        "description": "Proportion of initially treated individuals",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "l",
+        "type": "other",
+        "currentValue": 0.0129,
+        "description": "Natural mortality rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "d",
+        "type": "other",
+        "currentValue": 0.3333,
+        "description": "Induced disease mortality rate (for people with AIDS)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "a",
+        "type": "other",
+        "currentValue": 0.3333,
+        "description": "Departure rate from infected compartments (to treatment)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "b_s",
+        "type": "other",
+        "currentValue": 0.02,
+        "description": "Probability of sexual transmission (heterosexual)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "b_h",
+        "type": "other",
+        "currentValue": 0.44,
+        "description": "Probability of sexual transmission (homosexual)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "b_hw",
+        "type": "other",
+        "currentValue": 0.018,
+        "description": "Probability of sexual transmission (from infected women to homosexual men)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "b_hm",
+        "type": "other",
+        "currentValue": 0.25,
+        "description": "Probability of sexual transmission (from infected homosexual men to women)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "c_s",
+        "type": "other",
+        "currentValue": 4.0,
+        "description": "Sexual partner rate (heterosexual)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "c_h",
+        "type": "other",
+        "currentValue": 7.0,
+        "description": "Sexual partner rate (homosexual)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "c_hw",
+        "type": "other",
+        "currentValue": 2.0,
+        "description": "Sexual partner rate (homosexual men with women)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "c_hm",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Sexual partner rate (homosexual men with women)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "C",
+      "h",
+      "c",
+      "p",
+      "l"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "C",
+        "h",
+        "c",
+        "p",
+        "l"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "C": {
+          "mu": 95.84436921560894,
+          "mu_star": 95.84436921560894,
+          "sigma": 11.9117017582607,
+          "n_samples": 20
+        },
+        "h": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "c": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "p": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "l": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

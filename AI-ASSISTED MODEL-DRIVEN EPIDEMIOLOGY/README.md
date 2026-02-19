@@ -4,10 +4,11 @@ A comprehensive framework for analyzing, extracting, and synthesizing compartmen
 
 ## Project Overview
 
-This project consists of two phases:
+This project consists of three phases:
 
 - **Phase 1**: Analysis of existing `.compmodel` files - structural analysis, gap identification, uncertainty quantification, and sensitivity analysis
 - **Phase 2**: Automated extraction of models from PDF papers - uses LLM to extract model components, generates `.compmodel` files, identifies gaps, and suggests improvements
+- **Phase 3**: RAG and gap filling - paper database for parameter lookup, gap detection with required vs optional logic, intelligent inference for missing parameters, and human-readable gap reports (see `phase 3/README.md`)
 
 ## Project Structure
 
@@ -331,6 +332,17 @@ If LLM is unavailable (no API key, network error, etc.):
 - **Step 3:** Falls back to pattern-based extraction (less accurate)
 - **Step 7:** Only uses paper text and prior models (no domain knowledge suggestions)
 
+## Phase 3: RAG and Gap Filling
+
+**Purpose:** Enhance Phase 2 outputs with a paper database (RAG) for parameter lookup and intelligent gap filling (AI inference for missing parameters). Implements required vs optional gap logic and human-readable gap reports. See **`phase 3/README.md`** for details.
+
+```bash
+cd "phase 3"
+python run_phase3.py --phase2-report "../phase 2/reports/<report_dir>" --build-db --output reports/phase3_out
+```
+
+---
+
 ## Running the Project
 
 ### Phase 1: Analyze Existing Models
@@ -345,6 +357,13 @@ python run_phase1.py --model papers/epimde/malaria.compmodel --output reports/ma
 ```bash
 cd "phase 2"
 python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_paper
+```
+
+### Phase 3: RAG and Gap Filling
+
+```bash
+cd "phase 3"
+python run_phase3.py --phase2-report "../phase 2/reports/<report_dir>" --paper-db data/paper_database --build-db --output reports/phase3_out
 ```
 
 **With all options:**

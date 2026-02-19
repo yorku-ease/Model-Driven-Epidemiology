@@ -1,0 +1,240 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals not yet infected with the virus.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 1": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been exposed to the virus but are not yet infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 2": {
+      "evidence": [
+        {
+          "text_span": "A second stage of exposed individuals, closer to becoming infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 1": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are infectious and can transmit the virus to others.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 2": {
+      "evidence": [
+        {
+          "text_span": "A second stage of infectious individuals, closer to recovery or removal.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered or died and are no longer part of the transmission cycle.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed 1": {
+      "evidence": [
+        {
+          "text_span": "Infection occurs when a susceptible individual comes into contact with an infectious individual.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 1 -> Exposed 2": {
+      "evidence": [
+        {
+          "text_span": "Progression from the first stage of exposure to the second stage.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 2 -> Infectious 1": {
+      "evidence": [
+        {
+          "text_span": "Progression from the second stage of exposure to the first stage of being infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 1 -> Infectious 2": {
+      "evidence": [
+        {
+          "text_span": "Progression from the first stage of being infectious to the second stage.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate, the rate at which new infections occur given contact.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "varies",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3": {
+      "evidence": [
+        {
+          "text_span": "Rate of progression from exposed to infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Rate of recovery or removal from the infectious state.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5797",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "p_ICU": {
+      "evidence": [
+        {
+          "text_span": "Probability of ICU admission given infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "varies",
+          "unit": "probability"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bc_ICU|E": {
+      "evidence": [
+        {
+          "text_span": "Mean time from infection to ICU admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.708",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c32_ICU|E": {
+      "evidence": [
+        {
+          "text_span": "Variance of time from infection to ICU admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "18.24",
+          "unit": "days^2"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 13,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 19,
+    "items_with_evidence": 19,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 19,
+    "faithfulness_percentage": 100.0
+  }
+}

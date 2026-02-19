@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="A" expression="1000" type="CONSTANT" description="Recruitment rate of human." unit="human"/>
+  <parameters name="β" expression="0.01 to 5" type="CONSTANT" description="Probability of successful infection rate." unit="year×human"/>
+  <parameters name="ε" expression="0 to 1" type="CONSTANT" description="Correction parameter for reinfection term." unit="dimensionless"/>
+  <parameters name="u" expression="0 to 1" type="CONSTANT" description="Rate of vaccination." unit="day"/>
+  <parameters name="θ" expression="0.067 to 0.1" type="CONSTANT" description="Vaccine wane rate." unit="day"/>
+  <parameters name="γ" expression="0.5 to 2" type="CONSTANT" description="Recovery rate." unit="year"/>
+  <parameters name="δ" expression="0.003 to 0.02" type="CONSTANT" description="Drop out rate due to waning immunity." unit="day"/>
+  <parameters name="μ" expression="1" type="CONSTANT" description="Natural death rate." unit="65×12 month"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.1" description="Movement of individuals from the susceptible class to the vaccinated compartment at a constant vaccination rate."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Dropout from the vaccinated compartment back to the susceptible compartment due to waning immunity."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Transition back to the susceptible compartment from the recovered compartment due to waning immunity."/>
+  </compartments>
+</compartmental:CompartmentalModel>

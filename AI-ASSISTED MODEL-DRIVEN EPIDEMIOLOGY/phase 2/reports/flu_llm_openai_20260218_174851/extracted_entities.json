@@ -1,0 +1,223 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals not yet infected with the virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not yet infected with the virus."
+    },
+    {
+      "normalized_name": "Exposed 1",
+      "raw_text": "Exposed 1",
+      "page_number": 0,
+      "text_span": "Individuals who have been exposed to the virus but are not yet infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been exposed to the virus but are not yet infectious."
+    },
+    {
+      "normalized_name": "Exposed 2",
+      "raw_text": "Exposed 2",
+      "page_number": 0,
+      "text_span": "A second stage of exposed individuals, closer to becoming infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A second stage of exposed individuals, closer to becoming infectious."
+    },
+    {
+      "normalized_name": "Infectious 1",
+      "raw_text": "Infectious 1",
+      "page_number": 0,
+      "text_span": "Individuals who are infectious and can transmit the virus to others.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infectious and can transmit the virus to others."
+    },
+    {
+      "normalized_name": "Infectious 2",
+      "raw_text": "Infectious 2",
+      "page_number": 0,
+      "text_span": "A second stage of infectious individuals, closer to recovery or removal.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A second stage of infectious individuals, closer to recovery or removal."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Removed",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered or died and are no longer part of the transmission cycle.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered or died and are no longer part of the transmission cycle."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection occurs when a susceptible individual comes into contact with an infectious individual.",
+      "page_number": 0,
+      "text_span": "Infection occurs when a susceptible individual comes into contact with an infectious individual.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection occurs when a susceptible individual comes into contact with an infectious individual."
+    },
+    {
+      "source": "Exposed 1",
+      "target": "Exposed 2",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from the first stage of exposure to the second stage.",
+      "page_number": 0,
+      "text_span": "Progression from the first stage of exposure to the second stage.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from the first stage of exposure to the second stage."
+    },
+    {
+      "source": "Exposed 2",
+      "target": "Infectious 1",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from the second stage of exposure to the first stage of being infectious.",
+      "page_number": 0,
+      "text_span": "Progression from the second stage of exposure to the first stage of being infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from the second stage of exposure to the first stage of being infectious."
+    },
+    {
+      "source": "Infectious 1",
+      "target": "Infectious 2",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from the first stage of being infectious to the second stage.",
+      "page_number": 0,
+      "text_span": "Progression from the first stage of being infectious to the second stage.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from the first stage of being infectious to the second stage."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "varies",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Transmission rate, the rate at which new infections occur given contact.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate, the rate at which new infections occur given contact."
+    },
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "1",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of progression from exposed to infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of progression from exposed to infectious."
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "0.5797",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of recovery or removal from the infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of recovery or removal from the infectious state."
+    },
+    {
+      "normalized_name": "p_ICU",
+      "raw_text": "p_ICU",
+      "value": "varies",
+      "unit": "probability",
+      "page_number": 0,
+      "text_span": "Probability of ICU admission given infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability of ICU admission given infection."
+    },
+    {
+      "normalized_name": "\u03bc_ICU|E",
+      "raw_text": "\u03bc_ICU|E",
+      "value": "5.708",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean time from infection to ICU admission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean time from infection to ICU admission."
+    },
+    {
+      "normalized_name": "\u03c32_ICU|E",
+      "raw_text": "\u03c32_ICU|E",
+      "value": "18.24",
+      "unit": "days^2",
+      "page_number": 0,
+      "text_span": "Variance of time from infection to ICU admission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Variance of time from infection to ICU admission."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 13,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 4,
+    "num_parameters": 6,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}
