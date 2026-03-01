@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!-- Compartments -->
+  <compartments PrimaryName="Susceptible (S)">
+    <!-- S -> I depends on contact with contaminated water reservoir (B).
+         Metamodel ContactFlow needs a contactCompartment; we use B to reflect “exposed to contaminated water”.
+         The actual force-of-infection dependence on (contact rate, B, and IC50-like K) is left symbolic. -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      contactRate="0.0"
+      contactRateParameter="parameters.0"
+      contactCompartment="compartments.3"
+      target="compartments.1"
+      description="Infection from exposure to contaminated water reservoir"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious (I)">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.1"
+      target="compartments.2"
+      description="Recovery and immunity"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.2"
+      target="compartments.3"
+      description="Shedding/contamination of water reservoir by infectious humans"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered (R)"/>
+
+  <compartments PrimaryName="Bacterial concentration in water reservoir (B)"/>
+
+  <!-- Environmental removal/decay of bacteria -->
+  <externalSinks name="Bacteria decay/removal"
+    rateParameter="parameters.3"
+    sourceCompartment="compartments.3"/>
+
+  <!-- Parameters (symbolic placeholders; paper does not prescribe single numeric values here) -->
+  <parameters name="λ"
+    type="EXPRESSION"
+    expression="(contact_with_reservoir * B * IC50_term)"
+    description="Force of infection term; paper states it depends on (contact with contaminated water, B, and an IC50-like concentration parameter), functional form not fixed here"
+    unit="1/time"/>
+
+  <parameters name="γ"
+    expression="(placeholder)"
+    description="Per-capita recovery rate (approximately reciprocal of duration of infection)"
+    unit="1/time"/>
+
+  <parameters name="α"
+    expression="(placeholder)"
+    description="Rate of water contamination by infectious humans (increase in B due to shedding)"
+    unit="cells mL^-1 person^-1 day^-1"/>
+
+  <parameters name="μ_B"
+    expression="(placeholder)"
+    description="Removal/decay rate of V. cholerae in water reservoir"
+    unit="1/time"/>
+
+  <parameters name="K"
+    expression="(placeholder)"
+    description="V. cholerae concentration at which infection rate is 50% of maximum (IC50-like parameter)"
+    unit="cells/mL"/>
+
+</compartmental:CompartmentalModel>
+
