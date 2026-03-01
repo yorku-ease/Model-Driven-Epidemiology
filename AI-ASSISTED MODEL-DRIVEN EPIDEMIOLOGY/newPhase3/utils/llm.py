@@ -14,6 +14,10 @@ try:
 except ImportError:
     Image = None
 
+# New Google GenAI SDK (google-genai) — replaces deprecated google-generativeai
+# Install: pip install google-genai
+# Old SDK (google-generativeai) reached end-of-life November 30, 2025
+
 
 class LLMClient:
     """Wrapper for OpenAI and Gemini API clients with API key management"""
@@ -67,14 +71,13 @@ class LLMClient:
                     print(f"Warning: Failed to initialize OpenAI client: {e}")
             elif self.provider == "gemini":
                 try:
-                    import google.generativeai as genai
+                    from google import genai
 
-                    genai.configure(api_key=self.api_key)
-                    self.client = genai
+                    self.client = genai.Client(api_key=self.api_key)
                     self.available = True
                 except ImportError:
                     print(
-                        "Warning: google-generativeai package not installed. Install with: pip install google-generativeai"
+                        "Warning: google-genai package not installed. Install with: pip install google-genai"
                     )
                 except Exception as e:
                     print(f"Warning: Failed to initialize Gemini client: {e}")
@@ -176,7 +179,7 @@ class LLMClient:
             if self.provider == "openai":
                 provider_pkg = "openai"
             elif self.provider == "gemini":
-                provider_pkg = "google-generativeai"
+                provider_pkg = "google-genai"
             else:
                 provider_pkg = "openai"
             raise RuntimeError(
@@ -186,11 +189,12 @@ class LLMClient:
         # Set default model if not provided; allow environment variable overrides
         if model is None:
             if self.provider == "openai":
-                # Use gpt-4o for quality comparable to Gemini Pro; set OPENAI_MODEL=gpt-4o-mini for faster/cheaper
-                model = os.getenv("OPENAI_MODEL", "gpt-4o")
+                # gpt-5.2 is the current flagship (launched Dec 2025); set OPENAI_MODEL to override
+                model = os.getenv("OPENAI_MODEL", "gpt-5.2")
             elif self.provider == "gemini":
-                # e.g. export GEMINI_MODEL=gemini-2.5-flash or gemini-2.5-pro
-                model = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
+                # gemini-3-flash-preview for general tasks; set GEMINI_MODEL to override
+                # Use gemini-3-pro-preview for highest quality at higher cost
+                model = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
 
         # Use identical system instruction for both providers to ensure fair comparison
         system_instruction = """You are a scientific paper analyzer. You must return ONLY valid JSON.
@@ -242,126 +246,73 @@ CRITICAL RULES:
                 result_text = response.choices[0].message.content.strip()
 
             elif self.provider == "gemini":
-                # Use the same system instruction prepended to prompt (Gemini doesn't have separate system messages)
-                full_prompt = f"{system_instruction}\n\n{prompt}"
-                # For extraction tasks with schema, use lower temperature (best practice for reliability)
-                gemini_temp = 0.2 if response_schema else temperature
-                gen_config = {
-                    "temperature": gemini_temp,
-                    "max_output_tokens": max_tokens,
-                }
+                from google import genai as _genai
+                from google.genai import types as _gtypes
+
+                # New SDK: config goes into GenerateContentConfig, system instruction included there
+                # Safety settings use types.SafetySetting objects inside the config
+                safety_settings = [
+                    _gtypes.SafetySetting(category="HARM_CATEGORY_HARASSMENT",       threshold="BLOCK_NONE"),
+                    _gtypes.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH",       threshold="BLOCK_NONE"),
+                    _gtypes.SafetySetting(category="HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold="BLOCK_NONE"),
+                    _gtypes.SafetySetting(category="HARM_CATEGORY_DANGEROUS_CONTENT", threshold="BLOCK_NONE"),
+                ]
+
+                gen_config = _gtypes.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.2 if response_schema else temperature,
+                    max_output_tokens=max_tokens,
+                    safety_settings=safety_settings,
+                )
+
                 if response_schema:
-                    # Structured output: guarantees valid JSON matching schema (reduces parse failures and drift)
-                    gen_config = self.client.types.GenerationConfig(
-                        temperature=gemini_temp,
+                    gen_config = _gtypes.GenerateContentConfig(
+                        system_instruction=system_instruction,
+                        temperature=0.2,
                         max_output_tokens=max_tokens,
+                        safety_settings=safety_settings,
                         response_mime_type="application/json",
                         response_schema=response_schema,
                     )
-                gen_model = self.client.GenerativeModel(model)
-                response = gen_model.generate_content(
-                    full_prompt,
-                    generation_config=gen_config,
-                    safety_settings=[
-                        {
-                            "category": "HARM_CATEGORY_HARASSMENT",
-                            "threshold": "BLOCK_NONE",
-                        },
-                        {
-                            "category": "HARM_CATEGORY_HATE_SPEECH",
-                            "threshold": "BLOCK_NONE",
-                        },
-                        {
-                            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                            "threshold": "BLOCK_NONE",
-                        },
-                        {
-                            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                            "threshold": "BLOCK_NONE",
-                        },
-                    ],
-                    request_options={
-                        "timeout": 120
-                    },  # 2-minute timeout to avoid hanging
+
+                response = self.client.models.generate_content(
+                    model=model,
+                    contents=prompt,
+                    config=gen_config,
                 )
-                # Handle Gemini response - check for blocked content
+
+                # Handle blocked or empty response
                 if hasattr(response, "candidates") and response.candidates:
                     candidate = response.candidates[0]
-                    # Check finish reason (2 = SAFETY, 3 = RECITATION, etc.)
                     if hasattr(candidate, "finish_reason"):
-                        if candidate.finish_reason == 2:  # SAFETY
-                            # Try to get the text anyway, or use flash model as fallback
-                            if hasattr(candidate, "content") and candidate.content:
-                                if (
-                                    hasattr(candidate.content, "parts")
-                                    and candidate.content.parts
-                                ):
-                                    result_text = "".join(
-                                        [
-                                            part.text
-                                            for part in candidate.content.parts
-                                            if hasattr(part, "text")
-                                        ]
-                                    ).strip()
-                                else:
-                                    # Safety blocked - try flash model as fallback
-                                    print(
-                                        f"⚠️  Gemini Pro blocked by safety filters. Trying Flash model..."
-                                    )
-                                    if model != "gemini-2.5-flash":
-                                        return self.extract_with_llm(
-                                            prompt,
-                                            model="gemini-2.5-flash",
-                                            temperature=temperature,
-                                            max_tokens=max_tokens,
-                                            response_schema=response_schema,
-                                            retry_count=retry_count,
-                                        )
-                                    raise ValueError(
-                                        "Gemini content blocked by safety filters and Flash also unavailable"
-                                    )
-                            else:
-                                raise ValueError(
-                                    "Gemini content blocked by safety filters"
+                        finish = candidate.finish_reason
+                        # finish_reason values: 1=STOP, 2=SAFETY, 3=RECITATION, etc.
+                        if finish == 2:  # SAFETY
+                            # Try flash fallback
+                            fallback = "gemini-2.5-flash-lite"
+                            if model != fallback:
+                                print(f"⚠️  Gemini blocked by safety filters. Trying {fallback}...")
+                                return self.extract_with_llm(
+                                    prompt, model=fallback,
+                                    temperature=temperature, max_tokens=max_tokens,
+                                    response_schema=response_schema, retry_count=retry_count,
                                 )
-                        elif candidate.finish_reason == 3:  # RECITATION
-                            raise ValueError(
-                                "Gemini blocked content due to recitation policy"
-                            )
+                            raise ValueError("Gemini content blocked by safety filters")
+                        elif finish == 3:  # RECITATION
+                            raise ValueError("Gemini blocked content due to recitation policy")
 
-                # Try to get text from response
                 try:
                     result_text = response.text.strip()
-                except AttributeError:
-                    # Fallback: try to extract from candidates
+                except (AttributeError, ValueError):
+                    # Fallback: assemble from parts
+                    parts_text = []
                     if hasattr(response, "candidates") and response.candidates:
-                        candidate = response.candidates[0]
-                        if hasattr(candidate, "content") and candidate.content:
-                            if (
-                                hasattr(candidate.content, "parts")
-                                and candidate.content.parts
-                            ):
-                                result_text = "".join(
-                                    [
-                                        part.text
-                                        for part in candidate.content.parts
-                                        if hasattr(part, "text")
-                                    ]
-                                ).strip()
-                            else:
-                                # Check for blocked content
-                                if hasattr(response, "prompt_feedback"):
-                                    raise ValueError(
-                                        f"Gemini blocked content: {response.prompt_feedback}"
-                                    )
-                                raise ValueError("Gemini returned empty response")
-                        else:
-                            raise ValueError("Gemini returned empty response")
+                        content = getattr(response.candidates[0], "content", None)
+                        if content and hasattr(content, "parts"):
+                            parts_text = [p.text for p in content.parts if hasattr(p, "text")]
+                    if parts_text:
+                        result_text = "".join(parts_text).strip()
                     else:
-                        if hasattr(response, "prompt_feedback"):
-                            raise ValueError(
-                                f"Gemini blocked content: {response.prompt_feedback}"
-                            )
                         raise ValueError("Gemini returned empty response")
             else:
                 raise ValueError(f"Unknown provider: {self.provider}")
@@ -709,9 +660,10 @@ CRITICAL RULES:
                 raise RuntimeError("Failed to load image")
 
             b64_image = base64.b64encode(img).decode("utf-8")
+            # img bytes are always re-saved as PNG by _prepare_image (via PIL)
             data_url = f"data:image/png;base64,{b64_image}"
 
-            model_name = model or os.getenv("OPENAI_MODEL", "gpt-4o")
+            model_name = model or os.getenv("OPENAI_MODEL", "gpt-5.2")
 
             messages = [
                 {
@@ -741,42 +693,49 @@ CRITICAL RULES:
                 )
 
             try:
-                import google.generativeai as genai
+                from google import genai as _genai
+                from google.genai import types as _gtypes
             except ImportError:
                 raise RuntimeError(
-                    "google-generativeai package not installed. Install with: pip install google-generativeai"
+                    "google-genai package not installed. Install with: pip install google-genai"
                 )
 
-            genai.configure(api_key=gemini_key)
+            model_name = model or os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
 
-            model_name = model or os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-
-            img = self._prepare_image_for_gemini(image)
-            if img is None:
+            # Load image as raw bytes — new SDK uses Part.from_bytes
+            raw_bytes = self._prepare_image_for_gemini(image)
+            if raw_bytes is None:
                 raise RuntimeError("Failed to load image for Gemini")
 
-            gen_model = genai.GenerativeModel(model_name)
-            response = gen_model.generate_content(
-                [img, prompt],
-                generation_config=genai.types.GenerationConfig(
+            # Detect mime type from bytes header
+            if isinstance(raw_bytes, bytes):
+                if raw_bytes[:3] == b'\xff\xd8\xff':
+                    mime_type = "image/jpeg"
+                elif raw_bytes[:8] == b'\x89PNG\r\n\x1a\n':
+                    mime_type = "image/png"
+                else:
+                    mime_type = "image/png"  # safe default
+                image_part = _gtypes.Part.from_bytes(data=raw_bytes, mime_type=mime_type)
+            else:
+                # PIL Image object — convert to PNG bytes first
+                buf = io.BytesIO()
+                raw_bytes.save(buf, format="PNG")
+                image_part = _gtypes.Part.from_bytes(data=buf.getvalue(), mime_type="image/png")
+
+            client = _genai.Client(api_key=gemini_key)
+            response = client.models.generate_content(
+                model=model_name,
+                contents=[image_part, prompt],
+                config=_gtypes.GenerateContentConfig(
                     temperature=temperature,
                     max_output_tokens=max_tokens,
+                    safety_settings=[
+                        _gtypes.SafetySetting(category="HARM_CATEGORY_HARASSMENT",       threshold="BLOCK_NONE"),
+                        _gtypes.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH",       threshold="BLOCK_NONE"),
+                        _gtypes.SafetySetting(category="HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold="BLOCK_NONE"),
+                        _gtypes.SafetySetting(category="HARM_CATEGORY_DANGEROUS_CONTENT", threshold="BLOCK_NONE"),
+                    ],
                 ),
-                safety_settings=[
-                    {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-                    {
-                        "category": "HARM_CATEGORY_HATE_SPEECH",
-                        "threshold": "BLOCK_NONE",
-                    },
-                    {
-                        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                        "threshold": "BLOCK_NONE",
-                    },
-                    {
-                        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                        "threshold": "BLOCK_NONE",
-                    },
-                ],
             )
 
             result_text = response.text.strip()
