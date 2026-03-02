@@ -1,0 +1,49 @@
+{
+  "comp": [
+    "Susceptible Humans S_h",
+    "Exposed Humans E_h",
+    "Symptomatic Infectious Humans I_h",
+    "Asymptomatic Infectious Humans A_h",
+    "Recovered Humans R_h",
+    "Susceptible Mosquitoes S_v",
+    "Infectious Mosquitoes I_v"
+  ],
+  "flow": [
+    "Susceptible Humans S_h->Exposed Humans E_h",
+    "Exposed Humans E_h->Symptomatic Infectious Humans I_h",
+    "Exposed Humans E_h->Asymptomatic Infectious Humans A_h",
+    "Symptomatic Infectious Humans I_h->Recovered Humans R_h",
+    "Asymptomatic Infectious Humans A_h->Symptomatic Infectious Humans I_h",
+    "Asymptomatic Infectious Humans A_h->Recovered Humans R_h",
+    "Susceptible Mosquitoes S_v->Infectious Mosquitoes I_v",
+    "Susceptible Mosquitoes S_v->Infectious Mosquitoes I_v",
+    "__external__->Susceptible Humans S_h",
+    "__external__->Susceptible Mosquitoes S_v",
+    "Susceptible Humans S_h->__dead__",
+    "Exposed Humans E_h->__dead__",
+    "Symptomatic Infectious Humans I_h->__dead__",
+    "Asymptomatic Infectious Humans A_h->__dead__",
+    "Recovered Humans R_h->__dead__",
+    "Susceptible Mosquitoes S_v->__dead__",
+    "Infectious Mosquitoes I_v->__dead__"
+  ],
+  "param": [
+    "B The constant influx rate of the human hosts",
+    "\u03bc\u2095 The natural death rate of the human hosts",
+    "\u03bc\u1d65 The natural death rate of the mosquitoes",
+    "\u03b2\u2095 The age-specific transmission rate from infected mosquitoes to susceptible hosts",
+    "k The age-specific rate of progression from exposed to infectious for human hosts (inverse of latent period)",
+    "\u03c1 The probability of exposed hosts transferring to symptomatic infectious hosts",
+    "\u03c3 A factor characterizing the intensity of reinfection for asymptomatic hosts and their relative infectiousness to mosquitoes",
+    "\u03b3\u2081 The age-specific recovery rate of symptomatic infectious hosts",
+    "\u03b3\u2082 The age-specific recovery rate of asymptomatic infectious hosts",
+    "\u03b2\u1d65 The age-specific transmission rate from infectious hosts to susceptible mosquitoes",
+    "N\u2095 Total human population",
+    "HumanInfectionRate Frequency-dependent transmission rate from infectious mosquitoes to susceptible humans",
+    "HumanReinfectionRate Frequency-dependent reinfection rate from infectious mosquitoes to asymptomatic humans",
+    "progressionToSymptomatic Rate of progression from Exposed to Symptomatic Infectious",
+    "progressionToAsymptomatic Rate of progression from Exposed to Asymptomatic Infectious",
+    "VectorInfectionRateSymp Frequency-dependent transmission rate from symptomatic humans to susceptible mosquitoes",
+    "VectorInfectionRateAsymp Frequency-dependent transmission rate from asymptomatic humans to susceptible mosquitoes"
+  ]
+}

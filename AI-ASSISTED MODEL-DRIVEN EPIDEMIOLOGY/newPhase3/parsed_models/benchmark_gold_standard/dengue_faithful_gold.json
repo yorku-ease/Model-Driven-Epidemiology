@@ -1,0 +1,273 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible humans",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Exposed humans",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Asymptomatic infectious humans",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Symptomatic infectious humans",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Recovered humans",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Infectious mosquitoes",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Susceptible mosquitoes",
+      "secondary_name": "",
+      "initial_population": null
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible humans",
+      "target": "Exposed humans",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious mosquitoes",
+      "rate_parameter": "h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "S_h \u2192 E_h via bites from infectious mosquitoes (standard incidence ~ h_a * Iv * S_h / N_h in paper)"
+    },
+    {
+      "source": "Exposed humans",
+      "target": "Asymptomatic infectious humans",
+      "type": "RateFlow",
+      "rate_parameter": "k",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "E_h \u2192 A_h at rate (1-\u03c3) * k (fraction entering asymptomatic)"
+    },
+    {
+      "source": "Exposed humans",
+      "target": "Symptomatic infectious humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b32",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "E_h \u2192 I_h at rate \u03c3 * k (fraction entering symptomatic)"
+    },
+    {
+      "source": "Asymptomatic infectious humans",
+      "target": "Symptomatic infectious humans",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious mosquitoes",
+      "rate_parameter": "\u03c3*k",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "A_h \u2192 I_h via reinfection by infectious mosquitoes (paper uses \u03c1 factor on mosquito-to-human contact for secondary infection)"
+    },
+    {
+      "source": "Asymptomatic infectious humans",
+      "target": "Recovered humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1*h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "A_h \u2192 R_h recovery at rate \u03b32a (here: \u03b32)"
+    },
+    {
+      "source": "Symptomatic infectious humans",
+      "target": "Recovered humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "I_h \u2192 R_h recovery at rate \u03b31a (here: \u03b31)"
+    },
+    {
+      "source": "Susceptible mosquitoes",
+      "target": "Infectious mosquitoes",
+      "type": "ContactFlow",
+      "contact_compartment": "Asymptomatic infectious humans",
+      "rate_parameter": "\u03b31",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "S_v \u2192 I_v via biting asymptomatic infectious humans (paper force: (1-Iv)*(1/Nh)\u222b v_a (I_h + A_h) da)"
+    },
+    {
+      "source": "Susceptible mosquitoes",
+      "target": "Infectious mosquitoes",
+      "type": "ContactFlow",
+      "contact_compartment": "Symptomatic infectious humans",
+      "rate_parameter": "\u03b31",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "S_v \u2192 I_v via biting symptomatic infectious humans"
+    },
+    {
+      "source": "Susceptible humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Sh"
+    },
+    {
+      "source": "Exposed humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Eh"
+    },
+    {
+      "source": "Asymptomatic infectious humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Ah"
+    },
+    {
+      "source": "Symptomatic infectious humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Ih"
+    },
+    {
+      "source": "Recovered humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Rh"
+    },
+    {
+      "source": "Infectious mosquitoes",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_v",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Iv"
+    },
+    {
+      "source": "Susceptible mosquitoes",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_v",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death Sv"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "B",
+      "type": "CONSTANT",
+      "value": 250.0,
+      "unit": "1/time",
+      "description": "Constant influx of human hosts (boundary Sh(0,t)=B)"
+    },
+    {
+      "symbol": "\u03bc_h",
+      "type": "CONSTANT",
+      "value": 0.005,
+      "unit": "1/time",
+      "description": "Natural death rate of human hosts"
+    },
+    {
+      "symbol": "\u03bc_v",
+      "type": "CONSTANT",
+      "value": 0.65,
+      "unit": "1/time",
+      "description": "Natural death rate of mosquitoes"
+    },
+    {
+      "symbol": "h",
+      "type": "CONSTANT",
+      "value": 18.0,
+      "unit": "1/time",
+      "description": "Mosquito-to-human transmission/contact rate (age-averaged h_a)"
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": 0.007,
+      "unit": "dimensionless",
+      "description": "Probability an exposed host becomes symptomatic (paper: fraction to I_h)"
+    },
+    {
+      "symbol": "k",
+      "type": "CONSTANT",
+      "value": 0.6,
+      "unit": "1/time",
+      "description": "Latent progression rate (paper: k_a; here constant)"
+    },
+    {
+      "symbol": "(1-\u03c3)*k",
+      "type": "EXPRESSION",
+      "value": "(1-\u03c3) * k",
+      "unit": "1/time",
+      "description": "E_h \u2192 A_h rate"
+    },
+    {
+      "symbol": "\u03c3*k",
+      "type": "EXPRESSION",
+      "value": "\u03c3 * k",
+      "unit": "1/time",
+      "description": "E_h \u2192 I_h rate"
+    },
+    {
+      "symbol": "\u03c1",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "dimensionless",
+      "description": "Reinfection intensity factor for asymptomatic hosts (secondary infection)"
+    },
+    {
+      "symbol": "\u03c1*h",
+      "type": "EXPRESSION",
+      "value": "\u03c1 * h",
+      "unit": "1/time",
+      "description": "A_h \u2192 I_h reinfection contact term (scaled mosquito-to-human contact)"
+    },
+    {
+      "symbol": "\u03b31",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "1/time",
+      "description": "Recovery rate of symptomatic infectious hosts (paper: \u03b31a)"
+    },
+    {
+      "symbol": "\u03b32",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "1/time",
+      "description": "Recovery rate of asymptomatic infectious hosts (paper: \u03b32a)"
+    },
+    {
+      "symbol": "v",
+      "type": "CONSTANT",
+      "value": 8.0,
+      "unit": "1/time",
+      "description": "Human-to-mosquito transmission rate (age-averaged v_a)"
+    }
+  ]
+}

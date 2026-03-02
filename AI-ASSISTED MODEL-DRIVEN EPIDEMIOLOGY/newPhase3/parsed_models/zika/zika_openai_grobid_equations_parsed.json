@@ -1,0 +1,396 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Eggs Vectors",
+      "secondary_name": "Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Larvae Vectors",
+      "secondary_name": "Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Pupae Vectors",
+      "secondary_name": "Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Susceptible Mosquitoes Adult Female Vectors",
+      "secondary_name": "Adult Female Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Mosquitoes Adult Female Vectors",
+      "secondary_name": "Adult Female Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Mosquitoes Adult Female Vectors",
+      "secondary_name": "Adult Female Vectors",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Mosquitoes Adult Female Vectors",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human infection: susceptible humans become exposed via bites from infectious adult female vectors (frequency-dependent with denominator N_H + M; biting rate b)."
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Susceptible Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic crowding term on susceptible humans: \u03bb N_H (S_H/K_H) represented as per-capita loss from S_H (model uses \u03bb and K_H with N_H scaling)."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Infectious Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1_H",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human incubation/progression: exposed humans become infectious (E_H \u2192 I_H) at rate \u03b1_H."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Exposed Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic crowding term on exposed humans: \u03bb N_H (E_H/K_H) represented as per-capita loss from E_H (model uses \u03bb and K_H with N_H scaling)."
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Recovered Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human recovery: infectious humans recover (I_H \u2192 R_H) at rate \u03b3."
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Infectious Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic crowding term on infectious humans: \u03bb N_H (I_H/K_H) represented as per-capita loss from I_H (model uses \u03bb and K_H with N_H scaling)."
+    },
+    {
+      "source": "Recovered Humans",
+      "target": "Recovered Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic crowding term on recovered humans: \u03bb N_H (R_H/K_H) represented as per-capita loss from R_H (model uses \u03bb and K_H with N_H scaling)."
+    },
+    {
+      "source": "Eggs Vectors",
+      "target": "Larvae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4_1",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector development: eggs develop into larvae (V1 \u2192 V2) at rate \u03c4_1."
+    },
+    {
+      "source": "Eggs Vectors",
+      "target": "Eggs Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc_1",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Egg mortality: eggs die at rate \u03bc_1 (loss from V1)."
+    },
+    {
+      "source": "Larvae Vectors",
+      "target": "Pupae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4_2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector development: larvae develop into pupae (V2 \u2192 V3) at rate \u03c4_2."
+    },
+    {
+      "source": "Larvae Vectors",
+      "target": "Larvae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc_2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Larval mortality: larvae die at rate \u03bc_2 (loss from V2)."
+    },
+    {
+      "source": "Larvae Vectors",
+      "target": "Larvae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03ba",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Density-dependent larval loss due to competition/carrying capacity: \u03ba V2^2 / K_V (nonlinear loss term from V2)."
+    },
+    {
+      "source": "Pupae Vectors",
+      "target": "Susceptible Mosquitoes Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4_3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector development: pupae emerge to adult females (V3 \u2192 S_V) at rate q \u03c4_3 (q handled as parameter in inflow term)."
+    },
+    {
+      "source": "Pupae Vectors",
+      "target": "Pupae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc_3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Pupal mortality: pupae die at rate \u03bc_3 (loss from V3)."
+    },
+    {
+      "source": "Susceptible Mosquitoes Adult Female Vectors",
+      "target": "Exposed Mosquitoes Adult Female Vectors",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Humans",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector infection: susceptible adult female vectors become exposed by biting infectious humans (frequency-dependent with denominator N_H + M; biting rate b)."
+    },
+    {
+      "source": "Susceptible Mosquitoes Adult Female Vectors",
+      "target": "Susceptible Mosquitoes Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc_V",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adult female vector mortality: susceptible adult females die at rate \u03bc_V."
+    },
+    {
+      "source": "Exposed Mosquitoes Adult Female Vectors",
+      "target": "Infectious Mosquitoes Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1_V",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector incubation/progression: exposed adult females become infectious (E_V \u2192 I_V) at rate \u03b1_V."
+    },
+    {
+      "source": "Exposed Mosquitoes Adult Female Vectors",
+      "target": "Exposed Mosquitoes Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc_V",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adult female vector mortality: exposed adult females die at rate \u03bc_V."
+    },
+    {
+      "source": "Infectious Mosquitoes Adult Female Vectors",
+      "target": "Infectious Mosquitoes Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc_V",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adult female vector mortality: infectious adult females die at rate \u03bc_V."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Humans",
+      "type": "BirthSource",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human_Logistic_Births"
+    },
+    {
+      "source": "__external__",
+      "target": "Eggs Vectors",
+      "type": "BirthSource",
+      "rate_parameter": "e_V",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector_Egg_Production"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03bb",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Human population intrinsic growth rate used in logistic growth terms"
+    },
+    {
+      "symbol": "N_H",
+      "type": "EXPRESSION",
+      "value": null,
+      "unit": "persons",
+      "description": "Total human population size (used in transmission and logistic terms); N_H = S_H + E_H + I_H + R_H"
+    },
+    {
+      "symbol": "K_H",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "persons",
+      "description": "Human carrying capacity (logistic growth)"
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Transmission probability per bite/contact (used for both human and vector infection in equations)"
+    },
+    {
+      "symbol": "b",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "bites/(vector\u00b7time)",
+      "description": "Mosquito biting rate"
+    },
+    {
+      "symbol": "M",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "hosts",
+      "description": "Alternative hosts (non-human hosts) contributing to dilution in the biting term denominator (N_H + M)"
+    },
+    {
+      "symbol": "\u03b1_H",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Human incubation/progression rate from exposed to infectious (E_H \u2192 I_H)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Human recovery rate from infectious to recovered (I_H \u2192 R_H)"
+    },
+    {
+      "symbol": "N_V",
+      "type": "EXPRESSION",
+      "value": null,
+      "unit": "vectors",
+      "description": "Total adult female vector population size; N_V = S_V + E_V + I_V"
+    },
+    {
+      "symbol": "e_V",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "eggs/(vector\u00b7time)",
+      "description": "Vector egg-laying/oviposition rate contributing to egg production term e_V N_V"
+    },
+    {
+      "symbol": "\u03c4_1",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Development/maturation rate from eggs to larvae (V1 \u2192 V2)"
+    },
+    {
+      "symbol": "\u03bc_1",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Mortality rate in egg stage V1"
+    },
+    {
+      "symbol": "\u03c4_2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Development/maturation rate from larvae to pupae (V2 \u2192 V3)"
+    },
+    {
+      "symbol": "\u03bc_2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Mortality rate in larval stage V2"
+    },
+    {
+      "symbol": "\u03ba",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Density-dependent larval competition coefficient in term \u03ba V2^2 / K_V"
+    },
+    {
+      "symbol": "K_V",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "larvae",
+      "description": "Larval carrying capacity (appears in density-dependent larval loss term)"
+    },
+    {
+      "symbol": "\u03c4_3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Development/maturation rate from pupae to adult (V3 \u2192 adult females)"
+    },
+    {
+      "symbol": "\u03bc_3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Mortality rate in pupal stage V3"
+    },
+    {
+      "symbol": "q",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Fraction of emerging adults that are female (multiplies \u03c4_3 V3 into adult susceptible females)"
+    },
+    {
+      "symbol": "\u03bc_V",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Adult female vector mortality rate (applies to S_V, E_V, I_V)"
+    },
+    {
+      "symbol": "\u03b1_V",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Vector incubation/progression rate from exposed to infectious (E_V \u2192 I_V)"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="λ" type="CONSTANT" expression="0.00005" description="Human population logistic growth rate" unit="per day"/>
+  <parameters name="K_H" type="CONSTANT" expression="30000000" description="Human carrying capacity (logistic growth)" unit="humans"/>
+  <parameters name="β" type="CONSTANT" expression="0.071" description="Number of infectious bites delivered per vector per day (effective transmission term used in force of infection)" unit="per day"/>
+  <parameters name="b" type="CONSTANT" expression="1.0" description="Average biting rate per unit time of a female mosquito (appears in equations; paper text defines biting rate separately; set to 1.0 here because Table 2 provides β as infectious bites per vector per day)" unit="bites per mosquito per day"/>
+  <parameters name="M" type="CONSTANT" expression="100000" description="Number of alternative hosts besides humans in the environment" unit="hosts"/>
+
+  <parameters name="α_H" type="CONSTANT" expression="0.3333333333" description="Human progression rate Exposed→Infectious (inverse of human incubation time; Table 2 uses 3 days)" unit="per day"/>
+  <parameters name="γ" type="CONSTANT" expression="0.1428571429" description="Human recovery rate Infectious→Recovered (inverse of recovery time; Table 2 uses 7 days)" unit="per day"/>
+
+  <parameters name="e_V" type="CONSTANT" expression="80" description="Number of eggs laid per female mosquito per unit time" unit="eggs per female per day"/>
+  <parameters name="τ_1" type="CONSTANT" expression="0.3333333333" description="Egg development rate V1→V2 (inverse of egg development time; 3 days)" unit="per day"/>
+  <parameters name="τ_2" type="CONSTANT" expression="0.1111111111" description="Larval development rate V2→V3 (inverse of larval development time; 9 days)" unit="per day"/>
+  <parameters name="τ_3" type="CONSTANT" expression="0.3333333333" description="Pupal development rate V3→adult susceptible vectors (inverse of pupal development time; 3 days)" unit="per day"/>
+
+  <parameters name="μ_1" type="CONSTANT" expression="0.05" description="Egg mortality rate" unit="per day"/>
+  <parameters name="μ_2" type="CONSTANT" expression="0.025" description="Larval mortality rate (baseline)" unit="per day"/>
+  <parameters name="μ_3" type="CONSTANT" expression="0.0025" description="Pupal mortality rate" unit="per day"/>
+  <parameters name="μ_V" type="CONSTANT" expression="0.05" description="Adult female vector mortality rate" unit="per day"/>
+
+  <parameters name="q" type="CONSTANT" expression="0.68" description="Percentage of females among adult vectors" unit="dimensionless"/>
+
+  <parameters name="K_V" type="CONSTANT" expression="100000000" description="Larval carrying capacity (logistic term applied to larvae stage V2)" unit="vectors (larvae)"/>
+  <parameters name="κ" type="CONSTANT" expression="1" description="Larvae mortality intensity due to limited carrying capacity (coefficient in density-dependent term κ*V2^2/K_V)" unit="per day"/>
+
+  <parameters name="α_V" type="CONSTANT" expression="0.1" description="Vector progression rate Exposed→Infectious (inverse of vector incubation time; Table 2 uses 10 days)" unit="per day"/>
+
+  <!-- Initial conditions / scenario parameters from Table 2 (Rio de Janeiro State) -->
+  <parameters name="S_H(0)" type="CONSTANT" expression="16231365" description="Initial human population (assumed initially susceptible except initial infections)" unit="humans"/>
+  <parameters name="I_H(0)" type="CONSTANT" expression="1" description="Initial infectious humans" unit="humans"/>
+  <parameters name="N_V(0)" type="CONSTANT" expression="70000000" description="Initial adult female vector population (total adults)" unit="vectors"/>
+  <parameters name="E_V(0)" type="CONSTANT" expression="5" description="Initial exposed adult vectors" unit="vectors"/>
+  <parameters name="I_V(0)" type="CONSTANT" expression="5" description="Initial infectious adult vectors" unit="vectors"/>
+  <parameters name="V_1(0)" type="CONSTANT" expression="180000000" description="Initial eggs" unit="eggs"/>
+  <parameters name="V_2(0)" type="CONSTANT" expression="90000000" description="Initial larvae" unit="larvae"/>
+  <parameters name="V_3(0)" type="CONSTANT" expression="70000000" description="Initial pupae" unit="pupae"/>
+
+  <!-- ===================== -->
+  <!-- Compartments           -->
+  <!-- ===================== -->
+
+  <!-- Humans (SEIR) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="16231364">
+    <!-- S_H -> E_H : infection from infectious vectors I_V with frequency-dependent term β*b/(N_H+M) -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.9"
+                   target="//@compartments.1"
+                   description="Human infection: Susceptible humans become exposed due to bites from infectious vectors; force of infection uses β*b*I_V/(N_H+M)."/>
+    <!-- Note: logistic birth term λ N_H (1 - S_H/K_H) is not representable as a simple BirthSource in this metamodel. -->
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans" population="0">
+    <!-- E_H -> I_H -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.2"
+                   description="Human incubation/progression: exposed humans become infectious at rate α_H."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="1">
+    <!-- I_H -> R_H -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.3"
+                   description="Human recovery: infectious humans recover at rate γ."/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0">
+    <!-- No outgoing flows in paper equations (no waning immunity). -->
+  </compartments>
+
+  <!-- Vector life stages (eggs/larvae/pupae) -->
+  <compartments PrimaryName="Eggs" SecondaryName="Vectors" population="180000000">
+    <!-- V1 -> V2 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.9"
+                   target="//@compartments.5"
+                   description="Vector development: eggs develop into larvae at rate τ_1."/>
+    <!-- Egg mortality μ1 is an outflow to death; metamodel supports DeathSink but requires constant rate*compartment; included below as DeathSink. -->
+  </compartments>
+
+  <compartments PrimaryName="Larvae" SecondaryName="Vectors" population="90000000">
+    <!-- V2 -> V3 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.10"
+                   target="//@compartments.6"
+                   description="Vector development: larvae develop into pupae at rate τ_2."/>
+    <!-- Density-dependent mortality term κ*V2^2/K_V cannot be represented as a linear RateFlow/DeathSink in this metamodel. -->
+  </compartments>
+
+  <compartments PrimaryName="Pupae" SecondaryName="Vectors" population="70000000">
+    <!-- V3 -> S_V (adult susceptible female vectors) -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.11"
+                   target="//@compartments.7"
+                   description="Vector emergence: pupae develop into adult vectors at rate τ_3 (female fraction q applied in equations; see note)."/>
+  </compartments>
+
+  <!-- Adult vectors (SEI) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Vectors" population="69999990">
+    <!-- S_V -> E_V : infection from infectious humans I_H -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.8"
+                   description="Vector infection: susceptible adult vectors become exposed after biting infectious humans; force of infection uses β*b*I_H/(N_H+M)."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Vectors" population="5">
+    <!-- E_V -> I_V -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.17"
+                   target="//@compartments.9"
+                   description="Vector incubation/progression: exposed vectors become infectious at rate α_V."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Vectors" population="5">
+    <!-- No recovery in vectors in paper equations. -->
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Birth sources          -->
+  <!-- ===================== -->
+
+  <!-- Vector egg laying: dV1/dt includes + e_V * N_V.
+       This is not a constant birth rate; it depends on N_V = S_V+E_V+I_V.
+       Metamodel BirthSource cannot reference compartments, so we omit a BirthSource and document via parameter e_V.
+       Similarly, human logistic births are omitted as BirthSource. -->
+
+  <!-- ===================== -->
+  <!-- Death sinks            -->
+  <!-- ===================== -->
+
+  <!-- Linear mortality terms that are representable -->
+  <deathSinks name="Egg_Mortality" rateParameter="//@parameters.12" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Larval_Mortality_Baseline" rateParameter="//@parameters.13" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Pupal_Mortality" rateParameter="//@parameters.14" sourceCompartment="//@compartments.6"/>
+
+  <deathSinks name="Adult_Vector_Mortality_SV" rateParameter="//@parameters.15" sourceCompartment="//@compartments.7"/>
+  <deathSinks name="Adult_Vector_Mortality_EV" rateParameter="//@parameters.15" sourceCompartment="//@compartments.8"/>
+  <deathSinks name="Adult_Vector_Mortality_IV" rateParameter="//@parameters.15" sourceCompartment="//@compartments.9"/>
+
+  <!-- Human logistic "death" terms -λ N_H * X / K_H are nonlinear (depend on N_H) and not representable as DeathSink here; omitted. -->
+
+  <!-- ===================== -->
+  <!-- Notes / limitations    -->
+  <!-- ===================== -->
+  <!--
+    This XML captures the compartment topology and all linear flows exactly as implied by the ODEs and Figure 1 (SEIR humans, SEI adult vectors, and 3 vector life stages V1-V3).
+    The following ODE terms are nonlinear / state-dependent and cannot be represented in this metamodel’s current BirthSource/DeathSink/Flow primitives (which are linear in a single compartment and/or depend on a single contact compartment):
+      - Human logistic growth term: +λ N_H (1 - S_H/K_H) in dS_H/dt
+      - Human density-dependent removal terms: -λ N_H * (E_H/K_H), -λ N_H * (I_H/K_H), -λ N_H * (R_H/K_H)
+      - Vector egg laying term: + e_V * N_V in dV1/dt
+      - Larval density-dependent mortality: - κ * V2^2 / K_V in dV2/dt
+      - Female fraction q multiplying emergence into S_V: + q τ_3 V3 in dS_V/dt (represented structurally as V3->S_V with τ_3; q is provided as a parameter but not applied as a multiplier in-flow in this metamodel)
+      - Transmission term uses β*b/(N_H+M); denominator (N_H+M) is state-dependent via N_H.
+    All parameters appearing in the equations and extracted tables are included above with best-available values (Rio de Janeiro State scenario from Table 2; biological ranges from Table 1 are not duplicated as separate parameters).
+  -->
+
+</seir:SEIRModel>
+```

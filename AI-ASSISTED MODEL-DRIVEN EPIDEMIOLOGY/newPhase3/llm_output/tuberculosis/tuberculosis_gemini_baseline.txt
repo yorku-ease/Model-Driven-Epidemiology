@@ -1,0 +1,32 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="A" description="Recruitment rate of human."/>
+  <parameters name="β" description="Probability of successful infection rate."/>
+  <parameters name="ϵ" description="Correction parameter for reinfection term."/>
+  <parameters name="u" description="Rate of vaccination."/>
+  <parameters name="θ" description="Vaccine wane rate."/>
+  <parameters name="γ" description="Recovery rate."/>
+  <parameters name="δ" description="Drop out rate due to waning immunity."/>
+  <parameters name="μ" description="Natural death rate."/>
+  <parameters name="β_reinfection" type="EXPRESSION" expression="ϵ * β" description="Re-infection rate for recovered individuals."/>
+  <compartments PrimaryName="Susceptible">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.1" target="//@compartments.2" description="Primary infection of susceptible individuals."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.3" target="//@compartments.1" description="Vaccination of susceptible individuals."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.4" target="//@compartments.0" description="Waning of vaccine-induced immunity."/>
+  </compartments>
+  <compartments PrimaryName="Infected"/>
+  <compartments PrimaryName="Recovered">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.5" source="//@compartments.2" target="//@compartments.3" description="Recovery of infected individuals."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.8" target="//@compartments.2" description="Reinfection of recovered individuals."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.6" target="//@compartments.0" description="Waning of natural immunity in recovered individuals."/>
+  </compartments>
+  <birthSources name="Recruitment" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_S" rateParameter="//@parameters.7" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_V" rateParameter="//@parameters.7" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_I" rateParameter="//@parameters.7" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_R" rateParameter="//@parameters.7" sourceCompartment="//@compartments.3"/>
+</seir:SEIRModel>
+```

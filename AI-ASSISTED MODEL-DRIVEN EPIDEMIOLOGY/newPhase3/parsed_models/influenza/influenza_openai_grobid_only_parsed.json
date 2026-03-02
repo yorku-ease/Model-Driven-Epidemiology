@@ -1,0 +1,182 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed E1",
+      "secondary_name": "E1",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed E2",
+      "secondary_name": "E2",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious I1",
+      "secondary_name": "I1",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious I2",
+      "secondary_name": "I2",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed E1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious I1",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Transmission: susceptible individuals become infected (enter latent stage E\u2081) at rate \u03bb(t) proportional to \u03b2 and infectious population."
+    },
+    {
+      "source": "Exposed E1",
+      "target": "Exposed E2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Latent progression E\u2081\u2192E\u2082 at daily rate \u03c3."
+    },
+    {
+      "source": "Exposed E2",
+      "target": "Infectious I1",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Latent progression E\u2082\u2192I\u2081 at daily rate \u03c3."
+    },
+    {
+      "source": "Infectious I1",
+      "target": "Infectious I2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infectious stage progression I\u2081\u2192I\u2082 at daily rate \u03b3."
+    },
+    {
+      "source": "Infectious I2",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery/removal I\u2082\u2192R at daily rate \u03b3."
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Constant transmission rate (rate at which new infections take place given a contact); used in force of infection \u03bb(t) proportional to infectious people."
+    },
+    {
+      "symbol": "\u03bb(t)",
+      "type": "EXPRESSION",
+      "value": null,
+      "unit": "per day",
+      "description": "Force of infection (rate at which a susceptible becomes infected), assumed proportional to number of infectious people at time t and transmission rate \u03b2 (homogeneous mixing)."
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Daily rate of transition E\u2081\u2192E\u2082 and E\u2082\u2192I\u2081; implies average incubation period d_L = 2*(1/\u03c3) days."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Daily rate of transition I\u2081\u2192I\u2082 and I\u2082\u2192R; implies average infectious period d_I = 2*(1/\u03b3) days."
+    },
+    {
+      "symbol": "\u03c0",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Initial susceptibility (proportion non-immune at start); used in effective reproduction number R_n together with epidemic growth rate parameter \u03c8."
+    },
+    {
+      "symbol": "\u03bb\u2080",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Initial infection rate / initial force of infection parameter at epidemic start (as used in parameter set \u0398_T = (\u03c0, \u03bb\u2080, \u03c8, \u03c3, \u03b3))."
+    },
+    {
+      "symbol": "\u03c8",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Epidemic growth-related parameter (EGR parametrisation); used with \u03c0 to determine effective reproduction number R_n."
+    },
+    {
+      "symbol": "p_ICU",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Probability of ICU/HDU admission given infection."
+    },
+    {
+      "symbol": "\u03bc_ICU|E",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "time",
+      "description": "Mean of Gamma-distributed waiting time from infection to ICU/HDU admission."
+    },
+    {
+      "symbol": "\u03c3\u00b2_ICU|E",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "time^2",
+      "description": "Variance of Gamma-distributed waiting time from infection to ICU/HDU admission."
+    },
+    {
+      "symbol": "\u03b7",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Negative Binomial dispersion parameter for weekly ICU/HDU admission counts (observation model)."
+    },
+    {
+      "symbol": "R\u2080",
+      "type": "EXPRESSION",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Basic reproduction number; discussed with plausible range 1\u2264R\u2080\u22644 used to set priors (no explicit formula given in provided sections)."
+    },
+    {
+      "symbol": "R_n",
+      "type": "EXPRESSION",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Effective reproduction number in partially immune population; stated to be a function of susceptibility \u03c0 and EGR parameter \u03c8 (explicit formula not provided in provided sections)."
+    },
+    {
+      "symbol": "TAR",
+      "type": "EXPRESSION",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Total Attack Rate: probability of being infected over the whole epidemic for a susceptible individual (computed from transmission model; explicit formula not provided in provided sections)."
+    }
+  ]
+}

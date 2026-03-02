@@ -1,0 +1,175 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infected Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Infected Humans",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Humans",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Primary infection of susceptible individuals due to contact with infected individuals (S\u2192I)."
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Vaccinated Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bd",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible individuals (S\u2192V) at rate \u03bd."
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "Susceptible Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of vaccine-induced protection (V\u2192S) at rate \u03b4."
+    },
+    {
+      "source": "Infected Humans",
+      "target": "Recovered Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery from TB infection (I\u2192R) at rate \u03b3."
+    },
+    {
+      "source": "Recovered Humans",
+      "target": "Susceptible Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c9",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Loss of temporary immunity (R\u2192S) at rate \u03c9."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Humans",
+      "type": "BirthSource",
+      "rate_parameter": "\u039b",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Human_Births"
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_S"
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_V"
+    },
+    {
+      "source": "Infected Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_I"
+    },
+    {
+      "source": "Recovered Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_R"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u039b",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Recruitment/birth rate (all newborns enter Susceptible). Value not provided."
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Natural death rate (assumed equal to birth rate in non-dimensionalization; total population constant). Value not provided."
+    },
+    {
+      "symbol": "\u03bd",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Vaccination rate (Susceptible to Vaccinated). Value not provided."
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Vaccine waning rate (Vaccinated to Susceptible). Value not provided."
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Effective transmission/contact rate causing infection. Value not provided."
+    },
+    {
+      "symbol": "\u03c1",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Reinfection coefficient/parameter (drives backward bifurcation; does not explicitly appear in R0 per paper text). Value not provided."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Recovery rate (Infected to Recovered). Value not provided."
+    },
+    {
+      "symbol": "\u03c9",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Temporary immunity waning rate (Recovered to Susceptible). Value not provided."
+    }
+  ]
+}

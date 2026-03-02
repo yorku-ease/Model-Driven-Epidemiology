@@ -1,0 +1,497 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Human",
+      "secondary_name": "Human",
+      "initial_population": 99999.0
+    },
+    {
+      "name": "Exposed Human",
+      "secondary_name": "Human",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Human",
+      "secondary_name": "Human",
+      "initial_population": 1.0
+    },
+    {
+      "name": "Recovered Human",
+      "secondary_name": "Human",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Egg Vector",
+      "secondary_name": "Vector",
+      "initial_population": 10000.0
+    },
+    {
+      "name": "Larva Vector",
+      "secondary_name": "Vector",
+      "initial_population": 10000.0
+    },
+    {
+      "name": "Pupa Vector",
+      "secondary_name": "Vector",
+      "initial_population": 10000.0
+    },
+    {
+      "name": "Susceptible Vector",
+      "secondary_name": "Vector",
+      "initial_population": 10000.0
+    },
+    {
+      "name": "Exposed Vector",
+      "secondary_name": "Vector",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Vector",
+      "secondary_name": "Vector",
+      "initial_population": 0.0
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "",
+      "secondary_name": "",
+      "initial_population": null
+    }
+  ],
+  "flows": [
+    {
+      "source": "",
+      "target": "Exposed Human",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Vector",
+      "rate_parameter": "\u03b2_eff",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans by infectious vectors"
+    },
+    {
+      "source": "",
+      "target": "Infectious Human",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious in humans"
+    },
+    {
+      "source": "",
+      "target": "Recovered Human",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious humans"
+    },
+    {
+      "source": "",
+      "target": "Larva Vector",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation from eggs to larvae"
+    },
+    {
+      "source": "",
+      "target": "Pupa Vector",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation from larvae to pupae"
+    },
+    {
+      "source": "",
+      "target": "Susceptible Vector",
+      "type": "RateFlow",
+      "rate_parameter": "rate_pupa_to_adult",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation from pupae to susceptible female adult vectors"
+    },
+    {
+      "source": "",
+      "target": "Exposed Vector",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Human",
+      "rate_parameter": "\u03b2_eff",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible vectors by infectious humans"
+    },
+    {
+      "source": "",
+      "target": "Infectious Vector",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious in vectors"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Human",
+      "type": "BirthSource",
+      "rate_parameter": "rate_H_birth",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human_Births"
+    },
+    {
+      "source": "__external__",
+      "target": "Egg Vector",
+      "type": "BirthSource",
+      "rate_parameter": "rate_egg_laying",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector_Egg_Laying"
+    },
+    {
+      "source": "Susceptible Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "rate_H_death_dd",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_SH_dd"
+    },
+    {
+      "source": "Exposed Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "rate_H_death_dd",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_EH_dd"
+    },
+    {
+      "source": "Infectious Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "rate_H_death_dd",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_IH_dd"
+    },
+    {
+      "source": "Recovered Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "rate_H_death_dd",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_RH_dd"
+    },
+    {
+      "source": "Egg Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_V1"
+    },
+    {
+      "source": "Larva Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_V2_natural"
+    },
+    {
+      "source": "Larva Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "rate_larva_death_dd",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_V2_dd"
+    },
+    {
+      "source": "Pupa Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_V3_natural"
+    },
+    {
+      "source": "Pupa Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "rate_pupa_death_male",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_V3_males"
+    },
+    {
+      "source": "Susceptible Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_SV"
+    },
+    {
+      "source": "Exposed Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_EV"
+    },
+    {
+      "source": "Infectious Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death_IV"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Biting rate of vectors"
+    },
+    {
+      "symbol": "b",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Transmission probability per bite"
+    },
+    {
+      "symbol": "M",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Number of alternative hosts for vectors"
+    },
+    {
+      "symbol": "\u03b1\u2095",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Progression rate from Exposed to Infectious for humans (1/incubation period)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Recovery rate for humans"
+    },
+    {
+      "symbol": "\u03bb",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Human population logistic growth rate parameter"
+    },
+    {
+      "symbol": "K\u2095",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Carrying capacity of human population"
+    },
+    {
+      "symbol": "e\u1d65",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Vector oviposition rate (eggs per female vector per day)"
+    },
+    {
+      "symbol": "\u03c4\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Maturation rate from vector eggs to larvae"
+    },
+    {
+      "symbol": "\u03bc\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Mortality rate of vector eggs"
+    },
+    {
+      "symbol": "\u03c4\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Maturation rate from vector larvae to pupae"
+    },
+    {
+      "symbol": "\u03bc\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Natural mortality rate of vector larvae"
+    },
+    {
+      "symbol": "\u03ba",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Density-dependent mortality factor for vector larvae"
+    },
+    {
+      "symbol": "K\u1d65",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Carrying capacity of vector larvae"
+    },
+    {
+      "symbol": "\u03c4\u2083",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Maturation rate from vector pupae to adults"
+    },
+    {
+      "symbol": "\u03bc\u2083",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Mortality rate of vector pupae"
+    },
+    {
+      "symbol": "q",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Proportion of emerging adult vectors that are female"
+    },
+    {
+      "symbol": "\u03bc\u1d65",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Mortality rate of adult vectors"
+    },
+    {
+      "symbol": "\u03b1\u1d65",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Progression rate from Exposed to Infectious for vectors (1/incubation period)"
+    },
+    {
+      "symbol": "\u03b2b",
+      "type": "EXPRESSION",
+      "value": "\u03b2 * b",
+      "unit": "",
+      "description": "Combined transmission rate"
+    },
+    {
+      "symbol": "\u03b2_eff",
+      "type": "EXPRESSION",
+      "value": "\u03b2b / (S_H + E_H + I_H + R_H + M)",
+      "unit": "",
+      "description": "Effective contact rate for transmission, frequency-dependent"
+    },
+    {
+      "symbol": "rate_H_birth",
+      "type": "EXPRESSION",
+      "value": "\u03bb * (S_H + E_H + I_H + R_H)",
+      "unit": "",
+      "description": "Total birth rate for human population"
+    },
+    {
+      "symbol": "rate_H_death_dd",
+      "type": "EXPRESSION",
+      "value": "(\u03bb / K\u2095) * (S_H + E_H + I_H + R_H)",
+      "unit": "",
+      "description": "Density-dependent death rate for human population"
+    },
+    {
+      "symbol": "rate_egg_laying",
+      "type": "EXPRESSION",
+      "value": "e\u1d65 * (S_V + E_V + I_V)",
+      "unit": "",
+      "description": "Total egg laying rate from all adult female vectors"
+    },
+    {
+      "symbol": "rate_larva_death_dd",
+      "type": "EXPRESSION",
+      "value": "(\u03ba / K\u1d65) * V_2",
+      "unit": "",
+      "description": "Rate for density-dependent larval death"
+    },
+    {
+      "symbol": "rate_pupa_to_adult",
+      "type": "EXPRESSION",
+      "value": "q * \u03c4\u2083",
+      "unit": "",
+      "description": "Effective maturation rate from pupa to female adult vector"
+    },
+    {
+      "symbol": "rate_pupa_death_male",
+      "type": "EXPRESSION",
+      "value": "(1 - q) * \u03c4\u2083",
+      "unit": "",
+      "description": "Mortality rate of pupae that become male vectors"
+    }
+  ]
+}

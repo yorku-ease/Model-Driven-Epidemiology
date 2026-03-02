@@ -1,0 +1,75 @@
+An analysis of the provided LaTeX equations reveals a compartmental model structure. The text from the paper is used to assign meaningful names to the compartments and parameters. A critical interpretation was made regarding the transmission terms (e.g., `- \beta_2 S_H`): the provided equations appear to be a linearized or simplified form. To reconstruct the complete, standard epidemiological model described in the text, these terms were interpreted as non-linear `ContactFlows` (e.g., `- \beta_2 S_H I_M`), which is consistent with the paper's description of vector-borne and non-vector transmission dynamics.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="π" description="Human recruitment rate"/>
+  <parameters name="k" description="Proportion of newborns vaccinated"/>
+  <parameters name="θ" description="Waning rate of vaccine-induced immunity"/>
+  <parameters name="γ" description="Waning rate of natural immunity"/>
+  <parameters name="μ₁" description="Natural mortality rate of humans"/>
+  <parameters name="β₂" description="Transmission rate from infectious mosquitoes to susceptible humans"/>
+  <parameters name="α₂" description="Non-vector transmission rate to susceptible humans from infectious humans"/>
+  <parameters name="β₁" description="Transmission rate from infectious mosquitoes to vaccinated humans (breakthrough)"/>
+  <parameters name="ε" description="Factor modifying vaccine breakthrough transmission"/>
+  <parameters name="α₁" description="Non-vector transmission rate to vaccinated humans from infectious humans"/>
+  <parameters name="τ₁" description="Progression rate from vector-exposed to infectious"/>
+  <parameters name="τ₂" description="Progression rate from non-vector-exposed to infectious"/>
+  <parameters name="δ₁" description="Malaria-induced mortality rate"/>
+  <parameters name="σ" description="Treatment rate for infectious humans"/>
+  <parameters name="ω" description="Recovery rate from treatment"/>
+  <parameters name="Λ" description="Mosquito recruitment rate"/>
+  <parameters name="μ₂" description="Natural mortality rate of mosquitoes"/>
+  <parameters name="β₃" description="Transmission rate from infectious humans to susceptible mosquitoes"/>
+  <parameters name="φ" description="Progression rate for exposed mosquitoes to become infectious"/>
+  <parameters name="π_S" type="EXPRESSION" expression="π * (1-k)" description="Birth rate into susceptible human population"/>
+  <parameters name="π_V" type="EXPRESSION" expression="π * k" description="Birth rate into vaccinated human population"/>
+  <parameters name="β₁ε" type="EXPRESSION" expression="β₁ * ε" description="Effective vector transmission rate for vaccinated humans"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.5" contactCompartment="//@compartments.9" target="//@compartments.2" description="Infection of susceptible humans by infectious mosquitoes"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.6" contactCompartment="//@compartments.4" target="//@compartments.3" description="Non-vector infection of susceptible humans by infectious humans"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.0" description="Loss of vaccine-induced immunity"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.21" contactCompartment="//@compartments.9" target="//@compartments.2" description="Breakthrough infection of vaccinated humans by infectious mosquitoes"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.9" contactCompartment="//@compartments.4" target="//@compartments.3" description="Non-vector breakthrough infection of vaccinated humans by infectious humans"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Humans (Vector)">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.10" target="//@compartments.4" description="Progression from vector-exposed to infectious"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Humans (Non-Vector)">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4" description="Progression from non-vector-exposed to infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.13" target="//@compartments.5" description="Progression from infectious to treated"/>
+  </compartments>
+  <compartments PrimaryName="Treated" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.14" target="//@compartments.6" description="Recovery from treatment"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.3" target="//@compartments.0" description="Loss of natural immunity"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Mosquitoes">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.17" contactCompartment="//@compartments.4" target="//@compartments.8" description="Infection of susceptible mosquitoes by infectious humans"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Mosquitoes">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.18" target="//@compartments.9" description="Progression from exposed to infectious for mosquitoes"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquitoes"/>
+  <birthSources name="Human_Births_Unvaccinated" rateParameter="//@parameters.19" targetCompartment="//@compartments.0"/>
+  <birthSources name="Human_Births_Vaccinated" rateParameter="//@parameters.20" targetCompartment="//@compartments.1"/>
+  <birthSources name="Mosquito_Recruitment" rateParameter="//@parameters.15" targetCompartment="//@compartments.7"/>
+  <deathSinks name="Natural_Death_SH" rateParameter="//@parameters.4" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_VH" rateParameter="//@parameters.4" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_EH1" rateParameter="//@parameters.4" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_EH2" rateParameter="//@parameters.4" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural_Death_IH" rateParameter="//@parameters.4" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Disease_Death_IH" rateParameter="//@parameters.12" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_TH" rateParameter="//@parameters.4" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Disease_Death_TH" rateParameter="//@parameters.12" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Natural_Death_RH" rateParameter="//@parameters.4" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="Natural_Death_SM" rateParameter="//@parameters.16" sourceCompartment="//@compartments.7"/>
+  <deathSinks name="Natural_Death_EM" rateParameter="//@parameters.16" sourceCompartment="//@compartments.8"/>
+  <deathSinks name="Natural_Death_IM" rateParameter="//@parameters.16" sourceCompartment="//@compartments.9"/>
+</seir:SEIRModel>
+```

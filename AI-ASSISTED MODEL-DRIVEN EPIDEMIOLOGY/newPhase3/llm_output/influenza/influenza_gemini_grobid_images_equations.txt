@@ -1,0 +1,25 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="β" description="The rate at which new infections take place given a contact." unit="1/time"/>
+  <parameters name="σ" description="Daily rate of transition through exposed compartments. The average incubation period is 2/σ." unit="1/day"/>
+  <parameters name="γ" description="Daily rate of transition through infectious compartments. The average infectious period is 2/γ." unit="1/day"/>
+  <compartments PrimaryName="Susceptible">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.3" target="//@compartments.1" description="Infection from contact with Infectious1 individuals."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.4" target="//@compartments.1" description="Infection from contact with Infectious2 individuals."/>
+  </compartments>
+  <compartments PrimaryName="Exposed1">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression from the first to the second exposed stage."/>
+  </compartments>
+  <compartments PrimaryName="Exposed2">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Progression from the latent period to the infectious period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious1">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Progression from the first to the second infectious stage."/>
+  </compartments>
+  <compartments PrimaryName="Infectious2">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.5" description="Recovery from infection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered"/>
+</seir:SEIRModel>
+```

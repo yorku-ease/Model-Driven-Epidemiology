@@ -1,0 +1,31 @@
+{
+  "comp": [
+    "Susceptible S",
+    "Vaccinated V",
+    "Infectious I",
+    "Recovered R"
+  ],
+  "flow": [
+    "Susceptible S->Infectious I",
+    "Susceptible S->Vaccinated V",
+    "Vaccinated V->Susceptible S",
+    "Infectious I->Recovered R",
+    "Recovered R->Infectious I",
+    "Recovered R->Susceptible S",
+    "__external__->Susceptible S",
+    "Susceptible S->__dead__",
+    "Vaccinated V->__dead__",
+    "Infectious I->__dead__",
+    "Recovered R->__dead__"
+  ],
+  "param": [
+    "A Recruitment (birth/immigration) rate into the susceptible class.",
+    "\u03b2 Effective transmission (contact) rate for primary infection (S infected by I), appearing in mass-action term \u03b2 S I.",
+    "\u03b5 Correction factor for reinfection susceptibility of recovered individuals (scales reinfection term \u03b5 \u03b2 R I). Typically 0\u20131.",
+    "\u03b3 Recovery rate from infectious to recovered (I \u2192 R).",
+    "\u03b4 Waning of natural immunity (R \u2192 S).",
+    "\u03bc Natural death rate (applies to all compartments).",
+    "u Vaccination rate moving susceptible individuals to vaccinated (S \u2192 V).",
+    "\u03b8 Vaccine waning rate moving vaccinated individuals back to susceptible (V \u2192 S)."
+  ]
+}

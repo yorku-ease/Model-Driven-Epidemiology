@@ -1,0 +1,283 @@
+{
+  "meta": {
+    "disease": "ebola",
+    "case_id": "Ebola_openai_grobid_full",
+    "provider": "openai",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:25:37.672396+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.3333,
+      "recall": 0.3333,
+      "f1": 0.3333,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.3889,
+      "recall": 0.4375,
+      "f1": 0.4118,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.3158,
+      "recall": 0.4286,
+      "f1": 0.3636,
+      "weight": 0.15
+    },
+    "composite": 0.3712
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 6,
+      "extracted_total": 6,
+      "tp": 2,
+      "fp": 4,
+      "fn": 4
+    },
+    "flows": {
+      "gold_total": 16,
+      "extracted_total": 18,
+      "tp": 7,
+      "fp": 11,
+      "fn": 9
+    },
+    "parameters": {
+      "gold_total": 14,
+      "extracted_total": 19,
+      "tp": 6,
+      "fp": 13,
+      "fn": 8
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Quarantine Q",
+        "extracted": "Quarantined Humans",
+        "score": 0.794278085231781
+      },
+      {
+        "gold": "Environment pathogens B",
+        "extracted": "Environment Pathogens",
+        "score": 0.8739376068115234
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Infectious I->Quarantine Q",
+        "extracted": "Infected Humans->Quarantined Humans",
+        "score": 0.7626549005508423
+      },
+      {
+        "gold": "Infectious I->Environment pathogens B",
+        "extracted": "Infected Humans->Environment Pathogens",
+        "score": 0.7421041131019592
+      },
+      {
+        "gold": "Quarantine Q->Deceased D",
+        "extracted": "Quarantined Humans->Deceased Humans",
+        "score": 0.7594571113586426
+      },
+      {
+        "gold": "Deceased D->Environment pathogens B",
+        "extracted": "Deceased Humans->Environment Pathogens",
+        "score": 0.7881271839141846
+      },
+      {
+        "gold": "Environment pathogens B->__dead__",
+        "extracted": "Environment Pathogens->__dead__",
+        "score": 0.9209654331207275
+      },
+      {
+        "gold": "Susceptible S->__dead__",
+        "extracted": "Susceptible Humans->__dead__",
+        "score": 0.7937034368515015
+      },
+      {
+        "gold": "Quarantine Q->__dead__",
+        "extracted": "Quarantined Humans->Deceased Humans",
+        "score": 0.7201755046844482
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "\u03bc Natural human death rate (\u03bc)",
+        "extracted": "\u03b5 Natural death rate of humans (applies to A, P, F, K).",
+        "score": 0.7566227912902832
+      },
+      {
+        "gold": "\u03c93 Quarantine rate (I\u2192Q)",
+        "extracted": "\u03a9\u2083 Total removal rate from quarantined humans F.",
+        "score": 0.7407208681106567
+      },
+      {
+        "gold": "\u03b42 Death rate in quarantine (Q\u2192D)",
+        "extracted": "\u03c9\u2082 Disease-induced death rate of quarantined humans (F) to deceased (S).",
+        "score": 0.7271153330802917
+      },
+      {
+        "gold": "\u03b7 Shedding rate from deceased into environment (D\u2192B)",
+        "extracted": "h Shedding rate of deceased humans (S) into the environment (U).",
+        "score": 0.7511131763458252
+      },
+      {
+        "gold": "\u03c1 Burial/removal rate of deceased (D removed)",
+        "extracted": "c Burial/removal rate of deceased humans (S).",
+        "score": 0.8153196573257446
+      },
+      {
+        "gold": "\u03bcB Clearance/decay rate of pathogens in environment",
+        "extracted": "b Environmental pathogen decay/clearance rate (U).",
+        "score": 0.8184036612510681
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [
+      "Susceptible Humans",
+      "Infected Humans",
+      "Recovered Humans",
+      "Deceased Humans"
+    ],
+    "flows": [
+      "Susceptible Humans -> Infected Humans",
+      "Susceptible Humans -> Infected Humans",
+      "Susceptible Humans -> Infected Humans",
+      "Infected Humans -> Quarantined Humans",
+      "Infected Humans -> Deceased Humans",
+      "Infected Humans -> Deceased Humans",
+      "Infected Humans -> Environment Pathogens",
+      "Quarantined Humans -> Recovered Humans",
+      "Quarantined Humans -> Deceased Humans",
+      "Quarantined Humans -> Deceased Humans",
+      "Deceased Humans -> Environment Pathogens",
+      "__external__ -> Susceptible Humans",
+      "__external__ -> Infected Humans",
+      "__external__ -> Environment Pathogens",
+      "Susceptible Humans -> __dead__",
+      "Recovered Humans -> __dead__",
+      "Environment Pathogens -> __dead__",
+      "Deceased Humans -> __dead__"
+    ],
+    "parameters": [
+      "\u03b1\u2081 Recruitment rate into susceptible humans (A).",
+      "\u03b1\u2082 Recruitment/importation rate into infected humans (P).",
+      "\u03c8\u2081 Effective contact/transmission rate from infected humans (P) to susceptible humans (A).",
+      "\u03c8\u2082 Effective contact/transmission rate from environmental pathogens (U) to susceptible humans (A).",
+      "\u03c8\u2083 Effective contact/transmission rate from deceased humans (S) to susceptible humans (A) (e.g., burial contact).",
+      "\u03c1\u2081 Disease-induced death rate of infected humans (P).",
+      "\u03c1\u2082 Shedding rate of infected humans (P) into the environment (U).",
+      "\u03c1\u2083 Quarantine rate: infected humans (P) moved to quarantine (F).",
+      "\u03c9\u2081 Recovery rate of quarantined humans (F) to recovered (K).",
+      "d External input/source term into environment (U) (e.g., bush meat contamination).",
+      "\u03a9\u2081 Auxiliary quantity used in stability derivations (paper-defined).",
+      "\u03a9\u2082 Total removal rate from infected humans P.",
+      "\u03a9\u2084 Total removal rate from deceased humans S."
+    ]
+  },
+  "false_negatives": {
+    "compartments": [
+      "Susceptible S",
+      "Infectious I",
+      "Recovered R",
+      "Deceased D"
+    ],
+    "flows": [
+      "Susceptible S -> Infectious I",
+      "Susceptible S -> Infectious I",
+      "Susceptible S -> Infectious I",
+      "Infectious I -> Quarantine Q",
+      "Infectious I -> Recovered R",
+      "Infectious I -> Deceased D",
+      "Infectious I -> Environment pathogens B",
+      "Quarantine Q -> Recovered R",
+      "Quarantine Q -> Deceased D",
+      "Deceased D -> Environment pathogens B",
+      "Environment pathogens B -> __dead__",
+      "Deceased D -> __dead__",
+      "Susceptible S -> __dead__",
+      "Infectious I -> __dead__",
+      "Quarantine Q -> __dead__",
+      "Recovered R -> __dead__"
+    ],
+    "parameters": [
+      "\u039b Recruitment of susceptibles (\u039b)",
+      "\u03b21 Effective contact rate with infectious humans",
+      "\u03b22 Effective contact rate with pathogens in environment",
+      "\u03b23 Effective contact rate with deceased humans",
+      "\u03b41 Disease-induced death rate from I",
+      "\u03c92 Shedding rate from I into environment",
+      "\u03c91 Recovery rate from I (I\u2192R)",
+      "\u03c91q Recovery rate from Q (Q\u2192R)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "POOR",
+    "composite_score": 0.3712,
+    "entity_verdicts": {
+      "compartments": "poor",
+      "flows": "poor",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 4 compartment(s), 16 flow(s), 8 parameter(s) from gold standard.",
+      "Hallucinated 4 compartment(s), 18 flow(s), 13 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_compartments": [
+        "Susceptible S",
+        "Infectious I",
+        "Recovered R",
+        "Deceased D"
+      ],
+      "missed_flows": [
+        "Susceptible S -> Infectious I",
+        "Susceptible S -> Infectious I",
+        "Susceptible S -> Infectious I",
+        "Infectious I -> Quarantine Q",
+        "Infectious I -> Recovered R"
+      ],
+      "missed_flows_total": 16,
+      "missed_parameters": [
+        "\u039b Recruitment of susceptibles (\u039b)",
+        "\u03b21 Effective contact rate with infectious humans",
+        "\u03b22 Effective contact rate with pathogens in environment",
+        "\u03b23 Effective contact rate with deceased humans",
+        "\u03b41 Disease-induced death rate from I"
+      ],
+      "missed_parameters_total": 8,
+      "hallucinated_compartments": [
+        "Susceptible Humans",
+        "Infected Humans",
+        "Recovered Humans",
+        "Deceased Humans"
+      ],
+      "hallucinated_flows": [
+        "Susceptible Humans -> Infected Humans",
+        "Susceptible Humans -> Infected Humans",
+        "Susceptible Humans -> Infected Humans",
+        "Infected Humans -> Quarantined Humans",
+        "Infected Humans -> Deceased Humans"
+      ],
+      "hallucinated_flows_total": 18,
+      "hallucinated_parameters": [
+        "\u03b1\u2081 Recruitment rate into susceptible humans (A).",
+        "\u03b1\u2082 Recruitment/importation rate into infected humans (P).",
+        "\u03c8\u2081 Effective contact/transmission rate from infected humans (P) to susceptible humans (A).",
+        "\u03c8\u2082 Effective contact/transmission rate from environmental pathogens (U) to susceptible humans (A).",
+        "\u03c8\u2083 Effective contact/transmission rate from deceased humans (S) to susceptible humans (A) (e.g., burial contact)."
+      ],
+      "hallucinated_parameters_total": 13
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

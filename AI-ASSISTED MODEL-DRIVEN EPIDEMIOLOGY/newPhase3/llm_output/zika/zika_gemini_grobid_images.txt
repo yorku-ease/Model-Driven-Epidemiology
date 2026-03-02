@@ -1,0 +1,70 @@
+An epidemiological model for Zika virus was extracted from the provided scientific paper sections and figure descriptions. The model is a vector-host compartmental model, using an SEIR (Susceptible-Exposed-Infectious-Recovered) structure for the human population and an SEI (Susceptible-Exposed-Infectious) structure for the adult female mosquito (vector) population. It also incorporates a dynamic vector population by modeling the key life-cycle stages of the mosquito: Egg, Larva, and Pupa.
+
+The model captures the following key dynamics:
+1.  **Human Population:** Susceptible individuals are exposed to the virus through bites from infectious mosquitoes. After an incubation period, they become infectious and can later recover, gaining immunity. The model includes natural birth (recruitment) and death rates for the human population.
+2.  **Vector Population:** The model includes a full life-cycle for mosquitoes, from eggs to larvae, to pupae, and finally to susceptible adults. Susceptible adult female mosquitoes become exposed after biting an infectious human. Following an extrinsic incubation period, they become infectious and remain so for life. Each vector stage has its own mortality rate.
+3.  **Transmission:** The model uses contact-based flows to represent the two transmission pathways: from infectious vectors to susceptible humans (`I_v -> S_h`) and from infectious humans to susceptible vectors (`I_h -> S_v`).
+
+The resulting model is represented in a parametric format, defining all state variables, transitions, and symbolic parameters (e.g., biting rate `b`, transmission probabilities `βₕ`, `βᵥ`, recovery rate `γₕ`) as specified by the metamodel. This structure allows for clear separation of the model's logic from its specific numerical values.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="αₕ" expression="0.0" description="Human recruitment rate" unit="persons/day"/>
+  <parameters name="μₕ" expression="0.0" description="Human natural mortality rate" unit="1/day"/>
+  <parameters name="b" expression="0.0" description="Mosquito biting rate" unit="bites/person/day"/>
+  <parameters name="βₕ" expression="0.0" description="Transmission probability from vector to human" unit="dimensionless"/>
+  <parameters name="λₕ" type="EXPRESSION" expression="b * βₕ" description="Force of infection on humans" unit="1/day"/>
+  <parameters name="σₕ" expression="0.0" description="Human progression rate from Exposed to Infectious (1/incubation_period)" unit="1/day"/>
+  <parameters name="γₕ" expression="0.0" description="Human recovery rate from Infectious to Recovered" unit="1/day"/>
+  <parameters name="θᵥ" expression="0.0" description="Vector oviposition rate (eggs per adult vector per day)" unit="eggs/vector/day"/>
+  <parameters name="σ_V1" expression="0.0" description="Maturation rate from Egg to Larva" unit="1/day"/>
+  <parameters name="μ_V1" expression="0.0" description="Mortality rate of vector eggs" unit="1/day"/>
+  <parameters name="σ_V2" expression="0.0" description="Maturation rate from Larva to Pupa" unit="1/day"/>
+  <parameters name="μ_V2" expression="0.0" description="Mortality rate of vector larvae" unit="1/day"/>
+  <parameters name="σ_V3" expression="0.0" description="Maturation rate from Pupa to Adult" unit="1/day"/>
+  <parameters name="μ_V3" expression="0.0" description="Mortality rate of vector pupae" unit="1/day"/>
+  <parameters name="βᵥ" expression="0.0" description="Transmission probability from human to vector" unit="dimensionless"/>
+  <parameters name="λᵥ" type="EXPRESSION" expression="b * βᵥ" description="Force of infection on vectors" unit="1/day"/>
+  <parameters name="σᵥ" expression="0.0" description="Vector progression rate from Exposed to Infectious (1/extrinsic_incubation_period)" unit="1/day"/>
+  <parameters name="μᵥ" expression="0.0" description="Adult vector mortality rate" unit="1/day"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Human" population="99999.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.4" contactCompartment="//@compartments.9" target="//@compartments.1" description="Infection of humans by infectious mosquitoes"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Human" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.5" target="//@compartments.2" description="Progression from Exposed to Infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Human" population="1.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.6" target="//@compartments.3" description="Recovery from Infectious to Recovered"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" SecondaryName="Human" population="0.0"/>
+  <compartments PrimaryName="Eggs" SecondaryName="Vector" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.8" target="//@compartments.5" description="Maturation from Eggs to Larvae"/>
+  </compartments>
+  <compartments PrimaryName="Larvae" SecondaryName="Vector" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.10" target="//@compartments.6" description="Maturation from Larvae to Pupae"/>
+  </compartments>
+  <compartments PrimaryName="Pupae" SecondaryName="Vector" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.7" description="Emergence from Pupae to adult Susceptible vectors"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Vector" population="10000.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.15" contactCompartment="//@compartments.2" target="//@compartments.8" description="Infection of vectors by infectious humans"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Vector" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.16" target="//@compartments.9" description="Progression from Exposed to Infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Vector" population="0.0"/>
+  <birthSources name="Human_Births" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+  <birthSources name="Vector_Births" rateParameter="//@parameters.7" targetCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_SH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_EH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_IH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_RH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Death_V1" rateParameter="//@parameters.9" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Death_V2" rateParameter="//@parameters.11" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Death_V3" rateParameter="//@parameters.13" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="Death_SV" rateParameter="//@parameters.17" sourceCompartment="//@compartments.7"/>
+  <deathSinks name="Death_EV" rateParameter="//@parameters.17" sourceCompartment="//@compartments.8"/>
+  <deathSinks name="Death_IV" rateParameter="//@parameters.17" sourceCompartment="//@compartments.9"/>
+</seir:SEIRModel>
+```

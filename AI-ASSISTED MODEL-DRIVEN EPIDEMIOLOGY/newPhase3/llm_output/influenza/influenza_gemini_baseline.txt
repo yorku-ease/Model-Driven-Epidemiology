@@ -1,0 +1,26 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="53679750">
+  <parameters name="β" description="Transmission rate parameter, representing the rate at which new infections take place given a contact. Inferred in the paper via re-parametrization, so no fixed value is provided." unit="1/person/day"/>
+  <parameters name="σ" expression="1.0" description="Daily rate of transition through each of the two exposed (E) sub-compartments. The total average incubation period is 2/σ. Value is from Table 1." unit="1/day"/>
+  <parameters name="γ" expression="0.5797" description="Daily rate of transition through each of the two infectious (I) sub-compartments. This represents progression towards recovery. The total average infectious period is 2/γ. Value is from Table 1." unit="1/day"/>
+  <parameters name="N" expression="53679750" description="Total population size. The paper provides values for three seasons; this value is for the 2012/13 season from Table 1." unit="persons"/>
+  <compartments PrimaryName="Susceptible" population="30006970">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.3" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious individuals in compartment I1. The total force of infection is proportional to the sum of I1 and I2."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.4" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious individuals in compartment I2. The total force of infection is proportional to the sum of I1 and I2."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="1" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression from the first exposed sub-compartment to the second."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="2" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Progression from the second exposed sub-compartment to become infectious."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="1" population="5">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Progression from the first infectious sub-compartment to the second."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="2" population="5">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.5" description="Progression from the second infectious sub-compartment to the removed/recovered state."/>
+  </compartments>
+  <compartments PrimaryName="Removed" population="23672770"/>
+</seir:SEIRModel>
+```

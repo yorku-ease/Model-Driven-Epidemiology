@@ -1,0 +1,115 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 54551449.0
+    },
+    {
+      "name": "Exposed Stage 1",
+      "secondary_name": "Stage 1",
+      "initial_population": 1.0
+    },
+    {
+      "name": "Exposed Stage 2",
+      "secondary_name": "Stage 2",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Stage 1",
+      "secondary_name": "Stage 1",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Stage 2",
+      "secondary_name": "Stage 2",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Removed",
+      "secondary_name": "",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed Stage 1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Stage 1",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals by contact with Infectious Stage 1 individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed Stage 1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Stage 2",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals by contact with Infectious Stage 2 individuals."
+    },
+    {
+      "source": "Exposed Stage 1",
+      "target": "Exposed Stage 2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from first to second exposed stage. Average latent period is 2/\u03c3 days."
+    },
+    {
+      "source": "Exposed Stage 2",
+      "target": "Infectious Stage 1",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious stage (end of latency period)."
+    },
+    {
+      "source": "Infectious Stage 1",
+      "target": "Infectious Stage 2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from first to second infectious stage. Average infectious period is 2/\u03b3 days."
+    },
+    {
+      "source": "Infectious Stage 2",
+      "target": "Removed",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious individuals."
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/day",
+      "description": "Transmission rate"
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "1/day",
+      "description": "Daily rate of transition from Exposed to Infectious (1 / incubation period per stage)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.5797,
+      "unit": "1/day",
+      "description": "Daily rate of transition from Infectious to Removed (1 / infectious period per stage)"
+    }
+  ]
+}

@@ -1,0 +1,546 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Children",
+      "secondary_name": "Children",
+      "initial_population": null
+    },
+    {
+      "name": "Un-monitored Vaccinated Children",
+      "secondary_name": "Children",
+      "initial_population": null
+    },
+    {
+      "name": "Monitored Vaccinated Children",
+      "secondary_name": "Children",
+      "initial_population": null
+    },
+    {
+      "name": "Exposed Children",
+      "secondary_name": "Children",
+      "initial_population": null
+    },
+    {
+      "name": "Infectious Children",
+      "secondary_name": "Children",
+      "initial_population": null
+    },
+    {
+      "name": "Immune Children",
+      "secondary_name": "Children",
+      "initial_population": null
+    },
+    {
+      "name": "Susceptible Adults",
+      "secondary_name": "Adults",
+      "initial_population": null
+    },
+    {
+      "name": "Un-monitored Vaccinated Adults",
+      "secondary_name": "Adults",
+      "initial_population": null
+    },
+    {
+      "name": "Vaccinated Adults",
+      "secondary_name": "Adults",
+      "initial_population": null
+    },
+    {
+      "name": "Exposed Adults",
+      "secondary_name": "Adults",
+      "initial_population": null
+    },
+    {
+      "name": "Infectious Adults",
+      "secondary_name": "Adults",
+      "initial_population": null
+    },
+    {
+      "name": "Immune Adults",
+      "secondary_name": "Adults",
+      "initial_population": null
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Children",
+      "target": "Monitored Vaccinated Children",
+      "type": "RateFlow",
+      "rate_parameter": "x_M",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible children (monitored)."
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "Un-monitored Vaccinated Children",
+      "type": "RateFlow",
+      "rate_parameter": "x_U",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible children (un-monitored)."
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "Susceptible Adults",
+      "type": "RateFlow",
+      "rate_parameter": "j",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of susceptible children to susceptible adults."
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "Exposed Children",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Children",
+      "rate_parameter": "b_C",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible children by infectious children."
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "Exposed Children",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Adults",
+      "rate_parameter": "b_C",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible children by infectious adults."
+    },
+    {
+      "source": "Un-monitored Vaccinated Children",
+      "target": "Immune Children",
+      "type": "RateFlow",
+      "rate_parameter": "h_U",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Gaining of full immunity by un-monitored vaccinated children."
+    },
+    {
+      "source": "Un-monitored Vaccinated Children",
+      "target": "Un-monitored Vaccinated Adults",
+      "type": "RateFlow",
+      "rate_parameter": "j",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of un-monitored vaccinated children to un-monitored vaccinated adults."
+    },
+    {
+      "source": "Un-monitored Vaccinated Children",
+      "target": "Exposed Children",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Children",
+      "rate_parameter": "eb_C",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Breakthrough infection of un-monitored vaccinated children by infectious children."
+    },
+    {
+      "source": "Un-monitored Vaccinated Children",
+      "target": "Exposed Children",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Adults",
+      "rate_parameter": "eb_C",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Breakthrough infection of un-monitored vaccinated children by infectious adults."
+    },
+    {
+      "source": "Monitored Vaccinated Children",
+      "target": "Immune Children",
+      "type": "RateFlow",
+      "rate_parameter": "h_M",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Gaining of full immunity by monitored vaccinated children."
+    },
+    {
+      "source": "Exposed Children",
+      "target": "Infectious Children",
+      "type": "RateFlow",
+      "rate_parameter": "d_progression",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious for children."
+    },
+    {
+      "source": "Exposed Children",
+      "target": "Exposed Adults",
+      "type": "RateFlow",
+      "rate_parameter": "j",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of exposed children to exposed adults."
+    },
+    {
+      "source": "Infectious Children",
+      "target": "Immune Children",
+      "type": "RateFlow",
+      "rate_parameter": "g",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious children."
+    },
+    {
+      "source": "Infectious Children",
+      "target": "Infectious Adults",
+      "type": "RateFlow",
+      "rate_parameter": "j",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of infectious children to infectious adults."
+    },
+    {
+      "source": "Immune Children",
+      "target": "Immune Adults",
+      "type": "RateFlow",
+      "rate_parameter": "j",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of immune children to immune adults."
+    },
+    {
+      "source": "Susceptible Adults",
+      "target": "Vaccinated Adults",
+      "type": "RateFlow",
+      "rate_parameter": "x_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible adults."
+    },
+    {
+      "source": "Susceptible Adults",
+      "target": "Exposed Adults",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Children",
+      "rate_parameter": "b_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible adults by infectious children."
+    },
+    {
+      "source": "Susceptible Adults",
+      "target": "Exposed Adults",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Adults",
+      "rate_parameter": "b_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible adults by infectious adults."
+    },
+    {
+      "source": "Un-monitored Vaccinated Adults",
+      "target": "Immune Adults",
+      "type": "RateFlow",
+      "rate_parameter": "h_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Gaining of full immunity by un-monitored vaccinated adults."
+    },
+    {
+      "source": "Un-monitored Vaccinated Adults",
+      "target": "Exposed Adults",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Children",
+      "rate_parameter": "eb_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Breakthrough infection of un-monitored vaccinated adults by infectious children."
+    },
+    {
+      "source": "Un-monitored Vaccinated Adults",
+      "target": "Exposed Adults",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Adults",
+      "rate_parameter": "eb_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Breakthrough infection of un-monitored vaccinated adults by infectious adults."
+    },
+    {
+      "source": "Vaccinated Adults",
+      "target": "Immune Adults",
+      "type": "RateFlow",
+      "rate_parameter": "h_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Gaining of full immunity by vaccinated adults."
+    },
+    {
+      "source": "Exposed Adults",
+      "target": "Infectious Adults",
+      "type": "RateFlow",
+      "rate_parameter": "d_progression",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious for adults."
+    },
+    {
+      "source": "Infectious Adults",
+      "target": "Immune Adults",
+      "type": "RateFlow",
+      "rate_parameter": "g",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious adults."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Children",
+      "type": "BirthSource",
+      "rate_parameter": "L",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Births"
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_SC"
+    },
+    {
+      "source": "Un-monitored Vaccinated Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_UVC"
+    },
+    {
+      "source": "Monitored Vaccinated Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_MVC"
+    },
+    {
+      "source": "Exposed Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_EC"
+    },
+    {
+      "source": "Infectious Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_IC"
+    },
+    {
+      "source": "Infectious Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d_death",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Disease_Death_IC"
+    },
+    {
+      "source": "Immune Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_ImC"
+    },
+    {
+      "source": "Susceptible Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_SA"
+    },
+    {
+      "source": "Un-monitored Vaccinated Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_UVA"
+    },
+    {
+      "source": "Vaccinated Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_VA"
+    },
+    {
+      "source": "Exposed Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_EA"
+    },
+    {
+      "source": "Infectious Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_IA"
+    },
+    {
+      "source": "Infectious Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d_death",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Disease_Death_IA"
+    },
+    {
+      "source": "Immune Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_ImA"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "L",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Recruitment rate into the children group (births)."
+    },
+    {
+      "symbol": "x_U",
+      "type": "CONSTANT",
+      "value": 0.087,
+      "unit": "per week",
+      "description": "Un-monitored children vaccination rate."
+    },
+    {
+      "symbol": "x_M",
+      "type": "CONSTANT",
+      "value": 4.777e-05,
+      "unit": "per week",
+      "description": "Monitored children vaccination rate."
+    },
+    {
+      "symbol": "x_A",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "per week",
+      "description": "Adult vaccination rate."
+    },
+    {
+      "symbol": "b_C",
+      "type": "CONSTANT",
+      "value": 0.00188,
+      "unit": "per person per week",
+      "description": "Transmission rate for children."
+    },
+    {
+      "symbol": "b_A",
+      "type": "CONSTANT",
+      "value": 1e-05,
+      "unit": "per person per week",
+      "description": "Transmission rate for adults."
+    },
+    {
+      "symbol": "m",
+      "type": "CONSTANT",
+      "value": 0.000267,
+      "unit": "per week",
+      "description": "Natural death rate (1/(72*52))."
+    },
+    {
+      "symbol": "g",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "per week",
+      "description": "Rate of recovery from infection (1/2 weeks)."
+    },
+    {
+      "symbol": "j",
+      "type": "CONSTANT",
+      "value": 0.001282,
+      "unit": "per week",
+      "description": "Maturation rate from child to adult (1/(15*52))."
+    },
+    {
+      "symbol": "e",
+      "type": "CONSTANT",
+      "value": 0.2,
+      "unit": "",
+      "description": "Vaccine failure proportion (1 - effectiveness)."
+    },
+    {
+      "symbol": "h_A",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "per week",
+      "description": "Rate of gaining immunity for vaccinated adults (un-monitored and monitored)."
+    },
+    {
+      "symbol": "h_U",
+      "type": "CONSTANT",
+      "value": 3e-06,
+      "unit": "per week",
+      "description": "Rate of gaining immunity for un-monitored vaccinated children."
+    },
+    {
+      "symbol": "h_M",
+      "type": "CONSTANT",
+      "value": 0.167,
+      "unit": "per week",
+      "description": "Rate of gaining immunity for monitored vaccinated children."
+    },
+    {
+      "symbol": "d_progression",
+      "type": "CONSTANT",
+      "value": 0.7,
+      "unit": "per week",
+      "description": "Progression rate from Exposed to Infectious (incubation rate, symbol 'd' in paper)."
+    },
+    {
+      "symbol": "d_death",
+      "type": "CONSTANT",
+      "value": 9.3399e-05,
+      "unit": "per week",
+      "description": "Disease-induced death rate (symbol 'd' in paper)."
+    },
+    {
+      "symbol": "eb_C",
+      "type": "EXPRESSION",
+      "value": "e * b_C",
+      "unit": "per person per week",
+      "description": "Effective transmission rate for vaccinated children with vaccine failure."
+    },
+    {
+      "symbol": "eb_A",
+      "type": "EXPRESSION",
+      "value": "e * b_A",
+      "unit": "per person per week",
+      "description": "Effective transmission rate for vaccinated adults with vaccine failure."
+    }
+  ]
+}

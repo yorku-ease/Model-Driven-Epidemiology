@@ -1,0 +1,221 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ========================================================= -->
+  <!-- Parameters (symbols, values/ranges when provided, units, descriptions) -->
+  <!-- ========================================================= -->
+  <parameters name="b" type="CONSTANT" expression="0.3-0.5"
+              unit="bites per mosquito per day"
+              description="Average biting rate per unit time of a female mosquito (paper: typically 0.3 to 0.5 per day)."/>
+  <parameters name="β" type="CONSTANT" expression="0.05-0.12"
+              unit="dimensionless"
+              description="Percentage/probability that a bite transmits ZIKV (paper Table 1: 0.05–0.12)."/>
+  <parameters name="M" type="CONSTANT" expression="(varies; e.g., 100000 for Rio; 80000 for town)"
+              unit="hosts (count)"
+              description="Amount/number of alternative hosts besides human in the environment (affects bites received by humans via (N_H+M))."/>
+
+  <parameters name="λ" type="CONSTANT" expression="0.00005"
+              unit="per day"
+              description="Human population growth rate used in logistic growth term (Table 2)."/>
+  <parameters name="K_H" type="CONSTANT" expression="100000000"
+              unit="humans (count)"
+              description="Human carrying capacity for logistic growth (Table 2; Rio example)."/>
+
+  <parameters name="α_H" type="CONSTANT" expression="1/2-1/4"
+              unit="per day"
+              description="Inverse incubation time (progression rate) of ZIKV in humans (Table 1: incubation time 2–4 days)."/>
+  <parameters name="γ" type="CONSTANT" expression="1/5-1/7"
+              unit="per day"
+              description="Human recovery rate (inverse of recovery time; Table 1: recovery time 5–7 days)."/>
+
+  <parameters name="e" type="CONSTANT" expression="80"
+              unit="eggs per female mosquito per day"
+              description="Number of eggs laid per female mosquito per unit time (Table 1: 80 per day)."/>
+  <parameters name="τ1" type="CONSTANT" expression="1/3"
+              unit="per day"
+              description="Egg development rate (reciprocal of egg development time; Table 1: 3 days)."/>
+  <parameters name="μ1" type="CONSTANT" expression="0.05"
+              unit="per day"
+              description="Egg mortality rate (Table 1)."/>
+
+  <parameters name="τ2" type="CONSTANT" expression="1/9"
+              unit="per day"
+              description="Larval development rate (reciprocal of larval development time; Table 1: 9 days)."/>
+  <parameters name="μ2" type="CONSTANT" expression="0.025"
+              unit="per day"
+              description="Larval mortality rate (Table 1)."/>
+
+  <parameters name="τ3" type="CONSTANT" expression="1/3"
+              unit="per day"
+              description="Pupal development rate (reciprocal of pupal development time; Table 1: 3 days)."/>
+  <parameters name="μ3" type="CONSTANT" expression="0.0025"
+              unit="per day"
+              description="Pupal mortality rate (Table 1)."/>
+
+  <parameters name="μ_V" type="CONSTANT" expression="0.05"
+              unit="per day"
+              description="Adult vector mortality rate (Table 1)."/>
+
+  <parameters name="q" type="CONSTANT" expression="0.68"
+              unit="dimensionless"
+              description="Percentage of females among adult vectors (Table 1)."/>
+
+  <parameters name="κ" type="CONSTANT" expression="0.00005"
+              unit="per day"
+              description="Larvae mortality rate due to limited carrying capacity (logistic term in larvae equation; Table 2)."/>
+  <parameters name="K_V" type="CONSTANT" expression="30000000"
+              unit="larvae (count)"
+              description="Carrying capacity for larvae (vector aquatic stage) (Table 2; Rio example)."/>
+
+  <parameters name="α_V" type="CONSTANT" expression="1/8-1/12"
+              unit="per day"
+              description="Inverse incubation time (progression rate) of ZIKV in vectors (Table 1: incubation time 8–12 days; Table 2 uses 10 days)."/>
+
+  <!-- Transmission composite rates as used in the ODEs (paper equations) -->
+  <parameters name="c_H" type="EXPRESSION"
+              expression="β*b/(N_H+M)"
+              unit="per day per mosquito"
+              description="Composite factor in human force of infection: (β b I_V)/(N_H+M). (Paper: exposure rate of a human)."/>
+  <parameters name="c_V" type="EXPRESSION"
+              expression="β*b/(N_H+M)"
+              unit="per day per human"
+              description="Composite factor in mosquito force of infection: (β b I_H)/(N_H+M). (Paper: exposure rate of a mosquito)."/>
+
+  <!-- ========================================================= -->
+  <!-- Compartments (state variables) -->
+  <!-- Humans: SEIR -->
+  <!-- Vectors: aquatic stages V1,V2,V3 and adult female SEI -->
+  <!-- ========================================================= -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="16231365"/>
+  <compartments PrimaryName="Exposed" SecondaryName="Humans" population="0"/>
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="1"/>
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0"/>
+
+  <compartments PrimaryName="Eggs" SecondaryName="Vectors" population="180000000"/>
+  <compartments PrimaryName="Larvae" SecondaryName="Vectors" population="90000000"/>
+  <compartments PrimaryName="Pupae" SecondaryName="Vectors" population="70000000"/>
+
+  <compartments PrimaryName="Susceptible" SecondaryName="Adult Female Vectors" population="70000000"/>
+  <compartments PrimaryName="Exposed" SecondaryName="Adult Female Vectors" population="5"/>
+  <compartments PrimaryName="Infectious" SecondaryName="Adult Female Vectors" population="5"/>
+
+  <!-- ========================================================= -->
+  <!-- Flows (transitions) -->
+  <!-- NOTE: The paper includes logistic human growth and larvae logistic mortality.
+       The metamodel supports BirthSource/DeathSink with constant rates, but the paper’s
+       birth/death terms are state-dependent (λ N_H (1 - N_H/K_H) and κ*(V2/K_V)*V2).
+       We therefore encode the epidemiological transitions exactly, and include the
+       demographic/logistic terms as documented parameters/descriptions rather than
+       forcing incorrect constant BirthSource/DeathSink rates. -->
+  <!-- ========================================================= -->
+
+  <!-- Human infection: S_H -> E_H driven by infectious adult female vectors I_V -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="16231365">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.16"
+                   contactCompartment="//@compartments.9"
+                   target="//@compartments.1"
+                   description="Human infection by bites from infectious adult female vectors: rate = (β*b/(N_H+M)) * I_V * S_H (paper uses (β b I_V)/(N_H+M))."/>
+  </compartments>
+
+  <!-- Human progression: E_H -> I_H -->
+  <compartments PrimaryName="Exposed" SecondaryName="Humans" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.2"
+                   description="Human incubation completion: E_H -> I_H at rate α_H."/>
+  </compartments>
+
+  <!-- Human recovery: I_H -> R_H -->
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="1">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.3"
+                   description="Human recovery: I_H -> R_H at rate γ."/>
+  </compartments>
+
+  <!-- Recovered humans: no outgoing flows in paper -->
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0"/>
+
+  <!-- Vector aquatic development: Eggs -> Larvae -> Pupae -> Adult female susceptible -->
+  <compartments PrimaryName="Eggs" SecondaryName="Vectors" population="180000000">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.8"
+                   target="//@compartments.5"
+                   description="Egg development: V1 (eggs) -> V2 (larvae) at rate τ1."/>
+    <!-- Egg mortality is a sink in paper: -μ1 V1 -->
+    <deathSinks name="Egg_Mortality" rateParameter="//@parameters.9" sourceCompartment="//@compartments.4"/>
+  </compartments>
+
+  <compartments PrimaryName="Larvae" SecondaryName="Vectors" population="90000000">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.10"
+                   target="//@compartments.6"
+                   description="Larval development: V2 (larvae) -> V3 (pupae) at rate τ2."/>
+    <!-- Larval mortality: -μ2 V2 -->
+    <deathSinks name="Larval_Mortality" rateParameter="//@parameters.11" sourceCompartment="//@compartments.5"/>
+    <!-- Additional density-dependent larvae mortality term: -κ*(V2/K_V)*V2 (documented only) -->
+  </compartments>
+
+  <compartments PrimaryName="Pupae" SecondaryName="Vectors" population="70000000">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.12"
+                   target="//@compartments.7"
+                   description="Pupal development to adult female susceptible: V3 (pupae) -> S_V at rate q*τ3 (paper: q τ3 V3)."/>
+    <!-- Pupal mortality: -μ3 V3 -->
+    <deathSinks name="Pupal_Mortality" rateParameter="//@parameters.13" sourceCompartment="//@compartments.6"/>
+  </compartments>
+
+  <!-- Adult female vectors: infection dynamics SEI -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Adult Female Vectors" population="70000000">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.17"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.8"
+                   description="Vector infection by biting infectious humans: S_V -> E_V with rate = (β*b/(N_H+M)) * I_H * S_V (paper uses (β b I_H)/(N_H+M))."/>
+    <!-- Adult mortality: -μ_V S_V -->
+    <deathSinks name="Adult_Mortality_SV" rateParameter="//@parameters.14" sourceCompartment="//@compartments.7"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Adult Female Vectors" population="5">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.15"
+                   target="//@compartments.9"
+                   description="Vector incubation completion: E_V -> I_V at rate α_V."/>
+    <!-- Adult mortality: -μ_V E_V -->
+    <deathSinks name="Adult_Mortality_EV" rateParameter="//@parameters.14" sourceCompartment="//@compartments.8"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Adult Female Vectors" population="5">
+    <!-- No recovery in vectors in paper; only death -->
+    <deathSinks name="Adult_Mortality_IV" rateParameter="//@parameters.14" sourceCompartment="//@compartments.9"/>
+  </compartments>
+
+  <!-- ========================================================= -->
+  <!-- Birth sources (documented as in paper) -->
+  <!-- Vector egg laying: + e * N_V * (??) enters Eggs compartment in paper: dV1/dt = e*N_V - (τ1+μ1)V1 -->
+  <!-- Here N_V is total adult female vectors (S_V+E_V+I_V). This is state-dependent, so we document it. -->
+  <!-- Human logistic growth: + λ N_H (1 - N_H/K_H) enters S_H in paper. Also state-dependent. -->
+  <!-- ========================================================= -->
+
+  <!-- Included as placeholders with fixedRate=false and descriptive notes; numeric rate not provided as constant. -->
+  <birthSources name="Human_Logistic_Recruitment_to_S_H"
+                rate="0.0"
+                targetCompartment="//@compartments.0"
+                fixedRate="false"/>
+  <birthSources name="Vector_Egg_Laying_to_V1"
+                rate="0.0"
+                targetCompartment="//@compartments.4"
+                fixedRate="false"/>
+
+  <!-- ========================================================= -->
+  <!-- Additional paper-specified demographic death terms (documented) -->
+  <!-- Humans: each compartment has - (λ N_H / K_H) * compartment_size term in paper equations -->
+  <!-- Vectors: aquatic and adult stages have their μ_i mortality already represented; larvae also has density term -->
+  <!-- ========================================================= -->
+</seir:SEIRModel>
+```

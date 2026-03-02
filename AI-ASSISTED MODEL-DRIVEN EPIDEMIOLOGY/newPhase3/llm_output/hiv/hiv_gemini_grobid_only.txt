@@ -1,0 +1,86 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <!-- Parameters: Base -->
+  <parameters name="C" description="Constant recruitment in susceptible individuals" unit="persons/time"/>
+  <parameters name="h" description="Proportion of men" unit="dimensionless"/>
+  <parameters name="c" description="Proportion of heterosexual men among all men" unit="dimensionless"/>
+  <parameters name="λ" description="Natural mortality rate" unit="1/time"/>
+  <parameters name="d" description="AIDS-induced mortality rate for individuals in compartment A" unit="1/time"/>
+  <parameters name="a" description="Departure rate from infected compartments to treatment (ART)" unit="1/time"/>
+  <parameters name="δ" description="AIDS development rate in treated individuals (due to ART resistance or failure)" unit="1/time"/>
+  <parameters name="α" description="Progression rate from infected (untreated) to AIDS" unit="1/time"/>
+  <parameters name="τ" description="Rate of starting treatment for individuals with AIDS" unit="1/time"/>
+
+  <!-- Parameters: Contact - Number of Partners -->
+  <parameters name="cₕ" description="Number of sexual partners (homosexual men with homosexual men)" unit="partners/time"/>
+  <parameters name="cₛ" description="Number of sexual partners (heterosexuals)" unit="partners/time"/>
+  <parameters name="cₕw" description="Number of sexual partners (homosexual men with women)" unit="partners/time"/>
+  <parameters name="cₕₘ" description="Number of sexual partners (homosexual men with heterosexual men)" unit="partners/time"/>
+
+  <!-- Parameters: Contact - Transmission Probability -->
+  <parameters name="βₕ" description="Transmission probability per contact (homosexual men)" unit="dimensionless"/>
+  <parameters name="βₛ" description="Transmission probability per contact (heterosexual)" unit="dimensionless"/>
+  <parameters name="βₕw" description="Transmission probability per contact (homosexual man to woman)" unit="dimensionless"/>
+  <parameters name="βₕₘ" description="Transmission probability per contact (homosexual man to heterosexual man)" unit="dimensionless"/>
+
+  <!-- Parameters: Expressions for Recruitment -->
+  <parameters name="Recr_h" type="EXPRESSION" expression="C * h * (1 - c)" description="Recruitment rate for susceptible homosexual men"/>
+  <parameters name="Recr_w" type="EXPRESSION" expression="C * (1 - h)" description="Recruitment rate for susceptible women"/>
+  <parameters name="Recr_m" type="EXPRESSION" expression="C * h * c" description="Recruitment rate for susceptible heterosexual men"/>
+
+  <!-- Parameters: Expressions for Contact Rates -->
+  <parameters name="λₕ" type="EXPRESSION" expression="cₕ * βₕ" description="Effective contact rate for homosexual men transmission"/>
+  <parameters name="λₘw" type="EXPRESSION" expression="cₛ * βₛ" description="Effective contact rate for heterosexual men infecting women"/>
+  <parameters name="λₕw" type="EXPRESSION" expression="cₕw * βₕw" description="Effective contact rate for homosexual men infecting women"/>
+  <parameters name="λwₘ" type="EXPRESSION" expression="cₛ * βₛ" description="Effective contact rate for women infecting heterosexual men"/>
+  <parameters name="λₕₘ" type="EXPRESSION" expression="cₕₘ * βₕₘ" description="Effective contact rate for homosexual men infecting heterosexual men"/>
+
+  <!-- Compartments -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.3" target="//@compartments.3" contactRateParameter="//@parameters.20" description="Infection of susceptible homosexual men by infected homosexual men."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Women">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.5" target="//@compartments.4" contactRateParameter="//@parameters.21" description="Infection of susceptible women by infected heterosexual men."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.3" target="//@compartments.4" contactRateParameter="//@parameters.22" description="Infection of susceptible women by infected homosexual men."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.4" target="//@compartments.5" contactRateParameter="//@parameters.23" description="Infection of susceptible heterosexual men by infected women."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.3" target="//@compartments.5" contactRateParameter="//@parameters.24" description="Infection of susceptible heterosexual men by infected homosexual men."/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Homosexual Men">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.6" rateParameter="//@parameters.5" description="Infected homosexual men starting ART."/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.7" rateParameter="//@parameters.7" description="Infected homosexual men progressing to AIDS (untreated)."/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Women">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.6" rateParameter="//@parameters.5" description="Infected women starting ART."/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.7" rateParameter="//@parameters.7" description="Infected women progressing to AIDS (untreated)."/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Heterosexual Men">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.6" rateParameter="//@parameters.5" description="Infected heterosexual men starting ART."/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.7" rateParameter="//@parameters.7" description="Infected heterosexual men progressing to AIDS (untreated)."/>
+  </compartments>
+  <compartments PrimaryName="Treated" SecondaryName="with ART">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.7" rateParameter="//@parameters.6" description="Treated individuals developing AIDS due to treatment failure."/>
+  </compartments>
+  <compartments PrimaryName="AIDS" SecondaryName="living with AIDS">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.6" rateParameter="//@parameters.8" description="Individuals with AIDS starting treatment."/>
+  </compartments>
+
+  <!-- Birth Sources (Recruitment) -->
+  <birthSources name="Recruitment_Homosexual_Men" targetCompartment="//@compartments.0" rateParameter="//@parameters.17"/>
+  <birthSources name="Recruitment_Women" targetCompartment="//@compartments.1" rateParameter="//@parameters.18"/>
+  <birthSources name="Recruitment_Heterosexual_Men" targetCompartment="//@compartments.2" rateParameter="//@parameters.19"/>
+
+  <!-- Death Sinks (Mortality) -->
+  <deathSinks name="Natural_Death_S_h" sourceCompartment="//@compartments.0" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_S_w" sourceCompartment="//@compartments.1" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_S_m" sourceCompartment="//@compartments.2" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_I_h" sourceCompartment="//@compartments.3" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_I_w" sourceCompartment="//@compartments.4" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_I_m" sourceCompartment="//@compartments.5" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_T" sourceCompartment="//@compartments.6" rateParameter="//@parameters.3"/>
+  <deathSinks name="Natural_Death_A" sourceCompartment="//@compartments.7" rateParameter="//@parameters.3"/>
+  <deathSinks name="AIDS_Induced_Death" sourceCompartment="//@compartments.7" rateParameter="//@parameters.4"/>
+</seir:SEIRModel>
+```

@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "disease": "influenza",
+    "case_id": "influenza_gemini_grobid_full",
+    "provider": "gemini",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:25:53.362480+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.3333,
+      "recall": 0.3333,
+      "f1": 0.3333,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.0667,
+      "recall": 0.3333,
+      "f1": 0.1111,
+      "weight": 0.15
+    },
+    "composite": 0.3708
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 6,
+      "extracted_total": 6,
+      "tp": 2,
+      "fp": 4,
+      "fn": 4
+    },
+    "flows": {
+      "gold_total": 6,
+      "extracted_total": 6,
+      "tp": 3,
+      "fp": 3,
+      "fn": 3
+    },
+    "parameters": {
+      "gold_total": 3,
+      "extracted_total": 15,
+      "tp": 1,
+      "fp": 14,
+      "fn": 2
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible",
+        "extracted": "Susceptible",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Removed",
+        "extracted": "Removed",
+        "score": 1.0000001192092896
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Susceptible->Exposed E1",
+        "extracted": "Susceptible->Exposed stage 1",
+        "score": 0.8026231527328491
+      },
+      {
+        "gold": "Susceptible->Exposed E1",
+        "extracted": "Susceptible->Exposed stage 1",
+        "score": 0.8026231527328491
+      },
+      {
+        "gold": "Infectious I2->Removed",
+        "extracted": "Infectious stage 2->Removed",
+        "score": 0.7202221155166626
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "\u03b3 Daily transition rate I1\u2192I2 and I2\u2192R (two-stage infectious period)",
+        "extracted": "\u03b3 Daily rate of transition through infectious compartments.",
+        "score": 0.7553372383117676
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [
+      "Exposed stage 1",
+      "Exposed stage 2",
+      "Infectious stage 1",
+      "Infectious stage 2"
+    ],
+    "flows": [
+      "Susceptible -> Exposed stage 1",
+      "Susceptible -> Exposed stage 1",
+      "Exposed stage 1 -> Exposed stage 2",
+      "Exposed stage 2 -> Infectious stage 1",
+      "Infectious stage 1 -> Infectious stage 2",
+      "Infectious stage 2 -> Removed"
+    ],
+    "parameters": [
+      "\u03b2 Constant transmission rate (rate at which new infections take place given a contact). Paper suggests range 0 \u2264 \u03b2 \u2264 1.25.",
+      "\u03c3 Daily rate of transition through exposed compartments.",
+      "\u03c0 Initial susceptibility; proportion of the population that is susceptible at the start of the epidemic.",
+      "N Total population size for the 2014/15 season.",
+      "R\u2080 Basic reproduction number, for an SE\u2082I\u2082R model.",
+      "R\u2099 Effective reproduction number in a partially immune population.",
+      "I\u2080 Initial number of infectious individuals.",
+      "TAR Total Attack Rate; the probability of being infected over the whole epidemic for a susceptible individual.",
+      "\u03bb\u2080 Initial infection rate (used in EGR re-parametrization for estimation).",
+      "\u03c8 Exponential growth rate (used in EGR re-parametrization for estimation).",
+      "p_ICU Probability of ICU admission given infection. Part of the observational model.",
+      "\u03bc_ICU|E Mean time from infection to ICU admission. Part of the observational model.",
+      "\u03c3\u00b2_ICU|E Variance of time from infection to ICU admission. Part of the observational model.",
+      "\u03b7 Over-dispersion parameter for the Negative Binomial observation model."
+    ]
+  },
+  "false_negatives": {
+    "compartments": [
+      "Exposed E1",
+      "Exposed E2",
+      "Infectious I1",
+      "Infectious I2"
+    ],
+    "flows": [
+      "Susceptible -> Exposed E1",
+      "Susceptible -> Exposed E1",
+      "Exposed E1 -> Exposed E2",
+      "Exposed E2 -> Infectious I1",
+      "Infectious I1 -> Infectious I2",
+      "Infectious I2 -> Removed"
+    ],
+    "parameters": [
+      "\u03c3 Daily transition rate E1\u2192E2 and E2\u2192I1 (two-stage latent period)",
+      "\u03b2 Transmission rate in \u03bb(t)=\u03b2*I(t)/N (homogeneous mixing)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "POOR",
+    "composite_score": 0.3708,
+    "entity_verdicts": {
+      "compartments": "poor",
+      "flows": "poor",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 4 compartment(s), 6 flow(s), 2 parameter(s) from gold standard.",
+      "Hallucinated 4 compartment(s), 6 flow(s), 14 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_compartments": [
+        "Exposed E1",
+        "Exposed E2",
+        "Infectious I1",
+        "Infectious I2"
+      ],
+      "missed_flows": [
+        "Susceptible -> Exposed E1",
+        "Susceptible -> Exposed E1",
+        "Exposed E1 -> Exposed E2",
+        "Exposed E2 -> Infectious I1",
+        "Infectious I1 -> Infectious I2"
+      ],
+      "missed_flows_total": 6,
+      "missed_parameters": [
+        "\u03c3 Daily transition rate E1\u2192E2 and E2\u2192I1 (two-stage latent period)",
+        "\u03b2 Transmission rate in \u03bb(t)=\u03b2*I(t)/N (homogeneous mixing)"
+      ],
+      "hallucinated_compartments": [
+        "Exposed stage 1",
+        "Exposed stage 2",
+        "Infectious stage 1",
+        "Infectious stage 2"
+      ],
+      "hallucinated_flows": [
+        "Susceptible -> Exposed stage 1",
+        "Susceptible -> Exposed stage 1",
+        "Exposed stage 1 -> Exposed stage 2",
+        "Exposed stage 2 -> Infectious stage 1",
+        "Infectious stage 1 -> Infectious stage 2"
+      ],
+      "hallucinated_flows_total": 6,
+      "hallucinated_parameters": [
+        "\u03b2 Constant transmission rate (rate at which new infections take place given a contact). Paper suggests range 0 \u2264 \u03b2 \u2264 1.25.",
+        "\u03c3 Daily rate of transition through exposed compartments.",
+        "\u03c0 Initial susceptibility; proportion of the population that is susceptible at the start of the epidemic.",
+        "N Total population size for the 2014/15 season.",
+        "R\u2080 Basic reproduction number, for an SE\u2082I\u2082R model."
+      ],
+      "hallucinated_parameters_total": 14
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

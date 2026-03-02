@@ -1,0 +1,185 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infected",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infected",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Primary infection: Susceptible becomes Infected through contact with Infected (\u03b2 S I)"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "type": "RateFlow",
+      "rate_parameter": "u",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible individuals (u S)"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b8",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccine waning: vaccinated lose protection and return to Susceptible (\u03b8 V)"
+    },
+    {
+      "source": "Infected",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery from TB infection (\u03b3 I)"
+    },
+    {
+      "source": "Recovered",
+      "target": "Infected",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Reinfection: recovered individuals become Infected through contact with Infected (\u03b5 \u03b2 R I)"
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning immunity: recovered lose immunity and return to Susceptible (\u03b4 R)"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible",
+      "type": "BirthSource",
+      "rate_parameter": "A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "HumanRecruitment"
+    },
+    {
+      "source": "Susceptible",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Susceptible"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Vaccinated"
+    },
+    {
+      "source": "Infected",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Infected"
+    },
+    {
+      "source": "Recovered",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Recovered"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "A",
+      "type": "CONSTANT",
+      "value": 1000.0,
+      "unit": "human/time",
+      "description": "Recruitment rate of human (all newborn are susceptible)"
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": "0.01..5",
+      "unit": "1/(human\u00b7time)",
+      "description": "Probability/rate of successful infection (primary infection term \u03b2 S I)"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": "0..1",
+      "unit": "dimensionless",
+      "description": "Correction parameter for reinfection (reinfection force \u03b5 \u03b2 R I)"
+    },
+    {
+      "symbol": "u",
+      "type": "CONSTANT",
+      "value": "0..1",
+      "unit": "1/time",
+      "description": "Rate of vaccination (Susceptible \u2192 Vaccinated)"
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": "0.067..0.1",
+      "unit": "1/time",
+      "description": "Vaccine wane rate (Vaccinated \u2192 Susceptible)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": "0.5..2",
+      "unit": "1/time",
+      "description": "Recovery rate (Infected \u2192 Recovered)"
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": "0.003..0.02",
+      "unit": "1/time",
+      "description": "Drop out rate due to waning immunity (Recovered \u2192 Susceptible)"
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": "estimated",
+      "unit": "1/time",
+      "description": "Natural death rate (applies to all compartments)"
+    }
+  ]
+}

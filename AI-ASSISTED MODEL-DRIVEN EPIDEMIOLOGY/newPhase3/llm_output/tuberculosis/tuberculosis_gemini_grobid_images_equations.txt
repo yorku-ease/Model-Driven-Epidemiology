@@ -1,0 +1,46 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <!-- Parameters extracted from equations, text, and figure descriptions -->
+  <parameters name="A" description="Recruitment rate into the susceptible population (births/immigration)"/>
+  <parameters name="β" description="Transmission rate of tuberculosis"/>
+  <parameters name="δ" description="Rate of waning natural immunity (from Recovered to Susceptible)"/>
+  <parameters name="μ" description="Per-capita natural death rate for all compartments"/>
+  <parameters name="u" description="Vaccination rate of susceptible individuals"/>
+  <parameters name="θ" description="Rate of vaccine waning (from Vaccinated to Susceptible)"/>
+  <parameters name="ε" description="Factor for reduced susceptibility to reinfection for recovered individuals"/>
+  <parameters name="γ" description="Recovery rate of infectious individuals"/>
+  <parameters name="β_reinfection" type="EXPRESSION" expression="ε * β" description="Effective transmission rate for reinfection of recovered individuals"/>
+
+  <!-- Compartments derived from text, equations, and figures -->
+  <compartments PrimaryName="Susceptible" population="999.0">
+    <!-- Flow: Vaccination of susceptibles (S -> V) -->
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.4" target="//@compartments.1" description="uS"/>
+    <!-- Flow: Infection of susceptibles (S -> I) -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.1" contactCompartment="//@compartments.2" target="//@compartments.2" description="βSI"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0.0">
+    <!-- Flow: Waning of vaccine-induced immunity (V -> S) -->
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.5" target="//@compartments.0" description="θV"/>
+  </compartments>
+  <compartments PrimaryName="Infected" population="1.0">
+    <!-- Flow: Recovery of infected individuals (I -> R) -->
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.7" target="//@compartments.3" description="γI"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0.0">
+    <!-- Flow: Waning of natural immunity (R -> S) -->
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.0" description="δR"/>
+    <!-- Flow: Reinfection of recovered individuals (R -> I) -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.8" contactCompartment="//@compartments.2" target="//@compartments.2" description="εβRI"/>
+  </compartments>
+
+  <!-- Birth/Recruitment Source -->
+  <birthSources name="Recruitment" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+
+  <!-- Natural Death Sinks -->
+  <deathSinks name="Natural_Death_S" rateParameter="//@parameters.3" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_V" rateParameter="//@parameters.3" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_I" rateParameter="//@parameters.3" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_R" rateParameter="//@parameters.3" sourceCompartment="//@compartments.3"/>
+</seir:SEIRModel>
+```

@@ -1,0 +1,196 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- =========================================================
+       PARAMETERS (only those explicitly described in provided sections)
+       NOTE: The paper excerpt does not provide the full ODEs nor Table/Figure
+             with the complete parameter list, symbols, or numeric values.
+       ========================================================= -->
+  <parameters name="C" expression="" description="Constant recruitment into susceptible individuals (total recruitment rate). Recruitments split by h and c." unit="individuals/time"/>
+  <parameters name="h" expression="" description="Proportion of men in recruitment." unit="dimensionless"/>
+  <parameters name="c" expression="" description="Proportion of heterosexual men among men in recruitment." unit="dimensionless"/>
+  <parameters name="p" expression="" description="Proportion of initially treated individuals." unit="dimensionless"/>
+  <parameters name="l" expression="" description="Natural mortality rate (applies to all classes)." unit="1/time"/>
+  <parameters name="d" expression="" description="Induced disease mortality rate for individuals living with AIDS." unit="1/time"/>
+  <parameters name="δ" expression="" description="AIDS development rate in treated individuals due to ART resistance or treatment failure (symbol not given in excerpt; included as δ to distinguish from AIDS mortality d)." unit="1/time"/>
+  <parameters name="a" expression="" description="Departure rate from all compartments of infected individuals (most sensitive parameter per Results/Conclusions)." unit="1/time"/>
+
+  <!-- Partner-number parameters are referenced in Conclusions but not defined with symbols/units in the excerpt -->
+  <parameters name="c_s" expression="" description="Number of heterosexual partners (used in Scenario 1 to modify R0_het)." unit="dimensionless"/>
+  <parameters name="c_h" expression="" description="Number of homosexual partners (referenced in Conclusions as sensitive)." unit="dimensionless"/>
+  <parameters name="c_hw" expression="" description="Number of partners between homosexual men and women (Scenario 3 / Conclusions)." unit="dimensionless"/>
+  <parameters name="c_hm" expression="" description="Number of partners between homosexual men and heterosexual men (Scenario 3 / Conclusions)." unit="dimensionless"/>
+
+  <!-- Basic reproduction numbers are discussed but formulas are not provided in excerpt -->
+  <parameters name="R0_hom" expression="" description="Basic reproduction number for homosexual transmission (discussed as most influential)." unit="dimensionless"/>
+  <parameters name="R0_het" expression="" description="Basic reproduction number for heterosexual transmission." unit="dimensionless"/>
+
+  <!-- =========================================================
+       COMPARTMENTS (8 classes mentioned; Table/Figure with exact symbols removed)
+       Population stratification: Homosexual Men, Heterosexual Men, Women
+       Disease/treatment stratification: Susceptible, Infected (untreated), Treated (ART), AIDS (untreated), AIDS (treated)
+       NOTE: H4 indicates no gender difference for treated and AIDS, but the model is still said to have 8 classes.
+             With only the excerpt, the most consistent reconstruction is:
+             3 susceptible strata + 3 infected strata + 2 AIDS/treatment aggregate strata = 8.
+       ========================================================= -->
+
+  <!-- Susceptible strata -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men" population="0"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men" population="0"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Women" population="0"/>
+
+  <!-- Infected (HIV) strata (untreated) -->
+  <compartments PrimaryName="Infected" SecondaryName="Homosexual Men (untreated)" population="0"/>
+  <compartments PrimaryName="Infected" SecondaryName="Heterosexual Men (untreated)" population="0"/>
+  <compartments PrimaryName="Infected" SecondaryName="Women (untreated)" population="0"/>
+
+  <!-- Treated and AIDS (aggregated across gender per H4) -->
+  <compartments PrimaryName="Treated" SecondaryName="with ART" population="0"/>
+  <compartments PrimaryName="AIDS" SecondaryName="living with AIDS" population="0"/>
+
+  <!-- =========================================================
+       BIRTH / RECRUITMENT SOURCES (H1 and recruitment split described)
+       Recruitments:
+         - Homosexual men susceptible: C*h*(1-c)
+         - Women susceptible: C*(1-h)
+         - Heterosexual men susceptible: C*h*c
+       Metamodel supports parametric rates; expressions are stored in parameters.
+       ========================================================= -->
+
+  <parameters name="C_h_(1-c)" type="EXPRESSION" expression="C * h * (1 - c)" description="Recruitment into Susceptible Homosexual Men." unit="individuals/time"/>
+  <parameters name="C_(1-h)" type="EXPRESSION" expression="C * (1 - h)" description="Recruitment into Susceptible Women." unit="individuals/time"/>
+  <parameters name="C_h_c" type="EXPRESSION" expression="C * h * c" description="Recruitment into Susceptible Heterosexual Men." unit="individuals/time"/>
+
+  <!-- birthSources targetCompartment indices (0-based):
+       0 SHom, 1 SHetM, 2 SW, 3 IHom, 4 IHetM, 5 IW, 6 T, 7 AIDS
+  -->
+  <birthSources name="Recruitment_HomosexualMen" rateParameter="//@parameters.13" targetCompartment="//@compartments.0"/>
+  <birthSources name="Recruitment_HeterosexualMen" rateParameter="//@parameters.15" targetCompartment="//@compartments.1"/>
+  <birthSources name="Recruitment_Women" rateParameter="//@parameters.14" targetCompartment="//@compartments.2"/>
+
+  <!-- =========================================================
+       FLOWS (Transitions)
+       NOTE: The excerpt states the contact structure and some progression assumptions,
+             but the explicit ODEs/diagram (Eq. and Figure) are missing.
+             Therefore, only flows that are explicitly implied by hypotheses H2–H6
+             and the described contact directions are encoded.
+       ========================================================= -->
+
+  <!-- Transmission (ContactFlow) into infected compartments.
+       Contact structure from excerpt:
+         - Homosexual men get infected among themselves (H3).
+         - Women get infected via infected heterosexual men OR infected homosexual men (H3).
+         - Susceptible heterosexual men get infected via infected women OR infected homosexual men (H3).
+       The excerpt does not provide transmission-rate symbols (β...) nor whether treated contribute to transmission.
+       We include placeholder parameters for each transmission route.
+  -->
+  <parameters name="β_HH" expression="" description="Transmission/contact rate: Susceptible Homosexual Men infected by Infected Homosexual Men." unit="1/(individuals*time)"/>
+  <parameters name="β_WH" expression="" description="Transmission/contact rate: Susceptible Women infected by Infected Homosexual Men." unit="1/(individuals*time)"/>
+  <parameters name="β_WM" expression="" description="Transmission/contact rate: Susceptible Women infected by Infected Heterosexual Men." unit="1/(individuals*time)"/>
+  <parameters name="β_MW" expression="" description="Transmission/contact rate: Susceptible Heterosexual Men infected by Infected Women." unit="1/(individuals*time)"/>
+  <parameters name="β_MH" expression="" description="Transmission/contact rate: Susceptible Heterosexual Men infected by Infected Homosexual Men." unit="1/(individuals*time)"/>
+
+  <!-- S(Hom) -> I(Hom) via I(Hom) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men" population="0">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.16"
+        contactCompartment="//@compartments.3"
+        target="//@compartments.3"
+        description="Homosexual transmission among homosexual men (H3)."/>
+  </compartments>
+
+  <!-- S(HetM) -> I(HetM) via I(Women) and via I(Hom) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men" population="0">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.19"
+        contactCompartment="//@compartments.5"
+        target="//@compartments.4"
+        description="Heterosexual men infected by infected women (H3)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.20"
+        contactCompartment="//@compartments.3"
+        target="//@compartments.4"
+        description="Heterosexual men infected by infected homosexual men (H3)."/>
+  </compartments>
+
+  <!-- S(Women) -> I(Women) via I(HetM) and via I(Hom) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Women" population="0">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.18"
+        contactCompartment="//@compartments.4"
+        target="//@compartments.5"
+        description="Women infected by infected heterosexual men (H3)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.17"
+        contactCompartment="//@compartments.3"
+        target="//@compartments.5"
+        description="Women infected by infected homosexual men (H3)."/>
+  </compartments>
+
+  <!-- Progression/treatment flows:
+       H5: Individuals living with AIDS could be treated or untreated; if AIDS develops during hospital treatment, they will be diagnosed and enrolled in ART.
+       Excerpt does not provide explicit rates for:
+         - initiation of ART from infected
+         - progression from infected to AIDS
+         - movement between AIDS untreated/treated
+       Also H4 suggests treated and AIDS are not gender-stratified.
+       We include minimal implied flows with placeholder parameters.
+  -->
+  <parameters name="τ" expression="" description="ART initiation/enrollment rate from infected (untreated) to Treated (with ART)." unit="1/time"/>
+  <parameters name="ρ" expression="" description="AIDS development rate from infected (untreated) to AIDS." unit="1/time"/>
+
+  <!-- Infected (all strata) -> Treated -->
+  <compartments PrimaryName="Infected" SecondaryName="Homosexual Men (untreated)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.21" target="//@compartments.6"
+        description="Enrollment/initiation of ART from infected homosexual men (H5)."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.22" target="//@compartments.7"
+        description="Progression to AIDS from infected homosexual men (untreated)."/>
+  </compartments>
+
+  <compartments PrimaryName="Infected" SecondaryName="Heterosexual Men (untreated)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.21" target="//@compartments.6"
+        description="Enrollment/initiation of ART from infected heterosexual men (H5)."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.22" target="//@compartments.7"
+        description="Progression to AIDS from infected heterosexual men (untreated)."/>
+  </compartments>
+
+  <compartments PrimaryName="Infected" SecondaryName="Women (untreated)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.21" target="//@compartments.6"
+        description="Enrollment/initiation of ART from infected women (H5)."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.22" target="//@compartments.7"
+        description="Progression to AIDS from infected women (untreated)."/>
+  </compartments>
+
+  <!-- Treated -> AIDS due to ART resistance/treatment failure (δ described in excerpt) -->
+  <compartments PrimaryName="Treated" SecondaryName="with ART" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.7" target="//@compartments.7"
+        description="AIDS development in treated individuals due to ART resistance/treatment failure (δ)."/>
+  </compartments>
+
+  <!-- =========================================================
+       DEATH SINKS (H6): natural mortality in all classes + induced mortality for AIDS
+       Natural mortality parameter: l
+       AIDS-induced mortality parameter: d
+       ========================================================= -->
+
+  <!-- Natural deaths from all compartments -->
+  <deathSinks name="NaturalDeath_Susceptible_HomosexualMen" rateParameter="//@parameters.5" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_Susceptible_HeterosexualMen" rateParameter="//@parameters.5" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_Susceptible_Women" rateParameter="//@parameters.5" sourceCompartment="//@compartments.2"/>
+
+  <deathSinks name="NaturalDeath_Infected_HomosexualMen" rateParameter="//@parameters.5" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="NaturalDeath_Infected_HeterosexualMen" rateParameter="//@parameters.5" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="NaturalDeath_Infected_Women" rateParameter="//@parameters.5" sourceCompartment="//@compartments.5"/>
+
+  <deathSinks name="NaturalDeath_Treated" rateParameter="//@parameters.5" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="NaturalDeath_AIDS" rateParameter="//@parameters.5" sourceCompartment="//@compartments.7"/>
+
+  <!-- AIDS-induced deaths -->
+  <deathSinks name="AIDS_InducedDeath" rateParameter="//@parameters.6" sourceCompartment="//@compartments.7"/>
+
+</seir:SEIRModel>
+```

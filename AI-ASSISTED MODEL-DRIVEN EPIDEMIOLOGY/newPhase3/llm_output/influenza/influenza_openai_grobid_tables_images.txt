@@ -1,0 +1,127 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel"
+    totalPopulation="0">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="N" type="CONSTANT" expression="0"
+              description="Total population size (season-specific; see N2012/13, N2013/14, N2014/15)."
+              unit="persons"/>
+
+  <parameters name="N2012/13" type="CONSTANT" expression="53679750"
+              description="Population size for season 2012/13." unit="persons"/>
+  <parameters name="N2013/14" type="CONSTANT" expression="54091200"
+              description="Population size for season 2013/14." unit="persons"/>
+  <parameters name="N2014/15" type="CONSTANT" expression="54551450"
+              description="Population size for season 2014/15." unit="persons"/>
+
+  <parameters name="δt" type="CONSTANT" expression="0.25"
+              description="Discrete time step used in the transmission model (a quarter of a day)."
+              unit="days"/>
+
+  <parameters name="β" type="CONSTANT" expression="0"
+              description="Transmission rate (rate at which new infections take place given a contact); used in λ(t)=β*I(t)/N."
+              unit="per day"/>
+
+  <parameters name="λ(t)" type="EXPRESSION" expression="β * (I1 + I2) / N"
+              description="Force of infection at time t (frequency-dependent), proportional to total infectious individuals."
+              unit="per day"/>
+
+  <parameters name="σ" type="CONSTANT" expression="1"
+              description="Daily rate of progression through exposed stages (E1→E2 and E2→I1). Implies mean latent/incubation period dL=2/σ."
+              unit="per day"/>
+
+  <parameters name="γ" type="CONSTANT" expression="0.5797"
+              description="Daily rate of progression through infectious stages (I1→I2 and I2→R). Implies mean infectious period dI=2/γ."
+              unit="per day"/>
+
+  <parameters name="π" type="CONSTANT" expression="0"
+              description="Initial susceptibility (fraction of population susceptible at season start)."
+              unit="dimensionless"/>
+
+  <parameters name="λ0" type="CONSTANT" expression="0"
+              description="Initial infection rate parameter used in early exponential growth re-parameterisation (EGR)."
+              unit="per day"/>
+
+  <parameters name="ψ" type="CONSTANT" expression="0"
+              description="Exponential growth rate parameter used in early exponential growth re-parameterisation (EGR)."
+              unit="per day"/>
+
+  <parameters name="pICU" type="CONSTANT" expression="0"
+              description="Probability of ICU/HDU admission given infection."
+              unit="dimensionless"/>
+
+  <parameters name="μICU|E" type="CONSTANT" expression="5.708"
+              description="Mean time from infection to ICU/HDU admission (waiting time distribution)."
+              unit="days"/>
+
+  <parameters name="σ2ICU|E" type="CONSTANT" expression="18.24"
+              description="Variance of time from infection to ICU/HDU admission (waiting time distribution)."
+              unit="days^2"/>
+
+  <parameters name="η" type="CONSTANT" expression="0"
+              description="Negative Binomial over-dispersion (dispersion) parameter for weekly ICU/HDU admission counts."
+              unit="dimensionless"/>
+
+  <!-- ===================== -->
+  <!-- Compartments          -->
+  <!-- ===================== -->
+  <!-- Disease transmission states (SE2I2R) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="S(t)" population="0">
+    <!-- S -> E1 via contact with infectious individuals -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.5"
+                   contactCompartment="//@compartments.4"
+                   target="//@compartments.1"
+                   description="Infection: S(t) -> E1(t) at force of infection λ(t)=β*(I1+I2)/N (homogeneous mixing)."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="E1(t)" population="0">
+    <!-- E1 -> E2 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.7"
+                   target="//@compartments.2"
+                   description="Latent progression: E1(t) -> E2(t) at rate σ."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="E2(t)" population="0">
+    <!-- E2 -> I1 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.7"
+                   target="//@compartments.3"
+                   description="Latent progression to infectiousness: E2(t) -> I1(t) at rate σ."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="I1(t)" population="0">
+    <!-- I1 -> I2 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.8"
+                   target="//@compartments.4"
+                   description="Infectious stage progression: I1(t) -> I2(t) at rate γ."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="I2(t)" population="0">
+    <!-- I2 -> R -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.8"
+                   target="//@compartments.5"
+                   description="Recovery/removal: I2(t) -> R(t) at rate γ."/>
+  </compartments>
+
+  <compartments PrimaryName="Removed" SecondaryName="R(t)" population="0"/>
+
+  <!-- Observation/auxiliary compartment shown in the figure.
+       Note: the paper links ICU admissions to infections via a convolution with a Gamma delay
+       and models weekly counts with a Negative Binomial; this is not a simple Markovian flow.
+       We include ICU_t as an auxiliary compartment for structural completeness, but do not
+       encode the convolution/NegBin likelihood as metamodel flows. -->
+  <compartments PrimaryName="ICU" SecondaryName="ICU_t" population="0"/>
+
+</seir:SEIRModel>
+```

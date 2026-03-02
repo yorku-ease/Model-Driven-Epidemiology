@@ -1,0 +1,255 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="Λ" type="CONSTANT"
+              description="Recruitment/birth inflow into child susceptible population (S_C)."
+              unit="persons/week"/>
+
+  <parameters name="β_C" type="CONSTANT"
+              description="Effective transmission/contact rate for children (C). Force of infection uses (I_A + I_C)."
+              unit="1/(persons·week)"/>
+
+  <parameters name="β_A" type="CONSTANT"
+              description="Effective transmission/contact rate for adults (A). Assumed lower than β_C."
+              unit="1/(persons·week)"/>
+
+  <parameters name="ε" type="CONSTANT"
+              description="Residual susceptibility factor for unmonitored-vaccinated classes U^V (leaky vaccine). Vaccine effectiveness = 1-ε."
+              unit="dimensionless"/>
+
+  <parameters name="δ" type="CONSTANT" expression="0.7"
+              description="Progression rate from exposed to infectious (E → I). Incubation ~10 days."
+              unit="1/week"/>
+
+  <parameters name="γ" type="CONSTANT" expression="0.5"
+              description="Recovery/transition rate from infectious to managed/immune infectious class (I → I_m). Recovery ~15 days."
+              unit="1/week"/>
+
+  <parameters name="ψ" type="CONSTANT" expression="0.0013"
+              description="Maturation/aging rate from children (C) to adults (A), approx 1/(15 years)."
+              unit="1/week"/>
+
+  <parameters name="ξ_U" type="CONSTANT"
+              description="Rate at which susceptible children enter Unmonitored Vaccination Group (U_C^V)."
+              unit="1/week"/>
+
+  <parameters name="ξ_M" type="CONSTANT"
+              description="Rate at which susceptible children enter Monitored Vaccination Group (M_C^V)."
+              unit="1/week"/>
+
+  <parameters name="ξ_A" type="CONSTANT"
+              description="Rate at which susceptible adults enter Adult Vaccination Group (V_A) (catch-up vaccination)."
+              unit="1/week"/>
+
+  <parameters name="η_U" type="CONSTANT"
+              description="Rate at which unmonitored-vaccinated children (U_C^V) move to managed/immune infectious class (I_mC) (as drawn in figure; paper text uses h_U for immunization)."
+              unit="1/week"/>
+
+  <parameters name="η_M" type="CONSTANT"
+              description="Rate at which monitored-vaccinated children (M_C^V) move to managed/immune infectious class (I_mC) (paper text uses h_M for immunization)."
+              unit="1/week"/>
+
+  <parameters name="η_A" type="CONSTANT"
+              description="Rate at which vaccinated adults (V_A) and/or unmonitored-vaccinated adults (U_A^V) move to managed/immune infectious class (I_mA) (paper text uses h_A for immunization)."
+              unit="1/week"/>
+
+  <parameters name="μ" type="CONSTANT"
+              description="Natural death rate (applies to all human compartments in the full paper model; value mentioned as 1/(72*52) per week, but not explicitly tied to each compartment in extracted figure text)."
+              unit="1/week"/>
+
+  <parameters name="α" type="CONSTANT"
+              description="Disease-induced mortality rate (CFR-based) (mentioned in text but not fully visible in extracted equations)."
+              unit="1/week"/>
+
+  <!-- ===================== -->
+  <!-- Compartments (12)     -->
+  <!-- Names follow figure: A=Adults, C=Children -->
+  <!-- ===================== -->
+
+  <!-- Adults -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Adults" population="0">
+    <!-- Vaccination -->
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.11"
+                   target="//@compartments.1"
+                   description="Adult catch-up vaccination: S_A → V_A at rate ξ_A."/>
+    <!-- Infection -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.8"
+                   target="//@compartments.2"
+                   description="Adult infection: S_A → E_A at rate β_A * S_A * (I_A + I_C). (Implemented as contact with I_C; coupling to I_A is also required by paper/figure)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.3"
+                   target="//@compartments.2"
+                   description="Adult infection coupling: S_A → E_A at rate β_A * S_A * I_A (together with contact with I_C gives β_A*(I_A+I_C))."/>
+  </compartments>
+
+  <compartments PrimaryName="Vaccinated" SecondaryName="Adults" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.14"
+                   target="//@compartments.5"
+                   description="Immunization/managed transition for vaccinated adults: V_A → I_mA at rate η_A (paper text: h_A)."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Adults" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.5"
+                   target="//@compartments.3"
+                   description="Progression: E_A → I_A at rate δ."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Adults" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.6"
+                   target="//@compartments.5"
+                   description="Recovery/managed infectious: I_A → I_mA at rate γ."/>
+  </compartments>
+
+  <compartments PrimaryName="Unmonitored Vaccination" SecondaryName="Adults (aged from children)" population="0">
+    <!-- Breakthrough infection with reduced susceptibility -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.8"
+                   target="//@compartments.2"
+                   description="Breakthrough infection: U_A^V → E_A at rate εβ_A * U_A^V * (I_A + I_C). (Implemented as contact with I_C; coupling to I_A also required)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.3"
+                   target="//@compartments.2"
+                   description="Breakthrough infection coupling: U_A^V → E_A at rate εβ_A * U_A^V * I_A."/>
+    <!-- Figure shows a blue arrow U_A^V → I_mA labeled η_A -->
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.14"
+                   target="//@compartments.5"
+                   description="Immunization/managed transition: U_A^V → I_mA at rate η_A (as drawn)."/>
+  </compartments>
+
+  <compartments PrimaryName="Managed/Immune Infectious" SecondaryName="Adults" population="0">
+    <!-- Terminal in the figure (no outgoing flows shown). -->
+  </compartments>
+
+  <!-- Children -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Children" population="0">
+    <!-- Recruitment -->
+    <!-- BirthSources are used for inflow per metamodel -->
+  </compartments>
+
+  <compartments PrimaryName="Unmonitored Vaccination" SecondaryName="Children" population="0">
+    <!-- Breakthrough infection with reduced susceptibility -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.8"
+                   target="//@compartments.9"
+                   description="Breakthrough infection: U_C^V → E_C at rate εβ_C * U_C^V * (I_A + I_C). (Implemented as contact with I_C; coupling to I_A also required)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.3"
+                   target="//@compartments.9"
+                   description="Breakthrough infection coupling: U_C^V → E_C at rate εβ_C * U_C^V * I_A."/>
+    <!-- Figure shows U_C^V → I_mC labeled η_U -->
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.12"
+                   target="//@compartments.11"
+                   description="Immunization/managed transition: U_C^V → I_mC at rate η_U (paper text: h_U)."/>
+  </compartments>
+
+  <compartments PrimaryName="Monitored Vaccination" SecondaryName="Children" population="0">
+    <!-- Figure shows M_C^V → I_mC labeled η_M -->
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.13"
+                   target="//@compartments.11"
+                   description="Immunization/managed transition: M_C^V → I_mC at rate η_M (paper text: h_M)."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.5"
+                   target="//@compartments.10"
+                   description="Progression: E_C → I_C at rate δ."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.6"
+                   target="//@compartments.11"
+                   description="Recovery/managed infectious: I_C → I_mC at rate γ."/>
+  </compartments>
+
+  <compartments PrimaryName="Managed/Immune Infectious" SecondaryName="Children" population="0">
+    <!-- Terminal in the figure (no outgoing flows shown). -->
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Birth source           -->
+  <!-- ===================== -->
+  <birthSources name="Births_to_children" rate="0.0" rateParameter="//@parameters.0"
+                targetCompartment="//@compartments.6"
+                description="Recruitment/births into S_C at rate Λ."/>
+
+  <!-- ===================== -->
+  <!-- Additional flows not representable as single-source ContactFlow in this metamodel -->
+  <!-- Implemented as RateFlows where possible -->
+  <!-- ===================== -->
+
+  <!-- Child vaccination flows from S_C -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.9"
+                   target="//@compartments.7"
+                   description="Routine unmonitored vaccination: S_C → U_C^V at rate ξ_U."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.10"
+                   target="//@compartments.8"
+                   description="Monitored vaccination enrollment: S_C → M_C^V at rate ξ_M."/>
+    <!-- Infection -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.10"
+                   target="//@compartments.9"
+                   description="Child infection: S_C → E_C at rate β_C * S_C * I_C (part of β_C*(I_A+I_C))."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRate="0.0" contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.3"
+                   target="//@compartments.9"
+                   description="Child infection coupling: S_C → E_C at rate β_C * S_C * I_A (together gives β_C*(I_A+I_C))."/>
+    <!-- Aging -->
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.7"
+                   target="//@compartments.0"
+                   description="Aging/maturation: S_C → S_A at rate ψ."/>
+  </compartments>
+
+  <!-- Aging flows for other child compartments (ψ) -->
+  <compartments PrimaryName="Unmonitored Vaccination" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.7"
+                   target="//@compartments.4"
+                   description="Aging/maturation: U_C^V → U_A^V at rate ψ."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.7"
+                   target="//@compartments.2"
+                   description="Aging/maturation: E_C → E_A at rate ψ (as indicated by vertical ψ arrows in figure)."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.7"
+                   target="//@compartments.3"
+                   description="Aging/maturation: I_C → I_A at rate ψ (as indicated by vertical ψ arrows in figure)."/>
+  </compartments>
+
+  <compartments PrimaryName="Managed/Immune Infectious" SecondaryName="Children" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.7"
+                   target="//@compartments.5"
+                   description="Aging/maturation: I_mC → I_mA at rate ψ (as indicated by vertical ψ arrows in figure)."/>
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Death sinks (not shown in figure; mentioned in text positivity/boundedness and natural death rate) -->
+  <!-- Included generically; per-compartment death sinks would be required for full fidelity. -->
+  <!-- ===================== -->
+  <deathSinks name="NaturalDeath_SA" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_VA" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_EA" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_IA" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="NaturalDeath_UAV" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="NaturalDeath_ImA" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.5"/>
+
+  <deathSinks name="NaturalDeath_SC" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="NaturalDeath_UCV" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.7"/>
+  <deathSinks name="NaturalDeath_MCV" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.8"/>
+  <deathSinks name="NaturalDeath_EC" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.9"/>
+  <deathSinks name="NaturalDeath_IC" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.10"/>
+  <deathSinks name="NaturalDeath_ImC" rate="0.0" rateParameter="//@parameters.15" sourceCompartment="//@compartments.11"/>
+
+</seir:SEIRModel>
+```

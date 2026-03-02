@@ -1,0 +1,246 @@
+{
+  "meta": {
+    "disease": "tuberculosis",
+    "case_id": "tuberculosis_gemini_grobid_images_equations",
+    "provider": "gemini",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:26:26.169243+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.9091,
+      "recall": 1.0,
+      "f1": 0.9524,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.2222,
+      "recall": 0.2222,
+      "f1": 0.2222,
+      "weight": 0.15
+    },
+    "composite": 0.8631
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 4,
+      "extracted_total": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0
+    },
+    "flows": {
+      "gold_total": 10,
+      "extracted_total": 11,
+      "tp": 10,
+      "fp": 1,
+      "fn": 0
+    },
+    "parameters": {
+      "gold_total": 9,
+      "extracted_total": 9,
+      "tp": 2,
+      "fp": 7,
+      "fn": 7
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible",
+        "extracted": "Susceptible",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Vaccinated",
+        "extracted": "Vaccinated",
+        "score": 1.0
+      },
+      {
+        "gold": "Infected",
+        "extracted": "Infected",
+        "score": 1.0
+      },
+      {
+        "gold": "Recovered",
+        "extracted": "Recovered",
+        "score": 1.0
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Susceptible->Infected",
+        "extracted": "Susceptible->Infected",
+        "score": 0.9999998807907104
+      },
+      {
+        "gold": "Susceptible->Vaccinated",
+        "extracted": "Susceptible->Vaccinated",
+        "score": 1.0000001192092896
+      },
+      {
+        "gold": "Vaccinated->Susceptible",
+        "extracted": "Vaccinated->Susceptible",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Infected->Recovered",
+        "extracted": "Infected->Recovered",
+        "score": 0.9999997615814209
+      },
+      {
+        "gold": "Recovered->Infected",
+        "extracted": "Recovered->Infected",
+        "score": 1.0000001192092896
+      },
+      {
+        "gold": "Recovered->Susceptible",
+        "extracted": "Recovered->Susceptible",
+        "score": 1.0000003576278687
+      },
+      {
+        "gold": "Susceptible->__dead__",
+        "extracted": "Susceptible->__dead__",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Vaccinated->__dead__",
+        "extracted": "Vaccinated->__dead__",
+        "score": 1.000000238418579
+      },
+      {
+        "gold": "Infected->__dead__",
+        "extracted": "Infected->__dead__",
+        "score": 0.9999997615814209
+      },
+      {
+        "gold": "Recovered->__dead__",
+        "extracted": "Recovered->__dead__",
+        "score": 1.0
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "\u03bc Natural death rate",
+        "extracted": "\u03bc Per-capita natural death rate for all compartments",
+        "score": 0.7770557403564453
+      },
+      {
+        "gold": "\u03b4 Vaccine waning rate (V\u2192S)",
+        "extracted": "\u03b8 Rate of vaccine waning (from Vaccinated to Susceptible)",
+        "score": 0.8035194873809814
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [],
+    "flows": [
+      "Susceptible -> Vaccinated",
+      "Susceptible -> Infected",
+      "Vaccinated -> Susceptible",
+      "Infected -> Recovered",
+      "Recovered -> Susceptible",
+      "Recovered -> Infected",
+      "__external__ -> Susceptible",
+      "Susceptible -> __dead__",
+      "Vaccinated -> __dead__",
+      "Infected -> __dead__",
+      "Recovered -> __dead__"
+    ],
+    "parameters": [
+      "A Recruitment rate into the susceptible population (births/immigration)",
+      "\u03b2 Transmission rate of tuberculosis",
+      "\u03b4 Rate of waning natural immunity (from Recovered to Susceptible)",
+      "u Vaccination rate of susceptible individuals",
+      "\u03b5 Factor for reduced susceptibility to reinfection for recovered individuals",
+      "\u03b3 Recovery rate of infectious individuals",
+      "\u03b2_reinfection Effective transmission rate for reinfection of recovered individuals"
+    ]
+  },
+  "false_negatives": {
+    "compartments": [],
+    "flows": [
+      "Susceptible -> Infected",
+      "Susceptible -> Vaccinated",
+      "Vaccinated -> Susceptible",
+      "Infected -> Recovered",
+      "Recovered -> Infected",
+      "Recovered -> Susceptible",
+      "Susceptible -> __dead__",
+      "Vaccinated -> __dead__",
+      "Infected -> __dead__",
+      "Recovered -> __dead__"
+    ],
+    "parameters": [
+      "\u03b7 Immunity waning rate (R\u2192S)",
+      "\u03c0 Infection rate/probability of successful infection (S\u2192I term)",
+      "\u03b8 Vaccination rate (S\u2192V)",
+      "\u03b3 Recovery rate (I\u2192R)",
+      "\u03b1 Reinfection correction parameter (range: 0 to 1)",
+      "\u039b Recruitment rate into susceptible",
+      "\u03b1*\u03c0 Reinfection rate multiplier (\u03b1 in [0,1])"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "GOOD",
+    "composite_score": 0.8631,
+    "entity_verdicts": {
+      "compartments": "excellent",
+      "flows": "excellent",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 0 compartment(s), 10 flow(s), 7 parameter(s) from gold standard.",
+      "Hallucinated 0 compartment(s), 11 flow(s), 7 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_flows": [
+        "Susceptible -> Infected",
+        "Susceptible -> Vaccinated",
+        "Vaccinated -> Susceptible",
+        "Infected -> Recovered",
+        "Recovered -> Infected"
+      ],
+      "missed_flows_total": 10,
+      "missed_parameters": [
+        "\u03b7 Immunity waning rate (R\u2192S)",
+        "\u03c0 Infection rate/probability of successful infection (S\u2192I term)",
+        "\u03b8 Vaccination rate (S\u2192V)",
+        "\u03b3 Recovery rate (I\u2192R)",
+        "\u03b1 Reinfection correction parameter (range: 0 to 1)"
+      ],
+      "missed_parameters_total": 7,
+      "hallucinated_flows": [
+        "Susceptible -> Vaccinated",
+        "Susceptible -> Infected",
+        "Vaccinated -> Susceptible",
+        "Infected -> Recovered",
+        "Recovered -> Susceptible"
+      ],
+      "hallucinated_flows_total": 11,
+      "hallucinated_parameters": [
+        "A Recruitment rate into the susceptible population (births/immigration)",
+        "\u03b2 Transmission rate of tuberculosis",
+        "\u03b4 Rate of waning natural immunity (from Recovered to Susceptible)",
+        "u Vaccination rate of susceptible individuals",
+        "\u03b5 Factor for reduced susceptibility to reinfection for recovered individuals"
+      ],
+      "hallucinated_parameters_total": 7
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

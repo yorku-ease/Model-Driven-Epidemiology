@@ -1,0 +1,185 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infected Active TB",
+      "secondary_name": "Active TB",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infected Active TB",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Active TB",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Primary infection: Susceptible individuals become Infected through contact with Infected (\u03b2 S I)."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "type": "RateFlow",
+      "rate_parameter": "u",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination: Susceptible individuals move to Vaccinated at rate u S."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death from Susceptible at rate \u03bc S (modeled as sink-to-self placeholder)."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b8",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccine waning: Vaccinated individuals return to Susceptible at rate \u03b8 V."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Vaccinated",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death from Vaccinated at rate \u03bc V (modeled as sink-to-self placeholder)."
+    },
+    {
+      "source": "Infected Active TB",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery: Infected individuals recover and move to Recovered at rate \u03b3 I."
+    },
+    {
+      "source": "Infected Active TB",
+      "target": "Infected Active TB",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death from Infected at rate \u03bc I (modeled as sink-to-self placeholder)."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning natural immunity: Recovered individuals return to Susceptible at rate \u03b4 R."
+    },
+    {
+      "source": "Recovered",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death from Recovered at rate \u03bc R (modeled as sink-to-self placeholder)."
+    },
+    {
+      "source": "Recovered",
+      "target": "Infected Active TB",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Active TB",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Reinfection: Recovered individuals become Infected through contact with Infected at rate \u03b5 \u03b2 R I (\u03b5 applied in equations; see note)."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible",
+      "type": "BirthSource",
+      "rate_parameter": "A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "HumanRecruitment"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "A",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "humans/time",
+      "description": "Recruitment (birth) rate into the susceptible human population (all newborns are susceptible)"
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/(human\u00b7time)",
+      "description": "Effective transmission (infection) rate from susceptible to infected due to contact with infected individuals"
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": "[0.003, 0.02]",
+      "unit": "1/day",
+      "description": "Drop-out rate due to waning natural immunity (Recovered \u2192 Susceptible)"
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Natural death rate (applies to all compartments)"
+    },
+    {
+      "symbol": "u",
+      "type": "CONSTANT",
+      "value": "[0, 1]",
+      "unit": "1/day",
+      "description": "Vaccination rate moving individuals from Susceptible to Vaccinated"
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": "[0.067, 0.1]",
+      "unit": "1/day",
+      "description": "Vaccine waning rate (Vaccinated \u2192 Susceptible)"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": "[0, 1]",
+      "unit": "dimensionless",
+      "description": "Correction parameter for reinfection term (probability/relative success of reinfection compared to primary infection)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": "[0.5, 2]",
+      "unit": "1/year",
+      "description": "Recovery rate from active TB infection (Infected \u2192 Recovered)"
+    }
+  ]
+}

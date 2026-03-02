@@ -1,0 +1,176 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="B" type="CONSTANT"
+              description="Constant influx (birth/recruitment) rate of human hosts into susceptible class S_h(0,t)=B."
+              unit="hosts/time"/>
+  <parameters name="μₕ" type="CONSTANT"
+              description="Natural death rate of human hosts."
+              unit="1/time"/>
+  <parameters name="μᵥ" type="CONSTANT"
+              description="Natural death rate of mosquitoes (vectors)."
+              unit="1/time"/>
+  <parameters name="βₕ(a)" type="VARIABLE"
+              description="Age-specific transmission/contact rate from infected mosquitoes to susceptible humans (vector-to-human). Appears in force of infection βₕ(a) Iᵥ(t) S_h(a,t)/N_h(t)."
+              unit="1/time"/>
+  <parameters name="βᵥ(a)" type="VARIABLE"
+              description="Age-specific transmission rate from infectious humans (I_h and A_h) to susceptible mosquitoes (human-to-vector). Appears inside integral ∫ βᵥ(a)(I_h+σA_h) da / N_h(t)."
+              unit="1/time"/>
+  <parameters name="k(a)" type="VARIABLE"
+              description="Age-specific progression rate from exposed to infectious (inverse of age-specific latent period)."
+              unit="1/time"/>
+  <parameters name="ρ" type="CONSTANT"
+              description="Probability an exposed host becomes symptomatic infectious (E_h → I_h). (1-ρ) becomes asymptomatic (E_h → A_h)."
+              unit="dimensionless"/>
+  <parameters name="σ" type="CONSTANT"
+              description="Factor characterizing intensity of reinfection of asymptomatic infectious hosts; also scales contribution of A_h to mosquito infection and appears in A_h → I_h reinfection term."
+              unit="dimensionless"/>
+  <parameters name="γ₁(a)" type="VARIABLE"
+              description="Age-specific recovery rate of symptomatic infectious humans (I_h → R_h)."
+              unit="1/time"/>
+  <parameters name="γ₂(a)" type="VARIABLE"
+              description="Age-specific recovery rate of asymptomatic infectious humans (A_h → R_h)."
+              unit="1/time"/>
+  <parameters name="Nₕ(t)" type="VARIABLE"
+              description="Total human population size at time t used for standard incidence normalization."
+              unit="hosts"/>
+  <parameters name="Iᵥ(t)" type="VARIABLE"
+              description="Proportion of infectious mosquitoes at time t (vector population is rescaled to total 1)."
+              unit="dimensionless"/>
+
+  <!-- ===================== -->
+  <!-- Compartments          -->
+  <!-- ===================== -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Human (age-structured)"
+                description="S_h(a,t): susceptible human hosts of age a at time t."/>
+  <compartments PrimaryName="Exposed" SecondaryName="Human (age-structured)"
+                description="E_h(a,t): exposed/latent human hosts of age a at time t."/>
+  <compartments PrimaryName="Infectious" SecondaryName="Human Symptomatic (age-structured)"
+                description="I_h(a,t): symptomatic infectious human hosts of age a at time t."/>
+  <compartments PrimaryName="Infectious" SecondaryName="Human Asymptomatic (age-structured)"
+                description="A_h(a,t): asymptomatic infectious human hosts of age a at time t."/>
+  <compartments PrimaryName="Recovered" SecondaryName="Human (age-structured)"
+                description="R_h(a,t): recovered human hosts of age a at time t (assumed immune for life)."/>
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquito"
+                description="I_v(t): infectious mosquitoes (vector population rescaled; susceptible fraction is 1-I_v(t))."/>
+
+  <!-- ===================== -->
+  <!-- Demography: births    -->
+  <!-- ===================== -->
+  <birthSources name="HumanRecruitment"
+                rateParameter="//@parameters.0"
+                targetCompartment="//@compartments.0"
+                fixedRate="true"/>
+
+  <!-- ===================== -->
+  <!-- Demography: deaths    -->
+  <!-- (Natural death sinks) -->
+  <!-- ===================== -->
+  <deathSinks name="NaturalDeath_S_h"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_E_h"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_I_h"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_A_h"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.3"/>
+  <deathSinks name="NaturalDeath_R_h"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.4"/>
+  <deathSinks name="NaturalDeath_I_v"
+              rateParameter="//@parameters.2"
+              sourceCompartment="//@compartments.5"/>
+
+  <!-- ===================== -->
+  <!-- Flows (within humans) -->
+  <!-- ===================== -->
+
+  <!-- S_h -> E_h : vector-to-human infection, standard incidence -->
+  <compartments xsi:nil="true"/>
+  <!-- Note: flows must be nested under their source compartment in this metamodel.
+       We therefore repeat compartments with outgoingFlows below (same ordering). -->
+
+  <compartments PrimaryName="Susceptible" SecondaryName="Human (age-structured)">
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.5"
+                   target="//@compartments.1"
+                   description="Infection of susceptible humans by infectious mosquitoes: βₕ(a) Iᵥ(t) S_h(a,t)/Nₕ(t). (ContactFlow captures dependence on Iᵥ; normalization by Nₕ(t) is implicit from paper equations.)"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Human (age-structured)">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.2"
+                   description="Progression E_h→I_h at rate ρ k(a). Implemented as k(a) with branching handled conceptually; see note below."/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.3"
+                   description="Progression E_h→A_h at rate (1-ρ) k(a). Implemented as k(a) with branching handled conceptually; see note below."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Human Symptomatic (age-structured)">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.8"
+                   target="//@compartments.4"
+                   description="Recovery of symptomatic infectious humans: I_h→R_h at rate γ₁(a)."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Human Asymptomatic (age-structured)">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.9"
+                   target="//@compartments.4"
+                   description="Recovery of asymptomatic infectious humans: A_h→R_h at rate γ₂(a)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.5"
+                   target="//@compartments.2"
+                   description="Secondary infection / reinfection causing symptom development: A_h→I_h at rate σ βₕ(a) Iᵥ(t) A_h(a,t)/Nₕ(t). (σ is a multiplicative factor from paper; represented in description.)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Human (age-structured)">
+    <!-- No outgoing flows (lifelong immunity assumed). -->
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Flows (to mosquitoes) -->
+  <!-- ===================== -->
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquito">
+    <!-- Mosquito infection is from the susceptible fraction (1-I_v) and depends on human infectious pools.
+         Metamodel lacks an explicit susceptible mosquito compartment; we encode the acquisition as a ContactFlow
+         into I_v with human infectious as the contact compartment and document the (1-I_v) and integral term. -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.4"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.5"
+                   description="Human-to-vector transmission contributing to I_v(t): (1-I_v(t))*(1/Nₕ(t))∫₀^∞ βᵥ(a)[I_h(a,t)+σA_h(a,t)] da. ContactFlow uses βᵥ(a) with contactCompartment I_h; contribution from A_h and factor (1-I_v) are documented here (paper equation)."/>
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Notes on fidelity      -->
+  <!-- ===================== -->
+  <!--
+    1) Age structure: The paper is fully age-structured in humans (a,t). The metamodel supports stratification
+       via Groups/Products, but the paper uses continuous age a∈[0,∞). We therefore keep 'Human (age-structured)'
+       as SecondaryName and store age-dependence in parameter names βₕ(a), βᵥ(a), k(a), γ₁(a), γ₂(a).
+    2) Exposed branching: True rates are ρk(a) to I_h and (1-ρ)k(a) to A_h. The metamodel RateFlow supports a
+       single rate parameter per flow; we preserve k(a) symbolically and document multipliers ρ and (1-ρ) in
+       descriptions (faithful to equations).
+    3) Mosquito dynamics: The paper rescales total mosquitoes to 1 and models only I_v(t) with implicit S_v=1-I_v.
+       The infection term includes (1-I_v) and an integral over human ages. This is documented in the flow
+       description since the metamodel does not directly encode integrals or implicit complementary compartments.
+  -->
+
+</seir:SEIRModel>
+```

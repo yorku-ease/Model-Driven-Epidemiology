@@ -1,0 +1,37 @@
+An SE₂(2)IR (Susceptible, Exposed x2, Infectious x2, Recovered) compartmental model was extracted. The model structure is detailed in the "Transmission model" section, specifying two sequential exposed compartments (E₁, E₂) and two sequential infectious compartments (I₁, I₂). This structure models Erlang-distributed sojourn times for the latent and infectious periods.
+
+Parameter values were primarily sourced from "Table 1" (known parameters) and "Table 2" (posterior median estimates for the 2014/15 season) in the provided tables.
+- **Compartments:** S, E₁, E₂, I₁, I₂, and R.
+- **Initial Conditions:** Based on the 2014/15 season, the initial susceptible proportion (`π`) and initial number of infectious individuals (`I₀`) were used to populate the compartments.
+- **Transmission:** Infection is a `ContactFlow` from Susceptible to Exposed, driven by contact with both infectious compartments (I₁ and I₂) at a rate of `β`. The value for `β` was derived from the reported Basic Reproduction Number (`R₀ = 2.145`) and recovery rate (`γ`) for an SE₂(2)IR model using the formula `β = R₀ * γ`.
+- **Progression & Recovery:** Transitions through the latent (`E₁ → E₂ → I₁`) and infectious (`I₁ → I₂ → R`) stages are modeled as `RateFlows` with rates `σ` and `γ` respectively.
+
+The resulting model is represented below in the specified XML format.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="54551450">
+  <parameters name="β" expression="0.6217" description="Transmission rate, derived from R0 for 2014/15 season" unit="1/day"/>
+  <parameters name="σ" expression="1.0" description="Progression rate from Exposed states (inverse of mean latent period stage duration)" unit="1/day"/>
+  <parameters name="γ" expression="0.5797" description="Progression/Recovery rate from Infectious states (inverse of mean infectious period stage duration)" unit="1/day"/>
+  <parameters name="π" expression="0.538" description="Initial proportion of susceptible individuals (2014/15)" unit="dimensionless"/>
+  <parameters name="I₀" expression="3029.182" description="Initial number of infectious individuals (2014/15)" unit="persons"/>
+  <compartments PrimaryName="Susceptible" population="29350679.1">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.3" target="//@compartments.1" description="Infection from Infectious stage 1"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.4" target="//@compartments.1" description="Infection from Infectious stage 2"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="1" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression to second Exposed stage"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="2" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Progression to first Infectious stage"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="1" population="1514.591">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Progression to second Infectious stage"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="2" population="1514.591">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.5" description="Recovery"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="25197741.718"/>
+</seir:SEIRModel>
+```

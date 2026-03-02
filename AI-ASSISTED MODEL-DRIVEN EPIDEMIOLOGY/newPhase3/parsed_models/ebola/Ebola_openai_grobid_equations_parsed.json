@@ -1,0 +1,299 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Humans alive (A)",
+      "secondary_name": "alive (A)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infected Humans infectious (P)",
+      "secondary_name": "infectious (P)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Quarantined Deceased Humans F",
+      "secondary_name": "F",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Buried / Removed K",
+      "secondary_name": "K",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Environmental Ebola Pathogens U",
+      "secondary_name": "U",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Deceased Humans unburied/handled (S)",
+      "secondary_name": "unburied/handled (S)",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans alive (A)",
+      "target": "Infected Humans infectious (P)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Humans infectious (P)",
+      "rate_parameter": "\u03c8\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans A via effective contact with infected humans P (\u03c8\u2081\u00b7A\u00b7P)"
+    },
+    {
+      "source": "Susceptible Humans alive (A)",
+      "target": "Infected Humans infectious (P)",
+      "type": "ContactFlow",
+      "contact_compartment": "Environmental Ebola Pathogens U",
+      "rate_parameter": "\u03c8\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans A via contact with environmental pathogens U (\u03c8\u2082\u00b7A\u00b7U)"
+    },
+    {
+      "source": "Susceptible Humans alive (A)",
+      "target": "Infected Humans infectious (P)",
+      "type": "ContactFlow",
+      "contact_compartment": "Deceased Humans unburied/handled (S)",
+      "rate_parameter": "\u03c8\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans A via contact with deceased humans S (\u03c8\u2083\u00b7A\u00b7S)"
+    },
+    {
+      "source": "Susceptible Humans alive (A)",
+      "target": "Buried / Removed K",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b5",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death of susceptible humans A (\u03b5\u00b7A) to Removed/Death sink compartment K (used here as terminal)"
+    },
+    {
+      "source": "Infected Humans infectious (P)",
+      "target": "Deceased Humans unburied/handled (S)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Quarantine of infected humans P (\u03c1\u2081\u00b7P) to deceased/handled class S as written in dS/d\u03b6 inflow"
+    },
+    {
+      "source": "Infected Humans infectious (P)",
+      "target": "Environmental Ebola Pathogens U",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Shedding of infected humans P into environment U (\u03c1\u2082\u00b7P)"
+    },
+    {
+      "source": "Infected Humans infectious (P)",
+      "target": "Quarantined Deceased Humans F",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Disease-induced death of infected humans P (\u03c1\u2083\u00b7P) to quarantined deceased F"
+    },
+    {
+      "source": "Infected Humans infectious (P)",
+      "target": "Buried / Removed K",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b5",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural death of infected humans P (\u03b5\u00b7P) to Removed/Death sink compartment K (used here as terminal)"
+    },
+    {
+      "source": "Quarantined Deceased Humans F",
+      "target": "Buried / Removed K",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c9\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Burial of quarantined deceased F (\u03c9\u2081\u00b7F) to buried compartment K"
+    },
+    {
+      "source": "Quarantined Deceased Humans F",
+      "target": "Deceased Humans unburied/handled (S)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c9\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Contribution/transfer from quarantined deceased F to deceased/handled class S (\u03c9\u2082\u00b7F) as in dS/d\u03b6 inflow"
+    },
+    {
+      "source": "Quarantined Deceased Humans F",
+      "target": "Buried / Removed K",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b5",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural removal/death term for F (\u03b5\u00b7F) to buried/removed K (per equation)"
+    },
+    {
+      "source": "Environmental Ebola Pathogens U",
+      "target": "Buried / Removed K",
+      "type": "RateFlow",
+      "rate_parameter": "b",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Clearance/decay of pathogens in environment U (b\u00b7U) to Removed/Death K (terminal placeholder)"
+    },
+    {
+      "source": "Deceased Humans unburied/handled (S)",
+      "target": "Environmental Ebola Pathogens U",
+      "type": "RateFlow",
+      "rate_parameter": "h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Shedding from deceased humans S into environment U (h\u00b7S)"
+    },
+    {
+      "source": "Deceased Humans unburied/handled (S)",
+      "target": "Buried / Removed K",
+      "type": "RateFlow",
+      "rate_parameter": "c",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Burial/clearance/removal of deceased humans S (c\u00b7S) to buried/removed K"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Humans alive (A)",
+      "type": "BirthSource",
+      "rate_parameter": "\u03b1\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_to_Susceptible"
+    },
+    {
+      "source": "__external__",
+      "target": "Infected Humans infectious (P)",
+      "type": "BirthSource",
+      "rate_parameter": "\u03b1\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_to_Infected"
+    },
+    {
+      "source": "__external__",
+      "target": "Environmental Ebola Pathogens U",
+      "type": "BirthSource",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "External_Input_to_Environment"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b1\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "entities/time",
+      "description": "Recruitment/inflow rate into susceptible (alive) human population A"
+    },
+    {
+      "symbol": "\u03b1\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "entities/time",
+      "description": "Recruitment/inflow rate into infected human population P (e.g., infected recruitment/importation)"
+    },
+    {
+      "symbol": "\u03c8\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/(entities\u00b7time)",
+      "description": "Effective contact rate for transmission from infected humans P to susceptibles A (direct contact)"
+    },
+    {
+      "symbol": "\u03c8\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/(entities\u00b7time)",
+      "description": "Effective contact rate for transmission from environmental pathogens U to susceptibles A (indirect/environmental contact)"
+    },
+    {
+      "symbol": "\u03c8\u2083",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/(entities\u00b7time)",
+      "description": "Effective contact rate for transmission from deceased humans S to susceptibles A (contact during burial/handling)"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Natural death rate of humans (applies to living compartments; also appears as removal in some classes per paper notation)"
+    },
+    {
+      "symbol": "\u03c1\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate at which infected humans P are quarantined"
+    },
+    {
+      "symbol": "\u03c1\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate at which infected humans P shed Ebola pathogens into the environment U"
+    },
+    {
+      "symbol": "\u03c1\u2083",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Disease-induced death rate of infected humans P (flow to quarantined-deceased class F in this model)"
+    },
+    {
+      "symbol": "\u03c9\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate at which quarantined deceased F are buried (flow to buried class K)"
+    },
+    {
+      "symbol": "\u03c9\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate at which quarantined individuals F contribute to deceased/handled class S (as written in equations)"
+    },
+    {
+      "symbol": "h",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Proportion/rate of shedding of deceased individuals S contributing to environmental pathogens U"
+    },
+    {
+      "symbol": "b",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Decay/clearance rate of Ebola pathogens in the environment U"
+    },
+    {
+      "symbol": "c",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate of burial/clearance/removal of deceased humans S (in addition to h)"
+    },
+    {
+      "symbol": "d",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "entities/time",
+      "description": "External input of Ebola pathogens into the environment U (e.g., bush meat/other sources) as constant source term"
+    }
+  ]
+}

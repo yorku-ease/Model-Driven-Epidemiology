@@ -1,0 +1,192 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Vaccinated",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Infected",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": null
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infected",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals through contact with infected."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "type": "RateFlow",
+      "rate_parameter": "u",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible individuals."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b8",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Loss of vaccine-induced immunity, returning to susceptible."
+    },
+    {
+      "source": "Recovered",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infected individuals."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Loss of natural immunity, returning to susceptible."
+    },
+    {
+      "source": "Recovered",
+      "target": "Infected",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected",
+      "rate_parameter": "beta_r",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Reinfection of recovered individuals through contact with infected."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible",
+      "type": "BirthSource",
+      "rate_parameter": "A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment"
+    },
+    {
+      "source": "Susceptible",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_S"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_V"
+    },
+    {
+      "source": "Infected",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_I"
+    },
+    {
+      "source": "Recovered",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_R"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "A",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "persons/time",
+      "description": "Recruitment rate into the susceptible population (newborns)"
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/(person*time)",
+      "description": "Transmission rate of tuberculosis"
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate of waning immunity from recovered individuals"
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Natural death rate"
+    },
+    {
+      "symbol": "u",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Vaccination rate"
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate of vaccine waning"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Modification factor for reinfection susceptibility of recovered individuals"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Recovery rate from infection"
+    },
+    {
+      "symbol": "beta_r",
+      "type": "EXPRESSION",
+      "value": "\u03b5 * \u03b2",
+      "unit": "1/(person*time)",
+      "description": "Effective transmission rate for reinfection of recovered individuals"
+    }
+  ]
+}

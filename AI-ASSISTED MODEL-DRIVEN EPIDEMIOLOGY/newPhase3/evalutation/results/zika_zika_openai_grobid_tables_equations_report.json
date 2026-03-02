@@ -1,0 +1,341 @@
+{
+  "meta": {
+    "disease": "zika",
+    "case_id": "zika_openai_grobid_tables_equations",
+    "provider": "openai",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:25:12.845634+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.5,
+      "recall": 0.6,
+      "f1": 0.5455,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.4091,
+      "recall": 0.4737,
+      "f1": 0.439,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.5263,
+      "recall": 0.5263,
+      "f1": 0.5263,
+      "weight": 0.15
+    },
+    "composite": 0.4974
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 10,
+      "extracted_total": 12,
+      "tp": 6,
+      "fp": 6,
+      "fn": 4
+    },
+    "flows": {
+      "gold_total": 19,
+      "extracted_total": 22,
+      "tp": 9,
+      "fp": 13,
+      "fn": 10
+    },
+    "parameters": {
+      "gold_total": 19,
+      "extracted_total": 19,
+      "tp": 10,
+      "fp": 9,
+      "fn": 9
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible humans",
+        "extracted": "Susceptible Humans",
+        "score": 1.0000004768371582
+      },
+      {
+        "gold": "Exposed humans",
+        "extracted": "Exposed Humans",
+        "score": 1.0
+      },
+      {
+        "gold": "Infectious humans",
+        "extracted": "Infectious Humans",
+        "score": 1.0000003576278687
+      },
+      {
+        "gold": "Recovered humans",
+        "extracted": "Recovered Humans",
+        "score": 0.9999998807907104
+      },
+      {
+        "gold": "Larvae",
+        "extracted": "Larvae Vectors",
+        "score": 0.8047916889190674
+      },
+      {
+        "gold": "Infectious female adults",
+        "extracted": "Infectious Adult female vectors",
+        "score": 0.7488820552825928
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Susceptible humans->Exposed humans",
+        "extracted": "Susceptible Humans->Exposed Humans",
+        "score": 1.0
+      },
+      {
+        "gold": "Exposed humans->Infectious humans",
+        "extracted": "Exposed Humans->Infectious Humans",
+        "score": 1.0000001192092896
+      },
+      {
+        "gold": "Infectious humans->Recovered humans",
+        "extracted": "Infectious Humans->Recovered Humans",
+        "score": 1.0000001192092896
+      },
+      {
+        "gold": "Eggs->Larvae",
+        "extracted": "Eggs Vectors->Larvae Vectors",
+        "score": 0.7998928427696228
+      },
+      {
+        "gold": "Larvae->Pupae",
+        "extracted": "Larvae Vectors->Pupae Vectors",
+        "score": 0.7854316234588623
+      },
+      {
+        "gold": "Pupae->Susceptible female adults",
+        "extracted": "Pupae Vectors->Susceptible Adult female vectors",
+        "score": 0.7319977879524231
+      },
+      {
+        "gold": "Exposed female adults->Infectious female adults",
+        "extracted": "Exposed Adult female vectors->Infectious Adult female vectors",
+        "score": 0.7246406078338623
+      },
+      {
+        "gold": "Larvae->__dead__",
+        "extracted": "Larvae Vectors->Dead Vectors",
+        "score": 0.7852672338485718
+      },
+      {
+        "gold": "Larvae->__dead__",
+        "extracted": "Larvae Vectors->Dead Vectors",
+        "score": 0.7852672338485718
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "b Average biting rate / infectious bites delivered per vector per day (human exposure term)",
+        "extracted": "b Average biting rate per female mosquito per unit time (not separately identifiable from \u03b2 in provided tables; set to 1.0 so \u03b2 matches 'infectious bites per vector per day')",
+        "score": 0.8091626167297363
+      },
+      {
+        "gold": "1/\u03c41_v Egg development rate",
+        "extracted": "\u03c4_1 Egg development rate to larva (1 / egg development time; 3 days)",
+        "score": 0.7978284358978271
+      },
+      {
+        "gold": "1/\u03c43_v Pupal development rate",
+        "extracted": "\u03c4_3 Pupal development rate to adult (1 / pupal development time; 3 days)",
+        "score": 0.8752933740615845
+      },
+      {
+        "gold": "r_h Human population growth rate (logistic)",
+        "extracted": "\u03bb Human population logistic growth rate",
+        "score": 0.7771807909011841
+      },
+      {
+        "gold": "f Eggs laid per female mosquito per unit time",
+        "extracted": "e_V Number of eggs laid per female mosquito per unit time",
+        "score": 0.8800063133239746
+      },
+      {
+        "gold": "\u03bc1_v Egg mortality rate",
+        "extracted": "\u03bc_1 Egg mortality rate",
+        "score": 0.9478142857551575
+      },
+      {
+        "gold": "\u03bc2_v Larval base mortality rate",
+        "extracted": "\u03bc_2 Larval mortality rate (baseline, excluding density-dependent term)",
+        "score": 0.8929933309555054
+      },
+      {
+        "gold": "\u03b4_l Larval density-dependent mortality coefficient (logistic term)",
+        "extracted": "\u03ba Density-dependent larval mortality coefficient due to limited carrying capacity",
+        "score": 0.7702122926712036
+      },
+      {
+        "gold": "\u03bc3_v Pupal mortality rate",
+        "extracted": "\u03bc_3 Pupal mortality rate",
+        "score": 0.9583605527877808
+      },
+      {
+        "gold": "\u03bc_a_v Adult female mortality rate",
+        "extracted": "\u03bc_V Adult female mosquito mortality rate",
+        "score": 0.7284821271896362
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [
+      "Eggs Vectors",
+      "Pupae Vectors",
+      "Susceptible Adult female vectors",
+      "Exposed Adult female vectors",
+      "Removed Human logistic crowding loss",
+      "Dead Vectors"
+    ],
+    "flows": [
+      "Susceptible Humans -> Exposed Humans",
+      "Susceptible Humans -> Removed Human logistic crowding loss",
+      "Exposed Humans -> Infectious Humans",
+      "Exposed Humans -> Removed Human logistic crowding loss",
+      "Infectious Humans -> Recovered Humans",
+      "Infectious Humans -> Removed Human logistic crowding loss",
+      "Recovered Humans -> Removed Human logistic crowding loss",
+      "Eggs Vectors -> Larvae Vectors",
+      "Eggs Vectors -> Dead Vectors",
+      "Larvae Vectors -> Pupae Vectors",
+      "Larvae Vectors -> Dead Vectors",
+      "Larvae Vectors -> Dead Vectors",
+      "Pupae Vectors -> Susceptible Adult female vectors",
+      "Pupae Vectors -> Dead Vectors",
+      "Susceptible Adult female vectors -> Exposed Adult female vectors",
+      "Susceptible Adult female vectors -> Dead Vectors",
+      "Exposed Adult female vectors -> Infectious Adult female vectors",
+      "Exposed Adult female vectors -> Dead Vectors",
+      "Infectious Adult female vectors -> Dead Vectors",
+      "__external__ -> Susceptible Humans",
+      "__external__ -> Eggs Vectors",
+      "__external__ -> Susceptible Adult female vectors"
+    ],
+    "parameters": [
+      "K_H Carrying capacity for human population (Rio de Janeiro State simulation value)",
+      "\u03b2 Effective infectious bites delivered per vector per day (used as combined transmission factor in equations)",
+      "M Number of alternative hosts besides humans in the environment (reduces bites on humans via N_H+M)",
+      "\u03b1_H Progression rate from exposed humans to infectious humans (1 / human incubation time; 3 days used in simulations)",
+      "\u03b3 Recovery rate of infectious humans (1 / recovery time; 7 days used in simulations)",
+      "\u03c4_2 Larval development rate to pupa (1 / larval development time; 9 days)",
+      "q Proportion of females among emerging adult vectors",
+      "K_V Larval carrying capacity (Rio de Janeiro State simulation value)",
+      "\u03b1_V Progression rate from exposed adult vectors to infectious adult vectors (1 / vector incubation time; 10 days used in simulations)"
+    ]
+  },
+  "false_negatives": {
+    "compartments": [
+      "Eggs",
+      "Pupae",
+      "Susceptible female adults",
+      "Exposed female adults"
+    ],
+    "flows": [
+      "Susceptible humans -> Exposed humans",
+      "Exposed humans -> Infectious humans",
+      "Infectious humans -> Recovered humans",
+      "Eggs -> Larvae",
+      "Larvae -> Pupae",
+      "Pupae -> Susceptible female adults",
+      "Susceptible female adults -> Exposed female adults",
+      "Exposed female adults -> Infectious female adults",
+      "Susceptible humans -> __dead__",
+      "Exposed humans -> __dead__",
+      "Infectious humans -> __dead__",
+      "Recovered humans -> __dead__",
+      "Eggs -> __dead__",
+      "Larvae -> __dead__",
+      "Larvae -> __dead__",
+      "Pupae -> __dead__",
+      "Susceptible female adults -> __dead__",
+      "Exposed female adults -> __dead__",
+      "Infectious female adults -> __dead__"
+    ],
+    "parameters": [
+      "1/\u03c4_h Inverse incubation time in humans",
+      "\u03b3_h Human recovery rate",
+      "1/\u03c42_v Larval development rate",
+      "b_v Biting/exposure term for vectors becoming infected from infectious humans",
+      "1/\u03c4_v Inverse incubation time in vectors",
+      "\u03bc_h Natural human mortality rate",
+      "\u03c6 Female fraction among adult vectors",
+      "\u03c6*(1/\u03c43_v) Female pupae-to-adult development flow multiplier",
+      "HumanLogisticTerm Logistic human population growth term (distributed across Sh,Eh,Ih,Rh proportionally)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "POOR",
+    "composite_score": 0.4974,
+    "entity_verdicts": {
+      "compartments": "poor",
+      "flows": "poor",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 4 compartment(s), 19 flow(s), 9 parameter(s) from gold standard.",
+      "Hallucinated 6 compartment(s), 22 flow(s), 9 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_compartments": [
+        "Eggs",
+        "Pupae",
+        "Susceptible female adults",
+        "Exposed female adults"
+      ],
+      "missed_flows": [
+        "Susceptible humans -> Exposed humans",
+        "Exposed humans -> Infectious humans",
+        "Infectious humans -> Recovered humans",
+        "Eggs -> Larvae",
+        "Larvae -> Pupae"
+      ],
+      "missed_flows_total": 19,
+      "missed_parameters": [
+        "1/\u03c4_h Inverse incubation time in humans",
+        "\u03b3_h Human recovery rate",
+        "1/\u03c42_v Larval development rate",
+        "b_v Biting/exposure term for vectors becoming infected from infectious humans",
+        "1/\u03c4_v Inverse incubation time in vectors"
+      ],
+      "missed_parameters_total": 9,
+      "hallucinated_compartments": [
+        "Eggs Vectors",
+        "Pupae Vectors",
+        "Susceptible Adult female vectors",
+        "Exposed Adult female vectors",
+        "Removed Human logistic crowding loss"
+      ],
+      "hallucinated_compartments_total": 6,
+      "hallucinated_flows": [
+        "Susceptible Humans -> Exposed Humans",
+        "Susceptible Humans -> Removed Human logistic crowding loss",
+        "Exposed Humans -> Infectious Humans",
+        "Exposed Humans -> Removed Human logistic crowding loss",
+        "Infectious Humans -> Recovered Humans"
+      ],
+      "hallucinated_flows_total": 22,
+      "hallucinated_parameters": [
+        "K_H Carrying capacity for human population (Rio de Janeiro State simulation value)",
+        "\u03b2 Effective infectious bites delivered per vector per day (used as combined transmission factor in equations)",
+        "M Number of alternative hosts besides humans in the environment (reduces bites on humans via N_H+M)",
+        "\u03b1_H Progression rate from exposed humans to infectious humans (1 / human incubation time; 3 days used in simulations)",
+        "\u03b3 Recovery rate of infectious humans (1 / recovery time; 7 days used in simulations)"
+      ],
+      "hallucinated_parameters_total": 9
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "comp": [
+    "Susceptible Human",
+    "Exposed Human",
+    "Infectious Human_Symptomatic",
+    "Infectious Human_Asymptomatic",
+    "Recovered Human",
+    "Susceptible Mosquito",
+    "Infectious Mosquito"
+  ],
+  "flow": [
+    "Susceptible Human->Exposed Human",
+    "Exposed Human->Infectious Human_Symptomatic",
+    "Exposed Human->Infectious Human_Asymptomatic",
+    "Infectious Human_Symptomatic->Recovered Human",
+    "Infectious Human_Asymptomatic->Infectious Human_Symptomatic",
+    "Infectious Human_Asymptomatic->Recovered Human",
+    "Susceptible Mosquito->Infectious Mosquito",
+    "__external__->Susceptible Human",
+    "Susceptible Human->__dead__",
+    "Exposed Human->__dead__",
+    "Infectious Human_Symptomatic->__dead__",
+    "Infectious Human_Asymptomatic->__dead__",
+    "Recovered Human->__dead__",
+    "Susceptible Mosquito->__dead__",
+    "Infectious Mosquito->__dead__"
+  ],
+  "param": [
+    "B Constant influx/recruitment rate of susceptible human hosts (boundary condition Sh(0,t)=B in original unnormalized system; in normalized system sh(0,t)=1).",
+    "\u03bc\u2095 Natural death rate of human hosts.",
+    "\u03bc\u1d65 Natural death rate of mosquitoes.",
+    "\u03b2\u2095(a) Age-specific transmission/contact rate from infected mosquitoes to susceptible humans.",
+    "\u03b2\u1d65(a) Age-specific transmission rate from infectious humans (symptomatic and asymptomatic) to susceptible mosquitoes.",
+    "k(a) Age-specific progression rate from exposed to infectious (latent period is 1/k(a)).",
+    "\u03b3\u2081(a) Age-specific recovery rate of symptomatic infectious humans.",
+    "\u03b3\u2082(a) Age-specific recovery rate of asymptomatic infectious humans.",
+    "\u03c1 Probability an exposed human becomes symptomatic infectious (fraction \u03c1; remaining 1-\u03c1 become asymptomatic).",
+    "\u03c3 Factor characterizing intensity of reinfection/secondary infection of asymptomatic infectious hosts; also scales asymptomatic contribution to mosquito infection in the paper.",
+    "N\u2095(t) Total human population size at time t (used in standard incidence terms in system (2.1)).",
+    "N\u2095* Limiting/steady total human population size used in normalized system (2.2) (denoted N*h in the paper)."
+  ]
+}

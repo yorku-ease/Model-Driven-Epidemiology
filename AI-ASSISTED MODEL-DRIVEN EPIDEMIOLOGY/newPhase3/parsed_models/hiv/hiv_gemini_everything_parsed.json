@@ -1,0 +1,451 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Homosexual men",
+      "secondary_name": "Homosexual men",
+      "initial_population": 2446.0
+    },
+    {
+      "name": "Infectious Untreated homosexual men",
+      "secondary_name": "Untreated homosexual men",
+      "initial_population": 79.0
+    },
+    {
+      "name": "Susceptible Women",
+      "secondary_name": "Women",
+      "initial_population": 189994.0
+    },
+    {
+      "name": "Infectious Untreated women",
+      "secondary_name": "Untreated women",
+      "initial_population": 6.0
+    },
+    {
+      "name": "Susceptible Heterosexual men",
+      "secondary_name": "Heterosexual men",
+      "initial_population": 171173.0
+    },
+    {
+      "name": "Infectious Untreated heterosexual men",
+      "secondary_name": "Untreated heterosexual men",
+      "initial_population": 29.0
+    },
+    {
+      "name": "Treated with antiretrovirals",
+      "secondary_name": "with antiretrovirals",
+      "initial_population": 107.0
+    },
+    {
+      "name": "AIDS People living with AIDS",
+      "secondary_name": "People living with AIDS",
+      "initial_population": 47.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Homosexual men",
+      "target": "Infectious Untreated homosexual men",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Untreated homosexual men",
+      "rate_parameter": "\u03b2\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible homosexual men."
+    },
+    {
+      "source": "Infectious Untreated homosexual men",
+      "target": "Treated with antiretrovirals",
+      "type": "RateFlow",
+      "rate_parameter": "progression_to_T",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from untreated infected to treatment."
+    },
+    {
+      "source": "Infectious Untreated homosexual men",
+      "target": "AIDS People living with AIDS",
+      "type": "RateFlow",
+      "rate_parameter": "progression_to_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from untreated infected to AIDS."
+    },
+    {
+      "source": "Susceptible Women",
+      "target": "Infectious Untreated women",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Untreated heterosexual men",
+      "rate_parameter": "\u03b2\u2098",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible women by heterosexual men."
+    },
+    {
+      "source": "Susceptible Women",
+      "target": "Infectious Untreated women",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Untreated homosexual men",
+      "rate_parameter": "\u03b2\u2095w",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible women by homosexual men (bisexual contact)."
+    },
+    {
+      "source": "Infectious Untreated women",
+      "target": "Treated with antiretrovirals",
+      "type": "RateFlow",
+      "rate_parameter": "progression_to_T",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from untreated infected to treatment."
+    },
+    {
+      "source": "Infectious Untreated women",
+      "target": "AIDS People living with AIDS",
+      "type": "RateFlow",
+      "rate_parameter": "progression_to_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from untreated infected to AIDS."
+    },
+    {
+      "source": "Susceptible Heterosexual men",
+      "target": "Infectious Untreated heterosexual men",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Untreated women",
+      "rate_parameter": "\u03b2w",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible heterosexual men by women."
+    },
+    {
+      "source": "Susceptible Heterosexual men",
+      "target": "Infectious Untreated heterosexual men",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Untreated homosexual men",
+      "rate_parameter": "\u03b2\u2095\u2098",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible heterosexual men by homosexual men (bisexual contact)."
+    },
+    {
+      "source": "Infectious Untreated heterosexual men",
+      "target": "Treated with antiretrovirals",
+      "type": "RateFlow",
+      "rate_parameter": "progression_to_T",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from untreated infected to treatment."
+    },
+    {
+      "source": "Infectious Untreated heterosexual men",
+      "target": "AIDS People living with AIDS",
+      "type": "RateFlow",
+      "rate_parameter": "progression_to_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from untreated infected to AIDS."
+    },
+    {
+      "source": "Treated with antiretrovirals",
+      "target": "AIDS People living with AIDS",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to AIDS from treated state due to treatment failure."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Homosexual men",
+      "type": "BirthSource",
+      "rate_parameter": "recruitment_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_Sh"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Women",
+      "type": "BirthSource",
+      "rate_parameter": "recruitment_w",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_Sw"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Heterosexual men",
+      "type": "BirthSource",
+      "rate_parameter": "recruitment_m",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_Sm"
+    },
+    {
+      "source": "Susceptible Homosexual men",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Sh"
+    },
+    {
+      "source": "Infectious Untreated homosexual men",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Ih"
+    },
+    {
+      "source": "Susceptible Women",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Sw"
+    },
+    {
+      "source": "Infectious Untreated women",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Iw"
+    },
+    {
+      "source": "Susceptible Heterosexual men",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Sm"
+    },
+    {
+      "source": "Infectious Untreated heterosexual men",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Im"
+    },
+    {
+      "source": "Treated with antiretrovirals",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_T"
+    },
+    {
+      "source": "AIDS People living with AIDS",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_A"
+    },
+    {
+      "source": "AIDS People living with AIDS",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "AIDS_Death_A"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03a8",
+      "type": "CONSTANT",
+      "value": 333.0,
+      "unit": "individuals/year",
+      "description": "Constant total recruitment rate into susceptible populations. Symbol C in paper's Table 3."
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": 0.48,
+      "unit": "dimensionless",
+      "description": "Proportion of men in the population. Symbol h in paper's Table 3."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.92,
+      "unit": "dimensionless",
+      "description": "Proportion of heterosexual men among the male population. Symbol c in paper's Table 3."
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": 0.0129,
+      "unit": "1/year",
+      "description": "Natural mortality rate. Symbol l in paper's Table 3."
+    },
+    {
+      "symbol": "\u03b1",
+      "type": "CONSTANT",
+      "value": 0.3333,
+      "unit": "1/year",
+      "description": "Departure rate from infected compartments (diagnosis rate leading to treatment or progression to AIDS). Symbol a in paper's Table 3."
+    },
+    {
+      "symbol": "p",
+      "type": "CONSTANT",
+      "value": 0.9,
+      "unit": "dimensionless",
+      "description": "Proportion of diagnosed individuals who start antiretroviral therapy (ART)."
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": 0.018,
+      "unit": "1/year",
+      "description": "AIDS development rate in treated individuals due to ART resistance or treatment failure. Symbol d (second instance) in paper's Table 3."
+    },
+    {
+      "symbol": "d",
+      "type": "CONSTANT",
+      "value": 0.3333,
+      "unit": "1/year",
+      "description": "Induced disease mortality rate for individuals with AIDS."
+    },
+    {
+      "symbol": "b\u2095",
+      "type": "CONSTANT",
+      "value": 0.44,
+      "unit": "dimensionless",
+      "description": "Probability of transmission per contact (homosexual)."
+    },
+    {
+      "symbol": "c\u2095",
+      "type": "CONSTANT",
+      "value": 7.0,
+      "unit": "1/year",
+      "description": "Sexual partner rate (homosexual)."
+    },
+    {
+      "symbol": "b\u209b",
+      "type": "CONSTANT",
+      "value": 0.02,
+      "unit": "dimensionless",
+      "description": "Probability of transmission per contact (heterosexual)."
+    },
+    {
+      "symbol": "c\u209b",
+      "type": "CONSTANT",
+      "value": 4.0,
+      "unit": "1/year",
+      "description": "Sexual partner rate (heterosexual)."
+    },
+    {
+      "symbol": "b\u2095w",
+      "type": "CONSTANT",
+      "value": 0.018,
+      "unit": "dimensionless",
+      "description": "Probability of transmission per contact (bisexual, homosexual men to women)."
+    },
+    {
+      "symbol": "c\u2095w",
+      "type": "CONSTANT",
+      "value": 2.0,
+      "unit": "1/year",
+      "description": "Sexual partner rate (bisexual, homosexual men to women)."
+    },
+    {
+      "symbol": "b\u2095\u2098",
+      "type": "CONSTANT",
+      "value": 0.25,
+      "unit": "dimensionless",
+      "description": "Probability of transmission per contact (bisexual, homosexual men to heterosexual men)."
+    },
+    {
+      "symbol": "c\u2095\u2098",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "1/year",
+      "description": "Sexual partner rate (bisexual, homosexual men to heterosexual men)."
+    },
+    {
+      "symbol": "\u03b2\u2095",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Transmission rate parameter for homosexual contact (Sh <- Ih). Assumed to be related to b_h and c_h, but the exact form (e.g., denominator) is not provided in the paper."
+    },
+    {
+      "symbol": "\u03b2\u2098",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Transmission rate parameter for heterosexual contact (Sw <- Im). Assumed to be related to b_s and c_s, but the exact form is not provided."
+    },
+    {
+      "symbol": "\u03b2\u2095w",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Transmission rate parameter for bisexual contact (Sw <- Ih). Assumed to be related to b_hw and c_hw, but the exact form is not provided."
+    },
+    {
+      "symbol": "\u03b2w",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Transmission rate parameter for heterosexual contact (Sm <- Iw). Assumed to be related to b_s and c_s, but the exact form is not provided."
+    },
+    {
+      "symbol": "\u03b2\u2095\u2098",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Transmission rate parameter for bisexual contact (Sm <- Ih). Assumed to be related to b_hm and c_hm, but the exact form is not provided."
+    },
+    {
+      "symbol": "recruitment_h",
+      "type": "EXPRESSION",
+      "value": "\u03a8 * \u03b8 * (1 - \u03b3)",
+      "unit": "individuals/year",
+      "description": "Recruitment rate for susceptible homosexual men."
+    },
+    {
+      "symbol": "recruitment_w",
+      "type": "EXPRESSION",
+      "value": "\u03a8 * (1 - \u03b8)",
+      "unit": "individuals/year",
+      "description": "Recruitment rate for susceptible women."
+    },
+    {
+      "symbol": "recruitment_m",
+      "type": "EXPRESSION",
+      "value": "\u03a8 * \u03b8 * \u03b3",
+      "unit": "individuals/year",
+      "description": "Recruitment rate for susceptible heterosexual men."
+    },
+    {
+      "symbol": "progression_to_T",
+      "type": "EXPRESSION",
+      "value": "\u03b1 * p",
+      "unit": "1/year",
+      "description": "Rate at which infected individuals start treatment."
+    },
+    {
+      "symbol": "progression_to_A",
+      "type": "EXPRESSION",
+      "value": "\u03b1 * (1 - p)",
+      "unit": "1/year",
+      "description": "Rate at which infected individuals progress to AIDS without treatment."
+    }
+  ]
+}

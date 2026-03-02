@@ -1,0 +1,410 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Children",
+      "secondary_name": "Children",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Susceptible Adults",
+      "secondary_name": "Adults",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated Un-monitored Children (UVC)",
+      "secondary_name": "Un-monitored Children (UVC)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated Un-monitored Adults (UVA)",
+      "secondary_name": "Un-monitored Adults (UVA)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated Adults (Catch-up Program, VA)",
+      "secondary_name": "Adults (Catch-up Program, VA)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated Monitored Children (MVC)",
+      "secondary_name": "Monitored Children (MVC)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Children",
+      "secondary_name": "Children",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Adults",
+      "secondary_name": "Adults",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Children",
+      "secondary_name": "Children",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Adults",
+      "secondary_name": "Adults",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Monitored Children (ImC)",
+      "secondary_name": "Monitored Children (ImC)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Monitored Adults (ImA)",
+      "secondary_name": "Monitored Adults (ImA)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Immune/Removed All",
+      "secondary_name": "All",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Children",
+      "target": "Exposed Children",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Children",
+      "rate_parameter": "\u03b2_C",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Children susceptible become exposed via contact with infectious children at rate \u03b2_C (force-of-infection details not provided in excerpt)"
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "Susceptible Adults",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of susceptible children to susceptible adults at rate j"
+    },
+    {
+      "source": "Susceptible Adults",
+      "target": "Exposed Adults",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Adults",
+      "rate_parameter": "\u03b2_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adults susceptible become exposed via contact with infectious adults at rate \u03b2_A (force-of-infection details not provided in excerpt)"
+    },
+    {
+      "source": "Vaccinated Un-monitored Children (UVC)",
+      "target": "Exposed Children",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Children",
+      "rate_parameter": "\u03b2_C",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Un-monitored vaccinated children can still become exposed; infection described at rate \u03b5\u03b2_C (implemented as \u03b2_C contact flow; \u03b5 factor not representable directly without an EXPRESSION parameter in excerpt)"
+    },
+    {
+      "source": "Vaccinated Un-monitored Children (UVC)",
+      "target": "Vaccinated Un-monitored Adults (UVA)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of un-monitored vaccinated children to un-monitored vaccinated adults at rate j"
+    },
+    {
+      "source": "Vaccinated Adults (Catch-up Program, VA)",
+      "target": "Immune/Removed All",
+      "type": "RateFlow",
+      "rate_parameter": "h_A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Immunization of vaccinated adults under supervision to become immune/non-susceptible at rate h_A"
+    },
+    {
+      "source": "Vaccinated Monitored Children (MVC)",
+      "target": "Immune/Removed All",
+      "type": "RateFlow",
+      "rate_parameter": "h_M",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Immunization of monitored vaccinated children to become immune/non-susceptible at rate h_M"
+    },
+    {
+      "source": "Vaccinated Monitored Children (MVC)",
+      "target": "Vaccinated Adults (Catch-up Program, VA)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of monitored vaccinated children to adult vaccinated group at rate j (exact target not specified in excerpt; mapped to VA)"
+    },
+    {
+      "source": "Exposed Children",
+      "target": "Infectious Children",
+      "type": "RateFlow",
+      "rate_parameter": "g",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed children to infectious children at rate d"
+    },
+    {
+      "source": "Exposed Children",
+      "target": "Exposed Adults",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of exposed children to exposed adults at rate j"
+    },
+    {
+      "source": "Exposed Adults",
+      "target": "Infectious Adults",
+      "type": "RateFlow",
+      "rate_parameter": "g",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed adults to infectious adults at rate d"
+    },
+    {
+      "source": "Infectious Children",
+      "target": "Immune/Removed All",
+      "type": "RateFlow",
+      "rate_parameter": "q",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious children at rate g (destination immune/removed not explicitly named in excerpt; mapped to Immune)"
+    },
+    {
+      "source": "Infectious Children",
+      "target": "Infectious Adults",
+      "type": "RateFlow",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Maturation of infectious children to infectious adults at rate j"
+    },
+    {
+      "source": "Infectious Adults",
+      "target": "Immune/Removed All",
+      "type": "RateFlow",
+      "rate_parameter": "q",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious adults at rate g (destination immune/removed not explicitly named in excerpt; mapped to Immune)"
+    },
+    {
+      "source": "Susceptible Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_SC"
+    },
+    {
+      "source": "Susceptible Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_SA"
+    },
+    {
+      "source": "Vaccinated Un-monitored Children (UVC)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_UVC"
+    },
+    {
+      "source": "Vaccinated Un-monitored Adults (UVA)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_UVA"
+    },
+    {
+      "source": "Vaccinated Adults (Catch-up Program, VA)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_VA"
+    },
+    {
+      "source": "Vaccinated Monitored Children (MVC)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_MVC"
+    },
+    {
+      "source": "Exposed Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_EC"
+    },
+    {
+      "source": "Exposed Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_EA"
+    },
+    {
+      "source": "Infectious Children",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_IC"
+    },
+    {
+      "source": "Infectious Adults",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_IA"
+    },
+    {
+      "source": "Infectious Monitored Children (ImC)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_ImC"
+    },
+    {
+      "source": "Infectious Monitored Adults (ImA)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_ImA"
+    },
+    {
+      "source": "Immune/Removed All",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "d",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Immune"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2_C",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Infection (transmission) rate for fully susceptible children becoming infected"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Vaccine failure factor for un-monitored vaccinated children; infection occurs at rate \u03b5\u03b2_C where (1-\u03b5) is vaccine effectiveness"
+    },
+    {
+      "symbol": "\u03b2_A",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Infection (transmission) rate for adults (assumed low among adults)"
+    },
+    {
+      "symbol": "h_M",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Rate of immunization of the Monitored Vaccination Group (children) to become non-susceptible"
+    },
+    {
+      "symbol": "h_A",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "1/time",
+      "description": "Rate of immunization of the Adult Vaccination Group to become non-susceptible (set to 0 in Nepal fitting period)"
+    },
+    {
+      "symbol": "x_U",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Vaccination/enrollment rate into Un-monitored vaccination group (estimated in data fitting; symbol mentioned in sensitivity list)"
+    },
+    {
+      "symbol": "x_M",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Vaccination/enrollment rate into Monitored vaccination group (symbol mentioned in sensitivity list and adult-child vaccination plane)"
+    },
+    {
+      "symbol": "x_A",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "1/time",
+      "description": "Adult catch-up vaccination rate (set to 0 in Nepal fitting period)"
+    },
+    {
+      "symbol": "j",
+      "type": "CONSTANT",
+      "value": 0.0013,
+      "unit": "1/week",
+      "description": "Maturation rate from children (\u226415) to adults (>15)"
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": "1/(72*52)",
+      "unit": "1/week",
+      "description": "Natural death rate (lifespan ~72 years)"
+    },
+    {
+      "symbol": "d",
+      "type": "CONSTANT",
+      "value": 0.7,
+      "unit": "1/week",
+      "description": "Progression rate from exposed to infectious (incubation ~10 days)"
+    },
+    {
+      "symbol": "g",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "1/week",
+      "description": "Recovery rate from infectious (recovery period ~15 days)"
+    },
+    {
+      "symbol": "q",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Case reporting/observation factor used in weekly incidence: h(t)=q*d*E(t) (symbol appears in numerical fitting description)"
+    }
+  ]
+}

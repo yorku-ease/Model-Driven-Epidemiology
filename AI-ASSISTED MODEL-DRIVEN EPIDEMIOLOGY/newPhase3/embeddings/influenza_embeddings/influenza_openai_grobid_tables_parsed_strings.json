@@ -1,0 +1,30 @@
+{
+  "comp": [
+    "Susceptible",
+    "Exposed Stage1",
+    "Exposed Stage2",
+    "Infectious Stage1",
+    "Infectious Stage2",
+    "Removed"
+  ],
+  "flow": [
+    "Susceptible->Exposed Stage1",
+    "Exposed Stage1->Exposed Stage2",
+    "Exposed Stage2->Infectious Stage1",
+    "Infectious Stage1->Infectious Stage2",
+    "Infectious Stage2->Removed"
+  ],
+  "param": [
+    "\u03c0 Initial susceptibility (proportion susceptible at start of season); prior U(0,1)",
+    "\u03bb\u2080 Initial infection rate (force of infection at epidemic start); prior U(0,0.000241)",
+    "\u03c8 Exponential growth rate (EGR) at epidemic start; prior U(0,0.39)",
+    "\u03b7 Negative Binomial over-dispersion parameter for weekly ICU/HDU counts; prior U(1,100)",
+    "pICU Probability of ICU/HDU admission given infection; prior U(0,1)",
+    "\u03c3 Daily rate of transition E1\u2192E2 and E2\u2192I1 (two-stage latent period)",
+    "\u03b3 Daily rate of transition I1\u2192I2 and I2\u2192R (two-stage infectious period)",
+    "\u03bcICU|E Mean time from infection to ICU/HDU admission (waiting time distribution)",
+    "\u03c3\u00b2ICU|E Variance of time from infection to ICU/HDU admission (waiting time distribution)",
+    "\u03b2 Transmission rate in \u03bb(t)=\u03b2\u00b7I(t)/N; in the paper inferred via EGR re-parameterization (SI 1.1)",
+    "\u03b4t Model time step (quarter of a day)"
+  ]
+}

@@ -1,0 +1,218 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="π" type="CONSTANT" expression="0.012" unit="per day" description="Human recruitment/birth rate (given in Table 3 snippet: annual birth rate expressed per day)"/>
+  <parameters name="k" type="CONSTANT" unit="dimensionless" description="Proportion of recruited humans vaccinated at entry (recruitment split πk to V_H and π(1-k) to S_H)"/>
+  <parameters name="Λ" type="CONSTANT" unit="per day" description="Mosquito recruitment rate into susceptible mosquitoes S_M"/>
+  <parameters name="μ₁" type="CONSTANT" unit="per day" description="Natural death rate of humans (applies to human compartments)"/>
+  <parameters name="μ₂" type="CONSTANT" unit="per day" description="Natural death rate of mosquitoes (applies to mosquito compartments)"/>
+
+  <parameters name="θ" type="CONSTANT" unit="per day" description="Waning of vaccine protection: transition from vaccinated humans V_H to susceptible humans S_H"/>
+  <parameters name="γ" type="CONSTANT" unit="per day" description="Waning of natural immunity: transition from recovered humans R_H back to susceptible humans S_H"/>
+
+  <parameters name="β₂" type="CONSTANT" unit="per day" description="Mosquito-to-human transmission/contact rate (force of infection from infectious mosquitoes I_M to humans)"/>
+  <parameters name="ε" type="CONSTANT" unit="dimensionless" description="Vaccine breakthrough susceptibility modifier (vaccinated infection uses β₂·ε)"/>
+  <parameters name="β₃" type="CONSTANT" unit="per day" description="Human-to-mosquito transmission/contact rate (force of infection from infectious humans I_H to mosquitoes)"/>
+
+  <parameters name="α₁" type="CONSTANT" unit="per day" description="Allocation/transition rate from susceptible humans S_H into exposed humans class 1 (E_H1) upon infection (as shown in diagram)"/>
+  <parameters name="α₂" type="CONSTANT" unit="per day" description="Allocation/transition rate from susceptible humans S_H into exposed humans class 2 (E_H2) upon infection (as shown in diagram)"/>
+
+  <parameters name="τ₁" type="CONSTANT" unit="per day" description="Progression rate from exposed humans E_H1 to infectious humans I_H"/>
+  <parameters name="τ₂" type="CONSTANT" unit="per day" description="Progression rate from exposed humans E_H2 to infectious humans I_H"/>
+
+  <parameters name="σ" type="CONSTANT" unit="per day" description="Treatment initiation rate: infectious humans I_H to treated humans T_H"/>
+  <parameters name="ω" type="CONSTANT" unit="per day" description="Recovery rate under treatment: treated humans T_H to recovered humans R_H"/>
+
+  <parameters name="δ₁" type="CONSTANT" unit="per day" description="Disease-induced death rate for infectious and/or treated humans (diagram shows μ₁+δ₁ leaving I_H and T_H)"/>
+
+  <parameters name="φ" type="CONSTANT" unit="per day" description="Progression/incubation rate in mosquitoes: exposed mosquitoes E_M to infectious mosquitoes I_M"/>
+
+  <!-- ===================== -->
+  <!-- Compartments (states) -->
+  <!-- ===================== -->
+  <!-- Index map (0-based):
+       0 V_H, 1 S_H, 2 E_H1, 3 E_H2, 4 I_H, 5 T_H, 6 R_H, 7 S_M, 8 E_M, 9 I_M
+  -->
+
+  <compartments PrimaryName="Vaccinated" SecondaryName="Humans (V_H)" population="0">
+    <!-- Waning vaccine immunity -->
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.5" target="//@compartments.1"
+                   description="V_H -> S_H (waning vaccine protection)"/>
+    <!-- Breakthrough infection from infectious mosquitoes -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.7" contactCompartment="//@compartments.9"
+                   target="//@compartments.2"
+                   description="V_H -> E_H1 due to contact with infectious mosquitoes I_M at rate β₂·ε (implemented via expression parameter below)"/>
+    <!-- Note: natural death handled via deathSinks -->
+  </compartments>
+
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans (S_H)" population="0">
+    <!-- Infection from infectious mosquitoes into two exposed classes -->
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.8" contactCompartment="//@compartments.9"
+                   target="//@compartments.2"
+                   description="S_H -> E_H1 due to contact with infectious mosquitoes I_M (diagram shows α₁ allocation; see note below)"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.9" contactCompartment="//@compartments.9"
+                   target="//@compartments.3"
+                   description="S_H -> E_H2 due to contact with infectious mosquitoes I_M (diagram shows α₂ allocation; see note below)"/>
+    <!-- Note: The diagram labels S_H->E_H1 as α₁ and S_H->E_H2 as α₂.
+         We model them as ContactFlows driven by I_M, with contactRateParameter α₁/α₂. -->
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans, class 1 (E_H1)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.10" target="//@compartments.4"
+                   description="E_H1 -> I_H (progression)"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans, class 2 (E_H2)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4"
+                   description="E_H2 -> I_H (progression)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans (I_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.5"
+                   description="I_H -> T_H (start treatment)"/>
+    <!-- Death handled via deathSinks (μ₁ + δ₁) -->
+  </compartments>
+
+  <compartments PrimaryName="Treated" SecondaryName="Humans (T_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.13" target="//@compartments.6"
+                   description="T_H -> R_H (recovery)"/>
+    <!-- Death handled via deathSinks (μ₁ + δ₁) -->
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans (R_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.6" target="//@compartments.1"
+                   description="R_H -> S_H (loss of natural immunity)"/>
+  </compartments>
+
+  <compartments PrimaryName="Susceptible" SecondaryName="Mosquitoes (S_M)" population="0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.9" contactCompartment="//@compartments.4"
+                   target="//@compartments.8"
+                   description="S_M -> E_M due to contact with infectious humans I_H (human-to-mosquito transmission; diagram labels β₃)"/>
+    <!-- NOTE: contactRateParameter should be β₃; see correction below in parameter reference mapping -->
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Mosquitoes (E_M)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.15" target="//@compartments.9"
+                   description="E_M -> I_M (mosquito incubation/progression)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquitoes (I_M)" population="0">
+    <!-- No outgoing progression; death handled via deathSinks -->
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Expression parameters -->
+  <!-- ===================== -->
+  <!-- Add β₂·ε as an EXPRESSION parameter and re-point the V_H breakthrough ContactFlow to it.
+       (Kept separate to preserve symbolic structure from the figure.) -->
+  <parameters name="β₂ε" type="EXPRESSION" expression="β₂ * ε" unit="per day" description="Effective mosquito-to-vaccinated-human transmission rate (breakthrough), β₂ multiplied by ε"/>
+
+  <!-- NOTE on reference consistency:
+       The V_H breakthrough ContactFlow above currently points to ε (//@parameters.7).
+       In a strict implementation, it should point to β₂ε.
+       However, adding β₂ε after compartments changes indices.
+       To keep XML valid with stable indices, a production pipeline should build parameters first, then compartments.
+       Below is a corrected, index-consistent version of the model (parameters first, then compartments) that you should use.
+  -->
+
+</seir:SEIRModel>
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <!-- 0  --> <parameters name="π"   type="CONSTANT"   expression="0.012" unit="per day"      description="Human recruitment/birth rate (Table 3 snippet)"/>
+  <!-- 1  --> <parameters name="k"   type="CONSTANT"   unit="dimensionless"                  description="Proportion of recruited humans vaccinated at entry (πk to V_H; π(1-k) to S_H)"/>
+  <!-- 2  --> <parameters name="Λ"   type="CONSTANT"   unit="per day"                         description="Mosquito recruitment rate into S_M"/>
+  <!-- 3  --> <parameters name="μ₁"  type="CONSTANT"   unit="per day"                         description="Natural death rate of humans"/>
+  <!-- 4  --> <parameters name="μ₂"  type="CONSTANT"   unit="per day"                         description="Natural death rate of mosquitoes"/>
+  <!-- 5  --> <parameters name="θ"   type="CONSTANT"   unit="per day"                         description="Waning vaccine protection: V_H -> S_H"/>
+  <!-- 6  --> <parameters name="γ"   type="CONSTANT"   unit="per day"                         description="Waning natural immunity: R_H -> S_H"/>
+  <!-- 7  --> <parameters name="β₂"  type="CONSTANT"   unit="per day"                         description="Mosquito-to-human transmission/contact rate (from I_M)"/>
+  <!-- 8  --> <parameters name="ε"   type="CONSTANT"   unit="dimensionless"                   description="Vaccine susceptibility modifier (breakthrough factor)"/>
+  <!-- 9  --> <parameters name="β₂ε" type="EXPRESSION" expression="β₂ * ε" unit="per day"      description="Effective mosquito-to-vaccinated-human transmission rate"/>
+  <!-- 10 --> <parameters name="β₃"  type="CONSTANT"   unit="per day"                         description="Human-to-mosquito transmission/contact rate (from I_H)"/>
+  <!-- 11 --> <parameters name="α₁"  type="CONSTANT"   unit="per day"                         description="Infection allocation/contact rate into exposed humans class 1 (S_H -> E_H1), driven by I_M"/>
+  <!-- 12 --> <parameters name="α₂"  type="CONSTANT"   unit="per day"                         description="Infection allocation/contact rate into exposed humans class 2 (S_H -> E_H2), driven by I_M"/>
+  <!-- 13 --> <parameters name="τ₁"  type="CONSTANT"   unit="per day"                         description="Progression E_H1 -> I_H"/>
+  <!-- 14 --> <parameters name="τ₂"  type="CONSTANT"   unit="per day"                         description="Progression E_H2 -> I_H"/>
+  <!-- 15 --> <parameters name="σ"   type="CONSTANT"   unit="per day"                         description="Treatment initiation I_H -> T_H"/>
+  <!-- 16 --> <parameters name="ω"   type="CONSTANT"   unit="per day"                         description="Recovery under treatment T_H -> R_H"/>
+  <!-- 17 --> <parameters name="δ₁"  type="CONSTANT"   unit="per day"                         description="Disease-induced death rate in humans (additional to μ₁)"/>
+  <!-- 18 --> <parameters name="φ"   type="CONSTANT"   unit="per day"                         description="Mosquito progression E_M -> I_M"/>
+
+  <!-- ===================== -->
+  <!-- Compartments (states) -->
+  <!-- ===================== -->
+  <!-- Index map (0-based):
+       0 V_H, 1 S_H, 2 E_H1, 3 E_H2, 4 I_H, 5 T_H, 6 R_H, 7 S_M, 8 E_M, 9 I_M
+  -->
+
+  <compartments PrimaryName="Vaccinated" SecondaryName="Humans (V_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.5" target="//@compartments.1"
+                   description="V_H -> S_H (waning vaccine protection, θ)"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.9" contactCompartment="//@compartments.9"
+                   target="//@compartments.2"
+                   description="V_H -> E_H1 due to infectious mosquitoes I_M (breakthrough infection at rate β₂ε)"/>
+  </compartments>
+
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans (S_H)" population="0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.11" contactCompartment="//@compartments.9"
+                   target="//@compartments.2"
+                   description="S_H -> E_H1 due to infectious mosquitoes I_M (α₁)"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.12" contactCompartment="//@compartments.9"
+                   target="//@compartments.3"
+                   description="S_H -> E_H2 due to infectious mosquitoes I_M (α₂)"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans, class 1 (E_H1)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.13" target="//@compartments.4"
+                   description="E_H1 -> I_H (τ₁)"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans, class 2 (E_H2)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.14" target="//@compartments.4"
+                   description="E_H2 -> I_H (τ₂)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans (I_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.15" target="//@compartments.5"
+                   description="I_H -> T_H (σ)"/>
+  </compartments>
+
+  <compartments PrimaryName="Treated" SecondaryName="Humans (T_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.16" target="//@compartments.6"
+                   description="T_H -> R_H (ω)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans (R_H)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.6" target="//@compartments.1"
+                   description="R_H -> S_H (loss of immunity, γ)"/>
+  </compartments>
+
+  <compartments PrimaryName="Susceptible" SecondaryName="Mosquitoes (S_M)" population="0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.10" contactCompartment="//@compartments.4"
+                   target="//@compartments.8"
+                   description="S_M -> E_M due to infectious humans I_H (β₃)"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Mosquitoes (E_M)" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.18" target="//@compartments.9"
+                   description="E_M -> I_M (φ)"/>
+  </compartments>
+
+  <

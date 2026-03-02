@@ -1,0 +1,161 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible S(t)",
+      "secondary_name": "S(t)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed E\u2081(t)",
+      "secondary_name": "E\u2081(t)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed E\u2082(t)",
+      "secondary_name": "E\u2082(t)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious I\u2081(t)",
+      "secondary_name": "I\u2081(t)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious I\u2082(t)",
+      "secondary_name": "I\u2082(t)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered R(t)",
+      "secondary_name": "R(t)",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible S(t)",
+      "target": "Exposed E\u2081(t)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious I\u2081(t)",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection: Susceptible become exposed (enter E\u2081) at rate \u03bb(t)S, with \u03bb(t) proportional to infectious individuals."
+    },
+    {
+      "source": "Exposed E\u2081(t)",
+      "target": "Exposed E\u2082(t)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression through latent period: E\u2081 \u2192 E\u2082 at rate \u03c3."
+    },
+    {
+      "source": "Exposed E\u2082(t)",
+      "target": "Infectious I\u2081(t)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Onset of infectiousness: E\u2082 \u2192 I\u2081 at rate \u03c3."
+    },
+    {
+      "source": "Infectious I\u2081(t)",
+      "target": "Infectious I\u2082(t)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression within infectious period: I\u2081 \u2192 I\u2082 at rate \u03b3."
+    },
+    {
+      "source": "Infectious I\u2082(t)",
+      "target": "Recovered R(t)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery/removal: I\u2082 \u2192 R at rate \u03b3."
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03bb(t)",
+      "type": "EXPRESSION",
+      "value": "\u03b2 * (I\u2081(t) + I\u2082(t))",
+      "unit": "1/day",
+      "description": "Force of infection at time t; proportional to infectious individuals under homogeneous mixing."
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/day",
+      "description": "Transmission rate (rate at which new infections take place given a contact); used in \u03bb(t)."
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/day",
+      "description": "Daily progression rate through exposed/latent stages (E\u2081\u2192E\u2082 and E\u2082\u2192I\u2081). Mean latent/incubation period d_L = 2*(1/\u03c3) days."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/day",
+      "description": "Daily progression rate through infectious stages (I\u2081\u2192I\u2082 and I\u2082\u2192R). Mean infectious period d_I = 2*(1/\u03b3) days."
+    },
+    {
+      "symbol": "p_ICU",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Probability (proportion) of infected individuals who are admitted to ICU/HDU (severity given infection)."
+    },
+    {
+      "symbol": "\u03bc_ICU|E",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "day",
+      "description": "Mean delay from infection/exposure to ICU/HDU admission (used in convolution observational model; Gamma-distributed waiting time)."
+    },
+    {
+      "symbol": "\u03c3\u00b2_ICU|E",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "day^2",
+      "description": "Variance of delay from infection/exposure to ICU/HDU admission (Gamma waiting time)."
+    },
+    {
+      "symbol": "\u03b7",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Negative Binomial dispersion parameter for weekly ICU/HDU admission counts."
+    },
+    {
+      "symbol": "\u03c0",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Initial susceptibility / proportion non-immune at start of season (used for identifiability and to compute effective reproduction number R_n)."
+    },
+    {
+      "symbol": "\u03bb\u2080",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/day",
+      "description": "Initial infection rate / initial force of infection (used in early exponential growth re-parameterization)."
+    },
+    {
+      "symbol": "\u03c8",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/day",
+      "description": "Early exponential growth rate (EGR) parameter used to re-parameterize the transmission model at epidemic start."
+    }
+  ]
+}

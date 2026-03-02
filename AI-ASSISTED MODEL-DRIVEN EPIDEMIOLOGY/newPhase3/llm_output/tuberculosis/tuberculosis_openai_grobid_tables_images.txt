@@ -1,0 +1,107 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="A" type="CONSTANT"
+              description="Recruitment (birth) rate into susceptible population"
+              unit="humans/time"
+              expression="1000"/>
+  <!-- Natural death rate: paper states estimated from life expectancy ~65 years -->
+  <parameters name="μ" type="CONSTANT"
+              description="Natural death rate (applies to all compartments)"
+              unit="1/time"
+              expression="0.015384615384615385"/>
+  <parameters name="β" type="CONSTANT"
+              description="Effective transmission / successful infection rate (mass-action incidence)"
+              unit="1/(time·human)"
+              expression="0.01"/>
+  <parameters name="ε" type="CONSTANT"
+              description="Correction parameter for reinfection term (relative susceptibility of recovered); 0..1"
+              unit="dimensionless"
+              expression="0.5"/>
+  <parameters name="u" type="CONSTANT"
+              description="Vaccination rate moving susceptible to vaccinated"
+              unit="1/time"
+              expression="0.5"/>
+  <parameters name="θ" type="CONSTANT"
+              description="Vaccine waning rate moving vaccinated back to susceptible"
+              unit="1/time"
+              expression="0.067"/>
+  <parameters name="γ" type="CONSTANT"
+              description="Recovery rate moving infected to recovered"
+              unit="1/time"
+              expression="0.5"/>
+  <parameters name="δ" type="CONSTANT"
+              description="Waning natural immunity rate moving recovered back to susceptible"
+              unit="1/time"
+              expression="0.003"/>
+
+  <!-- ===================== -->
+  <!-- Compartments          -->
+  <!-- ===================== -->
+  <compartments PrimaryName="Susceptible" SecondaryName="S" population="0">
+    <!-- Infection: S -> I at rate β*S*I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.2"
+                   description="Primary infection of susceptibles (mass-action β S I)"/>
+    <!-- Vaccination: S -> V at rate u*S -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.4"
+                   target="//@compartments.1"
+                   description="Vaccination of susceptibles (u S)"/>
+  </compartments>
+
+  <compartments PrimaryName="Vaccinated" SecondaryName="V" population="0">
+    <!-- Waning vaccine immunity: V -> S at rate θ*V -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.0"
+                   description="Waning of vaccine-induced protection (θ V)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infected" SecondaryName="I" population="0">
+    <!-- Recovery: I -> R at rate γ*I -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.3"
+                   description="Recovery from infection (γ I)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="R" population="0">
+    <!-- Reinfection: R -> I at rate ε*β*R*I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.2"
+                   description="Reinfection of recovered (ε β R I); ε applied in simulation as multiplier"/>
+    <!-- Loss of natural immunity: R -> S at rate δ*R -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.7"
+                   target="//@compartments.0"
+                   description="Waning natural immunity (δ R)"/>
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Demography (sources/sinks) -->
+  <!-- ===================== -->
+  <birthSources name="Recruitment"
+                rateParameter="//@parameters.0"
+                targetCompartment="//@compartments.0"/>
+
+  <!-- Natural deaths from each compartment at rate μ * compartment -->
+  <deathSinks name="NaturalDeath_S" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_V" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_I" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_R" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
+
+</seir:SEIRModel>
+```

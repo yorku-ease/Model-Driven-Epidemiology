@@ -1,0 +1,306 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Exposed",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Infected",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Quarantined",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Deceased",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Pathogen in Environment",
+      "secondary_name": "",
+      "initial_population": null
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected",
+      "rate_parameter": "\u03b2\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals by contact with infected individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "type": "ContactFlow",
+      "contact_compartment": "Deceased",
+      "rate_parameter": "\u03b2\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals by contact with deceased individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "type": "ContactFlow",
+      "contact_compartment": "Pathogen in Environment",
+      "rate_parameter": "\u03b2\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals by contact with pathogens in the environment."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infected",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression of exposed individuals to the infected class."
+    },
+    {
+      "source": "Infected",
+      "target": "Quarantined",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Quarantining of infected individuals."
+    },
+    {
+      "source": "Infected",
+      "target": "Deceased",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death of infected individuals due to Ebola."
+    },
+    {
+      "source": "Infected",
+      "target": "Pathogen in Environment",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Shedding of virus into the environment by infected individuals."
+    },
+    {
+      "source": "Quarantined",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of quarantined individuals."
+    },
+    {
+      "source": "Quarantined",
+      "target": "Deceased",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death of quarantined individuals due to Ebola."
+    },
+    {
+      "source": "Deceased",
+      "target": "Pathogen in Environment",
+      "type": "RateFlow",
+      "rate_parameter": "\u210f",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Shedding of virus into the environment by deceased individuals."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible",
+      "type": "BirthSource",
+      "rate_parameter": "\u039b",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human_Recruitment"
+    },
+    {
+      "source": "Susceptible",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_S"
+    },
+    {
+      "source": "Exposed",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_E"
+    },
+    {
+      "source": "Infected",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_I"
+    },
+    {
+      "source": "Quarantined",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_Q"
+    },
+    {
+      "source": "Recovered",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_R"
+    },
+    {
+      "source": "Deceased",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "c",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Burial_of_Deceased"
+    },
+    {
+      "source": "Pathogen in Environment",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03c6",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Virus_Decay"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u039b",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Recruitment rate of susceptible individuals"
+    },
+    {
+      "symbol": "\u03b2\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Effective contact rate of infected humans"
+    },
+    {
+      "symbol": "\u03b2\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Effective contact rate of deceased humans"
+    },
+    {
+      "symbol": "\u03b2\u2083",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Effective contact rate of Ebola virus pathogens in the environment"
+    },
+    {
+      "symbol": "\u03b1",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Progression rate from exposed to infected (inferred, necessary for SEIR structure)"
+    },
+    {
+      "symbol": "\u03bc\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Natural death rate of humans"
+    },
+    {
+      "symbol": "\u03b4\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Rate at which infected people are quarantined"
+    },
+    {
+      "symbol": "\u03b3\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Disease-induced death rate of infected individuals (inferred, necessary for I to D transition)"
+    },
+    {
+      "symbol": "\u03b4\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Rate at which quarantined people are recovered"
+    },
+    {
+      "symbol": "\u03b3\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Disease-induced death rate of quarantined individuals"
+    },
+    {
+      "symbol": "\u03c3\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Rate at which infected humans shed virus into the environment"
+    },
+    {
+      "symbol": "\u210f",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Shedding rate of virus from deceased people into the environment"
+    },
+    {
+      "symbol": "c",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Burial rate of deceased people (removal from infectious deceased class)"
+    },
+    {
+      "symbol": "\u03c6",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "",
+      "description": "Decay rate of EVD in the environment"
+    }
+  ]
+}

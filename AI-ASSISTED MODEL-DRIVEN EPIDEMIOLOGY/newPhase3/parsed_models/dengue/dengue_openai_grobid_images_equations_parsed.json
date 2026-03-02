@@ -1,0 +1,40 @@
+{
+  "compartments": [
+    {"name": "Susceptible Human (age-structured) Sh(a,t)", "secondary_name": "Human (age-structured) Sh(a,t)", "initial_population": 0},
+    {"name": "Exposed Human (age-structured) Eh(a,t)", "secondary_name": "Human (age-structured) Eh(a,t)", "initial_population": 0},
+    {"name": "Infectious Human symptomatic (age-structured) Ih(a,t)", "secondary_name": "Human symptomatic (age-structured) Ih(a,t)", "initial_population": 0},
+    {"name": "Infectious Human asymptomatic (age-structured) Ah(a,t)", "secondary_name": "Human asymptomatic (age-structured) Ah(a,t)", "initial_population": 0},
+    {"name": "Recovered Human (age-structured) Rh(a,t)", "secondary_name": "Human (age-structured) Rh(a,t)", "initial_population": 0},
+    {"name": "Infectious Mosquitoes Vector Iv(t)", "secondary_name": "Vector Iv(t)", "initial_population": 0}
+  ],
+  "parameters": [
+    {"symbol": "a", "type": "VARIABLE", "value": null, "unit": "time", "description": "Host chronological age (structuring variable)"},
+    {"symbol": "t", "type": "VARIABLE", "value": null, "unit": "time", "description": "Time"},
+    {"symbol": "B", "type": "CONSTANT", "value": null, "unit": "hosts/time", "description": "Influx (recruitment/birth) rate into susceptible human hosts"},
+    {"symbol": "μh", "type": "CONSTANT", "value": null, "unit": "1/time", "description": "Natural death rate of human hosts"},
+    {"symbol": "μv", "type": "CONSTANT", "value": null, "unit": "1/time", "description": "Natural death rate of mosquitoes"},
+    {"symbol": "βh(a)", "type": "EXPRESSION", "value": null, "unit": "1/time", "description": "Age-dependent transmission rate from infectious mosquitoes to susceptible humans"},
+    {"symbol": "βv(a)", "type": "EXPRESSION", "value": null, "unit": "1/time", "description": "Age-dependent transmission rate from infectious humans to susceptible mosquitoes"},
+    {"symbol": "k(a)", "type": "EXPRESSION", "value": null, "unit": "1/time", "description": "Age-dependent progression rate from exposed humans to infectious humans"},
+    {"symbol": "ρ", "type": "CONSTANT", "value": null, "unit": "dimensionless", "description": "Probability an exposed human becomes symptomatic infectious"},
+    {"symbol": "σ", "type": "CONSTANT", "value": null, "unit": "dimensionless", "description": "Reinfection intensity factor for asymptomatic humans"},
+    {"symbol": "γ1(a)", "type": "EXPRESSION", "value": null, "unit": "1/time", "description": "Age-specific recovery rate of symptomatic infectious humans"},
+    {"symbol": "γ2(a)", "type": "EXPRESSION", "value": null, "unit": "1/time", "description": "Age-specific recovery rate of asymptomatic infectious humans"},
+    {"symbol": "Nh(t)", "type": "EXPRESSION", "value": null, "unit": "hosts", "description": "Total human population size at time t"}
+  ],
+  "flows": [
+    {"source": "__external__", "target": "Susceptible Human (age-structured) Sh(a,t)", "type": "BirthSource", "rate_parameter": "B", "rate_value": null, "rate_unit": null, "description": "HumanRecruitment"},
+    {"source": "Susceptible Human (age-structured) Sh(a,t)", "target": "Exposed Human (age-structured) Eh(a,t)", "type": "ContactFlow", "rate_parameter": "βh(a)", "rate_value": null, "rate_unit": null, "contact_compartment": "Infectious Mosquitoes Vector Iv(t)", "description": "Primary infection of susceptible humans by infectious mosquitoes"},
+    {"source": "Exposed Human (age-structured) Eh(a,t)", "target": "Infectious Human symptomatic (age-structured) Ih(a,t)", "type": "RateFlow", "rate_parameter": "k(a)", "rate_value": null, "rate_unit": null, "description": "Progression from exposed to symptomatic infectious humans"},
+    {"source": "Exposed Human (age-structured) Eh(a,t)", "target": "Infectious Human asymptomatic (age-structured) Ah(a,t)", "type": "RateFlow", "rate_parameter": "k(a)", "rate_value": null, "rate_unit": null, "description": "Progression from exposed to asymptomatic infectious humans"},
+    {"source": "Infectious Human symptomatic (age-structured) Ih(a,t)", "target": "Recovered Human (age-structured) Rh(a,t)", "type": "RateFlow", "rate_parameter": "γ1(a)", "rate_value": null, "rate_unit": null, "description": "Recovery of symptomatic infectious humans"},
+    {"source": "Infectious Human asymptomatic (age-structured) Ah(a,t)", "target": "Infectious Human symptomatic (age-structured) Ih(a,t)", "type": "ContactFlow", "rate_parameter": "βh(a)", "rate_value": null, "rate_unit": null, "contact_compartment": "Infectious Mosquitoes Vector Iv(t)", "description": "Secondary infection (reinfection) of asymptomatic humans leading to symptomatic infection"},
+    {"source": "Infectious Human asymptomatic (age-structured) Ah(a,t)", "target": "Recovered Human (age-structured) Rh(a,t)", "type": "RateFlow", "rate_parameter": "γ2(a)", "rate_value": null, "rate_unit": null, "description": "Recovery of asymptomatic infectious humans"},
+    {"source": "Susceptible Human (age-structured) Sh(a,t)", "target": "__dead__", "type": "DeathSink", "rate_parameter": "μh", "rate_value": null, "rate_unit": null, "description": "Natural Death Sh"},
+    {"source": "Exposed Human (age-structured) Eh(a,t)", "target": "__dead__", "type": "DeathSink", "rate_parameter": "μh", "rate_value": null, "rate_unit": null, "description": "Natural Death Eh"},
+    {"source": "Infectious Human symptomatic (age-structured) Ih(a,t)", "target": "__dead__", "type": "DeathSink", "rate_parameter": "μh", "rate_value": null, "rate_unit": null, "description": "Natural Death Ih"},
+    {"source": "Infectious Human asymptomatic (age-structured) Ah(a,t)", "target": "__dead__", "type": "DeathSink", "rate_parameter": "μh", "rate_value": null, "rate_unit": null, "description": "Natural Death Ah"},
+    {"source": "Recovered Human (age-structured) Rh(a,t)", "target": "__dead__", "type": "DeathSink", "rate_parameter": "μh", "rate_value": null, "rate_unit": null, "description": "Natural Death Rh"},
+    {"source": "Infectious Mosquitoes Vector Iv(t)", "target": "__dead__", "type": "DeathSink", "rate_parameter": "μv", "rate_value": null, "rate_unit": null, "description": "Natural Death Iv"}
+  ]
+}

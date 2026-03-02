@@ -50,12 +50,15 @@ class CamelotTableExtractor:
         text = re.sub(r"\n\s*\n", "\n\n", text)
         return text.strip()
 
-    def extract_tables(self, pdf_path: str) -> List[Dict[str, Any]]:
+    def extract_tables(
+        self, pdf_path: str, apply_filter: bool = True
+    ) -> List[Dict[str, Any]]:
         """
         Extract tables from PDF using Camelot (stream and lattice modes).
 
         Args:
             pdf_path: Path to PDF file
+            apply_filter: If False, skip validation filter and return all tables
 
         Returns:
             List of extracted tables with metadata
@@ -69,16 +72,18 @@ class CamelotTableExtractor:
         for i, table in enumerate(stream_tables):
             df = table.df
 
-            if self._is_valid_camelot_df(df):
-                tables.append(
-                    {
-                        "source": "camelot-stream",
-                        "table_index": i + 1,
-                        "page": table.page,
-                        "shape": df.shape,
-                        "data": df.values.tolist(),
-                    }
-                )
+            if apply_filter and not self._is_valid_camelot_df(df):
+                continue
+
+            tables.append(
+                {
+                    "source": "camelot-stream",
+                    "table_index": i + 1,
+                    "page": table.page,
+                    "shape": df.shape,
+                    "data": df.values.tolist(),
+                }
+            )
 
         try:
             lattice_tables = camelot.read_pdf(pdf_path, pages="all", flavor="lattice")
@@ -86,16 +91,18 @@ class CamelotTableExtractor:
             for i, table in enumerate(lattice_tables):
                 df = table.df
 
-                if self._is_valid_camelot_df(df):
-                    tables.append(
-                        {
-                            "source": "camelot-lattice",
-                            "table_index": i + 1,
-                            "page": table.page,
-                            "shape": df.shape,
-                            "data": df.values.tolist(),
-                        }
-                    )
+                if apply_filter and not self._is_valid_camelot_df(df):
+                    continue
+
+                tables.append(
+                    {
+                        "source": "camelot-lattice",
+                        "table_index": i + 1,
+                        "page": table.page,
+                        "shape": df.shape,
+                        "data": df.values.tolist(),
+                    }
+                )
         except Exception:
             pass
 

@@ -1,0 +1,250 @@
+{
+  "meta": {
+    "disease": "tuberculosis",
+    "case_id": "tuberculosis_gemini_everything",
+    "provider": "gemini",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:26:18.923898+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.9091,
+      "recall": 1.0,
+      "f1": 0.9524,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.4444,
+      "recall": 0.4444,
+      "f1": 0.4444,
+      "weight": 0.15
+    },
+    "composite": 0.7548
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 4,
+      "extracted_total": 8,
+      "tp": 4,
+      "fp": 4,
+      "fn": 0
+    },
+    "flows": {
+      "gold_total": 10,
+      "extracted_total": 11,
+      "tp": 10,
+      "fp": 1,
+      "fn": 0
+    },
+    "parameters": {
+      "gold_total": 9,
+      "extracted_total": 9,
+      "tp": 4,
+      "fp": 5,
+      "fn": 5
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible",
+        "extracted": "Susceptible",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Vaccinated",
+        "extracted": "Vaccinated",
+        "score": 1.0
+      },
+      {
+        "gold": "Infected",
+        "extracted": "Infectious",
+        "score": 0.8296633362770081
+      },
+      {
+        "gold": "Recovered",
+        "extracted": "Recovered",
+        "score": 1.0
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Susceptible->Infected",
+        "extracted": "Susceptible->Infectious",
+        "score": 0.9430539608001709
+      },
+      {
+        "gold": "Susceptible->Vaccinated",
+        "extracted": "Susceptible->Vaccinated",
+        "score": 1.000000238418579
+      },
+      {
+        "gold": "Vaccinated->Susceptible",
+        "extracted": "Vaccinated->Susceptible",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Infected->Recovered",
+        "extracted": "Infectious->Recovered",
+        "score": 0.8915942907333374
+      },
+      {
+        "gold": "Recovered->Infected",
+        "extracted": "Recovered->Infectious",
+        "score": 0.9048277139663696
+      },
+      {
+        "gold": "Recovered->Susceptible",
+        "extracted": "Recovered->Susceptible",
+        "score": 1.0000004768371582
+      },
+      {
+        "gold": "Susceptible->__dead__",
+        "extracted": "Susceptible->__dead__",
+        "score": 1.0
+      },
+      {
+        "gold": "Vaccinated->__dead__",
+        "extracted": "Vaccinated->__dead__",
+        "score": 1.000000238418579
+      },
+      {
+        "gold": "Infected->__dead__",
+        "extracted": "Infectious->__dead__",
+        "score": 0.8990072011947632
+      },
+      {
+        "gold": "Recovered->__dead__",
+        "extracted": "Recovered->__dead__",
+        "score": 0.9999999403953552
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "\u03bc Natural death rate",
+        "extracted": "\u03bc Natural death rate",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "\u03c0 Infection rate/probability of successful infection (S\u2192I term)",
+        "extracted": "\u03b2 Probability of successful infection rate",
+        "score": 0.7371967434883118
+      },
+      {
+        "gold": "\u03b4 Vaccine waning rate (V\u2192S)",
+        "extracted": "\u03b8 Vaccine wane rate",
+        "score": 0.7998664379119873
+      },
+      {
+        "gold": "\u03b3 Recovery rate (I\u2192R)",
+        "extracted": "\u03b3 Recovery rate",
+        "score": 0.9333148002624512
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [],
+    "flows": [
+      "Susceptible -> Infectious",
+      "Susceptible -> Vaccinated",
+      "Vaccinated -> Susceptible",
+      "Infectious -> Recovered",
+      "Recovered -> Infectious",
+      "Recovered -> Susceptible",
+      "__external__ -> Susceptible",
+      "Susceptible -> __dead__",
+      "Vaccinated -> __dead__",
+      "Infectious -> __dead__",
+      "Recovered -> __dead__"
+    ],
+    "parameters": [
+      "A Recruitment rate of human",
+      "\u03b5 Correction parameter for reinfection term",
+      "u Rate of vaccination",
+      "\u03b4 Drop out rate due to waning immunity",
+      "\u03b5\u03b2_reinfection Rate of reinfection for recovered individuals"
+    ]
+  },
+  "false_negatives": {
+    "compartments": [],
+    "flows": [
+      "Susceptible -> Infected",
+      "Susceptible -> Vaccinated",
+      "Vaccinated -> Susceptible",
+      "Infected -> Recovered",
+      "Recovered -> Infected",
+      "Recovered -> Susceptible",
+      "Susceptible -> __dead__",
+      "Vaccinated -> __dead__",
+      "Infected -> __dead__",
+      "Recovered -> __dead__"
+    ],
+    "parameters": [
+      "\u03b7 Immunity waning rate (R\u2192S)",
+      "\u03b8 Vaccination rate (S\u2192V)",
+      "\u03b1 Reinfection correction parameter (range: 0 to 1)",
+      "\u039b Recruitment rate into susceptible",
+      "\u03b1*\u03c0 Reinfection rate multiplier (\u03b1 in [0,1])"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "GOOD",
+    "composite_score": 0.7548,
+    "entity_verdicts": {
+      "compartments": "moderate",
+      "flows": "excellent",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 0 compartment(s), 10 flow(s), 5 parameter(s) from gold standard.",
+      "Hallucinated 0 compartment(s), 11 flow(s), 5 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_flows": [
+        "Susceptible -> Infected",
+        "Susceptible -> Vaccinated",
+        "Vaccinated -> Susceptible",
+        "Infected -> Recovered",
+        "Recovered -> Infected"
+      ],
+      "missed_flows_total": 10,
+      "missed_parameters": [
+        "\u03b7 Immunity waning rate (R\u2192S)",
+        "\u03b8 Vaccination rate (S\u2192V)",
+        "\u03b1 Reinfection correction parameter (range: 0 to 1)",
+        "\u039b Recruitment rate into susceptible",
+        "\u03b1*\u03c0 Reinfection rate multiplier (\u03b1 in [0,1])"
+      ],
+      "hallucinated_flows": [
+        "Susceptible -> Infectious",
+        "Susceptible -> Vaccinated",
+        "Vaccinated -> Susceptible",
+        "Infectious -> Recovered",
+        "Recovered -> Infectious"
+      ],
+      "hallucinated_flows_total": 11,
+      "hallucinated_parameters": [
+        "A Recruitment rate of human",
+        "\u03b5 Correction parameter for reinfection term",
+        "u Rate of vaccination",
+        "\u03b4 Drop out rate due to waning immunity",
+        "\u03b5\u03b2_reinfection Rate of reinfection for recovered individuals"
+      ]
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

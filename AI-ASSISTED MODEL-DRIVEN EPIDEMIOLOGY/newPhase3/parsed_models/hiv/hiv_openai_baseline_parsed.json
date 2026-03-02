@@ -1,0 +1,385 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Homosexual Men",
+      "secondary_name": "Homosexual Men",
+      "initial_population": 2446.0
+    },
+    {
+      "name": "Infected Homosexual Men (Untreated)",
+      "secondary_name": "Homosexual Men (Untreated)",
+      "initial_population": 7.0
+    },
+    {
+      "name": "Susceptible Women",
+      "secondary_name": "Women",
+      "initial_population": 189994.0
+    },
+    {
+      "name": "Infected Women (Untreated)",
+      "secondary_name": "Women (Untreated)",
+      "initial_population": 6.0
+    },
+    {
+      "name": "Susceptible Heterosexual Men",
+      "secondary_name": "Heterosexual Men",
+      "initial_population": 171173.0
+    },
+    {
+      "name": "Infected Heterosexual Men (Untreated)",
+      "secondary_name": "Heterosexual Men (Untreated)",
+      "initial_population": 2.0
+    },
+    {
+      "name": "Treated With ART",
+      "secondary_name": "With ART",
+      "initial_population": 107.0
+    },
+    {
+      "name": "AIDS People living with AIDS",
+      "secondary_name": "People living with AIDS",
+      "initial_population": 47.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Homosexual Men",
+      "target": "Infected Homosexual Men (Untreated)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Homosexual Men (Untreated)",
+      "rate_parameter": "b_h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Homosexual transmission: Susceptible homosexual men infected by untreated infected homosexual men (uses b_h; partner rate c_h described in paper as part of force of infection)."
+    },
+    {
+      "source": "Susceptible Homosexual Men",
+      "target": "Infected Homosexual Men (Untreated)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Heterosexual Men (Untreated)",
+      "rate_parameter": "b_hm",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Bisexual transmission: Susceptible homosexual men infected by untreated infected heterosexual men (uses b_hm; partner rate c_hm described in paper as part of force of infection)."
+    },
+    {
+      "source": "Infected Homosexual Men (Untreated)",
+      "target": "Treated With ART",
+      "type": "RateFlow",
+      "rate_parameter": "b_s",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Enrollment into ART / departure from untreated infected: I_h \u2192 T at rate a."
+    },
+    {
+      "source": "Susceptible Women",
+      "target": "Infected Women (Untreated)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Heterosexual Men (Untreated)",
+      "rate_parameter": "b_s",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Heterosexual transmission: Susceptible women infected by untreated infected heterosexual men (uses b_s; partner rate c_s described in paper as part of force of infection)."
+    },
+    {
+      "source": "Susceptible Women",
+      "target": "Infected Women (Untreated)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Homosexual Men (Untreated)",
+      "rate_parameter": "b_hw",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Transmission from homosexual men to women: S_w infected by untreated infected homosexual men (uses b_hw; partner rate c_hw described in paper as part of force of infection)."
+    },
+    {
+      "source": "Infected Women (Untreated)",
+      "target": "Treated With ART",
+      "type": "RateFlow",
+      "rate_parameter": "b_s",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Enrollment into ART / departure from untreated infected: I_w \u2192 T at rate a."
+    },
+    {
+      "source": "Susceptible Heterosexual Men",
+      "target": "Infected Heterosexual Men (Untreated)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Women (Untreated)",
+      "rate_parameter": "b_s",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Heterosexual transmission: Susceptible heterosexual men infected by untreated infected women (uses b_s; partner rate c_s described in paper as part of force of infection)."
+    },
+    {
+      "source": "Susceptible Heterosexual Men",
+      "target": "Infected Heterosexual Men (Untreated)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Homosexual Men (Untreated)",
+      "rate_parameter": "b_hm",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Bisexual transmission: Susceptible heterosexual men infected by untreated infected homosexual men (uses b_hm; partner rate c_hm described in paper as part of force of infection)."
+    },
+    {
+      "source": "Infected Heterosexual Men (Untreated)",
+      "target": "Treated With ART",
+      "type": "RateFlow",
+      "rate_parameter": "b_s",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Enrollment into ART / departure from untreated infected: I_m \u2192 T at rate a."
+    },
+    {
+      "source": "Treated With ART",
+      "target": "AIDS People living with AIDS",
+      "type": "RateFlow",
+      "rate_parameter": "a",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "AIDS development in treated individuals due to ART resistance/treatment failure: T \u2192 A at rate d."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Homosexual Men",
+      "type": "BirthSource",
+      "rate_parameter": "C_hom_rec",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_HomosexualMen"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Women",
+      "type": "BirthSource",
+      "rate_parameter": "C_w_rec",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_Women"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Heterosexual Men",
+      "type": "BirthSource",
+      "rate_parameter": "C_hetm_rec",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment_HeterosexualMen"
+    },
+    {
+      "source": "Susceptible Homosexual Men",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Susceptible_HomosexualMen"
+    },
+    {
+      "source": "Infected Homosexual Men (Untreated)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Infected_HomosexualMen"
+    },
+    {
+      "source": "Susceptible Women",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Susceptible_Women"
+    },
+    {
+      "source": "Infected Women (Untreated)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Infected_Women"
+    },
+    {
+      "source": "Susceptible Heterosexual Men",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Susceptible_HeterosexualMen"
+    },
+    {
+      "source": "Infected Heterosexual Men (Untreated)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Infected_HeterosexualMen"
+    },
+    {
+      "source": "Treated With ART",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_Treated_ART"
+    },
+    {
+      "source": "AIDS People living with AIDS",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bb",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_AIDS"
+    },
+    {
+      "source": "AIDS People living with AIDS",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "AIDS_InducedDeath"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "C",
+      "type": "CONSTANT",
+      "value": 333.0,
+      "unit": "individuals/year",
+      "description": "Constant recruitment into susceptible population (total recruitment, allocated across susceptible strata via h and c)"
+    },
+    {
+      "symbol": "h",
+      "type": "CONSTANT",
+      "value": 0.48,
+      "unit": "dimensionless",
+      "description": "Proportion of men in recruitment; used to split recruitment between men and women"
+    },
+    {
+      "symbol": "c",
+      "type": "CONSTANT",
+      "value": 0.92,
+      "unit": "dimensionless",
+      "description": "Proportion of heterosexual men among men in recruitment; used to split recruitment between homosexual men and heterosexual men"
+    },
+    {
+      "symbol": "p",
+      "type": "CONSTANT",
+      "value": 0.9,
+      "unit": "dimensionless",
+      "description": "Proportion of initially treated individuals (initial condition parameter)"
+    },
+    {
+      "symbol": "\u03bb",
+      "type": "CONSTANT",
+      "value": 0.0129,
+      "unit": "1/year",
+      "description": "Natural mortality rate (applies to all compartments)"
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": 0.3333,
+      "unit": "1/year",
+      "description": "AIDS-induced mortality rate (applies to AIDS compartment)"
+    },
+    {
+      "symbol": "d",
+      "type": "CONSTANT",
+      "value": 0.018,
+      "unit": "1/year",
+      "description": "AIDS development rate in treated individuals due to ART resistance or treatment failure (T \u2192 A)"
+    },
+    {
+      "symbol": "a",
+      "type": "CONSTANT",
+      "value": 0.3333,
+      "unit": "1/year",
+      "description": "Departure rate from all compartments of infected individuals (progression from untreated infected to treated: I_* \u2192 T); identified as most sensitive parameter"
+    },
+    {
+      "symbol": "b_s",
+      "type": "CONSTANT",
+      "value": 0.02,
+      "unit": "dimensionless",
+      "description": "Probability of sexual transmission for heterosexual contact (men-women)"
+    },
+    {
+      "symbol": "b_h",
+      "type": "CONSTANT",
+      "value": 0.44,
+      "unit": "dimensionless",
+      "description": "Probability of sexual transmission for exclusive homosexual contact among homosexual men"
+    },
+    {
+      "symbol": "b_hw",
+      "type": "CONSTANT",
+      "value": 0.018,
+      "unit": "dimensionless",
+      "description": "Probability of sexual transmission for contact between homosexual men and women"
+    },
+    {
+      "symbol": "b_hm",
+      "type": "CONSTANT",
+      "value": 0.25,
+      "unit": "dimensionless",
+      "description": "Probability of sexual transmission for contact between homosexual men and heterosexual men (bisexual contact)"
+    },
+    {
+      "symbol": "c_s",
+      "type": "CONSTANT",
+      "value": 4.0,
+      "unit": "1/year",
+      "description": "Rate of number of sexual partners for heterosexual contact"
+    },
+    {
+      "symbol": "c_h",
+      "type": "CONSTANT",
+      "value": 7.0,
+      "unit": "1/year",
+      "description": "Rate of number of sexual partners for exclusive homosexual contact among homosexual men"
+    },
+    {
+      "symbol": "c_hw",
+      "type": "CONSTANT",
+      "value": 2.0,
+      "unit": "1/year",
+      "description": "Rate of number of sexual partners for contact between homosexual men and women"
+    },
+    {
+      "symbol": "c_hm",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "1/year",
+      "description": "Rate of number of sexual partners for contact between homosexual men and heterosexual men"
+    },
+    {
+      "symbol": "C_hom_rec",
+      "type": "EXPRESSION",
+      "value": "C*h*(1-c)",
+      "unit": "individuals/year",
+      "description": "Recruitment into susceptible homosexual men: C h (1-c)"
+    },
+    {
+      "symbol": "C_w_rec",
+      "type": "EXPRESSION",
+      "value": "C*(1-h)",
+      "unit": "individuals/year",
+      "description": "Recruitment into susceptible women: C (1-h)"
+    },
+    {
+      "symbol": "C_hetm_rec",
+      "type": "EXPRESSION",
+      "value": "C*h*c",
+      "unit": "individuals/year",
+      "description": "Recruitment into susceptible heterosexual men: C h c"
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Eggs Vectors",
+      "secondary_name": "Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Larvae Vectors",
+      "secondary_name": "Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Pupae Vectors",
+      "secondary_name": "Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Susceptible Adult Female Vectors",
+      "secondary_name": "Adult Female Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Adult Female Vectors",
+      "secondary_name": "Adult Female Vectors",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Adult Female Vectors",
+      "secondary_name": "Adult Female Vectors",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Adult Female Vectors",
+      "rate_parameter": "\u03b2\u1d65\u2192\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Susceptible humans become exposed due to contact (bites) with infectious adult female vectors"
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Infectious Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Exposed humans progress to infectious humans (end of human incubation period)"
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Recovered Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infectious humans recover and move to recovered humans"
+    },
+    {
+      "source": "Eggs Vectors",
+      "target": "Larvae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Eggs develop into larvae"
+    },
+    {
+      "source": "Larvae Vectors",
+      "target": "Pupae Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Larvae develop into pupae"
+    },
+    {
+      "source": "Pupae Vectors",
+      "target": "Susceptible Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Pupae emerge into susceptible adult female vectors"
+    },
+    {
+      "source": "Susceptible Adult Female Vectors",
+      "target": "Exposed Adult Female Vectors",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Humans",
+      "rate_parameter": "\u03b2\u2095\u2192\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Susceptible adult female vectors become exposed due to biting infectious humans"
+    },
+    {
+      "source": "Exposed Adult Female Vectors",
+      "target": "Infectious Adult Female Vectors",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Exposed adult female vectors progress to infectious vectors (end of vector incubation period)"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Humans",
+      "type": "BirthSource",
+      "rate_parameter": "B\u2095(t)",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Human_Recruitment_Logistic"
+    },
+    {
+      "source": "__external__",
+      "target": "Eggs Vectors",
+      "type": "BirthSource",
+      "rate_parameter": "\u03b8\u2091",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Vector_Oviposition"
+    },
+    {
+      "source": "Susceptible Adult Female Vectors",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Adult_Vector_Death_Sv"
+    },
+    {
+      "source": "Exposed Adult Female Vectors",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Adult_Vector_Death_Ev"
+    },
+    {
+      "source": "Infectious Adult Female Vectors",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Adult_Vector_Death_Iv"
+    },
+    {
+      "source": "Eggs Vectors",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2091",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Egg_Death"
+    },
+    {
+      "source": "Larvae Vectors",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_L",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Larva_Death"
+    },
+    {
+      "source": "Pupae Vectors",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc_P",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Pupa_Death"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "K\u2095",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "persons",
+      "description": "Human carrying capacity for logistic growth (carrying capacity of human population)"
+    },
+    {
+      "symbol": "a",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "bites/(mosquito\u00b7day)",
+      "description": "Mosquito biting rate (bites per mosquito per unit time); intervention can reduce this"
+    },
+    {
+      "symbol": "\u03b2\u1d65\u2192\u2095",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Transmission coefficient from infectious vectors to susceptible humans per bite (vector-to-human)"
+    },
+    {
+      "symbol": "\u03b2\u2095\u2192\u1d65",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Transmission coefficient from infectious humans to susceptible vectors per bite (human-to-vector)"
+    },
+    {
+      "symbol": "\u03c3\u2095",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Human incubation progression rate (E\u2095 \u2192 I\u2095); inverse of human incubation period"
+    },
+    {
+      "symbol": "\u03b3\u2095",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Human recovery rate (I\u2095 \u2192 R\u2095); inverse of average human recovery time"
+    },
+    {
+      "symbol": "\u03c3\u1d65",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Adult vector incubation progression rate (E\u1d65 \u2192 I\u1d65); inverse of vector incubation period"
+    },
+    {
+      "symbol": "\u03bc\u1d65",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Adult female vector mortality rate; intervention can increase this"
+    },
+    {
+      "symbol": "\u03b8\u2091",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "eggs/day",
+      "description": "Egg production / oviposition input rate into egg stage (vector demography)"
+    },
+    {
+      "symbol": "\u03c4\u2081",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Egg-to-larva development rate (V1 eggs \u2192 V2 larvae)"
+    },
+    {
+      "symbol": "\u03c4\u2082",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Larva-to-pupa development rate (V2 larvae \u2192 V3 pupae)"
+    },
+    {
+      "symbol": "\u03c4\u2083",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Pupa-to-adult emergence rate (V3 pupae \u2192 S\u1d65 susceptible adult females)"
+    },
+    {
+      "symbol": "K_L",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "larvae",
+      "description": "Larval carrying capacity (environmental); containment strategy can reduce this"
+    },
+    {
+      "symbol": "\u03bc\u2091",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Egg mortality rate"
+    },
+    {
+      "symbol": "\u03bc_L",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Larval mortality rate (may include density dependence via K_L)"
+    },
+    {
+      "symbol": "\u03bc_P",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/day",
+      "description": "Pupal mortality rate"
+    },
+    {
+      "symbol": "B\u2095(t)",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "persons/day",
+      "description": "Net human recruitment/birth inflow term consistent with logistic growth toward K\u2095 (functional form not provided in extracted text)"
+    }
+  ]
+}

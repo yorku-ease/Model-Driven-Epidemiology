@@ -1,0 +1,308 @@
+{
+  "meta": {
+    "disease": "zika",
+    "case_id": "zika_openai_grobid_tables_images",
+    "provider": "openai",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:25:14.495155+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.2143,
+      "recall": 0.1579,
+      "f1": 0.1818,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.4444,
+      "recall": 0.6316,
+      "f1": 0.5217,
+      "weight": 0.15
+    },
+    "composite": 0.1555
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 10,
+      "extracted_total": 20,
+      "tp": 0,
+      "fp": 20,
+      "fn": 10
+    },
+    "flows": {
+      "gold_total": 19,
+      "extracted_total": 14,
+      "tp": 3,
+      "fp": 11,
+      "fn": 16
+    },
+    "parameters": {
+      "gold_total": 19,
+      "extracted_total": 27,
+      "tp": 12,
+      "fp": 15,
+      "fn": 7
+    }
+  },
+  "matches": {
+    "compartments": [],
+    "flows": [
+      {
+        "gold": "Eggs->__dead__",
+        "extracted": "V1 Egg->__dead__",
+        "score": 0.7872511744499207
+      },
+      {
+        "gold": "Larvae->__dead__",
+        "extracted": "V2 Larva->__dead__",
+        "score": 0.7210768461227417
+      },
+      {
+        "gold": "Pupae->__dead__",
+        "extracted": "V3 Pupa->__dead__",
+        "score": 0.7537142038345337
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "b Average biting rate / infectious bites delivered per vector per day (human exposure term)",
+        "extracted": "a Average biting rate per female mosquito per day (paper: typically 0.3\u20130.5/day; used implicitly in force of infection)",
+        "score": 0.7812262773513794
+      },
+      {
+        "gold": "1/\u03c4_h Inverse incubation time in humans",
+        "extracted": "\u03c4_H_inc Human incubation time (Table 2 baseline)",
+        "score": 0.8054646253585815
+      },
+      {
+        "gold": "\u03b3_h Human recovery rate",
+        "extracted": "\u03b3_H Human recovery rate I_H\u2192R_H",
+        "score": 0.9534574747085571
+      },
+      {
+        "gold": "1/\u03c41_v Egg development rate",
+        "extracted": "\u03b4_E Egg development rate V1\u2192V2",
+        "score": 0.779742956161499
+      },
+      {
+        "gold": "1/\u03c42_v Larval development rate",
+        "extracted": "\u03b4_L Larval development rate V2\u2192V3",
+        "score": 0.7860950231552124
+      },
+      {
+        "gold": "b_v Biting/exposure term for vectors becoming infected from infectious humans",
+        "extracted": "\u03bb_V Force of infection on vectors from infectious humans (bite-mediated; diluted by alternative hosts)",
+        "score": 0.745239794254303
+      },
+      {
+        "gold": "1/\u03c4_v Inverse incubation time in vectors",
+        "extracted": "\u03c4_V_inc Vector incubation time (Table 2 baseline)",
+        "score": 0.7679854035377502
+      },
+      {
+        "gold": "r_h Human population growth rate (logistic)",
+        "extracted": "r_H Human population logistic growth rate (Table 2)",
+        "score": 0.9555701017379761
+      },
+      {
+        "gold": "f Eggs laid per female mosquito per unit time",
+        "extracted": "\u03b7 Number of eggs laid per female mosquito per day (Table 1)",
+        "score": 0.8436272740364075
+      },
+      {
+        "gold": "\u03bc1_v Egg mortality rate",
+        "extracted": "\u03bc_E Egg mortality rate (Table 1)",
+        "score": 0.8477003574371338
+      },
+      {
+        "gold": "\u03bc2_v Larval base mortality rate",
+        "extracted": "\u03bc_L Larval baseline mortality rate (Table 1)",
+        "score": 0.8214819431304932
+      },
+      {
+        "gold": "\u03bc3_v Pupal mortality rate",
+        "extracted": "\u03bc_P Pupal mortality rate (Table 1)",
+        "score": 0.8448659181594849
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [
+      "S Human",
+      "E Human",
+      "I Human",
+      "R Human",
+      "V1 Egg",
+      "V2 Larva",
+      "V3 Pupa",
+      "S VectorAdultFemale",
+      "E VectorAdultFemale",
+      "I VectorAdultFemale",
+      "S Human",
+      "E Human",
+      "I Human",
+      "R Human",
+      "V1 Egg",
+      "V2 Larva",
+      "V3 Pupa",
+      "S VectorAdultFemale",
+      "E VectorAdultFemale",
+      "I VectorAdultFemale"
+    ],
+    "flows": [
+      "S Human -> E Human",
+      "E Human -> I Human",
+      "I Human -> R Human",
+      "V1 Egg -> V2 Larva",
+      "V2 Larva -> V3 Pupa",
+      "V3 Pupa -> S VectorAdultFemale",
+      "S VectorAdultFemale -> E VectorAdultFemale",
+      "E VectorAdultFemale -> I VectorAdultFemale",
+      "V1 Egg -> __dead__",
+      "V2 Larva -> __dead__",
+      "V3 Pupa -> __dead__",
+      "S VectorAdultFemale -> __dead__",
+      "E VectorAdultFemale -> __dead__",
+      "I VectorAdultFemale -> __dead__"
+    ],
+    "parameters": [
+      "b Transmission probability per bite (percentage of bites that transmit ZIKV)",
+      "H_alt Number of alternative hosts besides humans in the environment (Table 2: Rio de Janeiro State)",
+      "K_H Human carrying capacity (Table 2: Rio de Janeiro State)",
+      "K_L Larvae carrying capacity (Table 2: Rio de Janeiro State)",
+      "c_K Larvae mortality scaling due to limited carrying capacity (Table 2)",
+      "\u03c3_H Human incubation/progression rate E_H\u2192I_H",
+      "\u03c4_H_rec Human recovery time (Table 2 baseline)",
+      "\u03c3_V Vector incubation/progression rate E_V\u2192I_V",
+      "p_f Female adult percentage (Table 1)",
+      "\u03c4_E_dev Egg development time (Table 1)",
+      "\u03c4_L_dev Larval development time (Table 1)",
+      "\u03c4_P_dev Pupal development time (Table 1)",
+      "\u03b4_P Pupal development rate V3\u2192S_V (adult emergence)",
+      "\u03bc_V Adult mosquito mortality rate (Table 1)",
+      "\u03bb_H Force of infection on humans from infectious vectors (bite-mediated; diluted by alternative hosts)"
+    ]
+  },
+  "false_negatives": {
+    "compartments": [
+      "Susceptible humans",
+      "Exposed humans",
+      "Infectious humans",
+      "Recovered humans",
+      "Eggs",
+      "Larvae",
+      "Pupae",
+      "Susceptible female adults",
+      "Exposed female adults",
+      "Infectious female adults"
+    ],
+    "flows": [
+      "Susceptible humans -> Exposed humans",
+      "Exposed humans -> Infectious humans",
+      "Infectious humans -> Recovered humans",
+      "Eggs -> Larvae",
+      "Larvae -> Pupae",
+      "Pupae -> Susceptible female adults",
+      "Susceptible female adults -> Exposed female adults",
+      "Exposed female adults -> Infectious female adults",
+      "Susceptible humans -> __dead__",
+      "Exposed humans -> __dead__",
+      "Infectious humans -> __dead__",
+      "Recovered humans -> __dead__",
+      "Eggs -> __dead__",
+      "Larvae -> __dead__",
+      "Larvae -> __dead__",
+      "Pupae -> __dead__",
+      "Susceptible female adults -> __dead__",
+      "Exposed female adults -> __dead__",
+      "Infectious female adults -> __dead__"
+    ],
+    "parameters": [
+      "1/\u03c43_v Pupal development rate",
+      "\u03bc_h Natural human mortality rate",
+      "\u03b4_l Larval density-dependent mortality coefficient (logistic term)",
+      "\u03bc_a_v Adult female mortality rate",
+      "\u03c6 Female fraction among adult vectors",
+      "\u03c6*(1/\u03c43_v) Female pupae-to-adult development flow multiplier",
+      "HumanLogisticTerm Logistic human population growth term (distributed across Sh,Eh,Ih,Rh proportionally)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "POOR",
+    "composite_score": 0.1555,
+    "entity_verdicts": {
+      "compartments": "poor",
+      "flows": "poor",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 10 compartment(s), 19 flow(s), 7 parameter(s) from gold standard.",
+      "Hallucinated 20 compartment(s), 14 flow(s), 15 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_compartments": [
+        "Susceptible humans",
+        "Exposed humans",
+        "Infectious humans",
+        "Recovered humans",
+        "Eggs"
+      ],
+      "missed_compartments_total": 10,
+      "missed_flows": [
+        "Susceptible humans -> Exposed humans",
+        "Exposed humans -> Infectious humans",
+        "Infectious humans -> Recovered humans",
+        "Eggs -> Larvae",
+        "Larvae -> Pupae"
+      ],
+      "missed_flows_total": 19,
+      "missed_parameters": [
+        "1/\u03c43_v Pupal development rate",
+        "\u03bc_h Natural human mortality rate",
+        "\u03b4_l Larval density-dependent mortality coefficient (logistic term)",
+        "\u03bc_a_v Adult female mortality rate",
+        "\u03c6 Female fraction among adult vectors"
+      ],
+      "missed_parameters_total": 7,
+      "hallucinated_compartments": [
+        "S Human",
+        "E Human",
+        "I Human",
+        "R Human",
+        "V1 Egg"
+      ],
+      "hallucinated_compartments_total": 20,
+      "hallucinated_flows": [
+        "S Human -> E Human",
+        "E Human -> I Human",
+        "I Human -> R Human",
+        "V1 Egg -> V2 Larva",
+        "V2 Larva -> V3 Pupa"
+      ],
+      "hallucinated_flows_total": 14,
+      "hallucinated_parameters": [
+        "b Transmission probability per bite (percentage of bites that transmit ZIKV)",
+        "H_alt Number of alternative hosts besides humans in the environment (Table 2: Rio de Janeiro State)",
+        "K_H Human carrying capacity (Table 2: Rio de Janeiro State)",
+        "K_L Larvae carrying capacity (Table 2: Rio de Janeiro State)",
+        "c_K Larvae mortality scaling due to limited carrying capacity (Table 2)"
+      ],
+      "hallucinated_parameters_total": 15
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

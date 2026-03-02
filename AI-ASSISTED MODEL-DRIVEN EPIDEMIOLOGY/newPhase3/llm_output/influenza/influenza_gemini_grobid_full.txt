@@ -1,0 +1,37 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="54551450">
+  <parameters name="β" expression="0.0" description="Constant transmission rate (rate at which new infections take place given a contact). Paper suggests range 0 ≤ β ≤ 1.25." unit="1/day"/>
+  <parameters name="σ" expression="1.0" description="Daily rate of transition through exposed compartments." unit="1/day"/>
+  <parameters name="γ" expression="0.5797" description="Daily rate of transition through infectious compartments." unit="1/day"/>
+  <parameters name="π" expression="0.0" description="Initial susceptibility; proportion of the population that is susceptible at the start of the epidemic." unit="dimensionless"/>
+  <parameters name="N" expression="54551450" description="Total population size for the 2014/15 season." unit="persons"/>
+  <parameters name="R₀" type="EXPRESSION" expression="β * (2 / γ)" description="Basic reproduction number, for an SE₂I₂R model." unit="dimensionless"/>
+  <parameters name="Rₙ" type="EXPRESSION" expression="R₀ * π" description="Effective reproduction number in a partially immune population." unit="dimensionless"/>
+  <parameters name="I₀" expression="100.0" description="Initial number of infectious individuals." unit="persons"/>
+  <parameters name="TAR" expression="0.0" description="Total Attack Rate; the probability of being infected over the whole epidemic for a susceptible individual." unit="dimensionless"/>
+  <parameters name="λ₀" expression="0.0" description="Initial infection rate (used in EGR re-parametrization for estimation)." unit="1/day"/>
+  <parameters name="ψ" expression="0.0" description="Exponential growth rate (used in EGR re-parametrization for estimation)." unit="1/day"/>
+  <parameters name="p_ICU" expression="0.0" description="Probability of ICU admission given infection. Part of the observational model." unit="dimensionless"/>
+  <parameters name="μ_ICU|E" expression="5.708" description="Mean time from infection to ICU admission. Part of the observational model." unit="days"/>
+  <parameters name="σ²_ICU|E" expression="18.24" description="Variance of time from infection to ICU admission. Part of the observational model." unit="days²"/>
+  <parameters name="η" expression="0.0" description="Over-dispersion parameter for the Negative Binomial observation model." unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="54551350">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.3" target="//@compartments.1" description="Infection from contact with Infectious (stage 1) individuals. Total force of infection is λ(t) = β * (I₁(t) + I₂(t)) / N."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.4" target="//@compartments.1" description="Infection from contact with Infectious (stage 2) individuals. Total force of infection is λ(t) = β * (I₁(t) + I₂(t)) / N."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="stage 1" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression from first to second exposed stage. Average incubation period is 2/σ."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="stage 2" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Progression from second exposed stage to first infectious stage (becoming infectious)."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="stage 1" population="50">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Progression from first to second infectious stage. Average infectious period is 2/γ."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="stage 2" population="50">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.5" description="Recovery from infectious state."/>
+  </compartments>
+  <compartments PrimaryName="Removed" population="0"/>
+</seir:SEIRModel>
+```

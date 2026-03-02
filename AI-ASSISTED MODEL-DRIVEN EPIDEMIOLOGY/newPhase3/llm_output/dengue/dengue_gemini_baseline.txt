@@ -1,0 +1,53 @@
+An XML representation of the epidemiological model for dengue, based on the provided scientific paper. This model includes human and mosquito populations, age-dependent parameters, and both symptomatic and asymptomatic infection pathways.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="B" description="The constant influx rate of the human hosts." unit="persons/time"/>
+  <parameters name="μₕ" description="The natural death rate of the human hosts." unit="1/time"/>
+  <parameters name="μᵥ" description="The natural death rate of the mosquitoes." unit="1/time"/>
+  <parameters name="βₕ(a)" description="The age-specific transmission rate from infected mosquitoes to susceptible hosts." unit="1/time"/>
+  <parameters name="βᵥ(a)" description="The age-specific transmission rate from infectious hosts to susceptible mosquitoes." unit="1/time"/>
+  <parameters name="k(a)" description="The age-specific rate at which exposed humans become infectious (inverse of latent period)." unit="1/time"/>
+  <parameters name="ρ" description="The probability of exposed hosts transferring to the symptomatic infectious class." unit="dimensionless"/>
+  <parameters name="γ₁(a)" description="The age-specific recovery rate of symptomatic infectious hosts." unit="1/time"/>
+  <parameters name="γ₂(a)" description="The age-specific recovery rate of asymptomatic infectious hosts." unit="1/time"/>
+  <parameters name="σ" description="The factor characterizing the intensity of reinfection of asymptomatic individuals and their relative transmissibility." unit="dimensionless"/>
+  <parameters name="Nₕ*" type="EXPRESSION" expression="B / μₕ" description="The total human population at the disease-free equilibrium." unit="persons"/>
+  <parameters name="rate_E_to_I" type="EXPRESSION" expression="ρ * k(a)" description="Progression rate from Exposed to Symptomatic Infectious." unit="1/time"/>
+  <parameters name="rate_E_to_A" type="EXPRESSION" expression="(1 - ρ) * k(a)" description="Progression rate from Exposed to Asymptomatic Infectious." unit="1/time"/>
+  <parameters name="contact_rate_h_freq" type="EXPRESSION" expression="βₕ(a) / Nₕ*" description="Frequency-dependent contact rate for primary human infection from mosquitoes." unit="1/(person*time)"/>
+  <parameters name="contact_rate_reinfect_freq" type="EXPRESSION" expression="σ * βₕ(a) / Nₕ*" description="Frequency-dependent contact rate for reinfection of asymptomatic humans." unit="1/(person*time)"/>
+  <parameters name="contact_rate_v_symp_freq" type="EXPRESSION" expression="βᵥ(a) / Nₕ*" description="Frequency-dependent contact rate for mosquito infection from symptomatic humans." unit="1/(person*time)"/>
+  <parameters name="contact_rate_v_asymp_freq" type="EXPRESSION" expression="σ * βᵥ(a) / Nₕ*" description="Frequency-dependent contact rate for mosquito infection from asymptomatic humans." unit="1/(person*time)"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Human" population="0.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.13" contactCompartment="//@compartments.6" target="//@compartments.1" description="Primary infection of humans by infectious mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Human" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.2" description="Progression to symptomatic infectious class."/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.3" description="Progression to asymptomatic infectious class."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious" SecondaryName="Human" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.7" target="//@compartments.4" description="Recovery of symptomatic individuals."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious" SecondaryName="Human" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.8" target="//@compartments.4" description="Recovery of asymptomatic individuals."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.14" contactCompartment="//@compartments.6" target="//@compartments.2" description="Reinfection of asymptomatic individuals, who then become symptomatic."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" SecondaryName="Human" population="0.0"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Mosquito" population="0.0">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.15" contactCompartment="//@compartments.2" target="//@compartments.6" description="Infection of mosquitoes by symptomatic humans."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.16" contactCompartment="//@compartments.3" target="//@compartments.6" description="Infection of mosquitoes by asymptomatic humans."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquito" population="0.0"/>
+  <birthSources name="Human_Recruitment" rateParameter="//@parameters.0" targetCompartment="//@compartments.0" description="Constant influx of susceptible humans."/>
+  <birthSources name="Mosquito_Births" rateParameter="//@parameters.2" targetCompartment="//@compartments.5" description="Implicit birth rate for mosquitoes to balance the natural death rate and maintain a constant total population."/>
+  <deathSinks name="Natural_Death_SH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_EH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_IH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_AH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural_Death_RH" rateParameter="//@parameters.1" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_SV" rateParameter="//@parameters.2" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Natural_Death_IV" rateParameter="//@parameters.2" sourceCompartment="//@compartments.6"/>
+</seir:SEIRModel>
+```

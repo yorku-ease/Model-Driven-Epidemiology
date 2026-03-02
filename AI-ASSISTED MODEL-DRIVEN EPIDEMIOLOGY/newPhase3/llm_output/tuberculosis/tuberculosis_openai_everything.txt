@@ -1,0 +1,112 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="A" type="CONSTANT"
+              description="Recruitment rate of humans (births into susceptible class)"
+              unit="humans/time"/>
+  <parameters name="β" type="CONSTANT"
+              description="Transmission coefficient / probability of successful infection (mass-action incidence)"
+              unit="1/(human·time)"/>
+  <parameters name="ε" type="CONSTANT"
+              description="Correction parameter for reinfection term (0–1), scaling susceptibility of recovered individuals"
+              unit="dimensionless"/>
+  <parameters name="u" type="CONSTANT"
+              description="Vaccination rate of susceptible individuals"
+              unit="1/time"/>
+  <parameters name="θ" type="CONSTANT"
+              description="Vaccine waning rate (loss of vaccine-induced protection, V→S)"
+              unit="1/time"/>
+  <parameters name="γ" type="CONSTANT"
+              description="Recovery rate (I→R)"
+              unit="1/time"/>
+  <parameters name="δ" type="CONSTANT"
+              description="Waning natural immunity rate (R→S)"
+              unit="1/time"/>
+  <parameters name="μ" type="CONSTANT"
+              description="Natural death rate (applies to all compartments)"
+              unit="1/time"/>
+
+  <!-- ===================== -->
+  <!-- Compartments          -->
+  <!-- ===================== -->
+  <compartments PrimaryName="Susceptible" SecondaryName="S">
+    <!-- Outgoing flows from S -->
+    <!-- Infection: S -> I with incidence β S I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.2"
+                   description="Primary infection of susceptibles (β S I)"/>
+    <!-- Vaccination: S -> V with rate u S -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.3"
+                   target="//@compartments.1"
+                   description="Vaccination of susceptibles (u S)"/>
+  </compartments>
+
+  <compartments PrimaryName="Vaccinated" SecondaryName="V">
+    <!-- Waning vaccine immunity: V -> S with rate θ V -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.4"
+                   target="//@compartments.0"
+                   description="Waning of vaccine-induced protection (θ V)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="I">
+    <!-- Recovery: I -> R with rate γ I -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.3"
+                   description="Recovery (γ I)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="R">
+    <!-- Reinfection: R -> I with incidence ε β R I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.2"
+                   description="Reinfection of recovered individuals (ε β R I)">
+      <stratumSpecificRates stratum="ALL" multiplierParameter="//@parameters.2"/>
+    </outgoingFlows>
+
+    <!-- Waning natural immunity: R -> S with rate δ R -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.0"
+                   description="Loss of natural immunity (δ R)"/>
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Demography: births    -->
+  <!-- ===================== -->
+  <birthSources name="Recruitment"
+                rateParameter="//@parameters.0"
+                targetCompartment="//@compartments.0"/>
+
+  <!-- ===================== -->
+  <!-- Demography: deaths    -->
+  <!-- ===================== -->
+  <deathSinks name="NaturalDeath_S"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_V"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_I"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_R"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.3"/>
+
+</seir:SEIRModel>
+```

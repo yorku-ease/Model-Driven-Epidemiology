@@ -1,0 +1,248 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vaccinated",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infected Tuberculosis infectious",
+      "secondary_name": "Tuberculosis infectious",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infected Tuberculosis infectious",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Tuberculosis infectious",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Primary infection of susceptible individuals via contact with infected (\u03b2 S I)"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "type": "RateFlow",
+      "rate_parameter": "u",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible individuals (u S)"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b8",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of vaccine-induced protection (\u03b8 V)"
+    },
+    {
+      "source": "Infected Tuberculosis infectious",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery from active TB infection (\u03b3 I)"
+    },
+    {
+      "source": "Recovered",
+      "target": "Infected Tuberculosis infectious",
+      "type": "ContactFlow",
+      "contact_compartment": "Infected Tuberculosis infectious",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Reinfection of recovered individuals via contact with infected (\u03b5 \u03b2 R I); implemented as \u03b2 contact flow with \u03b5 handled as multiplier in simulation/expression"
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of natural immunity (\u03b4 R)"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible",
+      "type": "BirthSource",
+      "rate_parameter": "A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment"
+    },
+    {
+      "source": "Susceptible",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_S"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_V"
+    },
+    {
+      "source": "Infected Tuberculosis infectious",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_I"
+    },
+    {
+      "source": "Recovered",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "NaturalDeath_R"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "A",
+      "type": "CONSTANT",
+      "value": 1000.0,
+      "unit": "humans/time",
+      "description": "Recruitment rate of humans (all newborns enter Susceptible)"
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": 0.01,
+      "unit": "1/(human\u00b7time)",
+      "description": "Transmission coefficient / probability of successful infection (primary infection term \u03b2 S I). Table gives range [0.01, 5]."
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "dimensionless",
+      "description": "Correction parameter for reinfection term (reinfection force \u03b5 \u03b2 R I), 0\u20131"
+    },
+    {
+      "symbol": "u",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "1/time",
+      "description": "Vaccination rate moving Susceptible to Vaccinated, 0\u20131"
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": 0.067,
+      "unit": "1/time",
+      "description": "Vaccine waning rate moving Vaccinated to Susceptible. Table gives range [0.067, 0.1]."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "1/time",
+      "description": "Recovery rate moving Infected to Recovered. Table gives range [0.5, 2]."
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": 0.003,
+      "unit": "1/time",
+      "description": "Waning natural immunity rate moving Recovered to Susceptible. Table gives range [0.003, 0.02]."
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "1/time",
+      "description": "Natural death rate (applies to all compartments). Table indicates estimated ~ 1/(65\u00d712 months); numeric not cleanly extractable from table."
+    },
+    {
+      "symbol": "N",
+      "type": "EXPRESSION",
+      "value": "S+V+I+R",
+      "unit": "humans",
+      "description": "Total population size"
+    },
+    {
+      "symbol": "b",
+      "type": "EXPRESSION",
+      "value": "\u03b2*N/\u03b3",
+      "unit": "dimensionless",
+      "description": "Dimensionless transmission scaling used in nondimensional system (paper Section 3.2)"
+    },
+    {
+      "symbol": "m",
+      "type": "EXPRESSION",
+      "value": "\u03bc/\u03b3",
+      "unit": "dimensionless",
+      "description": "Dimensionless natural death rate used in nondimensional system"
+    },
+    {
+      "symbol": "c",
+      "type": "EXPRESSION",
+      "value": "\u03b4/\u03b3",
+      "unit": "dimensionless",
+      "description": "Dimensionless immunity waning rate used in nondimensional system"
+    },
+    {
+      "symbol": "d",
+      "type": "EXPRESSION",
+      "value": "\u03b8/\u03b3",
+      "unit": "dimensionless",
+      "description": "Dimensionless vaccine waning rate used in nondimensional system"
+    },
+    {
+      "symbol": "e",
+      "type": "EXPRESSION",
+      "value": "\u03b5",
+      "unit": "dimensionless",
+      "description": "Dimensionless reinfection correction parameter used in nondimensional system"
+    },
+    {
+      "symbol": "u\u0304",
+      "type": "EXPRESSION",
+      "value": "u/\u03b3",
+      "unit": "dimensionless",
+      "description": "Dimensionless vaccination rate used in nondimensional system"
+    },
+    {
+      "symbol": "\u211b_c",
+      "type": "EXPRESSION",
+      "value": "(b*(d+m))/((d+m+u\u0304)*(1+m))",
+      "unit": "dimensionless",
+      "description": "Control reproduction number as given in the paper (dimensionless form)"
+    },
+    {
+      "symbol": "K",
+      "type": "EXPRESSION",
+      "value": "(m+c+1)*(m+d) - e*(m+d+u\u0304)",
+      "unit": "dimensionless",
+      "description": "Bifurcation sign quantity (paper uses calligraphic K / script K) determining backward vs forward bifurcation"
+    }
+  ]
+}

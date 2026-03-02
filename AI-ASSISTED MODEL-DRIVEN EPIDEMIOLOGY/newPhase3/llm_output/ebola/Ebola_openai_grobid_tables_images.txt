@@ -1,0 +1,164 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- =========================================================
+       Parameters (symbols from Table 1 + figure; no numeric values
+       were present in the extracted tables, so expressions are left
+       symbolic/blank where appropriate)
+       ========================================================= -->
+  <parameters name="α₁" description="Recruitment into susceptible population (inflow to S)"/>
+  <parameters name="α₂" description="Recruitment/importation into infected population (inflow to I)"/>
+
+  <parameters name="ψ₁" description="Effective contact rate with infectious humans (direct transmission)"/>
+  <parameters name="ψ₂" description="Effective contact rate with environmental pathogens (indirect transmission)"/>
+  <parameters name="ψ₃" description="Effective contact rate with deceased humans (funeral/burial transmission)"/>
+
+  <parameters name="ε" description="Natural death rate of humans"/>
+
+  <parameters name="ρ₁" description="Disease-induced death rate of infected humans"/>
+  <parameters name="ρ₂" description="Shedding rate of infected humans into environment"/>
+  <parameters name="ρ₃" description="Quarantine rate of infected humans"/>
+
+  <parameters name="ω₁" description="Recovery rate of quarantined humans"/>
+  <parameters name="ω₂" description="Death rate of quarantined humans due to infection"/>
+
+  <parameters name="h" description="Shedding/contamination rate from deceased humans into environment"/>
+  <parameters name="c" description="Burial/removal rate of deceased humans"/>
+  <parameters name="b" description="Clearance/decay rate of Ebola pathogens in the environment"/>
+  <parameters name="d" description="External input into environmental pathogen compartment"/>
+
+  <!-- Optional combined-rate parameters used in text/figure labels -->
+  <parameters name="Ω₁" type="EXPRESSION" expression="ψ₁" description="Auxiliary quantity used in stability analysis (paper defines Ω₁ from model parameters)"/>
+  <parameters name="Ω₂" type="EXPRESSION" expression="ρ₁ + ρ₂ + ρ₃ + ε" description="Sum of outflow rates from infected (paper: Ω₂ = ρ₁+ρ₂+ρ₃+ε)"/>
+  <parameters name="Ω₃" type="EXPRESSION" expression="ω₁ + ω₂ + ε" description="Sum of outflow rates from quarantined (paper uses ω₁+ω₂+ε)"/>
+  <parameters name="Ω₄" type="EXPRESSION" expression="h + c" description="Sum of outflow/removal-related rates for deceased (paper uses Ω₄ = h + c)"/>
+
+  <!-- =========================================================
+       Compartments (from Table 1 + figure)
+       Mapping used:
+         S: Susceptible (paper uses 𝒜)
+         I: Infectious/Infected (paper uses 𝒫)
+         Q: Quarantined (paper uses 𝒡)
+         R: Recovered (paper uses 𝒦)
+         E: Environment pathogens (paper uses 𝒰)
+         D: Deceased (paper uses 𝒮)
+       ========================================================= -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="0">
+    <!-- Infection by contact with infectious humans: S -> I at rate ψ₁ * S * I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.2"
+        contactCompartment="//@compartments.1"
+        target="//@compartments.1"
+        description="Direct transmission: susceptible infected by infectious humans (ψ₁ * S * I)"/>
+
+    <!-- Infection by contact with environment: S -> I at rate ψ₂ * S * E -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.3"
+        contactCompartment="//@compartments.4"
+        target="//@compartments.1"
+        description="Indirect transmission: susceptible infected by environmental pathogens (ψ₂ * S * E)"/>
+
+    <!-- Infection by contact with deceased: S -> I at rate ψ₃ * S * D -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.4"
+        contactCompartment="//@compartments.5"
+        target="//@compartments.1"
+        description="Funeral/burial transmission: susceptible infected by deceased (ψ₃ * S * D)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="0">
+    <!-- Quarantine: I -> Q at rate ρ₃ * I -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.8"
+        target="//@compartments.2"
+        description="Infected humans moved to quarantine (ρ₃ * I)"/>
+
+    <!-- Disease-induced death: I -> Deceased at rate ρ₁ * I -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.6"
+        target="//@compartments.5"
+        description="Disease-induced death of infected humans (ρ₁ * I)"/>
+
+    <!-- Shedding to environment: I -> Environment at rate ρ₂ * I -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.7"
+        target="//@compartments.4"
+        description="Shedding of virus/pathogens from infected humans into environment (ρ₂ * I)"/>
+  </compartments>
+
+  <compartments PrimaryName="Quarantined" SecondaryName="Humans" population="0">
+    <!-- Recovery: Q -> R at rate ω₁ * Q -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.9"
+        target="//@compartments.3"
+        description="Recovery of quarantined humans (ω₁ * Q)"/>
+
+    <!-- Death in quarantine: Q -> Deceased at rate ω₂ * Q -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.10"
+        target="//@compartments.5"
+        description="Disease-induced death of quarantined humans (ω₂ * Q)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0">
+    <!-- No disease progression outflows; permanent immunity assumed.
+         Natural death handled via DeathSink. -->
+  </compartments>
+
+  <compartments PrimaryName="Environment" SecondaryName="Pathogens" population="0">
+    <!-- Environmental clearance/decay: E -> (sink) at rate b * E
+         Represented as RateFlow to no compartment is not allowed; use DeathSink below. -->
+  </compartments>
+
+  <compartments PrimaryName="Deceased" SecondaryName="Humans" population="0">
+    <!-- Contamination from corpses to environment: D -> E at rate h * D -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.11"
+        target="//@compartments.4"
+        description="Shedding/contamination from deceased bodies into environment (h * D)"/>
+    <!-- Burial/removal handled via DeathSink (c * D) -->
+  </compartments>
+
+  <!-- =========================================================
+       Birth sources (inflows shown in figure and Table 1)
+       ========================================================= -->
+  <birthSources name="Recruitment_Susceptible" rateParameter="//@parameters.0"
+      targetCompartment="//@compartments.0"/>
+
+  <birthSources name="Importation_Infected" rateParameter="//@parameters.1"
+      targetCompartment="//@compartments.1"/>
+
+  <!-- External input to environment (d) -->
+  <birthSources name="External_Environment_Input" rateParameter="//@parameters.13"
+      targetCompartment="//@compartments.4"/>
+
+  <!-- =========================================================
+       Death sinks / removals (natural death, burial, environmental decay)
+       Natural death ε applies to S, I, Q, R (per figure/table).
+       ========================================================= -->
+  <deathSinks name="Natural_Death_S" rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.0"/>
+
+  <deathSinks name="Natural_Death_I" rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.1"/>
+
+  <deathSinks name="Natural_Death_Q" rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.2"/>
+
+  <deathSinks name="Natural_Death_R" rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.3"/>
+
+  <!-- Burial/removal of deceased (c * D) -->
+  <deathSinks name="Burial_Removal_D" rateParameter="//@parameters.12"
+      sourceCompartment="//@compartments.5"/>
+
+  <!-- Environmental clearance/decay (b * E) -->
+  <deathSinks name="Environment_Clearance" rateParameter="//@parameters.14"
+      sourceCompartment="//@compartments.4"/>
+
+</seir:SEIRModel>
+```

@@ -1,0 +1,100 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (Table 1 + model text) -->
+  <!-- ===================== -->
+  <parameters name="Λ" description="Recruitment (birth) rate of humans into Susceptible" unit="humans/time" type="CONSTANT" expression="1000"/>
+  <!-- Note: Table shows '1000 human' and also '65×12 month' near Λ/μ; the PDF extraction is inconsistent.
+       We keep Λ=1000 as the explicit numeric shown. -->
+
+  <parameters name="β" description="Effective transmission (successful infection) rate (S infected by I); used in mass-action term β*S*I" unit="1/(human·time)" type="CONSTANT" expression="0.01"/>
+  <!-- Range in table: [0.01, 5] (year×human)^-1. We set expression to the lower bound as a placeholder. -->
+
+  <parameters name="q" description="Correction parameter for reinfection term (probability/scaling of reinfection relative to primary infection)" unit="dimensionless" type="CONSTANT" expression="0.0"/>
+  <!-- Range in table: [0,1]. Set to 0.0 as placeholder. -->
+
+  <parameters name="ν" description="Vaccination rate (Susceptible → Vaccinated)" unit="1/time" type="CONSTANT" expression="0.0"/>
+  <!-- Range in table: [0,1] day^-1. Set to 0.0 as placeholder. -->
+
+  <parameters name="ω" description="Vaccine waning rate (Vaccinated → Susceptible)" unit="1/time" type="CONSTANT" expression="0.067"/>
+  <!-- Range in table: [0.067, 0.1] day^-1. Use lower bound as placeholder. -->
+
+  <parameters name="γ" description="Recovery rate (Infected → Recovered)" unit="1/time" type="CONSTANT" expression="0.5"/>
+  <!-- Range in table: [0.5, 2] year^-1. Use lower bound as placeholder. -->
+
+  <parameters name="σ" description="Immunity waning (drop-out) rate from Recovered to Susceptible (Recovered → Susceptible)" unit="1/time" type="CONSTANT" expression="0.003"/>
+  <!-- Range in table: [0.003, 0.02] day^-1. Use lower bound as placeholder. -->
+
+  <parameters name="μ" description="Natural death rate (applies to all compartments)" unit="1/time" type="CONSTANT" expression="0.0"/>
+  <!-- Table indicates 'Estimated' with '65×12 month' (life expectancy proxy). Numeric not cleanly extractable; keep 0.0 placeholder. -->
+
+  <!-- ===================== -->
+  <!-- Compartments -->
+  <!-- Model text: four compartments S, V, I, R -->
+  <!-- ===================== -->
+  <compartments PrimaryName="Susceptible" population="0">
+    <!-- Infection: S -> Infected via contact with Infected at rate β*S*I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.1"
+        contactCompartment="//@compartments.2"
+        target="//@compartments.2"
+        description="Primary infection of susceptibles by infectious individuals (β*S*I)"/>
+    <!-- Vaccination: S -> Vaccinated at rate ν*S -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.3"
+        target="//@compartments.1"
+        description="Vaccination of susceptibles (ν*S)"/>
+  </compartments>
+
+  <compartments PrimaryName="Vaccinated" population="0">
+    <!-- Vaccine waning: V -> S at rate ω*V -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.4"
+        target="//@compartments.0"
+        description="Waning of vaccine-induced protection (ω*V)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infected" population="0">
+    <!-- Recovery: I -> R at rate γ*I -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.5"
+        target="//@compartments.3"
+        description="Recovery from active TB (γ*I)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" population="0">
+    <!-- Reinfection: R -> I via contact with I at rate q*β*R*I -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.1"
+        contactCompartment="//@compartments.2"
+        target="//@compartments.2"
+        description="Reinfection of recovered individuals by infectious individuals (q*β*R*I); q scales relative to primary infection"/>
+    <!-- Loss of natural immunity: R -> S at rate σ*R -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.6"
+        target="//@compartments.0"
+        description="Waning of post-infection immunity (σ*R)"/>
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Birth source -->
+  <!-- Assumption (A1): all newborns enter Susceptible at rate Λ -->
+  <!-- ===================== -->
+  <birthSources name="HumanRecruitment" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+
+  <!-- ===================== -->
+  <!-- Natural death sinks (apply to all compartments at rate μ) -->
+  <!-- Model equations show -μ*S, -μ*V, -μ*I, -μ*R -->
+  <!-- ===================== -->
+  <deathSinks name="NaturalDeath_S" rateParameter="//@parameters.7" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_V" rateParameter="//@parameters.7" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_I" rateParameter="//@parameters.7" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_R" rateParameter="//@parameters.7" sourceCompartment="//@compartments.3"/>
+
+</seir:SEIRModel>
+```

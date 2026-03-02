@@ -1,0 +1,71 @@
+An XML representation of the compartmental model described in the scientific paper, conforming to the provided metamodel.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <!-- Parameters -->
+  <parameters name="π_H" expression="0.012" description="Human recruitment/birth rate" unit="per day"/>
+  <parameters name="π_M" description="Mosquito recruitment/birth rate" unit="per day"/>
+  <parameters name="μ_H" description="Natural mortality rate of human population" unit="per day"/>
+  <parameters name="μ_M" description="Natural mortality rate of mosquito population" unit="per day"/>
+  <parameters name="v" description="Vaccination rate for susceptible humans" unit="per day"/>
+  <parameters name="ω_V" description="Waning immunity rate for vaccinated humans" unit="per day"/>
+  <parameters name="p" description="Waning immunity rate for recovered humans (loss of natural immunity)" unit="per day"/>
+  <parameters name="η_S" description="Transmission rate from infectious mosquitoes to susceptible humans (vector-borne)" unit="per person per day"/>
+  <parameters name="ξ_S" description="Transmission rate from infectious humans to susceptible humans (non-vector)" unit="per person per day"/>
+  <parameters name="β_M" description="Transmission rate from infectious humans to susceptible mosquitoes" unit="per person per day"/>
+  <parameters name="a₂" description="Progression rate from vector-exposed (E_H1) to infectious" unit="per day"/>
+  <parameters name="γ" description="Progression rate from non-vector-exposed (E_H2) to infectious" unit="per day"/>
+  <parameters name="n" description="Rate of seeking treatment for infectious humans" unit="per day"/>
+  <parameters name="δ_T" description="Recovery rate for treated humans" unit="per day"/>
+  <parameters name="a₃" description="Progression rate for exposed mosquitoes to become infectious" unit="per day"/>
+  
+  <!-- Compartments -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.4" target="//@compartments.1" description="Vaccination"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.7" contactCompartment="//@compartments.9" target="//@compartments.2" description="Infection by mosquito bite (vector)"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.8" contactCompartment="//@compartments.4" target="//@compartments.3" description="Infection by non-vector means"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.5" target="//@compartments.0" description="Loss of vaccine-induced immunity"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Vector">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.10" target="//@compartments.4" description="Progression to infectious state (vector pathway)"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Non-vector">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4" description="Progression to infectious state (non-vector pathway)"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.5" description="Movement to treatment"/>
+  </compartments>
+  <compartments PrimaryName="Treated" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.13" target="//@compartments.6" description="Recovery after treatment"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" SecondaryName="Humans">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.6" target="//@compartments.0" description="Loss of natural immunity"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Mosquitoes">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.9" contactCompartment="//@compartments.4" target="//@compartments.8" description="Mosquito becomes infected after biting an infectious human"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Mosquitoes">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.14" target="//@compartments.9" description="Mosquito becomes infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquitoes"/>
+  
+  <!-- Births -->
+  <birthSources name="Human_Births" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
+  <birthSources name="Mosquito_Births" rateParameter="//@parameters.1" targetCompartment="//@compartments.7"/>
+
+  <!-- Deaths -->
+  <deathSinks name="Natural_Death_SH" rateParameter="//@parameters.2" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_VH" rateParameter="//@parameters.2" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_EH1" rateParameter="//@parameters.2" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_EH2" rateParameter="//@parameters.2" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural_Death_IH" rateParameter="//@parameters.2" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_TH" rateParameter="//@parameters.2" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Natural_Death_RH" rateParameter="//@parameters.2" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="Natural_Death_SM" rateParameter="//@parameters.3" sourceCompartment="//@compartments.7"/>
+  <deathSinks name="Natural_Death_EM" rateParameter="//@parameters.3" sourceCompartment="//@compartments.8"/>
+  <deathSinks name="Natural_Death_IM" rateParameter="//@parameters.3" sourceCompartment="//@compartments.9"/>
+</seir:SEIRModel>
+```

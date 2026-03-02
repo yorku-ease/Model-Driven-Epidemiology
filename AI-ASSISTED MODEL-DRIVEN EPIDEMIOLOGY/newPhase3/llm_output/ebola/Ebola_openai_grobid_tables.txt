@@ -1,0 +1,166 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <!-- NOTE: The provided Camelot extraction includes symbols/descriptions but no numeric values.
+       Therefore parameters are encoded symbolically (type=CONSTANT, expression omitted). -->
+  <parameters name="Λ₁" type="CONSTANT" description="Recruitment rate into susceptible humans (proportion at which susceptible people are recruited)" unit="persons/time"/>
+  <parameters name="Λ₂" type="CONSTANT" description="Recruitment rate into infectious humans (proportion at which infected people are recruited)" unit="persons/time"/>
+
+  <parameters name="β₁" type="CONSTANT" description="Effective contact rate with infectious humans (human-to-human transmission)" unit="1/(persons·time)"/>
+  <parameters name="β₂" type="CONSTANT" description="Effective contact rate with Ebola pathogens in the environment (environment-to-human transmission)" unit="1/(pathogen·time)"/>
+  <parameters name="β₃" type="CONSTANT" description="Effective contact rate with deceased humans (funeral/burial transmission)" unit="1/(persons·time)"/>
+
+  <parameters name="μ" type="CONSTANT" description="Natural death rate of humans" unit="1/time"/>
+
+  <parameters name="δ₁" type="CONSTANT" description="Disease-induced death rate for infectious humans" unit="1/time"/>
+  <parameters name="δ₂" type="CONSTANT" description="Shedding rate of infectious humans into the environment" unit="pathogen/(persons·time)"/>
+  <parameters name="δ₃" type="CONSTANT" description="Quarantine rate of infectious humans" unit="1/time"/>
+
+  <parameters name="γ₁" type="CONSTANT" description="Recovery rate of quarantined humans" unit="1/time"/>
+  <parameters name="γ₂" type="CONSTANT" description="Disease-induced death rate for quarantined humans" unit="1/time"/>
+
+  <parameters name="η" type="CONSTANT" description="Proportion (or rate factor) of shedding from deceased humans into the environment" unit="pathogen/(persons·time)"/>
+  <parameters name="ρ" type="CONSTANT" description="Burial rate of deceased humans (removal of corpses)" unit="1/time"/>
+
+  <parameters name="φ" type="CONSTANT" description="Clearance/decay rate of Ebola pathogens in the environment" unit="1/time"/>
+
+  <!-- Force of infection (as used in the paper’s equations): λ = β₁ I + β₂ P + β₃ D -->
+  <parameters name="λ" type="EXPRESSION" expression="β₁*I + β₂*P + β₃*D" description="Force of infection on susceptibles from infectious humans, environment, and deceased" unit="1/time"/>
+
+  <!-- ================= -->
+  <!-- Compartments      -->
+  <!-- ================= -->
+  <!-- State variables from Table 1: S, I, Q, R, P, D -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="0.0">
+    <!-- Infection: S -> Infectious driven by I, P, D (encoded as three ContactFlows) -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRate="0.0"
+        contactRateParameter="//@parameters.2"
+        contactCompartment="//@compartments.1"
+        target="//@compartments.1"
+        description="Human-to-human transmission: S -> I via contact with infectious humans (β₁)"/>
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRate="0.0"
+        contactRateParameter="//@parameters.3"
+        contactCompartment="//@compartments.4"
+        target="//@compartments.1"
+        description="Environment-to-human transmission: S -> I via contact with pathogens in environment (β₂)"/>
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRate="0.0"
+        contactRateParameter="//@parameters.4"
+        contactCompartment="//@compartments.5"
+        target="//@compartments.1"
+        description="Funeral/deceased transmission: S -> I via contact with deceased humans (β₃)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="0.0">
+    <!-- Quarantine -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rate="0.0"
+        rateParameter="//@parameters.8"
+        target="//@compartments.2"
+        description="Quarantine of infectious humans: I -> Q (δ₃)"/>
+  </compartments>
+
+  <compartments PrimaryName="Quarantined" SecondaryName="Humans" population="0.0">
+    <!-- Recovery -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rate="0.0"
+        rateParameter="//@parameters.9"
+        target="//@compartments.3"
+        description="Recovery of quarantined humans: Q -> R (γ₁)"/>
+    <!-- Death while quarantined -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rate="0.0"
+        rateParameter="//@parameters.10"
+        target="//@compartments.5"
+        description="Disease-induced death in quarantine: Q -> D (γ₂)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0.0">
+    <!-- Permanent immunity assumed: no flow back to Susceptible -->
+  </compartments>
+
+  <compartments PrimaryName="Pathogens" SecondaryName="Environment" population="0.0">
+    <!-- Environmental clearance/decay -->
+    <!-- Implemented as a death sink (removal from system) rather than a flow to another compartment -->
+  </compartments>
+
+  <compartments PrimaryName="Deceased" SecondaryName="Humans" population="0.0">
+    <!-- Burial/removal of corpses -->
+    <!-- Implemented as a death sink (removal from system) -->
+  </compartments>
+
+  <!-- ================= -->
+  <!-- Birth / Recruitment sources -->
+  <!-- ================= -->
+  <birthSources name="Recruitment_to_Susceptible"
+      rateParameter="//@parameters.0"
+      targetCompartment="//@compartments.0"/>
+  <birthSources name="Recruitment_to_Infectious"
+      rateParameter="//@parameters.1"
+      targetCompartment="//@compartments.1"/>
+
+  <!-- ================= -->
+  <!-- Death / Removal sinks -->
+  <!-- ================= -->
+  <!-- Natural death from living human compartments -->
+  <deathSinks name="Natural_Death_S"
+      rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_I"
+      rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_Q"
+      rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_R"
+      rateParameter="//@parameters.5"
+      sourceCompartment="//@compartments.3"/>
+
+  <!-- Disease-induced death from Infectious: I -> Deceased (δ₁) -->
+  <outgoingFlows xsi:type="seir:RateFlow" rate="0.0" rateParameter="//@parameters.6"
+      target="//@compartments.5"
+      description="Disease-induced death of infectious humans: I -> D (δ₁)"/>
+
+  <!-- NOTE: XMI normally nests flows inside compartments; the above line is kept for completeness.
+       If strict nesting is required by your parser, move it inside the Infectious compartment. -->
+
+  <!-- Burial/removal of deceased: D removed at rate ρ -->
+  <deathSinks name="Burial_Removal_Deceased"
+      rateParameter="//@parameters.12"
+      sourceCompartment="//@compartments.5"/>
+
+  <!-- Environmental pathogen decay/clearance: P removed at rate φ -->
+  <deathSinks name="Environmental_Clearance_Pathogens"
+      rateParameter="//@parameters.13"
+      sourceCompartment="//@compartments.4"/>
+
+  <!-- ================= -->
+  <!-- Additional model couplings (not representable as simple flows in this metamodel) -->
+  <!-- ================= -->
+  <!-- The paper includes pathogen dynamics:
+         dP/dt = δ₂ I + η D - φ P
+       These are source terms into the Pathogens compartment from I and D.
+       The metamodel supports only compartment-to-compartment flows, BirthSources, and DeathSinks.
+       To preserve structure, we encode these as BirthSources into Pathogens with EXPRESSION rates. -->
+
+  <parameters name="δ₂I" type="EXPRESSION" expression="δ₂*I" description="Pathogen input from infectious shedding" unit="pathogen/time"/>
+  <parameters name="ηD" type="EXPRESSION" expression="η*D" description="Pathogen input from deceased shedding" unit="pathogen/time"/>
+
+  <birthSources name="Shedding_from_Infectious_to_Environment"
+      rateParameter="//@parameters.14"
+      targetCompartment="//@compartments.4"/>
+  <birthSources name="Shedding_from_Deceased_to_Environment"
+      rateParameter="//@parameters.15"
+      targetCompartment="//@compartments.4"/>
+
+</seir:SEIRModel>
+```

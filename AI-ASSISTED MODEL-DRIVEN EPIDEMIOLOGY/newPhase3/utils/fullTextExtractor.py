@@ -66,16 +66,19 @@ class PDFPipeline:
 
         with pdfplumber.open(pdf_path) as pdf:
             for page_num, page in enumerate(pdf.pages, start=1):
-                width = page.width
-                height = page.height
+                try:
+                    width = page.width
+                    height = page.height
 
-                left = page.crop((0, 0, width / 2, height))
-                right = page.crop((width / 2, 0, width, height))
+                    left = page.crop((0, 0, width / 2, height))
+                    right = page.crop((width / 2, 0, width, height))
 
-                left_text = left.extract_text(x_tolerance=2, y_tolerance=2) or ""
-                right_text = right.extract_text(x_tolerance=2, y_tolerance=2) or ""
+                    left_text = left.extract_text(x_tolerance=2, y_tolerance=2) or ""
+                    right_text = right.extract_text(x_tolerance=2, y_tolerance=2) or ""
 
-                text = left_text + "\n" + right_text
+                    text = left_text + "\n" + right_text
+                except Exception:
+                    text = page.extract_text() or ""
 
                 if text:
                     full_text.append(text)

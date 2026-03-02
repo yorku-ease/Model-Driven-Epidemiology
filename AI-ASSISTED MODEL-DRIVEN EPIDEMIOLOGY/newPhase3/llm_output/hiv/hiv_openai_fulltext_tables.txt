@@ -1,0 +1,179 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- =========================================================
+       Parameters (Table 3 is prioritized for numeric values)
+       Symbols follow paper notation as closely as possible.
+       ========================================================= -->
+  <parameters name="C" expression="333" description="Constant recruitment into susceptible classes (total recruitment)" unit="individuals/year"/>
+  <parameters name="h" expression="0.48" description="Proportion of men in recruitment" unit="dimensionless"/>
+  <parameters name="c" expression="0.92" description="Proportion of men who are heterosexual (so 1-c are homosexual men)" unit="dimensionless"/>
+  <parameters name="p" expression="0.90" description="Proportion of initially treated individuals (initial ART coverage fraction)" unit="dimensionless"/>
+
+  <parameters name="λ" expression="0.0129" description="Natural mortality rate (all compartments)" unit="1/year"/>
+  <parameters name="δ" expression="0.3333" description="AIDS-induced mortality rate (people living with AIDS)" unit="1/year"/>
+
+  <parameters name="d" expression="0.018" description="AIDS development rate in treated individuals due to ART resistance/treatment failure (T → A)" unit="1/year"/>
+  <parameters name="a" expression="0.3333" description="Departure rate from untreated infected compartments into treatment (I → T), also described as most sensitive parameter" unit="1/year"/>
+
+  <!-- Transmission probabilities (dimensionless) -->
+  <parameters name="b_s" expression="0.02" description="Probability of sexual transmission in heterosexual contact (men-women)" unit="dimensionless"/>
+  <parameters name="b_h" expression="0.44" description="Probability of sexual transmission in homosexual men contact (homosexual men-homosexual men)" unit="dimensionless"/>
+  <parameters name="b_hw" expression="0.018" description="Probability of sexual transmission from infected homosexual men to women (homosexual men-women contact)" unit="dimensionless"/>
+  <parameters name="b_hm" expression="0.25" description="Probability of sexual transmission from infected homosexual men to heterosexual men (bisexual contact: homosexual men-heterosexual men)" unit="dimensionless"/>
+
+  <!-- Sexual partner rates (1/year) -->
+  <parameters name="c_s" expression="4" description="Rate of number of sexual partners in heterosexual contact" unit="1/year"/>
+  <parameters name="c_h" expression="7" description="Rate of number of sexual partners in homosexual men contact" unit="1/year"/>
+  <parameters name="c_hw" expression="2" description="Rate of number of sexual partners in contact between homosexual men and women" unit="1/year"/>
+  <parameters name="c_hm" expression="1" description="Rate of number of sexual partners in contact between homosexual men and heterosexual men" unit="1/year"/>
+
+  <!-- Recruitment components (expressions from text: Ch(1-c), C(1-h), Chc) -->
+  <parameters name="C_h" type="EXPRESSION" expression="C*h*(1-c)" description="Recruitment into susceptible homosexual men" unit="individuals/year"/>
+  <parameters name="C_w" type="EXPRESSION" expression="C*(1-h)" description="Recruitment into susceptible women" unit="individuals/year"/>
+  <parameters name="C_m" type="EXPRESSION" expression="C*h*c" description="Recruitment into susceptible heterosexual men" unit="individuals/year"/>
+
+  <!-- Contact-rate products used in forces of infection (paper: B = b * c) -->
+  <parameters name="B_h"  type="EXPRESSION" expression="b_h*c_h"   description="Effective homosexual-men contact transmission factor (b_h * c_h)" unit="1/year"/>
+  <parameters name="B_s"  type="EXPRESSION" expression="b_s*c_s"   description="Effective heterosexual contact transmission factor (b_s * c_s)" unit="1/year"/>
+  <parameters name="B_hw" type="EXPRESSION" expression="b_hw*c_hw" description="Effective transmission factor from homosexual men to women (b_hw * c_hw)" unit="1/year"/>
+  <parameters name="B_hm" type="EXPRESSION" expression="b_hm*c_hm" description="Effective transmission factor from homosexual men to heterosexual men (b_hm * c_hm)" unit="1/year"/>
+
+  <!-- =========================================================
+       Compartments (Table 1)
+       Populations: initial conditions from text Eq. (2)
+       ========================================================= -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men" population="2446"/>
+  <compartments PrimaryName="Infected" SecondaryName="Untreated Homosexual Men" population="7"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Women" population="189994"/>
+  <compartments PrimaryName="Infected" SecondaryName="Untreated Women" population="6"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men" population="171173"/>
+  <compartments PrimaryName="Infected" SecondaryName="Untreated Heterosexual Men" population="29"/>
+  <compartments PrimaryName="Treated" SecondaryName="with ART" population="107"/>
+  <compartments PrimaryName="AIDS" SecondaryName="People living with AIDS" population="47"/>
+
+  <!-- =========================================================
+       Birth / recruitment sources (H1: constant recruitment)
+       Targets: Sh, Sw, Sm
+       ========================================================= -->
+  <birthSources name="Recruitment_HomosexualMen" rateParameter="//@parameters.16" targetCompartment="//@compartments.0"/>
+  <birthSources name="Recruitment_Women" rateParameter="//@parameters.17" targetCompartment="//@compartments.2"/>
+  <birthSources name="Recruitment_HeterosexualMen" rateParameter="//@parameters.18" targetCompartment="//@compartments.4"/>
+
+  <!-- =========================================================
+       Death sinks (H6: natural mortality in all classes; induced in AIDS)
+       ========================================================= -->
+  <deathSinks name="NaturalDeath_Sh" rateParameter="//@parameters.5" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_Ih" rateParameter="//@parameters.5" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_Sw" rateParameter="//@parameters.5" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_Iw" rateParameter="//@parameters.5" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="NaturalDeath_Sm" rateParameter="//@parameters.5" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="NaturalDeath_Im" rateParameter="//@parameters.5" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="NaturalDeath_T"  rateParameter="//@parameters.5" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="NaturalDeath_A"  rateParameter="//@parameters.5" sourceCompartment="//@compartments.7"/>
+
+  <!-- AIDS-induced mortality (applies to AIDS compartment) -->
+  <deathSinks name="AIDS_InducedDeath_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.7"/>
+
+  <!-- =========================================================
+       Flows
+       Notes from text:
+       - Infection occurs via sexual contact between susceptible and untreated infected.
+       - Treated T(t) and AIDS A(t) under treatment are assumed least infectious ~ null.
+         => we model transmission only from untreated infected compartments (Ih, Iw, Im).
+       - a: departure rate from all untreated infected compartments into treatment (I -> T).
+       - d: AIDS development in treated due to failure/resistance (T -> A).
+       - AIDS individuals can be diagnosed/enrolled in ART (A -> T) is stated, but no
+         parameter value is provided in Table 3; therefore not instantiated as a flow.
+       ========================================================= -->
+
+  <!-- Susceptible Homosexual Men (Sh) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men" population="2446">
+    <!-- Homosexual-men exclusive transmission: Sh -> Ih via contact with Ih -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.19"
+        contactCompartment="//@compartments.1"
+        target="//@compartments.1"
+        description="Infection of susceptible homosexual men via contact with untreated infected homosexual men (B_h=b_h*c_h)."/>
+  </compartments>
+
+  <!-- Untreated Infected Homosexual Men (Ih) -->
+  <compartments PrimaryName="Infected" SecondaryName="Untreated Homosexual Men" population="7">
+    <!-- Start ART: Ih -> T -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.8"
+        target="//@compartments.6"
+        description="Enrollment/transition of untreated infected homosexual men into ART treatment (rate a)."/>
+  </compartments>
+
+  <!-- Susceptible Women (Sw) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Women" population="189994">
+    <!-- Heterosexual transmission: Sw -> Iw via contact with Im -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.20"
+        contactCompartment="//@compartments.5"
+        target="//@compartments.3"
+        description="Infection of susceptible women via heterosexual contact with untreated infected heterosexual men (B_s=b_s*c_s)."/>
+    <!-- Contact with infected homosexual men: Sw -> Iw via contact with Ih -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.21"
+        contactCompartment="//@compartments.1"
+        target="//@compartments.3"
+        description="Infection of susceptible women via contact with untreated infected homosexual men (B_hw=b_hw*c_hw)."/>
+  </compartments>
+
+  <!-- Untreated Infected Women (Iw) -->
+  <compartments PrimaryName="Infected" SecondaryName="Untreated Women" population="6">
+    <!-- Start ART: Iw -> T -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.8"
+        target="//@compartments.6"
+        description="Enrollment/transition of untreated infected women into ART treatment (rate a)."/>
+  </compartments>
+
+  <!-- Susceptible Heterosexual Men (Sm) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men" population="171173">
+    <!-- Heterosexual transmission: Sm -> Im via contact with Iw -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.20"
+        contactCompartment="//@compartments.3"
+        target="//@compartments.5"
+        description="Infection of susceptible heterosexual men via heterosexual contact with untreated infected women (B_s=b_s*c_s)."/>
+    <!-- Bisexual contact: Sm -> Im via contact with Ih -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+        contactRateParameter="//@parameters.22"
+        contactCompartment="//@compartments.1"
+        target="//@compartments.5"
+        description="Infection of susceptible heterosexual men via contact with untreated infected homosexual men (B_hm=b_hm*c_hm)."/>
+  </compartments>
+
+  <!-- Untreated Infected Heterosexual Men (Im) -->
+  <compartments PrimaryName="Infected" SecondaryName="Untreated Heterosexual Men" population="29">
+    <!-- Start ART: Im -> T -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.8"
+        target="//@compartments.6"
+        description="Enrollment/transition of untreated infected heterosexual men into ART treatment (rate a)."/>
+  </compartments>
+
+  <!-- Treated with ART (T) -->
+  <compartments PrimaryName="Treated" SecondaryName="with ART" population="107">
+    <!-- ART failure/resistance leading to AIDS: T -> A -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+        rateParameter="//@parameters.7"
+        target="//@compartments.7"
+        description="Progression to AIDS from treated class due to ART resistance/treatment failure (rate d)."/>
+  </compartments>
+
+  <!-- People living with AIDS (A) -->
+  <compartments PrimaryName="AIDS" SecondaryName="People living with AIDS" population="47">
+    <!-- No explicit non-death outgoing flow instantiated because paper states possible ART enrollment from AIDS,
+         but provides no parameter value in Table 3 for A -> T. -->
+  </compartments>
+
+</seir:SEIRModel>
+```

@@ -1,0 +1,124 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="A" type="CONSTANT"
+              expression=""
+              description="Recruitment (birth) rate into the susceptible human population (all newborns are susceptible)"
+              unit="humans/time"/>
+  <parameters name="β" type="CONSTANT"
+              expression=""
+              description="Effective transmission (infection) rate from susceptible to infected due to contact with infected individuals"
+              unit="1/(human·time)"/>
+  <parameters name="δ" type="CONSTANT"
+              expression="[0.003, 0.02]"
+              description="Drop-out rate due to waning natural immunity (Recovered → Susceptible)"
+              unit="1/day"/>
+  <parameters name="μ" type="CONSTANT"
+              expression=""
+              description="Natural death rate (applies to all compartments)"
+              unit="1/time"/>
+  <parameters name="u" type="CONSTANT"
+              expression="[0, 1]"
+              description="Vaccination rate moving individuals from Susceptible to Vaccinated"
+              unit="1/day"/>
+  <parameters name="θ" type="CONSTANT"
+              expression="[0.067, 0.1]"
+              description="Vaccine waning rate (Vaccinated → Susceptible)"
+              unit="1/day"/>
+  <parameters name="ε" type="CONSTANT"
+              expression="[0, 1]"
+              description="Correction parameter for reinfection term (probability/relative success of reinfection compared to primary infection)"
+              unit="dimensionless"/>
+  <parameters name="γ" type="CONSTANT"
+              expression="[0.5, 2]"
+              description="Recovery rate from active TB infection (Infected → Recovered)"
+              unit="1/year"/>
+
+  <!-- ===================== -->
+  <!-- Compartments          -->
+  <!-- ===================== -->
+  <compartments PrimaryName="Susceptible" population="0">
+    <!-- Outflows from Susceptible -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.2"
+                   description="Primary infection: Susceptible individuals become Infected through contact with Infected (β S I)."/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.4"
+                   target="//@compartments.1"
+                   description="Vaccination: Susceptible individuals move to Vaccinated at rate u S."/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.3"
+                   target="//@compartments.0"
+                   description="Natural death from Susceptible at rate μ S (modeled as sink-to-self placeholder)."/>
+  </compartments>
+
+  <compartments PrimaryName="Vaccinated" population="0">
+    <!-- Outflows from Vaccinated -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.0"
+                   description="Vaccine waning: Vaccinated individuals return to Susceptible at rate θ V."/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.3"
+                   target="//@compartments.1"
+                   description="Natural death from Vaccinated at rate μ V (modeled as sink-to-self placeholder)."/>
+  </compartments>
+
+  <compartments PrimaryName="Infected" SecondaryName="Active TB" population="0">
+    <!-- Outflows from Infected -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.7"
+                   target="//@compartments.3"
+                   description="Recovery: Infected individuals recover and move to Recovered at rate γ I."/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.3"
+                   target="//@compartments.2"
+                   description="Natural death from Infected at rate μ I (modeled as sink-to-self placeholder)."/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" population="0">
+    <!-- Outflows from Recovered -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.2"
+                   target="//@compartments.0"
+                   description="Waning natural immunity: Recovered individuals return to Susceptible at rate δ R."/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.3"
+                   target="//@compartments.3"
+                   description="Natural death from Recovered at rate μ R (modeled as sink-to-self placeholder)."/>
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.1"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.2"
+                   description="Reinfection: Recovered individuals become Infected through contact with Infected at rate ε β R I (ε applied in equations; see note)."/>
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Birth source (A → S)  -->
+  <!-- ===================== -->
+  <birthSources name="HumanRecruitment"
+                rateParameter="//@parameters.0"
+                targetCompartment="//@compartments.0"
+                description="All newborns enter Susceptible at rate A."/>
+
+  <!-- ===================== -->
+  <!-- Notes on reinfection  -->
+  <!-- ===================== -->
+  <!--
+    The reinfection flow R -> I in the equations is ε β R I.
+    In this metamodel, ContactFlow supports a single contactRateParameter.
+    To preserve the published structure, keep β as the contactRateParameter and represent ε as a separate parameter
+    documented above; simulation/equation-generation layers should interpret this flow's effective rate as (ε * β).
+  -->
+
+</seir:SEIRModel>
+```

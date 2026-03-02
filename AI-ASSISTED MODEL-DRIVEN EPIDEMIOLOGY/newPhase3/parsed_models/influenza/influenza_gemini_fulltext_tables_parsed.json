@@ -1,0 +1,185 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 53679740.0
+    },
+    {
+      "name": "Exposed_1",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed_2",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious_1",
+      "secondary_name": "",
+      "initial_population": 10.0
+    },
+    {
+      "name": "Infectious_2",
+      "secondary_name": "",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Removed",
+      "secondary_name": "",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed_1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious_1",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals through contact with Infectious_1 individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed_1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious_2",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals through contact with Infectious_2 individuals."
+    },
+    {
+      "source": "Exposed_1",
+      "target": "Exposed_2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from the first to the second stage of the exposed (latent) period."
+    },
+    {
+      "source": "Exposed_2",
+      "target": "Infectious_1",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from the exposed (latent) period to becoming infectious."
+    },
+    {
+      "source": "Infectious_1",
+      "target": "Infectious_2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from the first to the second stage of the infectious period."
+    },
+    {
+      "source": "Infectious_2",
+      "target": "Removed",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery from infection and movement to the Removed compartment."
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "1/person/day",
+      "description": "Transmission rate, part of the force of infection \u03bb(t). Inferred via re-parameterization in the paper."
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "per day",
+      "description": "Rate of becoming infectious (progression through E1 and E2). Corresponds to an average latent period dL = 2/\u03c3."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.5797,
+      "unit": "per day",
+      "description": "Rate of recovery (progression through I1 and I2). Corresponds to an average infectious period dI = 2/\u03b3."
+    },
+    {
+      "symbol": "\u03c0",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Initial susceptibility, the proportion of the population that is initially susceptible to infection."
+    },
+    {
+      "symbol": "\u03bb\u2080",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "per day",
+      "description": "Initial infection rate, used for model initialization in the inference framework."
+    },
+    {
+      "symbol": "\u03c8",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "per day",
+      "description": "Exponential Growth Rate (EGR), used for re-parameterization of the model for inference."
+    },
+    {
+      "symbol": "\u03b7",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Over-dispersion parameter for the Negative Binomial observational model."
+    },
+    {
+      "symbol": "p_ICU",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Probability of ICU admission given infection, a measure of severity."
+    },
+    {
+      "symbol": "\u00b5_ICU|E",
+      "type": "CONSTANT",
+      "value": 5.708,
+      "unit": "days",
+      "description": "Mean time from infection to ICU admission (observational model parameter)."
+    },
+    {
+      "symbol": "\u03c3\u00b2_ICU|E",
+      "type": "CONSTANT",
+      "value": 18.24,
+      "unit": "days\u00b2",
+      "description": "Variance of time from infection to ICU admission (observational model parameter)."
+    },
+    {
+      "symbol": "N\u2082\u2080\u2081\u2082\u2e1d\u2081\u2083",
+      "type": "CONSTANT",
+      "value": 53679750.0,
+      "unit": "persons",
+      "description": "Total population size for the 2012/2013 season."
+    },
+    {
+      "symbol": "N\u2082\u2080\u2081\u2083\u2e1d\u2081\u2084",
+      "type": "CONSTANT",
+      "value": 54091200.0,
+      "unit": "persons",
+      "description": "Total population size for the 2013/2014 season."
+    },
+    {
+      "symbol": "N\u2082\u2080\u2081\u2084\u2e1d\u2081\u2085",
+      "type": "CONSTANT",
+      "value": 54551450.0,
+      "unit": "persons",
+      "description": "Total population size for the 2014/2015 season."
+    }
+  ]
+}

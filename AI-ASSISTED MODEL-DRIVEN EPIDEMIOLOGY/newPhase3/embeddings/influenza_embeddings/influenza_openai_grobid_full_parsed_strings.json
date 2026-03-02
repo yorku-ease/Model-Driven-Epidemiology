@@ -1,0 +1,51 @@
+{
+  "comp": [
+    "Susceptible S",
+    "Exposed E1",
+    "Exposed E2",
+    "Infectious I1",
+    "Infectious I2",
+    "Removed R",
+    "ICU ICU_t"
+  ],
+  "flow": [
+    "Susceptible S->Exposed E1",
+    "Susceptible S->Exposed E1",
+    "Exposed E1->Exposed E2",
+    "Exposed E2->Infectious I1",
+    "Infectious I1->Infectious I2",
+    "Infectious I2->Removed R"
+  ],
+  "param": [
+    "\u03b4t Discrete time step length",
+    "N Population size for the season (use N2012/13, N2013/14, or N2014/15)",
+    "N2012/13 Population size, season 2012/13",
+    "N2013/14 Population size, season 2013/14",
+    "N2014/15 Population size, season 2014/15",
+    "\u03b2 Transmission rate (rate at which new infections take place given a contact); used in \u03bb(t)=\u03b2*I/N",
+    "\u03bb(t) Force of infection at time t",
+    "\u03c3 Daily rate of progression through latent stages (E1\u2192E2 and E2\u2192I1); mean latent/incubation period dL=2/\u03c3",
+    "\u03b3 Daily rate of progression through infectious stages (I1\u2192I2 and I2\u2192R); mean infectious period dI=2/\u03b3",
+    "\u03c0 Initial susceptibility (proportion susceptible at start of season)",
+    "\u03bb0 Initial infection rate parameter used in early growth re-parameterisation (EGR)",
+    "\u03c8 Exponential growth rate parameter used in early growth re-parameterisation (EGR)",
+    "\u03b7 Negative binomial over-dispersion parameter for weekly ICU counts",
+    "pICU Probability of ICU/HDU admission given infection",
+    "\u03c0_prior_low Lower bound of prior for \u03c0 ~ Unif(0,1)",
+    "\u03c0_prior_high Upper bound of prior for \u03c0 ~ Unif(0,1)",
+    "\u03bb0_prior_low Lower bound of prior for \u03bb0 ~ Unif(0,0.000241)",
+    "\u03bb0_prior_high Upper bound of prior for \u03bb0 ~ Unif(0,0.000241)",
+    "\u03c8_prior_low Lower bound of prior for \u03c8 ~ Unif(0,0.39)",
+    "\u03c8_prior_high Upper bound of prior for \u03c8 ~ Unif(0,0.39)",
+    "\u03b7_prior_low Lower bound of prior for \u03b7 ~ Unif(1,100)",
+    "\u03b7_prior_high Upper bound of prior for \u03b7 ~ Unif(1,100)",
+    "pICU_prior_low Lower bound of prior for pICU ~ Unif(0,1)",
+    "pICU_prior_high Upper bound of prior for pICU ~ Unif(0,1)",
+    "\u03bcICU|E Mean time from infection to ICU/HDU admission (delay distribution mean)",
+    "\u03c32ICU|E Variance of time from infection to ICU/HDU admission (delay distribution variance)",
+    "R0 Basic reproduction number (derived from \u03b2, \u03c3, \u03b3 and initial conditions; reported in results)",
+    "Rn Effective reproduction number in partially immune population (function of \u03c0 and \u03c8; reported in results)",
+    "I0 Initial total infectious individuals (derived; reported in results)",
+    "TAR Total attack rate over the season (probability of infection for a susceptible individual; reported in results)"
+  ]
+}

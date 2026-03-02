@@ -1,0 +1,161 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!-- =========================================================
+       Parameters (symbolic/parametric; values not provided in Table 1)
+       Units inferred from equations and paper descriptions.
+       Age-dependent functions are represented as VARIABLE parameters.
+       ========================================================= -->
+  <parameters name="B" type="CONSTANT"
+              description="Constant influx (recruitment) rate of human hosts into susceptible class"
+              unit="humans/time"/>
+  <parameters name="μₕ" type="CONSTANT"
+              description="Natural death rate of human hosts"
+              unit="1/time"/>
+  <parameters name="μᵥ" type="CONSTANT"
+              description="Natural death rate of mosquitoes"
+              unit="1/time"/>
+  <parameters name="ρ" type="CONSTANT"
+              description="Probability exposed hosts progress to symptomatic infectious class (primary infection)"
+              unit="dimensionless"/>
+  <parameters name="σ" type="CONSTANT"
+              description="Reinfection intensity factor for asymptomatic hosts (distinguishes primary vs secondary infection contact intensity)"
+              unit="dimensionless"/>
+
+  <!-- Age-dependent rates (functions of age a) -->
+  <parameters name="βₕ(a)" type="VARIABLE"
+              description="Age-specific transmission/contact rate from infectious mosquitoes to susceptible humans"
+              unit="1/time"/>
+  <parameters name="k(a)" type="VARIABLE"
+              description="Age-specific progression rate from exposed to infectious (inverse of latent period)"
+              unit="1/time"/>
+  <parameters name="γ₁(a)" type="VARIABLE"
+              description="Age-specific recovery rate of symptomatic infectious humans"
+              unit="1/time"/>
+  <parameters name="γ₂(a)" type="VARIABLE"
+              description="Age-specific recovery rate of asymptomatic infectious humans"
+              unit="1/time"/>
+  <parameters name="βᵥ(a)" type="VARIABLE"
+              description="Age-specific transmission rate from infectious humans (symptomatic and asymptomatic) to susceptible mosquitoes"
+              unit="1/time"/>
+
+  <!-- Population normalizers appearing in incidence terms -->
+  <parameters name="Nₕ(t)" type="VARIABLE"
+              description="Total human population size at time t (used to normalize standard incidence)"
+              unit="humans"/>
+
+  <!-- =========================================================
+       Compartments (one per equation/state variable)
+       Human states are age-structured densities; mosquito state is a proportion.
+       ========================================================= -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans (age-structured)" population="0.0">
+    <!-- Outflows: infection by infectious mosquitoes (standard incidence), natural death -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRate="0.0"
+                   contactRateParameter="//@parameters.5"
+                   contactCompartment="//@compartments.5"
+                   target="//@compartments.1"
+                   description="Mosquito-to-human transmission: susceptible humans become exposed at rate βₕ(a)·Iᵥ(t)·Sₕ/Nₕ"/>
+    <!-- Natural death sink (modeled as DeathSink per metamodel best practice) -->
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans (age-structured)" population="0.0">
+    <!-- Outflows: progression to symptomatic infectious, progression to asymptomatic infectious, natural death -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.2"
+                   description="Progression: exposed humans become symptomatic infectious at rate ρ·k(a) (handled via expression externally)"/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.3"
+                   description="Progression: exposed humans become asymptomatic infectious at rate (1-ρ)·k(a) (handled via expression externally)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans (symptomatic, age-structured)" population="0.0">
+    <!-- Outflows: recovery, natural death -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.7"
+                   target="//@compartments.4"
+                   description="Recovery of symptomatic infectious humans at rate γ₁(a)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans (asymptomatic, age-structured)" population="0.0">
+    <!-- Outflows: reinfection to symptomatic via mosquito bites; recovery; natural death -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRate="0.0"
+                   contactRateParameter="//@parameters.5"
+                   contactCompartment="//@compartments.5"
+                   target="//@compartments.2"
+                   description="Secondary infection: asymptomatic humans become symptomatic via mosquito bites at rate σ·βₕ(a)·Iᵥ(t)·Aₕ/Nₕ"/>
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.8"
+                   target="//@compartments.4"
+                   description="Recovery of asymptomatic infectious humans at rate γ₂(a)"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans (age-structured)" population="0.0">
+    <!-- No outgoing flows in the provided equations (only natural death) -->
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquitoes (proportion)" population="0.0">
+    <!-- Outflows: mosquito natural death -->
+    <!-- Inflow: infection from infectious humans is not representable as a simple ContactFlow in this metamodel
+         because it depends on an age-integral of Ih(a,t) and Ah(a,t). We keep the compartment and represent
+         mosquito death as a DeathSink; the infection term must be implemented in the simulation layer as
+         a custom force of infection:
+           (1-Iv) * (1/Nh) * ∫ βv(a) (Ih(a,t) + σ Ah(a,t)) da
+    -->
+  </compartments>
+
+  <!-- =========================================================
+       Birth sources (human recruitment)
+       Boundary condition Sh(0,t)=B in the PDE corresponds to influx into susceptible humans.
+       ========================================================= -->
+  <birthSources name="Human recruitment to susceptible"
+                rate="0.0"
+                rateParameter="//@parameters.0"
+                targetCompartment="//@compartments.0"
+                fixedRate="true"/>
+
+  <!-- =========================================================
+       Death sinks (natural mortality)
+       Humans: μₕ applies to all human compartments.
+       Mosquitoes: μᵥ applies to infectious mosquitoes (and implicitly to susceptible mosquitoes 1-Iv).
+       ========================================================= -->
+  <deathSinks name="Natural death of susceptible humans"
+              rate="0.0"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural death of exposed humans"
+              rate="0.0"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural death of symptomatic infectious humans"
+              rate="0.0"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural death of asymptomatic infectious humans"
+              rate="0.0"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural death of recovered humans"
+              rate="0.0"
+              rateParameter="//@parameters.1"
+              sourceCompartment="//@compartments.4"/>
+
+  <deathSinks name="Natural death of infectious mosquitoes"
+              rate="0.0"
+              rateParameter="//@parameters.2"
+              sourceCompartment="//@compartments.5"/>
+
+</seir:SEIRModel>
+```

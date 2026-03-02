@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "disease": "hiv",
+    "case_id": "hiv_openai_grobid_images",
+    "provider": "openai",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:48:36.377948+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.4444,
+      "recall": 0.8,
+      "f1": 0.5714,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.3548,
+      "recall": 0.5789,
+      "f1": 0.44,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.4545,
+      "recall": 0.1786,
+      "f1": 0.2564,
+      "weight": 0.15
+    },
+    "composite": 0.4683
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 5,
+      "extracted_total": 9,
+      "tp": 4,
+      "fp": 5,
+      "fn": 1
+    },
+    "flows": {
+      "gold_total": 19,
+      "extracted_total": 31,
+      "tp": 11,
+      "fp": 20,
+      "fn": 8
+    },
+    "parameters": {
+      "gold_total": 28,
+      "extracted_total": 11,
+      "tp": 5,
+      "fp": 6,
+      "fn": 23
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible",
+        "extracted": "Susceptible Women",
+        "score": 0.7585594654083252
+      },
+      {
+        "gold": "Infectious Untreated Infected",
+        "extracted": "Infected Women (untreated)",
+        "score": 0.7633130550384521
+      },
+      {
+        "gold": "Treated with ART",
+        "extracted": "Treated On ART (initial treatment)",
+        "score": 0.89763343334198
+      },
+      {
+        "gold": "Infectious living with AIDS",
+        "extracted": "AIDS Living with AIDS",
+        "score": 0.8795886039733887
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Susceptible->Infectious Untreated Infected",
+        "extracted": "Susceptible Women->Infected Women (untreated)",
+        "score": 0.7713735699653625
+      },
+      {
+        "gold": "Infectious Untreated Infected->Treated with ART",
+        "extracted": "Infected Women (untreated)->Treated On ART (initial treatment)",
+        "score": 0.8482130765914917
+      },
+      {
+        "gold": "Infectious Untreated Infected->Infectious living with AIDS",
+        "extracted": "Infected Women (untreated)->AIDS Living with AIDS",
+        "score": 0.8069282174110413
+      },
+      {
+        "gold": "Treated with ART->Infectious living with AIDS",
+        "extracted": "Treated On ART (initial treatment)->AIDS Living with AIDS",
+        "score": 0.9058796167373657
+      },
+      {
+        "gold": "Infectious living with AIDS->HIV Deaths",
+        "extracted": "AIDS Living with AIDS->Death All-cause sink",
+        "score": 0.799906849861145
+      },
+      {
+        "gold": "Susceptible->__dead__",
+        "extracted": "Susceptible Women->__dead__",
+        "score": 0.7953020334243774
+      },
+      {
+        "gold": "Infectious Untreated Infected->__dead__",
+        "extracted": "Infected Women (untreated)->__dead__",
+        "score": 0.8137350678443909
+      },
+      {
+        "gold": "Treated with ART->__dead__",
+        "extracted": "Treated On ART (initial treatment)->__dead__",
+        "score": 0.931134045124054
+      },
+      {
+        "gold": "Infectious living with AIDS->__dead__",
+        "extracted": "AIDS Living with AIDS->__dead__",
+        "score": 0.9067443609237671
+      },
+      {
+        "gold": "Infectious living with AIDS->__dead__",
+        "extracted": "AIDS Living with AIDS->__dead__",
+        "score": 0.9067443609237671
+      },
+      {
+        "gold": "Infectious living with AIDS->__dead__",
+        "extracted": "AIDS Living with AIDS->Death All-cause sink",
+        "score": 0.7485475540161133
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "k_women_Heterosexual_Men Stratum-specific contact rate for: Transmission from infected women, stratum=Heterosexual Men",
+        "extracted": "\u03bb\ud835\udccc Force of infection for susceptible women (aggregates heterosexual contact with infected heterosexual men and bisexual contact with infected homosexual men)",
+        "score": 0.725612223148346
+      },
+      {
+        "gold": "\u03b4 AIDS-induced mortality rate",
+        "extracted": "d AIDS-induced additional mortality rate (applies only in AIDS compartment A)",
+        "score": 0.7723289132118225
+      },
+      {
+        "gold": "d_T AIDS development rate in treated individuals (ART resistance/failure)",
+        "extracted": "\u03b4 Progression rate from treatment (ART) to AIDS (treatment failure / resistance)",
+        "score": 0.7547012567520142
+      },
+      {
+        "gold": "a Departure rate from infected compartments (per paper)",
+        "extracted": "\u03b1 Departure/diagnosis rate from untreated infected classes (leaving I compartments)",
+        "score": 0.7519358396530151
+      },
+      {
+        "gold": "\u039b_h_rec Recruitment of homosexual men into susceptible (as encoded)",
+        "extracted": "\u03bb\u2095 Force of infection for susceptible homosexual men (aggregates exclusive homosexual + bisexual contacts as defined in paper/figure)",
+        "score": 0.7500559091567993
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [
+      "Susceptible Homosexual Men",
+      "Susceptible Heterosexual Men",
+      "Infected Homosexual Men (untreated)",
+      "Infected Heterosexual Men (untreated)",
+      "Death All-cause sink"
+    ],
+    "flows": [
+      "Susceptible Homosexual Men -> Infected Homosexual Men (untreated)",
+      "Susceptible Homosexual Men -> Death All-cause sink",
+      "Susceptible Women -> Infected Women (untreated)",
+      "Susceptible Women -> Death All-cause sink",
+      "Susceptible Heterosexual Men -> Infected Heterosexual Men (untreated)",
+      "Susceptible Heterosexual Men -> Death All-cause sink",
+      "Infected Homosexual Men (untreated) -> Treated On ART (initial treatment)",
+      "Infected Homosexual Men (untreated) -> AIDS Living with AIDS",
+      "Infected Homosexual Men (untreated) -> Death All-cause sink",
+      "Infected Women (untreated) -> Treated On ART (initial treatment)",
+      "Infected Women (untreated) -> AIDS Living with AIDS",
+      "Infected Women (untreated) -> Death All-cause sink",
+      "Infected Heterosexual Men (untreated) -> Treated On ART (initial treatment)",
+      "Infected Heterosexual Men (untreated) -> AIDS Living with AIDS",
+      "Infected Heterosexual Men (untreated) -> Death All-cause sink",
+      "Treated On ART (initial treatment) -> AIDS Living with AIDS",
+      "Treated On ART (initial treatment) -> Death All-cause sink",
+      "AIDS Living with AIDS -> Death All-cause sink",
+      "AIDS Living with AIDS -> Death All-cause sink",
+      "__external__ -> Susceptible Homosexual Men",
+      "__external__ -> Susceptible Women",
+      "__external__ -> Susceptible Heterosexual Men",
+      "Susceptible Homosexual Men -> __dead__",
+      "Susceptible Women -> __dead__",
+      "Susceptible Heterosexual Men -> __dead__",
+      "Infected Homosexual Men (untreated) -> __dead__",
+      "Infected Women (untreated) -> __dead__",
+      "Infected Heterosexual Men (untreated) -> __dead__",
+      "Treated On ART (initial treatment) -> __dead__",
+      "AIDS Living with AIDS -> __dead__",
+      "AIDS Living with AIDS -> __dead__"
+    ],
+    "parameters": [
+      "\u03a8 Total recruitment (entry) rate into adult susceptible population (all groups combined)",
+      "\u03b8 Proportion of recruits who are men",
+      "\u03b3 Proportion of male recruits who are heterosexual men (vs homosexual men)",
+      "\u03bb\u2098 Force of infection for susceptible heterosexual men (aggregates heterosexual contact with infected women and bisexual contact with infected homosexual men)",
+      "p Proportion of departing infected individuals who initiate ART (enter T); remaining (1-p) progress directly to AIDS (enter A)",
+      "\u03bc Natural mortality rate (applies to all compartments)"
+    ]
+  },
+  "false_negatives": {
+    "compartments": [
+      "HIV Deaths"
+    ],
+    "flows": [
+      "Susceptible -> Infectious Untreated Infected",
+      "Susceptible -> Infectious Untreated Infected",
+      "Susceptible -> Infectious Untreated Infected",
+      "Infectious Untreated Infected -> Treated with ART",
+      "Infectious Untreated Infected -> Infectious living with AIDS",
+      "Treated with ART -> Infectious living with AIDS",
+      "Infectious living with AIDS -> HIV Deaths",
+      "Susceptible -> __dead__",
+      "Susceptible -> __dead__",
+      "Susceptible -> __dead__",
+      "Infectious Untreated Infected -> __dead__",
+      "Infectious Untreated Infected -> __dead__",
+      "Infectious Untreated Infected -> __dead__",
+      "Treated with ART -> __dead__",
+      "Treated with ART -> __dead__",
+      "Treated with ART -> __dead__",
+      "Infectious living with AIDS -> __dead__",
+      "Infectious living with AIDS -> __dead__",
+      "Infectious living with AIDS -> __dead__"
+    ],
+    "parameters": [
+      "k_men_Heterosexual_Men Stratum-specific contact rate for: Transmission from infected homosexual men, stratum=Heterosexual Men",
+      "k_men_Women Stratum-specific contact rate for: Transmission from infected homosexual men, stratum=Women",
+      "k_men_Homosexual_Men Stratum-specific contact rate for: Transmission from infected homosexual men, stratum=Homosexual Men",
+      "C Constant recruitment in susceptible individuals",
+      "h Proportion of men",
+      "c Proportion of heterosexual men (among men)",
+      "p Proportion of initially treated individuals",
+      "\u2113 Natural mortality rate",
+      "b_s Transmission probability (heterosexual contact)",
+      "b_h Transmission probability (homosexual contact)",
+      "b_hw Transmission probability (homosexual men to women)",
+      "b_hm Transmission probability (homosexual to heterosexual men)",
+      "c_s Sexual partner rate (heterosexual)",
+      "c_h Sexual partner rate (homosexual)",
+      "c_hw Sexual partner rate (homosexual men with women)",
+      "c_hm Sexual partner rate (homosexual men with heterosexual men)",
+      "\u03c4 ART initiation rate (as encoded in this model)",
+      "\u03c1_AU Progression to AIDS rate for untreated individuals (as encoded in this model)",
+      "k_h_model Effective contact rate used in model: transmission from infected homosexual men (base)",
+      "k_w_model Effective contact rate used in model: transmission from infected women (base)",
+      "k_m_model Effective contact rate used in model: transmission from infected heterosexual men (base)",
+      "\u039b_w_rec Recruitment of women into susceptible (as encoded)",
+      "\u039b_m_rec Recruitment of heterosexual men into susceptible (as encoded)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "POOR",
+    "composite_score": 0.4683,
+    "entity_verdicts": {
+      "compartments": "moderate",
+      "flows": "poor",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 1 compartment(s), 19 flow(s), 23 parameter(s) from gold standard.",
+      "Hallucinated 5 compartment(s), 31 flow(s), 6 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_compartments": [
+        "HIV Deaths"
+      ],
+      "missed_flows": [
+        "Susceptible -> Infectious Untreated Infected",
+        "Susceptible -> Infectious Untreated Infected",
+        "Susceptible -> Infectious Untreated Infected",
+        "Infectious Untreated Infected -> Treated with ART",
+        "Infectious Untreated Infected -> Infectious living with AIDS"
+      ],
+      "missed_flows_total": 19,
+      "missed_parameters": [
+        "k_men_Heterosexual_Men Stratum-specific contact rate for: Transmission from infected homosexual men, stratum=Heterosexual Men",
+        "k_men_Women Stratum-specific contact rate for: Transmission from infected homosexual men, stratum=Women",
+        "k_men_Homosexual_Men Stratum-specific contact rate for: Transmission from infected homosexual men, stratum=Homosexual Men",
+        "C Constant recruitment in susceptible individuals",
+        "h Proportion of men"
+      ],
+      "missed_parameters_total": 23,
+      "hallucinated_compartments": [
+        "Susceptible Homosexual Men",
+        "Susceptible Heterosexual Men",
+        "Infected Homosexual Men (untreated)",
+        "Infected Heterosexual Men (untreated)",
+        "Death All-cause sink"
+      ],
+      "hallucinated_flows": [
+        "Susceptible Homosexual Men -> Infected Homosexual Men (untreated)",
+        "Susceptible Homosexual Men -> Death All-cause sink",
+        "Susceptible Women -> Infected Women (untreated)",
+        "Susceptible Women -> Death All-cause sink",
+        "Susceptible Heterosexual Men -> Infected Heterosexual Men (untreated)"
+      ],
+      "hallucinated_flows_total": 31,
+      "hallucinated_parameters": [
+        "\u03a8 Total recruitment (entry) rate into adult susceptible population (all groups combined)",
+        "\u03b8 Proportion of recruits who are men",
+        "\u03b3 Proportion of male recruits who are heterosexual men (vs homosexual men)",
+        "\u03bb\u2098 Force of infection for susceptible heterosexual men (aggregates heterosexual contact with infected women and bisexual contact with infected homosexual men)",
+        "p Proportion of departing infected individuals who initiate ART (enter T); remaining (1-p) progress directly to AIDS (enter A)"
+      ],
+      "hallucinated_parameters_total": 6
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

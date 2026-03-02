@@ -1,0 +1,47 @@
+{
+  "comp": [
+    "Susceptible A",
+    "Infectious P",
+    "Quarantined F",
+    "Recovered K",
+    "Environment U",
+    "Deceased S"
+  ],
+  "flow": [
+    "Susceptible A->Infectious P",
+    "Susceptible A->Infectious P",
+    "Susceptible A->Infectious P",
+    "Susceptible A->Susceptible A",
+    "Infectious P->Quarantined F",
+    "Infectious P->Deceased S",
+    "Infectious P->Deceased S",
+    "Infectious P->Environment U",
+    "Quarantined F->Recovered K",
+    "Quarantined F->Deceased S",
+    "Quarantined F->Deceased S",
+    "Recovered K->Recovered K",
+    "Environment U->Environment U",
+    "Deceased S->Environment U",
+    "Deceased S->Deceased S",
+    "__external__->Susceptible A",
+    "__external__->Infectious P",
+    "__external__->Environment U"
+  ],
+  "param": [
+    "\u03b1\u2081 Recruitment rate into susceptible people A",
+    "\u03b1\u2082 Recruitment/entry rate into infected people P",
+    "\u03c8\u2081 Effective contact rate with infectious humans (drives A\u2192P transmission via P)",
+    "\u03c8\u2082 Contact rate with Ebola virus pathogens in the environment (drives A\u2192P via U)",
+    "\u03c8\u2083 Effective contact rate with deceased humans (drives A\u2192P via S)",
+    "\u03b5 Natural death/removal rate of humans (applies to A,P,F,K in equations)",
+    "\u03c1\u2081 Disease-induced death rate of infected humans (contributes to S from P)",
+    "\u03c1\u2082 Shedding rate of infected humans into environment (P\u2192U contribution)",
+    "\u03c1\u2083 Rate at which infected people are quarantined (P\u2192F)",
+    "\u03c9\u2081 Recovery rate of quarantined people (F\u2192K contribution)",
+    "\u03c9\u2082 Death rate in quarantine due to infection (contributes to S from F)",
+    "h Shedding rate from deceased people into environment (S\u2192U contribution)",
+    "c Burial/removal rate of deceased people (removes S)",
+    "b Clearance/decay rate of Ebola virus pathogens in the environment (removes U)",
+    "d External input/source term into environment U"
+  ]
+}

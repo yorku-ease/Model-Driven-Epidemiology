@@ -1,0 +1,26 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="β" description="The constant transmission rate at which new infections take place given a contact." unit="1/day"/>
+  <parameters name="σ" description="The daily rate of transition through the latent compartments. The average incubation period is 2/σ." unit="1/day"/>
+  <parameters name="γ" description="The daily rate of transition through the infectious compartments. The average infectious period is 2/γ." unit="1/day"/>
+  <parameters name="π" description="The initial proportion of the population that is susceptible (a measure of immunity is 1-π)." unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.3" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious individuals in stage 1."/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactRateParameter="//@parameters.0" contactCompartment="//@compartments.4" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious individuals in stage 2."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Stage 1">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression from the first to the second latent stage."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Stage 2">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Progression from the second latent stage to becoming infectious (stage 1)."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Stage 1">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Progression from the first to the second infectious stage."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" SecondaryName="Stage 2">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.2" target="//@compartments.5" description="Transition from the second infectious stage to Recovered."/>
+  </compartments>
+  <compartments PrimaryName="Recovered"/>
+</seir:SEIRModel>
+```

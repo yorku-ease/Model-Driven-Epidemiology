@@ -1,0 +1,315 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible People (A)",
+      "secondary_name": "People (A)",
+      "initial_population": 0.9
+    },
+    {
+      "name": "Infectious People (P)",
+      "secondary_name": "People (P)",
+      "initial_population": 0.8
+    },
+    {
+      "name": "Quarantined People (F)",
+      "secondary_name": "People (F)",
+      "initial_population": 0.1
+    },
+    {
+      "name": "Recovered Disease (K)",
+      "secondary_name": "Disease (K)",
+      "initial_population": 0.2
+    },
+    {
+      "name": "Environmental Ebola virus pathogens (U)",
+      "secondary_name": "Ebola virus pathogens (U)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Deceased People (S)",
+      "secondary_name": "People (S)",
+      "initial_population": 0.5
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible People (A)",
+      "target": "Infectious People (P)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious People (P)",
+      "rate_parameter": "\u03c8\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Direct transmission: Susceptible A become Infectious P via contact with Infectious P at rate \u03c8\u2081 * A * P"
+    },
+    {
+      "source": "Susceptible People (A)",
+      "target": "Infectious People (P)",
+      "type": "ContactFlow",
+      "contact_compartment": "Deceased People (S)",
+      "rate_parameter": "\u03c8\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Transmission from deceased: Susceptible A become Infectious P via contact with Deceased S at rate \u03c8\u2083 * A * S"
+    },
+    {
+      "source": "Susceptible People (A)",
+      "target": "Infectious People (P)",
+      "type": "ContactFlow",
+      "contact_compartment": "Environmental Ebola virus pathogens (U)",
+      "rate_parameter": "\u03c8\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Environmental transmission: Susceptible A become Infectious P via contact with pathogens U at rate \u03c8\u2082 * A * U"
+    },
+    {
+      "source": "Infectious People (P)",
+      "target": "Quarantined People (F)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Quarantine of infectious: P \u2192 F at rate \u03c1\u2083 * P"
+    },
+    {
+      "source": "Infectious People (P)",
+      "target": "Deceased People (S)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Disease-induced death: P \u2192 S at rate \u03c1\u2081 * P"
+    },
+    {
+      "source": "Infectious People (P)",
+      "target": "Environmental Ebola virus pathogens (U)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Shedding to environment: P \u2192 U at rate \u03c1\u2082 * P"
+    },
+    {
+      "source": "Quarantined People (F)",
+      "target": "Recovered Disease (K)",
+      "type": "RateFlow",
+      "rate_parameter": "w\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery in quarantine: F \u2192 K at rate w\u2081 * F"
+    },
+    {
+      "source": "Quarantined People (F)",
+      "target": "Deceased People (S)",
+      "type": "RateFlow",
+      "rate_parameter": "w\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Death in quarantine: F \u2192 S at rate w\u2082 * F"
+    },
+    {
+      "source": "Environmental Ebola virus pathogens (U)",
+      "target": "Environmental Ebola virus pathogens (U)",
+      "type": "RateFlow",
+      "rate_parameter": "b",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Environmental pathogen removal/decay term -b*U represented as outflow (sink not explicitly modeled in metamodel)"
+    },
+    {
+      "source": "Deceased People (S)",
+      "target": "Deceased People (S)",
+      "type": "RateFlow",
+      "rate_parameter": "c",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Burial/removal term -c*S represented as outflow (sink not explicitly modeled in metamodel)"
+    },
+    {
+      "source": "Deceased People (S)",
+      "target": "Environmental Ebola virus pathogens (U)",
+      "type": "RateFlow",
+      "rate_parameter": "h",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Contribution of deceased to environmental pathogens: S \u2192 U at rate h * S"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible People (A)",
+      "type": "BirthSource",
+      "rate_parameter": "\u03b1\u2081",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Recruitment_to_Susceptible"
+    },
+    {
+      "source": "__external__",
+      "target": "Infectious People (P)",
+      "type": "BirthSource",
+      "rate_parameter": "\u03b1\u2082",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Recruitment_to_Infectious"
+    },
+    {
+      "source": "__external__",
+      "target": "Environmental Ebola virus pathogens (U)",
+      "type": "BirthSource",
+      "rate_parameter": "d",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Environmental_Input"
+    },
+    {
+      "source": "Susceptible People (A)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b5",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_Susceptible"
+    },
+    {
+      "source": "Infectious People (P)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b5",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_Infectious"
+    },
+    {
+      "source": "Quarantined People (F)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b5",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_Quarantined"
+    },
+    {
+      "source": "Recovered Disease (K)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b5",
+      "rate_value": 0.0,
+      "rate_unit": null,
+      "description": "Natural_Death_Recovered"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b1\u2081",
+      "type": "CONSTANT",
+      "value": 10.0,
+      "unit": "per day",
+      "description": "Recruitment rate into susceptible people (A)"
+    },
+    {
+      "symbol": "\u03b1\u2082",
+      "type": "CONSTANT",
+      "value": 3.0,
+      "unit": "per day",
+      "description": "Recruitment rate into infectious people (P)"
+    },
+    {
+      "symbol": "\u03c8\u2081",
+      "type": "CONSTANT",
+      "value": 0.006,
+      "unit": "1/(person\u00b7day)",
+      "description": "Effective contact rate with infectious humans (P) contributing to infection of susceptibles"
+    },
+    {
+      "symbol": "\u03c8\u2082",
+      "type": "CONSTANT",
+      "value": 0.0012,
+      "unit": "1/(pathogen\u00b7day)",
+      "description": "Effective contact rate with environmental Ebola pathogens (U) contributing to infection of susceptibles"
+    },
+    {
+      "symbol": "\u03c8\u2083",
+      "type": "CONSTANT",
+      "value": 0.006,
+      "unit": "1/(person\u00b7day)",
+      "description": "Effective contact rate with deceased humans (S) contributing to infection of susceptibles"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "1/day",
+      "description": "Natural death rate of humans"
+    },
+    {
+      "symbol": "\u03c1\u2081",
+      "type": "CONSTANT",
+      "value": 0.123,
+      "unit": "1/day",
+      "description": "Death rate of infected humans due to infection (disease-induced mortality from P to S)"
+    },
+    {
+      "symbol": "\u03c1\u2082",
+      "type": "CONSTANT",
+      "value": 0.04,
+      "unit": "1/day",
+      "description": "Shedding rate of infected humans into the environment (from P to U)"
+    },
+    {
+      "symbol": "\u03c1\u2083",
+      "type": "CONSTANT",
+      "value": 0.12,
+      "unit": "1/day",
+      "description": "Quarantine rate of infected people (from P to F)"
+    },
+    {
+      "symbol": "w\u2081",
+      "type": "CONSTANT",
+      "value": 0.04,
+      "unit": "1/day",
+      "description": "Recovery rate of quarantined people (from F to K)"
+    },
+    {
+      "symbol": "w\u2082",
+      "type": "CONSTANT",
+      "value": 0.22,
+      "unit": "1/day",
+      "description": "Death rate of quarantined people (from F to S)"
+    },
+    {
+      "symbol": "h",
+      "type": "CONSTANT",
+      "value": 0.04,
+      "unit": "1/day",
+      "description": "Shedding rate (or contribution) of deceased people to environmental pathogens (from S to U)"
+    },
+    {
+      "symbol": "c",
+      "type": "CONSTANT",
+      "value": 0.8,
+      "unit": "1/day",
+      "description": "Burial/removal rate of deceased people (outflow from S)"
+    },
+    {
+      "symbol": "b",
+      "type": "CONSTANT",
+      "value": 0.0,
+      "unit": "1/day",
+      "description": "Decay/removal rate of Ebola pathogens in the environment (outflow from U)"
+    },
+    {
+      "symbol": "d",
+      "type": "CONSTANT",
+      "value": 0.0015,
+      "unit": "per day",
+      "description": "Input/source term for Ebola pathogens in the environment (inflow to U)"
+    },
+    {
+      "symbol": "\u03b6",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Conformable fractional derivative order (used as t^(\u03b6-1) multiplier in the paper)"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:seir="http://example.com/seirmodel">
+
+  <!-- ===================== -->
+  <!-- Parameters (symbolic) -->
+  <!-- ===================== -->
+  <parameters name="λ" description="Intrinsic growth rate of human population in logistic growth term" unit="1/time"/>
+  <parameters name="K_H" description="Human carrying capacity (logistic growth)" unit="persons"/>
+  <parameters name="β" description="Transmission probability per bite (used symmetrically for vector→human and human→vector in equations)" unit="dimensionless"/>
+  <parameters name="b" description="Mosquito biting rate (bites per mosquito per time)" unit="bites/vector/time"/>
+  <parameters name="M" description="Number of alternative hosts (dilution term in force of infection denominator N_H + M)" unit="hosts"/>
+  <parameters name="α_H" description="Human incubation progression rate (E_H → I_H)" unit="1/time"/>
+  <parameters name="γ" description="Human recovery rate (I_H → R_H)" unit="1/time"/>
+
+  <parameters name="e_V" description="Vector egg-laying (oviposition) rate contributing to egg production term e_V * N_V" unit="eggs/vector/time"/>
+  <parameters name="N_V" description="Total (female) adult vector population used in egg production term" unit="vectors"/>
+  <parameters name="τ_1" description="Vector development/maturation rate from eggs V1 → larvae V2" unit="1/time"/>
+  <parameters name="τ_2" description="Vector development/maturation rate from larvae V2 → pupae V3" unit="1/time"/>
+  <parameters name="τ_3" description="Vector development/maturation rate from pupae V3 → adult susceptible vectors S_V (before applying q)" unit="1/time"/>
+  <parameters name="μ_1" description="Egg-stage mortality rate" unit="1/time"/>
+  <parameters name="μ_2" description="Larval-stage mortality rate" unit="1/time"/>
+  <parameters name="μ_3" description="Pupal-stage mortality rate" unit="1/time"/>
+  <parameters name="κ" description="Larval density-dependent competition coefficient in term κ * V2^2 / K_V" unit="1/time"/>
+  <parameters name="K_V" description="Larval carrying capacity (environmental capacity for larvae)" unit="larvae"/>
+  <parameters name="q" description="Proportion of emerging adults that are female (or effective emergence factor into female adult compartment)" unit="dimensionless"/>
+
+  <parameters name="μ_V" description="Adult female vector mortality rate" unit="1/time"/>
+  <parameters name="α_V" description="Vector extrinsic incubation progression rate (E_V → I_V)" unit="1/time"/>
+
+  <!-- ===================== -->
+  <!-- Compartments          -->
+  <!-- ===================== -->
+
+  <!-- Humans / hosts (SEIR) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="0">
+    <!-- Infection: S_H -> E_H driven by infectious vectors I_V -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+      contactCompartment="//@compartments.9"
+      contactRate="0.0"
+      description="Vector-to-human transmission: S_H to E_H at rate (β*b*I_V/(N_H+M))*S_H"
+      target="//@compartments.1"/>
+    <!-- Note: logistic growth inflow to S_H is not representable as BirthSource in this metamodel because it depends on N_H and S_H. -->
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans" population="0">
+    <!-- Progression: E_H -> I_H -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+      rate="0.0"
+      description="Human incubation progression: E_H to I_H at rate α_H*E_H"
+      target="//@compartments.2"/>
+    <!-- Note: logistic-density outflow term λ*N_H*(E_H/K_H) is not representable as DeathSink (rate depends on N_H). -->
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="0">
+    <!-- Recovery: I_H -> R_H -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+      rate="0.0"
+      description="Human recovery: I_H to R_H at rate γ*I_H"
+      target="//@compartments.3"/>
+    <!-- Note: logistic-density outflow term λ*N_H*(I_H/K_H) is not representable as DeathSink (rate depends on N_H). -->
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0">
+    <!-- No outgoing flows in equations (no loss of immunity). -->
+    <!-- Note: logistic-density outflow term λ*N_H*(R_H/K_H) is not representable as DeathSink (rate depends on N_H). -->
+  </compartments>
+
+  <!-- Vector life stages (eggs, larvae, pupae) -->
+  <compartments PrimaryName="Eggs" SecondaryName="Vectors (V1)" population="0">
+    <!-- Development: V1 -> V2 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+      rate="0.0"
+      description="Vector development: eggs (V1) to larvae (V2) at rate τ_1*V1"
+      target="//@compartments.5"/>
+    <!-- Note: mortality μ_1*V1 is a sink; representable as DeathSink with constant μ_1. -->
+  </compartments>
+
+  <compartments PrimaryName="Larvae" SecondaryName="Vectors (V2)" population="0">
+    <!-- Development: V2 -> V3 -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+      rate="0.0"
+      description="Vector development: larvae (V2) to pupae (V3) at rate τ_2*V2"
+      target="//@compartments.6"/>
+    <!-- Note: mortality μ_2*V2 is a sink; density-dependent competition κ*V2^2/K_V is not representable as DeathSink/RateFlow in this metamodel. -->
+  </compartments>
+
+  <compartments PrimaryName="Pupae" SecondaryName="Vectors (V3)" population="0">
+    <!-- Emergence: V3 -> S_V with factor q*τ_3*V3 (implemented as a rate flow using effective rate q*τ_3) -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+      rate="0.0"
+      description="Vector emergence: pupae (V3) to susceptible adult female vectors (S_V) at effective rate q*τ_3*V3"
+      target="//@compartments.7"/>
+    <!-- Note: mortality μ_3*V3 is a sink; representable as DeathSink with constant μ_3. -->
+  </compartments>
+
+  <!-- Adult female vectors (SEI) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Adult Female Vectors" population="0">
+    <!-- Infection: S_V -> E_V driven by infectious humans I_H -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+      contactCompartment="//@compartments.2"
+      contactRate="0.0"
+      description="Human-to-vector transmission: S_V to E_V at rate (β*b*I_H/(N_H+M))*S_V"
+      target="//@compartments.8"/>
+    <!-- Note: adult mortality μ_V*S_V is a sink; representable as DeathSink with constant μ_V. -->
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Adult Female Vectors" population="0">
+    <!-- Progression: E_V -> I_V -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+      rate="0.0"
+      description="Vector extrinsic incubation progression: E_V to I_V at rate α_V*E_V"
+      target="//@compartments.9"/>
+    <!-- Note: adult mortality μ_V*E_V is a sink; representable as DeathSink with constant μ_V. -->
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Adult Female Vectors" population="0">
+    <!-- No recovery in vectors (SEI). -->
+    <!-- Note: adult mortality μ_V*I_V is a sink; representable as DeathSink with constant μ_V. -->
+  </compartments>
+
+  <!-- ===================== -->
+  <!-- Birth sources          -->
+  <!-- ===================== -->
+
+  <!-- Vector egg production: V1 inflow e_V * N_V (depends on N_V, treated as parameter here) -->
+  <birthSources name="Vector_Egg_Production"
+    rate="0.0"
+    targetCompartment="//@compartments.4"
+    fixedRate="false"/>
+
+  <!-- ===================== -->
+  <!-- Death sinks            -->
+  <!-- ===================== -->
+
+  <!-- Stage-specific vector mortality (constant per-capita rates) -->
+  <deathSinks name="Egg_Mortality"
+    rate="0.0"
+    sourceCompartment="//@compartments.4"/>
+
+  <deathSinks name="Larval_Mortality"
+    rate="0.0"
+    sourceCompartment="//@compartments.5"/>
+
+  <deathSinks name="Pupal_Mortality"
+    rate="0.0"
+    sourceCompartment="//@compartments.6"/>
+
+  <!-- Adult vector mortality (applies to S_V, E_V, I_V) -->
+  <deathSinks name="Adult_Vector_Mortality_SV"
+    rate="0.0"
+    sourceCompartment="//@compartments.7"/>
+
+  <deathSinks name="Adult_Vector_Mortality_EV"
+    rate="0.0"
+    sourceCompartment="//@compartments.8"/>
+
+  <deathSinks name="Adult_Vector_Mortality_IV"
+    rate="0.0"
+    sourceCompartment="//@compartments.9"/>
+
+  <!-- Notes on omitted/nonlinear demographic terms:
+       - Human logistic growth term: λ*N_H*(1 - S_H/K_H) is state- and total-population-dependent.
+       - Human density-dependent outflow terms: λ*N_H*(X_H/K_H) for X_H in {E_H, I_H, R_H}.
+       - Larval density-dependent competition: κ*V2^2/K_V.
+       These terms cannot be represented exactly with the provided BirthSource/DeathSink/RateFlow/ContactFlow primitives
+       because they require rates that depend on other compartments (beyond ContactFlow’s single contact compartment)
+       and/or nonlinear self-interactions. The compartment set and infection/progression topology matches the paper’s
+       SEIR (humans) + SEI (vectors) plus vector life stages V1–V3 as shown in the figure description. -->
+</seir:SEIRModel>
+```

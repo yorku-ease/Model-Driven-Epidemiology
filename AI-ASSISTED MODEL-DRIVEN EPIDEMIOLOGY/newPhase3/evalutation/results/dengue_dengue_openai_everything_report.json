@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "disease": "dengue",
+    "case_id": "dengue_openai_everything",
+    "provider": "openai",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:08:00.873132+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 0.4615,
+      "recall": 0.8571,
+      "f1": 0.6,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.9286,
+      "recall": 0.8667,
+      "f1": 0.8966,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.5833,
+      "recall": 0.5385,
+      "f1": 0.56,
+      "weight": 0.15
+    },
+    "composite": 0.72
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 7,
+      "extracted_total": 13,
+      "tp": 6,
+      "fp": 7,
+      "fn": 1
+    },
+    "flows": {
+      "gold_total": 15,
+      "extracted_total": 14,
+      "tp": 13,
+      "fp": 1,
+      "fn": 2
+    },
+    "parameters": {
+      "gold_total": 13,
+      "extracted_total": 12,
+      "tp": 7,
+      "fp": 5,
+      "fn": 6
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible humans",
+        "extracted": "Susceptible Human (age-structured)",
+        "score": 0.7748570442199707
+      },
+      {
+        "gold": "Exposed humans",
+        "extracted": "Exposed Human (age-structured)",
+        "score": 0.7288509607315063
+      },
+      {
+        "gold": "Asymptomatic infectious humans",
+        "extracted": "Infectious Human Asymptomatic (age-structured)",
+        "score": 0.8695225715637207
+      },
+      {
+        "gold": "Symptomatic infectious humans",
+        "extracted": "Infectious Human Symptomatic (age-structured)",
+        "score": 0.8197363615036011
+      },
+      {
+        "gold": "Infectious mosquitoes",
+        "extracted": "Infectious Mosquito",
+        "score": 0.9639328718185425
+      },
+      {
+        "gold": "Susceptible mosquitoes",
+        "extracted": "Infectious Mosquito",
+        "score": 0.7603811025619507
+      }
+    ],
+    "flows": [
+      {
+        "gold": "Susceptible humans->Exposed humans",
+        "extracted": "Susceptible Human (age-structured)->Exposed Human (age-structured)",
+        "score": 0.7826021313667297
+      },
+      {
+        "gold": "Exposed humans->Asymptomatic infectious humans",
+        "extracted": "Exposed Human (age-structured)->Infectious Human Asymptomatic (age-structured)",
+        "score": 0.8326961398124695
+      },
+      {
+        "gold": "Exposed humans->Symptomatic infectious humans",
+        "extracted": "Exposed Human (age-structured)->Infectious Human Symptomatic (age-structured)",
+        "score": 0.8018335103988647
+      },
+      {
+        "gold": "Asymptomatic infectious humans->Symptomatic infectious humans",
+        "extracted": "Infectious Human Asymptomatic (age-structured)->Infectious Human Symptomatic (age-structured)",
+        "score": 0.7951997518539429
+      },
+      {
+        "gold": "Asymptomatic infectious humans->Recovered humans",
+        "extracted": "Infectious Human Asymptomatic (age-structured)->Recovered Human (age-structured)",
+        "score": 0.8344936370849609
+      },
+      {
+        "gold": "Symptomatic infectious humans->Recovered humans",
+        "extracted": "Infectious Human Symptomatic (age-structured)->Recovered Human (age-structured)",
+        "score": 0.7940348982810974
+      },
+      {
+        "gold": "Susceptible mosquitoes->Infectious mosquitoes",
+        "extracted": "Infectious Mosquito->Infectious Mosquito",
+        "score": 0.9040642976760864
+      },
+      {
+        "gold": "Susceptible humans->__dead__",
+        "extracted": "Susceptible Human (age-structured)->__dead__",
+        "score": 0.8711469769477844
+      },
+      {
+        "gold": "Exposed humans->__dead__",
+        "extracted": "Exposed Human (age-structured)->__dead__",
+        "score": 0.858834981918335
+      },
+      {
+        "gold": "Asymptomatic infectious humans->__dead__",
+        "extracted": "Infectious Human Asymptomatic (age-structured)->__dead__",
+        "score": 0.9112475514411926
+      },
+      {
+        "gold": "Symptomatic infectious humans->__dead__",
+        "extracted": "Infectious Human Symptomatic (age-structured)->__dead__",
+        "score": 0.907434344291687
+      },
+      {
+        "gold": "Recovered humans->__dead__",
+        "extracted": "Recovered Human (age-structured)->__dead__",
+        "score": 0.8597211241722107
+      },
+      {
+        "gold": "Infectious mosquitoes->__dead__",
+        "extracted": "Infectious Mosquito->__dead__",
+        "score": 0.9863522052764893
+      }
+    ],
+    "parameters": [
+      {
+        "gold": "B Constant influx of human hosts (boundary Sh(0,t)=B)",
+        "extracted": "B Constant influx (birth/recruitment) rate of human hosts into susceptible class S_h(0,t)=B.",
+        "score": 0.7457213401794434
+      },
+      {
+        "gold": "\u03bc_h Natural death rate of human hosts",
+        "extracted": "\u03bc\u2095 Natural death rate of human hosts.",
+        "score": 0.9181486368179321
+      },
+      {
+        "gold": "\u03bc_v Natural death rate of mosquitoes",
+        "extracted": "\u03bc\u1d65 Natural death rate of mosquitoes (vectors).",
+        "score": 0.9352012872695923
+      },
+      {
+        "gold": "\u03c3 Probability an exposed host becomes symptomatic (paper: fraction to I_h)",
+        "extracted": "\u03c1 Probability an exposed host becomes symptomatic infectious (E_h \u2192 I_h). (1-\u03c1) becomes asymptomatic (E_h \u2192 A_h).",
+        "score": 0.7416808605194092
+      },
+      {
+        "gold": "\u03c1 Reinfection intensity factor for asymptomatic hosts (secondary infection)",
+        "extracted": "\u03c3 Factor characterizing intensity of reinfection of asymptomatic infectious hosts; also scales contribution of A_h to mosquito infection and appears in A_h \u2192 I_h reinfection term.",
+        "score": 0.7247238159179688
+      },
+      {
+        "gold": "\u03b31 Recovery rate of symptomatic infectious hosts (paper: \u03b31a)",
+        "extracted": "\u03b3\u2081(a) Age-specific recovery rate of symptomatic infectious humans (I_h \u2192 R_h).",
+        "score": 0.7372593879699707
+      },
+      {
+        "gold": "\u03b32 Recovery rate of asymptomatic infectious hosts (paper: \u03b32a)",
+        "extracted": "\u03b3\u2082(a) Age-specific recovery rate of asymptomatic infectious humans (A_h \u2192 R_h).",
+        "score": 0.8036515712738037
+      }
+    ]
+  },
+  "false_positives": {
+    "compartments": [
+      "Recovered Human (age-structured)",
+      "",
+      "Recovered Human (age-structured)"
+    ],
+    "flows": [
+      "Susceptible Human (age-structured) -> Exposed Human (age-structured)",
+      "Exposed Human (age-structured) -> Infectious Human Symptomatic (age-structured)",
+      "Exposed Human (age-structured) -> Infectious Human Asymptomatic (age-structured)",
+      "Infectious Human Symptomatic (age-structured) -> Recovered Human (age-structured)",
+      "Infectious Human Asymptomatic (age-structured) -> Recovered Human (age-structured)",
+      "Infectious Human Asymptomatic (age-structured) -> Infectious Human Symptomatic (age-structured)",
+      "Infectious Mosquito -> Infectious Mosquito",
+      "__external__ -> Susceptible Human (age-structured)",
+      "Susceptible Human (age-structured) -> __dead__",
+      "Exposed Human (age-structured) -> __dead__",
+      "Infectious Human Symptomatic (age-structured) -> __dead__",
+      "Infectious Human Asymptomatic (age-structured) -> __dead__",
+      "Recovered Human (age-structured) -> __dead__",
+      "Infectious Mosquito -> __dead__"
+    ],
+    "parameters": [
+      "\u03b2\u2095(a) Age-specific transmission/contact rate from infected mosquitoes to susceptible humans (vector-to-human). Appears in force of infection \u03b2\u2095(a) I\u1d65(t) S_h(a,t)/N_h(t).",
+      "\u03b2\u1d65(a) Age-specific transmission rate from infectious humans (I_h and A_h) to susceptible mosquitoes (human-to-vector). Appears inside integral \u222b \u03b2\u1d65(a)(I_h+\u03c3A_h) da / N_h(t).",
+      "k(a) Age-specific progression rate from exposed to infectious (inverse of age-specific latent period).",
+      "N\u2095(t) Total human population size at time t used for standard incidence normalization.",
+      "I\u1d65(t) Proportion of infectious mosquitoes at time t (vector population is rescaled to total 1)."
+    ]
+  },
+  "false_negatives": {
+    "compartments": [
+      "Recovered humans"
+    ],
+    "flows": [
+      "Susceptible humans -> Exposed humans",
+      "Exposed humans -> Asymptomatic infectious humans",
+      "Exposed humans -> Symptomatic infectious humans",
+      "Asymptomatic infectious humans -> Symptomatic infectious humans",
+      "Asymptomatic infectious humans -> Recovered humans",
+      "Symptomatic infectious humans -> Recovered humans",
+      "Susceptible mosquitoes -> Infectious mosquitoes",
+      "Susceptible mosquitoes -> Infectious mosquitoes",
+      "Susceptible humans -> __dead__",
+      "Exposed humans -> __dead__",
+      "Asymptomatic infectious humans -> __dead__",
+      "Symptomatic infectious humans -> __dead__",
+      "Recovered humans -> __dead__",
+      "Infectious mosquitoes -> __dead__",
+      "Susceptible mosquitoes -> __dead__"
+    ],
+    "parameters": [
+      "h Mosquito-to-human transmission/contact rate (age-averaged h_a)",
+      "k Latent progression rate (paper: k_a; here constant)",
+      "(1-\u03c3)*k E_h \u2192 A_h rate",
+      "\u03c3*k E_h \u2192 I_h rate",
+      "\u03c1*h A_h \u2192 I_h reinfection contact term (scaled mosquito-to-human contact)",
+      "v Human-to-mosquito transmission rate (age-averaged v_a)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "MODERATE",
+    "composite_score": 0.72,
+    "entity_verdicts": {
+      "compartments": "moderate",
+      "flows": "good",
+      "parameters": "moderate"
+    },
+    "observations": [
+      "Missed 1 compartment(s), 15 flow(s), 6 parameter(s) from gold standard.",
+      "Hallucinated 3 compartment(s), 14 flow(s), 5 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_compartments": [
+        "Recovered humans"
+      ],
+      "missed_flows": [
+        "Susceptible humans -> Exposed humans",
+        "Exposed humans -> Asymptomatic infectious humans",
+        "Exposed humans -> Symptomatic infectious humans",
+        "Asymptomatic infectious humans -> Symptomatic infectious humans",
+        "Asymptomatic infectious humans -> Recovered humans"
+      ],
+      "missed_flows_total": 15,
+      "missed_parameters": [
+        "h Mosquito-to-human transmission/contact rate (age-averaged h_a)",
+        "k Latent progression rate (paper: k_a; here constant)",
+        "(1-\u03c3)*k E_h \u2192 A_h rate",
+        "\u03c3*k E_h \u2192 I_h rate",
+        "\u03c1*h A_h \u2192 I_h reinfection contact term (scaled mosquito-to-human contact)"
+      ],
+      "missed_parameters_total": 6,
+      "hallucinated_compartments": [
+        "Recovered Human (age-structured)",
+        "",
+        "Recovered Human (age-structured)"
+      ],
+      "hallucinated_flows": [
+        "Susceptible Human (age-structured) -> Exposed Human (age-structured)",
+        "Exposed Human (age-structured) -> Infectious Human Symptomatic (age-structured)",
+        "Exposed Human (age-structured) -> Infectious Human Asymptomatic (age-structured)",
+        "Infectious Human Symptomatic (age-structured) -> Recovered Human (age-structured)",
+        "Infectious Human Asymptomatic (age-structured) -> Recovered Human (age-structured)"
+      ],
+      "hallucinated_flows_total": 14,
+      "hallucinated_parameters": [
+        "\u03b2\u2095(a) Age-specific transmission/contact rate from infected mosquitoes to susceptible humans (vector-to-human). Appears in force of infection \u03b2\u2095(a) I\u1d65(t) S_h(a,t)/N_h(t).",
+        "\u03b2\u1d65(a) Age-specific transmission rate from infectious humans (I_h and A_h) to susceptible mosquitoes (human-to-vector). Appears inside integral \u222b \u03b2\u1d65(a)(I_h+\u03c3A_h) da / N_h(t).",
+        "k(a) Age-specific progression rate from exposed to infectious (inverse of age-specific latent period).",
+        "N\u2095(t) Total human population size at time t used for standard incidence normalization.",
+        "I\u1d65(t) Proportion of infectious mosquitoes at time t (vector population is rescaled to total 1)."
+      ]
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

@@ -1,0 +1,68 @@
+An XML representation of the compartmental model for HIV/AIDS transmission is provided below. The model structure, compartments, and flows are derived from the textual descriptions and hypotheses in the paper. Parameters are defined symbolically, with values included where they could be unambiguously extracted from the text.
+
+The model consists of eight compartments stratified by population group (Homosexual Men, Women, Heterosexual Men) and disease state (Susceptible, Infected, Treated, AIDS). Transmission dynamics include homosexual, heterosexual, and bisexual contact routes as described.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <!-- Parameters extracted from the paper. Symbolic names are used as per the text (e.g., C, h, c, a, d) with Greek equivalents (μ, α, δ) where standard. -->
+  <parameters name="C" expression="333" description="Constant recruitment in susceptible population per year"/>
+  <parameters name="h" expression="0.0" description="Proportion of men in the population"/>
+  <parameters name="c" expression="0.0" description="Proportion of heterosexual men among all men"/>
+  <parameters name="Λh" type="EXPRESSION" expression="C * h * (1 - c)" description="Recruitment rate of susceptible homosexual men"/>
+  <parameters name="Λw" type="EXPRESSION" expression="C * (1 - h)" description="Recruitment rate of susceptible women"/>
+  <parameters name="Λm" type="EXPRESSION" expression="C * h * c" description="Recruitment rate of susceptible heterosexual men"/>
+  <parameters name="μ" expression="0.0129" description="Natural mortality rate (l in paper)"/>
+  <parameters name="d" expression="0.3333" description="AIDS-induced mortality rate"/>
+  <parameters name="δ" expression="0.0" description="AIDS development rate in treated individuals (ART resistance/failure)"/>
+  <parameters name="α" expression="0.0" description="Departure rate from infected compartments to treated (a in paper)"/>
+  <parameters name="βh" expression="0.0" description="Transmission rate between homosexual men (product of contact rate ch and probability bh)"/>
+  <parameters name="βs" expression="0.0" description="Transmission rate between heterosexual men and women (product of contact rate cs and probability bs)"/>
+  <parameters name="βhw" expression="0.0" description="Transmission rate from homosexual men to women (product of chw and bhw)"/>
+  <parameters name="βhm" expression="0.0" description="Transmission rate from homosexual men to heterosexual men (product of chm and bhm)"/>
+
+  <!-- Compartments based on the model description of three susceptible populations, their infected counterparts, and shared Treated and AIDS states. Initial populations from the paper. -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men" population="2446">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Infection of susceptible homosexual men by infected homosexual men." contactRateParameter="//@parameters.10" contactCompartment="//@compartments.1" target="//@compartments.1"/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Homosexual Men" population="79">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Infected homosexual men moving to treatment." rateParameter="//@parameters.9" target="//@compartments.6"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Women" population="189994">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Infection of susceptible women by infected heterosexual men." contactRateParameter="//@parameters.11" contactCompartment="//@compartments.5" target="//@compartments.3"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Infection of susceptible women by infected homosexual men." contactRateParameter="//@parameters.12" contactCompartment="//@compartments.1" target="//@compartments.3"/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Women" population="6">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Infected women moving to treatment." rateParameter="//@parameters.9" target="//@compartments.6"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men" population="171173">
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Infection of susceptible heterosexual men by infected women." contactRateParameter="//@parameters.11" contactCompartment="//@compartments.3" target="//@compartments.5"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" description="Infection of susceptible heterosexual men by infected homosexual men." contactRateParameter="//@parameters.13" contactCompartment="//@compartments.1" target="//@compartments.5"/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Heterosexual Men" population="29">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Infected heterosexual men moving to treatment." rateParameter="//@parameters.9" target="//@compartments.6"/>
+  </compartments>
+  <compartments PrimaryName="Treated" population="107">
+    <outgoingFlows xsi:type="seir:RateFlow" description="Treated individuals developing AIDS due to ART failure." rateParameter="//@parameters.8" target="//@compartments.7"/>
+  </compartments>
+  <compartments PrimaryName="AIDS" population="47"/>
+
+  <!-- Recruitment flows into susceptible populations as per Hypothesis H1. -->
+  <birthSources name="Recruitment_Homosexual_Men" rateParameter="//@parameters.3" targetCompartment="//@compartments.0"/>
+  <birthSources name="Recruitment_Women" rateParameter="//@parameters.4" targetCompartment="//@compartments.2"/>
+  <birthSources name="Recruitment_Heterosexual_Men" rateParameter="//@parameters.5" targetCompartment="//@compartments.4"/>
+
+  <!-- Natural mortality flows from all compartments as per Hypothesis H6. -->
+  <deathSinks name="Natural_Death_Sh" rateParameter="//@parameters.6" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_Ih" rateParameter="//@parameters.6" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_Sw" rateParameter="//@parameters.6" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_Iw" rateParameter="//@parameters.6" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural_Death_Sm" rateParameter="//@parameters.6" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_Im" rateParameter="//@parameters.6" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Natural_Death_T" rateParameter="//@parameters.6" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="Natural_Death_A" rateParameter="//@parameters.6" sourceCompartment="//@compartments.7"/>
+
+  <!-- Disease-induced mortality from the AIDS compartment as per Hypothesis H6. -->
+  <deathSinks name="AIDS_Induced_Death" rateParameter="//@parameters.7" sourceCompartment="//@compartments.7"/>
+</seir:SEIRModel>
+```

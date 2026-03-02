@@ -1,0 +1,212 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Vaccinated",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Infectious",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Vaccinated",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Infectious",
+      "secondary_name": "",
+      "initial_population": null
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": null
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "type": "RateFlow",
+      "rate_parameter": "u",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccination of susceptible"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b8",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of vaccine-induced immunity"
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery from infection"
+    },
+    {
+      "source": "Recovered",
+      "target": "Infectious",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious",
+      "rate_parameter": "\u03b5\u03b2_reinfection",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Reinfection of recovered"
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b4",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of natural immunity"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible",
+      "type": "BirthSource",
+      "rate_parameter": "A",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recruitment"
+    },
+    {
+      "source": "Susceptible",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_S"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_V"
+    },
+    {
+      "source": "Infectious",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_I"
+    },
+    {
+      "source": "Recovered",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_R"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "A",
+      "type": "CONSTANT",
+      "value": 1.28,
+      "unit": "human/month",
+      "description": "Recruitment rate of human"
+    },
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": 0.1,
+      "unit": "1/(year*human)",
+      "description": "Probability of successful infection rate"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "dimensionless",
+      "description": "Correction parameter for reinfection term"
+    },
+    {
+      "symbol": "u",
+      "type": "CONSTANT",
+      "value": 0.5,
+      "unit": "1/day",
+      "description": "Rate of vaccination"
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": 0.08,
+      "unit": "1/day",
+      "description": "Vaccine wane rate"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "1/year",
+      "description": "Recovery rate"
+    },
+    {
+      "symbol": "\u03b4",
+      "type": "CONSTANT",
+      "value": 0.01,
+      "unit": "1/day",
+      "description": "Drop out rate due to waning immunity"
+    },
+    {
+      "symbol": "\u03bc",
+      "type": "CONSTANT",
+      "value": 0.00128,
+      "unit": "1/month",
+      "description": "Natural death rate"
+    },
+    {
+      "symbol": "\u03b5\u03b2_reinfection",
+      "type": "EXPRESSION",
+      "value": "\u03b5 * \u03b2",
+      "unit": "1/(year*human)",
+      "description": "Rate of reinfection for recovered individuals"
+    }
+  ]
+}

@@ -6,16 +6,51 @@ from typing import Dict, Any, Optional, List
 from xml.etree import ElementTree as ET
 
 
+def _strip_llm_noise(xml_string: str) -> str:
+    """
+    Strip common LLM wrapping noise from XML output.
+    Handles:
+      - ```xml ... ``` or ``` ... ``` code fences
+      - Leading prose before the XML declaration or root tag
+      - Trailing prose after the last closing tag
+    """
+    s = xml_string.strip()
+
+    # Remove ```xml ... ``` or ``` ... ``` fences
+    if s.startswith("```"):
+        first_newline = s.find("\n")
+        s = s[first_newline + 1:] if first_newline != -1 else s[3:]
+        if "```" in s:
+            s = s[:s.rfind("```")]
+        s = s.strip()
+
+    # Some LLMs add a sentence before the XML — find the actual start
+    xml_decl = s.find("<?xml")
+    root_tag = s.find("<")
+    xml_start = xml_decl if xml_decl != -1 else root_tag
+    if xml_start > 0:
+        s = s[xml_start:]
+
+    # Strip trailing prose after the closing root tag
+    last_close = s.rfind(">")
+    if last_close != -1:
+        s = s[:last_close + 1]
+
+    return s.strip()
+
+
 def parse_compartmental_xml(xml_string: str) -> Dict[str, Any]:
     """
     Parse a compartmental model XML string and convert to canonical JSON format.
+    Handles LLM output noise (code fences, leading prose, trailing text).
 
     Args:
-        xml_string: XML content as string
+        xml_string: XML content as string (raw LLM output or clean XML)
 
     Returns:
         Dictionary conforming to EpiMDE Canonical JSON schema
     """
+    xml_string = _strip_llm_noise(xml_string)
     root = ET.fromstring(xml_string)
 
     params = _extract_parameters(root)
@@ -67,12 +102,23 @@ def _extract_parameters(root: ET.Element) -> List[Dict[str, Any]]:
     return params
 
 
+def _clean_primary_name(name: str) -> str:
+    """
+    Remove parenthetical shorthand from compartment names.
+    'Susceptible (S)' -> 'Susceptible'
+    'Bacterial concentration in water reservoir (B)' -> 'Bacterial concentration in water reservoir'
+    Keeps names that are entirely in parens (edge case).
+    """
+    cleaned = re.sub(r"\s*\([^)]*\)\s*$", "", name).strip()
+    return cleaned if cleaned else name
+
+
 def _extract_compartments(root: ET.Element) -> List[Dict[str, Any]]:
     """Extract compartments from XML."""
     compartments = []
 
     for comp in _find_all(root, "compartments"):
-        primary_name = comp.get("PrimaryName", "")
+        primary_name = _clean_primary_name(comp.get("PrimaryName", ""))
         secondary_name = comp.get("SecondaryName", "")
 
         if secondary_name:
@@ -117,8 +163,7 @@ def _extract_flows(
 
     all_compartments = _find_all(root, "compartments")
 
-    for comp in all_compartments:
-        comp_idx = all_compartments.index(comp)
+    for comp_idx, comp in enumerate(all_compartments):
         source_name = (
             compartments[comp_idx]["name"] if comp_idx < len(compartments) else None
         )
@@ -186,7 +231,7 @@ def _extract_flows(
         target_name = _resolve_reference(target_comp, comp_lookup)
 
         flow_entry = {
-            "source": name,
+            "source": "__external__",
             "target": target_name,
             "type": "BirthSource",
             "rate_parameter": _resolve_reference(rate_param, param_lookup)
@@ -194,7 +239,7 @@ def _extract_flows(
             else None,
             "rate_value": float(rate_value) if rate_value else None,
             "rate_unit": None,
-            "description": birth.get("description", ""),
+            "description": name or birth.get("description", ""),
         }
         flows.append(flow_entry)
 
@@ -208,14 +253,14 @@ def _extract_flows(
 
         flow_entry = {
             "source": source_name,
-            "target": name,
+            "target": "__dead__",
             "type": "DeathSink",
             "rate_parameter": _resolve_reference(rate_param, param_lookup)
             if rate_param
             else None,
             "rate_value": float(rate_value) if rate_value else None,
             "rate_unit": None,
-            "description": death.get("description", ""),
+            "description": name or death.get("description", ""),
         }
         flows.append(flow_entry)
 
@@ -228,7 +273,7 @@ def _extract_flows(
 
         flow_entry = {
             "source": source_name,
-            "target": name,
+            "target": "__dead__",
             "type": "DeathSink",
             "rate_parameter": _resolve_reference(rate_param, param_lookup)
             if rate_param
@@ -247,14 +292,22 @@ def _resolve_reference(ref: str, lookup: Dict[str, str]) -> Optional[str]:
     if not ref:
         return None
 
+    # Direct lookup first (handles both '//@compartments.X' and plain names)
     if ref in lookup:
         return lookup[ref]
 
-    match = re.match(r"//@(compartments|parameters)\.(\d+)", ref)
+    # Try normalised form without leading slash variations
+    normalised = ref.lstrip("/").lstrip("@")
+    if normalised in lookup:
+        return lookup[normalised]
+
+    # Extract index from pattern and look up by canonical key
+    match = re.match(r"/?/?@?(compartments|parameters)\.(\d+)", ref)
     if match:
         ref_type, idx = match.groups()
-        key = f"//@{ref_type}.{idx}"
-        return lookup.get(key)
+        for key in (f"//@{ref_type}.{idx}", f"{ref_type}.{idx}"):
+            if key in lookup:
+                return lookup[key]
 
     return None
 

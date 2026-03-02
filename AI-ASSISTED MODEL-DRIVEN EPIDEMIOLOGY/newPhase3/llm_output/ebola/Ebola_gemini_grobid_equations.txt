@@ -1,0 +1,56 @@
+An epidemiological model for Ebola has been extracted based on the provided scientific paper sections and LaTeX equations.
+
+The model consists of six compartments: Susceptible (A), Infected (P), Quarantined (F), Recovered (K), Environmental Pathogens (U), and Deceased (S). The dynamics are governed by a set of parameters representing recruitment, transmission, progression, and decay rates.
+
+Transmission to the susceptible population (A) occurs through contact with infected individuals (P), deceased individuals (S), and environmental pathogens (U). Infected individuals (P) can be quarantined (F), shed the virus into the environment (U), or die (becoming S). Notably, both natural and disease-induced deaths of infected and quarantined individuals transition them to the deceased compartment (S), reflecting the role of corpses in transmission. Quarantined individuals (F) can either recover (K) or die (becoming S). The model also includes environmental dynamics, where pathogens (U) are introduced via shedding and a constant external source (e.g., bushmeat), and decay over time.
+
+The complete model is represented below in the specified XML format.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="α₁" description="Recruitment rate of susceptible individuals"/>
+  <parameters name="ψ₁" description="Effective contact rate with infected humans (P)"/>
+  <parameters name="ψ₃" description="Effective contact rate with deceased humans (S)"/>
+  <parameters name="ψ₂" description="Effective contact rate with environmental pathogens (U)"/>
+  <parameters name="ε" description="Natural death rate of humans"/>
+  <parameters name="α₂" description="Recruitment rate of infected individuals (e.g., via immigration)"/>
+  <parameters name="ρ₁" description="Disease-induced death rate of infected individuals"/>
+  <parameters name="ρ₂" description="Shedding rate of infected humans into the environment"/>
+  <parameters name="ρ₃" description="Quarantine rate of infected individuals"/>
+  <parameters name="ω₁" description="Recovery rate of quarantined individuals"/>
+  <parameters name="ω₂" description="Disease-induced death rate of quarantined individuals"/>
+  <parameters name="b" description="Decay rate of virus in the environment"/>
+  <parameters name="h" description="Shedding rate of deceased individuals into the environment"/>
+  <parameters name="d" description="Constant rate of environmental contamination (e.g., from bush meat)"/>
+  <parameters name="c" description="Burial rate of deceased individuals (removal from infectious population)"/>
+  <parameters name="rate_P_to_S" type="EXPRESSION" expression="ε + ρ₁" description="Combined rate of transition from Infected to Deceased (natural and disease-induced death)"/>
+  <parameters name="rate_F_to_S" type="EXPRESSION" expression="ε + ω₂" description="Combined rate of transition from Quarantined to Deceased (natural and disease-induced death)"/>
+  <compartments PrimaryName="Susceptible" population="1000000">
+    <outgoingFlows xsi:type="seir:ContactFlow" target="//@compartments.1" description="Infection from contact with Infected individuals" contactRateParameter="//@parameters.1" contactCompartment="//@compartments.1"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" target="//@compartments.1" description="Infection from contact with Deceased individuals" contactRateParameter="//@parameters.2" contactCompartment="//@compartments.5"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" target="//@compartments.1" description="Infection from contact with Environmental Pathogens" contactRateParameter="//@parameters.3" contactCompartment="//@compartments.4"/>
+  </compartments>
+  <compartments PrimaryName="Infected" population="10">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" description="Death of Infected individuals (natural and disease-induced)" rateParameter="//@parameters.15"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.4" description="Shedding of virus into environment by Infected" rateParameter="//@parameters.7"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.2" description="Movement of Infected to Quarantine" rateParameter="//@parameters.8"/>
+  </compartments>
+  <compartments PrimaryName="Quarantined" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.3" description="Recovery of Quarantined individuals" rateParameter="//@parameters.9"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" description="Death of Quarantined individuals (natural and disease-induced)" rateParameter="//@parameters.16"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Environmental Pathogens" population="0"/>
+  <compartments PrimaryName="Deceased" population="0">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.4" description="Shedding of virus into environment by Deceased" rateParameter="//@parameters.12"/>
+  </compartments>
+  <birthSources name="SusceptibleRecruitment" targetCompartment="//@compartments.0" rateParameter="//@parameters.0"/>
+  <birthSources name="InfectedRecruitment" targetCompartment="//@compartments.1" rateParameter="//@parameters.5"/>
+  <birthSources name="EnvironmentalContamination" targetCompartment="//@compartments.4" rateParameter="//@parameters.13"/>
+  <deathSinks name="NaturalDeath_Susceptible" sourceCompartment="//@compartments.0" rateParameter="//@parameters.4"/>
+  <deathSinks name="NaturalDeath_Recovered" sourceCompartment="//@compartments.3" rateParameter="//@parameters.4"/>
+  <deathSinks name="PathogenDecay" sourceCompartment="//@compartments.4" description="Decay and removal of virus from the environment" rateParameter="//@parameters.11"/>
+  <deathSinks name="Burial" sourceCompartment="//@compartments.5" description="Removal of deceased individuals via burial" rateParameter="//@parameters.14"/>
+</seir:SEIRModel>
+```

@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "disease": "malaria",
+    "case_id": "malaria_openai_grobid_only",
+    "provider": "openai",
+    "threshold": 0.72,
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "evaluated_at": "2026-03-02T02:09:56.316503+00:00"
+  },
+  "scores": {
+    "compartments": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "weight": 0.425
+    },
+    "flows": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "weight": 0.425
+    },
+    "parameters": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "weight": 0.15
+    },
+    "composite": 0.425
+  },
+  "counts": {
+    "compartments": {
+      "gold_total": 10,
+      "extracted_total": 10,
+      "tp": 10,
+      "fp": 0,
+      "fn": 0
+    },
+    "flows": {
+      "gold_total": 22,
+      "extracted_total": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 22
+    },
+    "parameters": {
+      "gold_total": 19,
+      "extracted_total": 6,
+      "tp": 0,
+      "fp": 6,
+      "fn": 19
+    }
+  },
+  "matches": {
+    "compartments": [
+      {
+        "gold": "Susceptible humans",
+        "extracted": "Susceptible Humans",
+        "score": 1.0000004768371582
+      },
+      {
+        "gold": "Vaccinated humans",
+        "extracted": "Vaccinated Humans",
+        "score": 1.0
+      },
+      {
+        "gold": "Vector-exposed humans",
+        "extracted": "Exposed Humans vector",
+        "score": 0.9757418632507324
+      },
+      {
+        "gold": "Non-vector-exposed humans",
+        "extracted": "Exposed Humans non-vector",
+        "score": 0.9750382304191589
+      },
+      {
+        "gold": "Infectious humans",
+        "extracted": "Infectious Humans",
+        "score": 1.0
+      },
+      {
+        "gold": "Treated humans",
+        "extracted": "Treated Humans",
+        "score": 1.0000003576278687
+      },
+      {
+        "gold": "Recovered humans",
+        "extracted": "Recovered Humans",
+        "score": 0.9999998807907104
+      },
+      {
+        "gold": "Susceptible mosquitoes",
+        "extracted": "Susceptible Mosquitoes",
+        "score": 1.0000001192092896
+      },
+      {
+        "gold": "Exposed mosquitoes",
+        "extracted": "Exposed Mosquitoes",
+        "score": 1.0
+      },
+      {
+        "gold": "Infectious mosquitoes",
+        "extracted": "Infectious Mosquitoes",
+        "score": 0.9999998807907104
+      }
+    ],
+    "flows": [],
+    "parameters": []
+  },
+  "false_positives": {
+    "compartments": [],
+    "flows": [],
+    "parameters": [
+      "\u03c0 Annual birth rate (as reported in Table 3 excerpt)",
+      "R\u2080 Basic reproduction number; computed as largest eigenvalue of FV^{-1} and reported as 6 in the text",
+      "\u03be_S Human-to-human (non-vector) transmission-related parameter varied in simulations (exact definition/value not provided in extracted sections)",
+      "\u03b7_S Mosquito-to-human exposure/transmission-related parameter varied in simulations (exact definition/value not provided in extracted sections)",
+      "\u03bc\u2081 Mortality-related parameter appearing in the DFE Jacobian excerpt (exact meaning/value not provided)",
+      "\u03bc\u2082 Mortality-related parameter appearing in the DFE Jacobian excerpt (exact meaning/value not provided)"
+    ]
+  },
+  "false_negatives": {
+    "compartments": [],
+    "flows": [
+      "Susceptible humans -> Vector-exposed humans",
+      "Susceptible humans -> Non-vector-exposed humans",
+      "Vaccinated humans -> Vector-exposed humans",
+      "Vaccinated humans -> Non-vector-exposed humans",
+      "Vector-exposed humans -> Infectious humans",
+      "Non-vector-exposed humans -> Infectious humans",
+      "Infectious humans -> Treated humans",
+      "Treated humans -> Recovered humans",
+      "Recovered humans -> Susceptible humans",
+      "Susceptible mosquitoes -> Exposed mosquitoes",
+      "Exposed mosquitoes -> Infectious mosquitoes",
+      "Susceptible humans -> __dead__",
+      "Vaccinated humans -> __dead__",
+      "Vector-exposed humans -> __dead__",
+      "Non-vector-exposed humans -> __dead__",
+      "Infectious humans -> __dead__",
+      "Infectious humans -> __dead__",
+      "Treated humans -> __dead__",
+      "Recovered humans -> __dead__",
+      "Susceptible mosquitoes -> __dead__",
+      "Exposed mosquitoes -> __dead__",
+      "Infectious mosquitoes -> __dead__"
+    ],
+    "parameters": [
+      "\u03b11 Human birth/recruitment rate (\u03b11)",
+      "(1-k)*\u03b11 Recruitment into SH",
+      "k*\u03b11 Recruitment into VH",
+      "\u03bc1 Natural death rate of humans (\u03bc1)",
+      "\u03c9 Immunity loss rate from RH to SH (\u03c9)",
+      "\u03bbV^V Effective contact rate of vaccinated humans with IM (vector route) (V1 in paper)",
+      "\u03bbV^S Effective contact rate of susceptible humans with IM (vector route) (V2 in paper)",
+      "\u03bbH^V Effective contact rate of vaccinated humans with IH (non-vector route) (H1 in paper)",
+      "\u03bbH^S Effective contact rate of susceptible humans with IH (non-vector route) (H2 in paper)",
+      "\u03c31 Progression EH1 -> IH (\u03c31 in paper)",
+      "\u03c32 Progression EH2 -> IH (\u03c32 in paper)",
+      "\u03b41 Disease-induced death rate in humans (\u03b41 in paper)",
+      "\u03c4 Progression IH -> TH (treatment rate \u03c4)",
+      "\u03b3 Progression TH -> RH (recovery rate \u03b3)",
+      "\u03b12 Mosquito recruitment rate (\u03b12)",
+      "\u03bbM Effective contact rate of susceptible mosquitoes with IH (M in paper)",
+      "\u03c3M Progression EM -> IM (\u03c3M in paper)",
+      "\u03bc2 Natural death rate of mosquitoes (\u03bc2)",
+      "k Fraction of newborns vaccinated (k)"
+    ]
+  },
+  "direction_errors": [],
+  "value_errors": [],
+  "llm_oversight": {
+    "overall_quality": "POOR",
+    "composite_score": 0.425,
+    "entity_verdicts": {
+      "compartments": "excellent",
+      "flows": "poor",
+      "parameters": "poor"
+    },
+    "observations": [
+      "Missed 0 compartment(s), 22 flow(s), 19 parameter(s) from gold standard.",
+      "Hallucinated 0 compartment(s), 0 flow(s), 6 parameter(s) not in gold standard."
+    ],
+    "review_items": {
+      "missed_flows": [
+        "Susceptible humans -> Vector-exposed humans",
+        "Susceptible humans -> Non-vector-exposed humans",
+        "Vaccinated humans -> Vector-exposed humans",
+        "Vaccinated humans -> Non-vector-exposed humans",
+        "Vector-exposed humans -> Infectious humans"
+      ],
+      "missed_flows_total": 22,
+      "missed_parameters": [
+        "\u03b11 Human birth/recruitment rate (\u03b11)",
+        "(1-k)*\u03b11 Recruitment into SH",
+        "k*\u03b11 Recruitment into VH",
+        "\u03bc1 Natural death rate of humans (\u03bc1)",
+        "\u03c9 Immunity loss rate from RH to SH (\u03c9)"
+      ],
+      "missed_parameters_total": 19,
+      "hallucinated_parameters": [
+        "\u03c0 Annual birth rate (as reported in Table 3 excerpt)",
+        "R\u2080 Basic reproduction number; computed as largest eigenvalue of FV^{-1} and reported as 6 in the text",
+        "\u03be_S Human-to-human (non-vector) transmission-related parameter varied in simulations (exact definition/value not provided in extracted sections)",
+        "\u03b7_S Mosquito-to-human exposure/transmission-related parameter varied in simulations (exact definition/value not provided in extracted sections)",
+        "\u03bc\u2081 Mortality-related parameter appearing in the DFE Jacobian excerpt (exact meaning/value not provided)"
+      ],
+      "hallucinated_parameters_total": 6
+    },
+    "flags": {
+      "has_direction_errors": false,
+      "has_value_errors": false,
+      "has_hallucinations": true,
+      "has_missed_items": true
+    }
+  }
+}

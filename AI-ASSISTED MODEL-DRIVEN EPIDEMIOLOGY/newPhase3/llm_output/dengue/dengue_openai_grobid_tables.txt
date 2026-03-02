@@ -1,0 +1,166 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!--
+    Source paper: Li et al. (JMAA 524 (2023) 127127) "Dynamical analysis of an age-structured dengue model with asymptomatic infection"
+    Core model (system (2.1)) is age-structured PDE for humans + ODE for infectious mosquitoes.
+    Normalized model (2.2) removes human natural death terms via normalization by P∞(a).
+    This metamodel is compartmental ODE-based; we encode the *compartment structure and flows* using the paper’s symbols.
+    Age-structure is represented as a Product/Group "Age a" (continuous in paper). Since the metamodel expects discrete strata,
+    we include a single placeholder stratum "a" to preserve the age-dependent parameter notation βₕ(a), βᵥ(a), k(a), γ₁(a), γ₂(a).
+  -->
+
+  <groups name="Age">
+    <values>a</values>
+  </groups>
+
+  <products name="HumanAgeProduct" description="Placeholder discretization of continuous age a; preserves age-dependent rates in parameter names.">
+    <groups>//@groups.0</groups>
+  </products>
+
+  <parameters name="B" type="CONSTANT" expression="" unit="hosts/time"
+              description="Constant influx (recruitment) rate of susceptible human hosts (Table 1)."/>
+  <parameters name="μₕ" type="CONSTANT" expression="" unit="1/time"
+              description="Natural death rate of human hosts (Table 1; appears in unnormalized system (2.1))."/>
+  <parameters name="μᵥ" type="CONSTANT" expression="" unit="1/time"
+              description="Natural death rate of mosquitoes (Table 1)."/>
+  <parameters name="k(a)" type="VARIABLE" expression="" unit="1/time"
+              description="Age-specific progression rate from exposed to infectious; latent period is k(a)^{-1} (Table 1)."/>
+  <parameters name="γ₁(a)" type="VARIABLE" expression="" unit="1/time"
+              description="Age-specific recovery rate of symptomatic infectious hosts (Table 1)."/>
+  <parameters name="γ₂(a)" type="VARIABLE" expression="" unit="1/time"
+              description="Age-specific recovery rate of asymptomatic infectious hosts (Table 1)."/>
+  <parameters name="βₕ(a)" type="VARIABLE" expression="" unit="1/time"
+              description="Age-specific transmission/contact rate from infected mosquitoes to susceptible humans (Table 1)."/>
+  <parameters name="βᵥ(a)" type="VARIABLE" expression="" unit="1/time"
+              description="Age-specific transmission rate from infectious humans to susceptible mosquitoes (Table 1)."/>
+  <parameters name="ρ" type="CONSTANT" expression="" unit="dimensionless"
+              description="Probability an exposed host becomes symptomatic infectious (Iₕ) upon leaving Eₕ (Table 1)."/>
+  <parameters name="σ" type="CONSTANT" expression="" unit="dimensionless"
+              description="Reinfection intensity factor: scales secondary infection of asymptomatic hosts and their contribution to mosquito infection (Table 1)."/>
+
+  <!-- Optional normalization constants used in (2.1)/(2.2) -->
+  <parameters name="Nₕ(t)" type="VARIABLE" expression="" unit="hosts"
+              description="Total human population at time t (paper notation)."/>
+  <parameters name="Nₕ*" type="VARIABLE" expression="" unit="hosts"
+              description="Asymptotic constant total human population used in normalized system (2.2) (paper notation)."/>
+
+  <!-- ===================== Compartments ===================== -->
+  <!-- Humans (age-structured densities) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Human (age a)" population="0" product="//@products.0">
+    <!-- Infection by infectious mosquitoes: S_h(a) -> E_h(a) -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRateParameter="//@parameters.6"
+                   contactCompartment="//@compartments.5"
+                   target="//@compartments.1"
+                   description="Mosquito-to-human transmission: S_h(a) -> E_h(a) at rate βₕ(a) * Iᵥ (standard incidence in paper)."/>
+    <!-- Natural death (system (2.1)) -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.1"
+                   target="//@compartments.6"
+                   description="Natural death of susceptible humans at rate μₕ (system (2.1))."/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Human (age a)" population="0" product="//@products.0">
+    <!-- Progression E_h(a) -> I_h(a) with probability ρ -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   target="//@compartments.2"
+                   description="Progression to symptomatic infectious: E_h(a) -> I_h(a) at rate ρ k(a) (paper). Implement as expression in simulation layer: ρ*k(a)."/>
+    <!-- Progression E_h(a) -> A_h(a) with probability (1-ρ) -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   target="//@compartments.3"
+                   description="Progression to asymptomatic infectious: E_h(a) -> A_h(a) at rate (1-ρ) k(a) (paper). Implement as expression in simulation layer: (1-ρ)*k(a)."/>
+    <!-- Natural death -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.1"
+                   target="//@compartments.6"
+                   description="Natural death of exposed humans at rate μₕ (system (2.1))."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Human Symptomatic (age a)" population="0" product="//@products.0">
+    <!-- Recovery I_h(a) -> R_h(a) -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.4"
+                   target="//@compartments.4"
+                   description="Recovery of symptomatic infectious humans: I_h(a) -> R_h(a) at rate γ₁(a)."/>
+    <!-- Natural death -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.1"
+                   target="//@compartments.6"
+                   description="Natural death of symptomatic infectious humans at rate μₕ (system (2.1))."/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Human Asymptomatic (age a)" population="0" product="//@products.0">
+    <!-- Reinfection / secondary infection: A_h(a) -> I_h(a) via infectious mosquitoes -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRate="0.0"
+                   contactCompartment="//@compartments.5"
+                   target="//@compartments.2"
+                   description="Secondary infection: A_h(a) -> I_h(a) at contact rate σ βₕ(a) * Iᵥ (paper). Implement as expression in simulation layer: σ*βₕ(a)."/>
+    <!-- Recovery A_h(a) -> R_h(a) -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.4"
+                   description="Recovery of asymptomatic infectious humans: A_h(a) -> R_h(a) at rate γ₂(a)."/>
+    <!-- Natural death -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.1"
+                   target="//@compartments.6"
+                   description="Natural death of asymptomatic infectious humans at rate μₕ (system (2.1))."/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Human (age a)" population="0" product="//@products.0">
+    <!-- Natural death -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.1"
+                   target="//@compartments.6"
+                   description="Natural death of recovered humans at rate μₕ (system (2.1))."/>
+  </compartments>
+
+  <!-- Mosquitoes: paper rescales total mosquitoes to 1; Iv(t) is infectious portion; Sv(t)=1-Iv(t) implicit -->
+  <compartments PrimaryName="Infectious" SecondaryName="Mosquito" population="0">
+    <!-- Death of infectious mosquitoes -->
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rateParameter="//@parameters.2"
+                   target="//@compartments.6"
+                   description="Natural death of infectious mosquitoes at rate μᵥ (paper)."/>
+  </compartments>
+
+  <!-- Terminal sink for deaths (humans and mosquitoes) -->
+  <compartments PrimaryName="Death" SecondaryName="All" population="0"/>
+
+  <!-- ===================== Sources/Sinks ===================== -->
+  <!-- Recruitment of susceptible humans -->
+  <birthSources name="HumanRecruitment" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"
+                description="Constant influx B into susceptible humans S_h (paper)."/>
+
+  <!-- Explicit death sinks (recommended by metamodel rules); flows above also point to Death compartment for completeness -->
+  <deathSinks name="NaturalDeath_S_h" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="NaturalDeath_E_h" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="NaturalDeath_I_h" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="NaturalDeath_A_h" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="NaturalDeath_R_h" rateParameter="//@parameters.1" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="NaturalDeath_I_v" rateParameter="//@parameters.2" sourceCompartment="//@compartments.5"/>
+
+  <!--
+    Note on mosquito infection process:
+      Paper ODE: dIᵥ/dt = (1 - Iᵥ) * (1/Nₕ(t)) ∫ βᵥ(a) [ Iₕ(a,t) + σ Aₕ(a,t) ] da  - μᵥ Iᵥ
+    This requires an explicit susceptible mosquito compartment Sᵥ = 1 - Iᵥ and an integral contact term over age.
+    The current metamodel ContactFlow supports contact with a single compartment, not an integral over multiple strata.
+    To preserve structure, one would typically add Sᵥ and use a custom/expression parameter for the force of infection λᵥ(t).
+    Since the task requests strict flow typing, we keep Iᵥ with death only, and capture λᵥ(t) as an EXPRESSION parameter below.
+  -->
+
+  <parameters name="λᵥ(t)" type="EXPRESSION"
+              expression="(1 - Iᵥ(t))*(1/Nₕ(t))*∫₀^∞ βᵥ(a)*(Iₕ(a,t)+σ*Aₕ(a,t)) da"
+              unit="1/time"
+              description="Force of infection for mosquitoes (paper). Use in simulation to drive Sᵥ->Iᵥ if Sᵥ is modeled explicitly."/>
+
+</seir:SEIRModel>
+```

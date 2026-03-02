@@ -1,0 +1,33 @@
+{
+  "comp": [
+    "Susceptible",
+    "Exposed E1",
+    "Exposed E2",
+    "Infectious I1",
+    "Infectious I2",
+    "Recovered"
+  ],
+  "flow": [
+    "Susceptible->Exposed E1",
+    "Exposed E1->Exposed E2",
+    "Exposed E2->Infectious I1",
+    "Infectious I1->Infectious I2",
+    "Infectious I2->Recovered"
+  ],
+  "param": [
+    "\u03b2 Constant transmission rate (rate at which new infections take place given a contact); used in force of infection \u03bb(t) proportional to infectious people.",
+    "\u03bb(t) Force of infection (rate at which a susceptible becomes infected), assumed proportional to number of infectious people at time t and transmission rate \u03b2 (homogeneous mixing).",
+    "\u03c3 Daily rate of transition E\u2081\u2192E\u2082 and E\u2082\u2192I\u2081; implies average incubation period d_L = 2*(1/\u03c3) days.",
+    "\u03b3 Daily rate of transition I\u2081\u2192I\u2082 and I\u2082\u2192R; implies average infectious period d_I = 2*(1/\u03b3) days.",
+    "\u03c0 Initial susceptibility (proportion non-immune at start); used in effective reproduction number R_n together with epidemic growth rate parameter \u03c8.",
+    "\u03bb\u2080 Initial infection rate / initial force of infection parameter at epidemic start (as used in parameter set \u0398_T = (\u03c0, \u03bb\u2080, \u03c8, \u03c3, \u03b3)).",
+    "\u03c8 Epidemic growth-related parameter (EGR parametrisation); used with \u03c0 to determine effective reproduction number R_n.",
+    "p_ICU Probability of ICU/HDU admission given infection.",
+    "\u03bc_ICU|E Mean of Gamma-distributed waiting time from infection to ICU/HDU admission.",
+    "\u03c3\u00b2_ICU|E Variance of Gamma-distributed waiting time from infection to ICU/HDU admission.",
+    "\u03b7 Negative Binomial dispersion parameter for weekly ICU/HDU admission counts (observation model).",
+    "R\u2080 Basic reproduction number; discussed with plausible range 1\u2264R\u2080\u22644 used to set priors (no explicit formula given in provided sections).",
+    "R_n Effective reproduction number in partially immune population; stated to be a function of susceptibility \u03c0 and EGR parameter \u03c8 (explicit formula not provided in provided sections).",
+    "TAR Total Attack Rate: probability of being infected over the whole epidemic for a susceptible individual (computed from transmission model; explicit formula not provided in provided sections)."
+  ]
+}

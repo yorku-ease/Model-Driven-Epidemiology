@@ -1,0 +1,129 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 29350679.1
+    },
+    {
+      "name": "Exposed 1",
+      "secondary_name": "1",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed 2",
+      "secondary_name": "2",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious 1",
+      "secondary_name": "1",
+      "initial_population": 1514.591
+    },
+    {
+      "name": "Infectious 2",
+      "secondary_name": "2",
+      "initial_population": 1514.591
+    },
+    {
+      "name": "Recovered",
+      "secondary_name": "",
+      "initial_population": 25197741.718
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious 1",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection from Infectious stage 1"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious 2",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection from Infectious stage 2"
+    },
+    {
+      "source": "Exposed 1",
+      "target": "Exposed 2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to second Exposed stage"
+    },
+    {
+      "source": "Exposed 2",
+      "target": "Infectious 1",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to first Infectious stage"
+    },
+    {
+      "source": "Infectious 1",
+      "target": "Infectious 2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to second Infectious stage"
+    },
+    {
+      "source": "Infectious 2",
+      "target": "Recovered",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": 0.6217,
+      "unit": "1/day",
+      "description": "Transmission rate, derived from R0 for 2014/15 season"
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "1/day",
+      "description": "Progression rate from Exposed states (inverse of mean latent period stage duration)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.5797,
+      "unit": "1/day",
+      "description": "Progression/Recovery rate from Infectious states (inverse of mean infectious period stage duration)"
+    },
+    {
+      "symbol": "\u03c0",
+      "type": "CONSTANT",
+      "value": 0.538,
+      "unit": "dimensionless",
+      "description": "Initial proportion of susceptible individuals (2014/15)"
+    },
+    {
+      "symbol": "I\u2080",
+      "type": "CONSTANT",
+      "value": 3029.182,
+      "unit": "persons",
+      "description": "Initial number of infectious individuals (2014/15)"
+    }
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Human (age-structured)",
+      "secondary_name": "Human (age-structured)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Human (age-structured)",
+      "secondary_name": "Human (age-structured)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Human Symptomatic (age-structured)",
+      "secondary_name": "Human Symptomatic (age-structured)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Human Asymptomatic (age-structured)",
+      "secondary_name": "Human Asymptomatic (age-structured)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered Human (age-structured)",
+      "secondary_name": "Human (age-structured)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Susceptible Mosquito (proportion)",
+      "secondary_name": "Mosquito (proportion)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Mosquito (proportion)",
+      "secondary_name": "Mosquito (proportion)",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Human (age-structured)",
+      "target": "Exposed Human (age-structured)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Mosquito (proportion)",
+      "rate_parameter": "\u03b2\u1d65(a)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Primary infection of susceptible humans by infectious mosquitoes: \u03b2\u2095(a) * I\u1d65(t) * S\u2095(a,t) / N\u2095(t)."
+    },
+    {
+      "source": "Exposed Human (age-structured)",
+      "target": "Infectious Human Symptomatic (age-structured)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3\u2081(a)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to symptomatic infectious: \u03c1 * k(a) * E\u2095(a,t). (Implemented as base k(a); split by \u03c1 handled conceptually)."
+    },
+    {
+      "source": "Exposed Human (age-structured)",
+      "target": "Infectious Human Asymptomatic (age-structured)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3\u2081(a)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to asymptomatic infectious: (1-\u03c1) * k(a) * E\u2095(a,t). (Implemented as base k(a); split by (1-\u03c1) handled conceptually)."
+    },
+    {
+      "source": "Infectious Human Symptomatic (age-structured)",
+      "target": "Recovered Human (age-structured)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3\u2082(a)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of symptomatic humans: \u03b3\u2081(a) * I\u2095(a,t)."
+    },
+    {
+      "source": "Infectious Human Asymptomatic (age-structured)",
+      "target": "Infectious Human Symptomatic (age-structured)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Mosquito (proportion)",
+      "rate_parameter": "\u03b2\u1d65(a)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Secondary infection (reinfection) of asymptomatic humans leading to symptomatic infection: \u03c3 * \u03b2\u2095(a) * I\u1d65(t) * A\u2095(a,t) / N\u2095(t). (\u03c3 is a modifier)."
+    },
+    {
+      "source": "Infectious Human Asymptomatic (age-structured)",
+      "target": "Recovered Human (age-structured)",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c1",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of asymptomatic humans: \u03b3\u2082(a) * A\u2095(a,t)."
+    },
+    {
+      "source": "Susceptible Mosquito (proportion)",
+      "target": "Infectious Mosquito (proportion)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Human Symptomatic (age-structured)",
+      "rate_parameter": "k(a)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Mosquito infection by biting infectious humans: (1-I\u1d65(t))*(1/N\u2095(t))\u222b\u03b2\u1d65(a)[I\u2095(a,t)+\u03c3A\u2095(a,t)]da. (Contact compartment set to I\u2095; A\u2095 contribution scaled by \u03c3)."
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Human (age-structured)",
+      "type": "BirthSource",
+      "rate_parameter": "B",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human_Recruitment"
+    },
+    {
+      "source": "Susceptible Human (age-structured)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_S_h"
+    },
+    {
+      "source": "Exposed Human (age-structured)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_E_h"
+    },
+    {
+      "source": "Infectious Human Symptomatic (age-structured)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_I_h"
+    },
+    {
+      "source": "Infectious Human Asymptomatic (age-structured)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_A_h"
+    },
+    {
+      "source": "Recovered Human (age-structured)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_R_h"
+    },
+    {
+      "source": "Susceptible Mosquito (proportion)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_S_v"
+    },
+    {
+      "source": "Infectious Mosquito (proportion)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural_Death_I_v"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "a",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "time (e.g., years)",
+      "description": "Host chronological age (structuring variable)"
+    },
+    {
+      "symbol": "t",
+      "type": "VARIABLE",
+      "value": null,
+      "unit": "time",
+      "description": "Time"
+    },
+    {
+      "symbol": "B",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "hosts/time",
+      "description": "Constant influx (recruitment/birth) rate of human hosts into S\u2095 at age a=0"
+    },
+    {
+      "symbol": "\u03bc\u2095",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Natural death rate of human hosts"
+    },
+    {
+      "symbol": "\u03bc\u1d65",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "1/time",
+      "description": "Natural death rate of mosquitoes"
+    },
+    {
+      "symbol": "\u03b2\u2095(a)",
+      "type": "EXPRESSION",
+      "value": "\u03b2\u2095(a)",
+      "unit": "1/time",
+      "description": "Age-specific transmission/contact rate from infectious mosquitoes to susceptible humans"
+    },
+    {
+      "symbol": "\u03b2\u1d65(a)",
+      "type": "EXPRESSION",
+      "value": "\u03b2\u1d65(a)",
+      "unit": "1/time",
+      "description": "Age-specific transmission rate from infectious humans (I\u2095 and A\u2095) to susceptible mosquitoes"
+    },
+    {
+      "symbol": "k(a)",
+      "type": "EXPRESSION",
+      "value": "k(a)",
+      "unit": "1/time",
+      "description": "Age-specific progression rate from exposed to infectious (inverse of latent period)"
+    },
+    {
+      "symbol": "\u03b3\u2081(a)",
+      "type": "EXPRESSION",
+      "value": "\u03b3\u2081(a)",
+      "unit": "1/time",
+      "description": "Age-specific recovery rate of symptomatic infectious humans"
+    },
+    {
+      "symbol": "\u03b3\u2082(a)",
+      "type": "EXPRESSION",
+      "value": "\u03b3\u2082(a)",
+      "unit": "1/time",
+      "description": "Age-specific recovery rate of asymptomatic infectious humans"
+    },
+    {
+      "symbol": "\u03c1",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Probability an exposed human becomes symptomatic infectious (E\u2095\u2192I\u2095); (1-\u03c1) becomes asymptomatic (E\u2095\u2192A\u2095)"
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Factor characterizing intensity of reinfection of asymptomatic infectious hosts (secondary infection modifier); also scales A\u2095 contribution to mosquito infection in vector equation"
+    },
+    {
+      "symbol": "N\u2095(t)",
+      "type": "EXPRESSION",
+      "value": "N\u2095(t)",
+      "unit": "hosts",
+      "description": "Total human population size at time t (integral over ages of S\u2095+E\u2095+I\u2095+A\u2095+R\u2095)"
+    },
+    {
+      "symbol": "I\u1d65(t)",
+      "type": "EXPRESSION",
+      "value": "I\u1d65(t)",
+      "unit": "dimensionless",
+      "description": "Proportion of infectious mosquitoes at time t (mosquito population rescaled to 1)"
+    }
+  ]
+}

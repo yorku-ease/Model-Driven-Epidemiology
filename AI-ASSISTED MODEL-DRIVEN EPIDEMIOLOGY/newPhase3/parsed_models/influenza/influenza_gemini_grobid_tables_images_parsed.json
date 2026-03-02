@@ -1,0 +1,115 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible",
+      "secondary_name": "",
+      "initial_population": 29350680.0
+    },
+    {
+      "name": "Exposed 1",
+      "secondary_name": "1",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed 2",
+      "secondary_name": "2",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious 1",
+      "secondary_name": "1",
+      "initial_population": 1515.0
+    },
+    {
+      "name": "Infectious 2",
+      "secondary_name": "2",
+      "initial_population": 1514.0
+    },
+    {
+      "name": "Removed",
+      "secondary_name": "",
+      "initial_population": 25197741.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious 1",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals through contact with infectious individuals in compartment I1."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious 2",
+      "rate_parameter": "\u03b2",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible individuals through contact with infectious individuals in compartment I2."
+    },
+    {
+      "source": "Exposed 1",
+      "target": "Exposed 2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from the first to the second exposed compartment."
+    },
+    {
+      "source": "Exposed 2",
+      "target": "Infectious 1",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from the second exposed compartment to becoming infectious."
+    },
+    {
+      "source": "Infectious 1",
+      "target": "Infectious 2",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from the first to the second infectious compartment."
+    },
+    {
+      "source": "Infectious 2",
+      "target": "Removed",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious individuals."
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03b2",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Transmission rate at which new infections take place given a contact."
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "per day",
+      "description": "Rate of progression through exposed compartments. The average incubation period is 2/\u03c3."
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.5797,
+      "unit": "per day",
+      "description": "Rate of progression through infectious compartments. The average infectious period is 2/\u03b3."
+    }
+  ]
+}

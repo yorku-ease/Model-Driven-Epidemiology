@@ -1,0 +1,68 @@
+An epidemiological model for HIV transmission was extracted from the provided scientific paper sections and figure descriptions. The model is a deterministic compartmental model described by a system of ordinary differential equations. It stratifies the population into three susceptible groups based on sexual behavior and gender: homosexual men, heterosexual men, and women. The model tracks the progression from susceptible to infected, then to treatment (ART), and finally to AIDS.
+
+Key features of the model include:
+- **Population Stratification**: The model explicitly separates susceptible and infected populations into Homosexual Men (Sh, Ih), Women (Sw, Iw), and Heterosexual Men (Sm, Im).
+- **Complex Transmission**: Infection is driven by forces of infection (λh, λw, λm) that account for exclusive homosexual, exclusive heterosexual, and bisexual contact between the groups.
+- **Treatment and Progression**: Infected individuals may start treatment (T) or progress directly to AIDS (A). Those on treatment can also progress to AIDS due to treatment failure.
+- **Demographics**: The model includes constant recruitment into the susceptible populations and accounts for both natural mortality in all stages and AIDS-induced mortality.
+
+The model is formalized below in the EpiMDE XML format, capturing all compartments, parameters, and the flows between them as identified from the source materials.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="C" description="Constant recruitment rate in susceptible individuals"/>
+  <parameters name="h" description="Proportion of men in new recruits"/>
+  <parameters name="c" description="Proportion of heterosexual men among new male recruits"/>
+  <parameters name="Recruit_h" type="EXPRESSION" expression="C*h*(1-c)" description="Recruitment rate into susceptible homosexual men population"/>
+  <parameters name="Recruit_w" type="EXPRESSION" expression="C*(1-h)" description="Recruitment rate into susceptible women population"/>
+  <parameters name="Recruit_m" type="EXPRESSION" expression="C*h*c" description="Recruitment rate into susceptible heterosexual men population"/>
+  <parameters name="λh" type="EXPRESSION" expression="EXPRESSION_UNDEFINED" description="Force of infection on susceptible homosexual men"/>
+  <parameters name="λw" type="EXPRESSION" expression="EXPRESSION_UNDEFINED" description="Force of infection on susceptible women"/>
+  <parameters name="λm" type="EXPRESSION" expression="EXPRESSION_UNDEFINED" description="Force of infection on susceptible heterosexual men"/>
+  <parameters name="a" description="Departure rate from infected compartments (diagnosis and start of follow-up)"/>
+  <parameters name="p" description="Proportion of diagnosed individuals who start initial treatment (ART)"/>
+  <parameters name="a_p" type="EXPRESSION" expression="a*p" description="Rate of moving from infected to treated"/>
+  <parameters name="a_1_minus_p" type="EXPRESSION" expression="a*(1-p)" description="Rate of moving from infected directly to AIDS (late diagnosis)"/>
+  <parameters name="δ" description="Rate of progression from treatment to AIDS (treatment failure)"/>
+  <parameters name="μ" description="Natural mortality rate for all compartments"/>
+  <parameters name="d" description="AIDS-induced (excess) mortality rate"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Homosexual Men" population="100000.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.6" target="//@compartments.3" description="Infection of susceptible homosexual men"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Women" population="100000.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.7" target="//@compartments.4" description="Infection of susceptible women"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Heterosexual Men" population="100000.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.8" target="//@compartments.5" description="Infection of susceptible heterosexual men"/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Homosexual Men" population="10.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.6" description="Homosexual men starting treatment"/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.7" description="Homosexual men progressing to AIDS without treatment"/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Women" population="10.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.6" description="Women starting treatment"/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.7" description="Women progressing to AIDS without treatment"/>
+  </compartments>
+  <compartments PrimaryName="Infected" SecondaryName="Heterosexual Men" population="10.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.11" target="//@compartments.6" description="Heterosexual men starting treatment"/>
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.12" target="//@compartments.7" description="Heterosexual men progressing to AIDS without treatment"/>
+  </compartments>
+  <compartments PrimaryName="Treated" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow" rateParameter="//@parameters.13" target="//@compartments.7" description="Progression to AIDS due to treatment failure"/>
+  </compartments>
+  <compartments PrimaryName="AIDS" SecondaryName="Individuals living with AIDS" population="0.0"/>
+  <birthSources name="Recruitment_Homosexual_Men" rateParameter="//@parameters.3" targetCompartment="//@compartments.0"/>
+  <birthSources name="Recruitment_Women" rateParameter="//@parameters.4" targetCompartment="//@compartments.1"/>
+  <birthSources name="Recruitment_Heterosexual_Men" rateParameter="//@parameters.5" targetCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_Sh" rateParameter="//@parameters.14" sourceCompartment="//@compartments.0"/>
+  <deathSinks name="Natural_Death_Sw" rateParameter="//@parameters.14" sourceCompartment="//@compartments.1"/>
+  <deathSinks name="Natural_Death_Sm" rateParameter="//@parameters.14" sourceCompartment="//@compartments.2"/>
+  <deathSinks name="Natural_Death_Ih" rateParameter="//@parameters.14" sourceCompartment="//@compartments.3"/>
+  <deathSinks name="Natural_Death_Iw" rateParameter="//@parameters.14" sourceCompartment="//@compartments.4"/>
+  <deathSinks name="Natural_Death_Im" rateParameter="//@parameters.14" sourceCompartment="//@compartments.5"/>
+  <deathSinks name="Natural_Death_T" rateParameter="//@parameters.14" sourceCompartment="//@compartments.6"/>
+  <deathSinks name="Natural_Death_A" rateParameter="//@parameters.14" sourceCompartment="//@compartments.7"/>
+  <deathSinks name="AIDS_Induced_Death_A" rateParameter="//@parameters.15" sourceCompartment="//@compartments.7"/>
+</seir:SEIRModel>
+```

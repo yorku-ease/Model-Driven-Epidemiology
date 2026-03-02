@@ -1,0 +1,436 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Humans",
+      "secondary_name": "Humans",
+      "initial_population": 1000000.0
+    },
+    {
+      "name": "Vaccinated Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Humans (vector-borne)",
+      "secondary_name": "Humans (vector-borne)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Exposed Humans (non-vector)",
+      "secondary_name": "Humans (non-vector)",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Humans",
+      "secondary_name": "Humans",
+      "initial_population": 100.0
+    },
+    {
+      "name": "Treated Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Recovered Humans",
+      "secondary_name": "Humans",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Susceptible Mosquitoes",
+      "secondary_name": "Mosquitoes",
+      "initial_population": 1000000.0
+    },
+    {
+      "name": "Exposed Mosquitoes",
+      "secondary_name": "Mosquitoes",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Mosquitoes",
+      "secondary_name": "Mosquitoes",
+      "initial_population": 0.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans (vector-borne)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Mosquitoes",
+      "rate_parameter": "\u03b2\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans by infectious mosquitoes (vector-borne)"
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans (non-vector)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Humans",
+      "rate_parameter": "\u03b2\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans by infectious humans (non-vector)"
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "Susceptible Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b8",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of vaccine-induced immunity"
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "Exposed Humans (vector-borne)",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Mosquitoes",
+      "rate_parameter": "\u03b2\u2082\u03b5",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Breakthrough infection of vaccinated humans by infectious mosquitoes"
+    },
+    {
+      "source": "Exposed Humans (vector-borne)",
+      "target": "Infectious Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to infectious stage for vector-exposed humans"
+    },
+    {
+      "source": "Exposed Humans (non-vector)",
+      "target": "Infectious Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to infectious stage for non-vector-exposed humans"
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Treated Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Movement of infectious humans to treatment"
+    },
+    {
+      "source": "Treated Humans",
+      "target": "Recovered Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c9",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of treated humans"
+    },
+    {
+      "source": "Recovered Humans",
+      "target": "Susceptible Humans",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Waning of natural immunity"
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Humans",
+      "rate_parameter": "\u03b2\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible mosquitoes by infectious humans"
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c6",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression to infectious stage for mosquitoes"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Humans",
+      "type": "BirthSource",
+      "rate_parameter": "\u03c0(1-k)",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Unvaccinated Human Births"
+    },
+    {
+      "source": "__external__",
+      "target": "Vaccinated Humans",
+      "type": "BirthSource",
+      "rate_parameter": "\u03c0k",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vaccinated Human Births"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Mosquitoes",
+      "type": "BirthSource",
+      "rate_parameter": "\u039b",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Mosquito Recruitment"
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death S_H"
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death V_H"
+    },
+    {
+      "source": "Exposed Humans (vector-borne)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death E_H1"
+    },
+    {
+      "source": "Exposed Humans (non-vector)",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death E_H2"
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death I_H"
+    },
+    {
+      "source": "Treated Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death T_H"
+    },
+    {
+      "source": "Recovered Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death R_H"
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death S_M"
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death E_M"
+    },
+    {
+      "source": "Infectious Mosquitoes",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Natural Death I_M"
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Disease-induced Death I_H"
+    },
+    {
+      "source": "Treated Humans",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03b4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Disease-induced Death T_H"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03c0",
+      "type": "CONSTANT",
+      "value": 0.012,
+      "unit": "per day",
+      "description": "Human recruitment (birth) rate"
+    },
+    {
+      "symbol": "k",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Proportion of newborns who are vaccinated"
+    },
+    {
+      "symbol": "\u039b",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Recruitment rate of the vector population"
+    },
+    {
+      "symbol": "\u03bc\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Natural mortality rate of the human population"
+    },
+    {
+      "symbol": "\u03bc\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Natural mortality rate of the vector population"
+    },
+    {
+      "symbol": "\u03b4\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Disease-induced mortality rate in infectious and treated humans"
+    },
+    {
+      "symbol": "\u03b8",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Rate of waning vaccine-induced immunity"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Rate of waning natural immunity (from recovery)"
+    },
+    {
+      "symbol": "\u03b2\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Non-vector transmission rate (human-to-human, e.g., blood transfusion)"
+    },
+    {
+      "symbol": "\u03b2\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Effective contact rate for vector transmission (mosquito-to-human)"
+    },
+    {
+      "symbol": "\u03b2\u2083",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Effective contact rate for vector transmission (human-to-mosquito)"
+    },
+    {
+      "symbol": "\u03b5",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "dimensionless",
+      "description": "Reduction in susceptibility for vaccinated individuals (vaccine efficacy)"
+    },
+    {
+      "symbol": "\u03c4\u2081",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Progression rate from vector-exposed to infectious in humans"
+    },
+    {
+      "symbol": "\u03c4\u2082",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Progression rate from non-vector-exposed to infectious in humans"
+    },
+    {
+      "symbol": "\u03c6",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Progression rate from exposed to infectious in vectors"
+    },
+    {
+      "symbol": "\u03c3",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Rate at which infectious humans begin treatment"
+    },
+    {
+      "symbol": "\u03c9",
+      "type": "CONSTANT",
+      "value": null,
+      "unit": "per day",
+      "description": "Rate at which treated humans recover"
+    },
+    {
+      "symbol": "\u03c0k",
+      "type": "EXPRESSION",
+      "value": "\u03c0 * k",
+      "unit": "",
+      "description": "Rate of vaccinated newborns entering the population"
+    },
+    {
+      "symbol": "\u03c0(1-k)",
+      "type": "EXPRESSION",
+      "value": "\u03c0 * (1-k)",
+      "unit": "",
+      "description": "Rate of unvaccinated newborns entering the population"
+    },
+    {
+      "symbol": "\u03b2\u2082\u03b5",
+      "type": "EXPRESSION",
+      "value": "\u03b2\u2082 * \u03b5",
+      "unit": "",
+      "description": "Effective contact rate for breakthrough infections in vaccinated individuals"
+    }
+  ]
+}

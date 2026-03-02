@@ -1,0 +1,57 @@
+An XML representation of the compartmental model has been generated below, adhering to the specified metamodel. The model structure, including compartments and flows, was derived from the differential equations and descriptions in the full paper text. Parameter values were sourced from the provided parameter tables.
+
+The model consists of six compartments: Susceptible (A), Infectious (P), Quarantine (F), Recovered (K), Ebola virus Pathogens in the Environment (U), and Deceased (S). Key dynamics include:
+- **Infection:** Susceptible individuals can become infected through contact with Infectious people (rate ψ₁), Deceased individuals (rate ψ₃), and environmental Pathogens (rate ψ₂). This is modeled as three distinct `ContactFlow`s.
+- **Quarantine:** Infectious individuals are moved to the Quarantine compartment at rate ρ₃.
+- **Outcomes:** Individuals can recover from quarantine (rate w₁), or die from the disease either while infectious (rate ρ₁) or in quarantine (rate w₂), moving to the Deceased compartment.
+- **Environmental Component:** The model tracks the concentration of Ebola virus pathogens in the environment, which is increased by shedding from infectious and deceased individuals and decreases via natural decay.
+- **Mortality:** Natural death (rate ε) is applied to all human compartments. Notably, the model routes natural deaths from the Infectious and Quarantine compartments into the Deceased compartment, rather than directly out of the system.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel">
+  <parameters name="α₁" expression="10.0" description="The proportion at which Susceptible people are recruitment"/>
+  <parameters name="α₂" expression="3.0" description="The proportion at which infected people are recruitment"/>
+  <parameters name="ψ₁" expression="0.006" description="The rate of contact (effective) of infected human"/>
+  <parameters name="ψ₂" expression="0.0012" description="The rate contact of Ebola virus pathogens in the environment"/>
+  <parameters name="ψ₃" expression="0.006" description="Rate of contact (effective) of deceased (human)"/>
+  <parameters name="ε" expression="0.5" description="Natural death rate of humans"/>
+  <parameters name="ρ₁" expression="0.123" description="Rate of deaths of human individuals due to infection"/>
+  <parameters name="ρ₂" expression="0.04" description="Rate at which shedding of infected humans"/>
+  <parameters name="ρ₃" expression="0.12" description="The rate at which infected people quarantined"/>
+  <parameters name="w₁" expression="0.04" description="The rate at which quarantined people are recovered"/>
+  <parameters name="w₂" expression="0.22" description="The rate at which quarantine people are in deceased"/>
+  <parameters name="h" expression="0.04" description="proportion of shedding of deceased people"/>
+  <parameters name="c" expression="0.8" description="The proportion rate of burial deceased people"/>
+  <parameters name="b" expression="0.0" description="The rate at which EVD in the environment is removed/decays"/>
+  <parameters name="d" expression="0.0015" description="Constant source of EVD pathogens in the environment"/>
+  <compartments PrimaryName="Susceptible People" population="0.9">
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.1" target="//@compartments.1" description="Infection from contact with Infectious People" contactRateParameter="//@parameters.2"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.5" target="//@compartments.1" description="Infection from contact with Deceased People" contactRateParameter="//@parameters.4"/>
+    <outgoingFlows xsi:type="seir:ContactFlow" contactCompartment="//@compartments.4" target="//@compartments.1" description="Infection from contact with Environmental Pathogens" contactRateParameter="//@parameters.3"/>
+  </compartments>
+  <compartments PrimaryName="Infectious People" population="0.8">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" description="Disease-induced death" rateParameter="//@parameters.6"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.4" description="Shedding of virus into the environment" rateParameter="//@parameters.7"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.2" description="Movement to quarantine" rateParameter="//@parameters.8"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" description="Natural death of infectious individuals (moves to Deceased compartment)" rateParameter="//@parameters.5"/>
+  </compartments>
+  <compartments PrimaryName="Quarantine People" population="0.1">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.3" description="Recovery from quarantine" rateParameter="//@parameters.9"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" description="Death while in quarantine" rateParameter="//@parameters.10"/>
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" description="Natural death in quarantine (moves to Deceased compartment)" rateParameter="//@parameters.5"/>
+  </compartments>
+  <compartments PrimaryName="Recovered Disease" population="0.2"/>
+  <compartments PrimaryName="Ebola virus Pathogens in the Environment" population="0.0"/>
+  <compartments PrimaryName="Deceased People" population="0.5">
+    <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.4" description="Shedding of virus from deceased into the environment" rateParameter="//@parameters.11"/>
+  </compartments>
+  <birthSources name="Recruitment_of_Susceptible" targetCompartment="//@compartments.0" rateParameter="//@parameters.0"/>
+  <birthSources name="Recruitment_of_Infected" targetCompartment="//@compartments.1" rateParameter="//@parameters.1"/>
+  <birthSources name="Environmental_Source_of_Pathogen" targetCompartment="//@compartments.4" rateParameter="//@parameters.14"/>
+  <deathSinks name="Natural_Death_Susceptible" sourceCompartment="//@compartments.0" rateParameter="//@parameters.5"/>
+  <deathSinks name="Natural_Death_Recovered" sourceCompartment="//@compartments.3" rateParameter="//@parameters.5"/>
+  <deathSinks name="Pathogen_Decay" sourceCompartment="//@compartments.4" rateParameter="//@parameters.13"/>
+  <deathSinks name="Burial_of_Deceased" sourceCompartment="//@compartments.5" rateParameter="//@parameters.12"/>
+</seir:SEIRModel>
+```

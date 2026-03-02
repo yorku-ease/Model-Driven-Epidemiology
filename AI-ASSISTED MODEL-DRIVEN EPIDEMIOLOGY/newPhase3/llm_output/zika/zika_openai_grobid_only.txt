@@ -1,0 +1,231 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:seir="http://example.com/seirmodel">
+
+  <!--
+    NOTE (source limitation):
+    The provided core sections describe the model structure (SEIR humans + SEI adult vectors + egg/larva/pupa life stages,
+    logistic human growth, dynamic vector demography, and bite-mediated transmission), but the extracted text omits the
+    explicit ODEs, parameter table (values/units), and the exact functional forms (e.g., logistic term, mosquito life-stage
+    transition rates, death rates, and transmission coefficients).
+    Therefore, this XML encodes the COMPLETE compartment set and the COMPLETE set of flow *types* implied by the text,
+    but leaves most rates as VARIABLE/unspecified parameters (no numeric values available in the provided sections).
+  -->
+
+  <parameters name="Kₕ" type="VARIABLE"
+              description="Human carrying capacity for logistic growth (carrying capacity of human population)"
+              unit="persons"/>
+
+  <parameters name="a" type="VARIABLE"
+              description="Mosquito biting rate (bites per mosquito per unit time); intervention can reduce this"
+              unit="bites/(mosquito·day)"/>
+
+  <parameters name="βᵥ→ₕ" type="VARIABLE"
+              description="Transmission coefficient from infectious vectors to susceptible humans per bite (vector-to-human)"
+              unit="1/day"/>
+
+  <parameters name="βₕ→ᵥ" type="VARIABLE"
+              description="Transmission coefficient from infectious humans to susceptible vectors per bite (human-to-vector)"
+              unit="1/day"/>
+
+  <parameters name="σₕ" type="VARIABLE"
+              description="Human incubation progression rate (Eₕ → Iₕ); inverse of human incubation period"
+              unit="1/day"/>
+
+  <parameters name="γₕ" type="VARIABLE"
+              description="Human recovery rate (Iₕ → Rₕ); inverse of average human recovery time"
+              unit="1/day"/>
+
+  <parameters name="σᵥ" type="VARIABLE"
+              description="Adult vector incubation progression rate (Eᵥ → Iᵥ); inverse of vector incubation period"
+              unit="1/day"/>
+
+  <parameters name="μᵥ" type="VARIABLE"
+              description="Adult female vector mortality rate; intervention can increase this"
+              unit="1/day"/>
+
+  <parameters name="θₑ" type="VARIABLE"
+              description="Egg production / oviposition input rate into egg stage (vector demography)"
+              unit="eggs/day"/>
+
+  <parameters name="τ₁" type="VARIABLE"
+              description="Egg-to-larva development rate (V1 eggs → V2 larvae)"
+              unit="1/day"/>
+
+  <parameters name="τ₂" type="VARIABLE"
+              description="Larva-to-pupa development rate (V2 larvae → V3 pupae)"
+              unit="1/day"/>
+
+  <parameters name="τ₃" type="VARIABLE"
+              description="Pupa-to-adult emergence rate (V3 pupae → Sᵥ susceptible adult females)"
+              unit="1/day"/>
+
+  <parameters name="K_L" type="VARIABLE"
+              description="Larval carrying capacity (environmental); containment strategy can reduce this"
+              unit="larvae"/>
+
+  <parameters name="μₑ" type="VARIABLE"
+              description="Egg mortality rate"
+              unit="1/day"/>
+
+  <parameters name="μ_L" type="VARIABLE"
+              description="Larval mortality rate (may include density dependence via K_L)"
+              unit="1/day"/>
+
+  <parameters name="μ_P" type="VARIABLE"
+              description="Pupal mortality rate"
+              unit="1/day"/>
+
+  <!-- ===================== -->
+  <!-- Compartments (states) -->
+  <!-- ===================== -->
+
+  <!-- Humans (SEIR) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Humans" population="0.0">
+    <!-- Infection of humans via bites from infectious adult female vectors -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRate="0.0"
+                   contactRateParameter="//@parameters.2"
+                   contactCompartment="//@compartments.9"
+                   target="//@compartments.1"
+                   description="Susceptible humans become exposed due to contact (bites) with infectious adult female vectors"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Humans" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.4"
+                   target="//@compartments.2"
+                   description="Exposed humans progress to infectious humans (end of human incubation period)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Humans" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.5"
+                   target="//@compartments.3"
+                   description="Infectious humans recover and move to recovered humans"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" SecondaryName="Humans" population="0.0">
+    <!-- No outgoing flows specified in provided text (no loss of immunity mentioned) -->
+  </compartments>
+
+  <!-- Vector life stages (no infection compartments for these stages per text) -->
+  <compartments PrimaryName="Eggs" SecondaryName="Vectors" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.9"
+                   target="//@compartments.5"
+                   description="Eggs develop into larvae"/>
+  </compartments>
+
+  <compartments PrimaryName="Larvae" SecondaryName="Vectors" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.10"
+                   target="//@compartments.6"
+                   description="Larvae develop into pupae"/>
+  </compartments>
+
+  <compartments PrimaryName="Pupae" SecondaryName="Vectors" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.11"
+                   target="//@compartments.7"
+                   description="Pupae emerge into susceptible adult female vectors"/>
+  </compartments>
+
+  <!-- Adult female vectors (SEI) -->
+  <compartments PrimaryName="Susceptible" SecondaryName="Adult Female Vectors" population="0.0">
+    <!-- Infection of vectors via bites on infectious humans -->
+    <outgoingFlows xsi:type="seir:ContactFlow"
+                   contactRate="0.0"
+                   contactRateParameter="//@parameters.3"
+                   contactCompartment="//@compartments.2"
+                   target="//@compartments.8"
+                   description="Susceptible adult female vectors become exposed due to biting infectious humans"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" SecondaryName="Adult Female Vectors" population="0.0">
+    <outgoingFlows xsi:type="seir:RateFlow"
+                   rate="0.0"
+                   rateParameter="//@parameters.6"
+                   target="//@compartments.9"
+                   description="Exposed adult female vectors progress to infectious vectors (end of vector incubation period)"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" SecondaryName="Adult Female Vectors" population="0.0">
+    <!-- No recovery mentioned for vectors -->
+  </compartments>
+
+  <!-- ================= -->
+  <!-- Births / Recruitment -->
+  <!-- ================= -->
+
+  <!-- Human logistic growth is mentioned, but the metamodel BirthSource is a rate input.
+       The exact logistic functional form is not provided in the extracted text, so we include
+       a placeholder recruitment parameter. -->
+  <parameters name="Bₕ(t)" type="VARIABLE"
+              description="Net human recruitment/birth inflow term consistent with logistic growth toward Kₕ (functional form not provided in extracted text)"
+              unit="persons/day"/>
+
+  <birthSources name="Human_Recruitment_Logistic"
+                rate="0.0"
+                rateParameter="//@parameters.16"
+                targetCompartment="//@compartments.0"
+                description="Human recruitment/birth inflow to susceptible humans (logistic growth toward carrying capacity Kₕ)"/>
+
+  <!-- Vector reproduction into eggs -->
+  <birthSources name="Vector_Oviposition"
+                rate="0.0"
+                rateParameter="//@parameters.8"
+                targetCompartment="//@compartments.4"
+                description="Vector reproduction/oviposition adds eggs to the environment"/>
+
+  <!-- ============ -->
+  <!-- Death sinks  -->
+  <!-- ============ -->
+
+  <!-- Adult female vector mortality (explicitly mentioned) -->
+  <deathSinks name="Adult_Vector_Death_Sv"
+              rate="0.0"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.7"
+              description="Natural/intervention-increased mortality of susceptible adult female vectors"/>
+
+  <deathSinks name="Adult_Vector_Death_Ev"
+              rate="0.0"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.8"
+              description="Natural/intervention-increased mortality of exposed adult female vectors"/>
+
+  <deathSinks name="Adult_Vector_Death_Iv"
+              rate="0.0"
+              rateParameter="//@parameters.7"
+              sourceCompartment="//@compartments.9"
+              description="Natural/intervention-increased mortality of infectious adult female vectors"/>
+
+  <!-- Immature stage mortality (implied by full life cycle + dynamic vector population; rates not given) -->
+  <deathSinks name="Egg_Death"
+              rate="0.0"
+              rateParameter="//@parameters.13"
+              sourceCompartment="//@compartments.4"
+              description="Mortality of vector eggs"/>
+
+  <deathSinks name="Larva_Death"
+              rate="0.0"
+              rateParameter="//@parameters.14"
+              sourceCompartment="//@compartments.5"
+              description="Mortality of vector larvae (may be affected by larval carrying capacity K_L)"/>
+
+  <deathSinks name="Pupa_Death"
+              rate="0.0"
+              rateParameter="//@parameters.15"
+              sourceCompartment="//@compartments.6"
+              description="Mortality of vector pupae"/>
+</seir:SEIRModel>
+```

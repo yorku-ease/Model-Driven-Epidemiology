@@ -1,0 +1,417 @@
+{
+  "compartments": [
+    {
+      "name": "Susceptible Human",
+      "secondary_name": "Human",
+      "initial_population": 99990.0
+    },
+    {
+      "name": "Exposed Human",
+      "secondary_name": "Human",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Infectious Human",
+      "secondary_name": "Human",
+      "initial_population": 10.0
+    },
+    {
+      "name": "Recovered Human",
+      "secondary_name": "Human",
+      "initial_population": 0.0
+    },
+    {
+      "name": "Vector Eggs",
+      "secondary_name": "Eggs",
+      "initial_population": 500000.0
+    },
+    {
+      "name": "Vector Larvae",
+      "secondary_name": "Larvae",
+      "initial_population": 150000.0
+    },
+    {
+      "name": "Vector Pupae",
+      "secondary_name": "Pupae",
+      "initial_population": 100000.0
+    },
+    {
+      "name": "Susceptible Vector",
+      "secondary_name": "Vector",
+      "initial_population": 498000.0
+    },
+    {
+      "name": "Exposed Vector",
+      "secondary_name": "Vector",
+      "initial_population": 1000.0
+    },
+    {
+      "name": "Infectious Vector",
+      "secondary_name": "Vector",
+      "initial_population": 1000.0
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Human",
+      "target": "Exposed Human",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Vector",
+      "rate_parameter": "TransmissionRateExpression",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible humans by infectious vectors"
+    },
+    {
+      "source": "Exposed Human",
+      "target": "Infectious Human",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1\u2095",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious for humans"
+    },
+    {
+      "source": "Infectious Human",
+      "target": "Recovered Human",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b3",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Recovery of infectious humans"
+    },
+    {
+      "source": "Vector Eggs",
+      "target": "Vector Larvae",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Development of eggs into larvae"
+    },
+    {
+      "source": "Vector Larvae",
+      "target": "Vector Pupae",
+      "type": "RateFlow",
+      "rate_parameter": "\u03c4\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Development of larvae into pupae"
+    },
+    {
+      "source": "Vector Pupae",
+      "target": "Susceptible Vector",
+      "type": "RateFlow",
+      "rate_parameter": "FemaleEmergenceRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Emergence of pupae into susceptible adult females"
+    },
+    {
+      "source": "Susceptible Vector",
+      "target": "Exposed Vector",
+      "type": "ContactFlow",
+      "contact_compartment": "Infectious Human",
+      "rate_parameter": "TransmissionRateExpression",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Infection of susceptible vectors by infectious humans"
+    },
+    {
+      "source": "Exposed Vector",
+      "target": "Infectious Vector",
+      "type": "RateFlow",
+      "rate_parameter": "\u03b1\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Progression from exposed to infectious for vectors"
+    },
+    {
+      "source": "__external__",
+      "target": "Susceptible Human",
+      "type": "BirthSource",
+      "rate_parameter": "HumanBirthRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Human_Births"
+    },
+    {
+      "source": "__external__",
+      "target": "Vector Eggs",
+      "type": "BirthSource",
+      "rate_parameter": "EggLayingRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Vector_Egg_Laying"
+    },
+    {
+      "source": "Susceptible Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "LogisticDeathRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic_Death_SH"
+    },
+    {
+      "source": "Exposed Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "LogisticDeathRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic_Death_EH"
+    },
+    {
+      "source": "Infectious Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "LogisticDeathRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic_Death_IH"
+    },
+    {
+      "source": "Recovered Human",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "LogisticDeathRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Logistic_Death_RH"
+    },
+    {
+      "source": "Vector Eggs",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2081",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Egg_Mortality"
+    },
+    {
+      "source": "Vector Larvae",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2082",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Larvae_Natural_Mortality"
+    },
+    {
+      "source": "Vector Larvae",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "LarvaeDensityDeathRate",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Larvae_Density_Mortality"
+    },
+    {
+      "source": "Vector Pupae",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u2083",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Pupae_Mortality"
+    },
+    {
+      "source": "Susceptible Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adult_Vector_Mortality_SV"
+    },
+    {
+      "source": "Exposed Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adult_Vector_Mortality_EV"
+    },
+    {
+      "source": "Infectious Vector",
+      "target": "__dead__",
+      "type": "DeathSink",
+      "rate_parameter": "\u03bc\u1d65",
+      "rate_value": null,
+      "rate_unit": null,
+      "description": "Adult_Vector_Mortality_IV"
+    }
+  ],
+  "parameters": [
+    {
+      "symbol": "\u03bb",
+      "type": "CONSTANT",
+      "value": 5e-05,
+      "unit": "per day",
+      "description": "Human population growth rate"
+    },
+    {
+      "symbol": "K\u2095",
+      "type": "CONSTANT",
+      "value": 120000.0,
+      "unit": "persons",
+      "description": "Carrying capacity for human population"
+    },
+    {
+      "symbol": "\u03b2b",
+      "type": "CONSTANT",
+      "value": 0.09,
+      "unit": "bites/day",
+      "description": "Number of infectious bites delivered per vector per day"
+    },
+    {
+      "symbol": "M",
+      "type": "CONSTANT",
+      "value": 80000.0,
+      "unit": "hosts",
+      "description": "Number of alternative hosts"
+    },
+    {
+      "symbol": "\u03b1\u2095",
+      "type": "CONSTANT",
+      "value": 0.333333333,
+      "unit": "1/day",
+      "description": "Human incubation rate (1/3 days)"
+    },
+    {
+      "symbol": "\u03b3",
+      "type": "CONSTANT",
+      "value": 0.142857143,
+      "unit": "1/day",
+      "description": "Human recovery rate (1/7 days)"
+    },
+    {
+      "symbol": "e\u1d65",
+      "type": "CONSTANT",
+      "value": 80.0,
+      "unit": "eggs/day",
+      "description": "Number of eggs laid per female mosquito per day"
+    },
+    {
+      "symbol": "\u03c4\u2081",
+      "type": "CONSTANT",
+      "value": 0.333333333,
+      "unit": "1/day",
+      "description": "Egg development rate (1/3 days)"
+    },
+    {
+      "symbol": "\u03bc\u2081",
+      "type": "CONSTANT",
+      "value": 0.05,
+      "unit": "1/day",
+      "description": "Egg mortality rate"
+    },
+    {
+      "symbol": "\u03c4\u2082",
+      "type": "CONSTANT",
+      "value": 0.111111111,
+      "unit": "1/day",
+      "description": "Larval development rate (1/9 days)"
+    },
+    {
+      "symbol": "\u03bc\u2082",
+      "type": "CONSTANT",
+      "value": 0.025,
+      "unit": "1/day",
+      "description": "Larval mortality rate"
+    },
+    {
+      "symbol": "\u03ba",
+      "type": "CONSTANT",
+      "value": 1.0,
+      "unit": "dimensionless",
+      "description": "Larvae mortality rate coefficient due to limited carrying capacity"
+    },
+    {
+      "symbol": "K\u1d65",
+      "type": "CONSTANT",
+      "value": 5000000.0,
+      "unit": "larvae",
+      "description": "Carrying capacity for larvae"
+    },
+    {
+      "symbol": "\u03c4\u2083",
+      "type": "CONSTANT",
+      "value": 0.333333333,
+      "unit": "1/day",
+      "description": "Pupal development rate (1/3 days)"
+    },
+    {
+      "symbol": "\u03bc\u2083",
+      "type": "CONSTANT",
+      "value": 0.0025,
+      "unit": "1/day",
+      "description": "Pupal mortality rate"
+    },
+    {
+      "symbol": "q",
+      "type": "CONSTANT",
+      "value": 0.68,
+      "unit": "dimensionless",
+      "description": "Female adult percentage"
+    },
+    {
+      "symbol": "\u03bc\u1d65",
+      "type": "CONSTANT",
+      "value": 0.05,
+      "unit": "1/day",
+      "description": "Adult vector mortality rate"
+    },
+    {
+      "symbol": "\u03b1\u1d65",
+      "type": "CONSTANT",
+      "value": 0.1,
+      "unit": "1/day",
+      "description": "Vector incubation rate (1/10 days)"
+    },
+    {
+      "symbol": "TransmissionRateExpression",
+      "type": "EXPRESSION",
+      "value": "\u03b2b / ((@compartments.0 + @compartments.1 + @compartments.2 + @compartments.3) + M)",
+      "unit": "1/day",
+      "description": "Effective transmission rate per contact, adjusted for human and alternative host populations."
+    },
+    {
+      "symbol": "FemaleEmergenceRate",
+      "type": "EXPRESSION",
+      "value": "q * \u03c4\u2083",
+      "unit": "1/day",
+      "description": "Rate at which pupae develop into adult female mosquitoes"
+    },
+    {
+      "symbol": "LarvaeDensityDeathRate",
+      "type": "EXPRESSION",
+      "value": "(\u03ba / K\u1d65) * @compartments.5",
+      "unit": "1/day",
+      "description": "Per-capita mortality rate of larvae due to density-dependent competition"
+    },
+    {
+      "symbol": "LogisticDeathRate",
+      "type": "EXPRESSION",
+      "value": "\u03bb * (@compartments.0 + @compartments.1 + @compartments.2 + @compartments.3) / K\u2095",
+      "unit": "1/day",
+      "description": "Per-capita mortality rate for humans due to logistic growth constraints"
+    },
+    {
+      "symbol": "HumanBirthRate",
+      "type": "EXPRESSION",
+      "value": "\u03bb * (@compartments.0 + @compartments.1 + @compartments.2 + @compartments.3)",
+      "unit": "persons/day",
+      "description": "Total birth rate of the human population"
+    },
+    {
+      "symbol": "EggLayingRate",
+      "type": "EXPRESSION",
+      "value": "e\u1d65 * (@compartments.7 + @compartments.8 + @compartments.9)",
+      "unit": "eggs/day",
+      "description": "Total egg laying rate of the adult female vector population"
+    }
+  ]
+}

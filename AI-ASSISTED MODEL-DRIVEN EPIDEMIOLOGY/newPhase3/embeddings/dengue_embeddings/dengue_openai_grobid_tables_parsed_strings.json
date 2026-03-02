@@ -1,0 +1,47 @@
+{
+  "comp": [
+    "Susceptible Human (age a)",
+    "Exposed Human (age a)",
+    "Infectious Human Symptomatic (age a)",
+    "Infectious Human Asymptomatic (age a)",
+    "Recovered Human (age a)",
+    "Infectious Mosquito",
+    "Death All"
+  ],
+  "flow": [
+    "Susceptible Human (age a)->Exposed Human (age a)",
+    "Susceptible Human (age a)->Death All",
+    "Exposed Human (age a)->Infectious Human Symptomatic (age a)",
+    "Exposed Human (age a)->Infectious Human Asymptomatic (age a)",
+    "Exposed Human (age a)->Death All",
+    "Infectious Human Symptomatic (age a)->Recovered Human (age a)",
+    "Infectious Human Symptomatic (age a)->Death All",
+    "Infectious Human Asymptomatic (age a)->Infectious Human Symptomatic (age a)",
+    "Infectious Human Asymptomatic (age a)->Recovered Human (age a)",
+    "Infectious Human Asymptomatic (age a)->Death All",
+    "Recovered Human (age a)->Death All",
+    "Infectious Mosquito->Death All",
+    "__external__->Susceptible Human (age a)",
+    "Susceptible Human (age a)->__dead__",
+    "Exposed Human (age a)->__dead__",
+    "Infectious Human Symptomatic (age a)->__dead__",
+    "Infectious Human Asymptomatic (age a)->__dead__",
+    "Recovered Human (age a)->__dead__",
+    "Infectious Mosquito->__dead__"
+  ],
+  "param": [
+    "B Constant influx (recruitment) rate of susceptible human hosts (Table 1).",
+    "\u03bc\u2095 Natural death rate of human hosts (Table 1; appears in unnormalized system (2.1)).",
+    "\u03bc\u1d65 Natural death rate of mosquitoes (Table 1).",
+    "k(a) Age-specific progression rate from exposed to infectious; latent period is k(a)^{-1} (Table 1).",
+    "\u03b3\u2081(a) Age-specific recovery rate of symptomatic infectious hosts (Table 1).",
+    "\u03b3\u2082(a) Age-specific recovery rate of asymptomatic infectious hosts (Table 1).",
+    "\u03b2\u2095(a) Age-specific transmission/contact rate from infected mosquitoes to susceptible humans (Table 1).",
+    "\u03b2\u1d65(a) Age-specific transmission rate from infectious humans to susceptible mosquitoes (Table 1).",
+    "\u03c1 Probability an exposed host becomes symptomatic infectious (I\u2095) upon leaving E\u2095 (Table 1).",
+    "\u03c3 Reinfection intensity factor: scales secondary infection of asymptomatic hosts and their contribution to mosquito infection (Table 1).",
+    "N\u2095(t) Total human population at time t (paper notation).",
+    "N\u2095* Asymptotic constant total human population used in normalized system (2.2) (paper notation).",
+    "\u03bb\u1d65(t) Force of infection for mosquitoes (paper). Use in simulation to drive S\u1d65->I\u1d65 if S\u1d65 is modeled explicitly."
+  ]
+}
