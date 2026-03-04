@@ -2,22 +2,18 @@
 
 Phase 4 turns the selected (filled) models from Phase 3 into **uncertainty-aware** outputs: parameter distributions, Monte Carlo simulation, sensitivity analysis, and a final report. It follows the **general framework** idea: similar diseases use the same *types* of compartments and the same uncertainty treatment for parameter *types* (transmission, recovery, mortality, etc.), not disease-specific copy-paste.
 
-## General framework (what “stick to the comment” means)
+## General framework
 
 - **Typed compartments:** We care about *types* of compartments (e.g. vector-borne → animal/vector compartment; STD → sexual contact structure), not copying a specific disease model. The file `data/general_framework.json` defines model types (vector_borne, std, airborne, waterborne) and expected compartment types.
-- **Typed parameter uncertainty:** Parameter distributions are assigned by **parameter type** (transmission, recovery, mortality, progression, contact) using the same distribution families and typical ranges for all diseases. So the “uncertainty guide” is a general framework that all similar diseases abide by.
-- **General + disease-specific:** The roadmap says we need general papers (e.g. textbook) and disease-specific papers. Here we implement the general part as a curated framework file; disease-specific values still come from the model (Phase 2/3) point estimates or ranges when available.
+- **Typed parameter uncertainty:** Parameter distributions are assigned by **parameter type** (transmission, recovery, mortality, progression, contact) using the same distribution families and typical ranges for all diseases. The “uncertainty guide” is a general framework that similar diseases abide by.
+- **General + disease-specific:** General-methodology sources (textbook-style knowledge, encoded here as a framework file) define how we treat parameter types; disease-specific values still come from the model’s own expressions or ranges (Phase 2/3).
 
-## Tasks
+## What Phase 4 does
 
-| Task | Description |
-|------|-------------|
-| **9.1** | Assign parameter distributions (point → family + bounds using general framework) |
-| **9.2** | Monte Carlo simulation (ensemble with parameter uncertainty) |
-| **9.3** | Sensitivity analysis (one-at-a-time; most influential parameters) |
-| **10.1** | Visualize uncertainty (bands) and sensitivity (tornado) |
-| **10.2** | Comprehensive report (distributions, MC summary, sensitivity, plots) |
-| **10.3** | Run pipeline on all selected models (disease-agnostic) |
+- **Assign parameter distributions:** Read each `.compmodel`, classify parameters by type (transmission, recovery, mortality, etc.), and convert point estimates/ranges into distributions (mostly lognormal for rates, uniform when only a rough range is known).
+- **Run Monte Carlo simulations:** Sample from the assigned distributions and run the Phase 1 generic simulator many times to obtain uncertainty bands (5–50–95% intervals) for each compartment over time.
+- **Analyze sensitivity:** Perturb one parameter at a time around its baseline and measure how peak infections and total cases change, ranking the most influential parameters.
+- **Visualize and report:** Generate uncertainty-band plots and tornado plots, and write a markdown report per disease that summarizes distributions, Monte Carlo results, and sensitivity findings.
 
 ## Directory layout
 
