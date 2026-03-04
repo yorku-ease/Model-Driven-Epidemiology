@@ -1,0 +1,88 @@
+{
+  "description": "General framework for epidemiological compartmental models. All similar diseases should abide by the same structural types. Used for completeness (typed compartments) and uncertainty (parameter distribution families). Not disease-specific — hints toward the right model shape without copying another model.",
+  "model_types": {
+    "vector_borne": {
+      "expected_compartment_types": [
+        "host_susceptible",
+        "host_exposed",
+        "host_infectious",
+        "host_recovered",
+        "vector_susceptible",
+        "vector_exposed",
+        "vector_infectious"
+      ],
+      "hint": "Vector-borne models should contain animal/vector compartments (e.g. mosquitoes) and host compartments. Biting rate and vector mortality are typical parameters."
+    },
+    "std": {
+      "expected_compartment_types": [
+        "susceptible",
+        "infectious",
+        "recovered",
+        "sexual_contact_structure"
+      ],
+      "hint": "STD models should contain sexual contact structure (e.g. partner acquisition, mixing). Contact rate and partnership duration are typical parameters."
+    },
+    "airborne": {
+      "expected_compartment_types": [
+        "susceptible",
+        "exposed",
+        "infectious",
+        "recovered"
+      ],
+      "hint": "Airborne transmission models typically use SEIR or SIR structure. Transmission rate, incubation rate, and recovery rate are standard."
+    },
+    "waterborne": {
+      "expected_compartment_types": [
+        "susceptible",
+        "infectious",
+        "recovered",
+        "environmental_reservoir"
+      ],
+      "hint": "Waterborne models often include an environmental compartment (e.g. water reservoir). Contact with reservoir and decay rate are typical."
+    },
+    "generic": {
+      "expected_compartment_types": ["susceptible", "infectious", "recovered"],
+      "hint": "Minimal SIR/SEIR structure when model type is unknown."
+    }
+  },
+  "parameter_uncertainty_defaults": {
+    "transmission": {
+      "family": "lognormal",
+      "cv": 0.3,
+      "hint": "Transmission rates are typically positive and often lognormally distributed in the literature."
+    },
+    "recovery": {
+      "family": "lognormal",
+      "cv": 0.25,
+      "hint": "Recovery rate (e.g. gamma) is positive; inverse is duration of infection."
+    },
+    "mortality": {
+      "family": "lognormal",
+      "cv": 0.4,
+      "hint": "Death rates are small and positive; high uncertainty in many settings."
+    },
+    "progression": {
+      "family": "lognormal",
+      "cv": 0.3,
+      "hint": "Incubation/progression rates (e.g. sigma) are positive."
+    },
+    "contact": {
+      "family": "lognormal",
+      "cv": 0.35,
+      "hint": "Contact rates and biting rates are positive."
+    },
+    "other": {
+      "family": "uniform",
+      "cv": null,
+      "relative_range": 0.5,
+      "hint": "Default: uniform around point estimate ±50% when type unknown."
+    }
+  },
+  "parameter_type_keywords": {
+    "transmission": ["beta", "β", "transmission", "contact rate", "biting", "force of infection", "lambda", "λ"],
+    "recovery": ["gamma", "γ", "recovery", "1/gamma", "duration"],
+    "mortality": ["mu", "μ", "death", "mortality", "delta", "δ"],
+    "progression": ["sigma", "σ", "incubation", "progression", "rho", "ρ", "tau", "τ"],
+    "contact": ["contact", "biting", "eta", "η", "rho", "ρ"]
+  }
+}

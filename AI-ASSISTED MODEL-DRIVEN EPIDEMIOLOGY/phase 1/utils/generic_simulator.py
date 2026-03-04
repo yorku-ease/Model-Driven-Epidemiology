@@ -491,9 +491,14 @@ class GenericModelSimulator:
         if total_cases < 0:
             total_cases = final_recovered
 
-        return {
+        result = {
             'peakInfections': float(peak_infections),
             'peakTime': float(peak_time),
             'totalCases': float(total_cases),
             'finalRecovered': float(final_recovered)
         }
+        if HAS_NUMPY:
+            result['trajectory'] = populations
+        else:
+            result['trajectory'] = populations
+        return result
