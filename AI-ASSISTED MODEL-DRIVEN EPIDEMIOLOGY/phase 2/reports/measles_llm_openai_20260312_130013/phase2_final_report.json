@@ -1,0 +1,545 @@
+{
+  "paper_name": "Measles",
+  "summary": {
+    "extraction": {
+      "compartments": 12,
+      "flows": 10,
+      "parameters": 15,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "S"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Un-monitored Vaccinated Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Monitored Vaccinated Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Immune Children",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Un-monitored Vaccinated Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Immune Adults",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Children",
+        "target": "Un-monitored Vaccinated Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Children",
+        "target": "Monitored Vaccinated Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Children",
+        "target": "Exposed Children",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Children",
+        "target": "Infectious Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Children",
+        "target": "Immune Children",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Adults",
+        "target": "Un-monitored Vaccinated Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Adults",
+        "target": "Vaccinated Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Adults",
+        "target": "Exposed Adults",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Adults",
+        "target": "Infectious Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Adults",
+        "target": "Immune Adults",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Recruitment rate",
+        "value": "L",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Un-monitored Vaccination rate",
+        "value": "xU",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Monitored Vaccination rate",
+        "value": "xM",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Adult Vaccination rate",
+        "value": "xA",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Transmission rate in children",
+        "value": "bC",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Transmission rate in adults",
+        "value": "bA",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Natural death rate",
+        "value": "m",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of immunity after recovery",
+        "value": "g",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Maturation rate",
+        "value": "j",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccine effectiveness",
+        "value": "1-e",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of immunity in unmonitored vaccinated adults",
+        "value": "hA",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of immunity in unmonitored vaccinated children",
+        "value": "hU",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of immunity in monitored vaccinated children",
+        "value": "hM",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Incubation period",
+        "value": "d",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Disease-induced death rate",
+        "value": "d",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 12,
+    "flows": 10,
+    "parameters": 15,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 42,
+    "items_with_evidence": 42,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 42,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 42,
+      "items_with_evidence": 42,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 42,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 12,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "flows": {
+        "tp": 10,
+        "fp": 0,
+        "fn": 14,
+        "precision": 1.0,
+        "recall": 0.4167,
+        "f1": 0.5882
+      },
+      "parameters": {
+        "tp": 10,
+        "fp": 5,
+        "fn": 9,
+        "precision": 0.6667,
+        "recall": 0.5263,
+        "f1": 0.5882
+      },
+      "composite_score": 0.7632,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible children",
+          "extracted": "Susceptible Children",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Un-monitored vaccinated children",
+          "extracted": "Un-monitored Vaccinated Children",
+          "score": 0.9999998807907104
+        },
+        {
+          "gold": "Monitored vaccinated children",
+          "extracted": "Monitored Vaccinated Children",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Exposed children",
+          "extracted": "Exposed Children",
+          "score": 0.9999998807907104
+        },
+        {
+          "gold": "Infectious children",
+          "extracted": "Infectious Children",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Immune children",
+          "extracted": "Immune Children",
+          "score": 0.9999997615814209
+        },
+        {
+          "gold": "Susceptible adults",
+          "extracted": "Susceptible Adults",
+          "score": 1.0
+        },
+        {
+          "gold": "Un-monitored vaccinated adults",
+          "extracted": "Un-monitored Vaccinated Adults",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Vaccinated adults (catch-up/monitored)",
+          "extracted": "Vaccinated Adults",
+          "score": 0.891788899898529
+        },
+        {
+          "gold": "Exposed adults",
+          "extracted": "Exposed Adults",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious adults",
+          "extracted": "Infectious Adults",
+          "score": 1.0
+        },
+        {
+          "gold": "Immune adults",
+          "extracted": "Immune Adults",
+          "score": 1.000000238418579
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible children->Exposed children",
+          "extracted": "Susceptible Children->Exposed Children",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Susceptible children->Un-monitored vaccinated children",
+          "extracted": "Susceptible Children->Un-monitored Vaccinated Children",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Susceptible children->Monitored vaccinated children",
+          "extracted": "Susceptible Children->Monitored Vaccinated Children",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Exposed children->Infectious children",
+          "extracted": "Exposed Children->Infectious Children",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious children->Immune children",
+          "extracted": "Infectious Children->Immune Children",
+          "score": 1.0000003576278687
+        },
+        {
+          "gold": "Susceptible adults->Exposed adults",
+          "extracted": "Susceptible Adults->Exposed Adults",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Susceptible adults->Vaccinated adults (catch-up/monitored)",
+          "extracted": "Susceptible Adults->Vaccinated Adults",
+          "score": 0.9323636293411255
+        },
+        {
+          "gold": "Un-monitored vaccinated adults->Exposed adults",
+          "extracted": "Susceptible Adults->Un-monitored Vaccinated Adults",
+          "score": 0.9528412818908691
+        },
+        {
+          "gold": "Exposed adults->Infectious adults",
+          "extracted": "Exposed Adults->Infectious Adults",
+          "score": 0.9999997615814209
+        },
+        {
+          "gold": "Infectious adults->Immune adults",
+          "extracted": "Infectious Adults->Immune Adults",
+          "score": 0.9999997615814209
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03beU 0.0087 Un-monitored child vaccination rate (xU)",
+          "extracted": "Un-monitored Vaccination rate xU Rate of unmonitored vaccination for children.",
+          "score": 0.8522735238075256
+        },
+        {
+          "gold": "\u03beM 4.77e-5 Monitored child vaccination rate (xM)",
+          "extracted": "Monitored Vaccination rate xM Rate of monitored vaccination for children.",
+          "score": 0.8666881322860718
+        },
+        {
+          "gold": "m 2.68e-4 Natural death rate (m)",
+          "extracted": "Natural death rate m Natural death rate of the population.",
+          "score": 0.8046319484710693
+        },
+        {
+          "gold": "\u03b3 0.5 Recovery-immunity rate after infection (g)",
+          "extracted": "Rate of immunity after recovery g Rate at which individuals become immune after recovery.",
+          "score": 0.7807527780532837
+        },
+        {
+          "gold": "e 0.2 Vaccine failure fraction; vaccine effectiveness is (1-e)",
+          "extracted": "Vaccine effectiveness 1-e Effectiveness of the vaccination.",
+          "score": 0.7866767644882202
+        },
+        {
+          "gold": "\u03b7A 0 Immunization rate for adult vaccinated groups (hA)",
+          "extracted": "Rate of immunity in unmonitored vaccinated adults hA Rate at which unmonitored vaccinated adults become immune.",
+          "score": 0.7672539353370667
+        },
+        {
+          "gold": "\u03b7U 3e-6 Immunization rate for un-monitored vaccinated children (hU)",
+          "extracted": "Rate of immunity in unmonitored vaccinated children hU Rate at which unmonitored vaccinated children become immune.",
+          "score": 0.7685211300849915
+        },
+        {
+          "gold": "\u03b7M 0.0167 Immunization rate for monitored vaccinated children (hM)",
+          "extracted": "Rate of immunity in monitored vaccinated children hM Rate at which monitored vaccinated children become immune.",
+          "score": 0.8647163510322571
+        },
+        {
+          "gold": "\u03beA 0 Adult vaccination rate SA\u2192VA (xA)",
+          "extracted": "Adult Vaccination rate xA Rate of vaccination for adults.",
+          "score": 0.7936362624168396
+        },
+        {
+          "gold": "L 0.02197 Recruitment rate into children susceptible (L)",
+          "extracted": "Recruitment rate L Rate of recruitment into the children group.",
+          "score": 0.81298828125
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

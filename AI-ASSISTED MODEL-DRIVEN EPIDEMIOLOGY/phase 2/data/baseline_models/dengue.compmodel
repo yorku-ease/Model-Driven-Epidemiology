@@ -1,55 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmental="http://example.com/compartmentalmodel">
-  <compartments PrimaryName="Susceptible humans"> 
-    	<outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.5"  contactRateParameter="//@parameters.3"/>
-  	</compartments>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
 
-    <compartments PrimaryName="Exposed humans"> 
-    	<outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3"  rateParameter="//@parameters.11"/>
-      <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2"  rateParameter="//@parameters.5"/>
-  	</compartments>
+  <!-- NOTE: The paper is an AGE-STRUCTURED PDE model (state variables are densities by age a and time t). [file:20]
+       This XML is a compartment graph approximation of the *flow chart* in Fig. 1 (host: S,E,A,I,R; vector: Sv,Iv). [file:20]
+       Age-dependence (h_a, v_a, k_a, γ1a, γ2a) is not representable here unless you encode them as time-varying/age-aggregated parameters. [file:20] -->
 
-    <compartments PrimaryName="Asymptomatic infectious humans"> 
-        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.5"  contactRateParameter="//@parameters.7"/>
-        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.9"/>
-  	</compartments>
-  
-    <compartments PrimaryName="Symptomatic infectious humans" > 
-    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4"  rateParameter="//@parameters.8"/>
-    </compartments>
-    <compartments PrimaryName="Recovered humans" /> 
+  <!-- Human compartments -->
+  <compartments PrimaryName="Susceptible humans">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="compartments.1"
+      contactCompartment="compartments.5"
+      contactRateParameter="parameters.3"
+      description="S_h → E_h via bites from infectious mosquitoes (standard incidence ~ h_a * Iv * S_h / N_h in paper)"/>
+  </compartments>
 
-    <compartments PrimaryName="Infectious mosquitoes" /> 
+  <compartments PrimaryName="Exposed humans">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="compartments.2"
+      rateParameter="parameters.5"
+      description="E_h → A_h at rate (1-σ) * k (fraction entering asymptomatic)"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="compartments.3"
+      rateParameter="parameters.11"
+      description="E_h → I_h at rate σ * k (fraction entering symptomatic)"/>
+  </compartments>
 
-    <compartments PrimaryName="Susceptible mosquitoes" > 
-      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.2"  contactRateParameter="//@parameters.10"/>
-      <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.3"  contactRateParameter="//@parameters.10"/>
-    </compartments>
+  <compartments PrimaryName="Asymptomatic infectious humans">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="compartments.3"
+      contactCompartment="compartments.5"
+      contactRateParameter="parameters.7"
+      description="A_h → I_h via reinfection by infectious mosquitoes (paper uses ρ factor on mosquito-to-human contact for secondary infection)"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="compartments.4"
+      rateParameter="parameters.9"
+      description="A_h → R_h recovery at rate γ2a (here: γ2)"/>
+  </compartments>
 
+  <compartments PrimaryName="Symptomatic infectious humans">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="compartments.4"
+      rateParameter="parameters.8"
+      description="I_h → R_h recovery at rate γ1a (here: γ1)"/>
+  </compartments>
 
-    <externalSources name="Birth" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
-    
-    <externalSinks name="Natural_Death_S" rateParameter="//@parameters.1" sourceCompartment="//@compartments.0"/>
-    <externalSinks name="Natural_Death_E" rateParameter="//@parameters.1" sourceCompartment="//@compartments.1"/>
-    <externalSinks name="Natural_Death_I" rateParameter="//@parameters.1" sourceCompartment="//@compartments.2"/>
-    <externalSinks name="Natural_Death_A" rateParameter="//@parameters.1" sourceCompartment="//@compartments.3"/>
-    <externalSinks name="Natural_Death_R" rateParameter="//@parameters.1" sourceCompartment="//@compartments.4"/>
-    <externalSinks name="Natural_Death_Mosquito" rateParameter="//@parameters.2" sourceCompartment="//@compartments.5"/>
-    <externalSinks name="Natural_Death_Mosquito" rateParameter="//@parameters.2" sourceCompartment="//@compartments.6"/>
+  <compartments PrimaryName="Recovered humans"/>
 
+  <!-- Vector compartments (paper: susceptible and infectious; total mosquitoes rescaled to 1) -->
+  <compartments PrimaryName="Infectious mosquitoes"/>
 
+  <compartments PrimaryName="Susceptible mosquitoes">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="compartments.5"
+      contactCompartment="compartments.2"
+      contactRateParameter="parameters.10"
+      description="S_v → I_v via biting asymptomatic infectious humans (paper force: (1-Iv)*(1/Nh)∫ v_a (I_h + A_h) da)"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="compartments.5"
+      contactCompartment="compartments.3"
+      contactRateParameter="parameters.10"
+      description="S_v → I_v via biting symptomatic infectious humans"/>
+  </compartments>
 
-    <parameters name="B" expression="250" description="Constant influx" unit="1/time"/> 
-    <parameters name="μh" expression="0.005" description="Natural death rate Humans" unit="1/time"/> 
-    <parameters name="μv" expression="0.65" description="Natural death rate Mosquito" unit="1/time"/> 
-    <parameters name="ha" expression="18" description="human infection rate" unit="1/time"/> 
-    <parameters name="σ" expression="0.007" description="Probability an exposed host becomes symptomatic" unit=""/> 
-    <parameters name="(1-σ) * k" type="EXPRESSION" expression="(1-σ) * k" description="Probability an exposed host becomes asymptomatic" unit="1/time"/> 
-    <parameters name="ρ" expression="0.5" description="Reinfection intensity factor" unit=""/> 
-    <parameters name="ρ * ha" type="EXPRESSION" expression="ρ * ha" description="Reinfection of asymptomatic" unit="1/time"/> 
-    <parameters name="γ1a" expression="0.5" description="recovery rates" unit="1/time"/> 
-    <parameters name="γ2a" expression="0.5" description="recovery rates" unit="1/time"/> 
-    <parameters name="va" expression="8" description="mosquito infection rate" unit="1/time"/> 
-    <parameters name="σ * k" type="EXPRESSION" expression="σ * k" description="Reinfection of asymptomatic" unit="1/time"/> 
-    <parameters name="k" expression="0.6" description="latent progression rate" unit="1/time"/> 
+  <!-- Human influx and natural deaths (paper: boundary condition Sh(0,t)=B and natural death μ_h for all host classes) -->
+  <externalSources name="Human influx" rateParameter="parameters.0" targetCompartment="compartments.0"/>
+
+  <externalSinks name="Natural death Sh" rateParameter="parameters.1" sourceCompartment="compartments.0"/>
+  <externalSinks name="Natural death Eh" rateParameter="parameters.1" sourceCompartment="compartments.1"/>
+  <externalSinks name="Natural death Ah" rateParameter="parameters.1" sourceCompartment="compartments.2"/>
+  <externalSinks name="Natural death Ih" rateParameter="parameters.1" sourceCompartment="compartments.3"/>
+  <externalSinks name="Natural death Rh" rateParameter="parameters.1" sourceCompartment="compartments.4"/>
+
+  <!-- Mosquito natural death (paper: mosquitoes die at rate μ_v; infected mosquitoes never recover) -->
+  <externalSinks name="Natural death Iv" rateParameter="parameters.2" sourceCompartment="compartments.5"/>
+  <externalSinks name="Natural death Sv" rateParameter="parameters.2" sourceCompartment="compartments.6"/>
+
+  <!-- Parameters (mapped to the paper’s constants-example; paper itself uses age-dependent functions h_a, v_a, k_a, γ1a, γ2a). -->
+  <parameters name="B" expression="250" description="Constant influx of human hosts (boundary Sh(0,t)=B)" unit="1/time"/>
+  <parameters name="μ_h" expression="0.005" description="Natural death rate of human hosts" unit="1/time"/>
+  <parameters name="μ_v" expression="0.65" description="Natural death rate of mosquitoes" unit="1/time"/>
+
+  <parameters name="h" expression="18" description="Mosquito-to-human transmission/contact rate (age-averaged h_a)" unit="1/time"/>
+
+  <parameters name="σ" expression="0.007" description="Probability an exposed host becomes symptomatic (paper: fraction to I_h)" unit="dimensionless"/>
+  <parameters name="k" expression="0.6" description="Latent progression rate (paper: k_a; here constant)" unit="1/time"/>
+  <parameters name="(1-σ)*k" type="EXPRESSION" expression="(1-σ) * k"
+    description="E_h → A_h rate" unit="1/time"/>
+  <parameters name="σ*k" type="EXPRESSION" expression="σ * k"
+    description="E_h → I_h rate" unit="1/time"/>
+
+  <parameters name="ρ" expression="0.5" description="Reinfection intensity factor for asymptomatic hosts (secondary infection)" unit="dimensionless"/>
+  <parameters name="ρ*h" type="EXPRESSION" expression="ρ * h"
+    description="A_h → I_h reinfection contact term (scaled mosquito-to-human contact)" unit="1/time"/>
+
+  <parameters name="γ1" expression="0.5" description="Recovery rate of symptomatic infectious hosts (paper: γ1a)" unit="1/time"/>
+  <parameters name="γ2" expression="0.5" description="Recovery rate of asymptomatic infectious hosts (paper: γ2a)" unit="1/time"/>
+
+  <parameters name="v" expression="8" description="Human-to-mosquito transmission rate (age-averaged v_a)" unit="1/time"/>
+
 </compartmental:CompartmentalModel>
+
