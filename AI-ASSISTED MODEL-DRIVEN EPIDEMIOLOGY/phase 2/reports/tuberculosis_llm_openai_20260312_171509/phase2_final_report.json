@@ -1,0 +1,306 @@
+{
+  "paper_name": "Tuberculosis",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 3,
+      "parameters": 8,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "A",
+        "value": "1000",
+        "unit": "human",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2",
+        "value": "0.01 to 5",
+        "unit": "year^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b5",
+        "value": "0 to 1",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "u",
+        "value": "0 to 1",
+        "unit": "year^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b8",
+        "value": "0.067 to 0.1",
+        "unit": "year^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "0.5 to 2",
+        "unit": "year^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b4",
+        "value": "0.003 to 0.02",
+        "unit": "year^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc",
+        "value": "0.003 to 0.02",
+        "unit": "year^-1",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 3,
+    "parameters": 8,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 20,
+    "items_with_evidence": 20,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 20,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 20,
+      "items_with_evidence": 20,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 20,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 3,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6667
+      },
+      "parameters": {
+        "tp": 5,
+        "fp": 3,
+        "fn": 4,
+        "precision": 0.625,
+        "recall": 0.5556,
+        "f1": 0.5882
+      },
+      "composite_score": 0.7966,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Vaccinated",
+          "extracted": "Vaccinated",
+          "score": 1.0
+        },
+        {
+          "gold": "Infected",
+          "extracted": "Infectious",
+          "score": 0.8296633362770081
+        },
+        {
+          "gold": "Recovered",
+          "extracted": "Recovered",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Vaccinated",
+          "extracted": "Susceptible->Vaccinated",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Vaccinated->Susceptible",
+          "extracted": "Vaccinated->Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Recovered->Susceptible",
+          "extracted": "Recovered->Susceptible",
+          "score": 1.0000001192092896
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03bc 0.000051 Natural death rate",
+          "extracted": "\u03bc 0.003 to 0.02 Natural death rate.",
+          "score": 0.9453983306884766
+        },
+        {
+          "gold": "\u03c0 0.0059 Infection rate/probability of successful infection (S\u2192I term)",
+          "extracted": "\u03b2 0.01 to 5 Probability of successful infection rate.",
+          "score": 0.7843602299690247
+        },
+        {
+          "gold": "\u03b4 0.00274 Vaccine waning rate (V\u2192S)",
+          "extracted": "\u03b8 0.067 to 0.1 Vaccine wane rate.",
+          "score": 0.7883126139640808
+        },
+        {
+          "gold": "\u03b3 0.041 Recovery rate (I\u2192R)",
+          "extracted": "\u03b3 0.5 to 2 Recovery rate.",
+          "score": 0.8301910161972046
+        },
+        {
+          "gold": "\u03b1 1 Reinfection correction parameter (range: 0 to 1)",
+          "extracted": "\u03b5 0 to 1 Correction parameter for reinfection.",
+          "score": 0.8415351510047913
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

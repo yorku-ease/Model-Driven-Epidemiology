@@ -1,0 +1,291 @@
+{
+  "paper_name": "Influenza",
+  "summary": {
+    "extraction": {
+      "compartments": 6,
+      "flows": 4,
+      "parameters": 5,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed 1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed 2",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious 1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious 2",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed 1",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed 1",
+        "target": "Exposed 2",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed 2",
+        "target": "Infectious 1",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious 1",
+        "target": "Infectious 2",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03c3",
+        "value": "1",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "0.5797",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2",
+        "value": "varies",
+        "unit": "per contact per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc_ICU|E",
+        "value": "5.708",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c3^2_ICU|E",
+        "value": "18.24",
+        "unit": "days^2",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 6,
+    "flows": 4,
+    "parameters": 5,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 18,
+    "items_with_evidence": 18,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 18,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 18,
+      "items_with_evidence": 18,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 18,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 5,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.8333,
+        "recall": 0.8333,
+        "f1": 0.8333
+      },
+      "flows": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.6667,
+        "f1": 0.8
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 4,
+        "fn": 2,
+        "precision": 0.2,
+        "recall": 0.3333,
+        "f1": 0.25
+      },
+      "composite_score": 0.7317,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed 2",
+          "score": 0.8085302710533142
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed 1",
+          "score": 0.789527177810669
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious 1",
+          "score": 0.8483736515045166
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious 2",
+          "score": 0.8318901658058167
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed 1",
+          "score": 0.9213107824325562
+        },
+        {
+          "gold": "Exposed->Exposed",
+          "extracted": "Exposed 1->Exposed 2",
+          "score": 0.8449705243110657
+        },
+        {
+          "gold": "Exposed->Infectious",
+          "extracted": "Exposed 2->Infectious 1",
+          "score": 0.8259994387626648
+        },
+        {
+          "gold": "Infectious->Infectious",
+          "extracted": "Infectious 1->Infectious 2",
+          "score": 0.8191148638725281
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03b2 1.24 Transmission rate in \u03bb(t)=\u03b2*I(t)/N (homogeneous mixing)",
+          "extracted": "\u03b2 varies Transmission rate.",
+          "score": 0.7176653742790222
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

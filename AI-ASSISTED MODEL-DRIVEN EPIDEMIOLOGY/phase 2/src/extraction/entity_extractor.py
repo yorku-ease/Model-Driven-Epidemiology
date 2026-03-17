@@ -116,6 +116,9 @@ class EntityExtractor:
         if example_models_path:
             self._load_example_models(example_models_path)
 
+        self.generic_examples = []
+        self._load_generic_examples()
+
         self.llm_compartments_chars = (
             int(llm_compartments_chars) if llm_compartments_chars else 50000
         )
@@ -416,6 +419,30 @@ class EntityExtractor:
             except Exception as e:
                 print(f"Warning: Failed to load example {compmodel_file}: {e}")
 
+    def _load_generic_examples(self):
+        """Load generic extraction examples from JSON file"""
+        import json
+        from pathlib import Path
+
+        examples_path = (
+            Path(__file__).parent.parent.parent
+            / "data"
+            / "examples"
+            / "generic_extraction_examples.json"
+        )
+        if not examples_path.exists():
+            return
+
+        try:
+            with open(examples_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self.generic_examples = data.get("models", [])
+                print(
+                    f"  Loaded {len(self.generic_examples)} generic extraction examples"
+                )
+        except Exception as e:
+            print(f"Warning: Failed to load generic examples: {e}")
+
     def _normalize_compartment_name(self, name: str) -> str:
         """Normalize compartment name to canonical form"""
         name = name.strip()
@@ -577,11 +604,40 @@ Standard compartment types from metamodel:
 {", ".join(compartment_types)}
 """
 
-        # Build Phase 1 examples context
+        # Build generic extraction examples context
         examples_context = ""
-        if self.example_models:
+        if self.generic_examples:
             examples_list = []
-            for model in self.example_models[:3]:  # Use up to 3 examples
+            for model in self.generic_examples[:2]:
+                model_name = model.get("model_name", "Model")
+                comps = model.get("compartments", [])
+                if comps:
+                    # Show compartment examples with text_span evidence
+                    examples_list.append(f"""
+Example from {model_name}:
+""")
+                    for comp in comps[:3]:
+                        examples_list.append(
+                            f'  - compartment: "{comp.get("name", "")}"'
+                        )
+                        examples_list.append(
+                            f'    evidence: "{comp.get("text_span", "")[:100]}..."'
+                        )
+
+            if examples_list:
+                examples_context = f"""
+EXAMPLE - How to extract compartments with evidence:
+{chr(10).join(examples_list)}
+
+IMPORTANT: The 'text_span' field shows the EXACT LINE from the INPUT PAPER that supports the extraction.
+The 'name' field is your DEDUCTION/INTERPRETATION of what that evidence represents.
+- text_span = exact quote from input paper
+- name = your extracted element based on that evidence
+"""
+        elif self.example_models:
+            # Fallback to old style if no generic examples
+            examples_list = []
+            for model in self.example_models[:3]:
                 comp_names = [
                     c["name"] for c in model.get("compartments", []) if c["name"]
                 ]
@@ -937,16 +993,43 @@ Flow types from metamodel:
 {", ".join(flow_types)}
 """
 
-        # Build Phase 1 examples context for flows
+        # Build generic extraction examples for flows
         examples_context = ""
-        if self.example_models:
+        if self.generic_examples:
             examples_list = []
-            for model in self.example_models[:2]:  # Use up to 2 examples
+            for model in self.generic_examples[:2]:
+                model_name = model.get("model_name", "Model")
+                flows = model.get("flows", [])
+                if flows:
+                    examples_list.append(f"""
+Example from {model_name}:
+""")
+                    for flow in flows[:3]:
+                        examples_list.append(
+                            f'  - flow: "{flow.get("source", "")} -> {flow.get("target", "")}"'
+                        )
+                        examples_list.append(
+                            f'    evidence: "{flow.get("text_span", "")[:100]}..."'
+                        )
+
+            if examples_list:
+                examples_context = f"""
+EXAMPLE - How to extract flows with evidence:
+{chr(10).join(examples_list)}
+
+IMPORTANT: The 'text_span' field shows the EXACT LINE from the INPUT PAPER that supports the extraction.
+The 'source' and 'target' fields are your DEDUCTIONS of what that evidence represents.
+- text_span = exact quote from input paper
+- source/target = your extracted compartment names based on that evidence
+"""
+        elif self.example_models:
+            # Fallback to old style if no generic examples
+            examples_list = []
+            for model in self.example_models[:2]:
                 comp_names_ex = [
                     c["name"] for c in model.get("compartments", []) if c["name"]
                 ]
                 if comp_names_ex:
-                    # Show example flow patterns
                     flow_pattern = " → ".join(comp_names_ex[:4])
                     examples_list.append(f"  {model['name']}: {flow_pattern}")
 
@@ -1615,15 +1698,43 @@ Parameter types from metamodel:
 {", ".join(parameter_types)}
 """
 
-        # Build Phase 1 examples context for parameters
+        # Build generic extraction examples for parameters
         examples_context = ""
-        if self.example_models:
+        if self.generic_examples:
             examples_list = []
-            for model in self.example_models[:3]:  # Use up to 3 examples
+            for model in self.generic_examples[:2]:
+                model_name = model.get("model_name", "Model")
+                params = model.get("parameters", [])
+                if params:
+                    examples_list.append(f"""
+Example from {model_name}:
+""")
+                    for param in params[:3]:
+                        examples_list.append(
+                            f'  - parameter: "{param.get("symbol", "")}"'
+                        )
+                        examples_list.append(
+                            f'    evidence: "{param.get("text_span", "")[:100]}..."'
+                        )
+
+            if examples_list:
+                examples_context = f"""
+EXAMPLE - How to extract parameters with evidence:
+{chr(10).join(examples_list)}
+
+IMPORTANT: The 'text_span' field shows the EXACT LINE from the INPUT PAPER that supports the extraction.
+The 'symbol' field is your DEDUCTION of what that evidence represents.
+- text_span = exact quote from input paper
+- symbol = your extracted parameter symbol based on that evidence
+"""
+        elif self.example_models:
+            # Fallback to old style if no generic examples
+            examples_list = []
+            for model in self.example_models[:3]:
                 params = model.get("parameters", [])
                 if params:
                     param_examples = []
-                    for p in params[:5]:  # Show up to 5 parameters per model
+                    for p in params[:5]:
                         name = p.get("name", "")
                         value = p.get("value", "")
                         desc = p.get("description", "")

@@ -1,0 +1,318 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are at risk of contracting the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are at risk of contracting the disease."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who have contracted the disease and can spread it to others.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have contracted the disease and can spread it to others."
+    },
+    {
+      "normalized_name": "Quarantine",
+      "raw_text": "Quarantine",
+      "page_number": 0,
+      "text_span": "Infected individuals who have been isolated to prevent disease spread.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infected individuals who have been isolated to prevent disease spread."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from the disease and gained immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the disease and gained immunity."
+    },
+    {
+      "normalized_name": "Ebola Virus Pathogens in the Environment",
+      "raw_text": "Ebola Virus Pathogens in the Environment",
+      "page_number": 0,
+      "text_span": "Pathogens present in the environment that can cause infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pathogens present in the environment that can cause infection."
+    },
+    {
+      "normalized_name": "Dead",
+      "raw_text": "Deceased",
+      "page_number": 0,
+      "text_span": "Individuals who have died from the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have died from the disease."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection through contact with infectious individuals, deceased, or environment.",
+      "page_number": 0,
+      "text_span": "Infection through contact with infectious individuals, deceased, or environment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection through contact with infectious individuals, deceased, or environment."
+    },
+    {
+      "source": "Infectious",
+      "target": "Quarantine",
+      "flow_type": "RateFlow",
+      "raw_text": "Infected individuals being quarantined.",
+      "page_number": 0,
+      "text_span": "Infected individuals being quarantined.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infected individuals being quarantined."
+    },
+    {
+      "source": "Quarantine",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Quarantined individuals recovering from the disease.",
+      "page_number": 0,
+      "text_span": "Quarantined individuals recovering from the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Quarantined individuals recovering from the disease."
+    },
+    {
+      "source": "Infectious",
+      "target": "Ebola Virus Pathogens in the Environment",
+      "flow_type": "RateFlow",
+      "raw_text": "Pathogens shed into the environment by infected individuals.",
+      "page_number": 0,
+      "text_span": "Pathogens shed into the environment by infected individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pathogens shed into the environment by infected individuals."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Recruitment rate of susceptible individuals",
+      "raw_text": "Recruitment rate of susceptible individuals",
+      "value": "10",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which susceptible individuals are recruited into the population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which susceptible individuals are recruited into the population."
+    },
+    {
+      "normalized_name": "Recruitment rate of infected individuals",
+      "raw_text": "Recruitment rate of infected individuals",
+      "value": "3",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which infected individuals are recruited into the population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which infected individuals are recruited into the population."
+    },
+    {
+      "normalized_name": "Effective contact rate of infected humans",
+      "raw_text": "Effective contact rate of infected humans",
+      "value": "0.006",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of effective contact between susceptible and infected individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of effective contact between susceptible and infected individuals."
+    },
+    {
+      "normalized_name": "Contact rate of Ebola virus pathogens in the environment",
+      "raw_text": "Contact rate of Ebola virus pathogens in the environment",
+      "value": "0.0012",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of contact with pathogens in the environment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of contact with pathogens in the environment."
+    },
+    {
+      "normalized_name": "Effective contact rate of deceased humans",
+      "raw_text": "Effective contact rate of deceased humans",
+      "value": "0.006",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of effective contact between susceptible individuals and deceased.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of effective contact between susceptible individuals and deceased."
+    },
+    {
+      "normalized_name": "Natural death rate of humans",
+      "raw_text": "Natural death rate of humans",
+      "value": "0.5",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Natural death rate of individuals in the population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural death rate of individuals in the population."
+    },
+    {
+      "normalized_name": "Death rate due to infection",
+      "raw_text": "Death rate due to infection",
+      "value": "0.123",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which infected individuals die from the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which infected individuals die from the disease."
+    },
+    {
+      "normalized_name": "Rate of shedding of infected humans",
+      "raw_text": "Rate of shedding of infected humans",
+      "value": "0.04",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which infected individuals shed pathogens into the environment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which infected individuals shed pathogens into the environment."
+    },
+    {
+      "normalized_name": "Rate at which infected people are quarantined",
+      "raw_text": "Rate at which infected people are quarantined",
+      "value": "0.12",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which infected individuals are moved to quarantine.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which infected individuals are moved to quarantine."
+    },
+    {
+      "normalized_name": "Rate at which quarantined people recover",
+      "raw_text": "Rate at which quarantined people recover",
+      "value": "0.04",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which quarantined individuals recover from the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which quarantined individuals recover from the disease."
+    },
+    {
+      "normalized_name": "Rate at which quarantined people die",
+      "raw_text": "Rate at which quarantined people die",
+      "value": "0.22",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which quarantined individuals die from the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which quarantined individuals die from the disease."
+    },
+    {
+      "normalized_name": "Proportion of shedding of deceased people",
+      "raw_text": "Proportion of shedding of deceased people",
+      "value": "0.04",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Proportion of pathogens shed by deceased individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of pathogens shed by deceased individuals."
+    },
+    {
+      "normalized_name": "Proportion rate of burial of deceased people",
+      "raw_text": "Proportion rate of burial of deceased people",
+      "value": "0.8",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which deceased individuals are buried.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which deceased individuals are buried."
+    },
+    {
+      "normalized_name": "Rate at which Ebola virus enters the environment",
+      "raw_text": "Rate at which Ebola virus enters the environment",
+      "value": "0",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate at which Ebola virus enters the environment from other sources.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which Ebola virus enters the environment from other sources."
+    }
+  ],
+  "stratifications": [],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 2,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 4,
+    "num_parameters": 14,
+    "num_stratifications": 0,
+    "num_interventions": 3
+  }
+}

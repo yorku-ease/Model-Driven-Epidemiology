@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="βb" expression="0.071" type="CONSTANT" description="Number of infectious bites delivered per vector per day (Rio de Janeiro State simulation value)." unit="per day"/>
+  <parameters name="M" expression="100000" type="CONSTANT" description="Number of alternative hosts for mosquito bites (Rio de Janeiro State simulation value)." unit="hosts"/>
+  <parameters name="α_H" expression="0.333" type="CONSTANT" description="Inverse incubation time of ZIKV in humans (1/3 days)." unit="per day"/>
+  <parameters name="γ" expression="0.143" type="CONSTANT" description="Recovery rate of infectious humans (1/7 days)." unit="per day"/>
+  <parameters name="λ" expression="0.00005" type="CONSTANT" description="Human population growth rate." unit="per day"/>
+  <parameters name="K_H" expression="30000000" type="CONSTANT" description="Carrying capacity for human population (Rio de Janeiro State simulation value)." unit="persons"/>
+  <parameters name="e" expression="80" type="CONSTANT" description="Number of eggs laid per female mosquito per unit time." unit="per day"/>
+  <parameters name="α_V" expression="0.1" type="CONSTANT" description="Inverse incubation time of ZIKV in vectors (1/10 days)." unit="per day"/>
+  <parameters name="τ1" expression="0.333" type="CONSTANT" description="Reciprocal of the egg development time (1/3 days)." unit="per day"/>
+  <parameters name="μ1" expression="0.05" type="CONSTANT" description="Mortality rate of vector eggs." unit="per day"/>
+  <parameters name="τ2" expression="0.111" type="CONSTANT" description="Reciprocal of the larval development time (1/9 days)." unit="per day"/>
+  <parameters name="μ2" expression="0.025" type="CONSTANT" description="Mortality rate of vector larvae." unit="per day"/>
+  <parameters name="τ3" expression="0.333" type="CONSTANT" description="Reciprocal of the pupal development time (1/3 days)." unit="per day"/>
+  <parameters name="μ3" expression="0.0025" type="CONSTANT" description="Mortality rate of vector pupae." unit="per day"/>
+  <parameters name="μ_V" expression="0.05" type="CONSTANT" description="Mortality rate of adult vectors." unit="per day"/>
+  <parameters name="q" expression="0.68" type="CONSTANT" description="Percentage of females among adult vectors." unit="dimensionless"/>
+  <parameters name="K_V" expression="100000000" type="CONSTANT" description="Carrying capacity for larvae (Rio de Janeiro State simulation value)." unit="larvae"/>
+  <parameters name="κ" expression="1" type="CONSTANT" description="Mortality rate of larvae caused by limited carrying capacity (Rio de Janeiro State simulation value)." unit="per day"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.1" target="//@compartments.1" description="Infection of susceptible humans through bites from infectious mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression of exposed humans to the infectious state after the incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Recovery of infectious humans, who then become immune."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Vector Eggs" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.5" description="Maturation of mosquito eggs into larvae."/>
+  </compartments>
+  <compartments PrimaryName="Vector Larvae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.6" description="Maturation of mosquito larvae into pupae."/>
+  </compartments>
+  <compartments PrimaryName="Vector Pupae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.7" description="Emergence of pupae as adult susceptible mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.1" target="//@compartments.8" description="Infection of susceptible mosquitoes by biting infectious humans."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Egg laying by adult female mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.9" description="Progression of exposed mosquitoes to the infectious state after the extrinsic incubation period."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Egg laying by adult female mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Egg laying by adult female mosquitoes."/>
+  </compartments>
+</compartmental:CompartmentalModel>

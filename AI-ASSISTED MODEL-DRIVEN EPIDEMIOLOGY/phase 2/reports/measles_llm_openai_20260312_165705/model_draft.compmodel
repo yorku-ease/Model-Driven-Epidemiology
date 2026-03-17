@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Recruitment rate to children group" expression="L" type="CONSTANT" description="Rate at which children are recruited into the population." unit="per week"/>
+  <parameters name="Un-monitored children Vaccination rate" expression="xU" type="CONSTANT" description="Rate at which children receive unmonitored vaccination." unit="per week"/>
+  <parameters name="Monitored children Vaccination rate" expression="xM" type="CONSTANT" description="Rate at which children receive monitored vaccination." unit="per week"/>
+  <parameters name="Adult Vaccination rate" expression="xA" type="CONSTANT" description="Rate at which adults receive vaccination." unit="per week"/>
+  <parameters name="Transmission rate on the children" expression="bC" type="CONSTANT" description="Rate of transmission among children." unit="per contact"/>
+  <parameters name="Transmission rate on the adults" expression="bA" type="CONSTANT" description="Rate of transmission among adults." unit="per contact"/>
+  <parameters name="Natural death rate" expression="m" type="CONSTANT" description="Natural death rate of the population." unit="per week"/>
+  <parameters name="Rate of being immune after recovery from infection" expression="g" type="CONSTANT" description="Rate at which individuals become immune after recovery." unit="per week"/>
+  <parameters name="Maturation rate" expression="j" type="CONSTANT" description="Rate at which children mature into adults." unit="per week"/>
+  <parameters name="Effectiveness of the vaccination" expression="1-e" type="CONSTANT" description="Effectiveness of the vaccination." unit="dimensionless"/>
+  <parameters name="Rate of being immune of Un-monitored vaccinated adults" expression="hA" type="CONSTANT" description="Rate at which unmonitored vaccinated adults become immune." unit="per week"/>
+  <parameters name="Rate of being immune of Un-monitored vaccinated children" expression="hU" type="CONSTANT" description="Rate at which unmonitored vaccinated children become immune." unit="per week"/>
+  <parameters name="Rate of being immune of Monitored vaccinated children" expression="hM" type="CONSTANT" description="Rate at which monitored vaccinated children become immune." unit="per week"/>
+  <parameters name="Incubation period" expression="d" type="CONSTANT" description="Incubation period of measles." unit="days"/>
+  <parameters name="Disease induced death" expression="d" type="CONSTANT" description="Rate of death induced by the disease." unit="per week"/>
+  <compartments PrimaryName="Susceptible Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Children receiving unmonitored vaccination."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Children receiving monitored vaccination."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.4" target="//@compartments.3" description="Susceptible children becoming exposed through contact with infectious individuals."/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Children" population="0"/>
+  <compartments PrimaryName="Monitored Vaccinated Children" population="0"/>
+  <compartments PrimaryName="Exposed Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.4" description="Exposed children becoming infectious."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.5" description="Infectious children recovering and becoming immune."/>
+  </compartments>
+  <compartments PrimaryName="Immune Children" population="0"/>
+  <compartments PrimaryName="Susceptible Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.7" description="Adults receiving unmonitored vaccination."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.8" description="Adults receiving vaccination."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.4" target="//@compartments.9" description="Susceptible adults becoming exposed through contact with infectious individuals."/>
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Adults" population="0"/>
+  <compartments PrimaryName="Vaccinated Adults" population="0"/>
+  <compartments PrimaryName="Exposed Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.10" description="Exposed adults becoming infectious."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.11" description="Infectious adults recovering and becoming immune."/>
+  </compartments>
+  <compartments PrimaryName="Immune Adults" population="0"/>
+</compartmental:CompartmentalModel>

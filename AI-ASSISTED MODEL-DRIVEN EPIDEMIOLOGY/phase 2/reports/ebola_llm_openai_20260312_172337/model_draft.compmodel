@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Recruitment rate of susceptible individuals" expression="10" type="CONSTANT" description="Rate at which susceptible individuals are recruited into the population." unit="per day"/>
+  <parameters name="Recruitment rate of infected individuals" expression="3" type="CONSTANT" description="Rate at which infected individuals are recruited into the population." unit="per day"/>
+  <parameters name="Effective contact rate of infected humans" expression="0.006" type="CONSTANT" description="Rate of effective contact between susceptible and infected individuals." unit="per day"/>
+  <parameters name="Contact rate of Ebola virus pathogens in the environment" expression="0.0012" type="CONSTANT" description="Rate of contact with pathogens in the environment." unit="per day"/>
+  <parameters name="Effective contact rate of deceased humans" expression="0.006" type="CONSTANT" description="Rate of effective contact between susceptible individuals and deceased." unit="per day"/>
+  <parameters name="Natural death rate of humans" expression="0.5" type="CONSTANT" description="Natural death rate of individuals in the population." unit="per day"/>
+  <parameters name="Death rate due to infection" expression="0.123" type="CONSTANT" description="Rate at which infected individuals die from the disease." unit="per day"/>
+  <parameters name="Rate of shedding of infected humans" expression="0.04" type="CONSTANT" description="Rate at which infected individuals shed pathogens into the environment." unit="per day"/>
+  <parameters name="Rate at which infected people are quarantined" expression="0.12" type="CONSTANT" description="Rate at which infected individuals are moved to quarantine." unit="per day"/>
+  <parameters name="Rate at which quarantined people recover" expression="0.04" type="CONSTANT" description="Rate at which quarantined individuals recover from the disease." unit="per day"/>
+  <parameters name="Rate at which quarantined people die" expression="0.22" type="CONSTANT" description="Rate at which quarantined individuals die from the disease." unit="per day"/>
+  <parameters name="Proportion of shedding of deceased people" expression="0.04" type="CONSTANT" description="Proportion of pathogens shed by deceased individuals." unit="per day"/>
+  <parameters name="Proportion rate of burial of deceased people" expression="0.8" type="CONSTANT" description="Rate at which deceased individuals are buried." unit="per day"/>
+  <parameters name="Rate at which Ebola virus enters the environment" expression="0" type="CONSTANT" description="Rate at which Ebola virus enters the environment from other sources." unit="per day"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.2" target="//@compartments.1" description="Infection through contact with infectious individuals, deceased, or environment."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.2" description="Infected individuals being quarantined."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Pathogens shed into the environment by infected individuals."/>
+  </compartments>
+  <compartments PrimaryName="Quarantine" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.3" description="Quarantined individuals recovering from the disease."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Ebola Virus Pathogens in the Environment" population="0"/>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

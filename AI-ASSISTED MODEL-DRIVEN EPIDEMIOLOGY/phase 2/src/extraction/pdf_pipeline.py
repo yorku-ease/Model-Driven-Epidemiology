@@ -123,9 +123,7 @@ class PDFPipeline:
 
         print(f"[PDFPipeline] Processing {pdf_path} with GROBID...")
 
-        grobid_result = extract_sections_from_pdf(
-            str(pdf_path), self.grobid_url, check_server=self.check_grobid
-        )
+        grobid_result = extract_sections_from_pdf(str(pdf_path), self.grobid_url)
         sections_list = grobid_result.get("sections", [])
 
         sections_dict = self._convert_sections_to_dict(sections_list)

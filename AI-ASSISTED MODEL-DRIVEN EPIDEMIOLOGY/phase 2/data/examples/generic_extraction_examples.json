@@ -1,0 +1,166 @@
+{
+  "source": "Enszer & Stadtherr (2009), Verified Solution of Nonlinear Dynamic Models in Epidemiology",
+
+  "models": [
+
+    {
+      "model_id": "SIRS_basic",
+      "model_name": "Basic SIRS Model",
+
+      "compartments": [
+        {
+          "name": "Susceptible",
+          "text_span": "This SIRS model assumes a constant total population n = s+i+r. Since we can determine the Recovered population from r = n − s − i, we only need unsteady population balances on the Susceptible and Infected classes."
+        },
+        {
+          "name": "Infected",
+          "text_span": "This SIRS model assumes a constant total population n = s+i+r. Since we can determine the Recovered population from r = n − s − i, we only need unsteady population balances on the Susceptible and Infected classes."
+        },
+        {
+          "name": "Recovered",
+          "text_span": "Since we can determine the Recovered population from r = n − s − i"
+        }
+      ],
+
+      "flows": [
+        {
+          "source": "Susceptible",
+          "target": "Infected",
+          "text_span": "ds/dt = −βsi + γr = −βsi + γ(n − s − i). Here the first term on the right-hand side is the loss of Susceptibles due to infection (flux from Susceptible to Infected class)"
+        },
+        {
+          "source": "Recovered",
+          "target": "Susceptible",
+          "text_span": "the second term is the gain of Susceptibles due to loss of immunity (flux from Recovered to Susceptible class)"
+        },
+        {
+          "source": "Infected",
+          "target": "Recovered",
+          "text_span": "di/dt = βsi − νi, where the second term on the right-hand side represents the flux from the Infected to the Recovered class."
+        }
+      ],
+
+      "parameters": [
+        {
+          "symbol": "β",
+          "text_span": "Uncertain values are assumed for the recovery rate, ν ∈ [0.125; 0.250] yr−1, and for the infection probability, β ∈ [2; 2.5]×10−5 yr−1indv−1."
+        },
+        {
+          "symbol": "ν",
+          "text_span": "Uncertain values are assumed for the recovery rate, ν ∈ [0.125; 0.250] yr−1, and for the infection probability, β ∈ [2; 2.5]×10−5 yr−1indv−1."
+        },
+        {
+          "symbol": "γ",
+          "text_span": "We also set the susceptibility rate to be γ = 50 yr−1."
+        },
+        {
+          "symbol": "n",
+          "text_span": "For this simple example, we have chosen a total population of n = 500000 individuals (indv)"
+        },
+        {
+          "symbol": "i0",
+          "text_span": "with an initial Infected population of i0 = 2000 indv and initial Susceptible populated of s0 = 498000 indv."
+        },
+        {
+          "symbol": "s0",
+          "text_span": "with an initial Infected population of i0 = 2000 indv and initial Susceptible populated of s0 = 498000 indv."
+        }
+      ]
+    },
+
+    {
+      "model_id": "SEIR_variable_pop",
+      "model_name": "SEIR Model with Variable Population Size",
+
+      "compartments": [
+        {
+          "name": "Susceptible",
+          "text_span": "This model (Li et al., 1999) is similar to the previous example, except that recovery is possible, with recovery providing permanent immunity. Thus, there is now a Recovered population class, and there is no flux from the Recovered class to the Susceptible class."
+        },
+        {
+          "name": "Exposed",
+          "text_span": "This model (Li et al., 1999) is similar to the previous example, except that recovery is possible, with recovery providing permanent immunity. Thus, there is now a Recovered population class, and there is no flux from the Recovered class to the Susceptible class."
+        },
+        {
+          "name": "Infected",
+          "text_span": "This model (Li et al., 1999) is similar to the previous example, except that recovery is possible, with recovery providing permanent immunity. Thus, there is now a Recovered population class, and there is no flux from the Recovered class to the Susceptible class."
+        },
+        {
+          "name": "Recovered",
+          "text_span": "Thus, there is now a Recovered population class, and there is no flux from the Recovered class to the Susceptible class. The only growth in the Susceptible class is from new births."
+        }
+      ],
+
+      "flows": [
+        {
+          "source": "Susceptible",
+          "target": "Exposed",
+          "text_span": "ds/dt = bn − ds − σsi/n"
+        },
+        {
+          "source": "Exposed",
+          "target": "Infected",
+          "text_span": "de/dt = σsi/n − (ǫ + d)e"
+        },
+        {
+          "source": "Infected",
+          "target": "Recovered",
+          "text_span": "di/dt = ǫe − (ν + α + d)i"
+        },
+        {
+          "source": "Births",
+          "target": "Susceptible",
+          "text_span": "The only growth in the Susceptible class is from new births, with the birth rate is assumed to be the same for all classes."
+        }
+      ],
+
+      "parameters": [
+        {
+          "symbol": "b",
+          "text_span": "These values are b = 0.5 yr−1, d = 0.18 yr−1, σ = 20 yr−1, ǫ = 4 yr−1, ν = 1.5 yr−1, and α = 6 yr−1."
+        },
+        {
+          "symbol": "d",
+          "text_span": "These values are b = 0.5 yr−1, d = 0.18 yr−1, σ = 20 yr−1, ǫ = 4 yr−1, ν = 1.5 yr−1, and α = 6 yr−1."
+        },
+        {
+          "symbol": "σ",
+          "text_span": "In this particular SEIR model, another important feature is that the transmission probability β is taken to be inversely proportional to the total population. Thus, β = σ/n with n = s + e + i + r and σ a proportionality constant."
+        },
+        {
+          "symbol": "ǫ",
+          "text_span": "These values are b = 0.5 yr−1, d = 0.18 yr−1, σ = 20 yr−1, ǫ = 4 yr−1, ν = 1.5 yr−1, and α = 6 yr−1."
+        },
+        {
+          "symbol": "ν",
+          "text_span": "These values are b = 0.5 yr−1, d = 0.18 yr−1, σ = 20 yr−1, ǫ = 4 yr−1, ν = 1.5 yr−1, and α = 6 yr−1."
+        },
+        {
+          "symbol": "α",
+          "text_span": "These values are b = 0.5 yr−1, d = 0.18 yr−1, σ = 20 yr−1, ǫ = 4 yr−1, ν = 1.5 yr−1, and α = 6 yr−1."
+        },
+        {
+          "symbol": "n0",
+          "text_span": "For the initial state, we choose a total population of n0 = 500000 indv with 10% already infected, so i0 = 50000 indv."
+        },
+        {
+          "symbol": "i0",
+          "text_span": "For the initial state, we choose a total population of n0 = 500000 indv with 10% already infected, so i0 = 50000 indv."
+        },
+        {
+          "symbol": "s0",
+          "text_span": "The initial populations of the other classes are uncertain and assumed to be s0 ∈ [400000; 405000] indv, e0 ∈ [10000; 15000] indv and r0 ∈ [30000; 40000] indv."
+        },
+        {
+          "symbol": "e0",
+          "text_span": "The initial populations of the other classes are uncertain and assumed to be s0 ∈ [400000; 405000] indv, e0 ∈ [10000; 15000] indv and r0 ∈ [30000; 40000] indv."
+        },
+        {
+          "symbol": "r0",
+          "text_span": "The initial populations of the other classes are uncertain and assumed to be s0 ∈ [400000; 405000] indv, e0 ∈ [10000; 15000] indv and r0 ∈ [30000; 40000] indv."
+        }
+      ]
+    }
+
+  ]
+}

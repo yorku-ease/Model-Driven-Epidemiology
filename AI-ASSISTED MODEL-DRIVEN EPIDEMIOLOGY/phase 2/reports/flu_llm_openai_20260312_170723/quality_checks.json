@@ -1,0 +1,363 @@
+{
+  "model_analysis": {
+    "modelName": "Influenza",
+    "summary": {
+      "modelName": "Influenza",
+      "totalPopulation": null,
+      "numCompartments": 6,
+      "numParameters": 5,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.2",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed 1",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from first to second stage of incubation.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Exposed 2",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from incubation to first stage of infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious 1",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from first to second stage of infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infectious 2",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03c3",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "Rate of becoming infectious.",
+          "unit": "per day"
+        },
+        {
+          "index": 1,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "0.5797",
+          "description": "Rate of recovery.",
+          "unit": "per day"
+        },
+        {
+          "index": 2,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "varies",
+          "description": "Transmission rate.",
+          "unit": "per contact per day"
+        },
+        {
+          "index": 3,
+          "name": "\u03bc_ICU|E",
+          "type": "CONSTANT",
+          "expression": "5.708",
+          "description": "Mean time from infection to ICU admission.",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "\u03c3^2_ICU|E",
+          "type": "CONSTANT",
+          "expression": "18.24",
+          "description": "Variance of time from infection to ICU admission.",
+          "unit": "days^2"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Influenza",
+    "totalParameters": 5,
+    "parametersWithUncertainty": 5,
+    "parameters": [
+      {
+        "parameter": "\u03c3",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "per day",
+        "description": "Rate of becoming infectious.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "0.5797",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "per day",
+        "description": "Rate of recovery.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2",
+        "yourValue": "varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "per contact per day",
+        "description": "Transmission rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bc_ICU|E",
+        "yourValue": "5.708",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "days",
+        "description": "Mean time from infection to ICU admission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c3^2_ICU|E",
+        "yourValue": "18.24",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "days^2",
+        "description": "Variance of time from infection to ICU admission.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 5
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Influenza",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\u03c3",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Rate of becoming infectious.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b3",
+        "type": "other",
+        "currentValue": 0.5797,
+        "description": "Rate of recovery.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03bc_ICU|E",
+        "type": "other",
+        "currentValue": 5.708,
+        "description": "Mean time from infection to ICU admission.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c3^2_ICU|E",
+        "type": "other",
+        "currentValue": 18.24,
+        "description": "Variance of time from infection to ICU admission.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\u03c3",
+      "\u03b3",
+      "\u03bc_ICU|E",
+      "\u03c3^2_ICU|E"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\u03c3",
+        "\u03b3",
+        "\u03bc_ICU|E",
+        "\u03c3^2_ICU|E"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\u03c3": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b3": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03bc_ICU|E": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c3^2_ICU|E": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}
