@@ -40,7 +40,7 @@ class RLMClient:
         temperature: float = 0.3,
         max_tokens: int = 2000,
     ):
-        """Generate text from LLM."""
+        """Generate text from LLM using pro model."""
         if not self.available:
             raise RuntimeError("LLM client not available")
 
@@ -49,6 +49,27 @@ class RLMClient:
         )
 
         return self._client.extract_with_llm(
+            prompt=full_prompt,
+            temperature=temperature,
+            max_output_tokens=max_tokens,
+        )
+
+    def generate_flash(
+        self,
+        prompt: str,
+        system_instruction: str = "",
+        temperature: float = 0.3,
+        max_tokens: int = 2000,
+    ):
+        """Generate text from LLM using flash model (faster, cheaper)."""
+        if not self.available:
+            raise RuntimeError("LLM client not available")
+
+        full_prompt = (
+            f"{system_instruction}\n\n{prompt}" if system_instruction else prompt
+        )
+
+        return self._client.extract_with_llm_flash(
             prompt=full_prompt,
             temperature=temperature,
             max_output_tokens=max_tokens,

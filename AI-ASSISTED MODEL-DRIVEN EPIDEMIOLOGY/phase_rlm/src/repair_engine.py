@@ -1,19 +1,32 @@
 """
-Repair Engine
+Iterative Repair Engine
 
-Performs targeted LLM-based repairs for specific model errors.
-Each repair is scoped to ONE error, ONE element, relevant context only.
+LLM-driven repair with:
+1. LLM designs semantic search queries
+2. Iterative context gathering (max 3 iterations)
+3. Conversation history maintained
+4. Error memory for intelligent reuse
+5. Clear decision framework: CAN_FIX / NEED_MORE_CONTEXT / CANNOT_FIX
 """
 
-import json
 import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .repair_dispatcher import RepairContext
+from .error_memory import ErrorMemory
 from .utils.llm_client import RLMClient
+from .utils.vector_store import VectorStore
+from .llm_prompts import (
+    QUERY_DESIGN_USER,
+    REPAIR_SYSTEM,
+    REPAIR_USER,
+    REPAIR_WITH_HISTORY_USER,
+    LLMRepairResponse,
+    format_chunks_for_prompt,
+    format_conversation_history,
+)
 
 
 @dataclass
@@ -24,444 +37,573 @@ class RepairResult:
     original_error: str
     repaired_model_xml: str
     explanation: str
-    retry_count: int
     error_type: str
+    failure_reason: Optional[str] = None
+    iterations_used: int = 0
 
 
-class RepairEngine:
-    """Engine for performing targeted repairs on disease models."""
+class IterativeRepairEngine:
+    """LLM-driven iterative repair engine with semantic search."""
 
-    SYSTEM_INSTRUCTION = """You are repairing a specific error in an epidemiological model XML.
-Only modify the element described. Do not change anything else.
-Return ONLY valid XML for the corrected element, or indicate if the paper doesn't contain enough information."""
+    CAN_FIX = "CAN_FIX"
+    NEED_MORE_CONTEXT = "NEED_MORE_CONTEXT"
+    CANNOT_FIX = "CANNOT_FIX"
 
-    def __init__(self, llm_client: RLMClient, config: Optional[Dict[str, Any]] = None):
+    def __init__(
+        self,
+        llm_client: RLMClient,
+        vector_store: VectorStore,
+        config: Optional[Dict[str, Any]] = None,
+        error_memory: Optional[ErrorMemory] = None,
+    ):
         self.llm = llm_client
+        self.vector_store = vector_store
         self.config = config or {}
-        self.max_retries = self.config.get("retry_per_error", 2)
+        self.error_memory = error_memory
+
+        self.max_iterations = self.config.get("max_context_iterations", 3)
+        self.initial_search_k = self.config.get("initial_search_k", 10)
+        self.additional_search_k = self.config.get("additional_search_k", 5)
+        self.min_chunk_score = self.config.get("min_chunk_score", 0.25)
+
+        memory_config = self.config.get("error_memory", {})
+        self.semantic_threshold = memory_config.get("semantic_threshold", 0.82)
+        self.max_memory_results = memory_config.get("max_results", 3)
+        self.min_entries_for_semantic = memory_config.get(
+            "min_entries_for_semantic", 10
+        )
+
+    def _log_success(
+        self,
+        error_type: str,
+        element: str,
+        search_query: Optional[str],
+        fix_summary: str,
+        evidence_chunk: Optional[str],
+    ) -> None:
+        """Log successful repair to error memory."""
+        if self.error_memory:
+            self.error_memory.add_success(
+                error_type=error_type,
+                element=element,
+                search_query_used=search_query,
+                fix_summary=fix_summary,
+                paper_evidence_chunk=evidence_chunk,
+            )
+
+    def _log_failure(
+        self,
+        error_type: str,
+        element: str,
+        failure_reason: str,
+        explanation: str,
+    ) -> None:
+        """Log failed repair to error memory."""
+        if self.error_memory:
+            self.error_memory.add_failure(
+                error_type=error_type,
+                element=element,
+                failure_reason=failure_reason,
+                llm_explanation=explanation,
+            )
 
     def repair(
         self,
-        context: RepairContext,
+        error: Dict[str, Any],
         current_model_xml: str,
     ) -> RepairResult:
         """
-        Attempt to repair a single error.
+        Attempt to repair an error using iterative LLM with semantic search and memory.
 
         Args:
-            context: RepairContext with error details and relevant sections
-            current_model_xml: Current model XML string
+            error: Error dict with type, element, detail, severity
+            current_model_xml: Current model XML
 
         Returns:
             RepairResult with success status and repaired model
         """
-        if context.error_type == "self_referential_flow":
-            return self._auto_fix_self_referential(current_model_xml, context)
+        error_type = error.get("type", "")
+        error_element = error.get("element", "")
+        error_detail = error.get("detail", "")
 
-        prompt = self._build_repair_prompt(context, current_model_xml)
+        used_search_query: Optional[str] = None
+        best_chunk_used = None
 
-        for retry in range(self.max_retries + 1):
-            try:
-                response = self.llm.generate(
-                    prompt=prompt,
-                    system_instruction=self.SYSTEM_INSTRUCTION,
-                    temperature=0.3,
-                    max_tokens=2000,
+        try:
+            memory_result = None
+            memory_context = "No previous repair attempts for this error type."
+
+            if self.error_memory and self.error_memory.has_memory:
+                memory_result = self.error_memory.search(
+                    error_type=error_type,
+                    element=error_element,
+                    semantic_threshold=self.semantic_threshold,
+                    max_results=self.max_memory_results,
+                    min_entries_for_semantic=self.min_entries_for_semantic,
                 )
 
-                repaired_xml = self._apply_repair(
-                    current_model_xml,
-                    response,
-                    context,
+                if memory_result.entries:
+                    memory_context = self.error_memory.format_for_prompt(memory_result)
+                    print(
+                        f"    [Memory] Found {len(memory_result.entries)} past attempt(s) ({memory_result.match_type})"
+                    )
+
+            search_query = self._design_search_query(
+                error_type, error_element, error_detail, memory_context
+            )
+            used_search_query = search_query
+            print(f"    [Query] {search_query[:80]}...")
+
+            initial_chunks = self.vector_store.semantic_search(
+                search_query,
+                top_k=self.initial_search_k,
+                min_score=self.min_chunk_score,
+            )
+
+            if not initial_chunks:
+                return RepairResult(
+                    success=False,
+                    original_error=error_element,
+                    repaired_model_xml=current_model_xml,
+                    explanation="No relevant chunks found for initial search",
+                    error_type=error_type,
+                    failure_reason="no_chunks_found",
+                    iterations_used=1,
                 )
 
-                if repaired_xml:
-                    if repaired_xml == current_model_xml:
-                        return RepairResult(
-                            success=False,
-                            original_error=context.error_element,
-                            repaired_model_xml=current_model_xml,
-                            explanation="Repair attempted but model unchanged",
-                            retry_count=retry,
-                            error_type=context.error_type,
-                        )
-                    return RepairResult(
-                        success=True,
-                        original_error=context.error_element,
-                        repaired_model_xml=repaired_xml,
-                        explanation=response,
-                        retry_count=retry,
-                        error_type=context.error_type,
+            conversation_history: List[LLMRepairResponse] = []
+            all_chunks = list(initial_chunks)
+
+            for iteration in range(1, self.max_iterations + 1):
+                remaining = self.max_iterations - iteration
+
+                if iteration == 1:
+                    llm_response = self._llm_repair(
+                        error_type=error_type,
+                        error_element=error_element,
+                        error_detail=error_detail,
+                        model_xml=current_model_xml,
+                        chunks=all_chunks,
+                        conversation=[],
+                        iteration=iteration,
+                        max_iterations=self.max_iterations,
+                        remaining=remaining,
+                        memory_context=memory_context,
                     )
                 else:
-                    if retry < self.max_retries:
-                        continue
-                    else:
-                        return RepairResult(
-                            success=False,
-                            original_error=context.error_element,
-                            repaired_model_xml=current_model_xml,
-                            explanation=f"Failed to parse repair response: {response[:200]}",
-                            retry_count=retry,
-                            error_type=context.error_type,
-                        )
-
-            except Exception as e:
-                if retry < self.max_retries:
-                    continue
-                return RepairResult(
-                    success=False,
-                    original_error=context.error_element,
-                    repaired_model_xml=current_model_xml,
-                    explanation=f"LLM error: {str(e)}",
-                    retry_count=retry,
-                    error_type=context.error_type,
-                )
-
-        return RepairResult(
-            success=False,
-            original_error=context.error_element,
-            repaired_model_xml=current_model_xml,
-            explanation="Max retries exceeded",
-            retry_count=self.max_retries,
-            error_type=context.error_type,
-        )
-
-    def _build_repair_prompt(self, context: RepairContext, model_xml: str) -> str:
-        """Build the repair prompt for the LLM."""
-        sections_text = ""
-
-        if context.relevant_sections:
-            sections_parts = []
-            for i, section in enumerate(context.relevant_sections[:3], 1):
-                content_preview = section.content[:1500]
-                sections_parts.append(
-                    f"SECTION {i}: {section.title}\n{content_preview}"
-                )
-            sections_text = "\n\n".join(sections_parts)
-        else:
-            sections_text = "No relevant mechanistic sections found in paper."
-
-        prompt = f"""ERROR TYPE: {context.error_type}
-ELEMENT: {context.error_element}
-SEVERITY: {context.severity}
-
-PROBLEM DESCRIPTION:
-{context.error_detail}
-
-RELEVANT PAPER SECTIONS:
-{sections_text}
-
-CURRENT MODEL XML (relevant portion):
-{model_xml[:3000]}
-
-TASK: Based ONLY on the paper sections above, identify the correct fix.
-Return the corrected XML element only. If unsure, return: <REPAIR_FAILED reason="insufficient_information"/>
-"""
-
-        return prompt
-
-    def _auto_fix_self_referential(
-        self,
-        xml: str,
-        context: RepairContext,
-    ) -> RepairResult:
-        """
-        Auto-fix self-referential ContactFlows without LLM.
-
-        Logic: For ContactFlow from S, the target should be E (Exposed),
-        and the contactCompartment should be I (Infectious).
-        """
-        try:
-            root = ET.fromstring(xml)
-            compartments = root.findall(
-                ".//{http://example.com/compartmentalmodel}compartments"
-            )
-            if not compartments:
-                compartments = root.findall(".//compartments")
-
-            compartment_names = [c.get("PrimaryName", "") for c in compartments]
-
-            infectious_idx = None
-            exposed_idx = None
-
-            for i, name in enumerate(compartment_names):
-                name_lower = name.lower()
-                if "infectious" in name_lower or "infected" in name_lower:
-                    if infectious_idx is None:
-                        infectious_idx = i
-                if "exposed" in name_lower or "latent" in name_lower:
-                    if exposed_idx is None:
-                        exposed_idx = i
-
-            fixed_count = 0
-            for comp in root.iter():
-                tag = comp.tag.split("}")[-1] if "}" in comp.tag else comp.tag
-                if tag != "compartments":
-                    continue
-
-                for flow in comp.findall(".//outgoingFlows"):
-                    flow_type = flow.get(
-                        "{http://www.w3.org/2001/XMLSchema-instance}type", ""
+                    llm_response = self._llm_repair_with_history(
+                        error_type=error_type,
+                        error_element=error_element,
+                        error_detail=error_detail,
+                        model_xml=current_model_xml,
+                        new_chunks=initial_chunks,
+                        conversation=conversation_history,
+                        iteration=iteration,
+                        max_iterations=self.max_iterations,
+                        remaining=remaining,
+                        memory_context=memory_context,
                     )
 
-                    if "ContactFlow" not in flow_type:
-                        continue
+                if llm_response.decision == self.CAN_FIX:
+                    patched_xml = self._apply_fix(
+                        current_model_xml,
+                        llm_response.content,
+                        error_element,
+                    )
+                    if patched_xml:
+                        best_chunk = all_chunks[0] if all_chunks else None
+                        self._log_success(
+                            error_type=error_type,
+                            element=error_element,
+                            search_query=used_search_query,
+                            fix_summary=llm_response.content[:200],
+                            evidence_chunk=best_chunk.content[:500]
+                            if best_chunk
+                            else None,
+                        )
+                        return RepairResult(
+                            success=True,
+                            original_error=error_element,
+                            repaired_model_xml=patched_xml,
+                            explanation=f"Fixed using {iteration} iteration(s)",
+                            error_type=error_type,
+                            iterations_used=iteration,
+                        )
+                    else:
+                        self._log_failure(
+                            error_type=error_type,
+                            element=error_element,
+                            failure_reason="xml_parse_failed",
+                            explanation=llm_response.content[:500],
+                        )
+                        return RepairResult(
+                            success=False,
+                            original_error=error_element,
+                            repaired_model_xml=current_model_xml,
+                            explanation=f"LLM suggested fix but XML parsing failed: {llm_response.content[:200]}",
+                            error_type=error_type,
+                            failure_reason="xml_parse_failed",
+                            iterations_used=iteration,
+                        )
 
-                    target = flow.get("target", "")
-                    contact = flow.get("contactCompartment", "")
+                elif llm_response.decision == self.CANNOT_FIX:
+                    self._log_failure(
+                        error_type=error_type,
+                        element=error_element,
+                        failure_reason="no_evidence",
+                        explanation=llm_response.content,
+                    )
+                    return RepairResult(
+                        success=False,
+                        original_error=error_element,
+                        repaired_model_xml=current_model_xml,
+                        explanation=llm_response.content,
+                        error_type=error_type,
+                        failure_reason="no_evidence",
+                        iterations_used=iteration,
+                    )
 
-                    if target == contact:
-                        if exposed_idx is not None:
-                            flow.set("target", f"//@compartments.{exposed_idx}")
-                        if infectious_idx is not None:
-                            flow.set(
-                                "contactCompartment",
-                                f"//@compartments.{infectious_idx}",
-                            )
-                        fixed_count += 1
+                elif llm_response.decision == self.NEED_MORE_CONTEXT:
+                    context_request = llm_response.content
+                    more_chunks = self.vector_store.semantic_search(
+                        context_request,
+                        top_k=self.additional_search_k,
+                        min_score=self.min_chunk_score,
+                    )
 
-            if fixed_count > 0:
-                return RepairResult(
-                    success=True,
-                    original_error=context.error_element,
-                    repaired_model_xml=ET.tostring(root, encoding="unicode"),
-                    explanation=f"Auto-fixed {fixed_count} self-referential ContactFlow(s). "
-                    f"Set target=Exposed(idx={exposed_idx}), contact=Infectious(idx={infectious_idx})",
-                    retry_count=0,
-                    error_type=context.error_type,
-                )
-            else:
-                return RepairResult(
-                    success=False,
-                    original_error=context.error_element,
-                    repaired_model_xml=xml,
-                    explanation="No self-referential ContactFlow found to fix",
-                    retry_count=0,
-                    error_type=context.error_type,
-                )
+                    if more_chunks:
+                        existing_ids = {c.chunk_id for c in all_chunks}
+                        for chunk in more_chunks:
+                            if chunk.chunk_id not in existing_ids:
+                                all_chunks.append(chunk)
+                                existing_ids.add(chunk.chunk_id)
 
-        except Exception as e:
+                    conversation_history.append(llm_response)
+
+                    if remaining == 0:
+                        self._log_failure(
+                            error_type=error_type,
+                            element=error_element,
+                            failure_reason="max_iterations",
+                            explanation=f"Max iterations reached. Last request: {context_request[:200]}",
+                        )
+                        return RepairResult(
+                            success=False,
+                            original_error=error_element,
+                            repaired_model_xml=current_model_xml,
+                            explanation=f"Max iterations reached. Last request: {context_request[:200]}",
+                            error_type=error_type,
+                            failure_reason="max_iterations",
+                            iterations_used=self.max_iterations,
+                        )
+
+            self._log_failure(
+                error_type=error_type,
+                element=error_element,
+                failure_reason="max_iterations",
+                explanation="Repair loop completed without resolution",
+            )
             return RepairResult(
                 success=False,
-                original_error=context.error_element,
-                repaired_model_xml=xml,
-                explanation=f"Auto-fix error: {str(e)}",
-                retry_count=0,
-                error_type=context.error_type,
+                original_error=error_element,
+                repaired_model_xml=current_model_xml,
+                explanation="Repair loop completed without resolution",
+                error_type=error_type,
+                failure_reason="max_iterations",
+                iterations_used=self.max_iterations,
             )
 
-    def _apply_repair(
+        except Exception as e:
+            self._log_failure(
+                error_type=error_type,
+                element=error_element,
+                failure_reason="engine_error",
+                explanation=str(e),
+            )
+            return RepairResult(
+                success=False,
+                original_error=error_element,
+                repaired_model_xml=current_model_xml,
+                explanation=f"Repair engine error: {str(e)}",
+                error_type=error_type,
+                failure_reason="engine_error",
+            )
+
+    def _design_search_query(
+        self,
+        error_type: str,
+        error_element: str,
+        error_detail: str,
+        memory_context: str = "No previous repair attempts for this error type.",
+    ) -> str:
+        """Use LLM to design a semantic search query."""
+        prompt = QUERY_DESIGN_USER.format(
+            error_type=error_type,
+            element=error_element,
+            detail=error_detail,
+            memory_context=memory_context,
+        )
+
+        response = self.llm.generate_flash(
+            prompt=prompt,
+            system_instruction="Design a search query for relevant paper sections.",
+            temperature=0.3,
+            max_tokens=200,
+        )
+
+        return response.strip()
+
+    def _llm_repair(
+        self,
+        error_type: str,
+        error_element: str,
+        error_detail: str,
+        model_xml: str,
+        chunks: List,
+        conversation: List,
+        iteration: int,
+        max_iterations: int,
+        remaining: int,
+        memory_context: str = "No previous repair attempts for this error type.",
+    ) -> LLMRepairResponse:
+        """First LLM call for repair."""
+        chunks_text = format_chunks_for_prompt(chunks)
+
+        prompt = REPAIR_USER.format(
+            error_type=error_type,
+            element=error_element,
+            detail=error_detail,
+            chunks=chunks_text,
+            model_xml=model_xml,
+            iteration=iteration,
+            max_iterations=max_iterations,
+            remaining=remaining,
+            memory_context=memory_context,
+        )
+
+        response = self.llm.generate_flash(
+            prompt=prompt,
+            system_instruction=REPAIR_SYSTEM,
+            temperature=0.3,
+            max_tokens=4000,
+        )
+
+        return self._parse_llm_response(response)
+
+    def _llm_repair_with_history(
+        self,
+        error_type: str,
+        error_element: str,
+        error_detail: str,
+        model_xml: str,
+        new_chunks: List,
+        conversation: List,
+        iteration: int,
+        max_iterations: int,
+        remaining: int,
+        memory_context: str = "No previous repair attempts for this error type.",
+    ) -> LLMRepairResponse:
+        """Subsequent LLM calls with conversation history."""
+        chunks_text = format_chunks_for_prompt(new_chunks)
+        history_text = format_conversation_history(conversation)
+
+        prompt = REPAIR_WITH_HISTORY_USER.format(
+            error_type=error_type,
+            element=error_element,
+            detail=error_detail,
+            new_chunks=chunks_text,
+            history=history_text,
+            model_xml=model_xml,
+            iteration=iteration,
+            max_iterations=max_iterations,
+            remaining=remaining,
+            memory_context=memory_context,
+        )
+
+        response = self.llm.generate_flash(
+            prompt=prompt,
+            system_instruction=REPAIR_SYSTEM,
+            temperature=0.3,
+            max_tokens=2000,
+        )
+
+        return self._parse_llm_response(response)
+
+    def _parse_llm_response(self, response: str) -> LLMRepairResponse:
+        """Parse LLM response into structured format."""
+        can_fix_match = re.search(r"<CAN_FIX>(.*?)</CAN_FIX>", response, re.DOTALL)
+        if can_fix_match:
+            return LLMRepairResponse(
+                decision=self.CAN_FIX,
+                content=can_fix_match.group(1).strip(),
+                full_response=response,
+            )
+
+        need_context_match = re.search(
+            r"<NEED_MORE_CONTEXT>(.*?)</NEED_MORE_CONTEXT>", response, re.DOTALL
+        )
+        if need_context_match:
+            return LLMRepairResponse(
+                decision=self.NEED_MORE_CONTEXT,
+                content=need_context_match.group(1).strip(),
+                full_response=response,
+            )
+
+        cannot_fix_match = re.search(
+            r"<CANNOT_FIX>(.*?)</CANNOT_FIX>", response, re.DOTALL
+        )
+        if cannot_fix_match:
+            return LLMRepairResponse(
+                decision=self.CANNOT_FIX,
+                content=cannot_fix_match.group(1).strip(),
+                full_response=response,
+            )
+
+        return LLMRepairResponse(
+            decision=self.CANNOT_FIX,
+            content=f"Could not parse LLM response. Response: {response[:500]}",
+            full_response=response,
+        )
+
+    def _apply_fix(
         self,
         original_xml: str,
-        repair_response: str,
-        context: RepairContext,
+        fix_xml: str,
+        error_element: str,
     ) -> Optional[str]:
-        """Apply the repair response to the model XML."""
-        if "<REPAIR_FAILED" in repair_response:
-            return None
-
-        cleaned = self._extract_xml_from_response(repair_response)
-        if not cleaned:
-            return None
-
+        """Apply the fixed XML from LLM (full model or partial)."""
         try:
+            cleaned = self._extract_xml(fix_xml)
+            if not cleaned:
+                return None
+
             ET.fromstring(cleaned)
-        except ET.ParseError:
-            return None
-
-        return self._apply_xml_patch(original_xml, cleaned, context)
-
-    def _extract_xml_from_response(self, response: str) -> Optional[str]:
-        """Extract clean XML from LLM response."""
-        response = response.strip()
-
-        if response.startswith("<"):
-            return response
-
-        if "```xml" in response:
-            response = response.split("```xml")[1].split("```")[0].strip()
-        elif "```" in response:
-            response = response.split("```")[1].split("```")[0].strip()
-
-        if response.startswith("<"):
-            return response
-
-        return None
-
-    def _apply_xml_patch(
-        self,
-        original_xml: str,
-        patch_xml: str,
-        context: RepairContext,
-    ) -> Optional[str]:
-        """Apply XML patch to original model."""
-        try:
-            root = ET.fromstring(original_xml)
-
-            patch_root = ET.fromstring(patch_xml)
-
-            if context.error_type == "self_referential_flow":
-                return self._fix_self_referential_flow(
-                    original_xml, patch_xml, context.error_element
-                )
-            elif context.error_type == "missing_birth_sources":
-                return self._add_birth_source(original_xml, context.error_element)
-            elif context.error_type == "orphaned_parameters":
-                return self._link_parameter(
-                    original_xml, patch_xml, context.error_element
-                )
-            elif context.error_type == "missing_death_sinks":
-                return self._add_death_sink(original_xml, context.error_element)
-            elif context.error_type == "zero_population_all":
-                return self._fix_population_values(original_xml, patch_xml)
-            else:
-                return self._generic_patch(original_xml, patch_xml)
+            return cleaned
 
         except ET.ParseError as e:
             print(f"[RepairEngine] XML parse error: {e}")
             return None
+        except Exception as e:
+            print(f"[RepairEngine] Apply fix error: {e}")
+            return None
 
-    def _fix_self_referential_flow(
+    def _extract_xml(self, text: str) -> Optional[str]:
+        """Extract XML from text."""
+        text = text.strip()
+
+        if text.startswith("<"):
+            if text.endswith(">"):
+                return text
+
+        code_block_match = re.search(r"```xml\s*(.*?)\s*```", text, re.DOTALL)
+        if code_block_match:
+            return code_block_match.group(1).strip()
+
+        code_match = re.search(r"```\s*(.*?)\s*```", text, re.DOTALL)
+        if code_match:
+            content = code_match.group(1).strip()
+            if content.startswith("<"):
+                return content
+
+        return None
+
+    def _patch_model(
         self,
-        xml: str,
-        patch: str,
-        element_name: str,
+        original_xml: str,
+        patch_xml: str,
+        error_element: str,
     ) -> Optional[str]:
-        """Fix self-referential ContactFlow by parsing and targeting specific element."""
-        target_match = re.search(r'target="([^"]+)"', patch)
-        contact_match = re.search(r'contactCompartment="([^"]+)"', patch)
-
-        if not target_match or not contact_match:
-            return None
-
-        new_target = target_match.group(1)
-        new_contact = contact_match.group(1)
-
-        if not new_target or not new_contact:
-            return None
-
+        """Patch model with new elements."""
         try:
-            root = ET.fromstring(xml)
+            root = ET.fromstring(original_xml)
+            patch_root = ET.fromstring(patch_xml)
 
-            fixed_count = 0
-            for comp in root.iter():
-                tag = comp.tag.split("}")[-1] if "}" in comp.tag else comp.tag
-                if tag != "compartments":
-                    continue
+            for elem in patch_root:
+                elem_tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
 
-                for flow in comp.findall(".//outgoingFlows"):
-                    flow_type = flow.get(
-                        "{http://www.w3.org/2001/XMLSchema-instance}type", ""
-                    )
-
-                    if "ContactFlow" not in flow_type:
-                        continue
-
-                    target = flow.get("target", "")
-                    contact = flow.get("contactCompartment", "")
-
-                    if target == contact:
-                        flow.set("target", new_target)
-                        flow.set("contactCompartment", new_contact)
-                        fixed_count += 1
-                        print(
-                            f"[RepairEngine] Fixed ContactFlow: target={new_target}, contact={new_contact}"
-                        )
-
-            if fixed_count > 0:
-                return ET.tostring(root, encoding="unicode")
-            else:
-                print("[RepairEngine] No self-referential ContactFlow found to fix")
-                return None
-
-        except ET.ParseError as e:
-            print(f"[RepairEngine] XML parse error in _fix_self_referential_flow: {e}")
-            return None
-
-    def _add_birth_source(self, xml: str, compartment_name: str) -> Optional[str]:
-        """Add birth source for compartment."""
-        try:
-            root = ET.fromstring(xml)
-
-            compartments = root.findall(
-                ".//{http://example.com/compartmentalmodel}compartments"
-            )
-            if not compartments:
-                compartments = root.findall(".//compartments")
-
-            target_comp = None
-            for comp in compartments:
-                if comp.get("PrimaryName", "").lower() == compartment_name.lower():
-                    target_comp = comp
-                    break
-
-            if target_comp is None:
-                return None
-
-            comp_idx = 0
-            for i, c in enumerate(compartments):
-                if c == target_comp:
-                    comp_idx = i
-                    break
-
-            external_source = ET.Element("externalSources")
-            external_source.set("name", f"Birth_{compartment_name.replace(' ', '_')}")
-            external_source.set("rateParameter", "//@parameters.0")
-            external_source.set("targetCompartment", f"//@compartments.{comp_idx}")
-
-            root.append(external_source)
+                if elem_tag == "outgoingFlows":
+                    self._add_outgoing_flows(root, elem)
+                elif elem_tag == "externalSources":
+                    self._add_external_sources(root, elem)
+                elif elem_tag == "externalSinks":
+                    self._add_external_sinks(root, elem)
+                else:
+                    root.append(elem)
 
             return ET.tostring(root, encoding="unicode")
 
         except Exception as e:
-            print(f"[RepairEngine] Error adding birth source: {e}")
+            print(f"[RepairEngine] Patch model error: {e}")
             return None
 
-    def _link_parameter(self, xml: str, patch: str, param_name: str) -> Optional[str]:
-        """Link orphaned parameter to a flow. Returns None if cannot implement."""
-        return None
-
-    def _add_death_sink(self, xml: str, compartment_name: str) -> Optional[str]:
-        """Add death sink for compartment. Returns None if cannot implement."""
-        return None
-
-    def _fix_population_values(self, xml: str, patch: str) -> Optional[str]:
-        """Fix zero population values."""
-        pop_match = re.search(r'population="(\d+)"', patch)
-        if not pop_match:
-            return None
-
-        new_pop = pop_match.group(1)
-
-        root = ET.fromstring(xml)
-        compartments = root.findall(
-            ".//{http://example.com/compartmentalmodel}compartments"
-        )
+    def _add_outgoing_flows(self, root: ET.Element, flows_elem: ET.Element):
+        """Add outgoing flows to compartments."""
+        compartments = root.findall(".//compartments")
         if not compartments:
-            compartments = root.findall(".//compartments")
+            compartments = root.findall(
+                ".//{http://example.com/compartmentalmodel}compartments"
+            )
 
-        for comp in compartments:
-            if comp.get("population", "0") == "0":
-                comp.set("population", new_pop)
+        if compartments:
+            comp = compartments[0]
+            for flow in flows_elem:
+                comp.append(flow)
 
-        return ET.tostring(root, encoding="unicode")
+    def _add_external_sources(self, root: ET.Element, sources_elem: ET.Element):
+        """Add external sources to model."""
+        model = root.find(".//model") or root
+        for source in sources_elem:
+            model.append(source)
 
-    def _generic_patch(self, xml: str, patch: str) -> Optional[str]:
-        """Generic patch application."""
-        if "<outgoingFlows" in patch:
-            return xml + "\n" + patch
-        elif "<externalSinks" in patch:
-            return xml + "\n" + patch
-        elif "<externalSources" in patch:
-            return xml + "\n" + patch
+    def _add_external_sinks(self, root: ET.Element, sinks_elem: ET.Element):
+        """Add external sinks to model."""
+        model = root.find(".//model") or root
+        for sink in sinks_elem:
+            model.append(sink)
 
-        return None
+    def _generic_replace(
+        self,
+        original_xml: str,
+        replacement_xml: str,
+        error_element: str,
+    ) -> Optional[str]:
+        """Generic replacement - append if no specific handler."""
+        try:
+            root = ET.fromstring(original_xml)
+
+            tag_pattern = re.search(r"<(\w+)", replacement_xml)
+            if not tag_pattern:
+                return None
+
+            tag_name = tag_pattern.group(1)
+            tag_match = re.search(rf"<(\w+:)?{tag_name}[^>]*>", replacement_xml)
+
+            if tag_match and "population=" in replacement_xml:
+                compartments = root.findall(".//compartments")
+                if not compartments:
+                    compartments = root.findall(
+                        ".//{http://example.com/compartmentalmodel}compartments"
+                    )
+
+                pop_match = re.search(r'population="(\d+)"', replacement_xml)
+                if pop_match and compartments:
+                    for comp in compartments:
+                        current_pop = comp.get("population", "0")
+                        if current_pop == "0":
+                            comp.set("population", pop_match.group(1))
+                    return ET.tostring(root, encoding="unicode")
+
+            return original_xml + "\n" + replacement_xml
+
+        except Exception as e:
+            print(f"[RepairEngine] Generic replace error: {e}")
+            return None
 
 
 def create_repair_engine(
     llm_client: RLMClient,
+    vector_store: VectorStore,
     config: Optional[Dict[str, Any]] = None,
-) -> RepairEngine:
-    """Factory function to create repair engine."""
-    return RepairEngine(llm_client, config)
+) -> IterativeRepairEngine:
+    """Factory function to create iterative repair engine."""
+    return IterativeRepairEngine(llm_client, vector_store, config)

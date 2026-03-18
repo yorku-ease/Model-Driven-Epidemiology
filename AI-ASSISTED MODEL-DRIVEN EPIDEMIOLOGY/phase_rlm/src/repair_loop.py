@@ -3,33 +3,19 @@ Repair Loop
 
 Orchestrates the iterative repair process:
 1. Validate model for structural errors
-2. Classify paper sections
-3. Dispatch errors to relevant sections
-4. Attempt repairs via LLM
-5. Re-validate until confidence threshold or max iterations
+2. Attempt repairs via LLM with semantic search and error memory
+3. Re-validate until confidence threshold or max iterations
 """
 
-import json
 import tempfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from .repair_dispatcher import RepairDispatcher
-from .repair_engine import RepairEngine
-from .section_classifier import SectionClassifier
+from .error_memory import ErrorMemory
+from .repair_engine import IterativeRepairEngine, RepairResult
 from .structural_validator import StructuralValidator
-
-
-@dataclass
-class RepairLogEntry:
-    """Single repair attempt in the log."""
-
-    iteration: int
-    error_type: str
-    error_element: str
-    repaired: bool
-    explanation: str
+from .utils.vector_store import VectorStore
 
 
 @dataclass
@@ -64,31 +50,28 @@ class RepairLoop:
     def __init__(
         self,
         validator: StructuralValidator,
-        classifier: SectionClassifier,
-        dispatcher: RepairDispatcher,
-        engine: RepairEngine,
+        engine: IterativeRepairEngine,
         config: Dict[str, Any],
     ):
         self.validator = validator
-        self.classifier = classifier
-        self.dispatcher = dispatcher
         self.engine = engine
         self.config = config
 
         self.max_iterations = config.get("max_iterations", 5)
-        self.confidence_threshold = config.get("confidence_threshold", 0.8)
+
+    def _get_error_signature(self, error: Dict[str, Any]) -> str:
+        """Create unique signature for an error."""
+        return f"{error.get('type', '')}|{error.get('element', '')}"
 
     def run(
         self,
         compmodel_path: Path,
-        paper_sections_path: Path,
     ) -> Dict[str, Any]:
         """
         Run the repair loop on a compmodel file.
 
         Args:
             compmodel_path: Path to the .compmodel file
-            paper_sections_path: Path to paper_sections.json
 
         Returns:
             RepairReport dict with results
@@ -99,15 +82,9 @@ class RepairLoop:
 
         current_xml = compmodel_path.read_text(encoding="utf-8")
 
-        print("\n[1/5] Loading and classifying paper sections...")
-        classified = self.classifier.load_and_classify(paper_sections_path)
-        print(f"  - Mechanistic: {len(classified.mechanistic)} sections")
-        print(f"  - Inference: {len(classified.inference)} sections (excluded)")
-        print(f"  - Parameters: {len(classified.parameters)} sections")
-
         initial_validation = self.validator.validate(compmodel_path)
         initial_errors = initial_validation.get("errors", [])
-        print(f"\n[2/5] Initial validation found {len(initial_errors)} errors")
+        print(f"\n[1/5] Initial validation found {len(initial_errors)} errors")
 
         for err in initial_errors[:5]:
             print(f"  - [{err['severity']}] {err['type']}: {err['element']}")
@@ -126,21 +103,12 @@ class RepairLoop:
 
             sorted_errors = self._sort_errors_by_priority(current_errors)
 
-            sorted_errors = self._sort_errors_by_priority(current_errors)
-            errors_remaining = list(sorted_errors)
-
-            for error in errors_remaining:
+            for error in sorted_errors:
                 print(
                     f"\n  Repairing: [{error['severity']}] {error['type']} - {error['element']}"
                 )
 
-                context = self.dispatcher.dispatch(
-                    error,
-                    classified,
-                    current_xml,
-                )
-
-                result = self.engine.repair(context, current_xml)
+                result = self.engine.repair(error, current_xml)
 
                 if result.success and result.repaired_model_xml != current_xml:
                     print(f"    ✓ Repair successful")
@@ -155,6 +123,7 @@ class RepairLoop:
                             "explanation": result.explanation[:200]
                             if result.explanation
                             else "",
+                            "iterations_used": result.iterations_used,
                         }
                     )
 
@@ -176,12 +145,9 @@ class RepairLoop:
                         print("    ✓ All errors resolved!")
                         break
                 else:
-                    msg = (
-                        result.explanation[:100]
-                        if result.explanation
-                        else "No change made"
-                    )
-                    print(f"    ✗ Repair failed: {msg}")
+                    print(f"    ✗ Repair failed: {result.failure_reason or 'unknown'}")
+                    if result.explanation:
+                        print(f"       {result.explanation[:150]}")
 
                     repair_log.append(
                         {
@@ -189,9 +155,11 @@ class RepairLoop:
                             "error_type": error["type"],
                             "error_element": error["element"],
                             "repaired": False,
+                            "failure_reason": result.failure_reason,
                             "explanation": result.explanation[:200]
                             if result.explanation
                             else "",
+                            "iterations_used": result.iterations_used,
                         }
                     )
 
@@ -256,29 +224,22 @@ class RepairLoop:
         return sorted(errors, key=error_priority)
 
 
-def create_repair_loop(
-    validator: StructuralValidator,
-    classifier: SectionClassifier,
-    dispatcher: RepairDispatcher,
-    engine: RepairEngine,
-    config: Dict[str, Any],
-) -> RepairLoop:
-    """Factory function to create repair loop."""
-    return RepairLoop(validator, classifier, dispatcher, engine, config)
-
-
 def run_repair(
     compmodel_path: Path,
     paper_sections_path: Path,
     config: Dict[str, Any],
+    vector_store: VectorStore,
+    error_memory: Optional[ErrorMemory] = None,
 ) -> Dict[str, Any]:
     """
     Convenience function to run repair loop with default components.
 
     Args:
         compmodel_path: Path to .compmodel file
-        paper_sections_path: Path to paper_sections.json
+        paper_sections_path: Path to paper_sections.json (unused, kept for compatibility)
         config: Configuration dict
+        vector_store: VectorStore for semantic search (required)
+        error_memory: Optional ErrorMemory for remembering past repairs
 
     Returns:
         Repair report dict
@@ -286,11 +247,9 @@ def run_repair(
     from .utils.llm_client import create_llm_client
 
     validator = StructuralValidator(config)
-    classifier = SectionClassifier(config.get("section_labels", {}))
-    dispatcher = RepairDispatcher(config)
     llm_client = create_llm_client(config)
-    engine = RepairEngine(llm_client, config)
+    engine = IterativeRepairEngine(llm_client, vector_store, config, error_memory)
 
-    loop = create_repair_loop(validator, classifier, dispatcher, engine, config)
+    loop = RepairLoop(validator, engine, config)
 
-    return loop.run(compmodel_path, paper_sections_path)
+    return loop.run(compmodel_path)

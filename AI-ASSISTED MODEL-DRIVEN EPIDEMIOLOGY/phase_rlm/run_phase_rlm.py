@@ -22,6 +22,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.repair_loop import run_repair
 from src.section_classifier import SectionClassifier
 from src.structural_validator import StructuralValidator
+from src.utils.vector_store import VectorStore
+from src.error_memory import ErrorMemory
 
 
 def load_config(config_path: Path = None) -> dict:
@@ -156,10 +158,39 @@ def main():
         print("\nError: paper_sections.json required for repair")
         sys.exit(1)
 
+    vector_store = None
+    error_log_path = None
+
+    print("\n[0/5] Initializing semantic search index...")
+    vector_store_path = report_dir / "sections_vector_store"
+
+    if vector_store_path.exists():
+        print(f"  Loading existing index from {vector_store_path}")
+        vector_store = VectorStore()
+        vector_store.load(vector_store_path)
+    else:
+        if paper_sections_path is None:
+            print("\nError: paper_sections.json required for semantic search")
+            sys.exit(1)
+        print(f"  Building new index from {paper_sections_path}")
+        vector_store = VectorStore()
+        vector_store.build_from_paper_sections(paper_sections_path)
+        vector_store.save(vector_store_path)
+        print(f"  Index saved to {vector_store_path}")
+
+    error_memory_dir = report_dir / "error_logs"
+    disease_name = report_dir.name.split("_")[0] if report_dir.name else "unknown"
+    error_memory = ErrorMemory(storage_dir=error_memory_dir, disease=disease_name)
+    error_memory.load()
+
+    print(f"\n  Error memory: {error_memory.entry_count} entries loaded")
+
     result = run_repair(
         compmodel_path=compmodel_path,
         paper_sections_path=paper_sections_path,
         config=config,
+        vector_store=vector_store,
+        error_memory=error_memory,
     )
 
     output_dir = Path(args.output) if args.output else report_dir
@@ -185,9 +216,12 @@ def main():
     print(f"{'=' * 60}")
     print(f"Initial errors:  {result['report']['errors_found_initially']}")
     print(f"Errors repaired: {result['report']['errors_repaired']}")
+    print(f"Errors unfixed:  {result['report']['errors_unfixed']}")
     print(f"Errors remaining: {result['report']['errors_remaining']}")
     print(f"Pass rate:       {result['report']['validator_pass_rate']:.1%}")
     print(f"Model valid:     {result['report']['final_model_valid']}")
+    if result["report"]["errors_unfixed"] > 0:
+        print(f"Error log:       {error_log_path}")
     print(f"{'=' * 60}")
 
 

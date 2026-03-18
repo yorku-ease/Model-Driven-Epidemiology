@@ -1,0 +1,52 @@
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="π" expression="0.012" type="CONSTANT" description="Human Population birth rate" unit="per day" />
+  <parameters name="k" expression="0.60-0.90" type="CONSTANT" description="Vaccination rate" unit="dimensionless" />
+  <parameters name="µ1" expression="0.0002" type="CONSTANT" description="Human Population Natural death rate" unit="per day" />
+  <parameters name="θ" expression="0.1-0.2" type="CONSTANT" description="Rate of vaccine immunity loss due to vaccine failure" unit="per day" />
+  <parameters name="ε" expression="0.3-0.5" type="CONSTANT" description="Rate of Vaccine Efficacy" unit="dimensionless" />
+  <parameters name="ηV" expression="0.001-0.005" type="CONSTANT" description="Effective contact rate of Human Vaccinated individuals with infected mosquitoes through bloodmeals" unit="per day" />
+  <parameters name="ηS" expression="0.005-0.02" type="CONSTANT" description="Effective contact rate of Human susceptible individuals with infected mosquitoes through bloodmeals" unit="per day" />
+  <parameters name="ξV" expression="0.0005-0.002" type="CONSTANT" description="Effective contact rate of Human Vaccinated individuals with infected humans through other non-mosquitoes’ ways (non-vector pathways) of malaria infectivity" unit="per day" />
+  <parameters name="ξS" expression="0.001-0.003" type="CONSTANT" description="Effective contact rate of Human susceptible individuals with infected human through other non-mosquitos’ ways (non-vector pathways) of malaria infectivity" unit="per day" />
+  <parameters name="τ1" expression="0.05" type="CONSTANT" description="Human Population Progression rate from exposed to infectious for mosquitos’ malaria exposed individuals" unit="per day" />
+  <parameters name="τ2" expression="0.05" type="CONSTANT" description="Human Population Progression rate from exposed to infectious for non-mosquitos’ (non-vector pathways) malaria exposed individuals" unit="per day" />
+  <parameters name="δ1" expression="0.002" type="CONSTANT" description="Human Population Malaria disease death rate" unit="per day" />
+  <parameters name="σ" expression="0.10" type="CONSTANT" description="Human Population progression rate from infected to treated" unit="per day" />
+  <parameters name="ω" expression="0.05" type="CONSTANT" description="Human Population progression rate from treated to recovered" unit="per day" />
+  <parameters name="γ" expression="0.01" type="CONSTANT" description="Human recovered Population rate of immunity loss" unit="per day" />
+  <parameters name="Λ" expression="0.10" type="CONSTANT" description="Mosquitoes Population birth rate" unit="per day" />
+  <parameters name="ρ" expression="0.01-0.05" type="CONSTANT" description="Effective contact rate of susceptible mosquitoes with infected humans through bloodmeals" unit="per mosquito" />
+  <parameters name="φ" expression="0.0" type="CONSTANT" description="Mosquitoes Population Progression rate from exposed to infectious" unit="per day" />
+  <parameters name="µ2" expression="0.1" type="CONSTANT" description="Mosquitoes Population Natural death rate" unit="per day" />
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.5" target="//@compartments.2" description="Infection of susceptible humans by infectious mosquitoes at rate β2" />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.5" target="//@compartments.2" description="Non-vector infection of susceptible humans by infectious humans at rate α2" />
+  </compartments>
+  <compartments PrimaryName="Vaccinated Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.0" description="Loss of vaccine-induced immunity at rate θ" />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.1" target="//@compartments.2" description="Breakthrough infection of vaccinated humans by infectious mosquitoes at rate β1ε" />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.1" target="//@compartments.2" description="Non-vector breakthrough infection of vaccinated humans by infectious humans at rate α1" />
+  </compartments>
+  <compartments PrimaryName="Vector-Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.4" description="Progression from vector-exposed to infectious at rate τ1" />
+  </compartments>
+  <compartments PrimaryName="Non-Vector-Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.10" target="//@compartments.4" description="Progression from non-vector-exposed to infectious at rate τ2" />
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.5" description="Progression from infectious to treated at rate σ" />
+  </compartments>
+  <compartments PrimaryName="Treated Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.13" target="//@compartments.6" description="Progression from treated to recovered at rate ω" />
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.0" description="Loss of natural immunity at rate γ" />
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.5" target="//@compartments.2" description="Infection of susceptible mosquitoes by infectious humans at rate β3" />
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.17" target="//@compartments.9" description="Progression from exposed to infectious at rate φ" />
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0" />
+<externalSources name="Birth_Susceptible_Mosquitoes" rateParameter="//@parameters.0" targetCompartment="//@compartments.7" /></ns0:CompartmentalModel>

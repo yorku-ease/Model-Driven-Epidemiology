@@ -1,0 +1,1074 @@
+{
+  "valid": false,
+  "total_errors": 3,
+  "errors_by_severity": {
+    "critical": 1,
+    "high": 1,
+    "medium": 1,
+    "low": 0
+  },
+  "errors": [
+    {
+      "type": "missing_birth_sources",
+      "element": "Susceptible Children",
+      "detail": "Compartment 'Susceptible Children' has population=0 and no incoming flow or externalSource. Susceptible compartments typically need recruitment.",
+      "severity": "high",
+      "compartment_idx": 0,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "zero_population_all",
+      "element": "all_compartments",
+      "detail": "All 12 compartments have population=0. This indicates a critical extraction failure.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "e",
+      "detail": "Parameter 'e' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 9,
+      "flow_idx": null
+    }
+  ],
+  "model_structure": {
+    "compartments": [
+      {
+        "name": "Susceptible Children",
+        "population": "0",
+        "idx": 0,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Susceptible Children",
+            "source_idx": 0,
+            "target": "//@compartments.1",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.1",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Vaccination of susceptible children through an un-monitored program at rate xU."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Susceptible Children",
+            "source_idx": 0,
+            "target": "//@compartments.2",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.2",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Vaccination of susceptible children through a monitored program at rate xM."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Susceptible Children",
+            "source_idx": 0,
+            "target": "//@compartments.6",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.8",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Maturation of susceptible children into susceptible adults at rate j."
+          },
+          {
+            "type": "ContactFlow",
+            "source": "Susceptible Children",
+            "source_idx": 0,
+            "target": "//@compartments.3",
+            "contactCompartment": "//@compartments.4",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.4",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Infection of susceptible children upon contact with infectious children or adults at rate bC."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Susceptible Children",
+            "source_idx": 0,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Un-monitored Vaccinated Children",
+        "population": "0",
+        "idx": 1,
+        "outgoing_flows": [
+          {
+            "type": "ContactFlow",
+            "source": "Un-monitored Vaccinated Children",
+            "source_idx": 1,
+            "target": "//@compartments.3",
+            "contactCompartment": "//@compartments.4",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.15",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Breakthrough infection of un-monitored vaccinated children due to incomplete vaccine effectiveness (e)."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Un-monitored Vaccinated Children",
+            "source_idx": 1,
+            "target": "//@compartments.5",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.11",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Development of full immunity in un-monitored vaccinated children at rate hU."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Un-monitored Vaccinated Children",
+            "source_idx": 1,
+            "target": "//@compartments.7",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.8",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Maturation of un-monitored vaccinated children into un-monitored vaccinated adults at rate j."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Un-monitored Vaccinated Children",
+            "source_idx": 1,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Monitored Vaccinated Children",
+        "population": "0",
+        "idx": 2,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Monitored Vaccinated Children",
+            "source_idx": 2,
+            "target": "//@compartments.5",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.12",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Development of full immunity in monitored vaccinated children at rate hM."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Monitored Vaccinated Children",
+            "source_idx": 2,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Monitored Vaccinated Children",
+            "source_idx": 2,
+            "target": "//@compartments.8",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.8",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Maturation of monitored vaccinated children into vaccinated adults at rate j."
+          }
+        ]
+      },
+      {
+        "name": "Exposed Children",
+        "population": "0",
+        "idx": 3,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Exposed Children",
+            "source_idx": 3,
+            "target": "//@compartments.4",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.13",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Progression from exposed to infectious state after the incubation period at rate d."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Exposed Children",
+            "source_idx": 3,
+            "target": "//@compartments.9",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.8",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Maturation of exposed children into exposed adults at rate j."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Exposed Children",
+            "source_idx": 3,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Infectious Children",
+        "population": "0",
+        "idx": 4,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious Children",
+            "source_idx": 4,
+            "target": "//@compartments.5",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.7",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Recovery of infectious children, leading to immunity, at rate g."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious Children",
+            "source_idx": 4,
+            "target": "//@compartments.10",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.8",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Maturation of infectious children into infectious adults at rate j."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious Children",
+            "source_idx": 4,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious Children",
+            "source_idx": 4,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.14",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Disease-induced death of infectious children at rate d (disease induced death)."
+          }
+        ]
+      },
+      {
+        "name": "Immune Children",
+        "population": "0",
+        "idx": 5,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Immune Children",
+            "source_idx": 5,
+            "target": "//@compartments.11",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.8",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Maturation of immune children into immune adults at rate j."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Immune Children",
+            "source_idx": 5,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Susceptible Adults",
+        "population": "0",
+        "idx": 6,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Susceptible Adults",
+            "source_idx": 6,
+            "target": "//@compartments.8",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.3",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Vaccination of susceptible adults through a catch-up program at rate xA."
+          },
+          {
+            "type": "ContactFlow",
+            "source": "Susceptible Adults",
+            "source_idx": 6,
+            "target": "//@compartments.9",
+            "contactCompartment": "//@compartments.10",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.5",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Infection of susceptible adults upon contact with infectious children or adults at rate bA."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Susceptible Adults",
+            "source_idx": 6,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Un-monitored Vaccinated Adults",
+        "population": "0",
+        "idx": 7,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Un-monitored Vaccinated Adults",
+            "source_idx": 7,
+            "target": "//@compartments.11",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.10",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Development of full immunity in un-monitored vaccinated adults at rate hA."
+          },
+          {
+            "type": "ContactFlow",
+            "source": "Un-monitored Vaccinated Adults",
+            "source_idx": 7,
+            "target": "//@compartments.9",
+            "contactCompartment": "//@compartments.10",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.16",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Breakthrough infection of un-monitored vaccinated adults due to incomplete vaccine effectiveness (e)."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Un-monitored Vaccinated Adults",
+            "source_idx": 7,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Vaccinated Adults",
+        "population": "0",
+        "idx": 8,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Vaccinated Adults",
+            "source_idx": 8,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Exposed Adults",
+        "population": "0",
+        "idx": 9,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Exposed Adults",
+            "source_idx": 9,
+            "target": "//@compartments.10",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.13",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Progression from exposed to infectious state after the incubation period at rate d."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Exposed Adults",
+            "source_idx": 9,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      },
+      {
+        "name": "Infectious Adults",
+        "population": "0",
+        "idx": 10,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious Adults",
+            "source_idx": 10,
+            "target": "//@compartments.11",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.7",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Recovery of infectious adults, leading to immunity, at rate g."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious Adults",
+            "source_idx": 10,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious Adults",
+            "source_idx": 10,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.14",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Disease-induced death of infectious adults at rate d (disease induced death)."
+          }
+        ]
+      },
+      {
+        "name": "Immune Adults",
+        "population": "0",
+        "idx": 11,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Immune Adults",
+            "source_idx": 11,
+            "target": "",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death at rate m."
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "name": "L",
+        "expression": "0.0",
+        "type": "CONSTANT",
+        "description": "Recruitment rate to children group.",
+        "idx": 0
+      },
+      {
+        "name": "xU",
+        "expression": "0.087",
+        "type": "CONSTANT",
+        "description": "Un-monitored children vaccination rate.",
+        "idx": 1
+      },
+      {
+        "name": "xM",
+        "expression": "4.77e-5",
+        "type": "CONSTANT",
+        "description": "Monitored children vaccination rate.",
+        "idx": 2
+      },
+      {
+        "name": "xA",
+        "expression": "0",
+        "type": "CONSTANT",
+        "description": "Adult vaccination rate.",
+        "idx": 3
+      },
+      {
+        "name": "bC",
+        "expression": "0.00188",
+        "type": "CONSTANT",
+        "description": "Transmission rate in children.",
+        "idx": 4
+      },
+      {
+        "name": "bA",
+        "expression": "1.00e-5",
+        "type": "CONSTANT",
+        "description": "Transmission rate in adults.",
+        "idx": 5
+      },
+      {
+        "name": "m",
+        "expression": "1/(72*52)",
+        "type": "CONSTANT",
+        "description": "Natural death rate.",
+        "idx": 6
+      },
+      {
+        "name": "g",
+        "expression": "0.5",
+        "type": "CONSTANT",
+        "description": "Rate of being immune after recovery from infection.",
+        "idx": 7
+      },
+      {
+        "name": "j",
+        "expression": "1/(15*52)",
+        "type": "CONSTANT",
+        "description": "Maturation rate from child to adult.",
+        "idx": 8
+      },
+      {
+        "name": "e",
+        "expression": "0.2",
+        "type": "CONSTANT",
+        "description": "Vaccine failure proportion, where (1-e) is vaccine effectiveness.",
+        "idx": 9
+      },
+      {
+        "name": "hA",
+        "expression": "0",
+        "type": "CONSTANT",
+        "description": "Rate of becoming immune for un-monitored vaccinated adults.",
+        "idx": 10
+      },
+      {
+        "name": "hU",
+        "expression": "3e-6",
+        "type": "CONSTANT",
+        "description": "Rate of becoming immune for un-monitored vaccinated children.",
+        "idx": 11
+      },
+      {
+        "name": "hM",
+        "expression": "0.167",
+        "type": "CONSTANT",
+        "description": "Rate of becoming immune for monitored vaccinated children.",
+        "idx": 12
+      },
+      {
+        "name": "incubation_period_rate",
+        "expression": "0.7",
+        "type": "CONSTANT",
+        "description": "Rate of progression from exposed to infectious (1/incubation period).",
+        "idx": 13
+      },
+      {
+        "name": "disease_induced_death_rate",
+        "expression": "9.3399e-05",
+        "type": "CONSTANT",
+        "description": "Disease induced death rate.",
+        "idx": 14
+      },
+      {
+        "name": "breakthrough_rate_children",
+        "expression": "e * bC",
+        "type": "CONSTANT",
+        "description": "Breakthrough infection rate for children (e * bC)",
+        "idx": 15
+      },
+      {
+        "name": "breakthrough_rate_adults",
+        "expression": "e * bA",
+        "type": "CONSTANT",
+        "description": "Breakthrough infection rate for adults (e * bA)",
+        "idx": 16
+      }
+    ],
+    "flows": [
+      {
+        "type": "RateFlow",
+        "source": "Susceptible Children",
+        "source_idx": 0,
+        "target": "//@compartments.1",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.1",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Vaccination of susceptible children through an un-monitored program at rate xU."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Susceptible Children",
+        "source_idx": 0,
+        "target": "//@compartments.2",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.2",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Vaccination of susceptible children through a monitored program at rate xM."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Susceptible Children",
+        "source_idx": 0,
+        "target": "//@compartments.6",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.8",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Maturation of susceptible children into susceptible adults at rate j."
+      },
+      {
+        "type": "ContactFlow",
+        "source": "Susceptible Children",
+        "source_idx": 0,
+        "target": "//@compartments.3",
+        "contactCompartment": "//@compartments.4",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.4",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Infection of susceptible children upon contact with infectious children or adults at rate bC."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Susceptible Children",
+        "source_idx": 0,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "ContactFlow",
+        "source": "Un-monitored Vaccinated Children",
+        "source_idx": 1,
+        "target": "//@compartments.3",
+        "contactCompartment": "//@compartments.4",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.15",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Breakthrough infection of un-monitored vaccinated children due to incomplete vaccine effectiveness (e)."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Un-monitored Vaccinated Children",
+        "source_idx": 1,
+        "target": "//@compartments.5",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.11",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Development of full immunity in un-monitored vaccinated children at rate hU."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Un-monitored Vaccinated Children",
+        "source_idx": 1,
+        "target": "//@compartments.7",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.8",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Maturation of un-monitored vaccinated children into un-monitored vaccinated adults at rate j."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Un-monitored Vaccinated Children",
+        "source_idx": 1,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Monitored Vaccinated Children",
+        "source_idx": 2,
+        "target": "//@compartments.5",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.12",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Development of full immunity in monitored vaccinated children at rate hM."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Monitored Vaccinated Children",
+        "source_idx": 2,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Monitored Vaccinated Children",
+        "source_idx": 2,
+        "target": "//@compartments.8",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.8",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Maturation of monitored vaccinated children into vaccinated adults at rate j."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Children",
+        "source_idx": 3,
+        "target": "//@compartments.4",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.13",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Progression from exposed to infectious state after the incubation period at rate d."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Children",
+        "source_idx": 3,
+        "target": "//@compartments.9",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.8",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Maturation of exposed children into exposed adults at rate j."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Children",
+        "source_idx": 3,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Children",
+        "source_idx": 4,
+        "target": "//@compartments.5",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.7",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Recovery of infectious children, leading to immunity, at rate g."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Children",
+        "source_idx": 4,
+        "target": "//@compartments.10",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.8",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Maturation of infectious children into infectious adults at rate j."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Children",
+        "source_idx": 4,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Children",
+        "source_idx": 4,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.14",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Disease-induced death of infectious children at rate d (disease induced death)."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Immune Children",
+        "source_idx": 5,
+        "target": "//@compartments.11",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.8",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Maturation of immune children into immune adults at rate j."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Immune Children",
+        "source_idx": 5,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Susceptible Adults",
+        "source_idx": 6,
+        "target": "//@compartments.8",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.3",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Vaccination of susceptible adults through a catch-up program at rate xA."
+      },
+      {
+        "type": "ContactFlow",
+        "source": "Susceptible Adults",
+        "source_idx": 6,
+        "target": "//@compartments.9",
+        "contactCompartment": "//@compartments.10",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.5",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Infection of susceptible adults upon contact with infectious children or adults at rate bA."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Susceptible Adults",
+        "source_idx": 6,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Un-monitored Vaccinated Adults",
+        "source_idx": 7,
+        "target": "//@compartments.11",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.10",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Development of full immunity in un-monitored vaccinated adults at rate hA."
+      },
+      {
+        "type": "ContactFlow",
+        "source": "Un-monitored Vaccinated Adults",
+        "source_idx": 7,
+        "target": "//@compartments.9",
+        "contactCompartment": "//@compartments.10",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.16",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Breakthrough infection of un-monitored vaccinated adults due to incomplete vaccine effectiveness (e)."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Un-monitored Vaccinated Adults",
+        "source_idx": 7,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Vaccinated Adults",
+        "source_idx": 8,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Adults",
+        "source_idx": 9,
+        "target": "//@compartments.10",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.13",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Progression from exposed to infectious state after the incubation period at rate d."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Adults",
+        "source_idx": 9,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Adults",
+        "source_idx": 10,
+        "target": "//@compartments.11",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.7",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Recovery of infectious adults, leading to immunity, at rate g."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Adults",
+        "source_idx": 10,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious Adults",
+        "source_idx": 10,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.14",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Disease-induced death of infectious adults at rate d (disease induced death)."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Immune Adults",
+        "source_idx": 11,
+        "target": "",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death at rate m."
+      }
+    ],
+    "external_sources": [
+      {
+        "name": "",
+        "rateParameter": "//@parameters.0",
+        "target": ""
+      }
+    ],
+    "external_sinks": []
+  }
+}
