@@ -1,0 +1,215 @@
+{
+  "modelName": "Ebola",
+  "summary": {
+    "modelName": "Ebola",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 11,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of susceptible individuals from effective contact with infectious humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rate at which infected people are quarantined.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Shedding of virus into the environment by infected humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Quarantined",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rate at which quarantined people recover.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Dead",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Pathogen in Environment",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "α1",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "The rate of contact (effective) of infected human.",
+        "unit": "N/A"
+      },
+      {
+        "index": 1,
+        "name": "d",
+        "type": "CONSTANT",
+        "expression": "0.0015",
+        "description": "Rate of deaths of human individuals due to infection.",
+        "unit": "N/A"
+      },
+      {
+        "index": 2,
+        "name": "α2",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "The rate contact of Ebola virus pathogens in the environment.",
+        "unit": "N/A"
+      },
+      {
+        "index": 3,
+        "name": "ψ1",
+        "type": "CONSTANT",
+        "expression": "0.006",
+        "description": "The rate at which infected people quarantined.",
+        "unit": "N/A"
+      },
+      {
+        "index": 4,
+        "name": "ψ2",
+        "type": "CONSTANT",
+        "expression": "0.0012",
+        "description": "The rate at which quarantined people are recovered.",
+        "unit": "N/A"
+      },
+      {
+        "index": 5,
+        "name": "b",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "The proportion rate of burial deceased people.",
+        "unit": "N/A"
+      },
+      {
+        "index": 6,
+        "name": "ψ3",
+        "type": "CONSTANT",
+        "expression": "0.006",
+        "description": "The rate at which quarantine people are in deceased.",
+        "unit": "N/A"
+      },
+      {
+        "index": 7,
+        "name": "c",
+        "type": "CONSTANT",
+        "expression": "0.8",
+        "description": "The proportion rate of burial deceased people.",
+        "unit": "N/A"
+      },
+      {
+        "index": 8,
+        "name": "ε",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Rate at which shedding of infected humans.",
+        "unit": "N/A"
+      },
+      {
+        "index": 9,
+        "name": "h",
+        "type": "CONSTANT",
+        "expression": "0.04",
+        "description": "proportion of shedding of deceased people.",
+        "unit": "N/A"
+      },
+      {
+        "index": 10,
+        "name": "ρ1",
+        "type": "CONSTANT",
+        "expression": "0.123",
+        "description": "The rate at which EVD in the environment decays.",
+        "unit": "N/A"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

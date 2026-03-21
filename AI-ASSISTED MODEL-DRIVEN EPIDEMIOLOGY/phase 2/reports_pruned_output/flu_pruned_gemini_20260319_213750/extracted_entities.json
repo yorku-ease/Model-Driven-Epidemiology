@@ -1,0 +1,227 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to infection."
+    },
+    {
+      "normalized_name": "Exposed 1",
+      "raw_text": "Exposed 1",
+      "page_number": 0,
+      "text_span": "Individuals in the first stage of the latent period after infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the first stage of the latent period after infection."
+    },
+    {
+      "normalized_name": "Exposed 2",
+      "raw_text": "Exposed 2",
+      "page_number": 0,
+      "text_span": "Individuals in the second stage of the latent period after infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the second stage of the latent period after infection."
+    },
+    {
+      "normalized_name": "Infectious 1",
+      "raw_text": "Infectious 1",
+      "page_number": 0,
+      "text_span": "Individuals in the first stage of the infectious period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the first stage of the infectious period."
+    },
+    {
+      "normalized_name": "Infectious 2",
+      "raw_text": "Infectious 2",
+      "page_number": 0,
+      "text_span": "Individuals in the second stage of the infectious period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the second stage of the infectious period."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from the infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the infection."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed 1",
+      "flow_type": "ContactFlow",
+      "raw_text": "Rate at which a person becomes infected, \u03bb(t), assumed to be proportional to the number of infectious people (I1 + I2) and the constant transmission rate \u03b2.",
+      "page_number": 0,
+      "text_span": "Rate at which a person becomes infected, \u03bb(t), assumed to be proportional to the number of infectious people (I1 + I2) and the constant transmission rate \u03b2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which a person becomes infected, \u03bb(t), assumed to be proportional to the number of infectious people (I1 + I2) and the constant transmission rate \u03b2."
+    },
+    {
+      "source": "Exposed 1",
+      "target": "Exposed 2",
+      "flow_type": "RateFlow",
+      "raw_text": "Transition from the first to the second exposed compartment at a daily rate \u03c3.",
+      "page_number": 0,
+      "text_span": "Transition from the first to the second exposed compartment at a daily rate \u03c3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transition from the first to the second exposed compartment at a daily rate \u03c3."
+    },
+    {
+      "source": "Exposed 2",
+      "target": "Infectious 1",
+      "flow_type": "RateFlow",
+      "raw_text": "Transition from the second exposed compartment to the first infectious compartment at a daily rate \u03c3.",
+      "page_number": 0,
+      "text_span": "Transition from the second exposed compartment to the first infectious compartment at a daily rate \u03c3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transition from the second exposed compartment to the first infectious compartment at a daily rate \u03c3."
+    },
+    {
+      "source": "Infectious 1",
+      "target": "Infectious 2",
+      "flow_type": "RateFlow",
+      "raw_text": "Transition from the first to the second infectious compartment at a daily rate \u03b3.",
+      "page_number": 0,
+      "text_span": "Transition from the first to the second infectious compartment at a daily rate \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transition from the first to the second infectious compartment at a daily rate \u03b3."
+    },
+    {
+      "source": "Infectious 2",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Transition from the second infectious compartment to the recovered compartment at a daily rate \u03b3.",
+      "page_number": 0,
+      "text_span": "Transition from the second infectious compartment to the recovered compartment at a daily rate \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transition from the second infectious compartment to the recovered compartment at a daily rate \u03b3."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "1",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Daily rate of transition from E1 to E2 and from E2 to I1.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Daily rate of transition from E1 to E2 and from E2 to I1."
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "0.5797",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Daily rate of transition from I1 to I2 and from I2 to R.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Daily rate of transition from I1 to I2 and from I2 to R."
+    },
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": null,
+      "unit": null,
+      "page_number": 0,
+      "text_span": "The constant transmission rate (the rate at which new infections take place given a contact).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The constant transmission rate (the rate at which new infections take place given a contact)."
+    },
+    {
+      "normalized_name": "N2012/13",
+      "raw_text": "N2012/13",
+      "value": "53679750",
+      "unit": "people",
+      "page_number": 0,
+      "text_span": "Population of 2012/13.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Population of 2012/13."
+    },
+    {
+      "normalized_name": "N2013/14",
+      "raw_text": "N2013/14",
+      "value": "54091200",
+      "unit": "people",
+      "page_number": 0,
+      "text_span": "Population of 2013/14.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Population of 2013/14."
+    },
+    {
+      "normalized_name": "N2014/15",
+      "raw_text": "N2014/15",
+      "value": "54551450",
+      "unit": "people",
+      "page_number": 0,
+      "text_span": "Population of 2014/15.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Population of 2014/15."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 5,
+    "num_parameters": 6,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

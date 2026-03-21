@@ -1,0 +1,250 @@
+{
+  "modelName": "Dengue",
+  "summary": {
+    "modelName": "Dengue",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Susceptible humans become exposed through bites by infected mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Exposed humans become asymptomatic infectious at a rate dependent on age.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Exposed humans become symptomatic infectious at a rate dependent on age.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Asymptomatic infectious humans recover at an age-specific rate.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.3",
+            "description": "Asymptomatic infectious humans can be reinfected and become symptomatic infectious.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Symptomatic Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Symptomatic infectious humans recover at an age-specific rate.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Recovered Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.6",
+            "description": "Susceptible mosquitoes become infectious after biting infectious humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "B",
+        "type": "CONSTANT",
+        "expression": "constant",
+        "description": "The constant influx rate of the human hosts.",
+        "unit": "individuals/time"
+      },
+      {
+        "index": 1,
+        "name": "k(a)",
+        "type": "CONSTANT",
+        "expression": "age-dependent",
+        "description": "The rate at which exposed humans become infectious.",
+        "unit": "1/time"
+      },
+      {
+        "index": 2,
+        "name": "μh",
+        "type": "CONSTANT",
+        "expression": "constant",
+        "description": "The natural death rate of the human hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 3,
+        "name": "μv",
+        "type": "CONSTANT",
+        "expression": "constant",
+        "description": "The natural death rate of the mosquitoes.",
+        "unit": "1/time"
+      },
+      {
+        "index": 4,
+        "name": "γ1(a)",
+        "type": "CONSTANT",
+        "expression": "age-dependent",
+        "description": "The recovery rate of symptomatic infectious hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 5,
+        "name": "γ2(a)",
+        "type": "CONSTANT",
+        "expression": "age-dependent",
+        "description": "The recovery rate of asymptomatic infectious hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 6,
+        "name": "βv(a)",
+        "type": "CONSTANT",
+        "expression": "age-dependent",
+        "description": "The transmission rate from infectious hosts to susceptible mosquitoes.",
+        "unit": "1/time"
+      },
+      {
+        "index": 7,
+        "name": "βh(a)",
+        "type": "CONSTANT",
+        "expression": "age-dependent",
+        "description": "The transmission rate from infected mosquitoes to susceptible hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 8,
+        "name": "ρ",
+        "type": "CONSTANT",
+        "expression": "0 < ρ < 1",
+        "description": "The probability of exposed hosts transferring to symptomatic infectious hosts.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "constant",
+        "description": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

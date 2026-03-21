@@ -1,0 +1,134 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are susceptible to tuberculosis infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are susceptible to tuberculosis infection."
+    },
+    {
+      "normalized_name": "Vaccinated",
+      "raw_text": "Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals who have been vaccinated against tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been vaccinated against tuberculosis."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Individuals who are currently infected with tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are currently infected with tuberculosis."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from tuberculosis infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from tuberculosis infection."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptible individuals.",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptible individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptible individuals."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of vaccine-induced immunity.",
+      "page_number": 0,
+      "text_span": "Waning of vaccine-induced immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of vaccine-induced immunity."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of immunity and return to susceptible state.",
+      "page_number": 0,
+      "text_span": "Loss of immunity and return to susceptible state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of immunity and return to susceptible state."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "u",
+      "raw_text": "u",
+      "value": "rate",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of vaccination.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccination."
+    },
+    {
+      "normalized_name": "theta",
+      "raw_text": "theta",
+      "value": "rate",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of vaccine wane.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccine wane."
+    }
+  ],
+  "stratifications": [],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 2,
+    "num_stratifications": 0,
+    "num_interventions": 2
+  }
+}

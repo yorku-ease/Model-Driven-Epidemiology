@@ -1,0 +1,384 @@
+{
+  "model_analysis": {
+    "modelName": "Ebola",
+    "summary": {
+      "modelName": "Ebola",
+      "totalPopulation": null,
+      "numCompartments": 6,
+      "numParameters": 5,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.1",
+              "description": "Transmission of Ebola Virus Disease through contact with infectious humans or contaminated environment.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infected humans are quarantined to prevent further transmission.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death of infected humans due to Ebola Virus Disease.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of infected humans with immunity.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Shedding of Ebola virus into the environment from infected humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Quarantined Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 3,
+          "primaryName": "Deceased Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Shedding of Ebola virus into the environment from deceased humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Recovered Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Environmental Pathogens",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\ud835\udf16",
+          "type": "CONSTANT",
+          "expression": "0.5",
+          "description": "Natural death rate of humans.",
+          "unit": "per day"
+        },
+        {
+          "index": 1,
+          "name": "\ud835\udf0c",
+          "type": "CONSTANT",
+          "expression": "0.123",
+          "description": "Rate of deaths of human individuals due to infection.",
+          "unit": "per day"
+        },
+        {
+          "index": 2,
+          "name": "\ud835\udc50",
+          "type": "CONSTANT",
+          "expression": "0.8",
+          "description": "Proportion rate of burial deceased people.",
+          "unit": "proportion"
+        },
+        {
+          "index": 3,
+          "name": "\ud835\udc4f",
+          "type": "CONSTANT",
+          "expression": "0",
+          "description": "Rate at which EVD in the environment.",
+          "unit": "per day"
+        },
+        {
+          "index": 4,
+          "name": "\u210e",
+          "type": "CONSTANT",
+          "expression": "0.04",
+          "description": "Proportion of shedding of deceased people.",
+          "unit": "proportion"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Ebola",
+    "totalParameters": 5,
+    "parametersWithUncertainty": 5,
+    "parameters": [
+      {
+        "parameter": "\ud835\udf16",
+        "yourValue": "0.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola",
+        "unit": "per day",
+        "description": "Natural death rate of humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\ud835\udf0c",
+        "yourValue": "0.123",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola",
+        "unit": "per day",
+        "description": "Rate of deaths of human individuals due to infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\ud835\udc50",
+        "yourValue": "0.8",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola",
+        "unit": "proportion",
+        "description": "Proportion rate of burial deceased people.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\ud835\udc4f",
+        "yourValue": "0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola",
+        "unit": "per day",
+        "description": "Rate at which EVD in the environment.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u210e",
+        "yourValue": "0.04",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola",
+        "unit": "proportion",
+        "description": "Proportion of shedding of deceased people.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 5
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Ebola",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\ud835\udf16",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "Natural death rate of humans.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\ud835\udf0c",
+        "type": "other",
+        "currentValue": 0.123,
+        "description": "Rate of deaths of human individuals due to infection.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\ud835\udc50",
+        "type": "other",
+        "currentValue": 0.8,
+        "description": "Proportion rate of burial deceased people.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u210e",
+        "type": "other",
+        "currentValue": 0.04,
+        "description": "Proportion of shedding of deceased people.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\ud835\udf16",
+      "\ud835\udf0c",
+      "\ud835\udc50",
+      "\u210e"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\ud835\udf16",
+        "\ud835\udf0c",
+        "\ud835\udc50",
+        "\u210e"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\ud835\udf16": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\ud835\udf0c": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\ud835\udc50": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u210e": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

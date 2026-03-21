@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="𝜖" expression="0.5" type="CONSTANT" description="Natural death rate of humans." unit="per day"/>
+  <parameters name="𝜌" expression="0.123" type="CONSTANT" description="Rate of deaths of human individuals due to infection." unit="per day"/>
+  <parameters name="𝑐" expression="0.8" type="CONSTANT" description="Proportion rate of burial deceased people." unit="proportion"/>
+  <parameters name="𝑏" expression="0" type="CONSTANT" description="Rate at which EVD in the environment." unit="per day"/>
+  <parameters name="ℎ" expression="0.04" type="CONSTANT" description="Proportion of shedding of deceased people." unit="proportion"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Transmission of Ebola Virus Disease through contact with infectious humans or contaminated environment."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Infected humans are quarantined to prevent further transmission."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Death of infected humans due to Ebola Virus Disease."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Recovery of infected humans with immunity."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Shedding of Ebola virus into the environment from infected humans."/>
+  </compartments>
+  <compartments PrimaryName="Quarantined Humans" population="0"/>
+  <compartments PrimaryName="Deceased Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Shedding of Ebola virus into the environment from deceased humans."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Environmental Pathogens" population="0"/>
+</compartmental:CompartmentalModel>

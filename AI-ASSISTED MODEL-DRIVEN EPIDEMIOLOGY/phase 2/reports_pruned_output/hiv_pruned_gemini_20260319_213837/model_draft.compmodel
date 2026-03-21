@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="C" expression="0.0" type="CONSTANT" description="Constant recruitment rate into susceptible populations." unit="individuals/time"/>
+  <parameters name="h" expression="0.0" type="CONSTANT" description="Proportion of men in the recruited population." unit="proportion"/>
+  <parameters name="c" expression="0.0" type="CONSTANT" description="Proportion of heterosexual men among all men." unit="proportion"/>
+  <parameters name="p" expression="0.0" type="CONSTANT" description="Proportion of initially treated individuals." unit="proportion"/>
+  <parameters name="l" expression="0.0" type="CONSTANT" description="Natural mortality rate in all classes." unit="1/time"/>
+  <parameters name="d" expression="0.0" type="CONSTANT" description="Induced disease mortality rate for individuals with AIDS." unit="1/time"/>
+  <parameters name="a" expression="0.0" type="CONSTANT" description="Departure rate from all compartments of infected individuals (assumed to be the rate of starting treatment)." unit="1/time"/>
+  <compartments PrimaryName="Susceptible Homosexual Men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.0" target="//@compartments.3" description="Transmission of HIV to susceptible homosexual men from infected homosexual men."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Heterosexual Men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.0" target="//@compartments.4" description="Transmission of HIV to susceptible heterosexual men from infected women or infected homosexual men."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Women" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRateParameter="//@parameters.0" target="//@compartments.5" description="Transmission of HIV to susceptible women from infected heterosexual men or infected homosexual men."/>
+  </compartments>
+  <compartments PrimaryName="Infected Homosexual Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Departure from the infected homosexual men compartment to the treated compartment at rate a."/>
+  </compartments>
+  <compartments PrimaryName="Infected Heterosexual Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Departure from the infected heterosexual men compartment to the treated compartment at rate a."/>
+  </compartments>
+  <compartments PrimaryName="Infected Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Departure from the infected women compartment to the treated compartment at rate a."/>
+  </compartments>
+  <compartments PrimaryName="Treated Individuals" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Progression to AIDS for treated individuals due to ART resistance or treatment failure at rate d."/>
+  </compartments>
+  <compartments PrimaryName="Individuals with AIDS" population="0"/>
+</compartmental:CompartmentalModel>

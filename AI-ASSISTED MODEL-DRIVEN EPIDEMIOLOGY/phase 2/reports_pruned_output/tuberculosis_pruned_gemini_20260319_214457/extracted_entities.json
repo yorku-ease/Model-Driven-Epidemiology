@@ -1,0 +1,230 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are susceptible to tuberculosis infection (S)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are susceptible to tuberculosis infection (S)"
+    },
+    {
+      "normalized_name": "Vaccinated",
+      "raw_text": "Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals who have been vaccinated against tuberculosis (V)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been vaccinated against tuberculosis (V)"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Individuals who are currently infected with tuberculosis (I)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are currently infected with tuberculosis (I)"
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from tuberculosis infection and have temporary immunity (R)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from tuberculosis infection and have temporary immunity (R)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptible individuals",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptible individuals"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of vaccine-induced immunity",
+      "page_number": 0,
+      "text_span": "Waning of vaccine-induced immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of vaccine-induced immunity"
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of natural immunity, leading to susceptibility",
+      "page_number": 0,
+      "text_span": "Waning of natural immunity, leading to susceptibility",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of natural immunity, leading to susceptibility"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "A",
+      "raw_text": "A",
+      "value": "2",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Recruitment rate of susceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recruitment rate of susceptible individuals"
+    },
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "0.75",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Transmission rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate"
+    },
+    {
+      "normalized_name": "\u03bc",
+      "raw_text": "\u03bc",
+      "value": "0.02",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Natural death rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural death rate"
+    },
+    {
+      "normalized_name": "u",
+      "raw_text": "u",
+      "value": "0.3",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Vaccination rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination rate"
+    },
+    {
+      "normalized_name": "\u03b8",
+      "raw_text": "\u03b8",
+      "value": "0.1",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Rate of vaccine wane",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccine wane"
+    },
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "0.8",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Efficacy of the vaccine",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Efficacy of the vaccine"
+    },
+    {
+      "normalized_name": "\u03b5",
+      "raw_text": "\u03b5",
+      "value": "0.5",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Factor for susceptibility of recovered individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Factor for susceptibility of recovered individuals"
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "0.2",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Recovery rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate"
+    },
+    {
+      "normalized_name": "\u03c9",
+      "raw_text": "\u03c9",
+      "value": "0.01",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Rate of waning natural immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of waning natural immunity"
+    },
+    {
+      "normalized_name": "d",
+      "raw_text": "d",
+      "value": "0.05",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Disease-induced death rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Disease-induced death rate"
+    }
+  ],
+  "stratifications": [],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 10,
+    "num_stratifications": 0,
+    "num_interventions": 2
+  }
+}
