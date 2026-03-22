@@ -1,0 +1,515 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Malaria Susceptible human population (S_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Susceptible human population (S_H)"
+    },
+    {
+      "normalized_name": "Vaccinated Humans",
+      "raw_text": "Vaccinated Humans",
+      "page_number": 0,
+      "text_span": "Malaria Vaccinated human population (V_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Vaccinated human population (V_H)"
+    },
+    {
+      "normalized_name": "Vector-Exposed Humans",
+      "raw_text": "Vector-Exposed Humans",
+      "page_number": 0,
+      "text_span": "Human population exposed to malaria through mosquitoes (vectors) but not yet infectious (E_H1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human population exposed to malaria through mosquitoes (vectors) but not yet infectious (E_H1)"
+    },
+    {
+      "normalized_name": "Non-Vector-Exposed Humans",
+      "raw_text": "Non-Vector-Exposed Humans",
+      "page_number": 0,
+      "text_span": "Human population exposed to malaria through non-mosquito (non-vector) pathways (E_H2)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human population exposed to malaria through non-mosquito (non-vector) pathways (E_H2)"
+    },
+    {
+      "normalized_name": "Infectious Humans",
+      "raw_text": "Infectious Humans",
+      "page_number": 0,
+      "text_span": "Malaria Infectious human population (I_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Infectious human population (I_H)"
+    },
+    {
+      "normalized_name": "Treated Humans",
+      "raw_text": "Treated Humans",
+      "page_number": 0,
+      "text_span": "Malaria Treated human population (T_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Treated human population (T_H)"
+    },
+    {
+      "normalized_name": "Recovered Humans",
+      "raw_text": "Recovered Humans",
+      "page_number": 0,
+      "text_span": "Malaria Recovered human population (R_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Recovered human population (R_H)"
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Malaria Susceptible Mosquitoes population (S_M)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Susceptible Mosquitoes population (S_M)"
+    },
+    {
+      "normalized_name": "Exposed Mosquitoes",
+      "raw_text": "Exposed Mosquitoes",
+      "page_number": 0,
+      "text_span": "Malaria Exposed Mosquitoes population (E_M)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Exposed Mosquitoes population (E_M)"
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Malaria Infectious Mosquitoes population (I_M)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Malaria Infectious Mosquitoes population (I_M)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Vaccinated Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of vaccine immunity at rate \u03b8.",
+      "page_number": 0,
+      "text_span": "Loss of vaccine immunity at rate \u03b8.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of vaccine immunity at rate \u03b8."
+    },
+    {
+      "source": "Recovered Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of natural immunity at rate \u03b3.",
+      "page_number": 0,
+      "text_span": "Loss of natural immunity at rate \u03b3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of natural immunity at rate \u03b3."
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Vector-Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible humans by infectious mosquitoes at rate \u03b22.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible humans by infectious mosquitoes at rate \u03b22.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible humans by infectious mosquitoes at rate \u03b22."
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Non-Vector-Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible humans through non-vector pathways from infectious humans at rate \u03b12.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible humans through non-vector pathways from infectious humans at rate \u03b12.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible humans through non-vector pathways from infectious humans at rate \u03b12."
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "Vector-Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Breakthrough infection of vaccinated humans by infectious mosquitoes at rate \u03b21\u03b5.",
+      "page_number": 0,
+      "text_span": "Breakthrough infection of vaccinated humans by infectious mosquitoes at rate \u03b21\u03b5.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Breakthrough infection of vaccinated humans by infectious mosquitoes at rate \u03b21\u03b5."
+    },
+    {
+      "source": "Vaccinated Humans",
+      "target": "Non-Vector-Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of vaccinated humans through non-vector pathways from infectious humans at rate \u03b11.",
+      "page_number": 0,
+      "text_span": "Infection of vaccinated humans through non-vector pathways from infectious humans at rate \u03b11.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of vaccinated humans through non-vector pathways from infectious humans at rate \u03b11."
+    },
+    {
+      "source": "Vector-Exposed Humans",
+      "target": "Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from vector-exposed to infectious at rate \u03c41.",
+      "page_number": 0,
+      "text_span": "Progression from vector-exposed to infectious at rate \u03c41.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from vector-exposed to infectious at rate \u03c41."
+    },
+    {
+      "source": "Non-Vector-Exposed Humans",
+      "target": "Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from non-vector-exposed to infectious at rate \u03c42.",
+      "page_number": 0,
+      "text_span": "Progression from non-vector-exposed to infectious at rate \u03c42.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from non-vector-exposed to infectious at rate \u03c42."
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Treated Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from infectious to treated at rate \u03c3.",
+      "page_number": 0,
+      "text_span": "Progression from infectious to treated at rate \u03c3.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from infectious to treated at rate \u03c3."
+    },
+    {
+      "source": "Treated Humans",
+      "target": "Recovered Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from treated to recovered at rate \u03c9.",
+      "page_number": 0,
+      "text_span": "Progression from treated to recovered at rate \u03c9.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from treated to recovered at rate \u03c9."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible mosquitoes by infectious humans at rate \u03b23.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible mosquitoes by infectious humans at rate \u03b23.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible mosquitoes by infectious humans at rate \u03b23."
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from exposed to infectious in mosquitoes at rate \u03c6.",
+      "page_number": 0,
+      "text_span": "Progression from exposed to infectious in mosquitoes at rate \u03c6.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from exposed to infectious in mosquitoes at rate \u03c6."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03c0",
+      "raw_text": "\u03c0",
+      "value": "0.012",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population birth rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population birth rate"
+    },
+    {
+      "normalized_name": "k",
+      "raw_text": "k",
+      "value": "0.60-0.90",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Vaccination rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination rate"
+    },
+    {
+      "normalized_name": "\u00b51",
+      "raw_text": "\u00b51",
+      "value": "0.0002",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population Natural death rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population Natural death rate"
+    },
+    {
+      "normalized_name": "\u03b8",
+      "raw_text": "\u03b8",
+      "value": "0.1-0.2",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of vaccine immunity loss due to vaccine failure",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccine immunity loss due to vaccine failure"
+    },
+    {
+      "normalized_name": "\u03b5",
+      "raw_text": "\u03b5",
+      "value": "0.3-0.5",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Rate of Vaccine Efficacy",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of Vaccine Efficacy"
+    },
+    {
+      "normalized_name": "\u03b7V",
+      "raw_text": "\u03b7V",
+      "value": "0.001-0.005",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Effective contact rate of Human Vaccinated individuals with infected mosquitoes through bloodmeals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective contact rate of Human Vaccinated individuals with infected mosquitoes through bloodmeals"
+    },
+    {
+      "normalized_name": "\u03b7S",
+      "raw_text": "\u03b7S",
+      "value": "0.005-0.02",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Effective contact rate of Human susceptible individuals with infected mosquitoes through bloodmeals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective contact rate of Human susceptible individuals with infected mosquitoes through bloodmeals"
+    },
+    {
+      "normalized_name": "\u03beV",
+      "raw_text": "\u03beV",
+      "value": "0.0005-0.002",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Effective contact rate of Human Vaccinated individuals with infected humans through other non-mosquitoes\u2019 ways (non-vector pathways) of malaria infectivity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective contact rate of Human Vaccinated individuals with infected humans through other non-mosquitoes\u2019 ways (non-vector pathways) of malaria infectivity"
+    },
+    {
+      "normalized_name": "\u03beS",
+      "raw_text": "\u03beS",
+      "value": "0.001-0.003",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Effective contact rate of Human susceptible individuals with infected human through other non-mosquitos\u2019 ways (non-vector pathways) of malaria infectivity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective contact rate of Human susceptible individuals with infected human through other non-mosquitos\u2019 ways (non-vector pathways) of malaria infectivity"
+    },
+    {
+      "normalized_name": "\u03c41",
+      "raw_text": "\u03c41",
+      "value": "0.05",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population Progression rate from exposed to infectious for mosquitos\u2019 malaria exposed individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population Progression rate from exposed to infectious for mosquitos\u2019 malaria exposed individuals"
+    },
+    {
+      "normalized_name": "\u03c42",
+      "raw_text": "\u03c42",
+      "value": "0.05",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population Progression rate from exposed to infectious for non-mosquitos\u2019 (non-vector pathways) malaria exposed individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population Progression rate from exposed to infectious for non-mosquitos\u2019 (non-vector pathways) malaria exposed individuals"
+    },
+    {
+      "normalized_name": "\u03b41",
+      "raw_text": "\u03b41",
+      "value": "0.002",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population Malaria disease death rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population Malaria disease death rate"
+    },
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "0.10",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population progression rate from infected to treated",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population progression rate from infected to treated"
+    },
+    {
+      "normalized_name": "\u03c9",
+      "raw_text": "\u03c9",
+      "value": "0.05",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human Population progression rate from treated to recovered",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Population progression rate from treated to recovered"
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "0.01",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human recovered Population rate of immunity loss",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human recovered Population rate of immunity loss"
+    },
+    {
+      "normalized_name": "\u039b",
+      "raw_text": "\u039b",
+      "value": "0.10",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Mosquitoes Population birth rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes Population birth rate"
+    },
+    {
+      "normalized_name": "\u03c1",
+      "raw_text": "\u03c1",
+      "value": "0.01-0.05",
+      "unit": "per mosquito",
+      "page_number": 0,
+      "text_span": "Effective contact rate of susceptible mosquitoes with infected humans through bloodmeals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective contact rate of susceptible mosquitoes with infected humans through bloodmeals"
+    },
+    {
+      "normalized_name": "\u03c6",
+      "raw_text": "\u03c6",
+      "value": null,
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Mosquitoes Population Progression rate from exposed to infectious",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes Population Progression rate from exposed to infectious"
+    },
+    {
+      "normalized_name": "\u00b52",
+      "raw_text": "\u00b52",
+      "value": "0.1",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Mosquitoes Population Natural death rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes Population Natural death rate"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 9,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 10,
+    "num_flows": 12,
+    "num_parameters": 19,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

@@ -1,0 +1,16 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Tuberculosis,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Vaccinated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Recovered,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Vaccinated,RateFlow,//@parameters.0,False,Vaccination of susceptible individuals at rate u,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,Waning of vaccine protection at rate θ,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,Waning immunity causing transition from recovered to susceptible at rate δ,,,
+Tuberculosis,Parameter,A,,,,,,Model file,Certain,,,,,,Recruitment rate of humans (newborns entering susceptible class),CONSTANT,1/(65*12),per month
+Tuberculosis,Parameter,β,,,,,,Model file,Certain,,,,,,Probability of successful infection rate,CONSTANT,0.01-5,1/(year × human)
+Tuberculosis,Parameter,ϵ,,,,,,Model file,Certain,,,,,,Correction parameter for reinfection term (reinfection probability relative to primary infection),CONSTANT,0-1,dimensionless
+Tuberculosis,Parameter,u,,,,,,Model file,Certain,,,,,,Rate of vaccination of susceptible individuals,CONSTANT,0-1,1/day
+Tuberculosis,Parameter,θ,,,,,,Model file,Certain,,,,,,Vaccine wane rate (rate of loss of vaccine protection),CONSTANT,0.067-0.1,1/day
+Tuberculosis,Parameter,γ,,,,,,Model file,Certain,,,,,,Recovery rate from tuberculosis,CONSTANT,0.5-2,1/year
+Tuberculosis,Parameter,δ,,,,,,Model file,Certain,,,,,,Drop out rate due to waning immunity (recovered to susceptible),CONSTANT,0.003-0.02,1/day
+Tuberculosis,Parameter,μ,,,,,,Model file,Certain,,,,,,Natural death rate,CONSTANT,1/(65*12),per month

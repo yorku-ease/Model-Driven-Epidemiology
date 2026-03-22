@@ -1,0 +1,49 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Measles,Compartment,Susceptible Children,,0,False,4.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Unmonitored Vaccinated Children,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Monitored Vaccinated Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Exposed Children,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Infectious Children,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Immune Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Susceptible Adults,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Unmonitored Vaccinated Adults,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Monitored Vaccinated Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Exposed Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Infectious Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Immune Adults,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles,Flow,,,,,,,Model file,Certain,,Unmonitored Vaccinated Children,RateFlow,//@parameters.0,False,Un-monitored vaccination of susceptible children.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Monitored Vaccinated Children,RateFlow,//@parameters.0,False,Monitored vaccination of susceptible children.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Susceptible Adults,RateFlow,//@parameters.0,False,Maturation of susceptible children into adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Children,RateFlow,//@parameters.0,False,Infection of susceptible children by infectious children or adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Children,RateFlow,//@parameters.0,False,Breakthrough infection of un-monitored vaccinated children.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Un-monitored vaccinated children gaining full immunity.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Unmonitored Vaccinated Adults,RateFlow,//@parameters.0,False,Maturation of un-monitored vaccinated children into adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Monitored vaccinated children gaining full immunity.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Children,RateFlow,//@parameters.0,False,Progression from exposed to infectious state for children.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Maturation of exposed children into adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Recovery of infectious children.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Adults,RateFlow,//@parameters.0,False,Maturation of infectious children into adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Maturation of immune children into adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Infection of susceptible adults by infectious children or adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Monitored Vaccinated Adults,RateFlow,//@parameters.0,False,Monitored (catch-up) vaccination of susceptible adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Un-monitored vaccinated adults gaining full immunity.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Breakthrough infection of un-monitored vaccinated adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Monitored vaccinated adults gaining full immunity.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Adults,RateFlow,//@parameters.0,False,Progression from exposed to infectious state for adults.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Recovery of infectious adults.,,,
+Measles,Parameter,L,,,,,,Model file,Certain,,,,,,Recruitment rate to children group.,CONSTANT,0.0,persons/week
+Measles,Parameter,x_U,,,,,,Model file,Certain,,,,,,Un-monitored children vaccination rate.,CONSTANT,0.087,per week
+Measles,Parameter,x_M,,,,,,Model file,Certain,,,,,,Monitored children vaccination rate.,CONSTANT,4.77e-5,per week
+Measles,Parameter,x_A,,,,,,Model file,Certain,,,,,,Adult vaccination rate.,CONSTANT,0,per week
+Measles,Parameter,b_C,,,,,,Model file,Certain,,,,,,Transmission rate in children.,CONSTANT,0.00188,per person per week
+Measles,Parameter,b_A,,,,,,Model file,Certain,,,,,,Transmission rate in adults.,CONSTANT,1.00e-5,per person per week
+Measles,Parameter,m,,,,,,Model file,Certain,,,,,,Natural death rate.,CONSTANT,1/(72*52),per week
+Measles,Parameter,g,,,,,,Model file,Certain,,,,,,Rate of becoming immune after recovery from infection.,CONSTANT,0.5,per week
+Measles,Parameter,j,,,,,,Model file,Certain,,,,,,Maturation rate from child to adult.,CONSTANT,1/(15*52),per week
+Measles,Parameter,e,,,,,,Model file,Certain,,,,,,"Vaccine failure proportion, where (1-e) is the vaccine effectiveness.",CONSTANT,0.2,dimensionless
+Measles,Parameter,h_A,,,,,,Model file,Certain,,,,,,Rate of vaccinated adults (both un-monitored and monitored) becoming immune.,CONSTANT,0,per week
+Measles,Parameter,h_U,,,,,,Model file,Certain,,,,,,Rate of un-monitored vaccinated children becoming immune.,CONSTANT,3e-6,per week
+Measles,Parameter,h_M,,,,,,Model file,Certain,,,,,,Rate of monitored vaccinated children becoming immune.,CONSTANT,0.167,per week
+Measles,Parameter,d,,,,,,Model file,Certain,,,,,,Rate of progression from exposed to infectious (inverse of incubation period).,CONSTANT,0.7,per week
+Measles,Parameter,q,,,,,,Model file,Certain,,,,,,Portion of infection recorded (data fitting parameter).,CONSTANT,0.15,dimensionless
+Measles,Parameter,a,,,,,,Model file,Certain,,,,,,Portion of the total population in the measles transmission contact network (data fitting parameter).,CONSTANT,0.01253,dimensionless

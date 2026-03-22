@@ -1,0 +1,164 @@
+{
+  "modelName": "Tuberculosis",
+  "summary": {
+    "modelName": "Tuberculosis",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 8,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination of susceptible individuals at rate u",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Vaccinated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of vaccine protection at rate θ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning immunity causing transition from recovered to susceptible at rate δ",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "A",
+        "type": "CONSTANT",
+        "expression": "1/(65*12)",
+        "description": "Recruitment rate of humans (newborns entering susceptible class)",
+        "unit": "per month"
+      },
+      {
+        "index": 1,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "0.01-5",
+        "description": "Probability of successful infection rate",
+        "unit": "1/(year × human)"
+      },
+      {
+        "index": 2,
+        "name": "ϵ",
+        "type": "CONSTANT",
+        "expression": "0-1",
+        "description": "Correction parameter for reinfection term (reinfection probability relative to primary infection)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 3,
+        "name": "u",
+        "type": "CONSTANT",
+        "expression": "0-1",
+        "description": "Rate of vaccination of susceptible individuals",
+        "unit": "1/day"
+      },
+      {
+        "index": 4,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "0.067-0.1",
+        "description": "Vaccine wane rate (rate of loss of vaccine protection)",
+        "unit": "1/day"
+      },
+      {
+        "index": 5,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5-2",
+        "description": "Recovery rate from tuberculosis",
+        "unit": "1/year"
+      },
+      {
+        "index": 6,
+        "name": "δ",
+        "type": "CONSTANT",
+        "expression": "0.003-0.02",
+        "description": "Drop out rate due to waning immunity (recovered to susceptible)",
+        "unit": "1/day"
+      },
+      {
+        "index": 7,
+        "name": "μ",
+        "type": "CONSTANT",
+        "expression": "1/(65*12)",
+        "description": "Natural death rate",
+        "unit": "per month"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

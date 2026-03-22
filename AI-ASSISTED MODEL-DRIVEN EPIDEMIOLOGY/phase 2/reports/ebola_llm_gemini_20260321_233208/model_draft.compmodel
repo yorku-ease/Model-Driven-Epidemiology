@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="α1" expression="10" type="CONSTANT" description="The proportion at which Susceptible people are recruitment"/>
+  <parameters name="α2" expression="3" type="CONSTANT" description="The proportion at which infected people are recruitment"/>
+  <parameters name="ψ1" expression="0.006" type="CONSTANT" description="The rate of contact (effective) of infected human"/>
+  <parameters name="ψ2" expression="0.0012" type="CONSTANT" description="The rate contact of Ebola virus pathogens in the environment"/>
+  <parameters name="ψ3" expression="0.006" type="CONSTANT" description="Rate of contact (effective) of deceased (human)"/>
+  <parameters name="ε" expression="0.5" type="CONSTANT" description="Natural death rate of humans"/>
+  <parameters name="ρ1" expression="0.123" type="CONSTANT" description="Rate of deaths of human individuals due to infection"/>
+  <parameters name="ρ2" expression="0.04" type="CONSTANT" description="Rate at which shedding of infected humans"/>
+  <parameters name="ρ3" expression="0.12" type="CONSTANT" description="The rate at which infected people quarantined"/>
+  <parameters name="w1" expression="0.04" type="CONSTANT" description="The rate at which quarantined people are recovered"/>
+  <parameters name="w2" expression="0.22" type="CONSTANT" description="The rate at which quarantine people are in deceased"/>
+  <parameters name="h" expression="0.04" type="CONSTANT" description="proportion of shedding of deceased people"/>
+  <parameters name="c" expression="0.8" type="CONSTANT" description="The proportion rate of burial deceased people"/>
+  <parameters name="b" expression="0" type="CONSTANT" description="The rate at which EVD in the environment is removed/decays"/>
+  <parameters name="d" expression="0.0015" type="CONSTANT" description="Source term for Ebola virus pathogens in the environment"/>
+  <compartments PrimaryName="Susceptible People" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.11" target="//@compartments.1" description="Infection of susceptible people through contact with infectious people, deceased people, or environmental pathogens."/>
+  </compartments>
+  <compartments PrimaryName="Infectious People" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.2" description="Infected people are quarantined."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.5" description="Death of infectious people due to the disease and natural causes."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4" description="Shedding of virus by infected humans into the environment."/>
+  </compartments>
+  <compartments PrimaryName="Quarantine People" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.3" description="Quarantined people recover from the disease."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.5" description="Death of quarantined people due to the disease and natural causes."/>
+  </compartments>
+  <compartments PrimaryName="Recovered People" population="0"/>
+  <compartments PrimaryName="Ebola virus Pathogens in the Environment" population="0"/>
+  <compartments PrimaryName="Deceased People" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4" description="Shedding of virus by deceased people into the environment."/>
+  </compartments>
+</compartmental:CompartmentalModel>

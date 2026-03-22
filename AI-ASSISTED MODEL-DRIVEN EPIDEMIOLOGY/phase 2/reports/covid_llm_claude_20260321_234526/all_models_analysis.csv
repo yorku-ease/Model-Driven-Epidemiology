@@ -1,0 +1,73 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Exposed Quarantined,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious Presymptomatic,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious Presymptomatic Isolated,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious Mild to Moderate,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious Mild to Moderate Isolated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious Severe,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious Severe Isolated,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Admitted to Hospital,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Admitted to Hospital Pre-ICU,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,ICU,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Admitted to Hospital Post-ICU,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.6,False,Infection of susceptible individuals through contact with infectious individuals,,,
+Covid,Flow,,,,,,,Model file,Certain,,Exposed Quarantined,RateFlow,//@parameters.6,False,Infection of susceptible individuals who are then quarantined via contact tracing,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Presymptomatic,RateFlow,//@parameters.0,False,Progression from latent period to presymptomatic infectious stage,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Presymptomatic Isolated,RateFlow,//@parameters.2,False,Progression from quarantined exposed to presymptomatic infectious isolated stage,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Mild to Moderate,RateFlow,//@parameters.2,False,Progression from presymptomatic to mild/moderate symptomatic infection,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Severe,RateFlow,//@parameters.2,False,Progression from presymptomatic to severe symptomatic infection,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Mild to Moderate Isolated,RateFlow,//@parameters.2,False,Progression from presymptomatic isolated to mild/moderate isolated,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Severe Isolated,RateFlow,//@parameters.2,False,Progression from presymptomatic isolated to severe isolated,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Mild to Moderate Isolated,RateFlow,0.0,False,Testing and isolation of mild/moderate cases,,,
+Covid,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.0,False,Recovery of mild/moderate cases,,,
+Covid,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.0,False,Recovery of isolated mild/moderate cases,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious Severe Isolated,RateFlow,0.0,False,Testing and isolation of severe cases,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to Hospital,RateFlow,0.0,False,Hospital admission for severe cases not requiring ICU,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to Hospital Pre-ICU,RateFlow,0.0,False,Hospital admission for severe cases before ICU,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to Hospital,RateFlow,0.0,False,Hospital admission for isolated severe cases not requiring ICU,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to Hospital Pre-ICU,RateFlow,0.0,False,Hospital admission for isolated severe cases before ICU,,,
+Covid,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.0,False,Recovery and discharge from hospital (non-ICU),,,
+Covid,Flow,,,,,,,Model file,Certain,,ICU,RateFlow,0.0,False,Transfer from hospital to ICU,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to Hospital Post-ICU,RateFlow,0.0,False,Transfer from ICU to post-ICU hospital care for survivors,,,
+Covid,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,0.0,False,Death in ICU,,,
+Covid,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.0,False,Recovery and discharge after post-ICU hospital stay,,,
+Covid,Parameter,Latent period,,,,,,Model file,Certain,,,,,,Time from exposure to onset of infectiousness,CONSTANT,2.5,days
+Covid,Parameter,Presymptomatic infectious period,,,,,,Model file,Certain,,,,,,Duration of infectiousness before symptom onset,CONSTANT,1,days
+Covid,Parameter,Infectious period mild to moderate,,,,,,Model file,Certain,,,,,,Symptomatic infectious period for mild-to-moderate cases in absence of isolation,CONSTANT,6,days
+Covid,Parameter,Infectious period severe,,,,,,Model file,Certain,,,,,,Symptomatic infectious period for severe cases; assumed equal to time to hospital admission,CONSTANT,6,days
+Covid,Parameter,R0,,,,,,Model file,Certain,,,,,,Basic reproduction number: average number of secondary infections from a primary infection in a susceptible population,CONSTANT,2.3,dimensionless
+Covid,Parameter,Quarantine duration,,,,,,Model file,Certain,,,,,,Duration of quarantine for exposed cases,CONSTANT,14,days
+Covid,Parameter,Relative risk of transmission for isolated cases,,,,,,Model file,Certain,,,,,,Isolated cases have reduced transmission relative to unrecognized cases,CONSTANT,0.1,dimensionless
+Covid,Parameter,Hospital length of stay non-ICU,,,,,,Model file,Certain,,,,,,Average length of stay in hospital for cases not requiring ICU care,CONSTANT,10,days
+Covid,Parameter,Hospital length of stay pre-ICU,,,,,,Model file,Certain,,,,,,Average length of stay in hospital before ICU admission for severe cases,CONSTANT,3,days
+Covid,Parameter,ICU length of stay,,,,,,Model file,Certain,,,,,,Average length of stay in ICU for severe cases requiring ICU care,CONSTANT,21,days
+Covid,Parameter,Hospital length of stay post-ICU,,,,,,Model file,Certain,,,,,,Average length of stay in hospital after ICU for severe cases,CONSTANT,21,days
+Covid,Parameter,"Probability of severe infection, <15 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.01,dimensionless
+Covid,Parameter,"Probability of severe infection, 15-49 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.03,dimensionless
+Covid,Parameter,"Probability of severe infection, 50-69 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.12,dimensionless
+Covid,Parameter,"Probability of severe infection, >=70 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.35,dimensionless
+Covid,Parameter,"Probability of severe infection, <15 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.02,dimensionless
+Covid,Parameter,"Probability of severe infection, 15-49 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.06,dimensionless
+Covid,Parameter,"Probability of severe infection, 50-69 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.25,dimensionless
+Covid,Parameter,"Probability of severe infection, >=70 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission,CONSTANT,0.76,dimensionless
+Covid,Parameter,Probability severe case requires ICU,,,,,,Model file,Certain,,,,,,Probability that a severe case requires admission to ICU,CONSTANT,0.26,dimensionless
+Covid,Parameter,"Probability of death in ICU, <15 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0,dimensionless
+Covid,Parameter,"Probability of death in ICU, 15-49 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0.2,dimensionless
+Covid,Parameter,"Probability of death in ICU, 50-69 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0.36,dimensionless
+Covid,Parameter,"Probability of death in ICU, >=70 yr, no comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0.58,dimensionless
+Covid,Parameter,"Probability of death in ICU, <15 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0,dimensionless
+Covid,Parameter,"Probability of death in ICU, 15-49 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0.53,dimensionless
+Covid,Parameter,"Probability of death in ICU, 50-69 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,0.9,dimensionless
+Covid,Parameter,"Probability of death in ICU, >=70 yr, comorbidities",,,,,,Model file,Certain,,,,,,Probability of death for cases admitted to ICU,CONSTANT,1,dimensionless
+Covid,Parameter,"Base case testing and isolation rate, <15 yr",,,,,,Model file,Certain,,,,,,Percentage of nonquarantined cases tested and isolated in base case,CONSTANT,10,percent
+Covid,Parameter,"Base case testing and isolation rate, 15-49 yr",,,,,,Model file,Certain,,,,,,Percentage of nonquarantined cases tested and isolated in base case,CONSTANT,40,percent
+Covid,Parameter,"Base case testing and isolation rate, >=50 yr",,,,,,Model file,Certain,,,,,,Percentage of nonquarantined cases tested and isolated in base case,CONSTANT,70,percent
+Covid,Parameter,Base case quarantine rate,,,,,,Model file,Certain,,,,,,Percentage of exposed cases in quarantine before becoming infectious in base case,CONSTANT,10,percent
+Covid,Parameter,Base case physical distancing reduction,,,,,,Model file,Certain,,,,,,Reduction in contacts with physical distancing in base case,CONSTANT,0,percent
+Covid,Parameter,Physical distancing contact reduction (restrictive),,,,,,Model file,Certain,,,,,,Reduction in contacts under restrictive physical distancing scenario,CONSTANT,60,percent
+Covid,Parameter,Physical distancing contact reduction (combination),,,,,,Model file,Certain,,,,,,Reduction in contacts under combination intervention scenario,CONSTANT,25,percent
+Covid,Parameter,ICU threshold for dynamic intervention,,,,,,Model file,Certain,,,,,,Number of COVID-19 cases in ICU that triggers dynamic intervention activation,CONSTANT,200,cases

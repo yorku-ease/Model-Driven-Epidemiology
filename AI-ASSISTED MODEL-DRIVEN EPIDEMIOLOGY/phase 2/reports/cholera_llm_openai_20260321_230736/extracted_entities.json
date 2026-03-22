@@ -1,0 +1,199 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who can contract cholera.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who can contract cholera."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who are infected and can transmit cholera.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infected and can transmit cholera."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from cholera and are immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from cholera and are immune."
+    },
+    {
+      "normalized_name": "Bacteria in Water",
+      "raw_text": "Bacteria in Water",
+      "page_number": 0,
+      "text_span": "Concentration of cholera bacteria in the water reservoir.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of cholera bacteria in the water reservoir."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Susceptible individuals become infected through contact with contaminated water.",
+      "page_number": 0,
+      "text_span": "Susceptible individuals become infected through contact with contaminated water.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible individuals become infected through contact with contaminated water."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Infectious individuals recover and become immune.",
+      "page_number": 0,
+      "text_span": "Infectious individuals recover and become immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious individuals recover and become immune."
+    },
+    {
+      "source": "Infectious",
+      "target": "Bacteria in Water",
+      "flow_type": "RateFlow",
+      "raw_text": "Infectious individuals contaminate the water supply with bacteria.",
+      "page_number": 0,
+      "text_span": "Infectious individuals contaminate the water supply with bacteria.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious individuals contaminate the water supply with bacteria."
+    },
+    {
+      "source": "Bacteria in Water",
+      "target": "Bacteria in Water",
+      "flow_type": "RateFlow",
+      "raw_text": "Decay of bacteria in the water reservoir.",
+      "page_number": 0,
+      "text_span": "Decay of bacteria in the water reservoir.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Decay of bacteria in the water reservoir."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "varies",
+      "unit": "days^-1",
+      "page_number": 0,
+      "text_span": "Contact rate between susceptible individuals and contaminated water.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Contact rate between susceptible individuals and contaminated water."
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "varies",
+      "unit": "days^-1",
+      "page_number": 0,
+      "text_span": "Recovery rate of infectious individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate of infectious individuals."
+    },
+    {
+      "normalized_name": "\u03b4",
+      "raw_text": "\u03b4",
+      "value": "varies",
+      "unit": "days^-1",
+      "page_number": 0,
+      "text_span": "Decay rate of cholera bacteria in the water reservoir.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Decay rate of cholera bacteria in the water reservoir."
+    },
+    {
+      "normalized_name": "\u03be",
+      "raw_text": "\u03be",
+      "value": "varies",
+      "unit": "cells * mL^-1 * person^-1 * day^-1",
+      "page_number": 0,
+      "text_span": "Rate of water contamination by infectious individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of water contamination by infectious individuals."
+    },
+    {
+      "normalized_name": "\u03ba",
+      "raw_text": "\u03ba",
+      "value": "varies",
+      "unit": "cells/mL",
+      "page_number": 0,
+      "text_span": "Concentration of cholera bacteria that yields 50% chance of infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of cholera bacteria that yields 50% chance of infection."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 4,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 7,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 4,
+    "num_parameters": 5,
+    "num_stratifications": 1,
+    "num_interventions": 3
+  }
+}

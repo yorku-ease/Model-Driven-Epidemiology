@@ -1,0 +1,426 @@
+{
+  "paper_name": "Dengue",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 7,
+      "parameters": 10,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "Susceptible",
+      "Infectious"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Symptomatic Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Asymptomatic Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infectious Humans",
+        "target": "Symptomatic Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "B",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "k(a)",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc_h",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc_v",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3_1(a)",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3_2(a)",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2_v(a)",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b2_h(a)",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c1",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c3",
+        "value": "...",
+        "unit": "...",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 7,
+    "parameters": 10,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 27,
+    "items_with_evidence": 27,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 27,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "promised_items": {
+        "compartments": 2,
+        "parameters": 0,
+        "stratifications": 0,
+        "interventions": 1
+      },
+      "extracted_items": {
+        "compartments": 7,
+        "parameters": 10,
+        "stratifications": 1,
+        "interventions": 2
+      }
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {
+      "paper_span": 0,
+      "prior_model": 0,
+      "domain_knowledge": 0
+    }
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 27,
+      "items_with_evidence": 27,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 27,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "flows": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.875,
+        "f1": 0.9333
+      },
+      "parameters": {
+        "tp": 7,
+        "fp": 3,
+        "fn": 6,
+        "precision": 0.7,
+        "recall": 0.5385,
+        "f1": 0.6087
+      },
+      "composite_score": 0.913,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible humans",
+          "extracted": "Susceptible Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed humans",
+          "extracted": "Exposed Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Asymptomatic infectious humans",
+          "extracted": "Asymptomatic Infectious Humans",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Symptomatic infectious humans",
+          "extracted": "Symptomatic Infectious Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Recovered humans",
+          "extracted": "Recovered Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious mosquitoes",
+          "extracted": "Infectious Mosquitoes",
+          "score": 0.9999998211860657
+        },
+        {
+          "gold": "Susceptible mosquitoes",
+          "extracted": "Susceptible Mosquitoes",
+          "score": 1.0000001192092896
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible humans->Exposed humans",
+          "extracted": "Susceptible Humans->Exposed Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed humans->Asymptomatic infectious humans",
+          "extracted": "Exposed Humans->Asymptomatic Infectious Humans",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Exposed humans->Symptomatic infectious humans",
+          "extracted": "Exposed Humans->Symptomatic Infectious Humans",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Asymptomatic infectious humans->Symptomatic infectious humans",
+          "extracted": "Asymptomatic Infectious Humans->Symptomatic Infectious Humans",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Asymptomatic infectious humans->Recovered humans",
+          "extracted": "Asymptomatic Infectious Humans->Recovered Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Symptomatic infectious humans->Recovered humans",
+          "extracted": "Symptomatic Infectious Humans->Recovered Humans",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Susceptible mosquitoes->Infectious mosquitoes",
+          "extracted": "Susceptible Mosquitoes->Infectious Mosquitoes",
+          "score": 1.0000001192092896
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03bc_h 0.005 Natural death rate of human hosts",
+          "extracted": "\u03bc_h ... The natural death rate of the human hosts.",
+          "score": 0.9411473274230957
+        },
+        {
+          "gold": "\u03bc_v 0.65 Natural death rate of mosquitoes",
+          "extracted": "\u03bc_v ... The natural death rate of the mosquitoes.",
+          "score": 0.9440605640411377
+        },
+        {
+          "gold": "h 18 Mosquito-to-human transmission/contact rate (age-averaged h_a)",
+          "extracted": "\u03b2_h(a) ... The age-specific transmission rate from infected mosquitoes to susceptible hosts.",
+          "score": 0.7954939603805542
+        },
+        {
+          "gold": "\u03c1 0.5 Reinfection intensity factor for asymptomatic hosts (secondary infection)",
+          "extracted": "\u03c3 ... The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+          "score": 0.8486785888671875
+        },
+        {
+          "gold": "\u03b31 0.5 Recovery rate of symptomatic infectious hosts (paper: \u03b31a)",
+          "extracted": "\u03b3_1(a) ... The age-specific recovery rate of symptomatic infectious hosts.",
+          "score": 0.8651975989341736
+        },
+        {
+          "gold": "\u03b32 0.5 Recovery rate of asymptomatic infectious hosts (paper: \u03b32a)",
+          "extracted": "\u03b3_2(a) ... The age-specific recovery rate of asymptomatic infectious hosts.",
+          "score": 0.8631192445755005
+        },
+        {
+          "gold": "v 8 Human-to-mosquito transmission rate (age-averaged v_a)",
+          "extracted": "\u03b2_v(a) ... The age-specific transmission rate from infectious hosts to susceptible mosquitoes.",
+          "score": 0.8031578660011292
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

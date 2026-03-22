@@ -1,0 +1,43 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Exposed,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Exposed (quarantined),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious (presymptomatic),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,"Infectious (presymptomatic, isolated)",,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious (mild to moderate),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,"Infectious (mild to moderate, isolated)",,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Infectious (severe),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,"Infectious (severe, isolated)",,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Admitted to hospital (pre-ICU),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,ICU,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Admitted to hospital (post-ICU),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.2,False,Susceptible individuals become exposed through contact with infectious individuals.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious (presymptomatic),RateFlow,//@parameters.2,False,Exposed individuals become presymptomatic infectious.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Exposed (quarantined),RateFlow,0.0,False,Exposed individuals are quarantined.,,,
+Covid,Flow,,,,,,,Model file,Certain,,"Infectious (presymptomatic, isolated)",RateFlow,//@parameters.2,False,Quarantined exposed individuals become presymptomatic infectious and isolated.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious (mild to moderate),RateFlow,//@parameters.2,False,Presymptomatic infectious individuals develop mild to moderate symptoms.,,,
+Covid,Flow,,,,,,,Model file,Certain,,"Infectious (mild to moderate, isolated)",RateFlow,//@parameters.2,False,Isolated presymptomatic infectious individuals develop mild to moderate symptoms.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Infectious (severe),RateFlow,//@parameters.6,False,Mild to moderate infectious individuals develop severe symptoms.,,,
+Covid,Flow,,,,,,,Model file,Certain,,"Infectious (severe, isolated)",RateFlow,//@parameters.6,False,Isolated mild to moderate infectious individuals develop severe symptoms.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to hospital (pre-ICU),RateFlow,//@parameters.6,False,Severe infectious individuals are admitted to hospital.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to hospital (pre-ICU),RateFlow,//@parameters.6,False,Isolated severe infectious individuals are admitted to hospital.,,,
+Covid,Flow,,,,,,,Model file,Certain,,ICU,RateFlow,0.0,False,Hospitalized individuals are moved to ICU.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Admitted to hospital (post-ICU),RateFlow,0.0,False,ICU patients are moved to regular hospital care after ICU.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.6,False,ICU patients die from the infection.,,,
+Covid,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,0.0,False,Post-ICU individuals recover.,,,
+Covid,Parameter,Latent period,,,,,,Model file,Certain,,,,,,Time from exposure to onset of infectiousness.,CONSTANT,2.5,days
+Covid,Parameter,Presymptomatic infectious period,,,,,,Model file,Certain,,,,,,Duration of infectiousness before symptom onset.,CONSTANT,1,days
+Covid,Parameter,Infectious period (mild to moderate),,,,,,Model file,Certain,,,,,,Symptomatic infectious period for mild-to-moderate cases.,CONSTANT,6,days
+Covid,Parameter,Infectious period (severe),,,,,,Model file,Certain,,,,,,Symptomatic infectious period for severe cases.,CONSTANT,6,days
+Covid,Parameter,Basic reproduction number,,,,,,Model file,Certain,,,,,,Average number of secondary infections from a primary infection.,CONSTANT,2.3,
+Covid,Parameter,Time in quarantine,,,,,,Model file,Certain,,,,,,Duration of quarantine for exposed cases.,CONSTANT,14,days
+Covid,Parameter,Relative risk of transmission for cases in isolation,,,,,,Model file,Certain,,,,,,Reduced transmission for isolated cases.,CONSTANT,0.1,
+Covid,Parameter,Average length of stay in hospital for cases not requiring ICU care,,,,,,Model file,Certain,,,,,,Duration of hospital stay for non-ICU cases.,CONSTANT,10,days
+Covid,Parameter,Average length of stay in hospital before ICU admission,,,,,,Model file,Certain,,,,,,Duration of hospital stay before ICU admission.,CONSTANT,3,days
+Covid,Parameter,Average length of stay in ICU,,,,,,Model file,Certain,,,,,,Duration of ICU stay.,CONSTANT,21,days
+Covid,Parameter,Average length of stay in hospital after ICU,,,,,,Model file,Certain,,,,,,Duration of hospital stay after ICU.,CONSTANT,21,days
+Covid,Parameter,Probability of severe infection,,,,,,Model file,Certain,,,,,,Probability of severe infection requiring hospital admission.,CONSTANT,Varies by age and comorbidity,
+Covid,Parameter,Probability severe case requires admission to ICU,,,,,,Model file,Certain,,,,,,Probability that a severe case requires ICU admission.,CONSTANT,0.26,
+Covid,Parameter,Probability of death in cases admitted to ICU,,,,,,Model file,Certain,,,,,,Probability of death for ICU cases.,CONSTANT,Varies by age and comorbidity,

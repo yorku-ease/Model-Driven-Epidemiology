@@ -1,0 +1,29 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Dengue,Compartment,Susceptible Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Exposed Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Symptomatic Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Asymptomatic Infectious Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Recovered Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Compartment,Infectious Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.0,False,Susceptible humans become exposed through bites by infectious mosquitoes at rate β_h(a)I_v/N_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,Natural death of susceptible humans at rate μ_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Humans,RateFlow,//@parameters.1,False,Fraction ρ of exposed individuals progress to symptomatic infectious class at rate ρk(a),,,
+Dengue,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Humans,RateFlow,//@parameters.1,False,Fraction (1-ρ) of exposed individuals progress to asymptomatic infectious class at rate (1-ρ)k(a),,,
+Dengue,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.2,False,Natural death of exposed humans at rate μ_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.4,False,Symptomatic infectious individuals recover at age-specific rate γ_1(a),,,
+Dengue,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Humans,RateFlow,//@parameters.2,False,Natural death of symptomatic infectious humans at rate μ_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Humans,RateFlow,//@parameters.0,False,Asymptomatic individuals are reinfected through mosquito bites and become symptomatic at rate σβ_h(a)I_v/N_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.5,False,Asymptomatic infectious individuals recover at age-specific rate γ_2(a),,,
+Dengue,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Humans,RateFlow,//@parameters.2,False,Natural death of asymptomatic infectious humans at rate μ_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.2,False,Natural death of recovered humans at rate μ_h,,,
+Dengue,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.0,False,"Susceptible mosquitoes become infectious by biting symptomatic or asymptomatic humans at rate (1-I_v)∫β_v(a)P_∞(a)(i_h(a,t)+σz_h(a,t))da/N_h",,,
+Dengue,Parameter,B,,,,,,Model file,Certain,,,,,,The constant influx rate of the human hosts,CONSTANT,250,individuals per unit time
+Dengue,Parameter,k(a),,,,,,Model file,Certain,,,,,,The age-specific rate at which exposed humans become infectious (inverse of latent period),CONSTANT,0.6,per unit time
+Dengue,Parameter,μ_h,,,,,,Model file,Certain,,,,,,The natural death rate of the human hosts,CONSTANT,0.005,per unit time
+Dengue,Parameter,μ_v,,,,,,Model file,Certain,,,,,,The natural death rate of the mosquitoes,CONSTANT,0.65,per unit time
+Dengue,Parameter,γ_1(a),,,,,,Model file,Certain,,,,,,The age-specific recovery rate of symptomatic infectious hosts,CONSTANT,0.5,per unit time
+Dengue,Parameter,γ_2(a),,,,,,Model file,Certain,,,,,,The age-specific recovery rate of asymptomatic infectious hosts,CONSTANT,0.5,per unit time
+Dengue,Parameter,β_v(a),,,,,,Model file,Certain,,,,,,The age-specific transmission rate from infectious hosts to susceptible mosquitoes,CONSTANT,8,per unit time
+Dengue,Parameter,β_h(a),,,,,,Model file,Certain,,,,,,The age-specific transmission rate from infected mosquitoes to susceptible hosts,CONSTANT,18,per unit time
+Dengue,Parameter,ρ,,,,,,Model file,Certain,,,,,,The probability of exposed hosts transferring to symptomatic infectious hosts,CONSTANT,0.5,dimensionless
+Dengue,Parameter,σ,,,,,,Model file,Certain,,,,,,The factor characterizing the intensity of reinfection of asymptomatic infectious hosts,CONSTANT,0.007,dimensionless

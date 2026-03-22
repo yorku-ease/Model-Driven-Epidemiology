@@ -1,0 +1,1678 @@
+{
+  "model_analysis": {
+    "modelName": "Covid",
+    "summary": {
+      "modelName": "Covid",
+      "totalPopulation": null,
+      "numCompartments": 15,
+      "numParameters": 36,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals through contact with infectious individuals",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of susceptible individuals who are then quarantined via contact tracing",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent period to presymptomatic infectious stage",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Exposed Quarantined",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from quarantined exposed to presymptomatic infectious isolated stage",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious Presymptomatic",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from presymptomatic to mild/moderate symptomatic infection",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from presymptomatic to severe symptomatic infection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infectious Presymptomatic Isolated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from presymptomatic isolated to mild/moderate isolated",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from presymptomatic isolated to severe isolated",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Infectious Mild to Moderate",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Testing and isolation of mild/moderate cases",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.13",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of mild/moderate cases",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Infectious Mild to Moderate Isolated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.13",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of isolated mild/moderate cases",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Infectious Severe",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Testing and isolation of severe cases",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.9",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospital admission for severe cases not requiring ICU",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.10",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospital admission for severe cases before ICU",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "primaryName": "Infectious Severe Isolated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.9",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospital admission for isolated severe cases not requiring ICU",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.10",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospital admission for isolated severe cases before ICU",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "primaryName": "Admitted to Hospital",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.13",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery and discharge from hospital (non-ICU)",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "primaryName": "Admitted to Hospital Pre-ICU",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.11",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Transfer from hospital to ICU",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "primaryName": "ICU",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.12",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Transfer from ICU to post-ICU hospital care for survivors",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.14",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death in ICU",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "primaryName": "Admitted to Hospital Post-ICU",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.13",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery and discharge after post-ICU hospital stay",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 14,
+          "primaryName": "Dead",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Latent period",
+          "type": "CONSTANT",
+          "expression": "2.5",
+          "description": "Time from exposure to onset of infectiousness",
+          "unit": "days"
+        },
+        {
+          "index": 1,
+          "name": "Presymptomatic infectious period",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "Duration of infectiousness before symptom onset",
+          "unit": "days"
+        },
+        {
+          "index": 2,
+          "name": "Infectious period mild to moderate",
+          "type": "CONSTANT",
+          "expression": "6",
+          "description": "Symptomatic infectious period for mild-to-moderate cases in absence of isolation",
+          "unit": "days"
+        },
+        {
+          "index": 3,
+          "name": "Infectious period severe",
+          "type": "CONSTANT",
+          "expression": "6",
+          "description": "Symptomatic infectious period for severe cases; assumed equal to time to hospital admission",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "R0",
+          "type": "CONSTANT",
+          "expression": "2.3",
+          "description": "Basic reproduction number: average number of secondary infections from a primary infection in a susceptible population",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 5,
+          "name": "Quarantine duration",
+          "type": "CONSTANT",
+          "expression": "14",
+          "description": "Duration of quarantine for exposed cases",
+          "unit": "days"
+        },
+        {
+          "index": 6,
+          "name": "Relative risk of transmission for isolated cases",
+          "type": "CONSTANT",
+          "expression": "0.1",
+          "description": "Isolated cases have reduced transmission relative to unrecognized cases",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 7,
+          "name": "Hospital length of stay non-ICU",
+          "type": "CONSTANT",
+          "expression": "10",
+          "description": "Average length of stay in hospital for cases not requiring ICU care",
+          "unit": "days"
+        },
+        {
+          "index": 8,
+          "name": "Hospital length of stay pre-ICU",
+          "type": "CONSTANT",
+          "expression": "3",
+          "description": "Average length of stay in hospital before ICU admission for severe cases",
+          "unit": "days"
+        },
+        {
+          "index": 9,
+          "name": "ICU length of stay",
+          "type": "CONSTANT",
+          "expression": "21",
+          "description": "Average length of stay in ICU for severe cases requiring ICU care",
+          "unit": "days"
+        },
+        {
+          "index": 10,
+          "name": "Hospital length of stay post-ICU",
+          "type": "CONSTANT",
+          "expression": "21",
+          "description": "Average length of stay in hospital after ICU for severe cases",
+          "unit": "days"
+        },
+        {
+          "index": 11,
+          "name": "Probability of severe infection, <15 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.01",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 12,
+          "name": "Probability of severe infection, 15-49 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.03",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 13,
+          "name": "Probability of severe infection, 50-69 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.12",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 14,
+          "name": "Probability of severe infection, >=70 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.35",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 15,
+          "name": "Probability of severe infection, <15 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.02",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 16,
+          "name": "Probability of severe infection, 15-49 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.06",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 17,
+          "name": "Probability of severe infection, 50-69 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.25",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 18,
+          "name": "Probability of severe infection, >=70 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.76",
+          "description": "Probability of severe infection requiring hospital admission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 19,
+          "name": "Probability severe case requires ICU",
+          "type": "CONSTANT",
+          "expression": "0.26",
+          "description": "Probability that a severe case requires admission to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 20,
+          "name": "Probability of death in ICU, <15 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 21,
+          "name": "Probability of death in ICU, 15-49 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.2",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 22,
+          "name": "Probability of death in ICU, 50-69 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.36",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 23,
+          "name": "Probability of death in ICU, >=70 yr, no comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.58",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 24,
+          "name": "Probability of death in ICU, <15 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 25,
+          "name": "Probability of death in ICU, 15-49 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.53",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 26,
+          "name": "Probability of death in ICU, 50-69 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "0.9",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 27,
+          "name": "Probability of death in ICU, >=70 yr, comorbidities",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "Probability of death for cases admitted to ICU",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 28,
+          "name": "Base case testing and isolation rate, <15 yr",
+          "type": "CONSTANT",
+          "expression": "10",
+          "description": "Percentage of nonquarantined cases tested and isolated in base case",
+          "unit": "percent"
+        },
+        {
+          "index": 29,
+          "name": "Base case testing and isolation rate, 15-49 yr",
+          "type": "CONSTANT",
+          "expression": "40",
+          "description": "Percentage of nonquarantined cases tested and isolated in base case",
+          "unit": "percent"
+        },
+        {
+          "index": 30,
+          "name": "Base case testing and isolation rate, >=50 yr",
+          "type": "CONSTANT",
+          "expression": "70",
+          "description": "Percentage of nonquarantined cases tested and isolated in base case",
+          "unit": "percent"
+        },
+        {
+          "index": 31,
+          "name": "Base case quarantine rate",
+          "type": "CONSTANT",
+          "expression": "10",
+          "description": "Percentage of exposed cases in quarantine before becoming infectious in base case",
+          "unit": "percent"
+        },
+        {
+          "index": 32,
+          "name": "Base case physical distancing reduction",
+          "type": "CONSTANT",
+          "expression": "0",
+          "description": "Reduction in contacts with physical distancing in base case",
+          "unit": "percent"
+        },
+        {
+          "index": 33,
+          "name": "Physical distancing contact reduction (restrictive)",
+          "type": "CONSTANT",
+          "expression": "60",
+          "description": "Reduction in contacts under restrictive physical distancing scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 34,
+          "name": "Physical distancing contact reduction (combination)",
+          "type": "CONSTANT",
+          "expression": "25",
+          "description": "Reduction in contacts under combination intervention scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 35,
+          "name": "ICU threshold for dynamic intervention",
+          "type": "CONSTANT",
+          "expression": "200",
+          "description": "Number of COVID-19 cases in ICU that triggers dynamic intervention activation",
+          "unit": "cases"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Covid",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 36,
+    "parametersWithUncertainty": 36,
+    "parameters": [
+      {
+        "parameter": "Latent period",
+        "yourValue": "2.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Time from exposure to onset of infectiousness",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Presymptomatic infectious period",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Duration of infectiousness before symptom onset",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Infectious period mild to moderate",
+        "yourValue": "6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Symptomatic infectious period for mild-to-moderate cases in absence of isolation",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Infectious period severe",
+        "yourValue": "6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Symptomatic infectious period for severe cases; assumed equal to time to hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "R0",
+        "yourValue": "2.3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Basic reproduction number: average number of secondary infections from a primary infection in a susceptible population",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Quarantine duration",
+        "yourValue": "14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Duration of quarantine for exposed cases",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative risk of transmission for isolated cases",
+        "yourValue": "0.1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Isolated cases have reduced transmission relative to unrecognized cases",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Hospital length of stay non-ICU",
+        "yourValue": "10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Average length of stay in hospital for cases not requiring ICU care",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Hospital length of stay pre-ICU",
+        "yourValue": "3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Average length of stay in hospital before ICU admission for severe cases",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "ICU length of stay",
+        "yourValue": "21",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Average length of stay in ICU for severe cases requiring ICU care",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Hospital length of stay post-ICU",
+        "yourValue": "21",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "days",
+        "description": "Average length of stay in hospital after ICU for severe cases",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, <15 yr, no comorbidities",
+        "yourValue": "0.01",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, 15-49 yr, no comorbidities",
+        "yourValue": "0.03",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, 50-69 yr, no comorbidities",
+        "yourValue": "0.12",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, >=70 yr, no comorbidities",
+        "yourValue": "0.35",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, <15 yr, comorbidities",
+        "yourValue": "0.02",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, 15-49 yr, comorbidities",
+        "yourValue": "0.06",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, 50-69 yr, comorbidities",
+        "yourValue": "0.25",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of severe infection, >=70 yr, comorbidities",
+        "yourValue": "0.76",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of severe infection requiring hospital admission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability severe case requires ICU",
+        "yourValue": "0.26",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability that a severe case requires admission to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, <15 yr, no comorbidities",
+        "yourValue": "0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, 15-49 yr, no comorbidities",
+        "yourValue": "0.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, 50-69 yr, no comorbidities",
+        "yourValue": "0.36",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, >=70 yr, no comorbidities",
+        "yourValue": "0.58",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, <15 yr, comorbidities",
+        "yourValue": "0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, 15-49 yr, comorbidities",
+        "yourValue": "0.53",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, 50-69 yr, comorbidities",
+        "yourValue": "0.9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death in ICU, >=70 yr, comorbidities",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "dimensionless",
+        "description": "Probability of death for cases admitted to ICU",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Base case testing and isolation rate, <15 yr",
+        "yourValue": "10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Percentage of nonquarantined cases tested and isolated in base case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Base case testing and isolation rate, 15-49 yr",
+        "yourValue": "40",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Percentage of nonquarantined cases tested and isolated in base case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Base case testing and isolation rate, >=50 yr",
+        "yourValue": "70",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Percentage of nonquarantined cases tested and isolated in base case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Base case quarantine rate",
+        "yourValue": "10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Percentage of exposed cases in quarantine before becoming infectious in base case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Base case physical distancing reduction",
+        "yourValue": "0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Reduction in contacts with physical distancing in base case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Physical distancing contact reduction (restrictive)",
+        "yourValue": "60",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Reduction in contacts under restrictive physical distancing scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Physical distancing contact reduction (combination)",
+        "yourValue": "25",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "percent",
+        "description": "Reduction in contacts under combination intervention scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "ICU threshold for dynamic intervention",
+        "yourValue": "200",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid",
+        "unit": "cases",
+        "description": "Number of COVID-19 cases in ICU that triggers dynamic intervention activation",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 36
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Covid",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Latent period",
+        "type": "other",
+        "currentValue": 2.5,
+        "description": "Time from exposure to onset of infectiousness",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Presymptomatic infectious period",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Duration of infectiousness before symptom onset",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Infectious period mild to moderate",
+        "type": "other",
+        "currentValue": 6.0,
+        "description": "Symptomatic infectious period for mild-to-moderate cases in absence of isolation",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Infectious period severe",
+        "type": "other",
+        "currentValue": 6.0,
+        "description": "Symptomatic infectious period for severe cases; assumed equal to time to hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "R0",
+        "type": "other",
+        "currentValue": 2.3,
+        "description": "Basic reproduction number: average number of secondary infections from a primary infection in a susceptible population",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Quarantine duration",
+        "type": "other",
+        "currentValue": 14.0,
+        "description": "Duration of quarantine for exposed cases",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Relative risk of transmission for isolated cases",
+        "type": "transmission",
+        "currentValue": 0.1,
+        "description": "Isolated cases have reduced transmission relative to unrecognized cases",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Hospital length of stay non-ICU",
+        "type": "other",
+        "currentValue": 10.0,
+        "description": "Average length of stay in hospital for cases not requiring ICU care",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Hospital length of stay pre-ICU",
+        "type": "other",
+        "currentValue": 3.0,
+        "description": "Average length of stay in hospital before ICU admission for severe cases",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "ICU length of stay",
+        "type": "other",
+        "currentValue": 21.0,
+        "description": "Average length of stay in ICU for severe cases requiring ICU care",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Hospital length of stay post-ICU",
+        "type": "other",
+        "currentValue": 21.0,
+        "description": "Average length of stay in hospital after ICU for severe cases",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, <15 yr, no comorbidities",
+        "type": "other",
+        "currentValue": 0.01,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, 15-49 yr, no comorbidities",
+        "type": "other",
+        "currentValue": 0.03,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, 50-69 yr, no comorbidities",
+        "type": "other",
+        "currentValue": 0.12,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, >=70 yr, no comorbidities",
+        "type": "other",
+        "currentValue": 0.35,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, <15 yr, comorbidities",
+        "type": "other",
+        "currentValue": 0.02,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, 15-49 yr, comorbidities",
+        "type": "other",
+        "currentValue": 0.06,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, 50-69 yr, comorbidities",
+        "type": "other",
+        "currentValue": 0.25,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of severe infection, >=70 yr, comorbidities",
+        "type": "other",
+        "currentValue": 0.76,
+        "description": "Probability of severe infection requiring hospital admission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability severe case requires ICU",
+        "type": "other",
+        "currentValue": 0.26,
+        "description": "Probability that a severe case requires admission to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death in ICU, 15-49 yr, no comorbidities",
+        "type": "mortality",
+        "currentValue": 0.2,
+        "description": "Probability of death for cases admitted to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death in ICU, 50-69 yr, no comorbidities",
+        "type": "mortality",
+        "currentValue": 0.36,
+        "description": "Probability of death for cases admitted to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death in ICU, >=70 yr, no comorbidities",
+        "type": "mortality",
+        "currentValue": 0.58,
+        "description": "Probability of death for cases admitted to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death in ICU, 15-49 yr, comorbidities",
+        "type": "mortality",
+        "currentValue": 0.53,
+        "description": "Probability of death for cases admitted to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death in ICU, 50-69 yr, comorbidities",
+        "type": "mortality",
+        "currentValue": 0.9,
+        "description": "Probability of death for cases admitted to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death in ICU, >=70 yr, comorbidities",
+        "type": "mortality",
+        "currentValue": 1.0,
+        "description": "Probability of death for cases admitted to ICU",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Base case testing and isolation rate, <15 yr",
+        "type": "other",
+        "currentValue": 10.0,
+        "description": "Percentage of nonquarantined cases tested and isolated in base case",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Base case testing and isolation rate, 15-49 yr",
+        "type": "other",
+        "currentValue": 40.0,
+        "description": "Percentage of nonquarantined cases tested and isolated in base case",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Base case testing and isolation rate, >=50 yr",
+        "type": "other",
+        "currentValue": 70.0,
+        "description": "Percentage of nonquarantined cases tested and isolated in base case",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Base case quarantine rate",
+        "type": "other",
+        "currentValue": 10.0,
+        "description": "Percentage of exposed cases in quarantine before becoming infectious in base case",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Physical distancing contact reduction (restrictive)",
+        "type": "transmission",
+        "currentValue": 60.0,
+        "description": "Reduction in contacts under restrictive physical distancing scenario",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Physical distancing contact reduction (combination)",
+        "type": "transmission",
+        "currentValue": 25.0,
+        "description": "Reduction in contacts under combination intervention scenario",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "ICU threshold for dynamic intervention",
+        "type": "other",
+        "currentValue": 200.0,
+        "description": "Number of COVID-19 cases in ICU that triggers dynamic intervention activation",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Latent period",
+      "Presymptomatic infectious period",
+      "Infectious period mild to moderate",
+      "Infectious period severe",
+      "R0"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Latent period",
+        "Presymptomatic infectious period",
+        "Infectious period mild to moderate",
+        "Infectious period severe",
+        "R0"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Latent period": {
+          "mu": -17.76847243569209,
+          "mu_star": 17.76847243569209,
+          "sigma": 10.367717100917472,
+          "n_samples": 20
+        },
+        "Presymptomatic infectious period": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Infectious period mild to moderate": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Infectious period severe": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "R0": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

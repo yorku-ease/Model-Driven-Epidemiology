@@ -1,0 +1,520 @@
+{
+  "model_analysis": {
+    "modelName": "Influenza",
+    "summary": {
+      "modelName": "Influenza",
+      "totalPopulation": null,
+      "numCompartments": 6,
+      "numParameters": 11,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.3",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals at a rate \u03bb(t), where \u03bb(t) = \u03b2 * (I1(t) + I2(t)) / N.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed 1",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from the first to the second exposed stage at a daily rate \u03c3.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Exposed 2",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from the second exposed stage to the first infectious stage at a daily rate \u03c3.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious 1",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.5",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from the first to the second infectious stage at a daily rate \u03b3.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infectious 2",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03c0",
+          "type": "CONSTANT",
+          "expression": "Estimated (Unif(0,1) prior)",
+          "description": "Initial proportion of the population who is susceptible.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 1,
+          "name": "\u03bb0",
+          "type": "CONSTANT",
+          "expression": "Estimated (Unif(0, 0.000241) prior)",
+          "description": "Initial infection rate at time t=0.",
+          "unit": "1/day"
+        },
+        {
+          "index": 2,
+          "name": "\u03c8",
+          "type": "CONSTANT",
+          "expression": "Estimated (Unif(0, 0.39) prior)",
+          "description": "Exponential growth rate of the epidemic at its start.",
+          "unit": "1/day"
+        },
+        {
+          "index": 3,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "Inferred from other parameters",
+          "description": "Constant transmission rate at which new infections take place given a contact.",
+          "unit": "1/day"
+        },
+        {
+          "index": 4,
+          "name": "\u03c3",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "Daily rate of transition through exposed compartments (E1 to E2, and E2 to I1), leading to an average incubation period of 2/\u03c3 days.",
+          "unit": "1/day"
+        },
+        {
+          "index": 5,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "0.5797",
+          "description": "Daily rate of transition through infectious compartments (I1 to I2, and I2 to R), leading to an average infectious period of 2/\u03b3 days.",
+          "unit": "1/day"
+        },
+        {
+          "index": 6,
+          "name": "p_ICU",
+          "type": "CONSTANT",
+          "expression": "Estimated (Unif(0,1) prior)",
+          "description": "Probability of ICU admission given infection.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 7,
+          "name": "\u03b7",
+          "type": "CONSTANT",
+          "expression": "Estimated (Unif(1, 100) prior)",
+          "description": "Over-dispersion parameter for the Negative Binomial observation model of ICU admissions.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 8,
+          "name": "\u00b5_ICU|E",
+          "type": "CONSTANT",
+          "expression": "5.708",
+          "description": "Mean time from infection to ICU admission.",
+          "unit": "days"
+        },
+        {
+          "index": 9,
+          "name": "\u03c3^2_ICU|E",
+          "type": "CONSTANT",
+          "expression": "18.24",
+          "description": "Variance of time from infection to ICU admission.",
+          "unit": "days^2"
+        },
+        {
+          "index": 10,
+          "name": "N",
+          "type": "CONSTANT",
+          "expression": "Season-dependent",
+          "description": "Total population size. N_2012/13 = 53,679,750; N_2013/14 = 54,091,200; N_2014/15 = 54,551,450.",
+          "unit": "persons"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Influenza",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 11,
+    "parametersWithUncertainty": 11,
+    "parameters": [
+      {
+        "parameter": "\u03c0",
+        "yourValue": "Estimated (Unif(0,1) prior)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "dimensionless",
+        "description": "Initial proportion of the population who is susceptible.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bb0",
+        "yourValue": "Estimated (Unif(0, 0.000241) prior)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "1/day",
+        "description": "Initial infection rate at time t=0.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c8",
+        "yourValue": "Estimated (Unif(0, 0.39) prior)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "1/day",
+        "description": "Exponential growth rate of the epidemic at its start.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2",
+        "yourValue": "Inferred from other parameters",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "1/day",
+        "description": "Constant transmission rate at which new infections take place given a contact.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c3",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "1/day",
+        "description": "Daily rate of transition through exposed compartments (E1 to E2, and E2 to I1), leading to an average incubation period of 2/\u03c3 days.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "0.5797",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "1/day",
+        "description": "Daily rate of transition through infectious compartments (I1 to I2, and I2 to R), leading to an average infectious period of 2/\u03b3 days.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "p_ICU",
+        "yourValue": "Estimated (Unif(0,1) prior)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "dimensionless",
+        "description": "Probability of ICU admission given infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b7",
+        "yourValue": "Estimated (Unif(1, 100) prior)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "dimensionless",
+        "description": "Over-dispersion parameter for the Negative Binomial observation model of ICU admissions.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u00b5_ICU|E",
+        "yourValue": "5.708",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "days",
+        "description": "Mean time from infection to ICU admission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c3^2_ICU|E",
+        "yourValue": "18.24",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "days^2",
+        "description": "Variance of time from infection to ICU admission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "N",
+        "yourValue": "Season-dependent",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza",
+        "unit": "persons",
+        "description": "Total population size. N_2012/13 = 53,679,750; N_2013/14 = 54,091,200; N_2014/15 = 54,551,450.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 11
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Influenza",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\u03c3",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Daily rate of transition through exposed compartments (E1 to E2, and E2 to I1), leading to an average incubation period of 2/\u03c3 days.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b3",
+        "type": "other",
+        "currentValue": 0.5797,
+        "description": "Daily rate of transition through infectious compartments (I1 to I2, and I2 to R), leading to an average infectious period of 2/\u03b3 days.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u00b5_ICU|E",
+        "type": "other",
+        "currentValue": 5.708,
+        "description": "Mean time from infection to ICU admission.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c3^2_ICU|E",
+        "type": "other",
+        "currentValue": 18.24,
+        "description": "Variance of time from infection to ICU admission.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\u03c3",
+      "\u03b3",
+      "\u00b5_ICU|E",
+      "\u03c3^2_ICU|E"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\u03c3",
+        "\u03b3",
+        "\u00b5_ICU|E",
+        "\u03c3^2_ICU|E"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\u03c3": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b3": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u00b5_ICU|E": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c3^2_ICU|E": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

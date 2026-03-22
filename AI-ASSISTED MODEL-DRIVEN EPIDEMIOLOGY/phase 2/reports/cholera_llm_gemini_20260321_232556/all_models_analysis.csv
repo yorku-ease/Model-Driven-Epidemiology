@@ -1,0 +1,13 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Bacteria in Water,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Susceptible people are exposed to contaminated water and become infected.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Infectious people recover and become immune.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Bacteria in Water,RateFlow,//@parameters.0,False,Infectious people contaminate the water supply by shedding bacteria.,,,
+Cholera,Parameter,β,,,,,,Model file,Certain,,,,,,Rate of 'contact' with reservoir water.,CONSTANT,1e-5 to 1,per day
+Cholera,Parameter,γ,,,,,,Model file,Certain,,,,,,"Per capita recovery rate, the reciprocal of the duration of cholera infection (2.9 to 14 days).",CONSTANT,1/14 to 1/2.9,per day
+Cholera,Parameter,δ,,,,,,Model file,Certain,,,,,,"Cholera decay rate in the water reservoir, the reciprocal of the cholera life span in water (3 to 41 days).",CONSTANT,1/41 to 1/3,per day
+Cholera,Parameter,ξ,,,,,,Model file,Certain,,,,,,Rate of water contamination by humans.,CONSTANT,0.01 to 10,cells * mL-1 * person-1 * day-1
+Cholera,Parameter,κ,,,,,,Model file,Certain,,,,,,Concentration of cholera that yields a 50% chance of infection.,CONSTANT,1e5 to 1e6,cells/mL

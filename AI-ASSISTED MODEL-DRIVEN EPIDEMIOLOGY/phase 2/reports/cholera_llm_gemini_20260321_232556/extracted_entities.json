@@ -1,0 +1,187 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Susceptible people (S)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible people (S)"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Infectious people (I)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious people (I)"
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Recovered and immune people (R)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovered and immune people (R)"
+    },
+    {
+      "normalized_name": "Bacteria in Water",
+      "raw_text": "Bacteria in Water",
+      "page_number": 0,
+      "text_span": "Cholera bacterial concentration in the water reservoir (B)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Cholera bacterial concentration in the water reservoir (B)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Susceptible people are exposed to contaminated water and become infected.",
+      "page_number": 0,
+      "text_span": "Susceptible people are exposed to contaminated water and become infected.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible people are exposed to contaminated water and become infected."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Infectious people recover and become immune.",
+      "page_number": 0,
+      "text_span": "Infectious people recover and become immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious people recover and become immune."
+    },
+    {
+      "source": "Infectious",
+      "target": "Bacteria in Water",
+      "flow_type": "RateFlow",
+      "raw_text": "Infectious people contaminate the water supply by shedding bacteria.",
+      "page_number": 0,
+      "text_span": "Infectious people contaminate the water supply by shedding bacteria.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious people contaminate the water supply by shedding bacteria."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "1e-5 to 1",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of 'contact' with reservoir water.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of 'contact' with reservoir water."
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "1/14 to 1/2.9",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Per capita recovery rate, the reciprocal of the duration of cholera infection (2.9 to 14 days).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Per capita recovery rate, the reciprocal of the duration of cholera infection (2.9 to 14 days)."
+    },
+    {
+      "normalized_name": "\u03b4",
+      "raw_text": "\u03b4",
+      "value": "1/41 to 1/3",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Cholera decay rate in the water reservoir, the reciprocal of the cholera life span in water (3 to 41 days).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Cholera decay rate in the water reservoir, the reciprocal of the cholera life span in water (3 to 41 days)."
+    },
+    {
+      "normalized_name": "\u03be",
+      "raw_text": "\u03be",
+      "value": "0.01 to 10",
+      "unit": "cells * mL-1 * person-1 * day-1",
+      "page_number": 0,
+      "text_span": "Rate of water contamination by humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of water contamination by humans."
+    },
+    {
+      "normalized_name": "\u03ba",
+      "raw_text": "\u03ba",
+      "value": "1e5 to 1e6",
+      "unit": "cells/mL",
+      "page_number": 0,
+      "text_span": "Concentration of cholera that yields a 50% chance of infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of cholera that yields a 50% chance of infection."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 4,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 7,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 5,
+    "num_stratifications": 1,
+    "num_interventions": 3
+  }
+}

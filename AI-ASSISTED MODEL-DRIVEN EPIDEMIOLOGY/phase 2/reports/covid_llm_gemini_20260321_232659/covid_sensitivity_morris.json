@@ -1,0 +1,165 @@
+{
+  "modelName": "Covid",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "Latent period",
+      "type": "other",
+      "currentValue": 2.5,
+      "description": "Time from exposure to onset of infectiousness.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Presymptomatic infectious period",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Duration of infectiousness before symptom onset.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Infectious period (mild to moderate)",
+      "type": "other",
+      "currentValue": 6.0,
+      "description": "Symptomatic infectious period for mild-to-moderate cases (in absence of isolation).",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Infectious period (severe)",
+      "type": "other",
+      "currentValue": 6.0,
+      "description": "Symptomatic infectious period for severe cases; assumed equal to time to hospital admission.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Basic reproduction number",
+      "type": "other",
+      "currentValue": 2.3,
+      "description": "Average number of secondary infections derived from a primary infection in a susceptible population.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Time in quarantine",
+      "type": "other",
+      "currentValue": 14.0,
+      "description": "Duration of quarantine for exposed cases.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Relative risk of transmission for cases in isolation",
+      "type": "transmission",
+      "currentValue": 0.1,
+      "description": "Transmission reduction for isolated cases relative to unrecognized cases.",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Average length of stay in hospital for cases not requiring ICU care",
+      "type": "other",
+      "currentValue": 10.0,
+      "description": "Duration of stay for hospitalized cases not requiring ICU.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Average length of stay in hospital before ICU admission",
+      "type": "other",
+      "currentValue": 3.0,
+      "description": "Duration of stay in hospital for severe cases before they are admitted to the ICU.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Average length of stay in ICU",
+      "type": "other",
+      "currentValue": 21.0,
+      "description": "Duration of stay for cases in the ICU.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Average length of stay in hospital after ICU",
+      "type": "other",
+      "currentValue": 21.0,
+      "description": "Duration of stay in hospital for cases after being discharged from the ICU.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Probability severe case requires admission to ICU",
+      "type": "other",
+      "currentValue": 0.26,
+      "description": "Probability that a severe case requires admission to the ICU.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Proportion of exposed cases quarantined (Base Case)",
+      "type": "other",
+      "currentValue": 10.0,
+      "description": "Proportion of exposed cases who are identified and enter quarantine before becoming infectious (Base Case).",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "Latent period",
+    "Presymptomatic infectious period",
+    "Infectious period (mild to moderate)",
+    "Infectious period (severe)",
+    "Basic reproduction number"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "Latent period",
+      "Presymptomatic infectious period",
+      "Infectious period (mild to moderate)",
+      "Infectious period (severe)",
+      "Basic reproduction number"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "Latent period": {
+        "mu": -16.251158206043474,
+        "mu_star": 16.251158206043474,
+        "sigma": 7.661994593616025,
+        "n_samples": 20
+      },
+      "Presymptomatic infectious period": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "Infectious period (mild to moderate)": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "Infectious period (severe)": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "Basic reproduction number": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

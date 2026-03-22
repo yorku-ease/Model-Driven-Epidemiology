@@ -1,0 +1,26 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebola,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Quarantine,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Ebola Virus Pathogens in Environment,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.2,False,"Infection of susceptible individuals through contact with infectious people, deceased people, and environmental pathogens at rates ψ1, ψ3, ψ2 respectively",,,
+Ebola,Flow,,,,,,,Model file,Certain,,Quarantine,RateFlow,//@parameters.8,False,Infected people entering quarantine at rate ρ3,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Ebola Virus Pathogens in Environment,RateFlow,//@parameters.7,False,Shedding of pathogens by infected humans into the environment at rate ρ2,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.9,False,Recovery of quarantined individuals at rate w1,,,
+Ebola,Parameter,α1,,,,,,Model file,Certain,,,,,,The proportion at which susceptible people are recruited,CONSTANT,10,people per unit time
+Ebola,Parameter,α2,,,,,,Model file,Certain,,,,,,The proportion at which infected people are recruited,CONSTANT,3,people per unit time
+Ebola,Parameter,ψ1,,,,,,Model file,Certain,,,,,,The rate of contact (effective) of infected human,CONSTANT,0.006,per unit time
+Ebola,Parameter,ψ2,,,,,,Model file,Certain,,,,,,The rate of contact of Ebola virus pathogens in the environment,CONSTANT,0.0012,per unit time
+Ebola,Parameter,ψ3,,,,,,Model file,Certain,,,,,,Rate of contact (effective) of deceased (human),CONSTANT,0.006,per unit time
+Ebola,Parameter,ε,,,,,,Model file,Certain,,,,,,Natural death rate of humans,CONSTANT,0.5,per unit time
+Ebola,Parameter,ρ1,,,,,,Model file,Certain,,,,,,Rate of deaths of human individuals due to infection,CONSTANT,0.123,per unit time
+Ebola,Parameter,ρ2,,,,,,Model file,Certain,,,,,,Rate at which shedding of infected humans,CONSTANT,0.04,per unit time
+Ebola,Parameter,ρ3,,,,,,Model file,Certain,,,,,,The rate at which infected people quarantined,CONSTANT,0.12,per unit time
+Ebola,Parameter,w1,,,,,,Model file,Certain,,,,,,The rate at which quarantined people are recovered,CONSTANT,0.04,per unit time
+Ebola,Parameter,w2,,,,,,Model file,Certain,,,,,,The rate at which quarantine people are in deceased,CONSTANT,0.22,per unit time
+Ebola,Parameter,h,,,,,,Model file,Certain,,,,,,Proportion of shedding of deceased people,CONSTANT,0.04,per unit time
+Ebola,Parameter,c,,,,,,Model file,Certain,,,,,,The proportion rate of burial deceased people,CONSTANT,0.8,per unit time
+Ebola,Parameter,b,,,,,,Model file,Certain,,,,,,The rate at which EVD in the environment decays,CONSTANT,0,per unit time
+Ebola,Parameter,d,,,,,,Model file,Certain,,,,,,Additional input of pathogens into the environment,CONSTANT,0.0015,per unit time

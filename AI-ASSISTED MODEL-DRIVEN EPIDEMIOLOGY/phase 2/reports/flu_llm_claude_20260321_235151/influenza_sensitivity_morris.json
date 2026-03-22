@@ -1,0 +1,125 @@
+{
+  "modelName": "Influenza",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "σ",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Daily rate of transition between exposed sub-compartments (E1 to E2 and E2 to I1), leading to average incubation period dL = 2/σ days",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "γ",
+      "type": "other",
+      "currentValue": 0.5797,
+      "description": "Daily rate of transition between infectious sub-compartments (I1 to I2 and I2 to R), leading to average infectious period dI = 2/γ days",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "µICU|E",
+      "type": "other",
+      "currentValue": 5.708,
+      "description": "Mean time from infection to ICU admission (Gamma distributed waiting time)",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "σ2ICU|E",
+      "type": "other",
+      "currentValue": 18.24,
+      "description": "Variance of time from infection to ICU admission",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "δt",
+      "type": "other",
+      "currentValue": 0.25,
+      "description": "Discrete time step length (quarter of a day)",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "N2012/13",
+      "type": "other",
+      "currentValue": 53679750.0,
+      "description": "Population size for 2012/13 season",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "N2013/14",
+      "type": "other",
+      "currentValue": 54091200.0,
+      "description": "Population size for 2013/14 season",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "N2014/15",
+      "type": "other",
+      "currentValue": 54551450.0,
+      "description": "Population size for 2014/15 season",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "σ",
+    "γ",
+    "µICU|E",
+    "σ2ICU|E",
+    "δt"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "σ",
+      "γ",
+      "µICU|E",
+      "σ2ICU|E",
+      "δt"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "σ": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "γ": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "µICU|E": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "σ2ICU|E": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "δt": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

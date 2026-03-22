@@ -1,0 +1,17 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Infectious,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Recovered,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Bacteria in Water Reservoir,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Susceptible people exposed to contaminated water become infected; rate depends on force of infection λ = β * B / (κ + B),,,
+Cholera,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,Birth into the susceptible population (birth rate),,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Infectious people recover and become immune at recovery rate γ,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Bacteria in Water Reservoir,RateFlow,//@parameters.3,False,Infectious people shed V. cholerae into the water reservoir at rate ξ,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Death from infectious compartment due to cholera or other causes,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Natural death from recovered compartment,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Bacteria in Water Reservoir,RateFlow,0.0,False,Bacteria decay/removal from the water reservoir at rate δ,,,
+Cholera,Parameter,β,,,,,,Model file,Certain,,,,,,Rate of contact between susceptible population and contaminated water reservoir,CONSTANT,10^-5 to 1,days^-1
+Cholera,Parameter,1/γ,,,,,,Model file,Certain,,,,,,Duration of cholera infection; γ is the per capita recovery rate,CONSTANT,2.9 to 14,days
+Cholera,Parameter,1/δ,,,,,,Model file,Certain,,,,,,Cholera life span in water reservoir; δ is the bacteria decay/removal rate,CONSTANT,3 to 41,days
+Cholera,Parameter,ξ,,,,,,Model file,Certain,,,,,,Rate of water contamination by infectious humans shedding V. cholerae into the water reservoir,CONSTANT,0.01 to 10,cells mL^-1 person^-1 day^-1
+Cholera,Parameter,κ,,,,,,Model file,Certain,,,,,,Concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate β,CONSTANT,10^5 to 10^6,cells/mL

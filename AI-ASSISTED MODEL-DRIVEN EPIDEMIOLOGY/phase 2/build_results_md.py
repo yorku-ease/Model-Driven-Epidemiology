@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
-"""Build RESULTS_NEW_RUN.md from latest evaluation_report.json per disease/provider."""
+"""Build RESULTS_REPORT.md from latest evaluation_report.json per disease/provider.
+
+Examples:
+  python3 build_results_md.py
+  python3 build_results_md.py --reports-dir reports --output RESULTS_REPORT_CURRENT.md
+  python3 build_results_md.py --reports-dir old-reports --output RESULTS_REPORT_OLD.md \\
+      --title "Phase 2 Evaluation Results (archived runs)"
+"""
+import argparse
 import json
 from pathlib import Path
 
-REPORTS_DIR = Path(__file__).resolve().parent / "reports"
-OUT_MD = Path(__file__).resolve().parent / "RESULTS_REPORT.md"
+DEFAULT_REPORTS_DIR = Path(__file__).resolve().parent / "reports"
+DEFAULT_OUT_MD = Path(__file__).resolve().parent / "RESULTS_REPORT.md"
 
 DISEASES = [
     "cholera",
@@ -32,12 +40,12 @@ DISEASE_DISPLAY = {
 }
 
 
-def get_latest_per_disease():
+def get_latest_per_disease(reports_dir: Path):
     """For each (disease, provider) return path to latest evaluation_report.json dir."""
-    if not REPORTS_DIR.is_dir():
+    if not reports_dir.is_dir():
         return {}
     out = {}
-    for subdir in REPORTS_DIR.iterdir():
+    for subdir in reports_dir.iterdir():
         if not subdir.is_dir():
             continue
         name = subdir.name
@@ -72,12 +80,51 @@ def load_scores(report_dir):
     }
 
 
-def fmt(p, r, f1):
-    return f"{p:.2f} / {r:.2f} / **{f1:.2f}**"
+def fmt_recall_first(p, r, f1):
+    """Recall first and bold — primary metric (how much of the gold standard was found)."""
+    return f"**{r:.2f}** / {p:.2f} / {f1:.2f}"
+
+
+def metric_from_cell(cell_str: str, index: int) -> str:
+    """Parse P/R/F1 from '**r** / p / f1' style cell (index 0=R, 1=P, 2=F1)."""
+    if not cell_str or cell_str == "-":
+        return "-"
+    parts = [x.strip().replace("*", "") for x in cell_str.split("/")]
+    if len(parts) <= index:
+        return "-"
+    return parts[index]
 
 
 def main():
-    latest = get_latest_per_disease()
+    parser = argparse.ArgumentParser(
+        description="Aggregate Phase 2 evaluation P/R/F1 into a markdown report."
+    )
+    parser.add_argument(
+        "--reports-dir",
+        type=Path,
+        default=DEFAULT_REPORTS_DIR,
+        help=f"Directory with run folders (default: {DEFAULT_REPORTS_DIR.name}/)",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=Path,
+        default=DEFAULT_OUT_MD,
+        help=f"Output markdown path (default: {DEFAULT_OUT_MD.name})",
+    )
+    parser.add_argument(
+        "--title",
+        default="Phase 2 Evaluation Results",
+        help="H1 title for the report",
+    )
+    args = parser.parse_args()
+
+    reports_dir = args.reports_dir.resolve()
+    out_md = args.output
+    if not out_md.is_absolute():
+        out_md = (Path(__file__).resolve().parent / out_md).resolve()
+
+    latest = get_latest_per_disease(reports_dir)
     # Collect per-disease scores
     openai_rows = []
     gemini_rows = []
@@ -100,22 +147,22 @@ def main():
             row = (
                 display,
                 (
-                    fmt(c.get("precision", 0), c.get("recall", 0), c.get("f1", 0)),
-                    fmt(p.get("precision", 0), p.get("recall", 0), p.get("f1", 0)),
-                    fmt(fl.get("precision", 0), fl.get("recall", 0), fl.get("f1", 0)),
+                    fmt_recall_first(c.get("precision", 0), c.get("recall", 0), c.get("f1", 0)),
+                    fmt_recall_first(p.get("precision", 0), p.get("recall", 0), p.get("f1", 0)),
+                    fmt_recall_first(fl.get("precision", 0), fl.get("recall", 0), fl.get("f1", 0)),
                 ),
             )
             rows.append(row)
 
     # Averages (only over diseases we have data for)
+    # Cell format: "**recall** / precision / f1" → index 0=R, 1=P, 2=F1
     def avg(rows, kind, metric):
         vals = []
+        idx = {"recall": 0, "precision": 1, "f1": 2}[metric]
         for _, s in rows:
             if s is None:
                 continue
-            idx = {"precision": 0, "recall": 1, "f1": 2}[metric]
-            # parse from formatted string like "0.86 / 1.00 / **0.92**"
-            part = s[kind].split("/")[idx].strip().strip("*")
+            part = s[kind].split("/")[idx].strip().replace("*", "")
             vals.append(float(part))
         return round(sum(vals) / len(vals), 2) if vals else 0
 
@@ -128,34 +175,34 @@ def main():
             gemini_avg[(kind, metric)] = avg(gemini_rows, kind, metric)
             claude_avg[(kind, metric)] = avg(claude_rows, kind, metric)
 
-    # F1-only for summary
-    def f1_vals(trip):
+    # Recall-only for quick summary (R / P / F1 order in cells → index 0 = recall)
+    def recall_triple(trip):
         if not trip:
             return ("-", "-", "-")
-        return tuple(trip[i].split("/")[2].strip().replace("*", "") for i in range(3))
+        return tuple(metric_from_cell(trip[i], 0) for i in range(3))
 
-    openai_f1 = []
-    gemini_f1 = []
-    claude_f1 = []
+    openai_recall = []
+    gemini_recall = []
+    claude_recall = []
     for i, disease in enumerate(DISEASES):
         display = DISEASE_DISPLAY[disease]
         o_row = openai_rows[i]
         g_row = gemini_rows[i]
         c_row = claude_rows[i]
-        o_f1 = f1_vals(o_row[1])
-        g_f1 = f1_vals(g_row[1])
-        c_f1 = f1_vals(c_row[1])
-        openai_f1.append((display, o_f1))
-        gemini_f1.append((display, g_f1))
-        claude_f1.append((display, c_f1))
+        openai_recall.append((display, recall_triple(o_row[1])))
+        gemini_recall.append((display, recall_triple(g_row[1])))
+        claude_recall.append((display, recall_triple(c_row[1])))
 
-    # Build markdown
+    # Build markdown — **Recall first** (coverage of gold items; not missing structure)
     lines = [
-        "## 1. Per-disease scores (Precision / Recall / F1)",
+        "## 1. Per-disease scores (**Recall** / Precision / F1)",
+        "",
+        "_Primary metric: **Recall** — fraction of gold-standard compartments, parameters, and flows that were retrieved. "
+        "Higher recall = fewer missed items. Precision penalizes hallucinated extras; use it secondarily._",
         "",
         "### 1.1 OpenAI (GPT-4o-mini)",
         "",
-        "| Disease      | Compartments (P / R / F1)   | Parameters (P / R / F1)     | Flows (P / R / F1)        |",
+        "| Disease      | Compartments (R / P / F1)   | Parameters (R / P / F1)     | Flows (R / P / F1)        |",
         "|-------------|-----------------------------|-----------------------------|----------------------------|",
     ]
     for (display, s) in openai_rows:
@@ -167,7 +214,7 @@ def main():
         "",
         "### 1.2 Gemini (2.5 Pro / Flash)",
         "",
-        "| Disease      | Compartments (P / R / F1)   | Parameters (P / R / F1)     | Flows (P / R / F1)        |",
+        "| Disease      | Compartments (R / P / F1)   | Parameters (R / P / F1)     | Flows (R / P / F1)        |",
         "|-------------|-----------------------------|-----------------------------|----------------------------|",
     ])
     for (display, s) in gemini_rows:
@@ -179,7 +226,7 @@ def main():
         "",
         "### 1.3 Claude (Opus 4)",
         "",
-        "| Disease      | Compartments (P / R / F1)   | Parameters (P / R / F1)     | Flows (P / R / F1)        |",
+        "| Disease      | Compartments (R / P / F1)   | Parameters (R / P / F1)     | Flows (R / P / F1)        |",
         "|-------------|-----------------------------|-----------------------------|----------------------------|",
     ])
     for (display, s) in claude_rows:
@@ -193,58 +240,61 @@ def main():
         "",
         f"## 2. Averages across {len(DISEASES)} diseases",
         "",
-        "| Provider  | Metric     | Compartments P / R / F1 (avg) | Parameters P / R / F1 (avg) | Flows P / R / F1 (avg) |",
-        "|-----------|------------|--------------------------------|-----------------------------|-------------------------|",
-        f"| **OpenAI**  | Precision | **{openai_avg[(0,'precision')]:.2f}**                       | **{openai_avg[(1,'precision')]:.2f}**                    | **{openai_avg[(2,'precision')]:.2f}**                |",
-        f"|           | Recall     | **{openai_avg[(0,'recall')]:.2f}**                       | **{openai_avg[(1,'recall')]:.2f}**                    | **{openai_avg[(2,'recall')]:.2f}**                |",
-        f"|           | **F1**     | **{openai_avg[(0,'f1')]:.2f}**                       | **{openai_avg[(1,'f1')]:.2f}**                    | **{openai_avg[(2,'f1')]:.2f}**                |",
-        f"| **Gemini**  | Precision | **{gemini_avg[(0,'precision')]:.2f}**                       | **{gemini_avg[(1,'precision')]:.2f}**                    | **{gemini_avg[(2,'precision')]:.2f}**                |",
-        f"|           | Recall     | **{gemini_avg[(0,'recall')]:.2f}**                       | **{gemini_avg[(1,'recall')]:.2f}**                    | **{gemini_avg[(2,'recall')]:.2f}**                |",
-        f"|           | **F1**     | **{gemini_avg[(0,'f1')]:.2f}**                       | **{gemini_avg[(1,'f1')]:.2f}**                    | **{gemini_avg[(2,'f1')]:.2f}**                |",
-        f"| **Claude**  | Precision | **{claude_avg[(0,'precision')]:.2f}**                       | **{claude_avg[(1,'precision')]:.2f}**                    | **{claude_avg[(2,'precision')]:.2f}**                |",
-        f"|           | Recall     | **{claude_avg[(0,'recall')]:.2f}**                       | **{claude_avg[(1,'recall')]:.2f}**                    | **{claude_avg[(2,'recall')]:.2f}**                |",
-        f"|           | **F1**     | **{claude_avg[(0,'f1')]:.2f}**                       | **{claude_avg[(1,'f1')]:.2f}**                    | **{claude_avg[(2,'f1')]:.2f}**                |",
+        "| Provider  | Metric     | Compartments (avg) | Parameters (avg) | Flows (avg) |",
+        "|-----------|------------|--------------------|------------------|-------------|",
+        f"| **OpenAI**  | **Recall** | **{openai_avg[(0,'recall')]:.2f}** | **{openai_avg[(1,'recall')]:.2f}** | **{openai_avg[(2,'recall')]:.2f}** |",
+        f"|           | Precision | {openai_avg[(0,'precision')]:.2f} | {openai_avg[(1,'precision')]:.2f} | {openai_avg[(2,'precision')]:.2f} |",
+        f"|           | F1        | {openai_avg[(0,'f1')]:.2f} | {openai_avg[(1,'f1')]:.2f} | {openai_avg[(2,'f1')]:.2f} |",
+        f"| **Gemini**  | **Recall** | **{gemini_avg[(0,'recall')]:.2f}** | **{gemini_avg[(1,'recall')]:.2f}** | **{gemini_avg[(2,'recall')]:.2f}** |",
+        f"|           | Precision | {gemini_avg[(0,'precision')]:.2f} | {gemini_avg[(1,'precision')]:.2f} | {gemini_avg[(2,'precision')]:.2f} |",
+        f"|           | F1        | {gemini_avg[(0,'f1')]:.2f} | {gemini_avg[(1,'f1')]:.2f} | {gemini_avg[(2,'f1')]:.2f} |",
+        f"| **Claude**  | **Recall** | **{claude_avg[(0,'recall')]:.2f}** | **{claude_avg[(1,'recall')]:.2f}** | **{claude_avg[(2,'recall')]:.2f}** |",
+        f"|           | Precision | {claude_avg[(0,'precision')]:.2f} | {claude_avg[(1,'precision')]:.2f} | {claude_avg[(2,'precision')]:.2f} |",
+        f"|           | F1        | {claude_avg[(0,'f1')]:.2f} | {claude_avg[(1,'f1')]:.2f} | {claude_avg[(2,'f1')]:.2f} |",
         "",
-        "**Overall (mean of provider F1 over diseases where available):**",
-        f"- Compartments F1: OpenAI **{openai_avg[(0,'f1')]:.2f}**, Gemini **{gemini_avg[(0,'f1')]:.2f}**, Claude **{claude_avg[(0,'f1')]:.2f}**",
-        f"- Parameters F1: OpenAI **{openai_avg[(1,'f1')]:.2f}**, Gemini **{gemini_avg[(1,'f1')]:.2f}**, Claude **{claude_avg[(1,'f1')]:.2f}**",
-        f"- Flows F1: OpenAI **{openai_avg[(2,'f1')]:.2f}**, Gemini **{gemini_avg[(2,'f1')]:.2f}**, Claude **{claude_avg[(2,'f1')]:.2f}**",
+        "**Overall (mean recall — higher = fewer missed gold items):**",
+        f"- Compartments recall: OpenAI **{openai_avg[(0,'recall')]:.2f}**, Gemini **{gemini_avg[(0,'recall')]:.2f}**, Claude **{claude_avg[(0,'recall')]:.2f}**",
+        f"- Parameters recall: OpenAI **{openai_avg[(1,'recall')]:.2f}**, Gemini **{gemini_avg[(1,'recall')]:.2f}**, Claude **{claude_avg[(1,'recall')]:.2f}**",
+        f"- Flows recall: OpenAI **{openai_avg[(2,'recall')]:.2f}**, Gemini **{gemini_avg[(2,'recall')]:.2f}**, Claude **{claude_avg[(2,'recall')]:.2f}**",
         "",
         "---",
         "",
-        "## 3. F1 summary table (for quick scan)",
+        "## 3. Recall summary table (quick scan — Compartments / Parameters / Flows)",
         "",
-        "| Disease       | OpenAI C / Par / Flow (F1) | Gemini C / Par / Flow (F1) | Claude C / Par / Flow (F1) |",
-        "|---------------|----------------------------|----------------------------|----------------------------|",
+        "| Disease       | OpenAI R (C / Par / Flow) | Gemini R (C / Par / Flow) | Claude R (C / Par / Flow) |",
+        "|---------------|---------------------------|---------------------------|---------------------------|",
     ])
     claude_n = sum(1 for _, s in claude_rows if s is not None)
     for i in range(len(DISEASES)):
         display = DISEASE_DISPLAY[DISEASES[i]]
-        o = openai_f1[i][1]
-        g = gemini_f1[i][1]
-        c = claude_f1[i][1]
+        o = openai_recall[i][1]
+        g = gemini_recall[i][1]
+        c = claude_recall[i][1]
         lines.append(f"| {display:<14} | {o[0]} / {o[1]} / {o[2]:<23} | {g[0]} / {g[1]} / {g[2]:<23} | {c[0]} / {c[1]} / {c[2]:<23} |")
-    o_c = openai_avg[(0, "f1")]
-    o_p = openai_avg[(1, "f1")]
-    o_f = openai_avg[(2, "f1")]
-    g_c = gemini_avg[(0, "f1")]
-    g_p = gemini_avg[(1, "f1")]
-    g_f = gemini_avg[(2, "f1")]
-    c_c = claude_avg[(0, "f1")]
-    c_p = claude_avg[(1, "f1")]
-    c_f = claude_avg[(2, "f1")]
+    o_c = openai_avg[(0, "recall")]
+    o_p = openai_avg[(1, "recall")]
+    o_f = openai_avg[(2, "recall")]
+    g_c = gemini_avg[(0, "recall")]
+    g_p = gemini_avg[(1, "recall")]
+    g_f = gemini_avg[(2, "recall")]
+    c_c = claude_avg[(0, "recall")]
+    c_p = claude_avg[(1, "recall")]
+    c_f = claude_avg[(2, "recall")]
     claude_avg_suffix = f" ({claude_n})" if claude_n < len(DISEASES) and claude_n else ""
-    lines.append(f"| **Average**   | **{o_c:.2f} / {o_p:.2f} / {o_f:.2f}**     | **{g_c:.2f} / {g_p:.2f} / {g_f:.2f}**     | **{c_c:.2f} / {c_p:.2f} / {c_f:.2f}**{claude_avg_suffix}     |")
+    lines.append(f"| **Avg recall** | **{o_c:.2f} / {o_p:.2f} / {o_f:.2f}**     | **{g_c:.2f} / {g_p:.2f} / {g_f:.2f}**     | **{c_c:.2f} / {c_p:.2f} / {c_f:.2f}**{claude_avg_suffix}     |")
 
-    title = "# Phase 2 Evaluation Results\n\n"
+    title = f"# {args.title}\n\n"
     intro = (
-        "This report summarizes precision (P), recall (R), and F1 for **compartments**, **parameters**, and **flows** "
-        "against baseline `.compmodel` gold standards. Each row is the latest run per disease and provider.\n\n"
-        "For a **before/after comparison** (initial vs improved pipeline) and what was effective in raising results "
-        "(PDF extractor, section detection, unified LLM, etc.), see **[COMPARISON_REPORT.md](COMPARISON_REPORT.md)**.\n\n---\n\n"
+        f"**Source runs:** `{reports_dir.name}/` (latest timestamp per disease × provider).\n\n"
+        "**Primary metric: recall** — share of gold-standard compartments, parameters, and flows that appear in the "
+        "extracted model (minimize misses). Values are shown as **Recall / Precision / F1** per category. "
+        "Precision is secondary (it penalizes hallucinated extras).\n\n"
+        "For pipeline **before/after** notes, see **INSTRUCTIONS.md** "
+        "(appendix: *Phase 2: Before vs After — What Improved Results*).\n\n---\n\n"
     )
-    OUT_MD.write_text(title + intro + "\n".join(lines))
-    print("Wrote", OUT_MD)
+    out_md.parent.mkdir(parents=True, exist_ok=True)
+    out_md.write_text(title + intro + "\n".join(lines))
+    print("Wrote", out_md)
 
 
 if __name__ == "__main__":

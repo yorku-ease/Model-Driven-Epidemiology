@@ -3,9 +3,13 @@
 Extracts tables from PDF files using Camelot with both stream and lattice modes.
 """
 
+import math
 import re
 from pathlib import Path
 from typing import List, Dict, Any
+
+import numpy as np
+import pandas as pd
 
 
 class CamelotTableExtractor:
@@ -13,6 +17,20 @@ class CamelotTableExtractor:
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def _cell_to_str(v) -> str:
+        """Coerce any Camelot/pandas cell to str (regex requires str, not float/NA)."""
+        if v is None:
+            return ""
+        try:
+            if pd.isna(v):
+                return ""
+        except (TypeError, ValueError):
+            pass
+        if isinstance(v, float) and math.isnan(v):
+            return ""
+        return str(v)
 
     def _is_valid_camelot_df(self, df) -> bool:
         """Validate extracted table dataframe."""
@@ -30,13 +48,13 @@ class CamelotTableExtractor:
             return False
 
         math_tokens = re.compile(r"[=¼∂∑∫λμθβγΔ]")
-        math_cells = sum(
-            1 for v in df.astype(str).values.flatten() if math_tokens.search(v)
-        )
+        flat_str = [self._cell_to_str(v) for v in np.asarray(df).ravel()]
+        math_cells = sum(1 for s in flat_str if math_tokens.search(s))
         if math_cells / (rows * cols) > 0.3:
             return False
 
-        avg_len = df.astype(str).map(len).values.mean()
+        lens = [len(s) for s in flat_str]
+        avg_len = float(np.mean(lens)) if lens else 0.0
         if avg_len > 80:
             return False
 

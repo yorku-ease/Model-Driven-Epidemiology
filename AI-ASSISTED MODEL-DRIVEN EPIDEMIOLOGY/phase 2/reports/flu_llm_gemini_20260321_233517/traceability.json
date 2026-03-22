@@ -1,0 +1,305 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals susceptible to influenza infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 1": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the first stage of the latent period, infected but not yet infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 2": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the second stage of the latent period, infected but not yet infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 1": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the first stage of the infectious period.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 2": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the second stage of the infectious period.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from infection and are considered immune.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed 1": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals at a rate \u03bb(t), where \u03bb(t) = \u03b2 * (I1(t) + I2(t)) / N.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 1 -> Exposed 2": {
+      "evidence": [
+        {
+          "text_span": "Progression from the first to the second exposed stage at a daily rate \u03c3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed 2 -> Infectious 1": {
+      "evidence": [
+        {
+          "text_span": "Progression from the second exposed stage to the first infectious stage at a daily rate \u03c3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious 1 -> Infectious 2": {
+      "evidence": [
+        {
+          "text_span": "Progression from the first to the second infectious stage at a daily rate \u03b3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03c0": {
+      "evidence": [
+        {
+          "text_span": "Initial proportion of the population who is susceptible.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Estimated (Unif(0,1) prior)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bb0": {
+      "evidence": [
+        {
+          "text_span": "Initial infection rate at time t=0.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Estimated (Unif(0, 0.000241) prior)",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c8": {
+      "evidence": [
+        {
+          "text_span": "Exponential growth rate of the epidemic at its start.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Estimated (Unif(0, 0.39) prior)",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "Constant transmission rate at which new infections take place given a contact.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inferred from other parameters",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3": {
+      "evidence": [
+        {
+          "text_span": "Daily rate of transition through exposed compartments (E1 to E2, and E2 to I1), leading to an average incubation period of 2/\u03c3 days.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Daily rate of transition through infectious compartments (I1 to I2, and I2 to R), leading to an average infectious period of 2/\u03b3 days.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5797",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "p_ICU": {
+      "evidence": [
+        {
+          "text_span": "Probability of ICU admission given infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Estimated (Unif(0,1) prior)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b7": {
+      "evidence": [
+        {
+          "text_span": "Over-dispersion parameter for the Negative Binomial observation model of ICU admissions.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Estimated (Unif(1, 100) prior)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u00b5_ICU|E": {
+      "evidence": [
+        {
+          "text_span": "Mean time from infection to ICU admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.708",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3^2_ICU|E": {
+      "evidence": [
+        {
+          "text_span": "Variance of time from infection to ICU admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "18.24",
+          "unit": "days^2"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N": {
+      "evidence": [
+        {
+          "text_span": "Total population size. N_2012/13 = 53,679,750; N_2013/14 = 54,091,200; N_2014/15 = 54,551,450.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Season-dependent",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 13,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 24,
+    "items_with_evidence": 24,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 24,
+    "faithfulness_percentage": 100.0
+  }
+}

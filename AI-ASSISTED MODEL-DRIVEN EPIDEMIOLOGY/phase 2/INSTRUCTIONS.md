@@ -9,7 +9,7 @@ Complete guide to running Phase 2 with detailed inputs and outputs for each step
 3. **Put paper in** → `data/papers/`
 4. **Run** → `python3 run_phase2.py --paper data/papers/your_paper.pdf --output reports` (add `--llm-provider gemini` for Gemini)
 5. **Check results** → Open the printed output folder (e.g. `reports/cholera_llm_gemini_20260211_201419`) and check `phase2_final_report.json` and `evaluation_report.json`
-6. **Results summary** → After multiple runs, `python3 build_results_md.py` creates `RESULTS_REPORT.md` with per-disease and average P/R/F1 for compartments, parameters, and flows
+6. **Results summary** → After multiple runs, `python3 build_results_md.py` creates `RESULTS_REPORT.md` with per-disease and average metrics (**recall-first**: R / P / F1) for compartments, parameters, and flows
 
 ---
 
@@ -519,170 +519,42 @@ Step 5: Creating Traceability Mapping...
 
 ---
 
-### Step 6: Gap Analysis
+### Steps 6–7: Gap Analysis & Gap Filler (**optional**)
 
-**What You Provide:**
-- (Automatic) Uses `paper_promises.json` from Step 2, `extracted_entities.json` from Step 3
+**Default behavior:** The main pipeline **does not** run Steps 6–7. It writes **empty** `phase2_gap_report.json` and `gap_fill_suggestions.json` so downstream steps still succeed. This avoids extra LLM calls for gap fill and matches the current production path.
 
-**What Happens:**
-1. Compares paper promises vs extracted model
-2. Finds missing compartments (promised but not extracted)
-3. Finds missing parameters (promised but not extracted)
-4. Finds missing stratifications and interventions
-5. Categorizes by severity:
-   - **Critical:** Essential for model function
-   - **High:** Important but model can work without
-   - **Medium:** Nice to have
+**To run real gap analysis + gap fill:**
 
-**No LLM used** - Pure comparison
-
-**What You Get:**
-- `phase2_gap_report.json`:
-  ```json
-  {
-    "missing_compartments": [
-      {
-        "name": "Vaccinated",
-        "promised": true,
-        "severity": "high",
-        "evidence": "Paper mentions vaccination compartment"
-      }
-    ],
-    "missing_parameters": [
-      {
-        "name": "vaccination_rate",
-        "promised": true,
-        "severity": "high",
-        "evidence": "Paper mentions vaccination rate parameter"
-      }
-    ],
-    "summary": {
-      "total_gaps": 5,
-      "critical_gaps": 0,
-      "high_gaps": 3,
-      "medium_gaps": 2
-    }
-  }
-  ```
-
-**Console Output:**
-```
-Step 6: Analyzing Gaps (Paper Promises vs Extracted Model)...
-  ✓ Gap analysis complete:
-    - Total gaps: 5
-    - Critical: 0
-    - High: 3
-    - Medium: 2
+```bash
+python run_phase2.py --paper path/to/paper.pdf --enable-gap-steps
+# Optional: point at Phase 1 model-analysis JSONs for “prior model” suggestions
+python run_phase2.py --paper path/to/paper.pdf --enable-gap-steps \
+  --prior-models-dir "../phase 1/reports/model_analysis"
 ```
 
----
+#### Step 6: Gap Analysis (`src/analysis/gap_analyzer.py`)
 
-### Step 7: Gap Filler
+**Inputs:** In-memory `paper_promises` (Step 2), `extracted_entities` (Step 3), and structure parsed from `model_draft.compmodel`.
 
-**What You Provide:**
-- (Automatic) Uses `phase2_gap_report.json` from Step 6, `paper_text.json` from Step 1
-- (Optional) `--prior-models-dir` for Phase 1 model analysis JSONs
+**Mechanism:** Compares promised vs extracted compartments, parameters, stratifications, interventions (string / fuzzy overlap). **No LLM.**
 
-**What Happens:**
+**Output:** `phase2_gap_report.json` — lists such as `missing_compartments` with entries like `{"promised": "...", "severity": "...", "reason": "..."}`.
 
-For each gap, suggests how to fill it from three sources:
+#### Step 7: Gap Filler (`src/analysis/gap_filler.py`)
 
-1. **Paper Text Re-examination:**
-   - Searches for weak signals in paper
-   - Looks for mentions that pattern extraction might have missed
+For each gap, suggestions are assembled from **three channels** (separate outputs in `gap_fill_suggestions.json`):
 
-2. **Prior Models:**
-   - Searches Phase 1 model analysis JSONs
-   - Finds how similar models handle the same gap
-   - Provides examples from validated models
+1. **`paper_span`** — substring search for the promised item in full paper text; attaches a short context window.
+2. **`prior_model`** — scans `*_analysis.json` files under `--prior-models-dir` for name overlap with compartments/parameters (heuristic match). **This is not** a numbered list of “examples” pasted into the next bullet’s LLM prompt.
+3. **`domain_knowledge`** — **only for** `missing_compartments` and `missing_parameters`: one **zero-shot** LLM call per gap with a **JSON-schema / format** prompt (`_use_domain_knowledge`). There are **no** few-shot “example answers” (no COVID vs malaria exemplar block) in that prompt in the current code.
 
-3. **Domain Knowledge (LLM):**
+**Implications for research questions:**
 
-**LLM Input:**
-```
-System: "You are an epidemiological modeling expert. Return only valid JSON."
+- **“How many examples?”** — **Zero** few-shot exemplars in the domain-knowledge LLM prompt. Prior-model hits are **separate** suggestion objects, not in-prompt examples.
+- **“Does the LLM copy the last example?”** — Not applicable to the shipped prompt; ablations (with vs without exemplars) are **not** bundled as experiment results in this repo.
+- **“Prompt without examples?”** — The domain-knowledge path is already **without** in-prompt exemplars.
 
-User: "Suggest how to fill this gap in an epidemiological model.
-
-Gap: Missing 'age stratification' compartment dimension
-
-Paper context:
-[Relevant paper text sections about age effects]
-
-Metamodel schema:
-{
-  "stratification_types": ["age", "gender", "location", ...]
-}
-
-Examples from prior models:
-- COVID-19 model uses age stratification: 0-17, 18-64, 65+
-- Malaria model uses age stratification: 0-5, 6-14, 15+
-
-Suggest how to fill this gap and return JSON:
-{
-  "element": "Suggested element (compartment/parameter name)",
-  "source": "domain_knowledge",
-  "confidence": "high/medium/low",
-  "rationale": "Why this suggestion makes epidemiological sense"
-}"
-```
-
-**LLM Output:**
-```json
-{
-  "element": "Age stratification with groups: 0-17, 18-64, 65+",
-  "source": "domain_knowledge",
-  "confidence": "high",
-  "rationale": "Age is a common stratification in epidemiological models as transmission and severity vary significantly by age. The suggested age groups align with standard epidemiological practice."
-}
-```
-
-**What You Get:**
-- `gap_fill_suggestions.json`:
-  ```json
-  {
-    "suggestions": [
-      {
-        "gap": {
-          "type": "missing_stratification",
-          "name": "age",
-          "severity": "high"
-        },
-        "suggestions": [
-          {
-            "element": "Age stratification: 0-17, 18-64, 65+",
-            "source": "domain_knowledge",
-            "confidence": "high",
-            "rationale": "Age is a common stratification...",
-            "method": "llm"
-          },
-          {
-            "element": "Age stratification from COVID-19 model",
-            "source": "prior_model",
-            "confidence": "medium",
-            "rationale": "Similar model uses this stratification",
-            "method": "prior_model_search"
-          }
-        ]
-      },
-      ...
-    ],
-    "summary": {
-      "total_suggestions": 8,
-      "from_paper": 2,
-      "from_prior_models": 3,
-      "from_domain_knowledge": 3
-    }
-  }
-  ```
-
-**Console Output:**
-```
-Step 7: Generating Gap Fill Suggestions...
-  ✓ Generated suggestions: 8 total suggestions from 3 sources
-```
-
-**Fallback:** If LLM unavailable, only uses paper text and prior models
+If the LLM is unavailable, Step 7 still produces **paper_span** and **prior_model** suggestions where possible.
 
 ---
 
@@ -866,7 +738,8 @@ python3 run_phase2.py --help
 - `--api-key-file`: Path to API key file (default: `.api_key.txt`)
 - `--llm-provider`: LLM provider to use - `openai` or `gemini` (default: `openai`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
-- `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (for gap filling)
+- `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (used when **`--enable-gap-steps`** runs Step 7 prior-model search)
+- `--enable-gap-steps`: Run Steps 6–7 (gap analysis + gap-fill JSON). **Default: off** (empty gap files).
 - `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation; otherwise baseline in `data/baseline_models` is auto-detected)
 - `--baseline-models-dir`: Directory with baseline `.compmodel` files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
@@ -878,7 +751,7 @@ python3 run_phase2.py --help
 
 Paper type (vector-borne / climate) is always **auto-detected** from the paper text and Step 2 promises; no option to set it manually.
 
-**Generating a results summary:** After running on multiple papers (and optionally both providers), run `python3 build_results_md.py` in the `phase 2` directory to create `RESULTS_REPORT.md` with per-disease and average precision/recall/F1 for compartments, parameters, and flows (OpenAI and Gemini).
+**Generating a results summary:** After running on multiple papers (and optionally both providers), run `python3 build_results_md.py` in the `phase 2` directory to create `RESULTS_REPORT.md` with per-disease and average **recall** (primary), precision, and F1 for compartments, parameters, and flows (OpenAI, Gemini, Claude). Use `--reports-dir` / `-o` for separate old vs current reports.
 
 ---
 
@@ -1026,7 +899,7 @@ pip install pdfplumber
    - Review suggestions for each gap
    - Check source and confidence
 
-6. **`RESULTS_REPORT.md`** — After running `build_results_md.py`, use this for a quick scan of P/R/F1 across diseases and providers (OpenAI vs Gemini).
+6. **`RESULTS_REPORT.md`** — After running `build_results_md.py`, use this for a quick scan of **recall** (and P/F1) across diseases and providers.
 
 ---
 
@@ -1041,4 +914,325 @@ After running Phase 2, you get:
 
 **Check `phase2_final_report.json` first** - it contains everything you need. Use `evaluation_report.json` for precision/recall/F1 when a baseline was auto-detected.
 
-**Aggregating multiple runs:** Run `python3 build_results_md.py` to generate `RESULTS_REPORT.md` with per-disease and average P/R/F1 from the latest report in each `reports/{disease}_llm_{openai|gemini}_{timestamp}/` folder.
+**Aggregating multiple runs:** Run `python3 build_results_md.py` to generate `RESULTS_REPORT.md` with per-disease and average metrics from the latest report in each `reports/{disease}_llm_{openai|gemini|claude}_{timestamp}/` folder (recall summary table included).
+
+
+---
+
+## Optional: GROBID (structured PDF parsing)
+
+GROBID is used to parse scientific PDFs into structured sections (methods, results, references, etc.) so we can embed only the relevant parts for semantic search.
+
+---
+
+## Prerequisites
+
+- Docker installed
+- Python 3.x
+
+### Install Docker (Arch Linux)
+
+```bash
+sudo pacman -S docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+```
+
+Log out and back in after adding yourself to the docker group.
+
+---
+
+## Running GROBID
+
+Run GROBID as a background service:
+
+```bash
+docker run -d --rm -p 8070:8070 -e JAVA_OPTS="-XX:-UseContainerSupport" --name grobid lfoppiano/grobid:0.8.0
+```
+
+The first run will pull the Docker image (~2-3GB), subsequent runs start immediately.
+
+Wait about 60 seconds for models to load, then verify it's alive:
+
+```bash
+curl http://localhost:8070/api/isalive
+# Should return: true
+```
+
+You can also open `http://localhost:8070` in your browser to use the web UI.
+
+### Stop GROBID
+
+```bash
+docker stop grobid
+```
+
+---
+
+## Python Client
+
+```bash
+pip install grobid-client-python
+```
+
+---
+
+## Usage in Code
+
+```python
+import requests
+
+def parse_pdf_sections(pdf_path: str) -> dict:
+    """Parse a PDF and return structured sections."""
+    with open(pdf_path, 'rb') as f:
+        response = requests.post(
+            'http://localhost:8070/api/processFulltextDocument',
+            files={'input': f},
+            data={'consolidateHeader': '0'}
+        )
+    return response.text  # Returns TEI XML
+
+def extract_methods_and_results(tei_xml: str) -> str:
+    """Extract only Methods and Results sections from TEI XML."""
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(tei_xml, 'xml')
+    
+    relevant_sections = []
+    for div in soup.find_all('div'):
+        head = div.find('head')
+        if head and any(kw in head.text.lower() for kw in ['method', 'result', 'model', 'abstract']):
+            relevant_sections.append(div.get_text())
+    
+    return '\n\n'.join(relevant_sections)
+```
+
+---
+
+## Notes
+
+- GROBID must be running before calling the API
+- Only Methods + Results sections are needed for parameter extraction — discard references, acknowledgements, funding, author contributions
+- The `-XX:-UseContainerSupport` flag is required on newer Linux kernels
+- Do NOT commit the Docker image to the repo — everyone pulls it themselves
+
+
+---
+
+## Phase 2: Before vs After — What Improved Results
+
+This appendix compares **initial pipeline runs** (early February 2026, “before”) with **later runs** (mid-February 2026, “after”) and summarizes what was changed and what was effective in raising extraction quality (precision, recall, F1) against baseline `.compmodel` gold standards.
+
+---
+
+## 1. Quantitative comparison (Gemini)
+
+Scores below are **F1** for compartments (C), parameters (Par), and flows (Flow). “Before” = latest run per disease from **2026-02-04** (initial pipeline). “After” = latest run per disease from **2026-02-11** (improved pipeline). Same provider (Gemini) and same seven diseases.
+
+| Disease       | Before (Feb 4) C / Par / Flow | After (Feb 11) C / Par / Flow | Change (F1) |
+|---------------|--------------------------------|--------------------------------|-------------|
+| Cholera       | 0.46 / 0.71 / 0.40            | 1.00 / 0.91 / 1.00             | +0.54 / +0.20 / +0.60 |
+| Dengue        | 0.92 / 0.48 / 0.71            | 1.00 / 0.64 / 1.00             | +0.08 / +0.16 / +0.29 |
+| Ebola         | 1.00 / 0.80 / 0.89            | 0.80 / 0.78 / 0.50             | −0.20 / −0.02 / −0.39 |
+| Flu           | 0.67 / 0.40 / 0.91            | 0.80 / 0.46 / 0.75             | +0.13 / +0.06 / −0.16 |
+| Measles       | 0.25 / 0.00 / 0.00             | 1.00 / 0.00 / 1.00             | +0.75 / 0.00 / +1.00 |
+| Tuberculosis  | 0.67 / 0.57 / 0.50             | 1.00 / 0.47 / 0.67             | +0.33 / −0.10 / +0.17 |
+| Zika          | 1.00 / 0.20 / 0.80             | 1.00 / 0.49 / 0.84             | 0.00 / +0.29 / +0.04 |
+| **Average**   | **0.70 / 0.45 / 0.60**         | **0.94 / 0.54 / 0.82**         | **+0.24 / +0.09 / +0.22** |
+
+**Summary:** On average, the improved pipeline increased F1 by about **+0.24** (compartments), **+0.09** (parameters), and **+0.22** (flows). Compartments and flows improved the most; parameters improved modestly. Some diseases (e.g. Measles) went from near-zero to strong scores; a few (e.g. Ebola) had small regressions on flows.
+
+---
+
+## 2. What we did (pipeline changes)
+
+### 2.1 PDF extraction and cleaning
+
+- **Before:** Extraction either used a single full-page pass or a different library (e.g. PyPDF2). Many papers showed **run-together text** (e.g. `FungEmergingThemesinEpidemiology` instead of `Fung Emerging Themes in Epidemiology`), which hurts entity and flow extraction.
+- **After:**
+  - **pdfplumber** as the main extractor (with PyPDF2 only as fallback).
+  - **Two-column handling:** Each page is split into left and right halves, text is extracted per half with `extract_text(x_tolerance=2, y_tolerance=2)`, then concatenated. This preserves reading order and word boundaries in typical two-column journal layouts.
+  - **Word-level data:** `extract_words(use_text_flow=True)` is used for headings and layout, and word-level data is stored in `raw_pages` for downstream use.
+  - **clean_text():** Hyphenation across line breaks is fixed, standalone page numbers are removed, and whitespace is normalized.
+
+**Effect:** Cleaner, correctly spaced text and better section boundaries, so the LLM and pattern-based steps see proper sentences and compartment/parameter/flow phrases instead of glued tokens.
+
+### 2.2 Section detection and structure
+
+- **Before:** Section detection could be weaker or more fragile when headings were lost in run-together text.
+- **After:**
+  - Heading detection uses **font size and boldness** (pdfplumber word metadata) plus regex-based fallbacks.
+  - Sections can be built from layout (headings + text regions) or from a **text-based fallback** (e.g. “Abstract”, “Introduction”, “Methods”, “Results”).
+  - Optional **coalesce_short_sections** merges very short sections to avoid tiny fragments.
+
+**Effect:** More stable sectioning and better context windows for promises and entity extraction.
+
+### 2.3 Entity extraction (LLM and fallbacks)
+
+- **Unified extraction:** When the LLM is available, a **single unified LLM call** can extract compartments, flows, and parameters with full-paper (or sectioned) context, instead of separate calls with narrow context.
+- **Paper-type awareness:** Vector-borne vs climate (and related) paper types are inferred from text and promises; **prompts are tailored** (e.g. mosquito compartments for dengue) so the model focuses on the right entity types.
+- **Fallback:** If the unified call fails, the pipeline falls back to **separate** compartment / flow / parameter extraction; pattern-based and post-processing (e.g. parameter noise filtering) still run.
+
+**Effect:** Better recall and consistency (compartments and flows in particular) and fewer spurious parameters when prompts and context are aligned with paper type.
+
+### 2.4 Evaluation and baselines
+
+- **Baseline auto-detection:** Baseline `.compmodel` files in `data/baseline_models/` are matched to the paper name (e.g. `cholera.compmodel` for Cholera.pdf) so **evaluation is consistent** across runs.
+- **Fuzzy matching:** Gold-standard comparison uses a **similarity threshold** (e.g. 0.75) for compartments, parameters, and flows so near-matches (e.g. “Recovered” vs “Recovered humans”) count as correct.
+
+**Effect:** More reliable and comparable P/R/F1 across runs and diseases.
+
+---
+
+## 2.5 Prompts and extraction logic (comprehensive)
+
+What actually changed in the **prompts**, **context**, and **LLM settings** is described here so the comparison is reproducible and auditable.
+
+### 2.5.1 System instruction (all providers)
+
+The LLM client sends a **single shared system instruction** for every extraction call (so provider comparison is fair):
+
+- *"You are a scientific paper analyzer. You must return ONLY valid JSON."*
+- Rules: no explanations, no markdown code blocks, no extra text; begin with `{` or `[`, end with `}` or `]`; do **not** use `\`\`\`json`; invalid JSON causes errors; return pure JSON only.
+
+For Gemini this is prepended to the user prompt; for OpenAI/Claude it is sent as a separate system message.
+
+### 2.5.2 Paper-type tailoring (vector-borne / climate)
+
+**Detection** (`paper_type.py`): The pipeline infers `vector_borne` and `climate` from (1) paper text regexes (e.g. mosquito, vector, dengue, zika, malaria, biting rate, susceptible mosquitoes; and climate, temperature, rainfall, seasonal, etc.) and (2) Step 2 promises (e.g. `model_type` or compartment names containing "mosquito", "vector", "egg").
+
+**Injection into prompts:** The following **exact** blocks are appended to the task/context section of the compartment, flow, and parameter prompts when the flags are true.
+
+- **Vector-borne (compartments):**  
+  *"This paper appears to describe a VECTOR-BORNE model (e.g. mosquito, dengue, Zika, malaria). Look for BOTH human compartments (Susceptible humans, Exposed humans, Infectious humans, Recovered humans) AND vector/life-stage compartments (Susceptible mosquitoes, Infectious mosquitoes, Eggs, Larvae, Pupae, Susceptible female adults, Exposed female adults, Infectious female adults) if there is direct evidence in the text. Only include those for which you find a clear quote."*
+
+- **Climate (compartments):**  
+  *"Consider CLIMATE or ENVIRONMENTAL drivers if mentioned (e.g. temperature, rainfall, seasonality, humidity). Include compartments or parameters related to these only if explicitly evidenced."*
+
+- **Vector-borne (flows):**  
+  *"This paper appears to describe a VECTOR-BORNE model. Look for flows between HUMAN compartments (e.g. Susceptible humans -> Exposed humans) AND vector/life-stage flows (e.g. Eggs -> Larvae -> Pupae -> Susceptible female adults, and human-vector transmission flows). Only include flows for which you find clear evidence."*
+
+- **Vector-borne (parameters):**  
+  *"This paper appears to describe a VECTOR-BORNE model. Look for human parameters (transmission, recovery, mortality) AND vector/life-stage parameters (biting rate, egg/larval/pupal development rates, vector mortality, vector incubation). Only include parameters with clear evidence."*
+
+- **Climate (parameters):**  
+  *"Consider CLIMATE/ENVIRONMENTAL parameters if mentioned (e.g. temperature, rainfall, seasonality). Include only if explicitly defined in the text."*
+
+So **what changed** in prompts: after adding paper-type detection, these blocks were added so the model explicitly looks for human+vector compartments/flows/parameters in vector-borne papers and for climate-related entities only when evidenced.
+
+### 2.5.3 Separate extraction prompts (compartments, flows, parameters)
+
+When **unified** extraction is not used (or fails), the pipeline uses **separate** prompts. Two variants exist: **detailed** (used for Gemini and Claude) and **concise** (used for OpenAI). Both now use the same “detailed” style for quality parity (`use_detailed_prompt = True`), so in practice all providers get the long instructions below.
+
+**Compartments:**
+
+- **Task:** Extract ALL compartment names; return only a valid JSON array; no markdown; begin with `[`, end with `]`.
+- **Evidence rule:** Only include a compartment if there is a clear, direct quote; if no supporting quote, do **not** include it; prefer false negatives over inventing; reject if not enough evidence.
+- **Chain-of-thought:** “First list the compartment names you find in the text; for each note the exact quote that defines it; then output the JSON array.”
+- **Required JSON:** `{"name": "...", "description": "...", "text_span": "Exact quote..."}` for each compartment.
+- **Systematic search:** Instructions list where to look (compartment definitions, state variables in equations like S(t)/dS/dt, population groups, model descriptions, tables, initial conditions S(0)/I(0), flow descriptions “from X to Y”).
+- **Normalization:** Explicit mapping (e.g. Susceptible/S → Susceptible, Exposed/E/Latent → Exposed, Infectious/Infected/I → Infectious, Recovered/Removed/R → Recovered, Dead/Deceased/D → Dead or Infectious Deceased).
+- **Optional injected context:**  
+  - **Promised compartments (Step 2):** If Step 2 produced a list, the prompt says “PROMISED COMPARTMENTS (from a prior pass): X, Y, Z. Only include these if you find direct evidence in the paper text below. If you find no supporting quote for a promised compartment, do NOT include it.” So **what changed**: we use Step 2 promises as a hint but require evidence, reducing hallucination.  
+  - **Metamodel:** Standard compartment types from the metamodel (e.g. from `metamodel_epidemiology.json`) are listed.  
+  - **Phase 1 examples:** Up to 3 example models with compartment names (e.g. “Model A: Susceptible, Infectious, Recovered”) to anchor naming.
+
+**Flows:**
+
+- **Task:** Extract every flow (transition) between compartments; return only a valid JSON array.
+- **Evidence rule:** Same as compartments: only include a flow with a clear quote; prefer omitting over inventing.
+- **Chain-of-thought:** “First list each flow you find (source -> target) with the quote that describes it; then output the JSON array.”
+- **Required JSON:** `{"source": "...", "target": "...", "description": "...", "text_span": "...", "flow_type": "RateFlow" or "ContactFlow"}`.  
+  Flow types: RateFlow = progression/recovery/death/treatment; ContactFlow = transmission/infection.
+- **Available compartments:** The prompt lists the **exact** compartment names from the compartment step so source/target must match them (reduces bogus flow endpoints).
+- **Where to look:** Flow descriptions (“from X to Y”), differential equations (dX/dt = … + Y), transmission/progression/recovery/death/treatment wording, flow tables.
+
+**Parameters:**
+
+- **Task:** Extract every parameter mentioned; return only a valid JSON array.
+- **Evidence rule:** Only include if there is clear evidence (quote or table row); prefer omitting over inventing.
+- **Chain-of-thought:** “First list each parameter you find with its definition or table row; then output the JSON array.”
+- **Required JSON:** `{"name": "...", "value": "...", "unit": "...", "description": "...", "text_span": "..."}`.
+- **Where to look:** Greek letters with values, parameter definitions, parameter tables, rate/probability definitions, symbols in equations (e.g. dS/dt = -βSI).
+- **Metamodel and Phase 1 examples:** Same idea as compartments (parameter types + example models with parameter names/values).
+
+**What changed in separate prompts:** (1) Paper-type blocks above were added. (2) Evidence rule and chain-of-thought were made explicit and consistent across all three tasks. (3) Promised compartments were wired in with “only if evidence” to reduce hallucination. (4) Detailed prompts were standardized so all providers get the same thorough instructions.
+
+### 2.5.4 Unified extraction (single LLM call)
+
+When the LLM is available, the pipeline **first** tries **one** call that returns a single JSON object with `compartments`, `flows`, and `parameters`:
+
+- **Role:** “You are an expert epidemiological modeler.”
+- **Task:** From the paper text below, extract the **primary** compartmental model (diagram, flow chart, or system of ODEs). Return one JSON object with:
+  - `compartments`: `[{ "name": "...", "description": "..." }]`
+  - `flows`: `[{ "source": "...", "target": "...", "type": "RateFlow or ContactFlow", "description": "..." }]`
+  - `parameters`: `[{ "name": "...", "value": "...", "unit": "...", "description": "..." }]`
+- **Paper-type hint (if vector_borne):** “This paper describes a VECTOR-BORNE disease model. Look for both human AND vector/mosquito compartments and flows.”
+- **Rules:**  
+  - Compartments: same level of abstraction as the paper’s diagram/equations; use standard epidemiological names; use **full** names (not S, E, I, R or S_h, I_v, E1, I2); if multiple groups (humans/vectors, age groups), include compartments for each (e.g. Susceptible Humans, Infectious Mosquitoes).  
+  - Flows: every transition arrow; source/target must **exactly** match compartment names from the list; ContactFlow = transmission/infection; RateFlow = recovery, death, vaccination, progression, etc.  
+  - Parameters: symbols, values, units from tables/equations/text.  
+  - Extract **only** what the paper explicitly presents; do not invent or over-split.
+
+**Context for unified call:** The text sent is not the full paper but a **window** built by `build_text_window()` (see below), plus optional formatted tables. So **what changed**: we added a single high-level “extract the primary model” prompt with strict naming and evidence rules, and we feed it a focused window instead of raw full text.
+
+### 2.5.5 Context building (text windows and limits)
+
+**Character limits (separate extraction):**
+
+- Compartments: `llm_compartments_chars` (default 50,000).
+- Flows: `llm_flows_chars` (default 80,000).
+- Parameters: `llm_parameters_chars` (default 80,000); when using a window, parameters use `min(llm_parameters_chars, 20_000)`.
+
+**Text window (when using `build_text_window`):**
+
+- **Goal:** Send only the most relevant pages/segments instead of the full PDF text.
+- **Mechanism:** `select_page_indices()` selects pages whose text matches **include_patterns**, with optional **exclude_patterns**. Selected indices are then **padded** (e.g. ±1 page) and capped at **max_pages**. If no page matches, a **fallback** uses the first N pages (e.g. 4–6).
+- **Patterns used for compartments:** e.g. `\bcompartment|\bstate\b|\bgroup\b|\bclass\b`, `\bS\s*\(t\)|\bE\s*\(t\)|\bI\s*\(t\)|\bR\s*\(t\)`, `d[a-z]\s*/\s*dt`, `\bequation|\bflow|\btransition|\bmodel\b`, etc.
+- **Patterns for flows:** Similar (flow, transition, equation, model, differential).
+- **Patterns for parameters:** Parameter, rate, value, table, equation.
+- **Unified extraction:** Uses a single window with combined model-relevant patterns, `max_chars = max(compartments, flows, parameters)`, `pad=2`, `max_pages=14`, `fallback_first_pages=6`.
+
+So **what changed**: we moved from “send truncated full text” to “send a pattern-based window of pages + padding” so the LLM sees the model-defining sections (and a bit of context) instead of arbitrary truncation.
+
+### 2.5.6 LLM settings and structured output
+
+- **Temperature:** For extraction, Gemini uses **0.2** when a response schema is set; unified extraction uses **temperature=0** for determinism. Others use the default (e.g. 0.3) unless overridden.
+- **Max tokens:** Compartments 4000; flows 4000 (or 6000 in an experiment variant); parameters 8000; unified 16000 to avoid truncation.
+- **Gemini structured output:** For separate extraction, Gemini uses **response_schema** (JSON Schema) for compartments, flows, and parameters so the API returns valid JSON matching the expected shape; this reduces parse failures and drift.
+
+### 2.5.7 Post-processing (parameters and flows)
+
+- **Parameters:** `_clean_and_filter_parameters()` drops entries that look like noise: e.g. DOI/arXiv identifiers, long numeric IDs, “etal”, “figure”, “table” as parameter names, and applies a blacklist of substrings. It keeps Greek letters, R0, N, and other epidemiology-relevant symbols. So **what changed**: after extraction we explicitly filter likely non-parameters to improve precision.
+- **Flows:** Flows whose source or target does not match any extracted compartment are dropped; “inconsistent/unmatched” flows are removed so the synthesized model only has valid compartment references.
+
+---
+
+## 3. What was most effective
+
+1. **PDF extractor and two-column handling** — Fixing run-together text and column order had the largest impact on **compartments and flows**. Without readable text, the LLM and patterns both underperform.
+2. **Section detection and clean text** — Better sections and clean_text (hyphenation, whitespace) gave the LLM **clearer context** and improved recall, especially where model structure is described in “Methods” or “Model”.
+3. **Unified LLM extraction and paper-type prompts** — One coherent call plus vector-borne/climate-aware prompts (§2.5.2, §2.5.4) improved **consistency and recall** for compartments and flows; parameter F1 improved more modestly and remains the hardest category.
+4. **Prompt design (evidence rule, CoT, context windows)** — Explicit “only if evidence” and chain-of-thought in every prompt (§2.5.3), plus pattern-based text windows (§2.5.5) instead of blind truncation, reduced hallucinations and missed entities.
+5. **Stable evaluation (baseline + fuzzy match)** — Same gold standards and matching rules make before/after and cross-disease comparisons meaningful.
+
+---
+
+## 4. Where results still vary
+
+- **Parameters** still have the lowest F1 on average (around 0.54–0.56) and are sensitive to notation (e.g. β vs β * κ, subscripts). Further gains likely need notation-aware parsing or parameter-specific prompts.
+- **Ebola** (and occasionally others) can show lower flow F1 in a given run due to model complexity or baseline definition; this is a known variance.
+- **OpenAI** runs in the reported set had no valid API/key, so comparison here is only Gemini (before/after) and Claude (after); adding OpenAI back would require re-runs with a working key.
+
+---
+
+## 5. How to reproduce
+
+- **Before (old pipeline):** Use report dirs from **2026-02-04** (e.g. `cholera_llm_gemini_20260204_165108`, etc.). Those were produced with the initial PDF and extraction setup.
+- **After (current pipeline):** Run the current Phase 2 code (pdfplumber, two-column extraction, unified LLM, section detection, and evaluation as in `run_phase2.py`). Latest report dirs are under `reports/` with timestamps **20260211** (Gemini) and **20260212** (Claude).
+- Regenerate summary tables with:  
+  `python3 build_results_md.py`
+
+---
+
+*Generated from Phase 2 report directories and pipeline code. “Before” = 2026-02-04 Gemini runs; “After” = 2026-02-11 Gemini (and 2026-02-12 Claude) as in RESULTS_REPORT.md.*

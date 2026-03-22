@@ -1,0 +1,669 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are not infected and have no immunity. The model is stratified by age group and presence or absence of comorbidities.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been infected but are not yet infectious (latent period). Not quarantined.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed (quarantined)": {
+      "evidence": [
+        {
+          "text_span": "Exposed individuals who have been identified via contact tracing and are in quarantine.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (presymptomatic)": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are infectious but have not yet developed symptoms.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (presymptomatic, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Presymptomatic individuals who are infectious but are isolated because they were previously in the quarantined exposed group.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (mild to moderate)": {
+      "evidence": [
+        {
+          "text_span": "Individuals with mild to moderate symptoms who are infectious and not isolated.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (mild to moderate, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Individuals with mild to moderate symptoms who are infectious and have been isolated following testing.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (severe)": {
+      "evidence": [
+        {
+          "text_span": "Individuals with severe symptoms who are infectious and not isolated.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (severe, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Individuals with severe symptoms who are infectious and have been isolated following testing.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Admitted to hospital": {
+      "evidence": [
+        {
+          "text_span": "Individuals admitted to hospital from the 'Infectious (severe)' compartment. These cases are assumed to not require ICU care and are no longer infectious to the community.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Admitted to hospital (pre-ICU)": {
+      "evidence": [
+        {
+          "text_span": "Individuals admitted to hospital from the 'Infectious (severe, isolated)' compartment who will require ICU care. They are no longer infectious to the community.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ICU": {
+      "evidence": [
+        {
+          "text_span": "Individuals requiring intensive care unit (ICU) care.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Admitted to hospital (post-ICU)": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been discharged from the ICU but still require hospital care.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from infection and are assumed to be immune for the duration of the model.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dead": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have died from the infection. All deaths are assumed to occur in the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals through contact with individuals in any of the infectious compartments.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Exposed (quarantined)": {
+      "evidence": [
+        {
+          "text_span": "Quarantine of exposed individuals identified via contact tracing.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious (presymptomatic)": {
+      "evidence": [
+        {
+          "text_span": "Progression from the latent period to the presymptomatic infectious stage.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed (quarantined) -> Infectious (presymptomatic, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Progression from the quarantined latent period to the isolated presymptomatic infectious stage.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (presymptomatic) -> Infectious (mild to moderate)": {
+      "evidence": [
+        {
+          "text_span": "Onset of mild to moderate symptoms.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (presymptomatic) -> Infectious (severe)": {
+      "evidence": [
+        {
+          "text_span": "Onset of severe symptoms.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (presymptomatic, isolated) -> Infectious (mild to moderate, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Onset of mild to moderate symptoms in an isolated individual.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (presymptomatic, isolated) -> Infectious (severe, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Onset of severe symptoms in an isolated individual.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (mild to moderate) -> Infectious (mild to moderate, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Isolation of individuals with mild to moderate symptoms following testing.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (severe) -> Infectious (severe, isolated)": {
+      "evidence": [
+        {
+          "text_span": "Isolation of individuals with severe symptoms following testing.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (mild to moderate) -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of individuals with mild to moderate infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (mild to moderate, isolated) -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of isolated individuals with mild to moderate infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (severe) -> Admitted to hospital": {
+      "evidence": [
+        {
+          "text_span": "Hospitalization of severe cases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (severe, isolated) -> Admitted to hospital (pre-ICU)": {
+      "evidence": [
+        {
+          "text_span": "Hospitalization of isolated severe cases that will require ICU care.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Admitted to hospital -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of hospitalized cases that did not require ICU care.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Admitted to hospital (pre-ICU) -> ICU": {
+      "evidence": [
+        {
+          "text_span": "Admission to the ICU from a hospital ward.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ICU -> Admitted to hospital (post-ICU)": {
+      "evidence": [
+        {
+          "text_span": "Discharge from the ICU to a hospital ward for continued care.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ICU -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Death of cases in the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Admitted to hospital (post-ICU) -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery after being discharged from the ICU and receiving post-ICU hospital care.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "Latent period": {
+      "evidence": [
+        {
+          "text_span": "Time from exposure to onset of infectiousness.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.5",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Presymptomatic infectious period": {
+      "evidence": [
+        {
+          "text_span": "Duration of infectiousness before symptom onset.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious period (mild to moderate)": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic infectious period for mild-to-moderate cases (in absence of isolation).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "6",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious period (severe)": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic infectious period for severe cases; assumed equal to time to hospital admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "6",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Basic reproduction number": {
+      "evidence": [
+        {
+          "text_span": "Average number of secondary infections derived from a primary infection in a susceptible population.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.3",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Time in quarantine": {
+      "evidence": [
+        {
+          "text_span": "Duration of quarantine for exposed cases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "14",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Relative risk of transmission for cases in isolation": {
+      "evidence": [
+        {
+          "text_span": "Transmission reduction for isolated cases relative to unrecognized cases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.1",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Average length of stay in hospital for cases not requiring ICU care": {
+      "evidence": [
+        {
+          "text_span": "Duration of stay for hospitalized cases not requiring ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Average length of stay in hospital before ICU admission": {
+      "evidence": [
+        {
+          "text_span": "Duration of stay in hospital for severe cases before they are admitted to the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "3",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Average length of stay in ICU": {
+      "evidence": [
+        {
+          "text_span": "Duration of stay for cases in the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "21",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Average length of stay in hospital after ICU": {
+      "evidence": [
+        {
+          "text_span": "Duration of stay in hospital for cases after being discharged from the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "21",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Probability of severe infection": {
+      "evidence": [
+        {
+          "text_span": "Probability that an infection is severe, requiring hospital admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Varies by age and comorbidity (e.g., 0.01 for <15 with no comorbidities, 0.76 for >=70 with comorbidities)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Probability severe case requires admission to ICU": {
+      "evidence": [
+        {
+          "text_span": "Probability that a severe case requires admission to the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.26",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Probability of death in cases admitted to ICU": {
+      "evidence": [
+        {
+          "text_span": "Probability of death for cases admitted to the ICU.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Varies by age and comorbidity (e.g., 0 for <15, 1 for >=70 with comorbidities)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Proportion of nonquarantined cases tested and isolated (Base Case)": {
+      "evidence": [
+        {
+          "text_span": "Proportion of symptomatic, non-quarantined individuals who are tested and moved to an isolated compartment (Base Case).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Varies by age: 10% (<15), 40% (15-49), 70% (>=50)",
+          "unit": "percent"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Proportion of exposed cases quarantined (Base Case)": {
+      "evidence": [
+        {
+          "text_span": "Proportion of exposed cases who are identified and enter quarantine before becoming infectious (Base Case).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "percent"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Reduction in contacts with physical distancing (Base Case)": {
+      "evidence": [
+        {
+          "text_span": "Reduction in contact rates due to physical distancing measures (Base Case).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0",
+          "unit": "percent"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 9,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "contact_tracing": {
+      "evidence": [
+        {
+          "text_span": "contact_tracing mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 56,
+    "items_with_evidence": 56,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 56,
+    "faithfulness_percentage": 100.0
+  }
+}

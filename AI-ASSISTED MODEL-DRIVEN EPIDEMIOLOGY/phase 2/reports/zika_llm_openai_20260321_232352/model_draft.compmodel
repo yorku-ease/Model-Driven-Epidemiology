@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Number of infectious bites delivered per vector per day" expression="0.05 - 0.12" type="CONSTANT" description="Average number of infectious bites a mosquito delivers per day." unit="bites/day"/>
+  <parameters name="Incubation time in human" expression="2 - 4" type="CONSTANT" description="Time from exposure to infectiousness in humans." unit="days"/>
+  <parameters name="Incubation time in vector" expression="8 - 12" type="CONSTANT" description="Time from exposure to infectiousness in mosquitoes." unit="days"/>
+  <parameters name="Recovery time" expression="5 - 7" type="CONSTANT" description="Time for humans to recover from ZIKV infection." unit="days"/>
+  <parameters name="Number of eggs laid per female mosquito per unit time" expression="80" type="CONSTANT" description="Average number of eggs laid by a female mosquito per day." unit="eggs/day"/>
+  <parameters name="Egg development time" expression="3" type="CONSTANT" description="Time for mosquito eggs to develop." unit="days"/>
+  <parameters name="Egg mortality" expression="0.05" type="CONSTANT" description="Mortality rate of mosquito eggs." unit="probability"/>
+  <parameters name="Larval development time" expression="9" type="CONSTANT" description="Time for mosquito larvae to develop." unit="days"/>
+  <parameters name="Larval mortality" expression="0.025" type="CONSTANT" description="Mortality rate of mosquito larvae." unit="probability"/>
+  <parameters name="Pupal development time" expression="3" type="CONSTANT" description="Time for mosquito pupae to develop." unit="days"/>
+  <parameters name="Pupal mortality" expression="0.0025" type="CONSTANT" description="Mortality rate of mosquito pupae." unit="probability"/>
+  <parameters name="Adult mortality" expression="0.05" type="CONSTANT" description="Mortality rate of adult mosquitoes." unit="probability"/>
+  <parameters name="Female adult percentage" expression="0.68" type="CONSTANT" description="Percentage of adult mosquitoes that are female." unit="percentage"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Transmission of ZIKV from infectious mosquitoes to humans."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Progression from exposed to infectious state in humans."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.3" description="Recovery from ZIKV infection in humans."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRate="0.0" target="//@compartments.5" description="Transmission of ZIKV from infectious humans to mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Progression from exposed to infectious state in mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

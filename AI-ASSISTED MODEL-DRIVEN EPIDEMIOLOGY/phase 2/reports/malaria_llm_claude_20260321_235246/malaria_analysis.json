@@ -1,0 +1,405 @@
+{
+  "modelName": "Malaria",
+  "summary": {
+    "modelName": "Malaria",
+    "totalPopulation": null,
+    "numCompartments": 10,
+    "numParameters": 19,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.15",
+            "contactCompartment": "//@compartments.2",
+            "description": "Vector-borne transmission from infectious mosquitoes to susceptible humans at rate β2 = η_S * I_M",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.17",
+            "contactCompartment": "//@compartments.3",
+            "description": "Non-vector transmission from infectious humans to susceptible humans at rate α2 = ξ_S * I_H",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Vaccinated Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of vaccine immunity at rate θ",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.2",
+            "description": "Vector-borne transmission from infectious mosquitoes to vaccinated humans at rate β1*ε = η_V * I_M * ε",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.16",
+            "contactCompartment": "//@compartments.3",
+            "description": "Non-vector transmission from infectious humans to vaccinated humans at rate α1 = ξ_V * I_H",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Vector Exposed Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from vector-exposed to infectious at rate τ1",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Non-Vector Exposed Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from non-vector-exposed to infectious at rate τ2",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Treatment of infectious humans at rate σ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Treated Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.10",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery after treatment at rate ω",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Recovered Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of natural immunity at rate γ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.18",
+            "contactCompartment": "//@compartments.8",
+            "description": "Mosquito infection from contact with infectious humans at rate β3 = ρ * I_H",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Exposed Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.13",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious mosquitoes at rate φ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "π",
+        "type": "CONSTANT",
+        "expression": "0.012",
+        "description": "Human population birth rate",
+        "unit": "per day"
+      },
+      {
+        "index": 1,
+        "name": "k",
+        "type": "CONSTANT",
+        "expression": "0.60-0.90",
+        "description": "Vaccination rate (fraction of births vaccinated)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "µ1",
+        "type": "CONSTANT",
+        "expression": "0.0002",
+        "description": "Human population natural death rate",
+        "unit": "per day"
+      },
+      {
+        "index": 3,
+        "name": "µ2",
+        "type": "CONSTANT",
+        "expression": "0.1",
+        "description": "Mosquito population natural death rate",
+        "unit": "per day"
+      },
+      {
+        "index": 4,
+        "name": "Λ",
+        "type": "CONSTANT",
+        "expression": "0.02",
+        "description": "Mosquito population birth rate",
+        "unit": "per day"
+      },
+      {
+        "index": 5,
+        "name": "ε",
+        "type": "CONSTANT",
+        "expression": "0.3-0.5",
+        "description": "Rate of vaccine efficacy",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "0.1-0.2",
+        "description": "Rate of vaccine immunity loss due to vaccine failure",
+        "unit": "per day"
+      },
+      {
+        "index": 7,
+        "name": "τ1",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Progression rate from vector-exposed to infectious",
+        "unit": "per day"
+      },
+      {
+        "index": 8,
+        "name": "τ2",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Progression rate from non-vector-exposed to infectious",
+        "unit": "per day"
+      },
+      {
+        "index": 9,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Progression rate from infectious to treated",
+        "unit": "per day"
+      },
+      {
+        "index": 10,
+        "name": "ω",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Progression rate from treated to recovered",
+        "unit": "per day"
+      },
+      {
+        "index": 11,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.01",
+        "description": "Recovered population rate of immunity loss",
+        "unit": "per day"
+      },
+      {
+        "index": 12,
+        "name": "δ1",
+        "type": "CONSTANT",
+        "expression": "0.002",
+        "description": "Human population malaria disease death rate",
+        "unit": "per day"
+      },
+      {
+        "index": 13,
+        "name": "φ",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Mosquito progression rate from exposed to infectious",
+        "unit": "per day"
+      },
+      {
+        "index": 14,
+        "name": "η_V",
+        "type": "CONSTANT",
+        "expression": "0.001-0.005",
+        "description": "Effective contact rate of vaccinated humans with infected mosquitoes through bloodmeals",
+        "unit": "per day"
+      },
+      {
+        "index": 15,
+        "name": "η_S",
+        "type": "CONSTANT",
+        "expression": "0.005-0.02",
+        "description": "Effective contact rate of susceptible humans with infected mosquitoes through bloodmeals",
+        "unit": "per day"
+      },
+      {
+        "index": 16,
+        "name": "ξ_V",
+        "type": "CONSTANT",
+        "expression": "0.0005-0.002",
+        "description": "Effective contact rate of vaccinated humans with infected humans through non-vector pathways",
+        "unit": "per day"
+      },
+      {
+        "index": 17,
+        "name": "ξ_S",
+        "type": "CONSTANT",
+        "expression": "0.001-0.003",
+        "description": "Effective contact rate of susceptible humans with infected humans through non-vector pathways",
+        "unit": "per day"
+      },
+      {
+        "index": 18,
+        "name": "ρ",
+        "type": "CONSTANT",
+        "expression": "0.01-0.05",
+        "description": "Effective contact rate of susceptible mosquitoes with infected humans through bloodmeals",
+        "unit": "per mosquito"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -150,6 +150,14 @@ Examples:
         default=0.70,
         help="Cosine similarity threshold for gold standard evaluation (default: 0.70)",
     )
+    parser.add_argument(
+        "--enable-gap-steps",
+        action="store_true",
+        help=(
+            "Run Step 6 (gap analysis: promises vs model) and Step 7 (gap-fill suggestions). "
+            "Default is OFF: empty gap JSON stubs (faster; avoids extra LLM calls for gap fill)."
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -372,36 +380,61 @@ Examples:
     print(f"    - Faithfulness: {metrics.get('faithfulness_percentage', 0):.1f}%")
     print()
 
-    # Steps 6-7: Gap Analysis & Gap Filler (skipped – they add context pollution
-    # and extra LLM calls with minimal benefit for model quality)
-    print("Steps 6-7: Skipping gap analysis & gap filler (simplified pipeline)...")
-    gaps = {
-        "missing_compartments": [],
-        "missing_parameters": [],
-        "missing_stratifications": [],
-        "missing_interventions": [],
-        "summary": {
-            "total_gaps": 0,
-            "critical_gaps": 0,
-            "high_gaps": 0,
-            "medium_gaps": 0,
-        },
-    }
-    gap_suggestions = {
-        "gaps": [],
-        "summary": {
-            "total_gaps": 0,
-            "total_suggestions": 0,
-            "suggestions_by_source": {},
-        },
-    }
-    # Save empty reports so final-report generator doesn't crash
-    with open(output_dir / "phase2_gap_report.json", "w") as f:
-        json.dump(gaps, f, indent=2)
-    with open(output_dir / "gap_fill_suggestions.json", "w") as f:
-        json.dump(gap_suggestions, f, indent=2)
-    print("  ✓ Saved empty gap reports (skipped)")
-    print()
+    # Steps 6-7: Gap Analysis & Gap Filler (optional — default skipped)
+    if args.enable_gap_steps:
+        from src.analysis.gap_analyzer import GapAnalyzer
+        from src.analysis.gap_filler import GapFiller
+
+        print("Steps 6-7: Gap Analysis & Gap Filler...")
+        gap_analyzer = GapAnalyzer()
+        model_structure = gap_analyzer.load_model_structure(
+            str(output_dir / "model_draft.compmodel")
+        )
+        gaps = gap_analyzer.analyze_gaps(promises, entities, model_structure)
+        gap_analyzer.save_gap_report(gaps, str(output_dir / "phase2_gap_report.json"))
+        tg = gaps.get("summary", {}).get("total_gaps", 0)
+        print(f"  ✓ Gap analysis complete: {tg} gap(s)")
+
+        gap_filler = GapFiller(
+            llm_client=llm_client,
+            prior_models_dir=args.prior_models_dir if Path(args.prior_models_dir).exists() else None,
+        )
+        paper_full = pdf_data.get("full_text", "") or promise_text
+        gap_suggestions = gap_filler.fill_gaps(gaps, paper_full, entities)
+        gap_filler.save_suggestions(gap_suggestions, str(output_dir / "gap_fill_suggestions.json"))
+        ts = gap_suggestions.get("summary", {}).get("total_suggestions", 0)
+        print(f"  ✓ Gap fill suggestions: {ts} suggestion(s)")
+        print()
+    else:
+        print(
+            "Steps 6-7: Skipping gap analysis & gap filler (use --enable-gap-steps to run)..."
+        )
+        gaps = {
+            "missing_compartments": [],
+            "missing_parameters": [],
+            "missing_stratifications": [],
+            "missing_interventions": [],
+            "summary": {
+                "total_gaps": 0,
+                "critical_gaps": 0,
+                "high_gaps": 0,
+                "medium_gaps": 0,
+            },
+        }
+        gap_suggestions = {
+            "gaps": [],
+            "summary": {
+                "total_gaps": 0,
+                "total_suggestions": 0,
+                "suggestions_by_source": {},
+            },
+        }
+        with open(output_dir / "phase2_gap_report.json", "w") as f:
+            json.dump(gaps, f, indent=2)
+        with open(output_dir / "gap_fill_suggestions.json", "w") as f:
+            json.dump(gap_suggestions, f, indent=2)
+        print("  ✓ Saved empty gap reports (skipped)")
+        print()
 
     # Step 8: Quality Checks
     print("Step 8: Running Quality Checks (Phase 1 Analyzers)...")

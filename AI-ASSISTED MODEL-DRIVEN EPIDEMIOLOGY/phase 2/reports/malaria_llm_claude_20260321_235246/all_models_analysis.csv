@@ -1,0 +1,42 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria,Compartment,Susceptible Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Vaccinated Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Vector Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Non-Vector Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Treated Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Recovered Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Vector Exposed Humans,RateFlow,//@parameters.15,False,Vector-borne transmission from infectious mosquitoes to susceptible humans at rate β2 = η_S * I_M,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Non-Vector Exposed Humans,RateFlow,//@parameters.17,False,Non-vector transmission from infectious humans to susceptible humans at rate α2 = ξ_S * I_H,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.6,False,Loss of vaccine immunity at rate θ,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Vector Exposed Humans,RateFlow,//@parameters.5,False,Vector-borne transmission from infectious mosquitoes to vaccinated humans at rate β1*ε = η_V * I_M * ε,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Non-Vector Exposed Humans,RateFlow,//@parameters.16,False,Non-vector transmission from infectious humans to vaccinated humans at rate α1 = ξ_V * I_H,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.7,False,Progression from vector-exposed to infectious at rate τ1,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.8,False,Progression from non-vector-exposed to infectious at rate τ2,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Treated Humans,RateFlow,//@parameters.9,False,Treatment of infectious humans at rate σ,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.10,False,Recovery after treatment at rate ω,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.11,False,Loss of natural immunity at rate γ,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.18,False,Mosquito infection from contact with infectious humans at rate β3 = ρ * I_H,,,
+Malaria,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.13,False,Progression from exposed to infectious mosquitoes at rate φ,,,
+Malaria,Parameter,π,,,,,,Model file,Certain,,,,,,Human population birth rate,CONSTANT,0.012,per day
+Malaria,Parameter,k,,,,,,Model file,Certain,,,,,,Vaccination rate (fraction of births vaccinated),CONSTANT,0.60-0.90,dimensionless
+Malaria,Parameter,µ1,,,,,,Model file,Certain,,,,,,Human population natural death rate,CONSTANT,0.0002,per day
+Malaria,Parameter,µ2,,,,,,Model file,Certain,,,,,,Mosquito population natural death rate,CONSTANT,0.1,per day
+Malaria,Parameter,Λ,,,,,,Model file,Certain,,,,,,Mosquito population birth rate,CONSTANT,0.02,per day
+Malaria,Parameter,ε,,,,,,Model file,Certain,,,,,,Rate of vaccine efficacy,CONSTANT,0.3-0.5,dimensionless
+Malaria,Parameter,θ,,,,,,Model file,Certain,,,,,,Rate of vaccine immunity loss due to vaccine failure,CONSTANT,0.1-0.2,per day
+Malaria,Parameter,τ1,,,,,,Model file,Certain,,,,,,Progression rate from vector-exposed to infectious,CONSTANT,0.05,per day
+Malaria,Parameter,τ2,,,,,,Model file,Certain,,,,,,Progression rate from non-vector-exposed to infectious,CONSTANT,0.05,per day
+Malaria,Parameter,σ,,,,,,Model file,Certain,,,,,,Progression rate from infectious to treated,CONSTANT,0.10,per day
+Malaria,Parameter,ω,,,,,,Model file,Certain,,,,,,Progression rate from treated to recovered,CONSTANT,0.05,per day
+Malaria,Parameter,γ,,,,,,Model file,Certain,,,,,,Recovered population rate of immunity loss,CONSTANT,0.01,per day
+Malaria,Parameter,δ1,,,,,,Model file,Certain,,,,,,Human population malaria disease death rate,CONSTANT,0.002,per day
+Malaria,Parameter,φ,,,,,,Model file,Certain,,,,,,Mosquito progression rate from exposed to infectious,CONSTANT,0.10,per day
+Malaria,Parameter,η_V,,,,,,Model file,Certain,,,,,,Effective contact rate of vaccinated humans with infected mosquitoes through bloodmeals,CONSTANT,0.001-0.005,per day
+Malaria,Parameter,η_S,,,,,,Model file,Certain,,,,,,Effective contact rate of susceptible humans with infected mosquitoes through bloodmeals,CONSTANT,0.005-0.02,per day
+Malaria,Parameter,ξ_V,,,,,,Model file,Certain,,,,,,Effective contact rate of vaccinated humans with infected humans through non-vector pathways,CONSTANT,0.0005-0.002,per day
+Malaria,Parameter,ξ_S,,,,,,Model file,Certain,,,,,,Effective contact rate of susceptible humans with infected humans through non-vector pathways,CONSTANT,0.001-0.003,per day
+Malaria,Parameter,ρ,,,,,,Model file,Certain,,,,,,Effective contact rate of susceptible mosquitoes with infected humans through bloodmeals,CONSTANT,0.01-0.05,per mosquito
