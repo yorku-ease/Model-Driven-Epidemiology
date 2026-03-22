@@ -25,6 +25,7 @@ except ImportError:
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'utils'))
 from xml_parser import CompModelParser
+from phase1_paths import find_compmodel_files, resolve_fallback_compmodel_dir
 
 
 class SensitivityAnalyzer:
@@ -76,7 +77,7 @@ class SensitivityAnalyzer:
         return key_params
     
     def _classify_parameter_type(self, param_name: str) -> str:
-        """Classify parameter type based on name"""
+        """Classify parameter type from the **parameter name** using fixed substring rules (heuristic, not ML)."""
         param_lower = param_name.lower()
         
         if any(kw in param_lower for kw in ['beta', 'transmission', 'contact']):
@@ -808,29 +809,27 @@ Examples:
         print(f"\nReport saved to: {output_dir}")
         return
 
-    # Original Phase 1 batch mode (no model-file argument)
-    base_path = Path(__file__).parent.parent.parent / "Compartmental" / "CompartmentalModel"
+    # Original Phase 1 batch mode (no model-file argument): all *.compmodel in default dir
+    base_path = resolve_fallback_compmodel_dir()
     output_dir = Path(__file__).parent.parent / "reports" / "sensitivity"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Analyze all 3 models
-    models = [
-        ("covid.compmodel", "COVID-19"),
-        ("malaria.compmodel", "Malaria"),
-        ("HIV.compmodel", "HIV"),
-    ]
+    models = find_compmodel_files(base_path)
 
     print("=" * 80)
     print("TASK 2.3: ENHANCED SENSITIVITY ANALYSIS")
     print("=" * 80)
+    print(f"Model directory: {base_path} ({len(models)} model(s))")
     print(f"Method: {args.method.upper()}")
     print(f"Variation range: ±{args.variation*100}%")
     print("Note: Very small parameters (< 0.001) automatically use ±200% range")
     print()
 
-    for model_file, model_name in models:
-        model_path = base_path / model_file
+    if not models:
+        print(f"No .compmodel files found in {base_path}")
+        return
 
+    for model_name, model_path in models:
         if not model_path.exists():
             print(f"\n⚠ Warning: {model_path} not found, skipping {model_name}")
             continue

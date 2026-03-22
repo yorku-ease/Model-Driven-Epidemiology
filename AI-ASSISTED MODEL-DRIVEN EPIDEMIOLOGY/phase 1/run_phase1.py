@@ -6,9 +6,10 @@ Executes all Phase 1 analysis tasks in order.
 import sys
 from pathlib import Path
 
-# Add analysis directory to path
-sys.path.insert(0, str(Path(__file__).parent / 'analysis'))
-sys.path.insert(0, str(Path(__file__).parent / 'utils'))
+# Phase 1 root on path so ``from analysis.*`` and ``from utils.*`` resolve from any CWD
+_PHASE1_ROOT = Path(__file__).resolve().parent
+if str(_PHASE1_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PHASE1_ROOT))
 
 from analysis.model_analyzer import main as analyze_models
 from analysis.gap_analyzer import main as analyze_gaps
@@ -56,8 +57,10 @@ def main():
     print("  - reports/uncertainty/        (Task 2.2)")
     print("  - reports/sensitivity/        (Task 2.3)")
     print("  - reports/paper_collection/   (Task 3.1)")
-    print("\nNote: Static outputs (protocols, taxonomies, patterns, templates)")
-    print("      are already in reports/ and don't need regeneration.")
+    print("\nOptional static folders (NOT created by this script):")
+    print("  reports/protocols/, reports/taxonomies/, reports/patterns/,")
+    print("  reports/manual_extraction/ — restore from backup or git if you use them.")
+    print("Catalog of all report outputs: reports/REPORTS.md")
 
 
 if __name__ == '__main__':

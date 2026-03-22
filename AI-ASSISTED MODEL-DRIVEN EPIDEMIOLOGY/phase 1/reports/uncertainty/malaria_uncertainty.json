@@ -1,10 +1,11 @@
 {
   "modelName": "Malaria",
-  "totalParameters": 17,
-  "parametersWithUncertainty": 10,
+  "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings — assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+  "totalParameters": 19,
+  "parametersWithUncertainty": 17,
   "parameters": [
     {
-      "parameter": "αₕ",
+      "parameter": "α1",
       "yourValue": "15129",
       "source": "Model file",
       "rangeInLiterature": {
@@ -18,47 +19,11 @@
       "notes": "Literature search needed for this parameter",
       "model": "Malaria",
       "unit": "people/time",
-      "description": "Recruitment rate of human populations",
+      "description": "Human birth/recruitment rate (α1)",
       "type": "CONSTANT"
     },
     {
-      "parameter": "q",
-      "yourValue": "0.98765",
-      "source": "Model file",
-      "rangeInLiterature": {
-        "min": null,
-        "max": null,
-        "mean": null,
-        "std": null
-      },
-      "papers": [],
-      "confidence": "Unknown",
-      "notes": "Literature search needed for this parameter",
-      "model": "Malaria",
-      "unit": "1/time",
-      "description": "Progression rate of Rh to Sh",
-      "type": "CONSTANT"
-    },
-    {
-      "parameter": "β₁",
-      "yourValue": "0.9969",
-      "source": "Model file",
-      "rangeInLiterature": {
-        "min": null,
-        "max": null,
-        "mean": null,
-        "std": null
-      },
-      "papers": [],
-      "confidence": "Unknown",
-      "notes": "Literature search needed for this parameter",
-      "model": "Malaria",
-      "unit": "dimensionless",
-      "description": "Probability of transmission (human)",
-      "type": "CONSTANT"
-    },
-    {
-      "parameter": "μₕ",
+      "parameter": "μ1",
       "yourValue": "0.001384",
       "source": "Model file",
       "rangeInLiterature": {
@@ -72,11 +37,101 @@
       "notes": "Literature search needed for this parameter",
       "model": "Malaria",
       "unit": "1/time",
-      "description": "Natural mortality rate of human population",
+      "description": "Natural death rate of humans (μ1)",
       "type": "CONSTANT"
     },
     {
-      "parameter": "ρₕ",
+      "parameter": "ω",
+      "yourValue": "0.98765",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Immunity loss rate from RH to SH (ω)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "λV^V",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Effective contact rate of vaccinated humans with IM (vector route) (V1 in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "λV^S",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Effective contact rate of susceptible humans with IM (vector route) (V2 in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "λH^V",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Effective contact rate of vaccinated humans with IH (non-vector route) (H1 in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "λH^S",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Effective contact rate of susceptible humans with IH (non-vector route) (H2 in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "σ1",
       "yourValue": "0.001995",
       "source": "Model file",
       "rangeInLiterature": {
@@ -90,11 +145,65 @@
       "notes": "Literature search needed for this parameter",
       "model": "Malaria",
       "unit": "1/time",
-      "description": "Progression rate Eh to Ih",
+      "description": "Progression EH1 -> IH (σ1 in paper)",
       "type": "CONSTANT"
     },
     {
-      "parameter": "γₕ",
+      "parameter": "σ2",
+      "yourValue": "0.001995",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Progression EH2 -> IH (σ2 in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "δ1",
+      "yourValue": "0.017325",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Disease-induced death rate in humans (δ1 in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "τ",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Progression IH -> TH (treatment rate τ)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "γ",
       "yourValue": "0.120342",
       "source": "Model file",
       "rangeInLiterature": {
@@ -108,12 +217,12 @@
       "notes": "Literature search needed for this parameter",
       "model": "Malaria",
       "unit": "1/time",
-      "description": "Recovery rate Ih to Rh",
+      "description": "Progression TH -> RH (recovery rate γ)",
       "type": "CONSTANT"
     },
     {
-      "parameter": "Nᵥ",
-      "yourValue": "80000",
+      "parameter": "α2",
+      "yourValue": "0.0",
       "source": "Model file",
       "rangeInLiterature": {
         "min": null,
@@ -125,13 +234,67 @@
       "confidence": "Unknown",
       "notes": "Literature search needed for this parameter",
       "model": "Malaria",
-      "unit": "mosquitoes",
-      "description": "Approx. Mosquito population",
+      "unit": "mosquitoes/time",
+      "description": "Mosquito recruitment rate (α2)",
       "type": "CONSTANT"
     },
     {
-      "parameter": "β₂",
-      "yourValue": "0.9917",
+      "parameter": "λM",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Effective contact rate of susceptible mosquitoes with IH (M in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "σM",
+      "yourValue": "0.0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Progression EM -> IM (σM in paper)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "μ2",
+      "yourValue": "0.1",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Malaria",
+      "unit": "1/time",
+      "description": "Natural death rate of mosquitoes (μ2)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "k",
+      "yourValue": "0.6",
       "source": "Model file",
       "rangeInLiterature": {
         "min": null,
@@ -144,50 +307,14 @@
       "notes": "Literature search needed for this parameter",
       "model": "Malaria",
       "unit": "dimensionless",
-      "description": "Probability of transmission (mosquito)",
+      "description": "Fraction of newborns vaccinated (k)",
       "type": "CONSTANT"
-    },
-    {
-      "parameter": "K",
-      "yourValue": "100000",
-      "source": "Model file",
-      "rangeInLiterature": {
-        "min": null,
-        "max": null,
-        "mean": null,
-        "std": null
-      },
-      "papers": [],
-      "confidence": "Unknown",
-      "notes": "Literature search needed for this parameter",
-      "model": "Malaria",
-      "unit": "mosquitoes",
-      "description": "Mosquito carrying capacity",
-      "type": "CONSTANT"
-    },
-    {
-      "parameter": "T",
-      "yourValue": "",
-      "source": "Model file",
-      "rangeInLiterature": {
-        "min": null,
-        "max": null,
-        "mean": null,
-        "std": null
-      },
-      "papers": [],
-      "confidence": "Unknown",
-      "notes": "Literature search needed for this parameter",
-      "model": "Malaria",
-      "unit": "°C",
-      "description": "Temperature",
-      "type": "VARIABLE"
     }
   ],
   "summary": {
     "highConfidence": 0,
     "mediumConfidence": 0,
     "lowConfidence": 0,
-    "unknownConfidence": 10
+    "unknownConfidence": 17
   }
 }

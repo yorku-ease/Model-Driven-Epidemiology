@@ -1,0 +1,243 @@
+{
+  "modelName": "Tuberculosis",
+  "summary": {
+    "modelName": "Tuberculosis",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 9,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 1,
+    "numExternalSinks": 4,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "parameters.2",
+            "contactCompartment": "compartments.2",
+            "description": "Primary infection: S→I through contact with I at rate π (incidence term uses S and I)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "compartments.1",
+            "rate": "",
+            "rateParameter": "parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination: S→V at rate θ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Vaccinated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.0",
+            "rate": "",
+            "rateParameter": "parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccine waning: V→S at rate δ (finite duration of vaccine protection)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infected",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.3",
+            "rate": "",
+            "rateParameter": "parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery/treatment: I→R at rate γ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "parameters.8",
+            "contactCompartment": "compartments.2",
+            "description": "Reinfection: R→I through contact with I at reduced rate α·π (α is correction in [0,1])",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "compartments.0",
+            "rate": "",
+            "rateParameter": "parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning natural immunity: R→S at rate η (temporary immunity)",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "η",
+        "type": "CONSTANT",
+        "expression": "0.027",
+        "description": "Immunity waning rate (R→S)",
+        "unit": "1/day"
+      },
+      {
+        "index": 1,
+        "name": "μ",
+        "type": "CONSTANT",
+        "expression": "0.000051",
+        "description": "Natural death rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 2,
+        "name": "π",
+        "type": "CONSTANT",
+        "expression": "0.0059",
+        "description": "Infection rate/probability of successful infection (S→I term)",
+        "unit": "1/day"
+      },
+      {
+        "index": 3,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "0.085",
+        "description": "Vaccination rate (S→V)",
+        "unit": "1/day"
+      },
+      {
+        "index": 4,
+        "name": "δ",
+        "type": "CONSTANT",
+        "expression": "0.00274",
+        "description": "Vaccine waning rate (V→S)",
+        "unit": "1/day"
+      },
+      {
+        "index": 5,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.041",
+        "description": "Recovery rate (I→R)",
+        "unit": "1/day"
+      },
+      {
+        "index": 6,
+        "name": "α",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Reinfection correction parameter (range: 0 to 1)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "Λ",
+        "type": "CONSTANT",
+        "expression": "98.7",
+        "description": "Recruitment rate into susceptible",
+        "unit": "1/day"
+      },
+      {
+        "index": 8,
+        "name": "α*π",
+        "type": "EXPRESSION",
+        "expression": "α * π",
+        "description": "Reinfection rate multiplier (α in [0,1])",
+        "unit": "1/day"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Recruitment (births)",
+        "rate": "",
+        "rateParameter": "parameters.7",
+        "targetCompartment": "compartments.0",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": [
+      {
+        "name": "Natural death S",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.0",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death V",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death I",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.2",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death R",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.3",
+        "sourceStratum": ""
+      }
+    ]
+  }
+}

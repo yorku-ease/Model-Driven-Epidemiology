@@ -2,387 +2,428 @@
   "modelName": "HIV",
   "summary": {
     "modelName": "HIV",
-    "totalPopulation": "362796",
-    "numCompartments": 5,
-    "numParameters": 0,
-    "numGroups": 1,
-    "numProducts": 1,
-    "numExternalSources": 3,
-    "numExternalSinks": 12,
-    "hasStratification": true,
-    "hasParameters": false,
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 14,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 9,
+    "hasStratification": false,
+    "hasParameters": true,
     "hasVectorCompartments": false,
     "hasTemperatureDependent": false
   },
   "data": {
     "modelInfo": {
-      "totalPopulation": "362796",
+      "totalPopulation": null,
       "globalBirthRate": "0",
       "globalDeathRate": "0"
     },
     "compartments": [
       {
         "index": 0,
-        "primaryName": "Susceptible",
-        "secondaryName": "",
-        "population": "363613",
-        "product": "//@products.0",
+        "primaryName": "Susceptible homosexual men",
+        "secondaryName": "Sh",
+        "population": "2446",
+        "product": "",
         "outgoingFlows": [
           {
             "type": "RateFlow",
             "target": "//@compartments.1",
             "rate": "",
             "rateParameter": "",
-            "contactRate": "0.09636435643564358",
-            "contactRateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
             "contactCompartment": "//@compartments.1",
-            "description": "Transmission from infected homosexual men",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.09636435643564358",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "0.0011263366336633665",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "0.007821782178217822",
-                "multiplier": ""
-              }
-            ]
+            "description": "Sh→Ih via homosexual contacts (ch*bh term).",
+            "stratumSpecificRates": []
           },
           {
             "type": "RateFlow",
             "target": "//@compartments.1",
             "rate": "",
             "rateParameter": "",
-            "contactRate": "2.526315789473684E-6",
-            "contactRateParameter": "",
-            "contactCompartment": "//@compartments.1",
-            "description": "Transmission from infected women",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.0",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "0.0",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "2.526315789473684E-6",
-                "multiplier": ""
-              }
-            ]
-          },
-          {
-            "type": "RateFlow",
-            "target": "//@compartments.1",
-            "rate": "",
-            "rateParameter": "",
-            "contactRate": "1.355124355907057E-5",
-            "contactRateParameter": "",
-            "contactCompartment": "//@compartments.1",
-            "description": "Transmission from infected heterosexual men",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.0",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "1.355124355907057E-5",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "0.0",
-                "multiplier": ""
-              }
-            ]
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.6",
+            "contactCompartment": "//@compartments.7",
+            "description": "Sh→Ih via contacts with AIDS individuals (from force of infection).",
+            "stratumSpecificRates": []
           }
         ]
       },
       {
         "index": 1,
-        "primaryName": "Infectious",
-        "secondaryName": "Untreated Infected",
-        "population": "114",
-        "product": "//@products.0",
+        "primaryName": "Untreated infected homosexual men",
+        "secondaryName": "Ih",
+        "population": "79",
+        "product": "",
         "outgoingFlows": [
           {
             "type": "RateFlow",
-            "target": "//@compartments.2",
-            "rate": "0.29997",
-            "rateParameter": "",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
             "contactRate": "",
             "contactRateParameter": "",
             "contactCompartment": "",
-            "description": "Initial treatment of infected individuals",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.29997",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "0.29997",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "0.29997",
-                "multiplier": ""
-              }
-            ]
+            "description": "Ih→T (ART initiation among homosexual men).",
+            "stratumSpecificRates": []
           },
           {
             "type": "RateFlow",
-            "target": "//@compartments.3",
-            "rate": "0.03333",
-            "rateParameter": "",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
             "contactRate": "",
             "contactRateParameter": "",
             "contactCompartment": "",
-            "description": "Progression to AIDS for untreated individuals",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.03333",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "0.03333",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "0.03333",
-                "multiplier": ""
-              }
-            ]
+            "description": "Ih→A (AIDS in untreated homosexual men).",
+            "stratumSpecificRates": []
           }
         ]
       },
       {
         "index": 2,
-        "primaryName": "Treated",
-        "secondaryName": "with ART",
-        "population": "107",
-        "product": "//@products.0",
+        "primaryName": "Susceptible women",
+        "secondaryName": "Sw",
+        "population": "189994",
+        "product": "",
         "outgoingFlows": [
           {
             "type": "RateFlow",
             "target": "//@compartments.3",
-            "rate": "0.018",
+            "rate": "",
             "rateParameter": "",
             "contactRate": "",
-            "contactRateParameter": "",
-            "contactCompartment": "",
-            "description": "Progression to AIDS for treated individuals",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.018",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "0.018",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "0.018",
-                "multiplier": ""
-              }
-            ]
+            "contactRateParameter": "//@parameters.9",
+            "contactCompartment": "//@compartments.1",
+            "description": "Sw→Iw via contacts with homosexual men (bhw * chw).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.10",
+            "contactCompartment": "//@compartments.5",
+            "description": "Sw→Iw via heterosexual contacts with infected men (bs * cs).",
+            "stratumSpecificRates": []
           }
         ]
       },
       {
         "index": 3,
-        "primaryName": "Infectious",
-        "secondaryName": "living with AIDS",
-        "population": "47",
-        "product": "//@products.0",
+        "primaryName": "Untreated infected women",
+        "secondaryName": "Iw",
+        "population": "6",
+        "product": "",
         "outgoingFlows": [
           {
             "type": "RateFlow",
-            "target": "//@compartments.4",
-            "rate": "0.3333",
-            "rateParameter": "",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
             "contactRate": "",
             "contactRateParameter": "",
             "contactCompartment": "",
-            "description": "Death from AIDS",
-            "stratumSpecificRates": [
-              {
-                "stratum": "Homosexual Men",
-                "rate": "0.3333",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Women",
-                "rate": "0.3333",
-                "multiplier": ""
-              },
-              {
-                "stratum": "Heterosexual Men",
-                "rate": "0.3333",
-                "multiplier": ""
-              }
-            ]
+            "description": "Iw→T (ART initiation among women).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Iw→A (AIDS in untreated women).",
+            "stratumSpecificRates": []
           }
         ]
       },
       {
         "index": 4,
-        "primaryName": "HIV Deaths",
-        "secondaryName": "",
+        "primaryName": "Susceptible heterosexual men",
+        "secondaryName": "Sm",
+        "population": "171173",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.11",
+            "contactCompartment": "//@compartments.3",
+            "description": "Sm→Im via contacts with infected women (bs * cs).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.12",
+            "contactCompartment": "//@compartments.1",
+            "description": "Sm→Im via contacts with homosexual men (bhm * chm).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Untreated infected heterosexual men",
+        "secondaryName": "Im",
+        "population": "29",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Im→T (ART initiation among heterosexual men).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Im→A (AIDS in untreated heterosexual men).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Treated with ART",
+        "secondaryName": "T",
+        "population": "107",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "T→A due to ART failure/resistance (δ).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "People living with AIDS",
+        "secondaryName": "A",
+        "population": "47",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 8,
+        "primaryName": "RecruitmentSource",
+        "secondaryName": "SRC",
         "population": "0",
-        "product": "//@products.0",
+        "product": "",
         "outgoingFlows": []
       }
     ],
-    "parameters": [],
-    "groups": [
+    "parameters": [
       {
         "index": 0,
-        "name": "SexualBehavior",
-        "description": "",
-        "values": [
-          "Homosexual Men",
-          "Women",
-          "Heterosexual Men"
-        ]
-      }
-    ],
-    "products": [
-      {
-        "index": 0,
-        "name": "SexualBehaviorProduct",
-        "description": "Stratification by sexual behavior",
-        "groups": "//@groups.0"
-      }
-    ],
-    "externalSources": [
-      {
-        "name": "Recruitment of Homosexual Men",
-        "rate": "12.7872",
-        "rateParameter": "",
-        "targetCompartment": "//@compartments.0",
-        "targetStratum": "Homosexual Men"
+        "name": "C_h_1_minus_c",
+        "type": "CONSTANT",
+        "expression": "333*0.48*(1-0.92)",
+        "description": "Recruitment: C*h*(1-c) into Sh",
+        "unit": "people/time"
       },
       {
-        "name": "Recruitment of Women",
-        "rate": "173.16",
-        "rateParameter": "",
-        "targetCompartment": "//@compartments.0",
-        "targetStratum": "Women"
+        "index": 1,
+        "name": "C_1_minus_h",
+        "type": "CONSTANT",
+        "expression": "333*(1-0.48)",
+        "description": "Recruitment: C*(1-h) into Sw",
+        "unit": "people/time"
       },
       {
-        "name": "Recruitment of Heterosexual Men",
-        "rate": "147.0528",
-        "rateParameter": "",
-        "targetCompartment": "//@compartments.0",
-        "targetStratum": "Heterosexual Men"
+        "index": 2,
+        "name": "C_h_c",
+        "type": "CONSTANT",
+        "expression": "333*0.48*0.92",
+        "description": "Recruitment: C*h*c into Sm",
+        "unit": "people/time"
+      },
+      {
+        "index": 3,
+        "name": "l",
+        "type": "CONSTANT",
+        "expression": "0.0129",
+        "description": "Natural death rate",
+        "unit": "1/time"
+      },
+      {
+        "index": 4,
+        "name": "delta",
+        "type": "CONSTANT",
+        "expression": "0.018",
+        "description": "AIDS development rate for treated individuals",
+        "unit": "1/time"
+      },
+      {
+        "index": 5,
+        "name": "ch_bh",
+        "type": "CONSTANT",
+        "expression": "7*0.44",
+        "description": "Homosexual contact term ch*bh",
+        "unit": "1/time"
+      },
+      {
+        "index": 6,
+        "name": "A_contact_term",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Contact term with AIDS individuals (as in model’s force of infection)",
+        "unit": "1/time"
+      },
+      {
+        "index": 7,
+        "name": "a_p",
+        "type": "CONSTANT",
+        "expression": "0.3333*0.90",
+        "description": "Rate a*p: progression from untreated infected to T",
+        "unit": "1/time"
+      },
+      {
+        "index": 8,
+        "name": "a_1_minus_p",
+        "type": "CONSTANT",
+        "expression": "0.3333*(1-0.90)",
+        "description": "Rate a*(1-p): progression from untreated infected to A",
+        "unit": "1/time"
+      },
+      {
+        "index": 9,
+        "name": "chw_bhw",
+        "type": "CONSTANT",
+        "expression": "2*0.018",
+        "description": "Contact term chw*bhw for Sw infection via Ih",
+        "unit": "1/time"
+      },
+      {
+        "index": 10,
+        "name": "cs_bs",
+        "type": "CONSTANT",
+        "expression": "4*0.02",
+        "description": "Contact term cs*bs for Sw infection via Im",
+        "unit": "1/time"
+      },
+      {
+        "index": 11,
+        "name": "cs_bs_Sm",
+        "type": "CONSTANT",
+        "expression": "4*0.02",
+        "description": "Contact term cs*bs for Sm infection via Iw",
+        "unit": "1/time"
+      },
+      {
+        "index": 12,
+        "name": "chm_bhm",
+        "type": "CONSTANT",
+        "expression": "1*0.25",
+        "description": "Contact term chm*bhm for Sm infection via Ih",
+        "unit": "1/time"
+      },
+      {
+        "index": 13,
+        "name": "d_AIDS",
+        "type": "CONSTANT",
+        "expression": "0.3333",
+        "description": "AIDS-induced death rate d",
+        "unit": "1/time"
       }
     ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
     "externalSinks": [
       {
-        "name": "Natural Death from Susceptible (Homosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
+        "name": "Natural_death_Sh",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
         "sourceCompartment": "//@compartments.0",
-        "sourceStratum": "Homosexual Men"
+        "sourceStratum": ""
       },
       {
-        "name": "Natural Death from Susceptible (Women)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.0",
-        "sourceStratum": "Women"
-      },
-      {
-        "name": "Natural Death from Susceptible (Heterosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.0",
-        "sourceStratum": "Heterosexual Men"
-      },
-      {
-        "name": "Natural Death from Untreated Infected (Homosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
+        "name": "Natural_death_Ih",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
         "sourceCompartment": "//@compartments.1",
-        "sourceStratum": "Homosexual Men"
+        "sourceStratum": ""
       },
       {
-        "name": "Natural Death from Untreated Infected (Women)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.1",
-        "sourceStratum": "Women"
-      },
-      {
-        "name": "Natural Death from Untreated Infected (Heterosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.1",
-        "sourceStratum": "Heterosexual Men"
-      },
-      {
-        "name": "Natural Death from Treated (Homosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
+        "name": "Natural_death_Sw",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
         "sourceCompartment": "//@compartments.2",
-        "sourceStratum": "Homosexual Men"
+        "sourceStratum": ""
       },
       {
-        "name": "Natural Death from Treated (Women)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.2",
-        "sourceStratum": "Women"
-      },
-      {
-        "name": "Natural Death from Treated (Heterosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.2",
-        "sourceStratum": "Heterosexual Men"
-      },
-      {
-        "name": "Natural Death from AIDS (Homosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
+        "name": "Natural_death_Iw",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
         "sourceCompartment": "//@compartments.3",
-        "sourceStratum": "Homosexual Men"
+        "sourceStratum": ""
       },
       {
-        "name": "Natural Death from AIDS (Women)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.3",
-        "sourceStratum": "Women"
+        "name": "Natural_death_Sm",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
+        "sourceCompartment": "//@compartments.4",
+        "sourceStratum": ""
       },
       {
-        "name": "Natural Death from AIDS (Heterosexual Men)",
-        "rate": "0.0129",
-        "rateParameter": "",
-        "sourceCompartment": "//@compartments.3",
-        "sourceStratum": "Heterosexual Men"
+        "name": "Natural_death_Im",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
+        "sourceCompartment": "//@compartments.5",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_death_T",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
+        "sourceCompartment": "//@compartments.6",
+        "sourceStratum": ""
+      },
+      {
+        "name": "AIDS_death",
+        "rate": "",
+        "rateParameter": "//@parameters.13",
+        "sourceCompartment": "//@compartments.7",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural_death_A",
+        "rate": "",
+        "rateParameter": "//@parameters.3",
+        "sourceCompartment": "//@compartments.7",
+        "sourceStratum": ""
       }
     ]
   }

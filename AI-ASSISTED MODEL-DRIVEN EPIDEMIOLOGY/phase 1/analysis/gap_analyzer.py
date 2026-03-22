@@ -12,8 +12,16 @@ from typing import Dict, List, Any, Optional, Set, Tuple
 import sys
 from datetime import datetime
 
-sys.path.insert(0, str(Path(__file__).parent.parent / 'utils'))
+_phase1 = Path(__file__).parent.parent
+sys.path.insert(0, str(_phase1 / "utils"))
+sys.path.insert(0, str(Path(__file__).parent))  # paper_promise_extractor.py in this folder
 from xml_parser import CompModelParser
+from phase1_paths import (
+    default_model_search_dirs,
+    find_compmodel_files,
+    find_pdf_for_compmodel,
+    resolve_fallback_compmodel_dir,
+)
 
 # Import paper promise extractor (optional - only needed for Phase 2)
 try:
@@ -492,8 +500,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Phase 2 (recommended): Analyze model with paper PDF
-  python3 gap_analyzer.py --model Compartmental/CompartmentalModel/covid.compmodel \\
+  # Phase 2 (recommended): Analyze model with paper PDF (paths relative to ``phase 1/``)
+  python3 gap_analyzer.py --model papers/epimde/covid.compmodel \\
                           --name "COVID-19" \\
                           --paper-pdf papers/epimde/covid.pdf
 
@@ -548,16 +556,16 @@ Examples:
         
         return
     
-    # Analyze all models, automatically using papers and .compmodel files from papers directory
-    base_path = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
+    # Analyze all models: epimde first, then Phase 2 baselines, then legacy Compartmental (if present)
     papers_base_dir = Path(__file__).parent.parent / 'papers'
+    fallback_model_dirs = [d for d in default_model_search_dirs() if d.is_dir()]
     output_dir = Path(__file__).parent.parent / 'reports' / 'gap_reports'
     output_dir.mkdir(parents=True, exist_ok=True)
     
     def find_model_and_paper(model_name: str) -> Tuple[Optional[Path], Optional[Path]]:
         """
         Find both .compmodel file and paper PDF for a model.
-        Prioritizes files in papers directory, falls back to Compartmental/CompartmentalModel.
+        Prioritizes ``papers/epimde``, then Phase 2 ``baseline_models``, then legacy Compartmental.
         """
         # Normalize model name for searching
         model_lower = model_name.lower().replace('-', '_').replace(' ', '_')
@@ -587,21 +595,26 @@ Examples:
                 model_path = path
                 break
         
-        # If not found in papers, try default location
+        # If not found in papers/epimde, try each fallback directory
         if not model_path:
-            default_paths = [
-                base_path / f"{model_lower}.compmodel",
-                base_path / f"{model_name.lower()}.compmodel",
-                base_path / f"{model_simple}.compmodel",
-            ]
-            if 'covid' in model_lower:
-                default_paths.append(base_path / 'covid.compmodel')
-            elif 'hiv' in model_lower:
-                default_paths.extend([base_path / 'HIV.compmodel', base_path / 'hiv.compmodel'])
-            
-            for path in default_paths:
-                if path.exists():
-                    model_path = path
+            for base_path in fallback_model_dirs:
+                default_paths = [
+                    base_path / f"{model_lower}.compmodel",
+                    base_path / f"{model_name.lower()}.compmodel",
+                    base_path / f"{model_simple}.compmodel",
+                ]
+                if 'covid' in model_lower:
+                    default_paths.append(base_path / 'covid.compmodel')
+                elif 'hiv' in model_lower:
+                    default_paths.extend(
+                        [base_path / 'HIV.compmodel', base_path / 'hiv.compmodel']
+                    )
+
+                for path in default_paths:
+                    if path.exists():
+                        model_path = path
+                        break
+                if model_path:
                     break
         
         # Find paper PDF (in same directory as model if found in papers, or search)
@@ -650,16 +663,24 @@ Examples:
         
         return model_path, paper_path
     
-    # Find models and papers
-    models = {}
-    for model_name in ['COVID-19', 'Malaria', 'HIV']:
-        model_path, paper_path = find_model_and_paper(model_name)
-        if model_path:
-            models[model_name] = (model_path, paper_path)
-    
+    # Find all .compmodel files in the same default directory as Task 1.1 / 2.2 / 2.3
+    base_dir = resolve_fallback_compmodel_dir()
+    papers_base_dir = Path(__file__).parent.parent / "papers"
+    discovered = find_compmodel_files(base_dir)
+    models: Dict[str, Tuple[Path, Optional[Path]]] = {}
+    for model_name, model_path in discovered:
+        paper_path = find_pdf_for_compmodel(model_path, papers_base_dir)
+        models[model_name] = (model_path, paper_path)
+
+    if not models:
+        print(f"No .compmodel files found in {base_dir}")
+        print("Add models under papers/epimde/ or ensure phase 2/data/baseline_models/ exists.")
+        return
+
     print("=" * 80)
     print("TASK 2.1: GAP ANALYSIS FOR ALL MODELS")
     print("Using papers and .compmodel files")
+    print(f"Model directory: {base_dir} ({len(models)} model(s))")
     print("=" * 80)
     
     all_reports = {}
@@ -681,20 +702,23 @@ Examples:
             if paper_path and paper_path.exists():
                 print(f"\n✓ Found paper: {paper_path}")
                 print("Extracting promises from paper...")
-                try:
-                    if not HAS_PAPER_EXTRACTOR:
-                        print("⚠ Paper promise extractor not available. Using pattern-based extraction.")
-                    extractor = PaperPromiseExtractor(use_llm=False)  # Use pattern-based by default
-                    promises = extractor.extract_from_pdf(str(paper_path))
-                    print(f"✓ Extracted promises:")
-                    print(f"  - Compartments: {list(promises.compartments)}")
-                    print(f"  - Stratifications: {list(promises.stratifications)}")
-                    print(f"  - Parameters: {list(promises.parameters)}")
-                    print(f"  - Interventions: {list(promises.interventions)}")
-                except Exception as e:
-                    print(f"⚠ Error extracting promises from paper: {e}")
-                    print("Falling back to minimal generic checks...")
-                    promises = None
+                promises = None
+                if not HAS_PAPER_EXTRACTOR:
+                    print("⚠ Paper promise extractor not installed or import failed. Skipping PDF extraction.")
+                    print("   (Install Phase 1 deps; ensure analysis/paper_promise_extractor.py is importable.)")
+                else:
+                    try:
+                        extractor = PaperPromiseExtractor(use_llm=False)  # pattern-based by default
+                        promises = extractor.extract_from_pdf(str(paper_path))
+                        print(f"✓ Extracted promises:")
+                        print(f"  - Compartments: {list(promises.compartments)}")
+                        print(f"  - Stratifications: {list(promises.stratifications)}")
+                        print(f"  - Parameters: {list(promises.parameters)}")
+                        print(f"  - Interventions: {list(promises.interventions)}")
+                    except Exception as e:
+                        print(f"⚠ Error extracting promises from paper: {e}")
+                        print("Falling back to minimal generic checks...")
+                        promises = None
             else:
                 print(f"⚠ Paper not found: {paper_path}")
                 print("Using minimal generic checks (limited gap analysis)")

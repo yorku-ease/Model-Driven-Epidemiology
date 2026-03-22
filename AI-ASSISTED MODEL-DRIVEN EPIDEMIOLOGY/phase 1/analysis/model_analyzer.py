@@ -24,6 +24,7 @@ except ImportError:
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from utils.xml_parser import CompModelParser
+from utils.phase1_paths import resolve_default_model_dir, find_compmodel_files
 
 
 class ModelAnalyzer:
@@ -218,40 +219,6 @@ class ModelAnalyzer:
             return compartments_data + flows_data + parameters_data + stratification_data
 
 
-def find_compmodel_files(directory: Path) -> list:
-    """
-    Find all .compmodel files in a directory.
-    
-    Args:
-        directory: Directory to search
-        
-    Returns:
-        List of (model_name, file_path) tuples
-    """
-    models = []
-    
-    if not directory.exists():
-        return models
-    
-    # Find all .compmodel files
-    for file_path in directory.glob('*.compmodel'):
-        # Extract model name from filename (remove extension, capitalize)
-        model_name = file_path.stem
-        # Convert to readable name (e.g., "covid" -> "COVID-19", "HIV" -> "HIV")
-        # Handle common patterns
-        if model_name.lower() == 'covid':
-            model_name = 'COVID-19'
-        elif model_name.lower() == 'hiv':
-            model_name = 'HIV'
-        else:
-            # Capitalize first letter of each word
-            model_name = ' '.join(word.capitalize() for word in model_name.replace('_', ' ').replace('-', ' ').split())
-        
-        models.append((model_name, file_path))
-    
-    return models
-
-
 def main():
     """
     Main function to analyze all models in a directory.
@@ -264,7 +231,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Analyze all models in default directory
+  # Analyze all models in default directory (phase 1/papers/epimde when present)
   python3 model_analyzer.py
 
   # Analyze models in specific directory
@@ -276,7 +243,7 @@ Examples:
     )
     
     parser.add_argument('--model-dir', 
-                       help='Directory containing .compmodel files (default: Compartmental/CompartmentalModel)')
+                       help='Directory containing .compmodel files (default: papers/epimde, else phase 2 baselines, else legacy Compartmental)')
     parser.add_argument('--model-file', 
                        help='Single model file to analyze (overrides --model-dir)')
     parser.add_argument('--model-name', 
@@ -305,8 +272,7 @@ Examples:
         if args.model_dir:
             model_dir = Path(args.model_dir)
         else:
-            # Default: Compartmental/CompartmentalModel
-            model_dir = Path(__file__).parent.parent.parent / 'Compartmental' / 'CompartmentalModel'
+            model_dir = resolve_default_model_dir()
         
         models = find_compmodel_files(model_dir)
         

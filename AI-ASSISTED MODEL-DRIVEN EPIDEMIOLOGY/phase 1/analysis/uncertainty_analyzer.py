@@ -15,6 +15,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'utils'))
 from xml_parser import CompModelParser
+from phase1_paths import find_compmodel_files, resolve_fallback_compmodel_dir
 
 
 class UncertaintyAnalyzer:
@@ -214,6 +215,13 @@ class UncertaintyAnalyzer:
         
         return {
             'modelName': self.model_name,
+            'methodologyNotes': (
+                'This task is **parameter uncertainty quantification**: documenting uncertainty about '
+                '**numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). '
+                'Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name '
+                '(COVID-19, Malaria, HIV) and parameter name substrings — assigning High/Medium/Low requires '
+                'curated literature ranges or expert review; see Phase 1 README (Validity & limitations).'
+            ),
             'totalParameters': len(self.data['parameters']),
             'parametersWithUncertainty': len(uncertainty_data),
             'parameters': uncertainty_data,
@@ -310,43 +318,50 @@ def main():
         print("=" * 80)
         return
 
-    # Original Phase 1 batch mode (no model-file argument)
-    base_path = Path(__file__).parent.parent.parent / "Compartmental" / "CompartmentalModel"
+    # Original Phase 1 batch mode (no model-file argument): all *.compmodel in default dir
+    base_path = resolve_fallback_compmodel_dir()
     output_dir = Path(__file__).parent.parent / "reports" / "uncertainty"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    models = {
-        "COVID-19": base_path / "covid.compmodel",
-        "Malaria": base_path / "malaria.compmodel",
-        "HIV": base_path / "HIV.compmodel",
-    }
+    models = find_compmodel_files(base_path)
 
     print("=" * 80)
     print("TASK 2.2: QUANTIFY UNCERTAINTY IN EXISTING PARAMETERS")
+    print(f"Model directory: {base_path} ({len(models)} model(s))")
     print("=" * 80)
 
     all_uncertainty = []
 
-    for model_name, model_path in models.items():
+    if not models:
+        print(f"No .compmodel files found in {base_path}")
+        return
+
+    for model_name, model_path in models:
         if not model_path.exists():
             print(f"Warning: {model_path} not found, skipping {model_name}")
             continue
 
         print(f"\nAnalyzing {model_name}...")
-        analyzer = UncertaintyAnalyzer(str(model_path), model_name)
+        try:
+            analyzer = UncertaintyAnalyzer(str(model_path), model_name)
 
-        # Export JSON
-        json_path = output_dir / f"{model_name.lower().replace('-', '_')}_uncertainty.json"
-        analyzer.export_uncertainty_database(str(json_path))
-        print(f"✓ Uncertainty database exported to: {json_path}")
+            # Export JSON
+            json_path = output_dir / f"{model_name.lower().replace('-', '_')}_uncertainty.json"
+            analyzer.export_uncertainty_database(str(json_path))
+            print(f"✓ Uncertainty database exported to: {json_path}")
 
-        db = analyzer.generate_uncertainty_database()
-        print(f"  Parameters analyzed: {db['parametersWithUncertainty']}")
-        print(f"  High confidence: {db['summary']['highConfidence']}")
-        print(f"  Medium confidence: {db['summary']['mediumConfidence']}")
-        print(f"  Low confidence: {db['summary']['lowConfidence']}")
+            db = analyzer.generate_uncertainty_database()
+            print(f"  Parameters analyzed: {db['parametersWithUncertainty']}")
+            print(f"  High confidence: {db['summary']['highConfidence']}")
+            print(f"  Medium confidence: {db['summary']['mediumConfidence']}")
+            print(f"  Low confidence: {db['summary']['lowConfidence']}")
 
-        all_uncertainty.extend(db["parameters"])
+            all_uncertainty.extend(db["parameters"])
+        except Exception as e:
+            print(f"✗ Error analyzing {model_name}: {e}")
+            import traceback
+
+            traceback.print_exc()
 
     # Export combined database
     if all_uncertainty:

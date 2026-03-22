@@ -2,7 +2,7 @@
 Generic Model Simulator
 
 Simulates any compartmental model using its actual structure from .compmodel files.
-Works for SEIR, vector-borne, traffic networks, and any other compartmental model.
+Works for SEIR, vector-borne, and other compartmental epidemiological models.
 """
 import sys
 from pathlib import Path

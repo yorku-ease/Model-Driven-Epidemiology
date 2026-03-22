@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel"
+  totalPopulation="16331365">
+
+  <!-- Human compartments: SEIR with logistic growth in total human population -->
+  <compartments PrimaryName="Susceptible humans" population="16231364">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      contactRate="0.0"
+      contactRateParameter="parameters.0"
+      contactCompartment="compartments.9"
+      target="compartments.1"
+      description="Human infection via bites from infectious female adult vectors"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.1"
+      target="compartments.2"
+      description="Human incubation: Eh→Ih at rate 1/τ_h"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious humans" population="1">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.2"
+      target="compartments.3"
+      description="Human recovery: Ih→Rh at rate γ_h"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered humans" population="0"/>
+
+  <!-- Vector life stages: eggs, larvae (logistic), pupae; then female adults: Sv, Ev, Iv -->
+  <compartments PrimaryName="Eggs (non-infectious)" population="180000000">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.3"
+      target="compartments.5"
+      description="Egg development: E→L at rate 1/τ1_v"/>
+  </compartments>
+
+  <compartments PrimaryName="Larvae (non-infectious, logistic)" population="90000000">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.4"
+      target="compartments.6"
+      description="Larval development: L→P at rate 1/τ2_v"/>
+  </compartments>
+
+  <compartments PrimaryName="Pupae (non-infectious)" population="70000000">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.5"
+      target="compartments.7"
+      description="Pupal development: P→Sv at rate φ*(1/τ3_v) (female fraction applied)"/>
+  </compartments>
+
+  <compartments PrimaryName="Susceptible female adults" population="69999990">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      contactRate="0.0"
+      contactRateParameter="parameters.6"
+      contactCompartment="compartments.2"
+      target="compartments.8"
+      description="Vector infection via biting infectious humans: Sv→Ev"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed female adults" population="5">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      rate="0.0"
+      rateParameter="parameters.7"
+      target="compartments.9"
+      description="Vector incubation: Ev→Iv at rate 1/τ_v"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious female adults" population="5"/>
+
+  <!-- Human logistic growth terms distributed across Sh, Eh, Ih, Rh as in the paper -->
+  <externalSources name="Human logistic growth into Sh" rateParameter="parameters.8" targetCompartment="compartments.0"/>
+  <externalSources name="Human logistic growth into Eh" rateParameter="parameters.8" targetCompartment="compartments.1"/>
+  <externalSources name="Human logistic growth into Ih" rateParameter="parameters.8" targetCompartment="compartments.2"/>
+  <externalSources name="Human logistic growth into Rh" rateParameter="parameters.8" targetCompartment="compartments.3"/>
+
+  <!-- Egg laying from female adult vectors -->
+  <externalSources name="Egg laying from female adult vectors" rateParameter="parameters.10" targetCompartment="compartments.4"/>
+
+  <!-- Natural death sinks for humans -->
+  <externalSinks name="Natural death Sh" rateParameter="parameters.9" sourceCompartment="compartments.0"/>
+  <externalSinks name="Natural death Eh" rateParameter="parameters.9" sourceCompartment="compartments.1"/>
+  <externalSinks name="Natural death Ih" rateParameter="parameters.9" sourceCompartment="compartments.2"/>
+  <externalSinks name="Natural death Rh" rateParameter="parameters.9" sourceCompartment="compartments.3"/>
+
+  <!-- Vector mortality and density dependence (larvae logistic term) -->
+  <externalSinks name="Egg mortality" rateParameter="parameters.11" sourceCompartment="compartments.4"/>
+  <externalSinks name="Larval base mortality" rateParameter="parameters.12" sourceCompartment="compartments.5"/>
+  <externalSinks name="Larval density-dependent mortality" rateParameter="parameters.13" sourceCompartment="compartments.5"/>
+  <externalSinks name="Pupal mortality" rateParameter="parameters.14" sourceCompartment="compartments.6"/>
+
+  <externalSinks name="Adult female mortality Sv" rateParameter="parameters.15" sourceCompartment="compartments.7"/>
+  <externalSinks name="Adult female mortality Ev" rateParameter="parameters.15" sourceCompartment="compartments.8"/>
+  <externalSinks name="Adult female mortality Iv" rateParameter="parameters.15" sourceCompartment="compartments.9"/>
+
+  <!-- Parameters as defined/used in the paper (placeholders kept where the paper uses combined terms) -->
+  <parameters name="b" expression="0.071"
+    description="Average biting rate / infectious bites delivered per vector per day (human exposure term)"
+    unit="1/day"/>
+  <parameters name="1/τ_h" expression="0.5"
+    description="Inverse incubation time in humans"
+    unit="1/day"/>
+  <parameters name="γ_h" expression="0.2"
+    description="Human recovery rate"
+    unit="1/day"/>
+
+  <parameters name="1/τ1_v" expression="0.3"
+    description="Egg development rate"
+    unit="1/day"/>
+  <parameters name="1/τ2_v" expression="0.1"
+    description="Larval development rate"
+    unit="1/day"/>
+  <parameters name="1/τ3_v" expression="0.3"
+    description="Pupal development rate"
+    unit="1/day"/>
+
+  <parameters name="b_v" expression="0.001"
+    description="Biting/exposure term for vectors becoming infected from infectious humans"
+    unit="1/day"/>
+  <parameters name="1/τ_v" expression="0.125"
+    description="Inverse incubation time in vectors"
+    unit="1/day"/>
+
+  <parameters name="r_h" expression="0.00005"
+    description="Human population growth rate (logistic)"
+    unit="1/day"/>
+  <parameters name="μ_h" expression="1.94e-5"
+    description="Natural human mortality rate"
+    unit="1/day"/>
+
+  <parameters name="f" expression="80"
+    description="Eggs laid per female mosquito per unit time"
+    unit="1/day"/>
+
+  <parameters name="μ1_v" expression="0.05"
+    description="Egg mortality rate"
+    unit="1/day"/>
+  <parameters name="μ2_v" expression="0.025"
+    description="Larval base mortality rate"
+    unit="1/day"/>
+  <parameters name="δ_l" expression="1"
+    description="Larval density-dependent mortality coefficient (logistic term)"
+    unit="1/day"/>
+  <parameters name="μ3_v" expression="0.0025"
+    description="Pupal mortality rate"
+    unit="1/day"/>
+  <parameters name="μ_a_v" expression="0.05"
+    description="Adult female mortality rate"
+    unit="1/day"/>
+  <parameters name="φ" expression="0.68"
+    description="Female fraction among adult vectors"
+    unit="dimensionless"/>
+
+  <!-- Combined term used for pupae→adult female recruitment -->
+  <parameters name="φ*(1/τ3_v)" type="EXPRESSION"
+    expression="φ * (1/τ3_v)"
+    description="Female pupae-to-adult development flow multiplier"
+    unit="1/day"/>
+
+  <!-- Logistic human growth term placeholder: paper distributes the crowding term across compartments;
+       represented as an expression parameter due to metamodel limitations. -->
+  <parameters name="HumanLogisticTerm" type="EXPRESSION"
+    expression="r_h * N_h * (1 - N_h / K_h)"
+    description="Logistic human population growth term (distributed across Sh,Eh,Ih,Rh proportionally)"
+    unit="1/day"/>
+
+</compartmental:CompartmentalModel>
+

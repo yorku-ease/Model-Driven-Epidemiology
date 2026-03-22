@@ -1,25 +1,25 @@
 {
   "modelName": "Malaria",
-  "analysisDate": "2026-01-14T19:39:11.270546",
+  "analysisDate": "2026-03-21T17:18:02.600475",
   "paperPromises": {
     "compartments": [
-      "Infectious",
-      "Exposed",
-      "Vaccinated",
-      "Asymptomatic",
-      "Susceptible",
       "Recovered",
+      "Severe",
+      "Susceptible",
       "ICU",
-      "Severe"
+      "Infectious",
+      "Asymptomatic",
+      "Exposed",
+      "Vaccinated"
     ],
     "stratifications": [
       "location"
     ],
     "parameters": [
-      "birth_rate",
+      "mortality_rate",
       "recovery_rate",
-      "contact_rate",
-      "mortality_rate"
+      "birth_rate",
+      "contact_rate"
     ],
     "interventions": [
       "treatment",
@@ -28,29 +28,15 @@
     "model_type": "SEIR",
     "description": "Pattern-based extraction from paper text. Found 8 compartments, 1 stratifications, 4 parameters, 2 interventions."
   },
-  "totalGaps": 8,
+  "totalGaps": 10,
   "gaps": {
     "structuralGaps": [
       {
-        "gap": "Missing Promised Compartment: Infectious",
-        "description": "Paper promises Infectious compartment but model does not include it",
+        "gap": "Missing Promised Compartment: Severe",
+        "description": "Paper promises Severe compartment but model does not include it",
         "promisedByPaper": true,
         "severity": "high",
-        "howToAdd": "Add compartment: Infectious"
-      },
-      {
-        "gap": "Missing Promised Compartment: Vaccinated",
-        "description": "Paper promises Vaccinated compartment but model does not include it",
-        "promisedByPaper": true,
-        "severity": "high",
-        "howToAdd": "Add compartment: Vaccinated"
-      },
-      {
-        "gap": "Missing Promised Compartment: Asymptomatic",
-        "description": "Paper promises Asymptomatic compartment but model does not include it",
-        "promisedByPaper": true,
-        "severity": "high",
-        "howToAdd": "Add compartment: Asymptomatic"
+        "howToAdd": "Add compartment: Severe"
       },
       {
         "gap": "Missing Promised Compartment: ICU",
@@ -60,14 +46,43 @@
         "howToAdd": "Add compartment: ICU"
       },
       {
-        "gap": "Missing Promised Compartment: Severe",
-        "description": "Paper promises Severe compartment but model does not include it",
+        "gap": "Missing Promised Compartment: Asymptomatic",
+        "description": "Paper promises Asymptomatic compartment but model does not include it",
         "promisedByPaper": true,
         "severity": "high",
-        "howToAdd": "Add compartment: Severe"
+        "howToAdd": "Add compartment: Asymptomatic"
       }
     ],
-    "parameterGaps": [],
+    "parameterGaps": [
+      {
+        "gap": "Missing Promised Parameter: mortality_rate",
+        "description": "Paper promises mortality_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract mortality_rate from flows or add as explicit parameter"
+      },
+      {
+        "gap": "Missing Promised Parameter: recovery_rate",
+        "description": "Paper promises recovery_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract recovery_rate from flows or add as explicit parameter"
+      },
+      {
+        "gap": "Missing Promised Parameter: birth_rate",
+        "description": "Paper promises birth_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract birth_rate from flows or add as explicit parameter"
+      },
+      {
+        "gap": "Missing Promised Parameter: contact_rate",
+        "description": "Paper promises contact_rate parameter but model does not include it",
+        "promisedByPaper": true,
+        "severity": "high",
+        "suggestedAction": "Extract contact_rate from flows or add as explicit parameter"
+      }
+    ],
     "stratificationGaps": [
       {
         "gap": "Missing Promised Stratification: location",
@@ -95,9 +110,9 @@
     ]
   },
   "summary": {
-    "criticalGaps": 5,
+    "criticalGaps": 7,
     "mediumGaps": 0,
     "lowGaps": 0,
-    "promisedByPaper": 8
+    "promisedByPaper": 10
   }
 }

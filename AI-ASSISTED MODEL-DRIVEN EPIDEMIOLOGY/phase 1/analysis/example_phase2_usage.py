@@ -12,7 +12,7 @@ Run with:
 import sys
 from pathlib import Path
 
-# Add phase1 to path
+# Phase 1 root (folder that contains ``run_phase1.py``)
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from analysis.gap_analyzer import analyze_gaps_with_paper
@@ -52,10 +52,10 @@ def example_with_paper_pdf():
     print("EXAMPLE: Extract from PDF and Analyze Gaps")
     print("=" * 80)
     
-    # Paths
-    base_path = Path(__file__).parent.parent.parent
-    model_path = base_path / 'Compartmental' / 'CompartmentalModel' / 'covid.compmodel'
-    paper_path = base_path / 'phase1' / 'papers' / 'epimde' / 'covid.pdf'
+    # Paths: gold COVID model + PDF under phase 1/papers/epimde (aligned with Phase 2 baselines)
+    phase1_root = Path(__file__).resolve().parent.parent
+    model_path = phase1_root / 'papers' / 'epimde' / 'covid.compmodel'
+    paper_path = phase1_root / 'papers' / 'epimde' / 'covid.pdf'
     
     if not model_path.exists():
         print(f"\n⚠ Model not found: {model_path}")
@@ -102,8 +102,8 @@ def example_with_llm():
     print("Set OPENAI_API_KEY environment variable or provide --api-key")
     print("\nExample usage:")
     print("  export OPENAI_API_KEY='sk-...'")
-    print("  python3 analysis/gap_analysis_with_paper.py \\")
-    print("      Compartmental/CompartmentalModel/covid.compmodel \\")
+    print("  python3 analysis/gap_analyzer.py \\")
+    print("      papers/epimde/covid.compmodel \\")
     print("      'COVID-19' \\")
     print("      --paper-pdf papers/epimde/covid.pdf \\")
     print("      --use-llm")

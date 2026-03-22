@@ -1,48 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="10933352">
-  <compartments PrimaryName="Susceptible Humans population">
-    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Force of infection: beta1 * a(T) * Iv / Nh." target="//@compartments.1" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.2"/>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!-- Compartments in Akowe et al. (2025): SH, VH, EH1, EH2, IH, TH, RH, SM, EM, IM. [file:23] -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="Susceptible humans (SH)">
+    <!-- SH -> EH1 via vector exposure: λV^S * SH, where λV depends on infectious mosquitoes IM. [file:23] -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.9"
+      contactRateParameter="//@parameters.6"
+      description="Vector exposure of susceptible humans: λV^S * SH (contact with IM)."/>
+    <!-- SH -> EH2 via non-vector exposure: λH^S * SH, where λH depends on infectious humans IH. [file:23] -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.3"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.8"
+      description="Non-vector exposure of susceptible humans: λH^S * SH (contact with IH)."/>
   </compartments>
-  <compartments PrimaryName="Exposed Humans Population">
-    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.8"/>
+
+  <!-- 1 -->
+  <compartments PrimaryName="Vaccinated humans (VH)">
+    <!-- VH -> EH1 via vector exposure of vaccinated: λV^V * VH. [file:23] -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.9"
+      contactRateParameter="//@parameters.5"
+      description="Vector exposure of vaccinated humans: λV^V * VH (contact with IM)."/>
+    <!-- VH -> EH2 via non-vector exposure of vaccinated: λH^V * VH. [file:23] -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.3"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.7"
+      description="Non-vector exposure of vaccinated humans: λH^V * VH (contact with IH)."/>
   </compartments>
-  <compartments PrimaryName="Infected Humans Population" SecondaryName="">
-    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.9"/>
+
+  <!-- 2 -->
+  <compartments PrimaryName="Vector-exposed humans (EH1)">
+    <!-- EH1 -> IH at rate σ1 (paper calls progression from EH1 to IH). [file:23] -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.9"
+      description="Progression EH1 -> IH at rate σ1."/>
   </compartments>
-  <compartments PrimaryName="Recovered Humans Population" SecondaryName="">
-    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.0" rateParameter="//@parameters.3"/>
+
+  <!-- 3 -->
+  <compartments PrimaryName="Non-vector-exposed humans (EH2)">
+    <!-- EH2 -> IH at rate σ2. [file:23] -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.10"
+      description="Progression EH2 -> IH at rate σ2."/>
   </compartments>
-  <compartments PrimaryName="Susceptible Mosquitoes Population">
-    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Force of infection: beta2 * a(T) * Ih / Nh." target="//@compartments.5" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.1"/>
+
+  <!-- 4 -->
+  <compartments PrimaryName="Infectious humans (IH)">
+    <!-- IH -> TH at rate τ (treatment). [file:23] -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.12"
+      description="Treatment IH -> TH at rate τ."/>
   </compartments>
-  <compartments PrimaryName="Exposed Mosquitoes Population">
-    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.6" rateParameter="//@parameters.14"/>
+
+  <!-- 5 -->
+  <compartments PrimaryName="Treated humans (TH)">
+    <!-- TH -> RH at rate γ (recovery after treatment). [file:23] -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.13"
+      description="Recovery TH -> RH at rate γ."/>
   </compartments>
-  <compartments PrimaryName="Infected Mosquitoes Population"/>
-  <externalSources name="Humans" rateParameter="//@parameters.0" targetCompartment="//@compartments.0"/>
-  <externalSources name="Mosquitoes" rateParameter="//@parameters.11" targetCompartment="//@compartments.4"/>
-  <externalSinks name="Natural_Death_SH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.0"/>
-  <externalSinks name="Natural_Death_EH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.1"/>
-  <externalSinks name="Death_IH" rateParameter="//@parameters.10" sourceCompartment="//@compartments.2"/>
-  <externalSinks name="Natural_Death_RH" rateParameter="//@parameters.5" sourceCompartment="//@compartments.3"/>
-  <externalSinks name="Natural_Death_SM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.4"/>
-  <externalSinks name="Natural_Death_EM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.5"/>
-  <externalSinks name="Natural_Death_IM" rateParameter="//@parameters.7" sourceCompartment="//@compartments.6"/>
-  <parameters name="αₕ" expression="15129" description="Recruitment rate of human populations" unit="people/time"/>
-  <parameters name="β₂a(T)" type="EXPRESSION" expression="β₂ * a(T)" description="Combined contact rate" unit="1/time"/>
-  <parameters name="β₁a(T)" type="EXPRESSION" expression="β₁ * a(T)" description="Combined contact rate" unit="1/time"/>
-  <parameters name="q" expression="0.98765" description="Progression rate of Rh to Sh" unit="1/time"/>
-  <parameters name="β₁" expression="0.9969" description="Probability of transmission (human)" unit="dimensionless"/>
-  <parameters name="μₕ" expression="0.001384" description="Natural mortality rate of human population" unit="1/time"/>
-  <parameters name="a(T)" type="EXPRESSION" expression="0.000203 * T * (T - 11.7) * sqrt(42.3 - T)" description="Mosquito biting rate" unit="bites/person/time"/>
-  <parameters name="μᵥ(T)" type="EXPRESSION" expression="1/((-0.03*T*T) + (1.31*T) - 4.4)" description="Mortality rate of adult mosquitoes" unit="1/time"/>
-  <parameters name="ρₕ" expression="0.001995" description="Progression rate Eh to Ih" unit="1/time"/>
-  <parameters name="γₕ" expression="0.120342" description="Recovery rate Ih to Rh" unit="1/time"/>
-  <parameters name="μₕ+δ" type="EXPRESSION" expression="μₕ + 0.017325" description="Disease-induced death rate" unit="1/time"/>
-  <parameters name="θᵥ(T,R)" type="EXPRESSION" expression="(200 * exp(-0.00554 * T + 0.06737) * 4 * R * (50 - R) * 6.75e-5) / (2 + (1 / (0.00554 * T - 0.056737))) * (1 - Nᵥ / K) * Nᵥ" description="Mosquito recruitment rate" unit="mosquitoes/time"/>
-  <parameters name="Nᵥ" expression="80000" description="Approx. Mosquito population" unit="mosquitoes"/>
-  <parameters name="β₂" expression="0.9917" description="Probability of transmission (mosquito)" unit="dimensionless"/>
-  <parameters name="Λₘ(T)" type="EXPRESSION" expression="1 / (exp(μᵥ(T)) * (111/(T - 16)))" description="Progression rate Ev to Iv" unit="1/time"/>
-  <parameters name="K" expression="100000" description="Mosquito carrying capacity" unit="mosquitoes"/>
-  <parameters name="T" type="VARIABLE" description="Temperature" unit="°C"/>
+
+  <!-- 6 -->
+  <compartments PrimaryName="Recovered humans (RH)">
+    <!-- RH -> SH via immunity loss at rate ω (paper: recovered lose immunity). [file:23] -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.0"
+      rateParameter="//@parameters.4"
+      description="Immunity loss RH -> SH at rate ω."/>
+  </compartments>
+
+  <!-- 7 -->
+  <compartments PrimaryName="Susceptible mosquitoes (SM)">
+    <!-- SM -> EM via infection from infectious humans: λM * SM, λM depends on IH. [file:23] -->
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.8"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.15"
+      description="Mosquito infection: λM * SM (contact with IH)."/>
+  </compartments>
+
+  <!-- 8 -->
+  <compartments PrimaryName="Exposed mosquitoes (EM)">
+    <!-- EM -> IM at rate σM (progression). [file:23] -->
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.9"
+      rateParameter="//@parameters.16"
+      description="Progression EM -> IM at rate σM."/>
+  </compartments>
+
+  <!-- 9 -->
+  <compartments PrimaryName="Infectious mosquitoes (IM)"/>
+
+  <!-- External sources (recruitment) -->
+  <!-- Human births into SH at rate (1-k)*α1, and into VH at rate k*α1. [file:23] -->
+  <externalSources name="Human recruitment to SH" rateParameter="//@parameters.1" targetCompartment="//@compartments.0"/>
+  <externalSources name="Human recruitment to VH" rateParameter="//@parameters.2" targetCompartment="//@compartments.1"/>
+
+  <!-- Mosquito recruitment into SM at rate α2. [file:23] -->
+  <externalSources name="Mosquito recruitment to SM" rateParameter="//@parameters.14" targetCompartment="//@compartments.7"/>
+
+  <!-- External sinks: natural death in humans at μ1, plus disease death δ1 from IH, plus mosquito death μ2. [file:23] -->
+  <externalSinks name="Natural death SH" rateParameter="//@parameters.3" sourceCompartment="//@compartments.0"/>
+  <externalSinks name="Natural death VH" rateParameter="//@parameters.3" sourceCompartment="//@compartments.1"/>
+  <externalSinks name="Natural death EH1" rateParameter="//@parameters.3" sourceCompartment="//@compartments.2"/>
+  <externalSinks name="Natural death EH2" rateParameter="//@parameters.3" sourceCompartment="//@compartments.3"/>
+  <externalSinks name="Natural death IH" rateParameter="//@parameters.3" sourceCompartment="//@compartments.4"/>
+  <externalSinks name="Disease-induced death IH" rateParameter="//@parameters.11" sourceCompartment="//@compartments.4"/>
+  <externalSinks name="Natural death TH" rateParameter="//@parameters.3" sourceCompartment="//@compartments.5"/>
+  <externalSinks name="Natural death RH" rateParameter="//@parameters.3" sourceCompartment="//@compartments.6"/>
+
+  <externalSinks name="Natural death SM" rateParameter="//@parameters.17" sourceCompartment="//@compartments.7"/>
+  <externalSinks name="Natural death EM" rateParameter="//@parameters.17" sourceCompartment="//@compartments.8"/>
+  <externalSinks name="Natural death IM" rateParameter="//@parameters.17" sourceCompartment="//@compartments.9"/>
+
+  <!-- Parameters (paper’s Table 2 / Eq. (2) structure; names chosen to match their notation). [file:23] -->
+  <parameters name="α1" expression="15129" description="Human birth/recruitment rate (α1)" unit="people/time"/> <!-- you can replace with paper value -->
+  <parameters name="(1-k)*α1" type="EXPRESSION" expression="(1-k) * α1" description="Recruitment into SH" unit="people/time"/>
+  <parameters name="k*α1" type="EXPRESSION" expression="k * α1" description="Recruitment into VH" unit="people/time"/>
+
+  <parameters name="μ1" expression="0.001384" description="Natural death rate of humans (μ1)" unit="1/time"/>
+  <parameters name="ω" expression="0.98765" description="Immunity loss rate from RH to SH (ω)" unit="1/time"/>
+
+  <parameters name="λV^V" expression="0.0" description="Effective contact rate of vaccinated humans with IM (vector route) (V1 in paper)" unit="1/time"/>
+  <parameters name="λV^S" expression="0.0" description="Effective contact rate of susceptible humans with IM (vector route) (V2 in paper)" unit="1/time"/>
+  <parameters name="λH^V" expression="0.0" description="Effective contact rate of vaccinated humans with IH (non-vector route) (H1 in paper)" unit="1/time"/>
+  <parameters name="λH^S" expression="0.0" description="Effective contact rate of susceptible humans with IH (non-vector route) (H2 in paper)" unit="1/time"/>
+
+  <parameters name="σ1" expression="0.001995" description="Progression EH1 -> IH (σ1 in paper)" unit="1/time"/>
+  <parameters name="σ2" expression="0.001995" description="Progression EH2 -> IH (σ2 in paper)" unit="1/time"/>
+
+  <parameters name="δ1" expression="0.017325" description="Disease-induced death rate in humans (δ1 in paper)" unit="1/time"/>
+  <parameters name="τ" expression="0.0" description="Progression IH -> TH (treatment rate τ)" unit="1/time"/>
+  <parameters name="γ" expression="0.120342" description="Progression TH -> RH (recovery rate γ)" unit="1/time"/>
+
+  <parameters name="α2" expression="0.0" description="Mosquito recruitment rate (α2)" unit="mosquitoes/time"/>
+  <parameters name="λM" expression="0.0" description="Effective contact rate of susceptible mosquitoes with IH (M in paper)" unit="1/time"/>
+  <parameters name="σM" expression="0.0" description="Progression EM -> IM (σM in paper)" unit="1/time"/>
+  <parameters name="μ2" expression="0.1" description="Natural death rate of mosquitoes (μ2)" unit="1/time"/>
+
+  <parameters name="k" expression="0.6" description="Fraction of newborns vaccinated (k)" unit="dimensionless"/>
+
 </compartmental:CompartmentalModel>
+
