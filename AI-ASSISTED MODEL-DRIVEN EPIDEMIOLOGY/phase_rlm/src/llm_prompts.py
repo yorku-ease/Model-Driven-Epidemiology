@@ -69,7 +69,10 @@ IMPORTANT RULES:
 - Past memory can inform your decision - use it wisely"""
 
 
-REPAIR_USER = """REPAIR MEMORY (past attempts for this error type):
+REPAIR_USER = """PHASE 2 BASELINE EVALUATION (extraction vs gold; use as soft guidance, not ground truth for XML structure):
+{evaluation_context}
+
+REPAIR MEMORY (past attempts for this error type):
 {memory_context}
 
 ERROR TO FIX:
@@ -92,7 +95,10 @@ Based on memory and paper chunks, make your decision:
 3. CANNOT_FIX → Explain why this cannot be fixed"""
 
 
-REPAIR_WITH_HISTORY_USER = """REPAIR MEMORY (past attempts for this error type):
+REPAIR_WITH_HISTORY_USER = """PHASE 2 BASELINE EVALUATION (extraction vs gold; use as soft guidance, not ground truth for XML structure):
+{evaluation_context}
+
+REPAIR MEMORY (past attempts for this error type):
 {memory_context}
 
 ERROR TO FIX:

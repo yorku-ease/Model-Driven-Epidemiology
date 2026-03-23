@@ -7,23 +7,110 @@ Main entry point for running the repair system on Phase 2 disease models.
 Usage:
     python run_phase_rlm.py <phase2_report_dir>
     python run_phase_rlm.py --disease measles --provider gemini
+    python run_phase_rlm.py <dir> --llm-provider gemini --llm-model gemini-2.5-flash
+
+  --provider (-p)     : only filters which Phase 2 *report folder* to pick with --disease
+  --llm-provider      : which API RLM uses for repair (like Phase 2 --llm-provider)
 
 Example:
     python run_phase_rlm.py "../phase 2/reports/measles_llm_gemini_20260312_165901"
+
+Evaluation context for the LLM defaults to evaluation_report_fuzzy_temp.json (config),
+with fallback to evaluation_report.json. Override: --evaluation-json FILE.json
 """
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
+from typing import Optional
 
-sys.path.insert(0, str(Path(__file__).parent))
+PHASE_RLM_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(PHASE_RLM_ROOT))
 
 from src.repair_loop import run_repair
 from src.section_classifier import SectionClassifier
 from src.structural_validator import StructuralValidator
 from src.utils.vector_store import VectorStore
 from src.error_memory import ErrorMemory
+from src.phase2_evaluation_context import load_evaluation_for_prompt
+
+
+def rlm_output_dir(report_dir: Path, output_arg: Optional[Path]) -> Path:
+    """Where RLM writes all artifacts (default: phase_rlm/output/<phase2_report_folder_name>/)."""
+    if output_arg is not None:
+        return output_arg.resolve()
+    return (PHASE_RLM_ROOT / "output" / report_dir.name).resolve()
+
+
+def write_rlm_readme(
+    path: Path,
+    report_dir: Path,
+    eval_ref: Optional[str],
+) -> None:
+    """Small README so users know how to compare vs Phase 2."""
+    eval_line = (
+        f"`{Path(eval_ref).name}` in the Phase 2 report folder."
+        if eval_ref
+        else "the evaluation JSON you use for Phase 2 (e.g. `evaluation_report.json`)."
+    )
+    try:
+        draft_rel = os.path.relpath(
+            report_dir / "model_draft.compmodel", path.parent
+        )
+    except ValueError:
+        draft_rel = str(report_dir / "model_draft.compmodel")
+    text = f"""# Phase RLM output
+
+All RLM artifacts for this run live **here** under `phase_rlm/output/`, not inside `phase 2/reports/`.
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `model_repaired.compmodel` | Model after RLM structural repair |
+| `initial_validation.json` | Structural validator on **Phase 2** `model_draft.compmodel` (before repair) |
+| `final_validation.json` | Structural validator on **repaired** model |
+| `comparison_report.json` | Before/after error counts and paths |
+| `repair_report.json` | LLM repair loop log |
+| `sections_vector_store/` | FAISS index (if built for this run) |
+| `error_logs/` | Error memory for this run |
+
+Original Phase 2 draft (unchanged): `{draft_rel}`
+
+## Did RLM improve things?
+
+### 1) Structural validation (always available)
+
+Compare `initial_validation.json` vs `final_validation.json` (`total_errors`, `errors_by_severity`).
+
+### 2) Gold baseline P/R/F1 (same metric as Phase 2)
+
+Phase 2 scores in {eval_line} refer to **LLM extraction** (`extracted_entities.json`), not the XML alone.
+
+**Fuzzy baseline (recommended, same as Phase 2 temp evaluator):** from `phase 2/`:
+
+```bash
+cd "../phase 2"
+python3 rerun_evaluation_phase2_temp.py "{report_dir.as_posix()}" --rlm-evaluate
+```
+
+Writes **`evaluation_report_fuzzy_rlm.json`** in **this** folder (`phase_rlm/output/<run>/`). Compare to Phase 2’s **`evaluation_report_fuzzy_temp.json`** using:
+
+```bash
+python3 build_phase2_vs_rlm_fuzzy_md.py --reports-dir reports -o RESULTS_PHASE2_VS_RLM_FUZZY.md
+```
+
+**Semantic (optional):** from `phase_rlm/`:
+
+```bash
+python3 evaluate_repaired_model.py "{report_dir.as_posix()}"
+```
+
+Writes **`evaluation_report_rlm_repaired.json`** (embeddings). Different metric than fuzzy.
+"""
+    path.write_text(text, encoding="utf-8")
 
 
 def load_config(config_path: Path = None) -> dict:
@@ -84,7 +171,30 @@ def main():
         "--provider",
         "-p",
         choices=["openai", "gemini", "claude"],
-        help="LLM provider used in Phase 2",
+        help=(
+            "When using --disease: pick latest Phase 2 report folder matching "
+            "{disease}_llm_{provider}_* (same idea as Phase 2 run naming). "
+            "Does NOT choose which LLM runs RLM — use --llm-provider for that."
+        ),
+    )
+
+    parser.add_argument(
+        "--llm-provider",
+        choices=["openai", "gemini"],
+        default=None,
+        help=(
+            "Which API to use for RLM repair calls (overrides repair_config.json llm_provider). "
+            "Default: value from configs/repair_config.json. Same backends as Phase 2 RLM utils."
+        ),
+    )
+
+    parser.add_argument(
+        "--llm-model",
+        default=None,
+        metavar="NAME",
+        help=(
+            "Model id for RLM (overrides repair_config.json llm_model), e.g. gemini-2.5-flash."
+        ),
     )
 
     parser.add_argument(
@@ -92,11 +202,25 @@ def main():
         "-c",
         help="Path to custom repair config JSON",
     )
+    parser.add_argument(
+        "--api-key-file",
+        type=str,
+        default=str(PHASE_RLM_ROOT.parent / "phase 2" / ".api_key.txt"),
+        help=(
+            "API key file path (Phase 2 format). "
+            "Default: ../phase 2/.api_key.txt. Supports lines like "
+            "'openai:sk-...', 'gemini:AIza...', or a single raw key."
+        ),
+    )
 
     parser.add_argument(
         "--output",
         "-o",
-        help="Output directory for repaired model",
+        type=Path,
+        help=(
+            "Directory for RLM outputs (default: phase_rlm/output/<phase2_report_folder_name>/). "
+            "Contains repaired model, validation JSON, vector store, error_logs, README."
+        ),
     )
 
     parser.add_argument(
@@ -105,9 +229,27 @@ def main():
         help="Only run validation, no repair",
     )
 
+    parser.add_argument(
+        "--evaluation-json",
+        type=str,
+        default=None,
+        metavar="FILENAME",
+        help=(
+            "Phase 2 evaluation JSON inside the report dir (default: repair_config.json "
+            "phase2_evaluation_json, else tries evaluation_report_fuzzy_temp.json then "
+            "evaluation_report.json)"
+        ),
+    )
+
     args = parser.parse_args()
 
     config = load_config(Path(args.config) if args.config else None)
+    config["api_key_file"] = args.api_key_file
+
+    if args.llm_provider:
+        config["llm_provider"] = args.llm_provider
+    if args.llm_model:
+        config["llm_model"] = args.llm_model
 
     if args.report_dir:
         report_dir = Path(args.report_dir)
@@ -138,7 +280,11 @@ def main():
     print(f"Report directory: {report_dir}")
     print(f"Model: {compmodel_path}")
     print(f"Sections: {paper_sections_path}")
-    print(f"Provider: {config.get('llm_provider', 'gemini')}")
+    print(
+        f"RLM LLM: provider={config.get('llm_provider', 'gemini')} "
+        f"model={config.get('llm_model', 'gemini-2.5-flash')}"
+    )
+    print(f"API key file: {config.get('api_key_file')}")
     print(f"{'=' * 60}\n")
 
     print("[0/5] Pre-validation check...")
@@ -146,8 +292,15 @@ def main():
     print(f"  Initial errors: {initial_result['total_errors']}")
 
     if args.validate_only:
+        vo_dir = rlm_output_dir(report_dir, args.output)
+        vo_dir.mkdir(parents=True, exist_ok=True)
+        iv_path = vo_dir / "initial_validation.json"
+        with open(iv_path, "w", encoding="utf-8") as f:
+            json.dump(initial_result, f, indent=2)
         print("\n=== VALIDATION RESULTS ===")
         print(json.dumps(initial_result, indent=2))
+        print(f"\n✓ Wrote structural validation snapshot: {iv_path}")
+        print(f"  (RLM output folder: {vo_dir})")
         sys.exit(0)
 
     if initial_result["total_errors"] == 0:
@@ -158,11 +311,13 @@ def main():
         print("\nError: paper_sections.json required for repair")
         sys.exit(1)
 
+    output_dir = rlm_output_dir(report_dir, args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     vector_store = None
-    error_log_path = None
 
     print("\n[0/5] Initializing semantic search index...")
-    vector_store_path = report_dir / "sections_vector_store"
+    vector_store_path = output_dir / "sections_vector_store"
 
     if vector_store_path.exists():
         print(f"  Loading existing index from {vector_store_path}")
@@ -178,12 +333,19 @@ def main():
         vector_store.save(vector_store_path)
         print(f"  Index saved to {vector_store_path}")
 
-    error_memory_dir = report_dir / "error_logs"
+    error_memory_dir = output_dir / "error_logs"
     disease_name = report_dir.name.split("_")[0] if report_dir.name else "unknown"
     error_memory = ErrorMemory(storage_dir=error_memory_dir, disease=disease_name)
     error_memory.load()
 
     print(f"\n  Error memory: {error_memory.entry_count} entries loaded")
+
+    eval_pref = args.evaluation_json or config.get("phase2_evaluation_json")
+    eval_summary, eval_path_used = load_evaluation_for_prompt(report_dir, eval_pref)
+    if eval_path_used:
+        print(f"  Phase 2 evaluation context from: {eval_path_used}")
+    else:
+        print("  Phase 2 evaluation: (no file found; LLM prompts will note this)")
 
     result = run_repair(
         compmodel_path=compmodel_path,
@@ -191,37 +353,84 @@ def main():
         config=config,
         vector_store=vector_store,
         error_memory=error_memory,
+        evaluation_context=eval_summary,
     )
 
-    output_dir = Path(args.output) if args.output else report_dir
-
-    output_dir.mkdir(parents=True, exist_ok=True)
+    initial_validation_path = output_dir / "initial_validation.json"
+    with open(initial_validation_path, "w", encoding="utf-8") as f:
+        json.dump(initial_result, f, indent=2)
+    print(f"\n✓ Wrote pre-repair validation: {initial_validation_path}")
 
     repaired_model_path = output_dir / "model_repaired.compmodel"
     repaired_model_path.write_text(result["repaired_model_xml"], encoding="utf-8")
-    print(f"\n✓ Repaired model saved to: {repaired_model_path}")
+    print(f"✓ Repaired model saved to: {repaired_model_path}")
 
     report_path = output_dir / "repair_report.json"
-    with open(report_path, "w") as f:
-        json.dump(result["report"], f, indent=2)
+    report_payload = dict(result["report"])
+    report_payload["phase2_evaluation_json"] = eval_path_used
+    report_payload["phase2_evaluation_json_preference"] = (
+        args.evaluation_json or config.get("phase2_evaluation_json")
+    )
+    report_payload["rlm_output_dir"] = str(output_dir)
+    report_payload["phase2_report_dir"] = str(report_dir.resolve())
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report_payload, f, indent=2)
     print(f"✓ Repair report saved to: {report_path}")
 
     final_validation_path = output_dir / "final_validation.json"
-    with open(final_validation_path, "w") as f:
+    with open(final_validation_path, "w", encoding="utf-8") as f:
         json.dump(result["final_validation"], f, indent=2)
     print(f"✓ Final validation saved to: {final_validation_path}")
+
+    delta = initial_result["total_errors"] - result["final_validation"]["total_errors"]
+    comparison = {
+        "phase2_report_dir": str(report_dir.resolve()),
+        "rlm_output_dir": str(output_dir),
+        "phase2_model_draft": str(compmodel_path.resolve()),
+        "model_repaired": str(repaired_model_path.resolve()),
+        "phase2_evaluation_context_file": eval_path_used,
+        "structural_validation": {
+            "before": {
+                "source": "model_draft.compmodel",
+                "total_errors": initial_result["total_errors"],
+                "errors_by_severity": initial_result.get("errors_by_severity", {}),
+                "valid": initial_result.get("valid", False),
+            },
+            "after": {
+                "source": "model_repaired.compmodel",
+                "total_errors": result["final_validation"]["total_errors"],
+                "errors_by_severity": result["final_validation"].get(
+                    "errors_by_severity", {}
+                ),
+                "valid": result["final_validation"].get("valid", False),
+            },
+            "delta_total_errors": delta,
+        },
+        "next_step_for_gold_prf": (
+            "Run from phase_rlm: python3 evaluate_repaired_model.py "
+            f"\"{report_dir.resolve()}\""
+        ),
+    }
+    comparison_path = output_dir / "comparison_report.json"
+    with open(comparison_path, "w", encoding="utf-8") as f:
+        json.dump(comparison, f, indent=2)
+    print(f"✓ Comparison report saved to: {comparison_path}")
+
+    readme_path = output_dir / "README.md"
+    write_rlm_readme(readme_path, report_dir.resolve(), eval_path_used)
+    print(f"✓ README saved to: {readme_path}")
+    print(f"\n  RLM output folder: {output_dir}")
 
     print(f"\n{'=' * 60}")
     print(f"SUMMARY")
     print(f"{'=' * 60}")
     print(f"Initial errors:  {result['report']['errors_found_initially']}")
     print(f"Errors repaired: {result['report']['errors_repaired']}")
-    print(f"Errors unfixed:  {result['report']['errors_unfixed']}")
     print(f"Errors remaining: {result['report']['errors_remaining']}")
     print(f"Pass rate:       {result['report']['validator_pass_rate']:.1%}")
     print(f"Model valid:     {result['report']['final_model_valid']}")
-    if result["report"]["errors_unfixed"] > 0:
-        print(f"Error log:       {error_log_path}")
+    if result["report"]["errors_remaining"] > 0:
+        print(f"Error log:       {output_dir / 'error_logs'}")
     print(f"{'=' * 60}")
 
 

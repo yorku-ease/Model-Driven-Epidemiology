@@ -16,20 +16,29 @@ class RLMClient:
         self,
         provider: Literal["openai", "gemini"] = "gemini",
         model: str = "gemini-2.5-flash",
+        api_key_file: Optional[str] = None,
     ):
         self.provider: str = provider.lower()
         self.model = model
+        self.api_key_file = api_key_file
         self._client = None
         self.available = False
         self._init_client()
 
     def _init_client(self):
         """Initialize the client."""
-        self._client = Phase2LLMClient(provider=self.provider)
+        self._client = Phase2LLMClient(
+            provider=self.provider,
+            api_key_file=self.api_key_file,
+            flash_model=self.model,
+        )
         self.available = self._client.available if self._client else False
 
         if self.available:
-            print(f"[RLM] Phase 2 LLM client initialized with provider {self.provider}")
+            print(
+                f"[RLM] LLM client: provider={self.provider}, "
+                f"flash_model={self.model}"
+            )
         else:
             print(f"[RLM] Warning: LLM client not available")
 
@@ -81,4 +90,5 @@ def create_llm_client(config):
     return RLMClient(
         provider=config.get("llm_provider", "gemini"),
         model=config.get("llm_model", "gemini-2.5-flash"),
+        api_key_file=config.get("api_key_file"),
     )

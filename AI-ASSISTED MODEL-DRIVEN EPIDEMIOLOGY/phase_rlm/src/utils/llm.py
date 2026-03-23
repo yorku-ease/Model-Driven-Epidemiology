@@ -15,6 +15,7 @@ import base64
 from typing import Optional, Literal
 
 import mimetypes
+from pathlib import Path
 
 
 class LLMClient:
@@ -22,9 +23,12 @@ class LLMClient:
         self,
         provider: Literal["openai", "gemini"] = "openai",
         api_key: Optional[str] = None,
+        api_key_file: Optional[str] = None,
+        flash_model: Optional[str] = None,
     ):
         self.provider = provider.lower()
-        self.api_key = api_key or self._load_api_key()
+        self.api_key = self._load_api_key(api_key, api_key_file)
+        self.flash_model = flash_model
         self.client = None
         self.available = False
 
@@ -43,10 +47,56 @@ class LLMClient:
             self.client = genai.Client(api_key=self.api_key)
             self.available = True
 
-    def _load_api_key(self) -> Optional[str]:
+    def _load_api_key(
+        self, api_key: Optional[str], api_key_file: Optional[str]
+    ) -> Optional[str]:
+        # Priority 1: direct key
+        if api_key:
+            return api_key.strip().strip("\ufeff")
+
+        # Priority 2: env var
         if self.provider == "openai":
-            return os.getenv("OPENAI_API_KEY")
-        return os.getenv("GEMINI_API_KEY")
+            env_key = os.getenv("OPENAI_API_KEY")
+        else:
+            env_key = os.getenv("GEMINI_API_KEY")
+        if env_key:
+            return env_key.strip().strip("\ufeff")
+
+        # Priority 3: key file (phase2-compatible format)
+        if api_key_file is None:
+            # Match Phase 2 default location
+            api_key_file = str(Path(__file__).resolve().parents[3] / "phase 2" / ".api_key.txt")
+
+        key_path = Path(api_key_file)
+        if not key_path.is_file():
+            return None
+        try:
+            openai_key: Optional[str] = None
+            gemini_key: Optional[str] = None
+            with open(key_path, "r", encoding="utf-8") as f:
+                for raw in f:
+                    line = raw.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    if ":" in line and line.split(":", 1)[0].lower() in ("openai", "gemini"):
+                        prefix, key = line.split(":", 1)
+                        key = key.strip().strip("\ufeff")
+                        if not key:
+                            continue
+                        if prefix.lower() == "openai":
+                            openai_key = key
+                        else:
+                            gemini_key = key
+                        continue
+                    if line.startswith("sk-"):
+                        openai_key = line.strip().strip("\ufeff")
+                    elif line.startswith("AIza"):
+                        gemini_key = line.strip().strip("\ufeff")
+            if self.provider == "openai":
+                return openai_key
+            return gemini_key
+        except Exception:
+            return None
 
     def extract_with_llm(
         self,
@@ -225,7 +275,7 @@ class LLMClient:
             )
 
         response = self.client.responses.create(
-            model="gpt-5.4-mini",
+            model=self.flash_model or "gpt-5.4-mini",
             input=[
                 {
                     "role": "user",
@@ -263,7 +313,7 @@ class LLMClient:
             )
 
         response = self.client.models.generate_content(
-            model="gemini-2.5-flash",
+            model=self.flash_model or "gemini-2.5-flash",
             contents=[{"role": "user", "parts": parts}],
         )
 

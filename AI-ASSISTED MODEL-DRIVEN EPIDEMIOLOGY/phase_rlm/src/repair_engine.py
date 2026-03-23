@@ -55,11 +55,15 @@ class IterativeRepairEngine:
         vector_store: VectorStore,
         config: Optional[Dict[str, Any]] = None,
         error_memory: Optional[ErrorMemory] = None,
+        evaluation_context: str = "",
     ):
         self.llm = llm_client
         self.vector_store = vector_store
         self.config = config or {}
         self.error_memory = error_memory
+        self.evaluation_context = evaluation_context or (
+            "No Phase 2 baseline evaluation summary loaded."
+        )
 
         self.max_iterations = self.config.get("max_context_iterations", 3)
         self.initial_search_k = self.config.get("initial_search_k", 10)
@@ -418,6 +422,7 @@ class IterativeRepairEngine:
             max_iterations=max_iterations,
             remaining=remaining,
             memory_context=memory_context,
+            evaluation_context=self.evaluation_context,
         )
 
         response = self.llm.generate_flash(

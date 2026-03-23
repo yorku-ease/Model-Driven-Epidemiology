@@ -230,6 +230,7 @@ def run_repair(
     config: Dict[str, Any],
     vector_store: VectorStore,
     error_memory: Optional[ErrorMemory] = None,
+    evaluation_context: str = "",
 ) -> Dict[str, Any]:
     """
     Convenience function to run repair loop with default components.
@@ -240,6 +241,7 @@ def run_repair(
         config: Configuration dict
         vector_store: VectorStore for semantic search (required)
         error_memory: Optional ErrorMemory for remembering past repairs
+        evaluation_context: Short text from Phase 2 evaluation JSON for LLM prompts
 
     Returns:
         Repair report dict
@@ -248,7 +250,13 @@ def run_repair(
 
     validator = StructuralValidator(config)
     llm_client = create_llm_client(config)
-    engine = IterativeRepairEngine(llm_client, vector_store, config, error_memory)
+    engine = IterativeRepairEngine(
+        llm_client,
+        vector_store,
+        config,
+        error_memory,
+        evaluation_context=evaluation_context,
+    )
 
     loop = RepairLoop(validator, engine, config)
 
