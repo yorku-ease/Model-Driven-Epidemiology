@@ -2,6 +2,10 @@
 
 Calculates traceability coverage, faithfulness, gap metrics, and optionally
 compares to gold standard for precision/recall using semantic embeddings.
+
+Semantic cosine similarity is **not** guaranteed to score >= fuzzy string similarity for
+the same pair of labels (different metrics). Fuzzy can look "better" on aggregate when
+short names vs long synonyms align with character overlap more than with sentence embeddings.
 """
 
 import json
@@ -112,6 +116,21 @@ class Evaluator:
         except Exception as e:
             print(f"Warning: Failed to load gold standard: {e}")
 
+    @staticmethod
+    def _compartment_display_name(comp_elem) -> str:
+        """
+        Match extracted_entities style: "Primary (secondary)" when SecondaryName exists.
+        Using only PrimaryName collapses stratified compartments to duplicate strings,
+        which breaks one-to-one matching intuition and can skew embedding scores.
+        """
+        primary = (comp_elem.get("PrimaryName") or "").strip()
+        secondary = (comp_elem.get("SecondaryName") or "").strip()
+        if not primary:
+            return ""
+        if secondary:
+            return f"{primary} ({secondary})"
+        return primary
+
     def _convert_compmodel_to_gold_standard(
         self, compmodel_path: str
     ) -> Dict[str, Any]:
@@ -139,15 +158,15 @@ class Evaluator:
             for comp in root.findall(
                 ".//{http://example.com/compartmentalmodel}compartments"
             ):
-                comp_name = comp.get("PrimaryName", "")
-                if comp_name:
-                    compartments.append({"name": comp_name})
+                display = self._compartment_display_name(comp)
+                if display:
+                    compartments.append({"name": display, "normalized_name": display})
 
             if not compartments:
                 for comp in root.findall(".//compartments"):
-                    comp_name = comp.get("PrimaryName", "")
-                    if comp_name:
-                        compartments.append({"name": comp_name})
+                    display = self._compartment_display_name(comp)
+                    if display:
+                        compartments.append({"name": display, "normalized_name": display})
 
             parameters = []
             for param in root.findall(
@@ -184,7 +203,7 @@ class Evaluator:
                 comp_elements = root.findall(".//compartments")
 
             for comp in comp_elements:
-                source_comp = comp.get("PrimaryName", "")
+                source_comp = self._compartment_display_name(comp)
                 if not source_comp:
                     continue
 
@@ -203,8 +222,8 @@ class Evaluator:
                             if match:
                                 comp_index = int(match.group(1))
                                 if comp_index < len(comp_elements):
-                                    target_comp = comp_elements[comp_index].get(
-                                        "PrimaryName", ""
+                                    target_comp = self._compartment_display_name(
+                                        comp_elements[comp_index]
                                     )
                         except (ValueError, IndexError, AttributeError):
                             pass
@@ -282,7 +301,18 @@ class Evaluator:
     def _match_strings(
         self, gold_strings: List[str], extracted_strings: List[str], threshold: float
     ) -> Tuple[List[MatchResult], List[int], List[int]]:
-        """Match gold strings to extracted strings using Hungarian algorithm."""
+        """
+        Match gold strings to extracted strings using Hungarian assignment on (1 - cosine_sim),
+        then keep pairs with similarity >= threshold.
+
+        Notes:
+        - This optimizes **total** similarity (global one-to-one assignment), not "maximize
+          count of pairs above threshold". In rare cases another assignment could yield more
+          threshold passes; string matchers that use a different pairing rule can disagree.
+        - Cosine similarity on MiniLM embeddings is **not** a superset of character overlap:
+          e.g. short labels vs long names ("Dead" vs "COVID Deaths") can score higher on
+          fuzzy ratio than in embedding space, and vice versa for paraphrases.
+        """
         if not gold_strings and not extracted_strings:
             return [], [], []
 

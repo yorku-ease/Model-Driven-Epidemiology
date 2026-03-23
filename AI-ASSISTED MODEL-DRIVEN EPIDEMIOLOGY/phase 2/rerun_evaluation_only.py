@@ -7,8 +7,8 @@ Reads from each report folder:
   - traceability.json          (required)
   - phase2_gap_report.json     (optional; uses empty gap summary if missing)
 
-Writes (does not touch the original evaluation_report.json):
-  - evaluation_report_rerun.json  (default; see --output)
+Writes (default: overwrites evaluation in place):
+  - evaluation_report.json  (default; use -o FILE for a separate copy, e.g. evaluation_report_rerun.json)
 
 Gold baseline: use --gold-standard, or auto-detect from --baseline-models-dir using the
 same rules as run_phase2.py (report folder name must look like {disease}_llm_{provider}_{ts}).
@@ -16,12 +16,15 @@ same rules as run_phase2.py (report folder name must look like {disease}_llm_{pr
 Examples:
   cd "phase 2"
   python3 rerun_evaluation_only.py reports/cholera_llm_openai_20260321_225824
-  # All report folders under old-reports or reports (writes evaluation_report_rerun.json each):
-  python3 rerun_evaluation_only.py --batch old-reports
+  # Re-run Step 9 for every report under reports/ (updates evaluation_report.json each):
   python3 rerun_evaluation_only.py --batch reports
+  python3 rerun_evaluation_only.py --batch old-reports
   python3 rerun_evaluation_only.py old-reports/cholera_llm_gemini_20260211_201419 --eval-threshold 0.75
+  # Keep previous JSON as a sidecar instead of overwriting:
+  python3 rerun_evaluation_only.py --batch reports -o evaluation_report_rerun.json
 
-Then aggregate tables from the rerun files:
+Then aggregate tables (use the same -e filename you wrote):
+  python3 build_results_md.py -e evaluation_report.json -o RESULTS_REPORT_CURRENT.md
   python3 build_results_md.py -e evaluation_report_rerun.json -o RESULTS_REPORT_RERUN.md
 """
 
@@ -109,7 +112,7 @@ def find_baseline_for_report(
     return None
 
 
-DEFAULT_OUTPUT_NAME = "evaluation_report_rerun.json"
+DEFAULT_OUTPUT_NAME = "evaluation_report.json"
 
 
 def run_one(
@@ -212,8 +215,8 @@ def main() -> int:
         default=DEFAULT_OUTPUT_NAME,
         metavar="FILENAME",
         help=(
-            f"Output JSON filename inside each report folder (default: {DEFAULT_OUTPUT_NAME}). "
-            "Does not overwrite evaluation_report.json unless you set -o evaluation_report.json"
+            f"Output JSON filename inside each report folder (default: {DEFAULT_OUTPUT_NAME}, in place). "
+            "Use e.g. -o evaluation_report_rerun.json to write a sidecar without replacing the main report."
         ),
     )
     args = parser.parse_args()
