@@ -16,6 +16,12 @@ def generate_gap_report(
     report_path: Path,
     disease_hint: str = "",
     validation: Optional[Dict[str, Any]] = None,
+    improvement: Optional[Dict[str, Any]] = None,
+    threelayer: Optional[Dict[str, Any]] = None,
+    completeness: Optional[Dict[str, Any]] = None,
+    structural: Optional[Dict[str, Any]] = None,
+    structural_after: Optional[Dict[str, Any]] = None,
+    repair_report: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Write a human-readable gap report to report_path (Markdown)."""
     lines: List[str] = []
@@ -36,10 +42,23 @@ def generate_gap_report(
     lines.append(f"- Missing parameters: {summary.get('missing_parameters', 0)}")
     lines.append(f"- Missing stratifications: {summary.get('missing_stratifications', 0)}")
     lines.append(f"- Missing interventions: {summary.get('missing_interventions', 0)}")
-    if summary.get("extra_compartments") or summary.get("extra_parameters"):
+    lines.append(f"- Missing flows: {summary.get('missing_flows', 0)}")
+    if summary.get("extra_compartments") or summary.get("extra_parameters") or summary.get("extra_flows"):
         lines.append(f"- Extra compartments (not in gold standard): {summary.get('extra_compartments', 0)}")
         lines.append(f"- Extra parameters (not in gold standard): {summary.get('extra_parameters', 0)}")
+        lines.append(f"- Extra flows (not in gold standard): {summary.get('extra_flows', 0)}")
     lines.append("")
+
+    if improvement and improvement.get("summary"):
+        imp = improvement.get("summary") or {}
+        lines.append("## 1b. Improvement vs Phase 2 draft")
+        lines.append(f"- Phase 2 gaps (before fills): **{imp.get('before_total_gaps', 0)}**")
+        lines.append(f"- After fills gaps (re-detected): **{imp.get('after_total_gaps', 0)}**")
+        lines.append(f"- Delta (before - after): **{imp.get('delta_total_gaps', 0)}**")
+        lines.append(f"- Delta missing parameters: **{imp.get('delta_missing_parameters', 0)}**")
+        lines.append(f"- Delta missing compartments: **{imp.get('delta_missing_compartments', 0)}**")
+        lines.append(f"- Delta missing flows: **{imp.get('delta_missing_flows', 0)}**")
+        lines.append("")
 
     # Section 2: Required vs optional
     lines.append("## 2. Required vs optional")
@@ -53,6 +72,15 @@ def generate_gap_report(
         label = g.get("expected", "") or g.get("promised", "")
         lines.append(f"- **{label}** — {g.get('reason', '')} (severity: {g.get('severity', '')})")
     if not gaps.get("missing_compartments"):
+        lines.append("- None")
+    lines.append("")
+
+    # Section 3b: Missing flows
+    lines.append("## 3b. Missing flows (gold vs extraction/XML)")
+    for g in gaps.get("missing_flows", []):
+        label = g.get("expected", "") or g.get("promised", "")
+        lines.append(f"- **{label}** — {g.get('reason', '')}")
+    if not gaps.get("missing_flows"):
         lines.append("- None")
     lines.append("")
 
@@ -74,10 +102,130 @@ def generate_gap_report(
             lines.append(f"- Extra parameters: {', '.join(gaps['extra_parameters'])}")
         lines.append("")
 
+    # Section 1c: Completeness score
+    if completeness:
+        comp_val = completeness.get("completeness_score", "—")
+        comp_c = completeness.get("components", {})
+        weights = completeness.get("weights", {})
+        lines.append("## 1c. Completeness score (0–100)")
+        lines.append(f"| Component | Score | Weight |")
+        lines.append(f"|-----------|-------|--------|")
+        lines.append(f"| **Gap reduction** | {comp_c.get('gap_reduction_pct', '—')}% | {int(weights.get('gap_reduction',0.30)*100)}% |")
+        lines.append(f"| **Reference agreement** | {comp_c.get('reference_agreement_pct', '—')}% | {int(weights.get('reference_agreement',0.30)*100)}% |")
+        lines.append(f"| **Fill traceability** | {comp_c.get('fill_traceability_pct', '—')}% | {int(weights.get('traceability',0.20)*100)}% |")
+        lines.append(f"| **Parameter accuracy** | {comp_c.get('parameter_accuracy_pct', '—')}% | {int(weights.get('parameter_accuracy',0.20)*100)}% |")
+        if "structural_integrity_pct" in comp_c:
+            n_b = comp_c.get("structural_errors_before", "?")
+            n_a = comp_c.get("structural_errors_after", "?")
+            lines.append(f"| **Structural integrity** | {comp_c['structural_integrity_pct']}%  ({n_b}→{n_a} errors) | {int(weights.get('structural_integrity',0.15)*100)}% |")
+        lines.append(f"| **→ Composite** | **{comp_val}/100** | — |")
+        lines.append("")
+
+    # Section 1d: Structural integrity (Phase RLM checks on filled/repaired model)
+    if structural and structural.get("available"):
+        total_before = structural.get("total_errors", 0)
+        total_after = structural_after.get("total_errors", total_before) if (structural_after and structural_after.get("available")) else total_before
+        repairs_applied = repair_report.get("repairs_applied", 0) if repair_report else 0
+
+        lines.append("## 1d. Structural integrity & repair")
+        lines.append("")
+        lines.append("*Phase RLM-inspired: checks + targeted repairs on model_filled.compmodel →*")
+        lines.append("*model_repaired.compmodel. Independent of gold standard.*")
+        lines.append("")
+
+        if total_before == 0:
+            lines.append("**✓ No structural errors detected** — model is internally consistent.")
+        else:
+            delta = total_before - total_after
+            lines.append(f"| | Before repair | After repair | Resolved |")
+            lines.append(f"|---|---|---|---|")
+            sev_b = structural.get("errors_by_severity", {})
+            sev_a = (structural_after or {}).get("errors_by_severity", {})
+            for sev in ("critical", "high", "medium", "low"):
+                nb = sev_b.get(sev, 0)
+                na = sev_a.get(sev, nb)
+                if nb or na:
+                    lines.append(f"| {sev.capitalize()} | {nb} | {na} | {nb-na:+d} |")
+            lines.append(f"| **Total** | **{total_before}** | **{total_after}** | **{delta:+d}** |")
+            lines.append("")
+
+            if repairs_applied > 0 and repair_report:
+                lines.append(f"**{repairs_applied} repair(s) applied:**")
+                lines.append("")
+                lines.append("| Error type | Element | Fix |")
+                lines.append("|-----------|---------|-----|")
+                for entry in repair_report.get("log", []):
+                    if entry.get("fix"):
+                        fix_desc = str(entry.get("fix", ""))[:100].replace("|", "\\|")
+                        lines.append(
+                            f"| `{entry.get('error_type','')}` "
+                            f"| {entry.get('element','')} "
+                            f"| {fix_desc} |"
+                        )
+                lines.append("")
+
+            if total_after > 0:
+                lines.append(f"**{total_after} structural error(s) remaining after repair:**")
+                lines.append("")
+                lines.append("| Type | Element | Severity |")
+                lines.append("|------|---------|----------|")
+                for err in (structural_after or structural).get("errors", []):
+                    lines.append(
+                        f"| `{err.get('type','')}` | {err.get('element','')} "
+                        f"| **{err.get('severity','')}** |"
+                    )
+                lines.append("")
+
+        lines.append("")
+
+    # Section 2b: Three-layer gap analysis
+    if threelayer:
+        lines.append("## 2b. Three-layer gap analysis")
+        lines.append("")
+        lines.append("*Matches the paper framework: gaps between specification, extraction, and validation.*")
+        lines.append("")
+        lines.append("| Layer | Description | C | P | F | Total |")
+        lines.append("|-------|-------------|---|---|---|-------|")
+        spec = threelayer.get("spec_vs_model", {}).get("summary", {})
+        gold = threelayer.get("model_vs_gold", {}).get("summary", {})
+        extra = threelayer.get("extra_in_model", {}).get("summary", {})
+        lines.append(
+            f"| **Spec → Model** | Recognised from paper text but absent from model "
+            f"| {spec.get('missing_compartments',0)} | {spec.get('missing_parameters',0)} "
+            f"| {spec.get('missing_flows',0)} | {spec.get('total',0)} |"
+        )
+        lines.append(
+            f"| **Model → Gold** | Reference model items absent from extraction "
+            f"| {gold.get('missing_compartments',0)} | {gold.get('missing_parameters',0)} "
+            f"| {gold.get('missing_flows',0)} | {gold.get('total',0)} |"
+        )
+        lines.append(
+            f"| **Extra in model** | Model items not in reference (noise/convention) "
+            f"| {extra.get('extra_compartments',0)} | {extra.get('extra_parameters',0)} "
+            f"| {extra.get('extra_flows',0)} | {extra.get('total',0)} |"
+        )
+        lines.append("")
+        # Detail rows for spec gaps
+        spec_mc = threelayer.get("spec_vs_model", {}).get("missing_compartments", [])
+        spec_mp = threelayer.get("spec_vs_model", {}).get("missing_parameters", [])
+        spec_mf = threelayer.get("spec_vs_model", {}).get("missing_flows", [])
+        if spec_mc or spec_mp or spec_mf:
+            lines.append("### Spec → Model detail")
+            if spec_mc:
+                lines.append(f"- **Compartments missing from model:** {', '.join(spec_mc)}")
+            if spec_mp:
+                lines.append(f"- **Parameters missing from model:** {', '.join(spec_mp[:10])}"
+                              + (" …" if len(spec_mp) > 10 else ""))
+            if spec_mf:
+                lines.append(f"- **Flows missing from model:** {', '.join(spec_mf[:8])}"
+                              + (" …" if len(spec_mf) > 8 else ""))
+            lines.append("")
+
     # Section 5: Gap filling
     lines.append("## 5. Gap filling results")
     fill_summary = filled.get("summary", {})
     lines.append(f"- Filled via **RAG**: {fill_summary.get('rag_count', 0)}")
+    lines.append(f"- Filled via **paper entities (spec)**: {fill_summary.get('spec_entity_count', 0)}")
     lines.append(f"- Filled via **inference**: {fill_summary.get('inference_count', 0)}")
     lines.append(f"- **Flagged** for manual review: {fill_summary.get('flagged_count', 0)}")
     lines.append("")
@@ -90,7 +238,19 @@ def generate_gap_report(
         label = gap.get("expected", "") or gap.get("promised", "")
         lines.append(f"### {label} ({gap_type})")
         lines.append(f"- **Source:** {source}")
-        if source == "rag" and sug.get("value") is not None:
+        if source == "rag" and gap_type == "missing_compartments" and sug.get("evidence_chunks"):
+            lines.append(f"- **Primary name:** {sug.get('primary_name', label)}")
+            lines.append(f"- **Evidence chunks:** {len(sug['evidence_chunks'])} snippet(s) in database")
+            if sug.get("note"):
+                lines.append(f"- *{sug['note']}*")
+        elif source == "rag" and gap_type == "missing_flows":
+            if sug.get("similar_flows_in_corpus"):
+                lines.append(f"- **Similar flows in corpus:** {len(sug['similar_flows_in_corpus'])} match(es)")
+            if sug.get("chunk_evidence"):
+                lines.append(f"- **Text evidence:** {len(sug['chunk_evidence'])} chunk(s)")
+            if sug.get("note"):
+                lines.append(f"- *{sug['note']}*")
+        elif source == "rag" and sug.get("value") is not None:
             lines.append(f"- **Value:** {sug.get('value')} {sug.get('unit', '') or ''}")
             if sug.get("description"):
                 lines.append(f"- **Description:** {sug['description']}")
@@ -98,12 +258,30 @@ def generate_gap_report(
                 lines.append(f"- **From papers:** {', '.join(str(s) for s in sug['sources'][:3])}")
             if sug.get("note"):
                 lines.append(f"- *{sug['note']}*")
+        elif source == "inference" and gap_type == "missing_compartments":
+            lines.append(f"- **Primary name:** {sug.get('primary_name', '')}")
+            if sug.get("reasoning"):
+                lines.append(f"- **Reasoning:** {sug['reasoning']}")
+        elif source == "inference" and gap_type == "missing_flows":
+            lines.append(f"- **Flow type:** {sug.get('flow_type', '')}")
+            if sug.get("description"):
+                lines.append(f"- **Description:** {sug['description']}")
+            if sug.get("reasoning"):
+                lines.append(f"- **Reasoning:** {sug['reasoning']}")
         elif source == "inference":
             lines.append(f"- **Value:** {sug.get('value')} {sug.get('unit', '') or ''}")
             if sug.get("reasoning"):
                 lines.append(f"- **Reasoning:** {sug['reasoning']}")
             if sug.get("confidence"):
                 lines.append(f"- **Confidence:** {sug['confidence']}")
+        elif source == "spec_entity":
+            if gap_type == "missing_compartments":
+                lines.append(f"- **Added from paper entities** (paper-traceable)")
+            elif gap_type == "missing_parameters":
+                val = sug.get("value")
+                lines.append(f"- **Value from paper entities:** {val if val is not None else 'name only'} {sug.get('unit','') or ''}")
+            else:
+                lines.append(f"- **Added from paper entities** (paper-traceable)")
         else:
             lines.append(f"- **Action:** {sug.get('action', 'manual_review')} — {sug.get('reason', '')}")
         lines.append("")
@@ -133,6 +311,21 @@ def generate_gap_report(
             err_str = f"{err}%" if err is not None else "—"
             quality = ev.get("match_quality", "—")
             lines.append(f"| {param} | {fv} | {gv} | {err_str} | {quality} |")
+        lines.append("")
+
+    struc = (validation or {}).get("structural_alignment") or {}
+    filled_struct = struc.get("filled_vs_gold") or struc.get("draft_vs_gold")
+    if filled_struct:
+        lines.append("## 7. Structural alignment vs gold (compartments & flows)")
+        for block, title in (("compartments", "Compartments"), ("flows", "Flows")):
+            b = filled_struct.get(block) or {}
+            lines.append(f"### {title}")
+            lines.append(
+                f"- Gold count: **{b.get('gold_count', '—')}** | Candidate: **{b.get('candidate_count', '—')}**"
+            )
+            lines.append(
+                f"- Precision **{b.get('precision', '—')}** | Recall **{b.get('recall', '—')}** | F1 **{b.get('f1', '—')}**"
+            )
         lines.append("")
 
     report_content = "\n".join(lines)
@@ -206,8 +399,10 @@ def generate_overall_report(
             "missing_param": len(gaps.get("missing_parameters", [])),
             "missing_strat": len(gaps.get("missing_stratifications", [])),
             "missing_interv": len(gaps.get("missing_interventions", [])),
+            "missing_flow": len(gaps.get("missing_flows", [])),
             "extra_comp": len(gaps.get("extra_compartments", [])),
             "extra_param": len(gaps.get("extra_parameters", [])),
+            "extra_flow": len(gaps.get("extra_flows", [])),
             "val_compared": val_s.get("compared", 0),
             "val_exact": val_s.get("exact", 0),
             "val_close": val_s.get("close", 0),
@@ -237,6 +432,7 @@ def generate_overall_report(
         lines.append("## Database")
         lines.append(f"- Entries: **{db_info.get('num_entries', '?')}**")
         lines.append(f"- Parameters indexed: **{db_info.get('num_parameters', '?')}**")
+        lines.append(f"- Flow signatures indexed: **{db_info.get('num_flow_signatures', '?')}**")
         lines.append(f"- Text chunks: **{db_info.get('total_chunks', '?')}**")
         lines.append(f"- Diseases: {', '.join(db_info.get('diseases', []))}")
         lines.append("")
@@ -299,13 +495,15 @@ def generate_overall_report(
     mp = sum(r["missing_param"] for r in rows)
     ms = sum(r["missing_strat"] for r in rows)
     mi = sum(r["missing_interv"] for r in rows)
+    mf = sum(r["missing_flow"] for r in rows)
     lines.append(f"| Category | Count |")
     lines.append(f"|----------|-------|")
     lines.append(f"| Missing compartments | {mc} |")
     lines.append(f"| Missing parameters | {mp} |")
     lines.append(f"| Missing stratifications | {ms} |")
     lines.append(f"| Missing interventions | {mi} |")
-    lines.append(f"| **Total** | **{mc+mp+ms+mi}** |")
+    lines.append(f"| Missing flows | {mf} |")
+    lines.append(f"| **Total** | **{mc+mp+ms+mi+mf}** |")
     lines.append("")
 
     # Validation accuracy

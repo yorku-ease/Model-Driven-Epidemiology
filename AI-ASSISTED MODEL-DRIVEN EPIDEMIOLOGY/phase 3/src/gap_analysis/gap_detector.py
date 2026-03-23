@@ -14,6 +14,7 @@ Both modes also apply contextual checks (vector-borne, stratification).
 """
 
 import json
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -96,7 +97,11 @@ def _local_tag(el: ET.Element) -> str:
 
 
 def load_model_structure(compmodel_path: Path) -> Dict[str, Any]:
-    """Extract compartments, parameters, stratifications from .compmodel XML."""
+    """Extract compartments, parameters, stratifications, and flows from .compmodel XML.
+
+    Flows are encoded as ``"SourceName->TargetName"`` using compartment index resolution
+    for ``target="compartments.N"`` references (document order of ``<compartments>``).
+    """
     raw = compmodel_path.read_text(encoding="utf-8", errors="replace")
     # Inject missing namespace declarations so the parser won't choke
     if "xmlns:xsi" not in raw and "xsi:" in raw:
@@ -105,14 +110,22 @@ def load_model_structure(compmodel_path: Path) -> Dict[str, Any]:
             'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xmi=',
         )
     root = ET.fromstring(raw)
-    compartments, parameters, stratifications = [], [], []
-    for el in root.iter():
+    compartments_ordered: List[str] = []
+    parameters, stratifications = [], []
+    flows: List[str] = []
+
+    for el in root:
         tag = _local_tag(el)
         if tag == "compartments":
             name = el.get("PrimaryName", "")
             if name:
-                compartments.append(name)
-        elif tag == "parameters":
+                compartments_ordered.append(name)
+
+    compartments = list(dict.fromkeys(compartments_ordered))
+
+    for el in root.iter():
+        tag = _local_tag(el)
+        if tag == "parameters":
             name = el.get("name", "")
             if name and name.lower() not in ("none", "n/a", ""):
                 parameters.append(name)
@@ -120,10 +133,34 @@ def load_model_structure(compmodel_path: Path) -> Dict[str, Any]:
             name = el.get("name", "")
             if name:
                 stratifications.append(name)
+
+    # Outgoing flows: under each <compartments> element, child tags containing "flow"
+    for el in root:
+        if _local_tag(el) != "compartments":
+            continue
+        src_name = el.get("PrimaryName", "")
+        if not src_name:
+            continue
+        for child in el:
+            ctag = _local_tag(child)
+            if "flow" not in ctag.lower():
+                continue
+            tgt_ref = child.get("target", "") or ""
+            # Handles ``compartments.N`` and ``//@compartments.N`` (Eclipse/XMI style)
+            m = re.search(r"compartments\.(\d+)", tgt_ref.strip())
+            if m:
+                ti = int(m.group(1))
+                if 0 <= ti < len(compartments_ordered):
+                    flows.append(f"{src_name}->{compartments_ordered[ti]}")
+            elif tgt_ref.startswith("compartments."):
+                # Non-numeric reference — skip or keep raw
+                flows.append(f"{src_name}->{tgt_ref}")
+
     return {
-        "compartments": list(dict.fromkeys(compartments)),
+        "compartments": compartments,
         "parameters": list(dict.fromkeys(parameters)),
         "stratifications": list(dict.fromkeys(stratifications)),
+        "flows": list(dict.fromkeys(flows)),
     }
 
 
@@ -182,6 +219,151 @@ def _fuzzy_match_any(query: str, candidates: List[str]) -> bool:
     return any(_fuzzy_match(query, c) for c in candidates)
 
 
+def _flows_from_entities(entities: Dict[str, Any]) -> List[str]:
+    out: List[str] = []
+    for f in entities.get("flows", []) or []:
+        if not isinstance(f, dict):
+            continue
+        s = (f.get("source") or f.get("from") or "").strip()
+        t = (f.get("target") or f.get("to") or "").strip()
+        if s and t:
+            out.append(f"{s}->{t}")
+    return list(dict.fromkeys(out))
+
+
+def _fuzzy_match_flow(gold_sig: str, candidates: List[str]) -> bool:
+    """Match ``A->B`` against candidate flow strings using fuzzy compartment names."""
+    if "->" not in gold_sig:
+        return _fuzzy_match_any(gold_sig, candidates)
+    ga, _, gb = gold_sig.partition("->")
+    ga, gb = ga.strip(), gb.strip()
+    for c in candidates:
+        if "->" not in c:
+            continue
+        ca, _, cb = c.partition("->")
+        if _fuzzy_match(ga, ca.strip()) and _fuzzy_match(gb, cb.strip()):
+            return True
+    return False
+
+
+# ─── Three-layer gap analysis ──────────────────────────────────────────────
+
+def detect_gaps_threelayer(
+    entities: Dict[str, Any],
+    model_structure: Dict[str, Any],
+    gold_standard: Optional[Dict[str, Any]],
+    paper_text: str = "",
+) -> Dict[str, Any]:
+    """
+    Three-layer gap analysis matching the paper framework:
+
+      Layer 1 — **Spec → Model** (specification gap):
+        Items the LLM *recognised* from paper text (extracted_entities) that did
+        NOT make it into the draft model.  These represent extraction/modelling
+        failures: the information was found but wasn't wired in.
+
+      Layer 2 — **Model → Gold** (validation gap):
+        Items present in the reference (gold) model but absent from the draft.
+        These are completeness gaps against the independent reference.
+
+      Layer 3 — **Extra** (noise / hallucination):
+        Items in the draft model that are NOT in the reference.  These may be
+        over-specified flows/compartments or modelling conventions that differ.
+
+    All three layers are computed for compartments, parameters, and flows.
+    Returns a dict keyed by layer; each layer contains per-entity-type lists.
+    """
+    # ── Normalise entity lists ──────────────────────────────────────────────
+    ent_comps = _normalize_list(entities.get("compartments", []))
+    ent_params = _normalize_list(entities.get("parameters", []))
+    ent_flows = _flows_from_entities(entities)
+
+    mdl_comps = [c.lower() for c in model_structure.get("compartments", [])]
+    mdl_params = [p.lower() for p in model_structure.get("parameters", [])]
+    mdl_flows = [str(f) for f in model_structure.get("flows", []) if f]
+
+    # Layer 1: spec → model (what was extracted but not in the draft model)
+    spec_missing_comps = [
+        e for e in ent_comps if not _fuzzy_match_any(e, mdl_comps)
+    ]
+    spec_missing_params = [
+        e for e in ent_params if not _fuzzy_match_any(e, mdl_params)
+    ]
+    spec_missing_flows = [
+        f for f in ent_flows if not _fuzzy_match_flow(f, mdl_flows)
+    ]
+
+    # Layer 2: gold → model (reference items missing from the draft model)
+    gold_missing_comps: List[str] = []
+    gold_missing_params: List[str] = []
+    gold_missing_flows: List[str] = []
+    if gold_standard:
+        gold_comps = [c.lower() for c in gold_standard.get("compartments", [])]
+        gold_params = [p.lower() for p in gold_standard.get("parameters", [])]
+        gold_flows = [str(f) for f in gold_standard.get("flows", []) if f]
+        all_comps = list(dict.fromkeys(ent_comps + mdl_comps))
+        all_params = list(dict.fromkeys(ent_params + mdl_params))
+        all_flows = list(dict.fromkeys(ent_flows + mdl_flows))
+        gold_missing_comps = [gc for gc in gold_comps if not _fuzzy_match_any(gc, all_comps)]
+        gold_missing_params = [gp for gp in gold_params if not _fuzzy_match_any(gp, all_params)]
+        gold_missing_flows = [gf for gf in gold_flows if not _fuzzy_match_flow(gf, all_flows)]
+
+    # Layer 3: extras (model items not in reference — noise / conventions)
+    extra_comps: List[str] = []
+    extra_params: List[str] = []
+    extra_flows: List[str] = []
+    if gold_standard:
+        gold_comps_l = [c.lower() for c in gold_standard.get("compartments", [])]
+        gold_params_l = [p.lower() for p in gold_standard.get("parameters", [])]
+        gold_flows_l = [str(f) for f in gold_standard.get("flows", []) if f]
+        extra_comps = [c for c in mdl_comps if not _fuzzy_match_any(c, gold_comps_l)]
+        extra_params = [p for p in mdl_params if not _fuzzy_match_any(p, gold_params_l)]
+        extra_flows = [f for f in mdl_flows if not _fuzzy_match_flow(f, gold_flows_l)]
+
+    def _cnt(lst: List) -> int:
+        return len(lst)
+
+    return {
+        "spec_vs_model": {
+            "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+            "missing_compartments": spec_missing_comps,
+            "missing_parameters": spec_missing_params,
+            "missing_flows": spec_missing_flows,
+            "summary": {
+                "missing_compartments": _cnt(spec_missing_comps),
+                "missing_parameters": _cnt(spec_missing_params),
+                "missing_flows": _cnt(spec_missing_flows),
+                "total": _cnt(spec_missing_comps) + _cnt(spec_missing_params) + _cnt(spec_missing_flows),
+            },
+        },
+        "model_vs_gold": {
+            "description": "Reference model items absent from extracted draft (completeness vs reference).",
+            "missing_compartments": gold_missing_comps,
+            "missing_parameters": gold_missing_params,
+            "missing_flows": gold_missing_flows,
+            "summary": {
+                "missing_compartments": _cnt(gold_missing_comps),
+                "missing_parameters": _cnt(gold_missing_params),
+                "missing_flows": _cnt(gold_missing_flows),
+                "total": _cnt(gold_missing_comps) + _cnt(gold_missing_params) + _cnt(gold_missing_flows),
+            },
+        },
+        "extra_in_model": {
+            "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+            "extra_compartments": extra_comps,
+            "extra_parameters": extra_params,
+            "extra_flows": extra_flows,
+            "summary": {
+                "extra_compartments": _cnt(extra_comps),
+                "extra_parameters": _cnt(extra_params),
+                "extra_flows": _cnt(extra_flows),
+                "total": _cnt(extra_comps) + _cnt(extra_params) + _cnt(extra_flows),
+            },
+        },
+        "has_gold": gold_standard is not None,
+    }
+
+
 # ─── Core gap detection ───────────────────────────────────────────────────
 
 def detect_gaps(
@@ -202,6 +384,7 @@ def detect_gaps(
         "missing_parameters": [],
         "missing_stratifications": [],
         "missing_interventions": [],
+        "missing_flows": [],
         "required_vs_optional": {},
         "comparison_mode": "gold_standard" if gold_standard else "promises",
         "summary": {},
@@ -212,14 +395,17 @@ def detect_gaps(
     extracted_parameters = _normalize_list(entities.get("parameters", []))
     extracted_stratifications = _normalize_list(entities.get("stratifications", []))
     extracted_interventions = _normalize_list(entities.get("interventions", []))
+    extracted_flows = _flows_from_entities(entities)
 
     model_compartments = [c.lower() for c in model_structure.get("compartments", [])]
     model_parameters = [p.lower() for p in model_structure.get("parameters", [])]
     model_stratifications = [s.lower() for s in model_structure.get("stratifications", [])]
+    model_flows = [str(x) for x in model_structure.get("flows", []) if x]
 
     all_comps = extracted_compartments + model_compartments
     all_params = extracted_parameters + model_parameters
     all_strats = extracted_stratifications + model_stratifications
+    all_flows = extracted_flows + model_flows
 
     # ── Gold-standard comparison (the meaningful one) ──────────────────────
     if gold_standard:
@@ -251,11 +437,22 @@ def detect_gaps(
                     "reason": "Present in gold standard but not in extracted model.",
                 })
 
+        gold_flows = [str(x) for x in gold_standard.get("flows", []) if x]
+        for gf in gold_flows:
+            if not _fuzzy_match_flow(gf, all_flows):
+                gaps["missing_flows"].append({
+                    "expected": gf,
+                    "severity": "high",
+                    "reason": "Present in gold standard but not in extracted model (or flows list).",
+                })
+
         # Also check for extra items (extracted but not in gold standard)
         extra_comps = [c for c in all_comps if not _fuzzy_match_any(c, gold_comps)]
         extra_params = [p for p in all_params if not _fuzzy_match_any(p, gold_params)]
+        extra_flows = [f for f in all_flows if not _fuzzy_match_flow(f, gold_flows)]
         gaps["extra_compartments"] = list(dict.fromkeys(extra_comps))
         gaps["extra_parameters"] = list(dict.fromkeys(extra_params))
+        gaps["extra_flows"] = list(dict.fromkeys(extra_flows))
 
     # ── Promise-based comparison (fallback) ────────────────────────────────
     else:
@@ -288,6 +485,10 @@ def detect_gaps(
                     "reason": "Promised in paper but not in extracted model.",
                 })
 
+        gaps["extra_compartments"] = []
+        gaps["extra_parameters"] = []
+        gaps["extra_flows"] = []
+
     # ── Contextual checks (both modes) ────────────────────────────────────
     if _paper_is_vector_borne(promises, paper_text) and not _model_has_vector_compartments(model_structure):
         gaps["missing_compartments"].append({
@@ -307,6 +508,7 @@ def detect_gaps(
     total = (
         len(gaps["missing_compartments"]) + len(gaps["missing_parameters"])
         + len(gaps["missing_stratifications"]) + len(gaps["missing_interventions"])
+        + len(gaps["missing_flows"])
     )
     gaps["summary"] = {
         "total_gaps": total,
@@ -314,7 +516,9 @@ def detect_gaps(
         "missing_parameters": len(gaps["missing_parameters"]),
         "missing_stratifications": len(gaps["missing_stratifications"]),
         "missing_interventions": len(gaps["missing_interventions"]),
+        "missing_flows": len(gaps["missing_flows"]),
         "extra_compartments": len(gaps.get("extra_compartments", [])),
         "extra_parameters": len(gaps.get("extra_parameters", [])),
+        "extra_flows": len(gaps.get("extra_flows", [])),
     }
     return gaps

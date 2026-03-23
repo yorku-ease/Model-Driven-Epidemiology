@@ -114,6 +114,116 @@ Return ONLY valid JSON in this exact format (no markdown, no explanation outside
     return _infer_fallback(parameter_name, disease_hint)
 
 
+def infer_compartment_llm(
+    expected_name_hint: str,
+    disease_hint: str,
+    context: str = "",
+    llm_client: Optional[Any] = None,
+    provider: str = "gemini",
+) -> Dict[str, Any]:
+    """
+    Suggest a **compartment label** consistent with the paper and disease
+    (for missing-compartment gaps). Does not use gold XML directly.
+    """
+    if llm_client is None and LLMClient is not None:
+        llm_provider = os.getenv("PHASE3_LLM_PROVIDER", provider)
+        llm_client = LLMClient(provider=llm_provider, api_key_file=str(_api_key_file))
+    if llm_client is None or not getattr(llm_client, "available", False):
+        return {
+            "primary_name": expected_name_hint.strip() or "Unknown",
+            "reasoning": "LLM unavailable; using expected label as placeholder.",
+            "source": "fallback_label",
+            "confidence": "LOW",
+            "warning": "Verify compartment name against the paper.",
+        }
+
+    prompt = f"""You are an expert epidemiologist. A compartmental model is missing a compartment.
+
+Expected / gold label (may be normalized): {expected_name_hint}
+Disease / context: {disease_hint}
+Paper excerpt: {(context or "")[:1200]}
+
+Return ONLY valid JSON (no markdown):
+{{"primary_name": "<short compartment name, Title Case>", "reasoning": "<one sentence>", "description": "<optional one line>"}}
+"""
+    try:
+        result = llm_client.extract_with_llm(prompt, max_tokens=400, temperature=0.2)
+        if isinstance(result, dict) and result.get("primary_name"):
+            return {
+                "primary_name": str(result.get("primary_name", "")).strip(),
+                "description": str(result.get("description", "") or ""),
+                "reasoning": str(result.get("reasoning", "") or ""),
+                "source": "llm_inference",
+                "confidence": "LOW",
+                "warning": "AI-inferred label; verify against gold / paper.",
+            }
+    except Exception:
+        pass
+    return {
+        "primary_name": expected_name_hint.strip() or "Unknown",
+        "reasoning": "Inference failed; using expected label.",
+        "source": "fallback_label",
+        "confidence": "LOW",
+        "warning": "Verify compartment name.",
+    }
+
+
+def infer_flow_llm(
+    flow_signature: str,
+    disease_hint: str,
+    context: str = "",
+    llm_client: Optional[Any] = None,
+    provider: str = "gemini",
+) -> Dict[str, Any]:
+    """
+    Suggest **flow type** and narrative for a missing ``Source->Target`` edge.
+    Structural wiring into XML may still require manual or Phase RLM repair.
+    """
+    if llm_client is None and LLMClient is not None:
+        llm_provider = os.getenv("PHASE3_LLM_PROVIDER", provider)
+        llm_client = LLMClient(provider=llm_provider, api_key_file=str(_api_key_file))
+    if llm_client is None or not getattr(llm_client, "available", False):
+        return {
+            "flow_type": "RateFlow",
+            "description": f"Suggested transition for {flow_signature}",
+            "reasoning": "LLM unavailable.",
+            "source": "fallback_label",
+            "confidence": "LOW",
+            "warning": "Manual .compmodel edit or Phase RLM recommended.",
+        }
+
+    prompt = f"""You are an expert epidemiologist. A compartmental model is missing a transition (flow).
+
+Required flow (source -> target): {flow_signature}
+Disease: {disease_hint}
+Paper excerpt: {(context or "")[:1200]}
+
+Return ONLY valid JSON (no markdown):
+{{"flow_type": "RateFlow" or "ContactFlow", "description": "<biological meaning>", "reasoning": "<one sentence>"}}
+"""
+    try:
+        result = llm_client.extract_with_llm(prompt, max_tokens=450, temperature=0.2)
+        if isinstance(result, dict) and (result.get("description") or result.get("flow_type")):
+            return {
+                "flow_type": str(result.get("flow_type", "RateFlow")),
+                "description": str(result.get("description", "") or ""),
+                "reasoning": str(result.get("reasoning", "") or ""),
+                "source": "llm_inference",
+                "confidence": "LOW",
+                "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM.",
+            }
+    except Exception:
+        pass
+    return {
+        "flow_type": "RateFlow",
+        "description": f"Transition for {flow_signature}",
+        "reasoning": "Inference failed.",
+        "source": "fallback_label",
+        "confidence": "LOW",
+        "warning": "Manual review.",
+    }
+
+
 def _salvage_from_raw(raw: str) -> Optional[Dict[str, Any]]:
     """Extract value from truncated/malformed LLM JSON response."""
     import re

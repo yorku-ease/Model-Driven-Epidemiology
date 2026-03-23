@@ -4,13 +4,14 @@ Paper Database — load and query the comprehensive Phase 1 + Phase 2 index.
 The index is produced by  phase 3/build_database.py  and stored at
   phase 3/data/paper_database/index.json
 
-Schema (v2):
-  version, num_entries, num_parameters, total_chunks, diseases,
+Schema (v3):
+  version, num_entries, num_parameters, num_flow_signatures, total_chunks, diseases,
   knowledge_base { pattern_library, taxonomies, required_optional, ... },
   entries [ { paper_id, source_phase, disease, chunks?, model_structure?,
               extracted_entities?, promises?, evaluation?, uncertainty?,
               sensitivity?, analysis?, ... } ],
-  parameter_index [ { name, value, unit, description, disease, paper_id, ... } ]
+  parameter_index [ { name, value, unit, description, disease, paper_id, ... } ],
+  flow_index [ { signature, disease, paper_id, source_phase } ]
 """
 
 import json

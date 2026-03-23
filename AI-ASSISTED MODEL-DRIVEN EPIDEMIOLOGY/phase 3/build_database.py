@@ -4,8 +4,9 @@ Build comprehensive paper database from Phase 1 AND Phase 2.
 
 Sources collected:
   Phase 1:
-    - papers/epimde/*.compmodel + PDFs
-    - papers/new papers/*.pdf
+    - papers/epimde/*.compmodel + co-located PDFs (primary; see phase 1/utils/phase1_paths.py)
+    - papers/**/*.compmodel / **/*.pdf (additional)
+    - data/papers/*/metadata.json (paper collection registry)
     - reports/model_analysis/*_analysis.json
     - reports/uncertainty/*_uncertainty.json
     - reports/sensitivity/*_sensitivity_*.json
@@ -42,9 +43,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 PHASE3_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PHASE3_DIR))
 PHASE1_DIR = PHASE3_DIR.parent / "phase 1"
 PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
 DB_DIR = PHASE3_DIR / "data" / "paper_database"
+
+from src.gap_analysis.gap_detector import load_model_structure  # noqa: E402
 
 DISEASES_CANONICAL = {
     "covid": "covid", "covid_19": "covid", "covid-19": "covid",
@@ -143,59 +147,111 @@ def _parse_compmodel(path: Path) -> Dict[str, Any]:
 
 # ─── Phase 1 ───────────────────────────────────────────────────────────────
 
+def _phase1_entry_from_compmodel(cm: Path) -> Dict[str, Any]:
+    """Single Phase 1 entry for a .compmodel under ``papers/`` (epimde or legacy)."""
+    disease = _canonical(cm.stem)
+    pdf = cm.with_suffix(".pdf")
+    entry: Dict[str, Any] = {
+        "paper_id": f"p1_model_{disease}",
+        "source_phase": "phase1",
+        "disease": disease,
+        "compmodel_path": str(cm),
+        "model_structure": _parse_compmodel(cm),
+    }
+    if pdf.exists():
+        entry["pdf_path"] = str(pdf)
+
+    for pattern in [f"{cm.stem}_analysis.json", f"{disease}_analysis.json"]:
+        a = PHASE1_DIR / "reports" / "model_analysis" / pattern
+        if a.exists():
+            entry["analysis"] = _load_json(a)
+            break
+
+    for pattern in [f"{cm.stem}_uncertainty.json", f"{disease}_uncertainty.json"]:
+        u = PHASE1_DIR / "reports" / "uncertainty" / pattern
+        if u.exists():
+            entry["uncertainty"] = _load_json(u)
+            break
+
+    for s in sorted(PHASE1_DIR.glob(f"reports/sensitivity/*{disease}*")):
+        entry.setdefault("sensitivity", []).append(_load_json(s))
+
+    for pattern in [f"{cm.stem}_gap_analysis.json", f"{disease}_gap_analysis.json"]:
+        g = PHASE1_DIR / "reports" / "gap_reports" / pattern
+        if g.exists():
+            entry["gap_analysis"] = _load_json(g)
+            break
+
+    return entry
+
+
+def _collect_phase1_paper_metadata_entries() -> List[Dict[str, Any]]:
+    """``phase 1/data/papers/<id>/metadata.json`` — curated paper collection (Phase 1 layout)."""
+    out: List[Dict[str, Any]] = []
+    base = PHASE1_DIR / "data" / "papers"
+    if not base.is_dir():
+        return out
+    for meta_path in sorted(base.glob("*/metadata.json")):
+        data = _load_json(meta_path)
+        if not data:
+            continue
+        disease = _canonical(str(data.get("disease") or meta_path.parent.name))
+        pdf_path = None
+        for pdf in meta_path.parent.glob("*.pdf"):
+            pdf_path = str(pdf)
+            break
+        if not pdf_path and data.get("pdfPath"):
+            pp = Path(str(data["pdfPath"]))
+            if pp.is_file():
+                pdf_path = str(pp)
+        out.append({
+            "paper_id": f"p1_meta_{meta_path.parent.name}",
+            "source_phase": "phase1_paper_metadata",
+            "disease": disease,
+            "metadata": data,
+            "metadata_path": str(meta_path),
+            "pdf_path": pdf_path,
+        })
+    return out
+
+
 def _collect_phase1_entries() -> List[Dict[str, Any]]:
+    """
+    Phase 1 models: prefer ``papers/epimde/*.compmodel`` (canonical per ``phase 1/utils/phase1_paths.py``),
+    then any other ``papers/**/*.compmodel`` not already indexed. Unlinked PDFs under ``papers/`` are
+    indexed as text-only entries. Paper metadata folders under ``data/papers/`` are included.
+    """
     entries: List[Dict[str, Any]] = []
     if not PHASE1_DIR.exists():
         print("  [WARN] Phase 1 dir not found")
         return entries
 
     linked_pdfs: Set[str] = set()
+    seen_cm: Set[str] = set()
 
-    # 1) .compmodel files (and paired PDFs)
+    # 1a) Primary: epimde reference models
+    epimde = PHASE1_DIR / "papers" / "epimde"
+    if epimde.is_dir():
+        for cm in sorted(epimde.glob("*.compmodel")):
+            seen_cm.add(str(cm.resolve()))
+            e = _phase1_entry_from_compmodel(cm)
+            if e.get("pdf_path"):
+                linked_pdfs.add(str(Path(e["pdf_path"]).resolve()))
+            entries.append(e)
+
+    # 1b) Other compmodels under papers/ (legacy / extra)
     for cm in sorted(PHASE1_DIR.glob("papers/**/*.compmodel")):
-        disease = _canonical(cm.stem)
-        pdf = cm.with_suffix(".pdf")
-        entry: Dict[str, Any] = {
-            "paper_id": f"p1_model_{disease}",
-            "source_phase": "phase1",
-            "disease": disease,
-            "compmodel_path": str(cm),
-            "model_structure": _parse_compmodel(cm),
-        }
-        if pdf.exists():
-            entry["pdf_path"] = str(pdf)
-            linked_pdfs.add(str(pdf))
-
-        # model analysis
-        for pattern in [f"{cm.stem}_analysis.json", f"{disease}_analysis.json"]:
-            a = PHASE1_DIR / "reports" / "model_analysis" / pattern
-            if a.exists():
-                entry["analysis"] = _load_json(a)
-                break
-
-        # uncertainty
-        for pattern in [f"{cm.stem}_uncertainty.json", f"{disease}_uncertainty.json"]:
-            u = PHASE1_DIR / "reports" / "uncertainty" / pattern
-            if u.exists():
-                entry["uncertainty"] = _load_json(u)
-                break
-
-        # sensitivity
-        for s in sorted(PHASE1_DIR.glob(f"reports/sensitivity/*{disease}*")):
-            entry.setdefault("sensitivity", []).append(_load_json(s))
-
-        # gap report
-        for pattern in [f"{cm.stem}_gap_analysis.json", f"{disease}_gap_analysis.json"]:
-            g = PHASE1_DIR / "reports" / "gap_reports" / pattern
-            if g.exists():
-                entry["gap_analysis"] = _load_json(g)
-                break
-
-        entries.append(entry)
+        if str(cm.resolve()) in seen_cm:
+            continue
+        seen_cm.add(str(cm.resolve()))
+        e = _phase1_entry_from_compmodel(cm)
+        if e.get("pdf_path"):
+            linked_pdfs.add(str(Path(e["pdf_path"]).resolve()))
+        entries.append(e)
 
     # 2) PDFs not yet linked
     for pdf in sorted(PHASE1_DIR.glob("papers/**/*.pdf")):
-        if str(pdf) in linked_pdfs:
+        if str(pdf.resolve()) in linked_pdfs:
             continue
         disease = _canonical(pdf.stem)
         entries.append({
@@ -205,7 +261,36 @@ def _collect_phase1_entries() -> List[Dict[str, Any]]:
             "pdf_path": str(pdf),
         })
 
+    entries.extend(_collect_phase1_paper_metadata_entries())
     return entries
+
+
+def _build_flow_index(entries: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Flat index of ``Source->Target`` flow signatures for RAG (structure_lookup)."""
+    rows: List[Dict[str, Any]] = []
+    seen: Set[str] = set()
+    for e in entries:
+        p = e.get("compmodel_path")
+        if not p:
+            continue
+        path = Path(p)
+        if not path.exists():
+            continue
+        try:
+            ms = load_model_structure(path)
+        except Exception:
+            continue
+        for sig in ms.get("flows") or []:
+            if not sig or sig in seen:
+                continue
+            seen.add(sig)
+            rows.append({
+                "signature": sig,
+                "disease": e.get("disease", ""),
+                "paper_id": e.get("paper_id", ""),
+                "source_phase": e.get("source_phase", ""),
+            })
+    return rows
 
 
 def _collect_phase1_knowledge() -> Dict[str, Any]:
@@ -468,6 +553,9 @@ def main():
     param_index = _build_parameter_index(all_entries)
     print(f"  Parameter index : {len(param_index)} records")
 
+    flow_index = _build_flow_index(all_entries)
+    print(f"  Flow index      : {len(flow_index)} signatures")
+
     # Summary
     diseases = sorted({e.get("disease", "") for e in all_entries if e.get("disease")})
     total_chunks = sum(e.get("num_chunks", 0) for e in all_entries)
@@ -475,14 +563,16 @@ def main():
     print(f"  Total text chunks: {total_chunks}")
 
     index = {
-        "version": 2,
+        "version": 3,
         "num_entries": len(all_entries),
         "num_parameters": len(param_index),
+        "num_flow_signatures": len(flow_index),
         "total_chunks": total_chunks,
         "diseases": diseases,
         "knowledge_base": knowledge_base,
         "entries": all_entries,
         "parameter_index": param_index,
+        "flow_index": flow_index,
     }
 
     DB_DIR.mkdir(parents=True, exist_ok=True)

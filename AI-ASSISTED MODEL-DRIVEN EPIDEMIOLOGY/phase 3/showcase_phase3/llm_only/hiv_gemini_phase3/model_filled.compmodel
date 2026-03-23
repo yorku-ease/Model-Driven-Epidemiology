@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="C" expression="333" type="CONSTANT" description="Constant recruitment in susceptible populations." unit="Individuals/year" />
+  <parameters name="h" expression="0.48" type="CONSTANT" description="Proportion of men." unit="Nondimensional" />
+  <parameters name="c" expression="0.92" type="CONSTANT" description="Proportion of heterosexual men among the male population." unit="Nondimensional" />
+  <parameters name="p" expression="0.90" type="CONSTANT" description="Proportion of initially treated individuals." unit="Nondimensional" />
+  <parameters name="l" expression="0.0129" type="CONSTANT" description="Natural mortality rate (denoted as μ in the ODE system)." unit="1/year" />
+  <parameters name="d" expression="0.3333" type="CONSTANT" description="Induced disease mortality rate for people living with AIDS." unit="1/year" />
+  <parameters name="a" expression="0.3333" type="CONSTANT" description="Departure rate from untreated infected compartments to treatment (denoted as α in the ODE system)." unit="1/year" />
+  <parameters name="b_s" expression="0.02" type="CONSTANT" description="Probability of sexual transmission for heterosexual contact." unit="Nondimensional" />
+  <parameters name="b_h" expression="0.44" type="CONSTANT" description="Probability of sexual transmission for homosexual contact." unit="Nondimensional" />
+  <parameters name="b_hw" expression="0.018" type="CONSTANT" description="Probability of sexual transmission between homosexual men and women." unit="Nondimensional" />
+  <parameters name="b_hm" expression="0.25" type="CONSTANT" description="Probability of sexual transmission between homosexual and heterosexual men." unit="Nondimensional" />
+  <parameters name="c_s" expression="4" type="CONSTANT" description="Sexual partner rate for heterosexuals." unit="1/year" />
+  <parameters name="c_h" expression="7" type="CONSTANT" description="Sexual partner rate for homosexuals." unit="1/year" />
+  <parameters name="c_hw" expression="2" type="CONSTANT" description="Sexual partner rate between homosexual men and women." unit="1/year" />
+  <parameters name="c_hm" expression="1" type="CONSTANT" description="Sexual partner rate between homosexual and heterosexual men." unit="1/year" />
+  <compartments PrimaryName="Susceptible homosexual men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible homosexual men through contact with infected individuals." />
+  </compartments>
+  <compartments PrimaryName="Untreated infected homosexual men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Untreated infected homosexual men beginning antiretroviral therapy." />
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.9" />
+  </compartments>
+  <compartments PrimaryName="Susceptible women" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.0" target="//@compartments.3" description="Infection of susceptible women through contact with infected individuals." />
+  </compartments>
+  <compartments PrimaryName="Untreated infected women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Untreated infected women beginning antiretroviral therapy." />
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.9" />
+  </compartments>
+  <compartments PrimaryName="Susceptible heterosexual men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRateParameter="//@parameters.0" target="//@compartments.5" description="Infection of susceptible heterosexual men through contact with infected individuals." />
+  </compartments>
+  <compartments PrimaryName="Untreated infected heterosexual men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Untreated infected heterosexual men beginning antiretroviral therapy." />
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.9" />
+  </compartments>
+  <compartments PrimaryName="Treated with antiretrovirals" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Treated individuals developing AIDS due to ART resistance or treatment failure." />
+  </compartments>
+  <compartments PrimaryName="People living with AIDS" population="0" />
+  <compartments PrimaryName="Recruitment Source" />
+  <compartments PrimaryName="Treated With ART">
+    <outgoingFlows target="//@compartments.7" />
+  </compartments>
+</ns0:CompartmentalModel>

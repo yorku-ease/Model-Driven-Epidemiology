@@ -1,15 +1,21 @@
 """
-Apply Phase 3 filled parameter values to the draft .compmodel.
+Apply Phase 3 fills to the draft .compmodel.
 
-Produces model_filled.compmodel: the Phase 2 draft with parameter values
-updated or added from RAG/inference. Used so downstream steps (and the
-selector) have an improved model file per candidate.
+What this module writes:
+  1. **Parameters** — update `expression` for matched parameters; add new ones.
+  2. **Compartments** — add missing compartment shells (from RAG, inference, OR
+     gap-detection in gold-standard mode) with the gold-aligned PrimaryName.
+  3. **Flows** — inject outgoingFlows elements for missing flows whose source AND
+     target compartments already exist in the (possibly updated) model.
+
+Renaming existing compartments is intentionally NOT done: changing a PrimaryName
+could silently break human-readable model semantics outside of this pipeline.
 """
 
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from .gap_detector import GREEK_TO_LATIN
 
@@ -19,14 +25,21 @@ def _local_tag(el: ET.Element) -> str:
 
 
 def _normalize_for_match(s: str) -> str:
-    """Normalize for parameter name matching (alphanumeric + normalized Greek)."""
     for greek, latin in GREEK_TO_LATIN.items():
         s = s.replace(greek, latin)
     return re.sub(r"[^a-z0-9]", "", s.lower())
 
 
+def _fuzzy_name_match(a: str, b: str) -> bool:
+    """Substring-based fuzzy match (same logic as gap_detector._fuzzy_match)."""
+    an = _normalize_for_match(a)
+    bn = _normalize_for_match(b)
+    if not an or not bn:
+        return False
+    return an in bn or bn in an
+
+
 def _extract_value(suggestion: Dict[str, Any]) -> Optional[str]:
-    """Get a single numeric expression string from a fill suggestion."""
     val = suggestion.get("value")
     if val is None:
         return None
@@ -39,17 +52,37 @@ def _extract_value(suggestion: Dict[str, Any]) -> Optional[str]:
     return None
 
 
+def _first_flow_tag(root: ET.Element) -> Optional[str]:
+    """Return the tag name of the first flow child found in any compartment."""
+    for el in root:
+        if _local_tag(el) != "compartments":
+            continue
+        for child in el:
+            if "flow" in _local_tag(child).lower():
+                return child.tag
+    return None
+
+
+def _compartments_ordered(root: ET.Element) -> List[Tuple[int, ET.Element, str]]:
+    """Return list of (global_index, element, PrimaryName) for compartments in root order."""
+    result = []
+    idx = 0
+    for el in root:
+        if _local_tag(el) == "compartments":
+            result.append((idx, el, el.get("PrimaryName", "")))
+            idx += 1
+    return result
+
+
 def apply_fills_to_model(
     draft_path: Path,
     filled_result: Dict[str, Any],
     output_path: Path,
 ) -> int:
     """
-    Write an updated .compmodel with filled parameter values applied.
+    Write an updated .compmodel with fills applied.
 
-    - For each filled_gap of type missing_parameters with source in (rag, inference)
-      and a numeric value, update or add that parameter in the draft XML.
-    - Returns the number of parameters updated or added.
+    Returns the total count of updates (params updated + compartments added + flows injected).
     """
     raw = draft_path.read_text(encoding="utf-8", errors="replace")
     if "xmlns:xsi" not in raw and "xsi:" in raw:
@@ -59,10 +92,10 @@ def apply_fills_to_model(
         )
     root = ET.fromstring(raw)
 
-    # Collect existing parameter elements by normalized name (and keep first occurrence for update)
+    # ── Collect existing parameter elements ────────────────────────────────
     param_elements: Dict[str, ET.Element] = {}
-    param_tag = None
-    insert_before = None
+    param_tag: Optional[str] = None
+    insert_before: Optional[ET.Element] = None
     for el in root:
         tag = _local_tag(el)
         if tag == "parameters":
@@ -80,16 +113,55 @@ def apply_fills_to_model(
         param_tag = "parameters"
 
     applied = 0
+
+    # ── Pass 1: Parameters and Compartments ───────────────────────────────
     for item in filled_result.get("filled_gaps", []):
-        if item.get("gap_type") != "missing_parameters":
-            continue
-        if item.get("source") not in ("rag", "inference"):
-            continue
+        gap_type = item.get("gap_type", "")
+        source = item.get("source", "")
         suggestion = item.get("suggestion") or {}
+        gap = item.get("gap") or {}
+
+        # ── Compartments ──────────────────────────────────────────────────
+        if gap_type == "missing_compartments":
+            # Accept RAG, inference, spec_entity, OR flagged (gap detection identified the name)
+            name = (suggestion.get("primary_name") or "").strip()
+            if not name:
+                name = (gap.get("expected") or "").strip()
+            if not name:
+                continue
+            key = _normalize_for_match(name)
+            existing = {
+                _normalize_for_match(el.get("PrimaryName", ""))
+                for el in root
+                if _local_tag(el) == "compartments"
+            }
+            # Also check fuzzy: skip if a very close name already exists
+            existing_names = [
+                el.get("PrimaryName", "")
+                for el in root
+                if _local_tag(el) == "compartments"
+            ]
+            if key in existing or any(_fuzzy_name_match(name, en) for en in existing_names):
+                continue
+            comp_tag = next(
+                (el.tag for el in root if _local_tag(el) == "compartments"),
+                "compartments",
+            )
+            new_c = ET.Element(comp_tag)
+            new_c.set("PrimaryName", name)
+            root.append(new_c)
+            applied += 1
+            continue
+
+        # ── Parameters ────────────────────────────────────────────────────
+        if gap_type != "missing_parameters":
+            continue
+        if source not in ("rag", "inference", "spec_entity"):
+            continue
         expr = _extract_value(suggestion)
         if expr is None:
             continue
-        expected = (item.get("gap") or {}).get("expected", "")
+        expected = gap.get("expected", "")
         if not expected or not str(expected).strip():
             continue
         key = _normalize_for_match(expected)
@@ -109,9 +181,8 @@ def apply_fills_to_model(
                 param_elements[key].set("description", desc)
             applied += 1
         else:
-            # Add new parameter (use original expected name for display)
             new_el = ET.Element(param_tag)
-            new_el.set("name", expected.strip())
+            new_el.set("name", str(expected).strip())
             new_el.set("expression", expr)
             new_el.set("type", "CONSTANT")
             if unit:
@@ -124,6 +195,55 @@ def apply_fills_to_model(
             else:
                 root.append(new_el)
             applied += 1
+
+    # ── Pass 2: Flow injection ─────────────────────────────────────────────
+    # Build up-to-date compartment order (after any additions in Pass 1)
+    comp_order = _compartments_ordered(root)
+    flow_tag = _first_flow_tag(root) or "outgoingFlows"
+
+    for item in filled_result.get("filled_gaps", []):
+        if item.get("gap_type") != "missing_flows":
+            continue
+        gap = item.get("gap") or {}
+        sig = (gap.get("expected") or "").strip()
+        if "->" not in sig:
+            continue
+        src_name, _, tgt_name = sig.partition("->")
+        src_name = src_name.strip()
+        tgt_name = tgt_name.strip()
+
+        # Fuzzy-find source and target in current compartment list
+        src_entry: Optional[Tuple[int, ET.Element, str]] = None
+        tgt_idx: Optional[int] = None
+        for order_idx, (comp_idx, el, name) in enumerate(comp_order):
+            if _fuzzy_name_match(src_name, name):
+                src_entry = (order_idx, el, name)
+            if _fuzzy_name_match(tgt_name, name):
+                tgt_idx = order_idx
+
+        if src_entry is None or tgt_idx is None:
+            continue
+
+        _, src_el, _ = src_entry
+
+        # Check if this target already has a flow going from src
+        already_wired = False
+        for child in src_el:
+            if "flow" not in _local_tag(child).lower():
+                continue
+            tgt_ref = (child.get("target") or "").strip()
+            m = re.search(r"compartments\.(\d+)", tgt_ref)
+            if m and int(m.group(1)) == tgt_idx:
+                already_wired = True
+                break
+        if already_wired:
+            continue
+
+        new_flow = ET.SubElement(src_el, flow_tag)
+        new_flow.set("target", f"//@compartments.{tgt_idx}")
+        applied += 1
+
+    # ── Write output ───────────────────────────────────────────────────────
     output_path.parent.mkdir(parents=True, exist_ok=True)
     tree = ET.ElementTree(root)
     try:

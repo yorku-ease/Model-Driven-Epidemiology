@@ -1,0 +1,133 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "vaccinated adults (catch-up/monitored)",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccinated Adults (Monitored)",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible adults->Vaccinated adults (catch-up/monitored)",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Susceptible adults->Vaccinated adults (catch-up/monitored)",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Susceptible adults->Vaccinated adults (catch-up/monitored)",
+            "disease": "measles",
+            "paper_id": "p1_model_measles",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible adults->Exposed adults",
+            "disease": "measles",
+            "paper_id": "p1_model_measles",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible->Vaccinated",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible->Infectious",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible->Exposed",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [
+          {
+            "paper_id": "p2_measles_llm_claude_20260321_235455",
+            "chunk_index": 1,
+            "chunk": " of acquiring immunity due to increased attention and regular supervision, in contrast to children under unsupervised immunization schemes. Consequently, the children eligible for vaccination are divided into two distinct groups: the Un-monitored Vaccination Group \u00f0U V A \u00de, consisting of vaccinated children undergoing routine vaccination without supervision, and the Monitored Vaccination Group \u00f0M V C \u00de, comprising children vaccinated under supervision to ensure timely administration. In addition, we consider the Adult Vaccination Group (V A ), which consists of vaccinated adults under supervision through the catch-up vaccination program. Upon successfully receiving both vaccine doses per the recommended schedule, we assume that the Monitored Vaccination Group and Adult Vaccination Group will attain sufficient immunization and become non-susceptible to diseases. h M and h A represent the rate of immunization of the Monitored Vaccination Group and Adult Vaccination Group, respectively, and b C represents the rate of the fully susceptible children becoming infected.\n\nGiven the possibility of incomplete administration of vaccine doses within the Un-monitored Vaccination Group, there remains a potential susceptibility to diseases. To capture this infection, we account for disease transmission within this group at a rate of eb C , where (1 \u00c0 e) represents the vaccine's effectiveness. Additionally, we consider a different infection rate, denoted by b A , for the adult group, assuming that measles transmission is low among adults. The complete description of the parameters is given in Table\n\nThe equations of the dynamical system describing measles transmission are as follows:\n\n(1)\n\n(2)\n\n(5)\n\n(10)\n\nModel analysis\n\n\n\nPositivity and boundedness of the solutions\n\nIn the system (1e12), all the state variables are non-negative and should remain non-negative forever since they represent the human population. For the given non-negative initial conditions, it can be easily verified "
+          },
+          {
+            "paper_id": "p2_measles_llm_gemini_20260321_233900",
+            "chunk_index": 1,
+            "chunk": " of acquiring immunity due to increased attention and regular supervision, in contrast to children under unsupervised immunization schemes. Consequently, the children eligible for vaccination are divided into two distinct groups: the Un-monitored Vaccination Group \u00f0U V A \u00de, consisting of vaccinated children undergoing routine vaccination without supervision, and the Monitored Vaccination Group \u00f0M V C \u00de, comprising children vaccinated under supervision to ensure timely administration. In addition, we consider the Adult Vaccination Group (V A ), which consists of vaccinated adults under supervision through the catch-up vaccination program. Upon successfully receiving both vaccine doses per the recommended schedule, we assume that the Monitored Vaccination Group and Adult Vaccination Group will attain sufficient immunization and become non-susceptible to diseases. h M and h A represent the rate of immunization of the Monitored Vaccination Group and Adult Vaccination Group, respectively, and b C represents the rate of the fully susceptible children becoming infected.\n\nGiven the possibility of incomplete administration of vaccine doses within the Un-monitored Vaccination Group, there remains a potential susceptibility to diseases. To capture this infection, we account for disease transmission within this group at a rate of eb C , where (1 \u00c0 e) represents the vaccine's effectiveness. Additionally, we consider a different infection rate, denoted by b A , for the adult group, assuming that measles transmission is low among adults. The complete description of the parameters is given in Table\n\nThe equations of the dynamical system describing measles transmission are as follows:\n\n(1)\n\n(2)\n\n(5)\n\n(10)\n\nModel analysis\n\n\n\nPositivity and boundedness of the solutions\n\nIn the system (1e12), all the state variables are non-negative and should remain non-negative forever since they represent the human population. For the given non-negative initial conditions, it can be easily verified "
+          }
+        ],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Vaccinated adults (catch-up/monitored)->Immune adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Vaccinated adults (catch-up/monitored)->Immune adults",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Vaccinated adults (catch-up/monitored)->Immune adults",
+            "disease": "measles",
+            "paper_id": "p1_model_measles",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Immune children->Immune adults",
+            "disease": "measles",
+            "paper_id": "p1_model_measles",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Un-monitored vaccinated adults->Immune adults",
+            "disease": "measles",
+            "paper_id": "p1_model_measles",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious adults->Immune adults",
+            "disease": "measles",
+            "paper_id": "p1_model_measles",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Vaccinated->Susceptible",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 9,
+    "inference_count": 2,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

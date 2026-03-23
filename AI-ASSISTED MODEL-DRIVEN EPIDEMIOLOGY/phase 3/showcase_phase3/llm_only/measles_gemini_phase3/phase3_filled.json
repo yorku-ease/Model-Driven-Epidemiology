@@ -1,0 +1,64 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "vaccinated adults (catch-up/monitored)",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Monitored Vaccinated Adults",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible adults->Vaccinated adults (catch-up/monitored)",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Susceptible adults receive",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Vaccinated adults (catch-up/monitored)->Immune adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Vaccinated adults developing protective immunity against measles.",
+        "reasoning": "The transition from a vaccinated state to an immune state occurs at a rate, representing the efficacy and time required for the vaccine to induce immunity, independent of contact with infected individuals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 11,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}
