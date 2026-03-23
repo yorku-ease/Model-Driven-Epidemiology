@@ -51,8 +51,8 @@
 | **Reference agreement** | 99.0% | 25% |
 | **Fill traceability** | 87.5% | 20% |
 | **Parameter accuracy** | 50.0% | 15% |
-| **Structural integrity** | 54.2%  (24→11 errors) | 15% |
-| **→ Composite** | **82.9/100** | — |
+| **Structural integrity** | 45.8%  (24→13 errors) | 15% |
+| **→ Composite** | **81.6/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -63,10 +63,10 @@
 |---|---|---|---|
 | Critical | 6 | 0 | +6 |
 | High | 1 | 0 | +1 |
-| Medium | 17 | 11 | +6 |
-| **Total** | **24** | **11** | **+13** |
+| Medium | 17 | 13 | +4 |
+| **Total** | **24** | **13** | **+11** |
 
-**9 repair(s) applied:**
+**7 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -76,14 +76,15 @@
 | `self_referential_flow` | Unmonitored Vaccinated Adults -> ContactFlow | Redirected Unmonitored Vaccinated Adults ContactFlow target from //@compartments.9 to //@compartment |
 | `zero_population_all` | all_compartments | Set Susceptible Children population=1000 |
 | `uniform_parameter_collapse` | all_flows | Reassigned parameters for 12 flow(s) using semantic matching |
-| `orphaned_parameters` | x_U | Wired x_U (//@parameters.1) to Monitored Vaccinated Children → Monitored Vaccinated Adults flow |
-| `orphaned_parameters` | x_M | Wired x_M (//@parameters.2) to Susceptible Adults → vaccinated adults (catch-up/monitored) flow |
-| `orphaned_parameters` | x_A | Wired x_A (//@parameters.3) to vaccinated adults (catch-up/monitored) → Immune Adults flow |
+| `orphaned_parameters` | φ | Wired φ (//@parameters.17) to Monitored Vaccinated Children → Monitored Vaccinated Adults flow |
 
-**11 structural error(s) remaining after repair:**
+**13 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
+| `orphaned_parameters` | x_U | **medium** |
+| `orphaned_parameters` | x_M | **medium** |
+| `orphaned_parameters` | x_A | **medium** |
 | `orphaned_parameters` | m | **medium** |
 | `orphaned_parameters` | g | **medium** |
 | `orphaned_parameters` | j | **medium** |
@@ -94,7 +95,6 @@
 | `orphaned_parameters` | d | **medium** |
 | `orphaned_parameters` | q | **medium** |
 | `orphaned_parameters` | ξu | **medium** |
-| `orphaned_parameters` | φ | **medium** |
 
 
 ## 2b. Three-layer gap analysis
@@ -121,12 +121,12 @@
 - **Source:** rag
 - **Value:** 0.0087 1/week
 - **Description:** Un-monitored child vaccination rate (xU)
-- **From papers:** p1_model_cholera, p1_model_measles, p2_cholera_llm_openai_20260321_230736
+- **From papers:** p2_cholera_llm_gemini_20260321_232556, p2_cholera_llm_openai_20260321_230736, p2_cholera_llm_claude_20260321_234449
 
 ### φ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.0 
-- **From papers:** p2_dengue_llm_gemini_20260321_232851, p2_baseline_zika, p2_malaria_llm_gemini_20260321_233636
+- **From papers:** p1_model_zika, p2_malaria_llm_claude_20260321_235246, p2_dengue_llm_claude_20260321_234654
 
 ### Un-monitored vaccinated children->Exposed children (missing_flows)
 - **Source:** rag

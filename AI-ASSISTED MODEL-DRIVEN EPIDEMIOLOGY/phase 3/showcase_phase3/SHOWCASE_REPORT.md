@@ -4,16 +4,16 @@ For each disease: **best Phase 2** run among **gemini / openai / claude** (by ev
 
 | Disease | Winning Phase 2 LLM | Best Phase 2 report | Phase2 score | Winner | rag_only | llm_only | both |
 |---------|----------------------|---------------------|--------------|--------|----------|----------|------|
-| Cholera | **claude** | `cholera_llm_claude_20260321_234449` | 98.2 | **rag_only** | g=2 acc=0.0% cF1=0.8889 fF1=0.5455 | g=2 acc=0.0% cF1=0.6 fF1=0.4 | g=2 acc=0.0% cF1=0.6667 fF1=0.4 |
+| Cholera | **claude** | `cholera_llm_claude_20260321_234449` | 98.2 | **rag_only** | g=2 acc=0.0% cF1=0.8889 fF1=0.5455 | g=2 acc=0.0% cF1=0.6667 fF1=0.4 | g=2 acc=0.0% cF1=0.6667 fF1=0.4 |
 | Covid | **claude** | `covid_llm_claude_20260321_234526` | 80.0 | **rag_only** | g=2 acc=0.0% cF1=0.9677 fF1=0.9767 | g=2 acc=0.0% cF1=0.875 fF1=0.9302 | g=2 acc=0.0% cF1=0.875 fF1=0.9302 |
 | Dengue | **claude** | `dengue_llm_claude_20260321_234654` | 93.9 | **rag_only** | g=4 acc=100.0% cF1=1.0 fF1=0.8182 | g=4 acc=0.0% cF1=1.0 fF1=0.8182 | g=4 acc=100.0% cF1=1.0 fF1=0.8182 |
-| Ebola | **openai** | `ebola_llm_openai_20260321_231120` | 85.7 | **both** | g=19 acc=0.0% cF1=0.9231 fF1=0.8889 | g=19 acc=0.0% cF1=0.7692 fF1=0.75 | g=19 acc=7.1% cF1=0.9231 fF1=0.8889 |
+| Ebola | **openai** | `ebola_llm_openai_20260321_231120` | 85.7 | **rag_only** | g=19 acc=0.0% cF1=0.9231 fF1=0.8889 | g=19 acc=0.0% cF1=0.9231 fF1=0.8889 | g=19 acc=0.0% cF1=0.8571 fF1=0.8889 |
 | Flu | **openai** | `flu_llm_openai_20260321_231306` | 95.0 | **rag_only** | g=1 acc=0.0% cF1=0.7895 fF1=0.8889 | g=1 acc=0.0% cF1=0.7895 fF1=0.8889 | g=1 acc=0.0% cF1=0.7895 fF1=0.8889 |
-| Hiv | **gemini** | `hiv_llm_gemini_20260321_233341` | 85.5 | **rag_only** | g=9 acc=0.0% cF1=0.9474 fF1=0.8333 | g=9 acc=0.0% cF1=0.9474 fF1=0.8333 | g=9 acc=0.0% cF1=0.8421 fF1=0.8333 |
-| Malaria | **claude** | `malaria_llm_claude_20260321_235246` | 89.5 | **rag_only** | g=12 acc=0.0% cF1=1.0 fF1=0.9565 | g=12 acc=0.0% cF1=1.0 fF1=0.9565 | g=12 acc=0.0% cF1=1.0 fF1=0.9565 |
+| Hiv | **gemini** | `hiv_llm_gemini_20260321_233341` | 85.5 | **rag_only** | g=9 acc=0.0% cF1=0.9474 fF1=0.8333 | g=9 acc=0.0% cF1=0.9 fF1=0.8333 | g=9 acc=0.0% cF1=0.8 fF1=0.8333 |
+| Malaria | **claude** | `malaria_llm_claude_20260321_235246` | 89.5 | **rag_only** | g=12 acc=0.0% cF1=1.0 fF1=0.9565 | g=12 acc=0.0% cF1=1.0 fF1=0.9565 | g=12 acc=0.0% cF1=0.9524 fF1=0.9565 |
 | Measles | **gemini** | `measles_llm_gemini_20260321_233900` | 85.7 | **rag_only** | g=8 acc=50.0% cF1=1.0 fF1=0.9796 | g=8 acc=0.0% cF1=0.9565 fF1=0.9274 | g=8 acc=0.0% cF1=0.9199 fF1=0.9274 |
 | Tuberculosis | **claude** | `tuberculosis_llm_claude_20260321_235852` | 89.4 | **rag_only** | g=4 acc=0.0% cF1=0.75 fF1=0.6667 | g=4 acc=0.0% cF1=0.75 fF1=0.6667 | g=4 acc=0.0% cF1=0.75 fF1=0.6667 |
-| Zika | **claude** | `zika_llm_claude_20260321_235943` | 89.5 | **rag_only** | g=13 acc=71.4% cF1=0.8696 fF1=0.8421 | g=13 acc=0.0% cF1=0.8333 fF1=0.8421 | g=13 acc=0.0% cF1=0.8 fF1=0.8421 |
+| Zika | **claude** | `zika_llm_claude_20260321_235943` | 89.5 | **rag_only** | g=13 acc=71.4% cF1=0.8696 fF1=0.8421 | g=13 acc=0.0% cF1=0.8333 fF1=0.8421 | g=13 acc=71.4% cF1=0.8696 fF1=0.8421 |
 
 ## How to read
 

@@ -80,18 +80,19 @@
 | `zero_population_all` | all_compartments | Set Susceptible Humans population=1000 |
 | `missing_birth_sources` | Susceptible Humans | Set Susceptible Vectors population=1000 (initial condition) |
 | `flow_chain_incomplete` | Infectious Vectors | Added flow Infectious Vectors → Recovered Humans |
-| `flow_chain_incomplete` | Exposed Pregnant Females | Added flow Exposed Pregnant Females → Infectious Humans |
+| `flow_chain_incomplete` | Pregnant Exposed | Added flow Pregnant Exposed → Infectious Humans |
 | `flow_chain_incomplete` | Infectious Female Adults | Added flow Infectious Female Adults → Recovered Humans |
 | `orphaned_parameters` | 1/α_H | Wired 1/α_H (//@parameters.1) to Eggs → Larvae flow |
 | `orphaned_parameters` | 1/α_V | Wired 1/α_V (//@parameters.2) to Larvae → Pupae flow |
-| `orphaned_parameters` | e_V | Wired e_V (//@parameters.4) to Pupae → Susceptible Female Adults flow |
-| `orphaned_parameters` | 1/τ_h | Wired 1/τ_h (//@parameters.19) to Susceptible Female Adults → Exposed Female Adults flow |
-| `orphaned_parameters` | b_v | Wired b_v (//@parameters.20) to Exposed Female Adults → Infectious Female Adults flow |
+| `orphaned_parameters` | 1/τ_h | Wired 1/τ_h (//@parameters.19) to Pupae → Susceptible Female Adults flow |
+| `orphaned_parameters` | b_v | Wired b_v (//@parameters.20) to Susceptible Female Adults → Exposed Female Adults flow |
+| `orphaned_parameters` | 1/τ_v | Wired 1/τ_v (//@parameters.21) to Exposed Female Adults → Infectious Female Adults flow |
 
 **18 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
+| `orphaned_parameters` | e_V | **medium** |
 | `orphaned_parameters` | 1/τ1 | **medium** |
 | `orphaned_parameters` | μ1 | **medium** |
 | `orphaned_parameters` | 1/τ2 | **medium** |
@@ -104,7 +105,6 @@
 | `orphaned_parameters` | κ | **medium** |
 | `orphaned_parameters` | λ | **medium** |
 | `orphaned_parameters` | R0 | **medium** |
-| `orphaned_parameters` | 1/τ_v | **medium** |
 | `orphaned_parameters` | r_h | **medium** |
 | `orphaned_parameters` | f | **medium** |
 | `orphaned_parameters` | δ_l | **medium** |
@@ -135,14 +135,14 @@
 ### Susceptible female adults->Exposed female adults (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Susceptible female adults become exposed to ZIKV after being bitten by an infectious Aedes mosquito, entering the latent period before becoming infectious.
-- **Reasoning:** The transition from susceptible to exposed in humans for ZIKV is driven by contact with infectious vectors, making it a contact-dependent infection process.
+- **Description:** Susceptible female adults become exposed to ZIKV after being bitten by infectious Aedes mosquitoes.
+- **Reasoning:** The transition from Susceptible to Exposed in humans for ZIKV is driven by contact with infectious vectors (mosquitoes), making it a contact-dependent flow.
 
 ### Exposed female adults->Infectious female adults (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** The transition of female adults from the latent (exposed) stage to the infectious stage after completing the intrinsic incubation period.
-- **Reasoning:** In an SEIR model, individuals in the Exposed compartment become Infectious after a period of latency, which is typically modeled as a rate-based transition.
+- **Description:** Exposed female adults become infectious after completing the intrinsic incubation period.
+- **Reasoning:** In an SEIR model, exposed individuals transition to the infectious compartment at a specific rate after the latent period, representing disease progression within the host.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

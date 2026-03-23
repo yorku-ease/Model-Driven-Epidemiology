@@ -108,18 +108,18 @@
 
 ### γ1 (missing_parameters)
 - **Source:** inference
-- **Value:** 0.167 per day
+- **Value:** 0.143 per day
 - **Confidence:** LOW
 
 ### γ2 (missing_parameters)
 - **Source:** inference
-- **Value:** 0.167 per day
+- **Value:** 0.143 per day
 - **Confidence:** LOW
 
 ### Susceptible mosquitoes->Infectious mosquitoes (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Susceptible
+- **Description:** The transition of a susceptible
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **2**
@@ -128,12 +128,12 @@
 - Approximate (<50% error): **0**
 - Poor (>50% error): **2**
 - **Accuracy (exact+close)**: **0.0%**
-- Median relative error: **66.6%**
+- Median relative error: **71.4%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| γ1 | 0.167 | 0.5 | 66.6% | poor |
-| γ2 | 0.167 | 0.5 | 66.6% | poor |
+| γ1 | 0.143 | 0.5 | 71.4% | poor |
+| γ2 | 0.143 | 0.5 | 71.4% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

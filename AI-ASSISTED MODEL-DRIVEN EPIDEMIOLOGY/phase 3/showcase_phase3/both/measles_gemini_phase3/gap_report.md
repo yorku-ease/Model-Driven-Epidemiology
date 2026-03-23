@@ -76,13 +76,14 @@
 | `self_referential_flow` | Unmonitored Vaccinated Adults -> ContactFlow | Redirected Unmonitored Vaccinated Adults ContactFlow target from //@compartments.9 to //@compartment |
 | `zero_population_all` | all_compartments | Set Susceptible Children population=1000 |
 | `uniform_parameter_collapse` | all_flows | Reassigned parameters for 12 flow(s) using semantic matching |
-| `orphaned_parameters` | x_U | Wired x_U (//@parameters.1) to Monitored Vaccinated Children → Monitored Vaccinated Adults flow |
+| `orphaned_parameters` | φ | Wired φ (//@parameters.17) to Monitored Vaccinated Children → Monitored Vaccinated Adults flow |
 
 **14 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
 | `flow_chain_incomplete` | Vaccinated Adults (Monitored) | **high** |
+| `orphaned_parameters` | x_U | **medium** |
 | `orphaned_parameters` | x_M | **medium** |
 | `orphaned_parameters` | x_A | **medium** |
 | `orphaned_parameters` | m | **medium** |
@@ -95,7 +96,6 @@
 | `orphaned_parameters` | d | **medium** |
 | `orphaned_parameters` | q | **medium** |
 | `orphaned_parameters` | ξu | **medium** |
-| `orphaned_parameters` | φ | **medium** |
 
 
 ## 2b. Three-layer gap analysis

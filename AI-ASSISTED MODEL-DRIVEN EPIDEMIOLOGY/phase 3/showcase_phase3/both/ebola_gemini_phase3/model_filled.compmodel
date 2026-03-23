@@ -17,15 +17,15 @@
   <parameters name="λ" expression="0.0" type="CONSTANT" />
   <parameters name="μ" expression="0.00038461" type="CONSTANT" unit="1/time" description="Natural human death rate (μ)" />
   <parameters name="β1" expression="0.25" type="CONSTANT" unit="per day" />
-  <parameters name="β2" expression="0.15" type="CONSTANT" unit="per day" />
-  <parameters name="β3" expression="0.001" type="CONSTANT" unit="per day" />
-  <parameters name="δ1" expression="0.5" type="CONSTANT" unit="1/day" />
-  <parameters name="ω2" expression="0.05" type="CONSTANT" unit="1/day" />
-  <parameters name="ω3" expression="0.001" type="CONSTANT" unit="per day" />
-  <parameters name="ω1" expression="0.5" type="CONSTANT" unit="per day" />
-  <parameters name="ω1q" expression="0.001" type="CONSTANT" unit="per day" />
-  <parameters name="δ2" expression="0.06" type="CONSTANT" unit="1/day" />
-  <parameters name="η" expression="0.1" type="CONSTANT" unit="per day" />
+  <parameters name="β2" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="β3" expression="0.5" type="CONSTANT" unit="per day" />
+  <parameters name="δ1" expression="0.1" type="CONSTANT" unit="1/day" />
+  <parameters name="ω2" expression="0.2" type="CONSTANT" unit="1/day" />
+  <parameters name="ω3" expression="0.005" type="CONSTANT" unit="per day" />
+  <parameters name="ω1" expression="0.1" type="CONSTANT" unit="per day" />
+  <parameters name="ω1q" expression="0.01" type="CONSTANT" unit="1/day" />
+  <parameters name="δ2" expression="0.05" type="CONSTANT" unit="1/day" />
+  <parameters name="η" expression="0.001" type="CONSTANT" unit="per day" />
   <parameters name="ρ" expression="0.5" type="CONSTANT" />
   <parameters name="μb" expression="0.0001" type="CONSTANT" unit="per day" />
   <compartments PrimaryName="Susceptible People" population="0">
@@ -36,7 +36,7 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Shedding of pathogens into the environment by infected individuals." />
     <outgoingFlows target="//@compartments.3" />
     <outgoingFlows target="//@compartments.5" />
-    <outgoingFlows target="//@compartments.6" />
+    <outgoingFlows target="//@compartments.7" />
   </compartments>
   <compartments PrimaryName="Quarantine People" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.3" description="Quarantined individuals recovering from the disease." />
@@ -46,7 +46,8 @@
   <compartments PrimaryName="Ebola Virus Pathogens in the Environment" population="0" />
   <compartments PrimaryName="Deceased People" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Shedding of pathogens into the environment by deceased individuals." />
-    <outgoingFlows target="//@compartments.6" />
+    <outgoingFlows target="//@compartments.7" />
   </compartments>
+  <compartments PrimaryName="Environmental Pathogens" />
   <compartments PrimaryName="Environment Pathogens" />
 </ns0:CompartmentalModel>

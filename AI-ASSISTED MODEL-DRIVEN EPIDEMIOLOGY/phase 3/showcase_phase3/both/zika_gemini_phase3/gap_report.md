@@ -53,11 +53,11 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 25% |
-| **Reference agreement** | 82.1% | 25% |
-| **Fill traceability** | 60.0% | 20% |
-| **Parameter accuracy** | 100.0% | 15% |
-| **Structural integrity** | 43.8%  (32→18 errors) | 15% |
-| **→ Composite** | **79.1/100** | — |
+| **Reference agreement** | 85.6% | 25% |
+| **Fill traceability** | 84.6% | 20% |
+| **Parameter accuracy** | 71.4% | 15% |
+| **Structural integrity** | 36.7%  (30→19 errors) | 15% |
+| **→ Composite** | **79.5/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -67,11 +67,11 @@
 | | Before repair | After repair | Resolved |
 |---|---|---|---|
 | Critical | 3 | 0 | +3 |
-| High | 5 | 0 | +5 |
+| High | 3 | 1 | +2 |
 | Medium | 24 | 18 | +6 |
-| **Total** | **32** | **18** | **+14** |
+| **Total** | **30** | **19** | **+11** |
 
-**13 repair(s) applied:**
+**12 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -79,20 +79,21 @@
 | `self_referential_flow` | Susceptible Vectors -> ContactFlow | Redirected Susceptible Vectors ContactFlow target from //@compartments.8 to //@compartments.1 (Expos |
 | `zero_population_all` | all_compartments | Set Susceptible Humans population=1000 |
 | `missing_birth_sources` | Susceptible Humans | Set Susceptible Vectors population=1000 (initial condition) |
-| `missing_birth_sources` | Susceptible Pregnant Females | Set Susceptible Pregnant Females population=1000 (initial condition) |
 | `flow_chain_incomplete` | Infectious Vectors | Added flow Infectious Vectors → Recovered Humans |
-| `flow_chain_incomplete` | Exposed Pregnant Women | Added flow Exposed Pregnant Women → Infectious Humans |
-| `flow_chain_incomplete` | infectious female adults | Added flow infectious female adults → Recovered Humans |
+| `flow_chain_incomplete` | infectious female adults | Added flow Exposed Female Adults → Infectious Humans |
 | `orphaned_parameters` | 1/α_H | Wired 1/α_H (//@parameters.1) to Eggs → Larvae flow |
 | `orphaned_parameters` | 1/α_V | Wired 1/α_V (//@parameters.2) to Larvae → Pupae flow |
-| `orphaned_parameters` | e_V | Wired e_V (//@parameters.4) to Pupae → Susceptible Female Adults flow |
 | `orphaned_parameters` | 1/τ_h | Wired 1/τ_h (//@parameters.19) to Exposed Female Adults → infectious female adults flow |
-| `orphaned_parameters` | f | Wired f (//@parameters.23) to Susceptible Female Adults → Exposed Female Adults flow |
+| `orphaned_parameters` | f | Wired f (//@parameters.23) to Pupae → Susceptible Female Adults flow |
+| `orphaned_parameters` | φ | Wired φ (//@parameters.25) to Susceptible Female Adults → Exposed Female Adults flow |
+| `flow_chain_incomplete` | infectious female adults | Added flow Exposed Female Adults → Infectious Humans |
 
-**18 structural error(s) remaining after repair:**
+**19 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
+| `flow_chain_incomplete` | infectious female adults | **high** |
+| `orphaned_parameters` | e_V | **medium** |
 | `orphaned_parameters` | 1/τ1 | **medium** |
 | `orphaned_parameters` | μ1 | **medium** |
 | `orphaned_parameters` | 1/τ2 | **medium** |
@@ -109,7 +110,6 @@
 | `orphaned_parameters` | 1/τ_v | **medium** |
 | `orphaned_parameters` | r_h | **medium** |
 | `orphaned_parameters` | δ_l | **medium** |
-| `orphaned_parameters` | φ | **medium** |
 | `parameter_layer_contamination` | R0 | **medium** |
 
 
@@ -124,9 +124,9 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 3 | 10 | 3 | 16 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 14
+- Filled via **RAG**: 11
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 4
+- Filled via **inference**: 2
 - **Flagged** for manual review: 0
 
 ### susceptible female adults (missing_compartments)
@@ -136,6 +136,52 @@
 ### exposed female adults (missing_compartments)
 - **Source:** inference
 - **Primary name:** Exposed Female Adults
+
+### infectious female adults (missing_compartments)
+- **Source:** rag
+- **Primary name:** infectious female adults
+- **Evidence chunks:** 3 snippet(s) in database
+- *Use paper snippets to confirm compartment label and add to model.*
+
+### 1/τ_h (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5 1/day
+- **Description:** Inverse incubation time in humans
+- **From papers:** p1_model_zika, p2_ebola_llm_claude_20260321_234954, p2_hiv_llm_claude_20260321_235051
+
+### b_v (missing_parameters)
+- **Source:** rag
+- **Value:** 0.001 1/day
+- **Description:** Biting/exposure term for vectors becoming infected from infectious humans
+- **From papers:** p1_model_zika, p2_dengue_llm_openai_20260321_230911, p2_dengue_llm_gemini_20260321_232851
+
+### 1/τ_v (missing_parameters)
+- **Source:** rag
+- **Value:** 0.125 1/day
+- **Description:** Inverse incubation time in vectors
+- **From papers:** p1_model_zika, p2_malaria_llm_claude_20260321_235246, p2_hiv_llm_openai_20260321_231210
+
+### r_h (missing_parameters)
+- **Source:** rag
+- **Value:** 0.00005 1/day
+- **Description:** Human population growth rate (logistic)
+- **From papers:** p1_model_zika, p2_malaria_llm_openai_20260321_231406, p2_dengue_llm_openai_20260321_230911
+
+### f (missing_parameters)
+- **Source:** rag
+- **Value:** 1.0 
+- **From papers:** p1_model_zika, p2_zika_llm_gemini_20260321_234220, p2_covid_llm_claude_20260321_234526
+
+### δ_l (missing_parameters)
+- **Source:** rag
+- **Value:** 1 1/day
+- **Description:** Larval density-dependent mortality coefficient (logistic term)
+- **From papers:** p1_model_zika, p2_cholera_llm_gemini_20260321_232556, p2_dengue_llm_gemini_20260321_232851
+
+### φ (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0 
+- **From papers:** p1_model_zika, p2_zika_llm_openai_20260321_232352, p2_dengue_llm_claude_20260321_234654
 
 ### Pupae (non-infectious)->Susceptible female adults (missing_flows)
 - **Source:** rag
@@ -152,10 +198,29 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **7**
+- Exact match (<1% error): **5**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **2**
+- **Accuracy (exact+close)**: **71.4%**
+- Median relative error: **0.0%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| 1/τ_h | 0.5 | 0.5 | 0.0% | exact |
+| b_v | 0.001 | 0.001 | 0.0% | exact |
+| 1/τ_v | 0.125 | 0.125 | 0.0% | exact |
+| r_h | 5e-05 | 5e-05 | 0.0% | exact |
+| f | 1.0 | 80.0 | 98.75% | poor |
+| δ_l | 1.0 | 1.0 | 0.0% | exact |
+| φ | 0.0 | 0.68 | 100.0% | poor |
+
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **10** | Candidate: **15**
-- Precision **0.6667** | Recall **1.0** | F1 **0.8**
+- Gold count: **10** | Candidate: **13**
+- Precision **0.7692** | Recall **1.0** | F1 **0.8696**
 ### Flows
 - Gold count: **8** | Candidate: **11**
 - Precision **0.7273** | Recall **1.0** | F1 **0.8421**

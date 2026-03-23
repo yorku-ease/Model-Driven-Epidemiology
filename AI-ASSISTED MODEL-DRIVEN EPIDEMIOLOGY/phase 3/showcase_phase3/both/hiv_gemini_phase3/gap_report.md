@@ -50,11 +50,11 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 88.9% | 25% |
-| **Reference agreement** | 83.8% | 25% |
+| **Reference agreement** | 81.7% | 25% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 15% |
-| **Structural integrity** | 66.7%  (24→8 errors) | 15% |
-| **→ Composite** | **68.2/100** | — |
+| **Structural integrity** | 24.0%  (25→19 errors) | 15% |
+| **→ Composite** | **61.2/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -64,11 +64,12 @@
 | | Before repair | After repair | Resolved |
 |---|---|---|---|
 | Critical | 5 | 3 | +2 |
-| High | 5 | 1 | +4 |
-| Medium | 14 | 4 | +10 |
-| **Total** | **24** | **8** | **+16** |
+| High | 6 | 3 | +3 |
+| Medium | 14 | 11 | +3 |
+| Low | 0 | 2 | -2 |
+| **Total** | **25** | **19** | **+6** |
 
-**18 repair(s) applied:**
+**10 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -79,19 +80,11 @@
 | `uniform_parameter_collapse` | all_flows | Reassigned parameters for 7 flow(s) using semantic matching |
 | `missing_birth_sources` | Susceptible homosexual men | Set Susceptible women population=1000 (initial condition) |
 | `missing_birth_sources` | Susceptible women | Set Susceptible heterosexual men population=1000 (initial condition) |
-| `missing_birth_sources` | Susceptible Population | Set Susceptible Population population=1000 (initial condition) |
-| `orphaned_parameters` | h | Wired h (//@parameters.1) to Untreated infected homosexual men → Treated with ART flow |
-| `orphaned_parameters` | c | Wired c (//@parameters.2) to Untreated infected homosexual men → People living with AIDS flow |
-| `orphaned_parameters` | p | Wired p (//@parameters.3) to Untreated infected women → Treated with ART flow |
-| `orphaned_parameters` | c_s | Wired c_s (//@parameters.11) to Untreated infected women → People living with AIDS flow |
-| `orphaned_parameters` | c_h | Wired c_h (//@parameters.12) to Untreated infected heterosexual men → Treated with ART flow |
-| `orphaned_parameters` | c_hw | Wired c_hw (//@parameters.13) to Untreated infected heterosexual men → People living with AIDS flow |
-| `orphaned_parameters` | c_hm | Wired c_hm (//@parameters.14) to Treated with ART → People living with AIDS flow |
 | `self_referential_flow` | Susceptible homosexual men -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 | `self_referential_flow` | Susceptible women -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 | `self_referential_flow` | Susceptible heterosexual men -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 
-**8 structural error(s) remaining after repair:**
+**19 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
@@ -99,10 +92,21 @@
 | `self_referential_flow` | Susceptible women -> ContactFlow | **critical** |
 | `self_referential_flow` | Susceptible heterosexual men -> ContactFlow | **critical** |
 | `flow_chain_incomplete` | People living with AIDS | **high** |
+| `flow_chain_incomplete` | Births | **high** |
+| `flow_chain_incomplete` | New Infections | **high** |
 | `orphaned_parameters` | C | **medium** |
+| `orphaned_parameters` | h | **medium** |
+| `orphaned_parameters` | c | **medium** |
+| `orphaned_parameters` | p | **medium** |
 | `orphaned_parameters` | l | **medium** |
 | `orphaned_parameters` | d | **medium** |
 | `orphaned_parameters` | b_h | **medium** |
+| `orphaned_parameters` | c_s | **medium** |
+| `orphaned_parameters` | c_h | **medium** |
+| `orphaned_parameters` | c_hw | **medium** |
+| `orphaned_parameters` | c_hm | **medium** |
+| `composite_parameter_decomposition` | C | **low** |
+| `composite_parameter_decomposition` | c | **low** |
 
 
 ## 2b. Three-layer gap analysis
@@ -123,13 +127,12 @@
 
 ### recruitmentsource (missing_compartments)
 - **Source:** inference
-- **Primary name:** Susceptible
-- **Reasoning:** The text mentions millions of people contracting HIV infection annually, implying a source population from which these new infections are recruited into the infected compartment.
+- **Primary name:** New Infections
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **10**
-- Precision **0.8** | Recall **0.8889** | F1 **0.8421**
+- Gold count: **9** | Candidate: **11**
+- Precision **0.7273** | Recall **0.8889** | F1 **0.8**
 ### Flows
 - Gold count: **10** | Candidate: **14**
 - Precision **0.7143** | Recall **1.0** | F1 **0.8333**

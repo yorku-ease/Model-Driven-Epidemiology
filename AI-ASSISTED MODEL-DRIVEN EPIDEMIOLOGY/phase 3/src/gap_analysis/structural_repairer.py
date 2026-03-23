@@ -224,9 +224,10 @@ class StructuralRepairer:
                 repair_log.append({"iteration": iteration, "error": f"XML parse failed: {exc}"})
                 break
 
+            current_types = {e.get("type", "") for e in errors_sorted}
             for error in errors_sorted:
                 etype = error.get("type", "")
-                result = self._dispatch(root, error)
+                result = self._dispatch(root, error, current_error_types=current_types)
                 if result.get("fixed"):
                     changed_this_iter += 1
                     repair_log.append({
@@ -265,13 +266,23 @@ class StructuralRepairer:
 
     # ── Dispatch ─────────────────────────────────────────────────────────────
 
-    def _dispatch(self, root: ET.Element, error: Dict[str, Any]) -> Dict[str, Any]:
+    def _dispatch(
+        self,
+        root: ET.Element,
+        error: Dict[str, Any],
+        current_error_types: Optional[set] = None,
+    ) -> Dict[str, Any]:
         etype = error.get("type", "")
+
+        # Disable orphaned-parameter swapping when parameter collapse is also
+        # being fixed in this same iteration — collapse fix already reassigns
+        # all parameters and swapping would undo those assignments.
+        collapse_present = (current_error_types or set()) & {"uniform_parameter_collapse"}
+
         dispatch = {
             "zero_population_all": self._fix_zero_population,
             "self_referential_flow": self._fix_self_referential_flow,
             "uniform_parameter_collapse": self._fix_parameter_collapse,
-            "orphaned_parameters": self._fix_orphaned_parameter,
             "flow_chain_incomplete": self._fix_flow_chain,
             "missing_birth_sources": self._fix_missing_birth_source,
             "parameter_layer_contamination": self._fix_param_contamination,
@@ -282,6 +293,15 @@ class StructuralRepairer:
                 return handler(root, error)
             except Exception as exc:
                 return {"fixed": False, "description": f"handler error: {exc}"}
+
+        if etype == "orphaned_parameters":
+            try:
+                return self._fix_orphaned_parameter(
+                    root, error, allow_swap=not bool(collapse_present)
+                )
+            except Exception as exc:
+                return {"fixed": False, "description": f"handler error: {exc}"}
+
         return {"fixed": False, "description": "no handler"}
 
     # ── Fix: zero_population_all ─────────────────────────────────────────────
@@ -480,18 +500,36 @@ class StructuralRepairer:
 
     # ── Fix: orphaned_parameters ─────────────────────────────────────────────
 
-    def _fix_orphaned_parameter(self, root: ET.Element, error: Dict[str, Any]) -> Dict[str, Any]:
+    def _fix_orphaned_parameter(
+        self,
+        root: ET.Element,
+        error: Dict[str, Any],
+        allow_swap: bool = True,
+    ) -> Dict[str, Any]:
         """
         Wire an orphaned parameter (declared but never referenced in any flow)
-        to a flow that has no rateParameter or whose description matches the param.
-        Only assigns to flows that currently have NO rateParameter to avoid displacing
-        a correctly assigned one.
+        to a flow that either has no rateParameter OR has one with the WRONG
+        semantic category while this orphaned parameter has the RIGHT category.
+
+        Two-pass strategy:
+          Pass 1 — flows with no rateParameter (safe, never displaces anything)
+          Pass 2 — flows where the current parameter category mismatches the flow
+                   AND the orphaned parameter is a better semantic fit (swap)
+
+        allow_swap is set to False when uniform_parameter_collapse is also being
+        resolved in this iteration, to avoid undoing the collapse fix's assignments.
         """
         param_name = error.get("element", "")
         params = _get_parameters(root)
         compartments = _get_compartments(root)
 
-        # Find the parameter's index
+        # Build a per-parameter category map for swap decisions
+        param_cats = {
+            i: _classify_param(p.get("name", ""), p.get("description", ""))
+            for i, p in enumerate(params)
+        }
+
+        # Find this orphaned parameter's index and category
         param_idx_val: Optional[int] = None
         for i, p in enumerate(params):
             if p.get("name", "") == param_name:
@@ -504,10 +542,13 @@ class StructuralRepairer:
         param_cat = _classify_param(p_el.get("name", ""), p_el.get("description", ""))
         param_ref = _param_ref(param_idx_val)
 
-        # Find flows with no rateParameter (empty or missing)
+        # Only swap if allowed AND the parameter has a known category
+        can_swap = allow_swap and param_cat != "unknown"
+
         best_flow: Optional[ET.Element] = None
         best_comp: Optional[ET.Element] = None
-        best_score = 0.25  # minimum threshold
+        best_score = 0.25
+        best_is_swap = False
 
         for comp in compartments:
             src_name = comp.get("PrimaryName", "")
@@ -515,11 +556,7 @@ class StructuralRepairer:
                 xtype = _get_xsi_type(flow)
                 is_contact = "Contact" in xtype
                 attr = "contactRateParameter" if is_contact else "rateParameter"
-
-                # Only target flows with no parameter assigned
                 current = flow.get(attr, "")
-                if current:
-                    continue
 
                 target_ref = flow.get("target", "")
                 tgt_idx = _comp_idx(target_ref)
@@ -531,8 +568,8 @@ class StructuralRepairer:
                 desc = flow.get("description", "")
                 flow_cat = _classify_flow(src_name, tgt_name, desc, xtype)
 
-                # Score: category match + description similarity
-                cat_score = 1.0 if flow_cat == param_cat else 0.0
+                # Score this orphaned param against the flow
+                cat_score = 1.0 if (flow_cat != "unknown" and flow_cat == param_cat) else 0.0
                 desc_score = max(
                     _similarity(p_el.get("description", ""), desc),
                     _similarity(p_el.get("name", ""), desc),
@@ -540,14 +577,39 @@ class StructuralRepairer:
                 )
                 score = max(cat_score * 0.7, desc_score)
 
-                if score > best_score:
-                    best_score = score
-                    best_flow = flow
-                    best_comp = comp
+                if not current:
+                    # Pass 1: empty slot — assign freely
+                    if score > best_score:
+                        best_score = score
+                        best_flow = flow
+                        best_comp = comp
+                        best_is_swap = False
+
+                elif can_swap and cat_score > 0:
+                    # Pass 2: swap only when BOTH conditions are met with high confidence:
+                    #   (a) current param category clearly mismatches this flow
+                    #   (b) orphaned param description matches this flow strongly (>0.6)
+                    # High threshold prevents displacing correct assignments made by
+                    # _fix_parameter_collapse, especially in complex multi-group models.
+                    current_idx = _param_idx(current)
+                    current_cat = param_cats.get(current_idx, "unknown") if current_idx is not None else "unknown"
+                    current_wrong = (
+                        current_cat != "unknown"
+                        and flow_cat != "unknown"
+                        and current_cat != flow_cat
+                    )
+                    if current_wrong and desc_score > 0.6:
+                        swap_score = desc_score + 0.3
+                        if swap_score > best_score:
+                            best_score = swap_score
+                            best_flow = flow
+                            best_comp = comp
+                            best_is_swap = True
 
         if best_flow is not None and best_comp is not None:
             xtype = _get_xsi_type(best_flow)
             attr = "contactRateParameter" if "Contact" in xtype else "rateParameter"
+            old_ref = best_flow.get(attr, "")
             best_flow.set(attr, param_ref)
             tgt_ref = best_flow.get("target", "")
             tgt_i = _comp_idx(tgt_ref)
@@ -556,11 +618,13 @@ class StructuralRepairer:
                 if tgt_i is not None and tgt_i < len(compartments)
                 else "?"
             )
+            action = "Swapped" if best_is_swap else "Wired"
+            swap_note = f" (replaced mismatched {old_ref})" if best_is_swap else ""
             return {
                 "fixed": True,
                 "description": (
-                    f"Wired {param_name} ({param_ref}) to "
-                    f"{best_comp.get('PrimaryName','?')} → {tgt_n} flow"
+                    f"{action} {param_name} ({param_ref}) to "
+                    f"{best_comp.get('PrimaryName','?')} → {tgt_n} flow{swap_note}"
                 ),
             }
         return {"fixed": False}

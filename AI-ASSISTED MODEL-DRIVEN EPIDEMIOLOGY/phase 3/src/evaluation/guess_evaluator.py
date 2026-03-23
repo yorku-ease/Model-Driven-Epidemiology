@@ -28,18 +28,61 @@ def _normalize(s: str) -> str:
 
 
 def _parse_numeric(val: Any) -> Optional[float]:
+    """
+    Parse a numeric value from a string.
+    When a range is detected (e.g. "0.1 to 0.5", "2.9–14", "10^-5 to 1"),
+    return the arithmetic midpoint rather than just the first number.
+    This prevents RAG fills that return ranges from always being scored as
+    "poor" simply because the lower bound doesn't match the gold value.
+    """
     if val is None:
         return None
     if isinstance(val, (int, float)):
         return float(val)
-    if isinstance(val, str):
-        val = val.strip()
-        m = re.search(r"[-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?\d+)?", val)
-        if m:
-            try:
-                return float(m.group())
-            except ValueError:
-                pass
+    if not isinstance(val, str):
+        return None
+
+    val = val.strip()
+
+    # Normalise scientific notation written as "10^N" → float string
+    val_norm = re.sub(
+        r"(\d+(?:\.\d+)?)\^([-+]?\d+(?:\.\d+)?)",
+        lambda m: str(float(m.group(1)) ** float(m.group(2))),
+        val,
+    )
+
+    # Detect explicit range: "X to Y"
+    m_to = re.search(
+        r"([-+]?[\d.]+(?:[eE][-+]?\d+)?)\s+to\s+([-+]?[\d.]+(?:[eE][-+]?\d+)?)",
+        val_norm,
+        re.IGNORECASE,
+    )
+    if m_to:
+        try:
+            lo, hi = float(m_to.group(1)), float(m_to.group(2))
+            return (lo + hi) / 2.0
+        except ValueError:
+            pass
+
+    # Detect range with en-dash or em-dash between two positive numbers: "2.9–14"
+    m_dash = re.search(
+        r"([\d.]+(?:[eE][-+]?\d+)?)\s*[–—]\s*([\d.]+(?:[eE][-+]?\d+)?)",
+        val_norm,
+    )
+    if m_dash:
+        try:
+            lo, hi = float(m_dash.group(1)), float(m_dash.group(2))
+            return (lo + hi) / 2.0
+        except ValueError:
+            pass
+
+    # Single number fallback (original behaviour)
+    m = re.search(r"[-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?\d+)?", val_norm)
+    if m:
+        try:
+            return float(m.group())
+        except ValueError:
+            pass
     return None
 
 

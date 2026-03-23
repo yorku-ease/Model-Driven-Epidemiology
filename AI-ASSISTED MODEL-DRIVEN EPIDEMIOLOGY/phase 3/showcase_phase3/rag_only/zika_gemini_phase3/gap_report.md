@@ -83,9 +83,9 @@
 | `flow_chain_incomplete` | infectious female adults | Added flow exposed female adults → Infectious Humans |
 | `orphaned_parameters` | 1/α_H | Wired 1/α_H (//@parameters.1) to Eggs → Larvae flow |
 | `orphaned_parameters` | 1/α_V | Wired 1/α_V (//@parameters.2) to Larvae → Pupae flow |
-| `orphaned_parameters` | e_V | Wired e_V (//@parameters.4) to Pupae → susceptible female adults flow |
 | `orphaned_parameters` | 1/τ_h | Wired 1/τ_h (//@parameters.19) to exposed female adults → infectious female adults flow |
-| `orphaned_parameters` | f | Wired f (//@parameters.23) to susceptible female adults → exposed female adults flow |
+| `orphaned_parameters` | f | Wired f (//@parameters.23) to Pupae → susceptible female adults flow |
+| `orphaned_parameters` | φ | Wired φ (//@parameters.25) to susceptible female adults → exposed female adults flow |
 | `flow_chain_incomplete` | infectious female adults | Added flow exposed female adults → Infectious Humans |
 
 **19 structural error(s) remaining after repair:**
@@ -93,6 +93,7 @@
 | Type | Element | Severity |
 |------|---------|----------|
 | `flow_chain_incomplete` | infectious female adults | **high** |
+| `orphaned_parameters` | e_V | **medium** |
 | `orphaned_parameters` | 1/τ1 | **medium** |
 | `orphaned_parameters` | μ1 | **medium** |
 | `orphaned_parameters` | 1/τ2 | **medium** |
@@ -109,7 +110,6 @@
 | `orphaned_parameters` | 1/τ_v | **medium** |
 | `orphaned_parameters` | r_h | **medium** |
 | `orphaned_parameters` | δ_l | **medium** |
-| `orphaned_parameters` | φ | **medium** |
 | `parameter_layer_contamination` | R0 | **medium** |
 
 
@@ -147,41 +147,41 @@
 - **Source:** rag
 - **Value:** 0.5 1/day
 - **Description:** Inverse incubation time in humans
-- **From papers:** p1_model_dengue, p2_ebola_llm_gemini_20260321_233208, p2_baseline_zika
+- **From papers:** p1_model_zika, p2_ebola_llm_claude_20260321_234954, p2_hiv_llm_claude_20260321_235051
 
 ### b_v (missing_parameters)
 - **Source:** rag
 - **Value:** 0.001 1/day
 - **Description:** Biting/exposure term for vectors becoming infected from infectious humans
-- **From papers:** p1_model_dengue, p2_baseline_zika, p2_dengue_llm_openai_20260321_230911
+- **From papers:** p1_model_zika, p2_dengue_llm_openai_20260321_230911, p2_dengue_llm_gemini_20260321_232851
 
 ### 1/τ_v (missing_parameters)
 - **Source:** rag
 - **Value:** 0.125 1/day
 - **Description:** Inverse incubation time in vectors
-- **From papers:** p1_model_dengue, p2_baseline_zika, p2_malaria_llm_claude_20260321_235246
+- **From papers:** p1_model_zika, p2_malaria_llm_claude_20260321_235246, p2_hiv_llm_openai_20260321_231210
 
 ### r_h (missing_parameters)
 - **Source:** rag
 - **Value:** 0.00005 1/day
 - **Description:** Human population growth rate (logistic)
-- **From papers:** p2_baseline_zika, p2_ebola_llm_claude_20260321_234954, p2_dengue_llm_claude_20260321_234654
+- **From papers:** p1_model_zika, p2_malaria_llm_openai_20260321_231406, p2_dengue_llm_openai_20260321_230911
 
 ### f (missing_parameters)
 - **Source:** rag
 - **Value:** 1.0 
-- **From papers:** p2_zika_llm_openai_20260321_232352, p2_zika_llm_claude_20260321_235943, p2_baseline_zika
+- **From papers:** p1_model_zika, p2_zika_llm_gemini_20260321_234220, p2_covid_llm_claude_20260321_234526
 
 ### δ_l (missing_parameters)
 - **Source:** rag
 - **Value:** 1 1/day
 - **Description:** Larval density-dependent mortality coefficient (logistic term)
-- **From papers:** p2_baseline_zika, p1_model_cholera, p2_ebola_llm_claude_20260321_234954
+- **From papers:** p1_model_zika, p2_cholera_llm_gemini_20260321_232556, p2_dengue_llm_gemini_20260321_232851
 
 ### φ (missing_parameters)
 - **Source:** rag
 - **Value:** 0.0 
-- **From papers:** p2_zika_llm_openai_20260321_232352, p2_zika_llm_claude_20260321_235943, p2_baseline_zika
+- **From papers:** p1_model_zika, p2_zika_llm_openai_20260321_232352, p2_dengue_llm_claude_20260321_234654
 
 ### Pupae (non-infectious)->Susceptible female adults (missing_flows)
 - **Source:** rag

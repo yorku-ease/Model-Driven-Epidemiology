@@ -52,11 +52,11 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 33.3% | 25% |
-| **Reference agreement** | 97.8% | 25% |
+| **Reference agreement** | 95.4% | 25% |
 | **Fill traceability** | 75.0% | 20% |
 | **Parameter accuracy** | 100.0% | 15% |
-| **Structural integrity** | 36.8%  (19→12 errors) | 15% |
-| **→ Composite** | **68.3/100** | — |
+| **Structural integrity** | 40.0%  (20→12 errors) | 15% |
+| **→ Composite** | **68.2/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -66,11 +66,11 @@
 | | Before repair | After repair | Resolved |
 |---|---|---|---|
 | Critical | 6 | 0 | +6 |
-| High | 2 | 1 | +1 |
+| High | 3 | 1 | +2 |
 | Medium | 11 | 11 | +0 |
-| **Total** | **19** | **12** | **+7** |
+| **Total** | **20** | **12** | **+8** |
 
-**9 repair(s) applied:**
+**10 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -82,6 +82,7 @@
 | `zero_population_all` | all_compartments | Set Susceptible Humans population=1000 |
 | `missing_birth_sources` | Susceptible Mosquitoes | Set Susceptible Mosquitoes population=1000 (initial condition) |
 | `flow_chain_incomplete` | Infectious Mosquitoes | Added flow Exposed Mosquitoes → Infectious Humans |
+| `flow_chain_incomplete` | Exposed Humans (Vector-borne | Added flow Exposed Humans (Vector-borne → Infectious Humans |
 | `flow_chain_incomplete` | Infectious Mosquitoes | Added flow Exposed Mosquitoes → Infectious Humans |
 
 **12 structural error(s) remaining after repair:**
@@ -120,12 +121,12 @@
 
 ### vector-exposed humans (eh1) (missing_compartments)
 - **Source:** inference
-- **Primary name:** Exposed Humans
-- **Reasoning:** The
+- **Primary name:** Exposed Humans (Vector-borne
 
 ### non-vector-exposed humans (eh2) (missing_compartments)
 - **Source:** inference
 - **Primary name:** Non-Vector Exposed Humans
+- **Reasoning:** The paper explicitly states that existing models often neglect non-vector transmission pathways, which this study aims
 
 ### Susceptible humans (SH)->Vector-exposed humans (EH1) (missing_flows)
 - **Source:** rag
@@ -162,8 +163,8 @@
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **10** | Candidate: **10**
-- Precision **1.0** | Recall **1.0** | F1 **1.0**
+- Gold count: **10** | Candidate: **11**
+- Precision **0.9091** | Recall **1.0** | F1 **0.9524**
 ### Flows
 - Gold count: **11** | Candidate: **12**
 - Precision **0.9167** | Recall **1.0** | F1 **0.9565**

@@ -129,33 +129,33 @@
 ### Susceptible humans (SH)->Vector-exposed humans (EH1) (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Susceptible humans become exposed to malaria infection through contact with infectious Anopheles mosquitoes.
-- **Reasoning:** The paper explicitly states that malaria is a vectorborne disease with Anopheles mosquitoes playing the primary role in its transmission, indicating that human exposure occurs via vector contact.
+- **Description:** Susceptible humans become exposed to malaria parasites after being bitten by an infected Anopheles mosquito.
+- **Reasoning:** The excerpt explicitly states malaria is a 'vectorborne disease, with Anopheles mosquitoes playing the primary role in its transmission,' indicating that human exposure occurs through contact with infected vectors.
 
 ### Susceptible humans (SH)->Non-vector-exposed humans (EH2) (missing_flows)
 - **Source:** inference
-- **Flow type:** ContactFlow
-- **Description:** Susceptible humans
+- **Flow type:** RateFlow
+- **Description:** Susceptible humans become exposed
 
 ### Vaccinated humans (VH)->Vector-exposed humans (EH1) (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Vaccinated humans become
+- **Description:** Vaccinated humans
 
 ### Vaccinated humans (VH)->Non-vector-exposed humans (EH2) (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Waning of vaccine-
+- **Description:** Vaccinated individuals
 
 ### Vector-exposed humans (EH1)->Infectious humans (IH) (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of vector
+- **Description:** The rate at which vector
 
 ### Non-vector-exposed humans (EH2)->Infectious humans (IH) (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression
+- **Description:** Non-vector
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

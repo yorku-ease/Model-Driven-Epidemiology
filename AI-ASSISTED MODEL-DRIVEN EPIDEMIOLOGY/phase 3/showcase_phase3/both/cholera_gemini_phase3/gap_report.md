@@ -98,6 +98,7 @@
 ### chollerae bacterial concentration (missing_compartments)
 - **Source:** inference
 - **Primary name:** Environmental Bacteria
+- **Reasoning:** Chol
 
 ### Infectious->Chollerae bacterial concentration (missing_flows)
 - **Source:** rag

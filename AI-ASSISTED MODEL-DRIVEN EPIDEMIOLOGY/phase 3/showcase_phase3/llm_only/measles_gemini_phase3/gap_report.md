@@ -76,12 +76,13 @@
 | `self_referential_flow` | Unmonitored Vaccinated Adults -> ContactFlow | Redirected Unmonitored Vaccinated Adults ContactFlow target from //@compartments.9 to //@compartment |
 | `zero_population_all` | all_compartments | Set Susceptible Children population=1000 |
 | `uniform_parameter_collapse` | all_flows | Reassigned parameters for 12 flow(s) using semantic matching |
-| `orphaned_parameters` | x_U | Wired x_U (//@parameters.1) to Monitored Vaccinated Children → Monitored Vaccinated Adults flow |
+| `orphaned_parameters` | ξu | Wired ξu (//@parameters.16) to Monitored Vaccinated Children → Monitored Vaccinated Adults flow |
 
 **13 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
+| `orphaned_parameters` | x_U | **medium** |
 | `orphaned_parameters` | x_M | **medium** |
 | `orphaned_parameters` | x_A | **medium** |
 | `orphaned_parameters` | m | **medium** |
@@ -93,7 +94,6 @@
 | `orphaned_parameters` | h_M | **medium** |
 | `orphaned_parameters` | d | **medium** |
 | `orphaned_parameters` | q | **medium** |
-| `orphaned_parameters` | ξu | **medium** |
 | `orphaned_parameters` | φ | **medium** |
 
 
@@ -115,18 +115,19 @@
 
 ### vaccinated adults (catch-up/monitored) (missing_compartments)
 - **Source:** inference
-- **Primary name:** Monitored Vaccinated Adults
+- **Primary name:** Monitored Vaccinated Children
 
 ### Susceptible adults->Vaccinated adults (catch-up/monitored) (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Susceptible adults receive
+- **Description:** Susceptible adults receive the measles vaccine, either as a catch-up dose or through a monitored vaccination program, transitioning them to the vaccinated adult compartment.
+- **Reasoning:** Vaccination is an external intervention applied to susceptible individuals at a certain rate, not a result of contact-dependent transmission.
 
 ### Vaccinated adults (catch-up/monitored)->Immune adults (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Vaccinated adults developing protective immunity against measles.
-- **Reasoning:** The transition from a vaccinated state to an immune state occurs at a rate, representing the efficacy and time required for the vaccine to induce immunity, independent of contact with infected individuals.
+- **Description:** The transition of vaccinated adults, who received their doses through catch-up or monitored programs, developing protective immunity against measles.
+- **Reasoning:** Successful vaccination directly confers immunity to individuals, and this process is typically modeled as a rate rather than through contact.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

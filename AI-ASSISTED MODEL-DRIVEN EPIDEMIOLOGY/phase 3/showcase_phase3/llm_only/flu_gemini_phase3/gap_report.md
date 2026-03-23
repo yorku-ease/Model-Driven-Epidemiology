@@ -99,8 +99,7 @@
 ### Infectious->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Infectious individuals with influenza either recover from the illness, potentially gaining immunity, or succumb to the disease, thus being removed from the infectious population.
-- **Reasoning:** The
+- **Description:** Infectious
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

@@ -100,18 +100,18 @@
 ### Susceptible->Infected (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Susceptible individuals acquire Mycobacterium tuberculosis through contact with infected individuals and become infected.
-- **Reasoning:** The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population', indicating that infection occurs via contact between susceptible and infected individuals.
+- **Description:** Susceptible individuals acquire Mycobacterium tuberculosis infection, transitioning to the infected state.
+- **Reasoning:** The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population,' which implies new infections occur through contact between susceptible and infected individuals.
 
 ### Infected->Recovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Represents the rate
+- **Description:** Individuals with active tuberculosis
 
 ### Recovered->Infected (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Reactivation of
+- **Description:** Individuals who have recovered from
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

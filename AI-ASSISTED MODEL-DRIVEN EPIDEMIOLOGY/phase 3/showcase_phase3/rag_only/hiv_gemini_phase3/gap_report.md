@@ -53,8 +53,8 @@
 | **Reference agreement** | 89.0% | 25% |
 | **Fill traceability** | 77.8% | 20% |
 | **Parameter accuracy** | 100.0% | 15% |
-| **Structural integrity** | 62.5%  (24→9 errors) | 15% |
-| **→ Composite** | **87.2/100** | — |
+| **Structural integrity** | 25.0%  (24→18 errors) | 15% |
+| **→ Composite** | **81.6/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -65,10 +65,11 @@
 |---|---|---|---|
 | Critical | 5 | 3 | +2 |
 | High | 5 | 2 | +3 |
-| Medium | 14 | 4 | +10 |
-| **Total** | **24** | **9** | **+15** |
+| Medium | 14 | 11 | +3 |
+| Low | 0 | 2 | -2 |
+| **Total** | **24** | **18** | **+6** |
 
-**17 repair(s) applied:**
+**10 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -79,18 +80,11 @@
 | `uniform_parameter_collapse` | all_flows | Reassigned parameters for 7 flow(s) using semantic matching |
 | `missing_birth_sources` | Susceptible homosexual men | Set Susceptible women population=1000 (initial condition) |
 | `missing_birth_sources` | Susceptible women | Set Susceptible heterosexual men population=1000 (initial condition) |
-| `orphaned_parameters` | h | Wired h (//@parameters.1) to Untreated infected homosexual men → treated with art flow |
-| `orphaned_parameters` | c | Wired c (//@parameters.2) to Untreated infected homosexual men → People living with AIDS flow |
-| `orphaned_parameters` | p | Wired p (//@parameters.3) to Untreated infected women → treated with art flow |
-| `orphaned_parameters` | c_s | Wired c_s (//@parameters.11) to Untreated infected women → People living with AIDS flow |
-| `orphaned_parameters` | c_h | Wired c_h (//@parameters.12) to Untreated infected heterosexual men → treated with art flow |
-| `orphaned_parameters` | c_hw | Wired c_hw (//@parameters.13) to Untreated infected heterosexual men → People living with AIDS flow |
-| `orphaned_parameters` | c_hm | Wired c_hm (//@parameters.14) to treated with art → People living with AIDS flow |
 | `self_referential_flow` | Susceptible homosexual men -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 | `self_referential_flow` | Susceptible women -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 | `self_referential_flow` | Susceptible heterosexual men -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 
-**9 structural error(s) remaining after repair:**
+**18 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
@@ -100,9 +94,18 @@
 | `flow_chain_incomplete` | People living with AIDS | **high** |
 | `flow_chain_incomplete` | recruitmentsource | **high** |
 | `orphaned_parameters` | C | **medium** |
+| `orphaned_parameters` | h | **medium** |
+| `orphaned_parameters` | c | **medium** |
+| `orphaned_parameters` | p | **medium** |
 | `orphaned_parameters` | l | **medium** |
 | `orphaned_parameters` | d | **medium** |
 | `orphaned_parameters` | b_h | **medium** |
+| `orphaned_parameters` | c_s | **medium** |
+| `orphaned_parameters` | c_h | **medium** |
+| `orphaned_parameters` | c_hw | **medium** |
+| `orphaned_parameters` | c_hm | **medium** |
+| `composite_parameter_decomposition` | C | **low** |
+| `composite_parameter_decomposition` | c | **low** |
 
 
 ## 2b. Three-layer gap analysis

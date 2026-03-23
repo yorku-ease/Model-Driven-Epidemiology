@@ -42,11 +42,11 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 25% |
-| **Reference agreement** | 50.0% | 25% |
+| **Reference agreement** | 53.3% | 25% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 15% |
-| **Structural integrity** | 42.9%  (7→4 errors) | 15% |
-| **→ Composite** | **33.9/100** | — |
+| **Structural integrity** | 50.0%  (6→3 errors) | 15% |
+| **→ Composite** | **35.8/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -56,29 +56,26 @@
 | | Before repair | After repair | Resolved |
 |---|---|---|---|
 | Critical | 2 | 1 | +1 |
-| High | 3 | 2 | +1 |
+| High | 2 | 1 | +1 |
 | Medium | 2 | 1 | +1 |
-| **Total** | **7** | **4** | **+3** |
+| **Total** | **6** | **3** | **+3** |
 
-**7 repair(s) applied:**
+**5 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
 | `self_referential_flow` | Susceptible -> ContactFlow | Annotated Susceptible ContactFlow as direct S→I (no Exposed stage) |
 | `zero_population_all` | all_compartments | Set Susceptible population=1000 |
 | `flow_chain_incomplete` | Environmental Bacteria | Added flow Environmental Bacteria → Recovered |
-| `flow_chain_incomplete` | Environmental Vibrio Cholerae | Added flow Environmental Bacteria → Recovered |
 | `orphaned_parameters` | 1/δ | Wired 1/δ (//@parameters.2) to Bacteria in Water Reservoir → Bacteria in Water Reservoir flow |
 | `self_referential_flow` | Susceptible -> ContactFlow | Annotated Susceptible ContactFlow as direct S→I (no Exposed stage) |
-| `flow_chain_incomplete` | Environmental Vibrio Cholerae | Added flow Environmental Bacteria → Recovered |
 
-**4 structural error(s) remaining after repair:**
+**3 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
 | `self_referential_flow` | Susceptible -> ContactFlow | **critical** |
 | `missing_death_sinks` | model | **high** |
-| `flow_chain_incomplete` | Environmental Vibrio Cholerae | **high** |
 | `orphaned_parameters` | κ | **medium** |
 
 
@@ -100,17 +97,17 @@
 
 ### chollerae bacterial concentration (missing_compartments)
 - **Source:** inference
-- **Primary name:** Environmental Vibrio Cholerae
+- **Primary name:** Environmental Bacteria
 
 ### Infectious->Chollerae bacterial concentration (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Infectious individuals ex
+- **Description:** The rate
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **4** | Candidate: **6**
-- Precision **0.5** | Recall **0.75** | F1 **0.6**
+- Gold count: **4** | Candidate: **5**
+- Precision **0.6** | Recall **0.75** | F1 **0.6667**
 ### Flows
 - Gold count: **3** | Candidate: **7**
 - Precision **0.2857** | Recall **0.6667** | F1 **0.4**

@@ -70,28 +70,28 @@
 | `zero_population_all` | all_compartments | Set Susceptible population=1000 |
 | `flow_chain_incomplete` | Dead | Added flow Dead → Recovered |
 | `flow_chain_incomplete` | Deceased | Added flow Deceased → Recovered |
-| `orphaned_parameters` | Presymptomatic infectious period | Wired Presymptomatic infectious period (//@parameters.1) to Infectious Severe → Admitted to Hospital |
-| `orphaned_parameters` | Infectious period severe | Wired Infectious period severe (//@parameters.3) to Infectious Severe → Admitted to Hospital Pre-ICU |
-| `orphaned_parameters` | R0 | Wired R0 (//@parameters.4) to Infectious Severe Isolated → Admitted to Hospital flow |
-| `orphaned_parameters` | Quarantine duration | Wired Quarantine duration (//@parameters.5) to Infectious Severe Isolated → Admitted to Hospital Pre |
-| `orphaned_parameters` | Hospital length of stay non-ICU | Wired Hospital length of stay non-ICU (//@parameters.7) to Admitted to Hospital Pre-ICU → ICU flow |
-| `orphaned_parameters` | Hospital length of stay pre-ICU | Wired Hospital length of stay pre-ICU (//@parameters.8) to ICU → Admitted to Hospital Post-ICU flow |
-| `orphaned_parameters` | ICU length of stay | Wired ICU length of stay (//@parameters.9) to ICU → Dead flow |
-| `orphaned_parameters` | Hospital length of stay post-ICU | Wired Hospital length of stay post-ICU (//@parameters.10) to Admitted to Hospital Post-ICU → Recover |
-| `orphaned_parameters` | Probability of severe infection, <15 yr, no comorbidities | Wired Probability of severe infection, <15 yr, no comorbidities (//@parameters.11) to Infectious Mil |
+| `orphaned_parameters` | Presymptomatic infectious period | Wired Presymptomatic infectious period (//@parameters.1) to Infectious Mild to Moderate → Infectious |
+| `orphaned_parameters` | Infectious period severe | Wired Infectious period severe (//@parameters.3) to Infectious Severe → Infectious Severe Isolated f |
+| `orphaned_parameters` | R0 | Wired R0 (//@parameters.4) to Admitted to Hospital → Recovered flow |
+| `orphaned_parameters` | Quarantine duration | Wired Quarantine duration (//@parameters.5) to Infectious Mild to Moderate → Recovered flow |
+| `orphaned_parameters` | Hospital length of stay non-ICU | Wired Hospital length of stay non-ICU (//@parameters.7) to Infectious Severe → Admitted to Hospital  |
+| `orphaned_parameters` | Hospital length of stay pre-ICU | Wired Hospital length of stay pre-ICU (//@parameters.8) to Infectious Severe → Admitted to Hospital  |
+| `orphaned_parameters` | ICU length of stay | Wired ICU length of stay (//@parameters.9) to Infectious Severe Isolated → Admitted to Hospital flow |
+| `orphaned_parameters` | Hospital length of stay post-ICU | Wired Hospital length of stay post-ICU (//@parameters.10) to ICU → Admitted to Hospital Post-ICU flo |
+| `orphaned_parameters` | Probability of severe infection, <15 yr, no comorbidities | Wired Probability of severe infection, <15 yr, no comorbidities (//@parameters.11) to Admitted to Ho |
 | `orphaned_parameters` | Probability of severe infection, 15-49 yr, no comorbidities | Wired Probability of severe infection, 15-49 yr, no comorbidities (//@parameters.12) to Infectious S |
-| `orphaned_parameters` | Probability of severe infection, 50-69 yr, no comorbidities | Wired Probability of severe infection, 50-69 yr, no comorbidities (//@parameters.13) to Admitted to  |
-| `orphaned_parameters` | Probability of severe infection, >=70 yr, no comorbidities | Wired Probability of severe infection, >=70 yr, no comorbidities (//@parameters.14) to Infectious Mi |
-| `orphaned_parameters` | Probability of severe infection, <15 yr, comorbidities | Wired Probability of severe infection, <15 yr, comorbidities (//@parameters.15) to Infectious Mild t |
+| `orphaned_parameters` | Probability of severe infection, 50-69 yr, no comorbidities | Wired Probability of severe infection, 50-69 yr, no comorbidities (//@parameters.13) to Infectious M |
+| `orphaned_parameters` | Probability of severe infection, >=70 yr, no comorbidities | Wired Probability of severe infection, >=70 yr, no comorbidities (//@parameters.14) to Admitted to H |
+| `orphaned_parameters` | Probability severe case requires ICU | Wired Probability severe case requires ICU (//@parameters.19) to ICU → Dead flow |
 
 **20 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
+| `orphaned_parameters` | Probability of severe infection, <15 yr, comorbidities | **medium** |
 | `orphaned_parameters` | Probability of severe infection, 15-49 yr, comorbidities | **medium** |
 | `orphaned_parameters` | Probability of severe infection, 50-69 yr, comorbidities | **medium** |
 | `orphaned_parameters` | Probability of severe infection, >=70 yr, comorbidities | **medium** |
-| `orphaned_parameters` | Probability severe case requires ICU | **medium** |
 | `orphaned_parameters` | Probability of death in ICU, <15 yr, no comorbidities | **medium** |
 | `orphaned_parameters` | Probability of death in ICU, 15-49 yr, no comorbidities | **medium** |
 | `orphaned_parameters` | Probability of death in ICU, 50-69 yr, no comorbidities | **medium** |
@@ -129,12 +129,11 @@
 ### covid deaths (missing_compartments)
 - **Source:** inference
 - **Primary name:** Deceased
-- **Reasoning:** The model
 
 ### ICU->COVID Deaths (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals in the Intensive Care
+- **Description:** The rate
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

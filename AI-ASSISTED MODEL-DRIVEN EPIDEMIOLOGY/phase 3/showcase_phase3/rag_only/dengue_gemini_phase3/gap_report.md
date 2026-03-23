@@ -112,13 +112,13 @@
 - **Source:** rag
 - **Value:** 0.5 1/time
 - **Description:** Recovery rate of symptomatic infectious hosts (paper: γ1a)
-- **From papers:** p2_baseline_dengue, p1_model_cholera, p2_dengue_llm_claude_20260321_234654
+- **From papers:** p2_dengue_llm_gemini_20260321_232851, p2_dengue_llm_openai_20260321_230911, p1_model_dengue
 
 ### γ2 (missing_parameters)
 - **Source:** rag
 - **Value:** 0.5 1/time
 - **Description:** Recovery rate of asymptomatic infectious hosts (paper: γ2a)
-- **From papers:** p2_baseline_dengue, p1_model_cholera, p2_dengue_llm_claude_20260321_234654
+- **From papers:** p2_dengue_llm_gemini_20260321_232851, p2_dengue_llm_openai_20260321_230911, p1_model_dengue
 
 ### Susceptible mosquitoes->Infectious mosquitoes (missing_flows)
 - **Source:** rag

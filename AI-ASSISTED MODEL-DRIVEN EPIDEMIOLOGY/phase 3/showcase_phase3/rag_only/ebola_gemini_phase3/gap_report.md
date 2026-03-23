@@ -77,7 +77,7 @@
 | Medium | 15 | 7 | +8 |
 | **Total** | **20** | **8** | **+12** |
 
-**13 repair(s) applied:**
+**14 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -93,6 +93,7 @@
 | `orphaned_parameters` | Death rate due to infection | Wired Death rate due to infection (//@parameters.6) to Ebola Virus Pathogens in the Environment → Re |
 | `orphaned_parameters` | Rate of shedding of infected humans | Wired Rate of shedding of infected humans (//@parameters.7) to Infectious People → Recovered Disease |
 | `orphaned_parameters` | Rate at which infected people are quarantined | Wired Rate at which infected people are quarantined (//@parameters.8) to Deceased People → environme |
+| `orphaned_parameters` | Proportion of shedding of deceased people | Swapped Proportion of shedding of deceased people (//@parameters.11) to Deceased People → Ebola Viru |
 | `self_referential_flow` | Susceptible People -> ContactFlow | Annotated Susceptible People ContactFlow as direct S→I (no Exposed stage) |
 
 **8 structural error(s) remaining after repair:**
@@ -100,8 +101,8 @@
 | Type | Element | Severity |
 |------|---------|----------|
 | `self_referential_flow` | Susceptible People -> ContactFlow | **critical** |
+| `orphaned_parameters` | Contact rate of Ebola virus pathogens in the environment | **medium** |
 | `orphaned_parameters` | Rate at which quarantined people die | **medium** |
-| `orphaned_parameters` | Proportion of shedding of deceased people | **medium** |
 | `orphaned_parameters` | Proportion rate of burial of deceased people | **medium** |
 | `orphaned_parameters` | Rate at which Ebola virus decays in the environment | **medium** |
 | `orphaned_parameters` | λ | **medium** |

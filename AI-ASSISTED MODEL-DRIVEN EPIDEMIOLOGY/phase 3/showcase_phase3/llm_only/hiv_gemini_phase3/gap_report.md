@@ -50,11 +50,11 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 88.9% | 25% |
-| **Reference agreement** | 89.0% | 25% |
+| **Reference agreement** | 86.7% | 25% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 15% |
-| **Structural integrity** | 62.5%  (24→9 errors) | 15% |
-| **→ Composite** | **68.9/100** | — |
+| **Structural integrity** | 28.0%  (25→18 errors) | 15% |
+| **→ Composite** | **63.1/100** | — |
 
 ## 1d. Structural integrity & repair
 
@@ -64,11 +64,12 @@
 | | Before repair | After repair | Resolved |
 |---|---|---|---|
 | Critical | 5 | 3 | +2 |
-| High | 5 | 2 | +3 |
-| Medium | 14 | 4 | +10 |
-| **Total** | **24** | **9** | **+15** |
+| High | 6 | 2 | +4 |
+| Medium | 14 | 11 | +3 |
+| Low | 0 | 2 | -2 |
+| **Total** | **25** | **18** | **+7** |
 
-**17 repair(s) applied:**
+**11 repair(s) applied:**
 
 | Error type | Element | Fix |
 |-----------|---------|-----|
@@ -79,18 +80,12 @@
 | `uniform_parameter_collapse` | all_flows | Reassigned parameters for 7 flow(s) using semantic matching |
 | `missing_birth_sources` | Susceptible homosexual men | Set Susceptible women population=1000 (initial condition) |
 | `missing_birth_sources` | Susceptible women | Set Susceptible heterosexual men population=1000 (initial condition) |
-| `orphaned_parameters` | h | Wired h (//@parameters.1) to Untreated infected homosexual men → People living with AIDS flow |
-| `orphaned_parameters` | c | Wired c (//@parameters.2) to Untreated infected homosexual men → Treated With ART flow |
-| `orphaned_parameters` | p | Wired p (//@parameters.3) to Untreated infected women → People living with AIDS flow |
-| `orphaned_parameters` | c_s | Wired c_s (//@parameters.11) to Untreated infected women → Treated With ART flow |
-| `orphaned_parameters` | c_h | Wired c_h (//@parameters.12) to Untreated infected heterosexual men → People living with AIDS flow |
-| `orphaned_parameters` | c_hw | Wired c_hw (//@parameters.13) to Untreated infected heterosexual men → Treated With ART flow |
-| `orphaned_parameters` | c_hm | Wired c_hm (//@parameters.14) to Treated With ART → People living with AIDS flow |
+| `missing_birth_sources` | Susceptible Population | Set Susceptible Population population=1000 (initial condition) |
 | `self_referential_flow` | Susceptible homosexual men -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 | `self_referential_flow` | Susceptible women -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 | `self_referential_flow` | Susceptible heterosexual men -> ContactFlow | Annotated Susceptible homosexual men ContactFlow as direct S→I (no Exposed stage) |
 
-**9 structural error(s) remaining after repair:**
+**18 structural error(s) remaining after repair:**
 
 | Type | Element | Severity |
 |------|---------|----------|
@@ -100,9 +95,18 @@
 | `flow_chain_incomplete` | People living with AIDS | **high** |
 | `flow_chain_incomplete` | Recruitment Source | **high** |
 | `orphaned_parameters` | C | **medium** |
+| `orphaned_parameters` | h | **medium** |
+| `orphaned_parameters` | c | **medium** |
+| `orphaned_parameters` | p | **medium** |
 | `orphaned_parameters` | l | **medium** |
 | `orphaned_parameters` | d | **medium** |
 | `orphaned_parameters` | b_h | **medium** |
+| `orphaned_parameters` | c_s | **medium** |
+| `orphaned_parameters` | c_h | **medium** |
+| `orphaned_parameters` | c_hw | **medium** |
+| `orphaned_parameters` | c_hm | **medium** |
+| `composite_parameter_decomposition` | C | **low** |
+| `composite_parameter_decomposition` | c | **low** |
 
 
 ## 2b. Three-layer gap analysis
@@ -118,46 +122,17 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 15
+- Filled via **inference**: 10
 - **Flagged** for manual review: 0
-
-### treated with art (missing_compartments)
-- **Source:** inference
-- **Primary name:** Treated With ART
-- **Reasoning:** The excerpt details antiretroviral therapy (ART) as a critical intervention for HIV
 
 ### recruitmentsource (missing_compartments)
 - **Source:** inference
-- **Primary name:** Recruitment Source
-- **Reasoning:** The text mentions 1.7 million people contracted HIV infection in a single year, indicating a continuous influx of new individuals into the infected population, which must originate from a recruitment source.
-
-### Untreated infected homosexual men->Treated with ART (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Initiation of antiretroviral therapy (ART) among HIV-infected homosexual men who were previously untreated.
-- **Reasoning:** The excerpt describes ART as a treatment option for HIV, indicating a transition from an untreated to a treated state for infected individuals.
-
-### Untreated infected women->Treated with ART (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** The rate at which untreated HIV-infected women initiate antiretroviral therapy (ART).
-- **Reasoning:** The excerpt emphasizes ART as
-
-### Untreated infected heterosexual men->Treated with ART (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Rate at which untreated infected heterosexual men initiate antiretroviral therapy (ART).
-- **Reasoning:** The paper excerpt highlights ART as the best treatment option for HIV, implying a need to model the transition of infected individuals into a treated state.
-
-### Treated with ART->People living with AIDS (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Progression
+- **Primary name:** Susceptible Population
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **10**
-- Precision **0.9** | Recall **1.0** | F1 **0.9474**
+- Gold count: **9** | Candidate: **11**
+- Precision **0.8182** | Recall **1.0** | F1 **0.9**
 ### Flows
 - Gold count: **10** | Candidate: **14**
 - Precision **0.7143** | Recall **1.0** | F1 **0.8333**
