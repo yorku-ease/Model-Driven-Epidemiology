@@ -19,9 +19,10 @@ For each run, outputs go under `reports/{disease}_llm_{provider}_{timestamp}/`. 
 | `evaluation_report.json` | Traceability, faithfulness, gaps; **gold_standard_comparison** (P/R/F1) if a baseline was found |
 | `extracted_entities.json`, `traceability.json`, `paper_sections.json` | Evidence and intermediate structure |
 
-Aggregated metrics across many runs: run `python3 build_results_md.py` → writes **`RESULTS_REPORT.md`** from `reports/` (latest run per disease × provider). The report is **recall-first** (minimize missed gold items vs F1). For **old vs current** snapshots:  
-`python3 build_results_md.py --reports-dir old-reports -o RESULTS_REPORT_OLD.md` and  
-`python3 build_results_md.py --reports-dir reports -o RESULTS_REPORT_CURRENT.md`.
+Aggregated metrics: `python3 build_results_md.py` → **`RESULTS_REPORT.md`** from `evaluation_report.json` in each latest run under `reports/`. The report is **recall-first**.
+
+- **Which evaluation JSON:** `-e` / `--evaluation-json` (default `evaluation_report.json`). After `rerun_evaluation_only.py`, use `-e evaluation_report_rerun.json -o RESULTS_REPORT_RERUN.md`.
+- **Old vs current dirs:** `--reports-dir old-reports -o RESULTS_REPORT_OLD.md` vs `--reports-dir reports -o RESULTS_REPORT_CURRENT.md`.
 
 ## Pipeline shape (9 steps)
 

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Build RESULTS_REPORT.md from latest evaluation_report.json per disease/provider.
+"""Build RESULTS_REPORT.md from latest per-disease evaluation JSON per disease/provider.
 
 Examples:
   python3 build_results_md.py
-  python3 build_results_md.py --reports-dir reports --output RESULTS_REPORT_CURRENT.md
-  python3 build_results_md.py --reports-dir old-reports --output RESULTS_REPORT_OLD.md \\
+  python3 build_results_md.py --reports-dir reports -o RESULTS_REPORT_CURRENT.md
+  python3 build_results_md.py --evaluation-json evaluation_report_rerun.json \\
+      -o RESULTS_REPORT_RERUN.md
+  python3 build_results_md.py --reports-dir old-reports -o RESULTS_REPORT_OLD.md \\
       --title "Phase 2 Evaluation Results (archived runs)"
 """
 import argparse
@@ -13,6 +15,7 @@ from pathlib import Path
 
 DEFAULT_REPORTS_DIR = Path(__file__).resolve().parent / "reports"
 DEFAULT_OUT_MD = Path(__file__).resolve().parent / "RESULTS_REPORT.md"
+DEFAULT_EVAL_JSON = "evaluation_report.json"
 
 DISEASES = [
     "cholera",
@@ -40,13 +43,15 @@ DISEASE_DISPLAY = {
 }
 
 
-def get_latest_per_disease(reports_dir: Path):
-    """For each (disease, provider) return path to latest evaluation_report.json dir."""
+def get_latest_per_disease(reports_dir: Path, eval_filename: str):
+    """For each (disease, provider) return path to latest run dir that contains eval_filename."""
     if not reports_dir.is_dir():
         return {}
     out = {}
     for subdir in reports_dir.iterdir():
         if not subdir.is_dir():
+            continue
+        if not (subdir / eval_filename).exists():
             continue
         name = subdir.name
         if not name.endswith(".json") and "_llm_" in name:
@@ -66,8 +71,8 @@ def get_latest_per_disease(reports_dir: Path):
     return {k: v[1] for k, v in out.items()}
 
 
-def load_scores(report_dir):
-    path = report_dir / "evaluation_report.json"
+def load_scores(report_dir: Path, eval_filename: str):
+    path = report_dir / eval_filename
     if not path.exists():
         return None
     with open(path) as f:
@@ -97,7 +102,7 @@ def metric_from_cell(cell_str: str, index: int) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Aggregate Phase 2 evaluation P/R/F1 into a markdown report."
+        description="Aggregate Phase 2 evaluation (recall-primary) into a markdown report."
     )
     parser.add_argument(
         "--reports-dir",
@@ -117,6 +122,17 @@ def main():
         default="Phase 2 Evaluation Results",
         help="H1 title for the report",
     )
+    parser.add_argument(
+        "-e",
+        "--evaluation-json",
+        type=str,
+        default=DEFAULT_EVAL_JSON,
+        metavar="FILENAME",
+        help=(
+            f"Evaluation JSON filename inside each report folder (default: {DEFAULT_EVAL_JSON}). "
+            "Use evaluation_report_rerun.json after rerun_evaluation_only.py."
+        ),
+    )
     args = parser.parse_args()
 
     reports_dir = args.reports_dir.resolve()
@@ -124,7 +140,8 @@ def main():
     if not out_md.is_absolute():
         out_md = (Path(__file__).resolve().parent / out_md).resolve()
 
-    latest = get_latest_per_disease(reports_dir)
+    eval_filename = args.evaluation_json.strip() or DEFAULT_EVAL_JSON
+    latest = get_latest_per_disease(reports_dir, eval_filename)
     # Collect per-disease scores
     openai_rows = []
     gemini_rows = []
@@ -137,7 +154,7 @@ def main():
             if not dirpath:
                 rows.append((display, None))
                 continue
-            scores = load_scores(dirpath)
+            scores = load_scores(dirpath, eval_filename)
             if not scores:
                 rows.append((display, None))
                 continue
@@ -286,6 +303,7 @@ def main():
     title = f"# {args.title}\n\n"
     intro = (
         f"**Source runs:** `{reports_dir.name}/` (latest timestamp per disease × provider).\n\n"
+        f"**Evaluation file:** `{eval_filename}` in each run folder.\n\n"
         "**Primary metric: recall** — share of gold-standard compartments, parameters, and flows that appear in the "
         "extracted model (minimize misses). Values are shown as **Recall / Precision / F1** per category. "
         "Precision is secondary (it penalizes hallucinated extras).\n\n"
@@ -294,7 +312,7 @@ def main():
     )
     out_md.parent.mkdir(parents=True, exist_ok=True)
     out_md.write_text(title + intro + "\n".join(lines))
-    print("Wrote", out_md)
+    print("Wrote", out_md, f"(from `{eval_filename}` in each latest run)")
 
 
 if __name__ == "__main__":
