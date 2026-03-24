@@ -1,0 +1,330 @@
+{
+  "paper_name": "Ebolasensitivity",
+  "summary": {
+    "extraction": {
+      "compartments": 5,
+      "flows": 4,
+      "parameters": 7,
+      "stratifications": 1,
+      "interventions": 4
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "quarantine",
+      "vaccination"
+    ],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Non-symptomatic Infected",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Living",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Deceased",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Non-symptomatic Infected",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-symptomatic Infected",
+        "target": "Infectious Living",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Living",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Living",
+        "target": "Infectious Deceased",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2",
+        "value": "0.75",
+        "unit": "-",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "cI",
+        "value": "variable",
+        "unit": "people weeks^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "cD",
+        "value": "variable",
+        "unit": "people weeks^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c9",
+        "value": "1",
+        "unit": "weeks^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b1",
+        "value": "0.5",
+        "unit": "weeks^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "0.5",
+        "unit": "weeks^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b8",
+        "value": "1",
+        "unit": "weeks^-1",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 5,
+    "flows": 4,
+    "parameters": 7,
+    "stratifications": 1,
+    "interventions": 4
+  },
+  "traceability": {
+    "total_items": 21,
+    "items_with_evidence": 21,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 21,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 21,
+      "items_with_evidence": 21,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 21,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.8,
+        "recall": 0.8,
+        "f1": 0.8000000000000002,
+        "tp": 4,
+        "fp": 1,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Infectious Living",
+            "gold": "Infectious",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infectious Deceased",
+            "gold": "InfectiousDeceased",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Non-symptomatic Infected"
+        ],
+        "unmatched_gold": [
+          "Exposed"
+        ]
+      },
+      "parameters": {
+        "precision": 0.7142857142857143,
+        "recall": 0.45454545454545453,
+        "f1": 0.5555555555555556,
+        "tp": 5,
+        "fp": 2,
+        "fn": 6,
+        "matches": [
+          {
+            "extracted": "\u03b8",
+            "gold": "\u03b8",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b1",
+            "gold": "\u03b1",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03c9",
+            "gold": "\u03c9",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b3",
+            "gold": "\u03b3",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03b2",
+            "gold": "\u03b2",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "cI",
+          "cD"
+        ],
+        "unmatched_gold": [
+          "c_I",
+          "\u03b2c_D",
+          "\u03bc",
+          "c_D",
+          "\u039b",
+          "\u03b2c_I"
+        ]
+      },
+      "flows": {
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5,
+        "tp": 2,
+        "fp": 2,
+        "fn": 2,
+        "matches": [
+          {
+            "extracted": "Infectious->InfectiousDeceased",
+            "gold": "Infectious->InfectiousDeceased",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious->Recovered",
+            "gold": "Infectious->Recovered",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Infectious->Infectious",
+          "Susceptible->Infectious"
+        ],
+        "unmatched_gold": [
+          "Exposed->Infectious",
+          "Susceptible->Exposed"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

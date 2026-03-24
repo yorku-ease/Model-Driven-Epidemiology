@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="σ" expression="1" type="CONSTANT" description="Daily rate of transition between exposed sub-compartments (E1 to E2 and E2 to I1), leading to average incubation period dL = 2/σ days" unit="per day"/>
+  <parameters name="γ" expression="0.5797" type="CONSTANT" description="Daily rate of transition between infectious sub-compartments (I1 to I2 and I2 to R), leading to average infectious period dI = 2/γ days" unit="per day"/>
+  <parameters name="π" expression="Unif(0,1)" type="CONSTANT" description="Proportion of the population who are initially susceptible (susceptibility)" unit="dimensionless"/>
+  <parameters name="λ0" expression="Unif(0, 0.000241)" type="CONSTANT" description="Initial infection rate" unit="per day"/>
+  <parameters name="ψ" expression="Unif(0, 0.39)" type="CONSTANT" description="Exponential growth rate (EGR) at which compartments E1, E2, I1, I2 grow initially" unit="per day"/>
+  <parameters name="η" expression="Unif(1, 100)" type="CONSTANT" description="Over-dispersion parameter of the Negative Binomial observation model" unit="dimensionless"/>
+  <parameters name="pICU" expression="Unif(0, 1)" type="CONSTANT" description="Probability of ICU/HDU admission given infection" unit="dimensionless"/>
+  <parameters name="µICU|E" expression="5.708" type="CONSTANT" description="Mean time from infection to ICU admission (Gamma distributed waiting time)" unit="days"/>
+  <parameters name="σ2ICU|E" expression="18.24" type="CONSTANT" description="Variance of time from infection to ICU admission" unit="days squared"/>
+  <parameters name="β" expression="0.0" type="CONSTANT" description="Transmission rate (rate at which new infections take place given a contact)" unit="per day"/>
+  <parameters name="R0" expression="0.0" type="CONSTANT" description="Basic reproduction number, average number of successful transmissions per infectious person in a fully susceptible population" unit="dimensionless"/>
+  <parameters name="Rn" expression="0.0" type="CONSTANT" description="Effective reproduction number, average number of successful transmissions per infectious person in a partially susceptible population" unit="dimensionless"/>
+  <parameters name="δt" expression="0.25" type="CONSTANT" description="Discrete time step length (quarter of a day)" unit="days"/>
+  <parameters name="N2012/13" expression="53679750" type="CONSTANT" description="Population size for 2012/13 season" unit="persons"/>
+  <parameters name="N2013/14" expression="54091200" type="CONSTANT" description="Population size for 2013/14 season" unit="persons"/>
+  <parameters name="N2014/15" expression="54551450" type="CONSTANT" description="Population size for 2014/15 season" unit="persons"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.9" target="//@compartments.1" description="Infection of susceptible individuals at force of infection λ(t) = β * I(t)/N"/>
+  </compartments>
+  <compartments PrimaryName="Exposed 1" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Progression through first exposed sub-compartment at rate σ"/>
+  </compartments>
+  <compartments PrimaryName="Exposed 2" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Progression from exposed to infectious at rate σ"/>
+  </compartments>
+  <compartments PrimaryName="Infectious 1" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.4" description="Progression through first infectious sub-compartment at rate γ"/>
+  </compartments>
+  <compartments PrimaryName="Infectious 2" population="0"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

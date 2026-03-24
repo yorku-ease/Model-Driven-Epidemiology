@@ -1,0 +1,289 @@
+{
+  "valid": false,
+  "total_errors": 4,
+  "errors_by_severity": {
+    "critical": 2,
+    "high": 0,
+    "medium": 2,
+    "low": 0
+  },
+  "errors": [
+    {
+      "type": "self_referential_flow",
+      "element": "Susceptible -> ContactFlow",
+      "detail": "ContactFlow has contactCompartment=//@compartments.1 and target=//@compartments.1. These should be different compartments. ContactFlow moves source to target upon contact with contactCompartment.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": 0
+    },
+    {
+      "type": "zero_population_all",
+      "element": "all_compartments",
+      "detail": "All 4 compartments have population=0. This indicates a critical extraction failure.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "1/\u03b4",
+      "detail": "Parameter '1/\u03b4' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 2,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03ba",
+      "detail": "Parameter '\u03ba' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 4,
+      "flow_idx": null
+    }
+  ],
+  "model_structure": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "population": "0",
+        "idx": 0,
+        "outgoing_flows": [
+          {
+            "type": "ContactFlow",
+            "source": "Susceptible",
+            "source_idx": 0,
+            "target": "//@compartments.1",
+            "contactCompartment": "//@compartments.1",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.0",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Susceptible people exposed to contaminated water become infected; rate depends on force of infection \u03bb = \u03b2 * B / (\u03ba + B)"
+          },
+          {
+            "type": "RateFlow",
+            "source": "Susceptible",
+            "source_idx": 0,
+            "target": "//@compartments.0",
+            "contactCompartment": "",
+            "rateParameter": "",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Birth into the susceptible population (birth rate)"
+          }
+        ]
+      },
+      {
+        "name": "Infectious",
+        "population": "0",
+        "idx": 1,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious",
+            "source_idx": 1,
+            "target": "//@compartments.2",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.1",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Infectious people recover and become immune at recovery rate \u03b3"
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious",
+            "source_idx": 1,
+            "target": "//@compartments.3",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.3",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Infectious people shed V. cholerae into the water reservoir at rate \u03be"
+          },
+          {
+            "type": "RateFlow",
+            "source": "Infectious",
+            "source_idx": 1,
+            "target": "//@compartments.1",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.0",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Death from infectious compartment due to cholera or other causes"
+          }
+        ]
+      },
+      {
+        "name": "Recovered",
+        "population": "0",
+        "idx": 2,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Recovered",
+            "source_idx": 2,
+            "target": "//@compartments.2",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.1",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Natural death from recovered compartment"
+          }
+        ]
+      },
+      {
+        "name": "Bacteria in Water Reservoir",
+        "population": "0",
+        "idx": 3,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Bacteria in Water Reservoir",
+            "source_idx": 3,
+            "target": "//@compartments.3",
+            "contactCompartment": "",
+            "rateParameter": "",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Bacteria decay/removal from the water reservoir at rate \u03b4"
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2",
+        "expression": "10^-5 to 1",
+        "type": "CONSTANT",
+        "description": "Rate of contact between susceptible population and contaminated water reservoir",
+        "idx": 0
+      },
+      {
+        "name": "1/\u03b3",
+        "expression": "2.9 to 14",
+        "type": "CONSTANT",
+        "description": "Duration of cholera infection; \u03b3 is the per capita recovery rate",
+        "idx": 1
+      },
+      {
+        "name": "1/\u03b4",
+        "expression": "3 to 41",
+        "type": "CONSTANT",
+        "description": "Cholera life span in water reservoir; \u03b4 is the bacteria decay/removal rate",
+        "idx": 2
+      },
+      {
+        "name": "\u03be",
+        "expression": "0.01 to 10",
+        "type": "CONSTANT",
+        "description": "Rate of water contamination by infectious humans shedding V. cholerae into the water reservoir",
+        "idx": 3
+      },
+      {
+        "name": "\u03ba",
+        "expression": "10^5 to 10^6",
+        "type": "CONSTANT",
+        "description": "Concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate \u03b2",
+        "idx": 4
+      }
+    ],
+    "flows": [
+      {
+        "type": "ContactFlow",
+        "source": "Susceptible",
+        "source_idx": 0,
+        "target": "//@compartments.1",
+        "contactCompartment": "//@compartments.1",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.0",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Susceptible people exposed to contaminated water become infected; rate depends on force of infection \u03bb = \u03b2 * B / (\u03ba + B)"
+      },
+      {
+        "type": "RateFlow",
+        "source": "Susceptible",
+        "source_idx": 0,
+        "target": "//@compartments.0",
+        "contactCompartment": "",
+        "rateParameter": "",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Birth into the susceptible population (birth rate)"
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious",
+        "source_idx": 1,
+        "target": "//@compartments.2",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.1",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Infectious people recover and become immune at recovery rate \u03b3"
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious",
+        "source_idx": 1,
+        "target": "//@compartments.3",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.3",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Infectious people shed V. cholerae into the water reservoir at rate \u03be"
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious",
+        "source_idx": 1,
+        "target": "//@compartments.1",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.0",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Death from infectious compartment due to cholera or other causes"
+      },
+      {
+        "type": "RateFlow",
+        "source": "Recovered",
+        "source_idx": 2,
+        "target": "//@compartments.2",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.1",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Natural death from recovered compartment"
+      },
+      {
+        "type": "RateFlow",
+        "source": "Bacteria in Water Reservoir",
+        "source_idx": 3,
+        "target": "//@compartments.3",
+        "contactCompartment": "",
+        "rateParameter": "",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Bacteria decay/removal from the water reservoir at rate \u03b4"
+      }
+    ],
+    "external_sources": [],
+    "external_sinks": []
+  }
+}

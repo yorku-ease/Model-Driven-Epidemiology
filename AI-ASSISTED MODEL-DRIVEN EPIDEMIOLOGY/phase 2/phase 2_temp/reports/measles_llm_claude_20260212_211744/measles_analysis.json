@@ -1,0 +1,495 @@
+{
+  "modelName": "Measles",
+  "summary": {
+    "modelName": "Measles",
+    "totalPopulation": null,
+    "numCompartments": 12,
+    "numParameters": 17,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Children",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Children entering un-monitored vaccination at rate x_U",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Children entering monitored vaccination at rate x_M",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.6",
+            "description": "Susceptible children infected through contact with infectious children and adults at rate b_C*(I_C + I_A)*S_C",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Maturation of susceptible children to adults at rate j",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Susceptible Adults",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.7",
+            "description": "Susceptible adults infected through contact with infectious children and adults at rate b_A*(I_C + I_A)*S_A",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Adults entering vaccination program at rate x_A",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Un-monitored Vaccinated Children",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.6",
+            "description": "Un-monitored vaccinated children infected at reduced rate e*b_C*(I_C + I_A)*UV_C",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Un-monitored vaccinated children gaining immunity at rate h_U",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Maturation of un-monitored vaccinated children to adults at rate j",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Un-monitored Vaccinated Adults",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.7",
+            "description": "Un-monitored vaccinated adults infected at reduced rate e*b_A*(I_C + I_A)*UV_A",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Un-monitored vaccinated adults gaining immunity at rate h_A",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Adult Vaccination Group",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccinated adults gaining immunity at rate h_A",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Monitored Vaccinated Children",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Monitored vaccinated children gaining immunity at rate h_M",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Exposed Children",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious in children at incubation rate d",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Maturation of exposed children to exposed adults at rate j",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Exposed Adults",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious in adults at incubation rate d",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Infectious Children",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery of infectious children gaining immunity at rate g",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Maturation of infectious children to infectious adults at rate j",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Infectious Adults",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery of infectious adults gaining immunity at rate g",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "primaryName": "Immune Children",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Maturation of immune children to immune adults at rate j",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "primaryName": "Immune Adults",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "L",
+        "type": "CONSTANT",
+        "expression": "mu * N",
+        "description": "Recruitment rate to children group (birth rate balancing death rate)",
+        "unit": "persons per week"
+      },
+      {
+        "index": 1,
+        "name": "x_U",
+        "type": "CONSTANT",
+        "expression": "0.0087",
+        "description": "Un-monitored children vaccination rate",
+        "unit": "per week"
+      },
+      {
+        "index": 2,
+        "name": "x_M",
+        "type": "CONSTANT",
+        "expression": "4.777e-6",
+        "description": "Monitored children vaccination rate",
+        "unit": "per week"
+      },
+      {
+        "index": 3,
+        "name": "x_A",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "Adult vaccination rate",
+        "unit": "per week"
+      },
+      {
+        "index": 4,
+        "name": "b_C",
+        "type": "CONSTANT",
+        "expression": "0.00188",
+        "description": "Transmission rate on children",
+        "unit": "per person per week"
+      },
+      {
+        "index": 5,
+        "name": "b_A",
+        "type": "CONSTANT",
+        "expression": "1.00e-5",
+        "description": "Transmission rate on adults",
+        "unit": "per person per week"
+      },
+      {
+        "index": 6,
+        "name": "mu",
+        "type": "CONSTANT",
+        "expression": "2.67e-4",
+        "description": "Natural death rate (1/(72*52))",
+        "unit": "per week"
+      },
+      {
+        "index": 7,
+        "name": "g",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Rate of becoming immune after recovery from infection (1/2)",
+        "unit": "per week"
+      },
+      {
+        "index": 8,
+        "name": "j",
+        "type": "CONSTANT",
+        "expression": "0.00128",
+        "description": "Maturation rate of child becoming adult (1/(15*52))",
+        "unit": "per week"
+      },
+      {
+        "index": 9,
+        "name": "e",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "h_A",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "Rate of being immune of un-monitored vaccinated adults and adult vaccination group",
+        "unit": "per week"
+      },
+      {
+        "index": 11,
+        "name": "h_U",
+        "type": "CONSTANT",
+        "expression": "3e-6",
+        "description": "Rate of being immune of un-monitored vaccinated children",
+        "unit": "per week"
+      },
+      {
+        "index": 12,
+        "name": "h_M",
+        "type": "CONSTANT",
+        "expression": "0.0167",
+        "description": "Rate of being immune of monitored vaccinated children",
+        "unit": "per week"
+      },
+      {
+        "index": 13,
+        "name": "d",
+        "type": "CONSTANT",
+        "expression": "0.7",
+        "description": "Incubation period rate (inverse of ~10 day incubation period)",
+        "unit": "per week"
+      },
+      {
+        "index": 14,
+        "name": "delta",
+        "type": "CONSTANT",
+        "expression": "9.3399e-5",
+        "description": "Disease-induced death rate",
+        "unit": "per week"
+      },
+      {
+        "index": 15,
+        "name": "q",
+        "type": "CONSTANT",
+        "expression": "0.15",
+        "description": "Portion of infections recorded",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 16,
+        "name": "a",
+        "type": "CONSTANT",
+        "expression": "0.01253",
+        "description": "Fraction of total population in the measles transmission contact network",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

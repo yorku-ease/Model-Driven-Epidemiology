@@ -13,7 +13,7 @@ A comprehensive framework for analyzing, extracting, and validating compartmenta
 ## End-to-End Workflow
 
 ```
- Phase 1                    Phase 2                     Phase 3
+ Phase 1                    Phase 2                     Phase 3 (+ selection)
 ┌──────────┐   examples   ┌──────────────┐   models   ┌──────────────────┐
 │ Baseline │ ──────────►  │ PDF → LLM →  │ ────────►  │ Gap Detection    │
 │ .compmodel│             │ .compmodel   │            │ RAG + LLM Fill   │
@@ -24,7 +24,7 @@ A comprehensive framework for analyzing, extracting, and validating compartmenta
   reports/                   reports/                     reports/
   model_analysis.json        model_draft.compmodel        phase3_gaps.json
   gap_report.json            phase2_final_report.json     phase3_filled.json
-  sensitivity.json           traceability.json            PHASE3_OVERALL_REPORT.md
+  sensitivity.json           traceability.json            selected_models/PHASE3_OVERALL_REPORT.md
 ```
 
 ## Project Structure
@@ -35,6 +35,7 @@ AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
 ├── README.md                     ← This file
 │
 ├── phase 1/                      ← Model Analysis
+│   ├── README.md / INSTRUCTIONS.md
 │   ├── run_phase1.py             ← Main script
 │   ├── analysis/                 ← Analyzers (model, gap, uncertainty, sensitivity)
 │   ├── papers/                   ← Baseline .compmodel files and PDFs
@@ -42,6 +43,7 @@ AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
 │   └── reports/                  ← Analysis outputs
 │
 ├── phase 2/                      ← Automated Extraction
+│   ├── README.md / INSTRUCTIONS.md
 │   ├── run_phase2.py             ← Main script
 │   ├── .api_key.txt              ← LLM API key (Gemini/OpenAI/Claude)
 │   ├── src/
@@ -55,18 +57,27 @@ AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
 │   │   └── baseline_models/      ← Gold-standard .compmodel for validation
 │   └── reports/                  ← One directory per disease/provider/timestamp
 │
-└── phase 3/                      ← RAG Gap Filling + Validation
-    ├── run_phase3.py             ← Main script
-    ├── build_database.py         ← Build paper database from Phase 1 + 2
-    ├── src/
-    │   ├── rag/                  ← Paper database + parameter lookup
-    │   ├── gap_analysis/         ← Gold-standard comparison + 3-tier filler
-    │   ├── inference/            ← LLM inference engine
-    │   ├── evaluation/           ← Fill accuracy evaluator
-    │   └── reporting/            ← Per-disease + overall Markdown reports
-    ├── data/
-    │   └── paper_database/       ← Searchable index (built by build_database.py)
-    └── reports/                  ← Phase 3 outputs + PHASE3_OVERALL_REPORT.md
+├── phase 3/                      ← RAG Gap Filling + Validation
+│   ├── README.md / INSTRUCTIONS.md
+│   ├── run_phase3.py             ← Main script
+│   ├── build_database.py         ← Build paper database from Phase 1 + 2
+│   ├── src/
+│   │   ├── rag/                  ← Paper database + parameter lookup
+│   │   ├── gap_analysis/         ← Gold-standard comparison + 3-tier filler
+│   │   ├── inference/            ← LLM inference engine
+│   │   ├── evaluation/           ← Fill accuracy evaluator
+│   │   └── reporting/            ← Per-disease + overall Markdown reports
+│   ├── data/
+│   │   └── paper_database/       ← Searchable index (built by build_database.py)
+│   └── reports/                  ← Phase 3 outputs (per report); overall produced after selection
+│
+├── phase 4/                      ← Monte Carlo + sensitivity + viz (optional extension)
+│   ├── README.md / INSTRUCTIONS.md
+│   └── run_phase4.py
+│
+└── phase_rlm/                    ← Agentic repair on Phase 2 drafts (optional)
+    ├── README.md / INSTRUCTIONS.md
+    └── (scripts + configs)
 ```
 
 ## Setup
@@ -196,7 +207,7 @@ python3 run_phase3.py --all --output reports
 ### Outputs
 
 - Per-disease: `phase3_gaps.json`, `phase3_filled.json`, `phase3_validation.json`, `gap_report.md`, **`model_filled.compmodel`** (draft with filled parameters applied)
-- Overall: `PHASE3_OVERALL_REPORT.md` with aggregated accuracy metrics
+- Overall (after selection): `selected_models/PHASE3_OVERALL_REPORT.md`
 
 ### Best model per disease (optional)
 
@@ -208,7 +219,7 @@ python3 select_best_model.py --phase2-reports "../phase 2/reports" \
   --phase3-roots reports/gemini reports/openai reports/claude --output selected_models
 ```
 
-Result: `selected_models/<disease>/model_filled.compmodel` plus `selection_report.json` and `SELECTION_REPORT.md`. See `phase 3/README.md` for the full workflow.
+Result: `selected_models/<disease>/model_filled.compmodel` plus `selection_report.json` and `SELECTION_REPORT.md`. See **`phase 3/INSTRUCTIONS.md`** for the full workflow.
 
 ---
 
@@ -237,9 +248,9 @@ python3 run_phase3.py --all --output reports
 
 ### Phase 3 overall report
 
-After running Phase 3 with `--all`, the main results are in:
+After running Phase 3 and selecting the best model per disease, the main results are in:
 
-- **`phase 3/reports/PHASE3_OVERALL_REPORT.md`**
+- **`phase 3/selected_models/PHASE3_OVERALL_REPORT.md`**
 
 This report includes:
 
@@ -257,7 +268,7 @@ Per-disease reports (which parameters were filled, suggested values, validation 
 - `phase 3/reports/<disease>_<provider>_phase3/gap_report.md`
 - `phase 3/reports/<disease>_<provider>_phase3/phase3_validation.json`
 
-See **`phase 3/README.md`** for a full description of the report and how to interpret it.
+See **`phase 3/README.md`** (overview) and **`phase 3/INSTRUCTIONS.md`** (commands and selection workflow).
 
 ### Phase 1 and Phase 2 outputs
 
@@ -286,7 +297,18 @@ No code changes required:
 
 ## Documentation
 
-- `phase 1/README.md` — Phase 1 details
-- `phase 2/README.md` — Phase 2 details
-- `phase 2/INSTRUCTIONS.md` — step-by-step Phase 2 guide
-- `phase 3/README.md` — Phase 3 details (gap detection, RAG, LLM inference, validation)
+Each phase uses **README.md** (overview, no shell commands) and **INSTRUCTIONS.md** (setup, CLI, troubleshooting) where applicable.
+
+- **Phase 1:** `phase 1/README.md`, `phase 1/INSTRUCTIONS.md`
+- **Phase 2:** `phase 2/README.md`, `phase 2/INSTRUCTIONS.md` (includes GROBID + evaluation appendix)
+- **Phase 3:** `phase 3/README.md`, `phase 3/INSTRUCTIONS.md`
+- **Phase 4:** `phase 4/README.md`, `phase 4/INSTRUCTIONS.md`
+- **Phase RLM:** `phase_rlm/README.md`, `phase_rlm/INSTRUCTIONS.md`
+- **`docs/CLEANUP_NOTES.md`** — optional cleanup history
+
+This root **README** keeps a **high-level** workflow and quick-start snippets. **Full flags, options, and troubleshooting** for each phase are in that phase’s **`INSTRUCTIONS.md`** (Phase 1’s file also embeds the historical long guide + results appendix).
+
+## Repository hygiene
+
+- Use a **local virtualenv** (`venv/`) — listed in `.gitignore`; recreate with `pip install -r requirements.txt`.
+- **API keys** belong in `phase 2/.api_key.txt` or environment variables — never commit (see `.gitignore`).

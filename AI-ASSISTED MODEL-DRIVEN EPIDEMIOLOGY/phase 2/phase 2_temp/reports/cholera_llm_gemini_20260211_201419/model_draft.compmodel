@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="10^-5 to 1" type="CONSTANT" description="Rate of 'contact' with reservoir water." unit="days^-1"/>
+  <parameters name="1/γ" expression="2.9 to 14" type="CONSTANT" description="Duration of cholera infection." unit="days"/>
+  <parameters name="1/δ" expression="3 to 41" type="CONSTANT" description="Cholera life span in water reservoir." unit="days"/>
+  <parameters name="ξ" expression="0.01 to 10" type="CONSTANT" description="Rate of water contamination by humans, i.e. rate of increase in V. cholerae concentration in the water reservoir." unit="cells * mL^-1 * person^-1 * day^-1"/>
+  <parameters name="κ" expression="10^5 to 10^6" type="CONSTANT" description="Concentration of cholera that yields 50% chance of infection." unit="cells/mL"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible people are exposed to contaminated water and become infected."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Infectious people recover and become immune."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Infectious people contaminate the water supply with bacteria."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Bacteria in Reservoir" population="0"/>
+</compartmental:CompartmentalModel>

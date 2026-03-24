@@ -1,0 +1,216 @@
+{
+  "modelName": "Influenza",
+  "summary": {
+    "modelName": "Influenza",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 11,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of susceptible individuals at force of infection λ(t) = β * I(t)/N",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed First Stage",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression through first exposed sub-compartment at rate σ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Exposed Second Stage",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious at rate σ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious First Stage",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression through first infectious sub-compartment at rate γ",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious Second Stage",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Transmission rate, the rate at which new infections take place given a contact",
+        "unit": "per day"
+      },
+      {
+        "index": 1,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Daily rate of transition from E1 to E2 and from E2 to I1, leading to average incubation period dL = 2/σ days",
+        "unit": "per day"
+      },
+      {
+        "index": 2,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5797",
+        "description": "Daily rate of transition from I1 to I2 and from I2 to R, leading to average infectious period dI = 2/γ days",
+        "unit": "per day"
+      },
+      {
+        "index": 3,
+        "name": "π",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Proportion of the population who are initially susceptible",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 4,
+        "name": "λ0",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Initial infection rate",
+        "unit": "per day"
+      },
+      {
+        "index": 5,
+        "name": "ψ",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Exponential growth rate (EGR) at which compartments E1, E2, I1, and I2 grow initially",
+        "unit": "per day"
+      },
+      {
+        "index": 6,
+        "name": "pICU",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Probability of ICU/HDU admission given infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "μICU|E",
+        "type": "CONSTANT",
+        "expression": "5.708",
+        "description": "Mean time from infection to ICU admission",
+        "unit": "days"
+      },
+      {
+        "index": 8,
+        "name": "σ²ICU|E",
+        "type": "CONSTANT",
+        "expression": "18.24",
+        "description": "Variance of time from infection to ICU admission",
+        "unit": "days squared"
+      },
+      {
+        "index": 9,
+        "name": "η",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Over-dispersion parameter of the Negative Binomial observation model",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "δt",
+        "type": "CONSTANT",
+        "expression": "0.25",
+        "description": "Discrete time step length (quarter of a day)",
+        "unit": "days"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

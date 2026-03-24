@@ -31,6 +31,7 @@ class LLMClient:
         self.flash_model = flash_model
         self.client = None
         self.available = False
+        self._gemini_legacy = False
 
         if not self.api_key:
             return
@@ -42,10 +43,20 @@ class LLMClient:
             self.available = True
 
         elif self.provider == "gemini":
-            from google import genai
+            try:
+                # New SDK (google-genai)
+                from google import genai
 
-            self.client = genai.Client(api_key=self.api_key)
-            self.available = True
+                self.client = genai.Client(api_key=self.api_key)
+                self.available = True
+            except ImportError:
+                # Backward-compatible fallback (google-generativeai)
+                import google.generativeai as genai_legacy
+
+                genai_legacy.configure(api_key=self.api_key)
+                self.client = genai_legacy
+                self._gemini_legacy = True
+                self.available = True
 
     def _load_api_key(
         self, api_key: Optional[str], api_key_file: Optional[str]
@@ -177,6 +188,11 @@ class LLMClient:
         temperature: float,
         max_output_tokens: int,
     ) -> str:
+        if self._gemini_legacy:
+            model = self.client.GenerativeModel("gemini-2.5-pro")
+            response = model.generate_content(prompt)
+            return getattr(response, "text", "") or ""
+
         parts = [{"text": prompt}]
 
         if image_path:
@@ -295,6 +311,12 @@ class LLMClient:
         temperature: float,
         max_output_tokens: int,
     ) -> str:
+        if self._gemini_legacy:
+            model_name = self.flash_model or "gemini-2.5-flash"
+            model = self.client.GenerativeModel(model_name)
+            response = model.generate_content(prompt)
+            return getattr(response, "text", "") or ""
+
         parts = [{"text": prompt}]
 
         if image_path:

@@ -1,6 +1,7 @@
-# AI-Assisted Model-Driven Epidemiology - Unified Dependencies
+# AI-Assisted Model-Driven Epidemiology — single dependency file for all phases
+# Install from this directory: pip install -r requirements.txt
 
-# Core XML/Data Processing (Required for Phase 1 & Phase 2)
+# --- Core XML/Data (Phase 1 & 2) ---
 lxml>=4.9.0
 xmltodict>=0.13.0
 pandas>=2.0.0
@@ -8,17 +9,22 @@ numpy>=1.24.0
 jsonschema>=4.17.0
 camelot-py[cv]
 
-# PDF Processing (Required for Phase 2)
-pdfplumber>=0.10.0  # Recommended - better table extraction
-PyPDF2>=3.0.0       # Fallback option
+# --- PDF / Phase 2 pipeline ---
+pdfplumber>=0.10.0
+PyPDF2>=3.0.0
+grobid-client-python>=0.0.8  # requires GROBID Docker on localhost:8070
 
-# LLM Integration (Required for Phase 2)
-openai>=1.0.0              # OpenAI API client
-google-generativeai>=0.3.0  # Google Gemini API client
-anthropic>=0.18.0          # Anthropic Claude API client
+# --- LLM (Phase 2+) ---
+openai>=1.0.0
+google-generativeai>=0.3.0
+anthropic>=0.18.0
 
-# Visualization & Analysis (Required for Phase 1)
+# --- Visualization & analysis (Phase 1) ---
 matplotlib>=3.7.0
 seaborn>=0.12.0
-openpyxl>=3.1.0     # For Excel export
-scipy>=1.11.0       # For Sobol sequences in sensitivity analysis
+openpyxl>=3.1.0
+scipy>=1.11.0
+
+# --- Phase 3 RAG / embeddings (optional; Phase 3 database & similar) ---
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.0  # use faiss-gpu if you need CUDA

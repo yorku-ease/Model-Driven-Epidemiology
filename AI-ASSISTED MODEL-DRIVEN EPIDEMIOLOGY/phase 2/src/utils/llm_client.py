@@ -474,6 +474,12 @@ CRITICAL RULES:
                     except json.JSONDecodeError:
                         pass
 
+                # Try to salvage common truncated single-object outputs
+                # (e.g., {"value": 0.2, "unit": "per day", "reasoning ...)
+                salvaged_obj = self._salvage_partial_object(result_text)
+                if salvaged_obj is not None:
+                    return salvaged_obj
+
                 print(f"Warning: Failed to parse LLM response as JSON: {e}")
                 print(f"Response text (first 500 chars): {result_text[:500]}")
                 # Try to extract JSON if it's wrapped in text
@@ -715,6 +721,63 @@ CRITICAL RULES:
                     continue
 
         return objects or None
+
+    def _salvage_partial_object(self, text: str) -> Optional[Dict[str, Any]]:
+        """
+        Best-effort salvage for truncated JSON object responses.
+        Handles common inference payloads used in Phase 3:
+          - {"value": <num>, "unit": "...", "reasoning": "..."}
+          - {"primary_name": "...", ...}
+          - {"flow_type": "RateFlow|ContactFlow", "description": "...", ...}
+        """
+        if not text:
+            return None
+
+        s = text.strip()
+        if not s.startswith("{"):
+            return None
+
+        out: Dict[str, Any] = {}
+
+        # Numeric value
+        m_val = re.search(r'"value"\s*:\s*([-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?\d+)?)', s)
+        if m_val:
+            try:
+                out["value"] = float(m_val.group(1))
+            except ValueError:
+                pass
+
+        # Unit (possibly truncated; capture safely until next quote if available)
+        m_unit = re.search(r'"unit"\s*:\s*"([^"]*)', s)
+        if m_unit:
+            unit = m_unit.group(1).strip()
+            if unit:
+                out["unit"] = unit
+
+        # Optional reasoning/description/name fields (allow truncated strings)
+        m_reason = re.search(r'"reasoning"\s*:\s*"([^"]*)', s)
+        if m_reason:
+            out["reasoning"] = m_reason.group(1).strip()
+
+        m_desc = re.search(r'"description"\s*:\s*"([^"]*)', s)
+        if m_desc:
+            out["description"] = m_desc.group(1).strip()
+
+        m_pname = re.search(r'"primary_name"\s*:\s*"([^"]*)', s)
+        if m_pname:
+            pname = m_pname.group(1).strip()
+            if pname:
+                out["primary_name"] = pname
+
+        m_ftype = re.search(r'"flow_type"\s*:\s*"([^"]*)', s)
+        if m_ftype:
+            ftype = m_ftype.group(1).strip()
+            if ftype:
+                out["flow_type"] = ftype
+
+        if not out:
+            return None
+        return out
 
     def try_salvage_array(self, raw_text: str):
         """Try to salvage a JSON array from broken LLM output (e.g. flow/compartment lists). Returns list or None."""

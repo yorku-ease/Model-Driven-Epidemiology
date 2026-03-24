@@ -1,0 +1,13 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Cholera Bacteria in Water,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.1,False,Susceptible individuals become infected through contact with contaminated water.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Infectious individuals recover and become immune.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Cholera Bacteria in Water,RateFlow,//@parameters.0,False,Infectious individuals contaminate the water supply with bacteria.,,,
+Cholera,Parameter,β,,,,,,Model file,Certain,,,,,,Contact rate between susceptible individuals and contaminated water.,CONSTANT,varies,days^-1
+Cholera,Parameter,γ,,,,,,Model file,Certain,,,,,,Recovery rate of infectious individuals.,CONSTANT,varies,days^-1
+Cholera,Parameter,δ,,,,,,Model file,Certain,,,,,,Decay rate of cholera bacteria in the water.,CONSTANT,varies,days^-1
+Cholera,Parameter,κ,,,,,,Model file,Certain,,,,,,Concentration of cholera bacteria at which the infection rate is 50% of the maximum.,CONSTANT,varies,cells/mL
+Cholera,Parameter,ξ,,,,,,Model file,Certain,,,,,,Rate of water contamination by infectious individuals.,CONSTANT,varies,cells * mL^-1 * person^-1 * day^-1

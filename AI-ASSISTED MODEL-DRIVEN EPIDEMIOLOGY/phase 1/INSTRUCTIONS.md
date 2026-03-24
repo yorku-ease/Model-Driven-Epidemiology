@@ -1164,7 +1164,6 @@ phase 1/
 ├── README.md                       # This file
 ├── metamodel_epidemiology.json     # Epidemiology metamodel (shared with Phase 2)
 ├── run_phase1.py                   # Main task runner
-├── requirements.txt                # Python dependencies
 │
 ├── analysis/                       # Core analysis scripts
 │   ├── model_analyzer.py           # Task 1.1: Model structure
@@ -1232,8 +1231,10 @@ pip install pandas openpyxl
 
 ### Install All Dependencies
 
+Use the **project root** unified file (`../requirements.txt` from here):
+
 ```bash
-cd "phase 1"
+cd "/path/to/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
 pip install -r requirements.txt
 ```
 

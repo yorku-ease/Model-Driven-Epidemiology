@@ -1,0 +1,409 @@
+{
+  "valid": false,
+  "total_errors": 14,
+  "errors_by_severity": {
+    "critical": 3,
+    "high": 3,
+    "medium": 8,
+    "low": 0
+  },
+  "errors": [
+    {
+      "type": "self_referential_flow",
+      "element": "Susceptible Humans -> ContactFlow",
+      "detail": "ContactFlow has contactCompartment=//@compartments.1 and target=//@compartments.1. These should be different compartments. ContactFlow moves source to target upon contact with contactCompartment.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": 0
+    },
+    {
+      "type": "self_referential_flow",
+      "element": "Susceptible Mosquitoes -> ContactFlow",
+      "detail": "ContactFlow has contactCompartment=//@compartments.6 and target=//@compartments.6. These should be different compartments. ContactFlow moves source to target upon contact with contactCompartment.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": 5
+    },
+    {
+      "type": "missing_birth_sources",
+      "element": "Susceptible Humans",
+      "detail": "Compartment 'Susceptible Humans' has population=0 and no incoming flow or externalSource. Susceptible compartments typically need recruitment.",
+      "severity": "high",
+      "compartment_idx": 0,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "missing_birth_sources",
+      "element": "Susceptible Mosquitoes",
+      "detail": "Compartment 'Susceptible Mosquitoes' has population=0 and no incoming flow or externalSource. Susceptible compartments typically need recruitment.",
+      "severity": "high",
+      "compartment_idx": 5,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "zero_population_all",
+      "element": "all_compartments",
+      "detail": "All 7 compartments have population=0. This indicates a critical extraction failure.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "k(a)",
+      "detail": "Parameter 'k(a)' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 1,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03bch",
+      "detail": "Parameter '\u03bch' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 2,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03bcv",
+      "detail": "Parameter '\u03bcv' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 3,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03b32(a)",
+      "detail": "Parameter '\u03b32(a)' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 5,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03b2v(a)",
+      "detail": "Parameter '\u03b2v(a)' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 6,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03b2h(a)",
+      "detail": "Parameter '\u03b2h(a)' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 7,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03c1",
+      "detail": "Parameter '\u03c1' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 8,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "\u03c3",
+      "detail": "Parameter '\u03c3' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 9,
+      "flow_idx": null
+    },
+    {
+      "type": "flow_chain_incomplete",
+      "element": "Infectious Mosquitoes",
+      "detail": "Compartment 'Infectious Mosquitoes' has no outgoing flow or sink. This breaks the flow chain.",
+      "severity": "high",
+      "compartment_idx": 6,
+      "parameter_idx": null,
+      "flow_idx": null
+    }
+  ],
+  "model_structure": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "population": "0",
+        "idx": 0,
+        "outgoing_flows": [
+          {
+            "type": "ContactFlow",
+            "source": "Susceptible Humans",
+            "source_idx": 0,
+            "target": "//@compartments.1",
+            "contactCompartment": "//@compartments.1",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.0",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Transmission from infectious mosquitoes to susceptible humans."
+          }
+        ]
+      },
+      {
+        "name": "Exposed Humans",
+        "population": "0",
+        "idx": 1,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Exposed Humans",
+            "source_idx": 1,
+            "target": "//@compartments.2",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.4",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Progression from exposed to asymptomatic infectious state."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Exposed Humans",
+            "source_idx": 1,
+            "target": "//@compartments.3",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.4",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Progression from exposed to symptomatic infectious state."
+          }
+        ]
+      },
+      {
+        "name": "Asymptomatic Infectious Humans",
+        "population": "0",
+        "idx": 2,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Asymptomatic Infectious Humans",
+            "source_idx": 2,
+            "target": "//@compartments.4",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.4",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Recovery from asymptomatic infectious state."
+          }
+        ]
+      },
+      {
+        "name": "Symptomatic Infectious Humans",
+        "population": "0",
+        "idx": 3,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Symptomatic Infectious Humans",
+            "source_idx": 3,
+            "target": "//@compartments.4",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.4",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Recovery from symptomatic infectious state."
+          }
+        ]
+      },
+      {
+        "name": "Recovered Humans",
+        "population": "0",
+        "idx": 4,
+        "outgoing_flows": []
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "population": "0",
+        "idx": 5,
+        "outgoing_flows": [
+          {
+            "type": "ContactFlow",
+            "source": "Susceptible Mosquitoes",
+            "source_idx": 5,
+            "target": "//@compartments.6",
+            "contactCompartment": "//@compartments.6",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.0",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Transmission from infectious humans to susceptible mosquitoes."
+          }
+        ]
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "population": "0",
+        "idx": 6,
+        "outgoing_flows": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "B",
+        "expression": "constant",
+        "type": "CONSTANT",
+        "description": "The constant influx rate of the human hosts.",
+        "idx": 0
+      },
+      {
+        "name": "k(a)",
+        "expression": "variable",
+        "type": "CONSTANT",
+        "description": "The age-specific latent period of the human hosts.",
+        "idx": 1
+      },
+      {
+        "name": "\u03bch",
+        "expression": "constant",
+        "type": "CONSTANT",
+        "description": "The natural death rate of the human hosts.",
+        "idx": 2
+      },
+      {
+        "name": "\u03bcv",
+        "expression": "constant",
+        "type": "CONSTANT",
+        "description": "The natural death rate of the mosquitoes.",
+        "idx": 3
+      },
+      {
+        "name": "\u03b31(a)",
+        "expression": "variable",
+        "type": "CONSTANT",
+        "description": "The age-specific recovery rate of symptomatic infectious hosts.",
+        "idx": 4
+      },
+      {
+        "name": "\u03b32(a)",
+        "expression": "variable",
+        "type": "CONSTANT",
+        "description": "The age-specific recovery rate of asymptomatic infectious hosts.",
+        "idx": 5
+      },
+      {
+        "name": "\u03b2v(a)",
+        "expression": "variable",
+        "type": "CONSTANT",
+        "description": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes.",
+        "idx": 6
+      },
+      {
+        "name": "\u03b2h(a)",
+        "expression": "variable",
+        "type": "CONSTANT",
+        "description": "The age-specific transmission rate from infected mosquitoes to susceptible hosts.",
+        "idx": 7
+      },
+      {
+        "name": "\u03c1",
+        "expression": "constant",
+        "type": "CONSTANT",
+        "description": "The probability of exposed hosts transferring to symptomatic infectious hosts.",
+        "idx": 8
+      },
+      {
+        "name": "\u03c3",
+        "expression": "constant",
+        "type": "CONSTANT",
+        "description": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+        "idx": 9
+      }
+    ],
+    "flows": [
+      {
+        "type": "ContactFlow",
+        "source": "Susceptible Humans",
+        "source_idx": 0,
+        "target": "//@compartments.1",
+        "contactCompartment": "//@compartments.1",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.0",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Transmission from infectious mosquitoes to susceptible humans."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Humans",
+        "source_idx": 1,
+        "target": "//@compartments.2",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.4",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Progression from exposed to asymptomatic infectious state."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed Humans",
+        "source_idx": 1,
+        "target": "//@compartments.3",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.4",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Progression from exposed to symptomatic infectious state."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Asymptomatic Infectious Humans",
+        "source_idx": 2,
+        "target": "//@compartments.4",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.4",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Recovery from asymptomatic infectious state."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Symptomatic Infectious Humans",
+        "source_idx": 3,
+        "target": "//@compartments.4",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.4",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Recovery from symptomatic infectious state."
+      },
+      {
+        "type": "ContactFlow",
+        "source": "Susceptible Mosquitoes",
+        "source_idx": 5,
+        "target": "//@compartments.6",
+        "contactCompartment": "//@compartments.6",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.0",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Transmission from infectious humans to susceptible mosquitoes."
+      }
+    ],
+    "external_sources": [],
+    "external_sinks": []
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Humans who are susceptible to dengue infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans who are susceptible to dengue infection."
+    },
+    {
+      "normalized_name": "Exposed Humans",
+      "raw_text": "Exposed Humans",
+      "page_number": 0,
+      "text_span": "Humans who have been bitten by an infectious mosquito and are in the latent period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans who have been bitten by an infectious mosquito and are in the latent period."
+    },
+    {
+      "normalized_name": "Asymptomatic Infectious Humans",
+      "raw_text": "Asymptomatic Infectious Humans",
+      "page_number": 0,
+      "text_span": "Humans who are infected with dengue but do not show symptoms.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans who are infected with dengue but do not show symptoms."
+    },
+    {
+      "normalized_name": "Symptomatic Infectious Humans",
+      "raw_text": "Symptomatic Infectious Humans",
+      "page_number": 0,
+      "text_span": "Humans who are infected with dengue and show symptoms.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans who are infected with dengue and show symptoms."
+    },
+    {
+      "normalized_name": "Recovered Humans",
+      "raw_text": "Recovered Humans",
+      "page_number": 0,
+      "text_span": "Humans who have recovered from dengue infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans who have recovered from dengue infection."
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes that are susceptible to dengue infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes that are susceptible to dengue infection."
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes that are infected with dengue and can transmit the virus to humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes that are infected with dengue and can transmit the virus to humans."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of dengue from infectious mosquitoes to susceptible humans.",
+      "page_number": 0,
+      "text_span": "Transmission of dengue from infectious mosquitoes to susceptible humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of dengue from infectious mosquitoes to susceptible humans."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Asymptomatic Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from exposed to asymptomatic infectious state.",
+      "page_number": 0,
+      "text_span": "Progression from exposed to asymptomatic infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from exposed to asymptomatic infectious state."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Symptomatic Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from exposed to symptomatic infectious state.",
+      "page_number": 0,
+      "text_span": "Progression from exposed to symptomatic infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from exposed to symptomatic infectious state."
+    },
+    {
+      "source": "Asymptomatic Infectious Humans",
+      "target": "Recovered Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery of asymptomatic infectious humans.",
+      "page_number": 0,
+      "text_span": "Recovery of asymptomatic infectious humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery of asymptomatic infectious humans."
+    },
+    {
+      "source": "Symptomatic Infectious Humans",
+      "target": "Recovered Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery of symptomatic infectious humans.",
+      "page_number": 0,
+      "text_span": "Recovery of symptomatic infectious humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery of symptomatic infectious humans."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of dengue from infectious humans to susceptible mosquitoes.",
+      "page_number": 0,
+      "text_span": "Transmission of dengue from infectious humans to susceptible mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of dengue from infectious humans to susceptible mosquitoes."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "B",
+      "raw_text": "B",
+      "value": "constant",
+      "unit": "individuals per time",
+      "page_number": 0,
+      "text_span": "The constant influx rate of the human hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The constant influx rate of the human hosts."
+    },
+    {
+      "normalized_name": "\u03bc_h",
+      "raw_text": "\u03bc_h",
+      "value": "0.005",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The natural death rate of the human hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The natural death rate of the human hosts."
+    },
+    {
+      "normalized_name": "\u03bc_v",
+      "raw_text": "\u03bc_v",
+      "value": "0.65",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The natural death rate of the mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The natural death rate of the mosquitoes."
+    },
+    {
+      "normalized_name": "\u03b3_1(a)",
+      "raw_text": "\u03b3_1(a)",
+      "value": "age-specific",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific recovery rate of symptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific recovery rate of symptomatic infectious hosts."
+    },
+    {
+      "normalized_name": "\u03b3_2(a)",
+      "raw_text": "\u03b3_2(a)",
+      "value": "age-specific",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific recovery rate of asymptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific recovery rate of asymptomatic infectious hosts."
+    },
+    {
+      "normalized_name": "\u03b2_v(a)",
+      "raw_text": "\u03b2_v(a)",
+      "value": "age-specific",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific transmission rate from infectious hosts to susceptible mosquitoes."
+    },
+    {
+      "normalized_name": "\u03b2_h(a)",
+      "raw_text": "\u03b2_h(a)",
+      "value": "age-specific",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "The age-specific transmission rate from infected mosquitoes to susceptible hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The age-specific transmission rate from infected mosquitoes to susceptible hosts."
+    },
+    {
+      "normalized_name": "\u03c1",
+      "raw_text": "\u03c1",
+      "value": "0.5",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "The probability of exposed hosts transferring to symptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The probability of exposed hosts transferring to symptomatic infectious hosts."
+    },
+    {
+      "normalized_name": "\u03c3",
+      "raw_text": "\u03c3",
+      "value": "0.007",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The factor characterizing the intensity of reinfection of asymptomatic infectious hosts."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 6,
+    "num_parameters": 9,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

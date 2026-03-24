@@ -1,0 +1,696 @@
+{
+  "valid": false,
+  "total_errors": 16,
+  "errors_by_severity": {
+    "critical": 2,
+    "high": 2,
+    "medium": 12,
+    "low": 0
+  },
+  "errors": [
+    {
+      "type": "self_referential_flow",
+      "element": "Susceptible -> ContactFlow",
+      "detail": "ContactFlow has contactCompartment=//@compartments.1 and target=//@compartments.1. These should be different compartments. ContactFlow moves source to target upon contact with contactCompartment.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": 0
+    },
+    {
+      "type": "missing_birth_sources",
+      "element": "Susceptible",
+      "detail": "Compartment 'Susceptible' has population=0 and no incoming flow or externalSource. Susceptible compartments typically need recruitment.",
+      "severity": "high",
+      "compartment_idx": 0,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "zero_population_all",
+      "element": "all_compartments",
+      "detail": "All 14 compartments have population=0. This indicates a critical extraction failure.",
+      "severity": "critical",
+      "compartment_idx": null,
+      "parameter_idx": null,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Latent period",
+      "detail": "Parameter 'Latent period' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 0,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Presymptomatic infectious period",
+      "detail": "Parameter 'Presymptomatic infectious period' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 1,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Infectious period (severe)",
+      "detail": "Parameter 'Infectious period (severe)' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 3,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Basic reproduction number",
+      "detail": "Parameter 'Basic reproduction number' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 4,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Time in quarantine",
+      "detail": "Parameter 'Time in quarantine' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 5,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Average length of stay in hospital for cases not requiring ICU care",
+      "detail": "Parameter 'Average length of stay in hospital for cases not requiring ICU care' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 7,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Average length of stay in hospital before ICU admission",
+      "detail": "Parameter 'Average length of stay in hospital before ICU admission' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 8,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Average length of stay in ICU",
+      "detail": "Parameter 'Average length of stay in ICU' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 9,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Average length of stay in hospital after ICU",
+      "detail": "Parameter 'Average length of stay in hospital after ICU' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 10,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Probability of severe infection",
+      "detail": "Parameter 'Probability of severe infection' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 11,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Probability severe case requires admission to ICU",
+      "detail": "Parameter 'Probability severe case requires admission to ICU' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 12,
+      "flow_idx": null
+    },
+    {
+      "type": "orphaned_parameters",
+      "element": "Probability of death in cases admitted to ICU",
+      "detail": "Parameter 'Probability of death in cases admitted to ICU' is declared but never referenced in any flow. It may have been extracted but not properly composed into the model.",
+      "severity": "medium",
+      "compartment_idx": null,
+      "parameter_idx": 13,
+      "flow_idx": null
+    },
+    {
+      "type": "flow_chain_incomplete",
+      "element": "Dead",
+      "detail": "Compartment 'Dead' has no outgoing flow or sink. This breaks the flow chain.",
+      "severity": "high",
+      "compartment_idx": 13,
+      "parameter_idx": null,
+      "flow_idx": null
+    }
+  ],
+  "model_structure": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "population": "0",
+        "idx": 0,
+        "outgoing_flows": [
+          {
+            "type": "ContactFlow",
+            "source": "Susceptible",
+            "source_idx": 0,
+            "target": "//@compartments.1",
+            "contactCompartment": "//@compartments.1",
+            "rateParameter": "",
+            "contactRateParameter": "//@parameters.2",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Susceptible individuals become exposed through contact with infectious individuals."
+          }
+        ]
+      },
+      {
+        "name": "Exposed",
+        "population": "0",
+        "idx": 1,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Exposed",
+            "source_idx": 1,
+            "target": "//@compartments.3",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.2",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Exposed individuals become presymptomatic infectious."
+          },
+          {
+            "type": "RateFlow",
+            "source": "Exposed",
+            "source_idx": 1,
+            "target": "//@compartments.2",
+            "contactCompartment": "",
+            "rateParameter": "",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Exposed individuals are quarantined."
+          }
+        ]
+      },
+      {
+        "name": "Exposed (quarantined)",
+        "population": "0",
+        "idx": 2,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Exposed (quarantined)",
+            "source_idx": 2,
+            "target": "//@compartments.4",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.2",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Quarantined exposed individuals become presymptomatic infectious and isolated."
+          }
+        ]
+      },
+      {
+        "name": "Infectious (presymptomatic)",
+        "population": "0",
+        "idx": 3,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious (presymptomatic)",
+            "source_idx": 3,
+            "target": "//@compartments.5",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.2",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Presymptomatic infectious individuals develop mild to moderate symptoms."
+          }
+        ]
+      },
+      {
+        "name": "Infectious (presymptomatic, isolated)",
+        "population": "0",
+        "idx": 4,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious (presymptomatic, isolated)",
+            "source_idx": 4,
+            "target": "//@compartments.6",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.2",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Isolated presymptomatic infectious individuals develop mild to moderate symptoms."
+          }
+        ]
+      },
+      {
+        "name": "Infectious (mild to moderate)",
+        "population": "0",
+        "idx": 5,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious (mild to moderate)",
+            "source_idx": 5,
+            "target": "//@compartments.7",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Mild to moderate infectious individuals develop severe symptoms."
+          }
+        ]
+      },
+      {
+        "name": "Infectious (mild to moderate, isolated)",
+        "population": "0",
+        "idx": 6,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious (mild to moderate, isolated)",
+            "source_idx": 6,
+            "target": "//@compartments.8",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Isolated mild to moderate infectious individuals develop severe symptoms."
+          }
+        ]
+      },
+      {
+        "name": "Infectious (severe)",
+        "population": "0",
+        "idx": 7,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious (severe)",
+            "source_idx": 7,
+            "target": "//@compartments.9",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Severe infectious individuals are admitted to hospital."
+          }
+        ]
+      },
+      {
+        "name": "Infectious (severe, isolated)",
+        "population": "0",
+        "idx": 8,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Infectious (severe, isolated)",
+            "source_idx": 8,
+            "target": "//@compartments.9",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Isolated severe infectious individuals are admitted to hospital."
+          }
+        ]
+      },
+      {
+        "name": "Admitted to hospital (pre-ICU)",
+        "population": "0",
+        "idx": 9,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Admitted to hospital (pre-ICU)",
+            "source_idx": 9,
+            "target": "//@compartments.10",
+            "contactCompartment": "",
+            "rateParameter": "",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Hospitalized individuals are moved to ICU."
+          }
+        ]
+      },
+      {
+        "name": "ICU",
+        "population": "0",
+        "idx": 10,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "ICU",
+            "source_idx": 10,
+            "target": "//@compartments.11",
+            "contactCompartment": "",
+            "rateParameter": "",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "ICU patients are moved to regular hospital care after ICU."
+          },
+          {
+            "type": "RateFlow",
+            "source": "ICU",
+            "source_idx": 10,
+            "target": "//@compartments.13",
+            "contactCompartment": "",
+            "rateParameter": "//@parameters.6",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "ICU patients die from the infection."
+          }
+        ]
+      },
+      {
+        "name": "Admitted to hospital (post-ICU)",
+        "population": "0",
+        "idx": 11,
+        "outgoing_flows": [
+          {
+            "type": "RateFlow",
+            "source": "Admitted to hospital (post-ICU)",
+            "source_idx": 11,
+            "target": "//@compartments.12",
+            "contactCompartment": "",
+            "rateParameter": "",
+            "contactRateParameter": "",
+            "rate": "0.0",
+            "contactRate": "0.0",
+            "description": "Post-ICU individuals recover."
+          }
+        ]
+      },
+      {
+        "name": "Recovered",
+        "population": "0",
+        "idx": 12,
+        "outgoing_flows": []
+      },
+      {
+        "name": "Dead",
+        "population": "0",
+        "idx": 13,
+        "outgoing_flows": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Latent period",
+        "expression": "2.5",
+        "type": "CONSTANT",
+        "description": "Time from exposure to onset of infectiousness.",
+        "idx": 0
+      },
+      {
+        "name": "Presymptomatic infectious period",
+        "expression": "1",
+        "type": "CONSTANT",
+        "description": "Duration of infectiousness before symptom onset.",
+        "idx": 1
+      },
+      {
+        "name": "Infectious period (mild to moderate)",
+        "expression": "6",
+        "type": "CONSTANT",
+        "description": "Symptomatic infectious period for mild-to-moderate cases.",
+        "idx": 2
+      },
+      {
+        "name": "Infectious period (severe)",
+        "expression": "6",
+        "type": "CONSTANT",
+        "description": "Symptomatic infectious period for severe cases.",
+        "idx": 3
+      },
+      {
+        "name": "Basic reproduction number",
+        "expression": "2.3",
+        "type": "CONSTANT",
+        "description": "Average number of secondary infections from a primary infection.",
+        "idx": 4
+      },
+      {
+        "name": "Time in quarantine",
+        "expression": "14",
+        "type": "CONSTANT",
+        "description": "Duration of quarantine for exposed cases.",
+        "idx": 5
+      },
+      {
+        "name": "Relative risk of transmission for cases in isolation",
+        "expression": "0.1",
+        "type": "CONSTANT",
+        "description": "Reduced transmission for isolated cases.",
+        "idx": 6
+      },
+      {
+        "name": "Average length of stay in hospital for cases not requiring ICU care",
+        "expression": "10",
+        "type": "CONSTANT",
+        "description": "Duration of hospital stay for non-ICU cases.",
+        "idx": 7
+      },
+      {
+        "name": "Average length of stay in hospital before ICU admission",
+        "expression": "3",
+        "type": "CONSTANT",
+        "description": "Duration of hospital stay before ICU admission.",
+        "idx": 8
+      },
+      {
+        "name": "Average length of stay in ICU",
+        "expression": "21",
+        "type": "CONSTANT",
+        "description": "Duration of ICU stay.",
+        "idx": 9
+      },
+      {
+        "name": "Average length of stay in hospital after ICU",
+        "expression": "21",
+        "type": "CONSTANT",
+        "description": "Duration of hospital stay after ICU.",
+        "idx": 10
+      },
+      {
+        "name": "Probability of severe infection",
+        "expression": "Varies by age and comorbidity",
+        "type": "CONSTANT",
+        "description": "Probability of severe infection requiring hospital admission.",
+        "idx": 11
+      },
+      {
+        "name": "Probability severe case requires admission to ICU",
+        "expression": "0.26",
+        "type": "CONSTANT",
+        "description": "Probability that a severe case requires ICU admission.",
+        "idx": 12
+      },
+      {
+        "name": "Probability of death in cases admitted to ICU",
+        "expression": "Varies by age and comorbidity",
+        "type": "CONSTANT",
+        "description": "Probability of death for ICU cases.",
+        "idx": 13
+      }
+    ],
+    "flows": [
+      {
+        "type": "ContactFlow",
+        "source": "Susceptible",
+        "source_idx": 0,
+        "target": "//@compartments.1",
+        "contactCompartment": "//@compartments.1",
+        "rateParameter": "",
+        "contactRateParameter": "//@parameters.2",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Susceptible individuals become exposed through contact with infectious individuals."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed",
+        "source_idx": 1,
+        "target": "//@compartments.3",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.2",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Exposed individuals become presymptomatic infectious."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed",
+        "source_idx": 1,
+        "target": "//@compartments.2",
+        "contactCompartment": "",
+        "rateParameter": "",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Exposed individuals are quarantined."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Exposed (quarantined)",
+        "source_idx": 2,
+        "target": "//@compartments.4",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.2",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Quarantined exposed individuals become presymptomatic infectious and isolated."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious (presymptomatic)",
+        "source_idx": 3,
+        "target": "//@compartments.5",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.2",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Presymptomatic infectious individuals develop mild to moderate symptoms."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious (presymptomatic, isolated)",
+        "source_idx": 4,
+        "target": "//@compartments.6",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.2",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Isolated presymptomatic infectious individuals develop mild to moderate symptoms."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious (mild to moderate)",
+        "source_idx": 5,
+        "target": "//@compartments.7",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Mild to moderate infectious individuals develop severe symptoms."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious (mild to moderate, isolated)",
+        "source_idx": 6,
+        "target": "//@compartments.8",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Isolated mild to moderate infectious individuals develop severe symptoms."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious (severe)",
+        "source_idx": 7,
+        "target": "//@compartments.9",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Severe infectious individuals are admitted to hospital."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Infectious (severe, isolated)",
+        "source_idx": 8,
+        "target": "//@compartments.9",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Isolated severe infectious individuals are admitted to hospital."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Admitted to hospital (pre-ICU)",
+        "source_idx": 9,
+        "target": "//@compartments.10",
+        "contactCompartment": "",
+        "rateParameter": "",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Hospitalized individuals are moved to ICU."
+      },
+      {
+        "type": "RateFlow",
+        "source": "ICU",
+        "source_idx": 10,
+        "target": "//@compartments.11",
+        "contactCompartment": "",
+        "rateParameter": "",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "ICU patients are moved to regular hospital care after ICU."
+      },
+      {
+        "type": "RateFlow",
+        "source": "ICU",
+        "source_idx": 10,
+        "target": "//@compartments.13",
+        "contactCompartment": "",
+        "rateParameter": "//@parameters.6",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "ICU patients die from the infection."
+      },
+      {
+        "type": "RateFlow",
+        "source": "Admitted to hospital (post-ICU)",
+        "source_idx": 11,
+        "target": "//@compartments.12",
+        "contactCompartment": "",
+        "rateParameter": "",
+        "contactRateParameter": "",
+        "rate": "0.0",
+        "contactRate": "0.0",
+        "description": "Post-ICU individuals recover."
+      }
+    ],
+    "external_sources": [],
+    "external_sinks": []
+  }
+}

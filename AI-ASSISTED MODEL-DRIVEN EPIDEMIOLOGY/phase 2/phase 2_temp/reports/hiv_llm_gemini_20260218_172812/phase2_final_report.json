@@ -1,0 +1,404 @@
+{
+  "paper_name": "Hiv",
+  "summary": {
+    "extraction": {
+      "compartments": 8,
+      "flows": 7,
+      "parameters": 15,
+      "stratifications": 2,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "S",
+      "R"
+    ],
+    "stratifications": [
+      "gender"
+    ],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Homosexual Men",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Untreated Infected Homosexual Men",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Women",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Untreated Infected Women",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Heterosexual Men",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Untreated Infected Heterosexual Men",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "People with AIDS",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Homosexual Men",
+        "target": "Untreated Infected Homosexual Men",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Women",
+        "target": "Untreated Infected Women",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Heterosexual Men",
+        "target": "Untreated Infected Heterosexual Men",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Untreated Infected Homosexual Men",
+        "target": "Treated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Untreated Infected Women",
+        "target": "Treated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Untreated Infected Heterosexual Men",
+        "target": "Treated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated",
+        "target": "People with AIDS",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "C",
+        "value": "333",
+        "unit": "Individuals/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "h",
+        "value": "0.48",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c",
+        "value": "0.92",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "p",
+        "value": "0.90",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "l",
+        "value": "0.0129",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d",
+        "value": "0.3333",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "a",
+        "value": "0.3333",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_s",
+        "value": "0.02",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_h",
+        "value": "0.44",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_hw",
+        "value": "0.018",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_hm",
+        "value": "0.25",
+        "unit": "Nondimensional",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_s",
+        "value": "4",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_h",
+        "value": "7",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_hw",
+        "value": "2",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_hm",
+        "value": "1",
+        "unit": "1/year",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 8,
+    "flows": 7,
+    "parameters": 15,
+    "stratifications": 2,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 34,
+    "items_with_evidence": 34,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 34,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 34,
+      "items_with_evidence": 34,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 34,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.375,
+        "recall": 0.75,
+        "f1": 0.5,
+        "tp": 3,
+        "fp": 5,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Untreated Infected Homosexual Men",
+            "gold": "Infectious",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Treated",
+            "gold": "Treated",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Homosexual Men",
+            "gold": "Susceptible",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "People with AIDS",
+          "Untreated Infected Women",
+          "Susceptible Women",
+          "Susceptible Heterosexual Men",
+          "Untreated Infected Heterosexual Men"
+        ],
+        "unmatched_gold": [
+          "HIV Deaths"
+        ]
+      },
+      "parameters": {
+        "precision": 0.0,
+        "recall": 0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 15,
+        "fn": 0,
+        "matches": [],
+        "unmatched_extracted": [
+          "b_hm",
+          "b_s",
+          "a",
+          "c_h",
+          "c_hm",
+          "c_hw",
+          "b_h",
+          "c",
+          "p",
+          "h",
+          "C",
+          "l",
+          "d",
+          "c_s",
+          "b_hw"
+        ],
+        "unmatched_gold": []
+      },
+      "flows": {
+        "precision": 0.6666666666666666,
+        "recall": 0.4,
+        "f1": 0.5,
+        "tp": 2,
+        "fp": 1,
+        "fn": 3,
+        "matches": [
+          {
+            "extracted": "Infectious->Treated",
+            "gold": "Infectious->Treated",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible->Infectious",
+            "gold": "Susceptible->Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Treated->People with AIDS"
+        ],
+        "unmatched_gold": [
+          "Treated->Infectious",
+          "Infectious->HIV Deaths",
+          "Infectious->Infectious"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

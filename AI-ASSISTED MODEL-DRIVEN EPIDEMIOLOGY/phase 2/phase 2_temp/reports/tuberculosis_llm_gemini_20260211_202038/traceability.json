@@ -1,0 +1,255 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals susceptible to tuberculosis infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been vaccinated against tuberculosis and have temporary protection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Individuals infected with tuberculosis who can transmit the disease.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from tuberculosis but may be reinfected or lose immunity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Vaccination of susceptible individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Vaccinated -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Waning of vaccine-induced immunity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Waning of natural immunity in recovered individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "A": {
+      "evidence": [
+        {
+          "text_span": "Recruitment rate of human",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1000",
+          "unit": "human"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "Probability of successful infection rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.01, 5]",
+          "unit": "1/(year*human)"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b5": {
+      "evidence": [
+        {
+          "text_span": "Correction parameter for reinfection term",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0,1]",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "u": {
+      "evidence": [
+        {
+          "text_span": "Rate of vaccination",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0,1]",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b8": {
+      "evidence": [
+        {
+          "text_span": "Vaccine wane rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.067, 0.1]",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Recovery rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.5,2]",
+          "unit": "1/year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b4": {
+      "evidence": [
+        {
+          "text_span": "Drop out rate due to waning immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "[0.003, 0.02]",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bc": {
+      "evidence": [
+        {
+          "text_span": "Natural death rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1/(65*12)",
+          "unit": "1/month"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 4,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 11,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 20,
+    "items_with_evidence": 20,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 20,
+    "faithfulness_percentage": 100.0
+  }
+}

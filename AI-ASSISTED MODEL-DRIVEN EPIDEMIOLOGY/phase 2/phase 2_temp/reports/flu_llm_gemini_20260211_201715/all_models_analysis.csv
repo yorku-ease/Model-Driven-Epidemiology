@@ -1,0 +1,21 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed 1,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed 2,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious 1,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious 2,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed 1,RateFlow,//@parameters.8,False,"Infection of susceptible individuals at a rate λ(t), which is proportional to the number of infectious people I(t) and the transmission rate β.",,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed 2,RateFlow,//@parameters.5,False,Progression from the first to the second exposed stage at a daily rate σ.,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious 1,RateFlow,//@parameters.5,False,Progression from the exposed state to the infectious state at a daily rate σ.,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious 2,RateFlow,//@parameters.6,False,Progression from the first to the second infectious stage at a daily rate γ.,,,
+Influenza,Parameter,π,,,,,,Model file,Certain,,,,,,Susceptibility; the proportion of the population that is initially susceptible.,CONSTANT,"Unif(0,1)",dimensionless
+Influenza,Parameter,λ0,,,,,,Model file,Certain,,,,,,Initial infection rate.,CONSTANT,"Unif(0,0.000241)",day^-1
+Influenza,Parameter,ψ,,,,,,Model file,Certain,,,,,,Exponential growth rate (EGR).,CONSTANT,"Unif(0,0.39)",day^-1
+Influenza,Parameter,η,,,,,,Model file,Certain,,,,,,Over-dispersion parameter for the observation model.,CONSTANT,"Unif(1,100)",dimensionless
+Influenza,Parameter,p_ICU,,,,,,Model file,Certain,,,,,,Probability of ICU admission given infection.,CONSTANT,"Unif(0,1)",dimensionless
+Influenza,Parameter,σ,,,,,,Model file,Certain,,,,,,Rate of becoming infectious (progression through E1 and E2).,CONSTANT,1,day^-1
+Influenza,Parameter,γ,,,,,,Model file,Certain,,,,,,Rate of recovery (progression through I1 and I2).,CONSTANT,0.5797,day^-1
+Influenza,Parameter,σ^2_ICU|E,,,,,,Model file,Certain,,,,,,Variance of time from infection to ICU admission.,CONSTANT,18.24,days^2
+Influenza,Parameter,N,,,,,,Model file,Certain,,,,,,Total population size for each season.,CONSTANT,"53,679,750 (2012/13); 54,091,200 (2013/14); 54,551,450 (2014/15)",persons
+Influenza,Parameter,β,,,,,,Model file,Certain,,,,,,Constant transmission rate at which new infections take place given a contact.,CONSTANT,0.0,day^-1

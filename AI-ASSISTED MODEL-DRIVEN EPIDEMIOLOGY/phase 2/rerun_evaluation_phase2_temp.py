@@ -38,7 +38,6 @@ if not TEMP_EVAL_ROOT.is_dir():
 sys.path.insert(0, str(TEMP_EVAL_ROOT))
 
 from evaluation.evaluator import Evaluator  # noqa: E402
-
 EMPTY_GAPS: Dict[str, Any] = {
     "missing_compartments": [],
     "missing_parameters": [],
@@ -128,6 +127,7 @@ def run_one(
 
     with open(ent_path) as f:
         entities = json.load(f)
+
     with open(tr_path) as f:
         traceability = json.load(f)
 

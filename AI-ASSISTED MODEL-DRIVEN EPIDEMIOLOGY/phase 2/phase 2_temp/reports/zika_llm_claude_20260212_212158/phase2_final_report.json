@@ -1,0 +1,547 @@
+{
+  "paper_name": "Zika",
+  "summary": {
+    "extraction": {
+      "compartments": 10,
+      "flows": 8,
+      "parameters": 19,
+      "stratifications": 0,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Eggs",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larvae",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pupae",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Vectors",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Vectors",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Vectors",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Eggs",
+        "target": "Larvae",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Larvae",
+        "target": "Pupae",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pupae",
+        "target": "Susceptible Vectors",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Vectors",
+        "target": "Exposed Vectors",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Vectors",
+        "target": "Infectious Vectors",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2b",
+        "value": "0.05 - 0.12",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/\u03b1_H",
+        "value": "2 - 4",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/\u03b1_V",
+        "value": "8 - 12",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/\u03b3",
+        "value": "5 - 7",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "e_V",
+        "value": "80",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/\u03c41",
+        "value": "3",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc1",
+        "value": "0.05",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/\u03c42",
+        "value": "9",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc2",
+        "value": "0.025",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/\u03c43",
+        "value": "3",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc3",
+        "value": "0.0025",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bc_V",
+        "value": "0.05",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "q",
+        "value": "0.68",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03ba",
+        "value": "1",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "K_H",
+        "value": "30000000",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "K_V",
+        "value": "100000000",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "M",
+        "value": "100000",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bb",
+        "value": "0.00005",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R0",
+        "value": "1.1139",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 10,
+    "flows": 8,
+    "parameters": 19,
+    "stratifications": 0,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 40,
+    "items_with_evidence": 40,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 40,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 40,
+      "items_with_evidence": 40,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 40,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 10,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Exposed Vectors",
+            "gold": "Exposed humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious Vectors",
+            "gold": "Infectious female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Vectors",
+            "gold": "Susceptible female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Larvae",
+            "gold": "Larvae (non-infectious, logistic)",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed Humans",
+            "gold": "Exposed female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered Humans",
+            "gold": "Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious Humans",
+            "gold": "Infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Humans",
+            "gold": "Susceptible humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Pupae",
+            "gold": "Pupae (non-infectious)",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Eggs",
+            "gold": "Eggs(non-infectious)",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0.47368421052631576,
+        "recall": 0.5,
+        "f1": 0.4864864864864865,
+        "tp": 9,
+        "fp": 10,
+        "fn": 9,
+        "matches": [
+          {
+            "extracted": "\u03bc_V",
+            "gold": "\u03bc1_v",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03bc3",
+            "gold": "\u03bc3_v",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "R0",
+            "gold": "r_h",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03bc2",
+            "gold": "\u03bc_h",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "1/\u03b3",
+            "gold": "\u03b3_h",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "1/\u03c41",
+            "gold": "1/\u03c4_v",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "1/\u03c43",
+            "gold": "1/\u03c41_v",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "1/\u03c42",
+            "gold": "1/\u03c4_h",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "\u03bc1",
+            "gold": "\u03bc2_v",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "\u03bb",
+          "1/\u03b1_V",
+          "M",
+          "1/\u03b1_H",
+          "K_V",
+          "K_H",
+          "\u03ba",
+          "e_V",
+          "\u03b2b",
+          "q"
+        ],
+        "unmatched_gold": [
+          "\u03bc_a_v",
+          "b_v",
+          "\u03c6",
+          "b",
+          "f",
+          "\u03c43_v",
+          "\u03c6 * \u03c43_v",
+          "1/\u03c42_v",
+          "\u03b4_l"
+        ]
+      },
+      "flows": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible female adults->Exposed humans",
+            "gold": "Susceptible humans->Exposed humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed humans->Infectious female adults",
+            "gold": "Exposed female adults->Infectious female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible humans->Exposed female adults",
+            "gold": "Susceptible female adults->Exposed female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed female adults->Infectious humans",
+            "gold": "Exposed humans->Infectious humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Eggs(non-infectious)->Larvae (non-infectious, logistic)",
+            "gold": "Eggs(non-infectious)->Larvae (non-infectious, logistic)",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious humans->Recovered humans",
+            "gold": "Infectious humans->Recovered humans",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Pupae (non-infectious)->Susceptible female adults",
+            "gold": "Pupae (non-infectious)->Susceptible female adults",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Larvae (non-infectious, logistic)->Pupae (non-infectious)",
+            "gold": "Larvae (non-infectious, logistic)->Pupae (non-infectious)",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

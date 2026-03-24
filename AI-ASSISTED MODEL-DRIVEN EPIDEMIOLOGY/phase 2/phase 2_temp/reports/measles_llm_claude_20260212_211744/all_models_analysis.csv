@@ -1,0 +1,50 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Measles,Compartment,Susceptible Children,,0,False,4.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Susceptible Adults,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Un-monitored Vaccinated Children,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Un-monitored Vaccinated Adults,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Adult Vaccination Group,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Monitored Vaccinated Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Exposed Children,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Exposed Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Infectious Children,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Infectious Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Immune Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Immune Adults,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles,Flow,,,,,,,Model file,Certain,,Un-monitored Vaccinated Children,RateFlow,//@parameters.0,False,Children entering un-monitored vaccination at rate x_U,,,
+Measles,Flow,,,,,,,Model file,Certain,,Monitored Vaccinated Children,RateFlow,//@parameters.0,False,Children entering monitored vaccination at rate x_M,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Children,RateFlow,//@parameters.0,False,Susceptible children infected through contact with infectious children and adults at rate b_C*(I_C + I_A)*S_C,,,
+Measles,Flow,,,,,,,Model file,Certain,,Susceptible Adults,RateFlow,//@parameters.0,False,Maturation of susceptible children to adults at rate j,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Susceptible adults infected through contact with infectious children and adults at rate b_A*(I_C + I_A)*S_A,,,
+Measles,Flow,,,,,,,Model file,Certain,,Adult Vaccination Group,RateFlow,//@parameters.0,False,Adults entering vaccination program at rate x_A,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Children,RateFlow,//@parameters.0,False,Un-monitored vaccinated children infected at reduced rate e*b_C*(I_C + I_A)*UV_C,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Un-monitored vaccinated children gaining immunity at rate h_U,,,
+Measles,Flow,,,,,,,Model file,Certain,,Un-monitored Vaccinated Adults,RateFlow,//@parameters.0,False,Maturation of un-monitored vaccinated children to adults at rate j,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Un-monitored vaccinated adults infected at reduced rate e*b_A*(I_C + I_A)*UV_A,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Un-monitored vaccinated adults gaining immunity at rate h_A,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Vaccinated adults gaining immunity at rate h_A,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Monitored vaccinated children gaining immunity at rate h_M,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Children,RateFlow,//@parameters.0,False,Progression from exposed to infectious in children at incubation rate d,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Maturation of exposed children to exposed adults at rate j,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Adults,RateFlow,//@parameters.0,False,Progression from exposed to infectious in adults at incubation rate d,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Recovery of infectious children gaining immunity at rate g,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Adults,RateFlow,//@parameters.0,False,Maturation of infectious children to infectious adults at rate j,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Recovery of infectious adults gaining immunity at rate g,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Maturation of immune children to immune adults at rate j,,,
+Measles,Parameter,L,,,,,,Model file,Certain,,,,,,Recruitment rate to children group (birth rate balancing death rate),CONSTANT,mu * N,persons per week
+Measles,Parameter,x_U,,,,,,Model file,Certain,,,,,,Un-monitored children vaccination rate,CONSTANT,0.0087,per week
+Measles,Parameter,x_M,,,,,,Model file,Certain,,,,,,Monitored children vaccination rate,CONSTANT,4.777e-6,per week
+Measles,Parameter,x_A,,,,,,Model file,Certain,,,,,,Adult vaccination rate,CONSTANT,0,per week
+Measles,Parameter,b_C,,,,,,Model file,Certain,,,,,,Transmission rate on children,CONSTANT,0.00188,per person per week
+Measles,Parameter,b_A,,,,,,Model file,Certain,,,,,,Transmission rate on adults,CONSTANT,1.00e-5,per person per week
+Measles,Parameter,mu,,,,,,Model file,Certain,,,,,,Natural death rate (1/(72*52)),CONSTANT,2.67e-4,per week
+Measles,Parameter,g,,,,,,Model file,Certain,,,,,,Rate of becoming immune after recovery from infection (1/2),CONSTANT,0.5,per week
+Measles,Parameter,j,,,,,,Model file,Certain,,,,,,Maturation rate of child becoming adult (1/(15*52)),CONSTANT,0.00128,per week
+Measles,Parameter,e,,,,,,Model file,Certain,,,,,,1 minus vaccine effectiveness; (1-e) is the effectiveness of vaccination,CONSTANT,0.2,dimensionless
+Measles,Parameter,h_A,,,,,,Model file,Certain,,,,,,Rate of being immune of un-monitored vaccinated adults and adult vaccination group,CONSTANT,0,per week
+Measles,Parameter,h_U,,,,,,Model file,Certain,,,,,,Rate of being immune of un-monitored vaccinated children,CONSTANT,3e-6,per week
+Measles,Parameter,h_M,,,,,,Model file,Certain,,,,,,Rate of being immune of monitored vaccinated children,CONSTANT,0.0167,per week
+Measles,Parameter,d,,,,,,Model file,Certain,,,,,,Incubation period rate (inverse of ~10 day incubation period),CONSTANT,0.7,per week
+Measles,Parameter,delta,,,,,,Model file,Certain,,,,,,Disease-induced death rate,CONSTANT,9.3399e-5,per week
+Measles,Parameter,q,,,,,,Model file,Certain,,,,,,Portion of infections recorded,CONSTANT,0.15,dimensionless
+Measles,Parameter,a,,,,,,Model file,Certain,,,,,,Fraction of total population in the measles transmission contact network,CONSTANT,0.01253,dimensionless

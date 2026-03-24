@@ -1,0 +1,484 @@
+{
+  "paper_name": "Covid",
+  "summary": {
+    "extraction": {
+      "compartments": 15,
+      "flows": 21,
+      "parameters": 0,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [
+      "vaccination",
+      "quarantine"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed (quarantined)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (presymptomatic)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (presymptomatic, isolated)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (mild to moderate)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (mild to moderate, isolated)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (severe)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious (severe, isolated)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Admitted to hospital",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Admitted to hospital (pre-ICU)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ICU",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Admitted to hospital (post-ICU)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Exposed (quarantined)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious (presymptomatic)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed (quarantined)",
+        "target": "Infectious (presymptomatic, isolated)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (presymptomatic)",
+        "target": "Infectious (mild to moderate)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (presymptomatic)",
+        "target": "Infectious (severe)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (presymptomatic, isolated)",
+        "target": "Infectious (mild to moderate, isolated)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (presymptomatic, isolated)",
+        "target": "Infectious (severe, isolated)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (mild to moderate)",
+        "target": "Infectious (mild to moderate, isolated)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (mild to moderate)",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (mild to moderate, isolated)",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (severe)",
+        "target": "Infectious (severe, isolated)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (severe)",
+        "target": "Admitted to hospital",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (severe, isolated)",
+        "target": "Admitted to hospital",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (severe)",
+        "target": "Admitted to hospital (pre-ICU)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious (severe, isolated)",
+        "target": "Admitted to hospital (pre-ICU)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Admitted to hospital",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Admitted to hospital (pre-ICU)",
+        "target": "ICU",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "ICU",
+        "target": "Admitted to hospital (post-ICU)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "ICU",
+        "target": "Dead",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Admitted to hospital (post-ICU)",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": []
+  },
+  "model_structure": {
+    "compartments": 15,
+    "flows": 21,
+    "parameters": 0,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 41,
+    "items_with_evidence": 41,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 41,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 41,
+      "items_with_evidence": 41,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 41,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.5333333333333333,
+        "recall": 1.0,
+        "f1": 0.6956521739130436,
+        "tp": 8,
+        "fp": 7,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Exposed (quarantined)",
+            "gold": "Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "ICU",
+            "gold": "ICU",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Admitted to hospital (pre-ICU)",
+            "gold": "Admitted to hospital",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious (presymptomatic)",
+            "gold": "Infectious",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Dead",
+            "gold": "COVID Deaths",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infectious (presymptomatic, isolated)",
+            "gold": "Isolated",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Infectious (severe)",
+          "Infectious (mild to moderate, isolated)",
+          "Admitted to hospital",
+          "Admitted to hospital (post-ICU)",
+          "Infectious (severe, isolated)",
+          "Infectious (mild to moderate)",
+          "Exposed"
+        ],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0,
+        "recall": 0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "matches": [],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "flows": {
+        "precision": 0.6470588235294118,
+        "recall": 1.0,
+        "f1": 0.7857142857142858,
+        "tp": 11,
+        "fp": 6,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Susceptible->Exposed",
+            "gold": "Susceptible->Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Admitted to hospital->Recovered",
+            "gold": "Admitted to hospital->Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "ICU->COVID Deaths",
+            "gold": "ICU->COVID Deaths",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Isolated->Recovered",
+            "gold": "Isolated->Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious->Recovered",
+            "gold": "Infectious->Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious->Infectious",
+            "gold": "Infectious->Infectious",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious->Isolated",
+            "gold": "Infectious->Isolated",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious->Admitted to hospital",
+            "gold": "Infectious->Admitted to hospital",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "ICU->Admitted to hospital",
+            "gold": "ICU->Admitted to hospital",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Admitted to hospital->ICU",
+            "gold": "Admitted to hospital->ICU",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed->Infectious",
+            "gold": "Exposed->Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Isolated->Isolated",
+          "Exposed->Isolated",
+          "Admitted to hospital->Isolated",
+          "Exposed->Exposed",
+          "Isolated->Admitted to hospital",
+          "Admitted to hospital->Admitted to hospital"
+        ],
+        "unmatched_gold": []
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

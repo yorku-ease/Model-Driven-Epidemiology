@@ -1,0 +1,466 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Humans susceptible to ZIKV infection (S_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans susceptible to ZIKV infection (S_H)"
+    },
+    {
+      "normalized_name": "Exposed Humans",
+      "raw_text": "Exposed Humans",
+      "page_number": 0,
+      "text_span": "Humans exposed to ZIKV but not yet infectious, in incubation period (E_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans exposed to ZIKV but not yet infectious, in incubation period (E_H)"
+    },
+    {
+      "normalized_name": "Infectious Humans",
+      "raw_text": "Infectious Humans",
+      "page_number": 0,
+      "text_span": "Humans infectious with ZIKV (I_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans infectious with ZIKV (I_H)"
+    },
+    {
+      "normalized_name": "Recovered Humans",
+      "raw_text": "Recovered Humans",
+      "page_number": 0,
+      "text_span": "Humans recovered from ZIKV infection (R_H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans recovered from ZIKV infection (R_H)"
+    },
+    {
+      "normalized_name": "Eggs",
+      "raw_text": "Eggs",
+      "page_number": 0,
+      "text_span": "Mosquito eggs in the environment (V1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito eggs in the environment (V1)"
+    },
+    {
+      "normalized_name": "Larvae",
+      "raw_text": "Larvae",
+      "page_number": 0,
+      "text_span": "Mosquito larvae in the environment (V2)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito larvae in the environment (V2)"
+    },
+    {
+      "normalized_name": "Pupae",
+      "raw_text": "Pupae",
+      "page_number": 0,
+      "text_span": "Mosquito pupae in the environment (V3)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito pupae in the environment (V3)"
+    },
+    {
+      "normalized_name": "Susceptible Vectors",
+      "raw_text": "Susceptible Vectors",
+      "page_number": 0,
+      "text_span": "Susceptible female adult mosquitoes (S_V)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible female adult mosquitoes (S_V)"
+    },
+    {
+      "normalized_name": "Exposed Vectors",
+      "raw_text": "Exposed Vectors",
+      "page_number": 0,
+      "text_span": "Female adult mosquitoes exposed to ZIKV but not yet infectious (E_V)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Female adult mosquitoes exposed to ZIKV but not yet infectious (E_V)"
+    },
+    {
+      "normalized_name": "Infectious Vectors",
+      "raw_text": "Infectious Vectors",
+      "page_number": 0,
+      "text_span": "Female adult mosquitoes infectious with ZIKV (I_V)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Female adult mosquitoes infectious with ZIKV (I_V)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Humans become exposed through bites from infectious vectors, rate \u03b2bI_V/(N_H+M) per susceptible human",
+      "page_number": 0,
+      "text_span": "Humans become exposed through bites from infectious vectors, rate \u03b2bI_V/(N_H+M) per susceptible human",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans become exposed through bites from infectious vectors, rate \u03b2bI_V/(N_H+M) per susceptible human"
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Exposed humans become infectious after incubation period, rate \u03b1_H",
+      "page_number": 0,
+      "text_span": "Exposed humans become infectious after incubation period, rate \u03b1_H",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed humans become infectious after incubation period, rate \u03b1_H"
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Recovered Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Infectious humans recover, rate \u03b3",
+      "page_number": 0,
+      "text_span": "Infectious humans recover, rate \u03b3",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious humans recover, rate \u03b3"
+    },
+    {
+      "source": "Eggs",
+      "target": "Larvae",
+      "flow_type": "RateFlow",
+      "raw_text": "Eggs develop into larvae, rate \u03c41",
+      "page_number": 0,
+      "text_span": "Eggs develop into larvae, rate \u03c41",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Eggs develop into larvae, rate \u03c41"
+    },
+    {
+      "source": "Larvae",
+      "target": "Pupae",
+      "flow_type": "RateFlow",
+      "raw_text": "Larvae develop into pupae, rate \u03c42",
+      "page_number": 0,
+      "text_span": "Larvae develop into pupae, rate \u03c42",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Larvae develop into pupae, rate \u03c42"
+    },
+    {
+      "source": "Pupae",
+      "target": "Susceptible Vectors",
+      "flow_type": "RateFlow",
+      "raw_text": "Pupae emerge as susceptible female adult vectors, rate q\u03c43 (q is female percentage)",
+      "page_number": 0,
+      "text_span": "Pupae emerge as susceptible female adult vectors, rate q\u03c43 (q is female percentage)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pupae emerge as susceptible female adult vectors, rate q\u03c43 (q is female percentage)"
+    },
+    {
+      "source": "Susceptible Vectors",
+      "target": "Exposed Vectors",
+      "flow_type": "ContactFlow",
+      "raw_text": "Susceptible vectors become exposed through biting infectious humans, rate \u03b2bI_H/(N_H+M) per susceptible vector",
+      "page_number": 0,
+      "text_span": "Susceptible vectors become exposed through biting infectious humans, rate \u03b2bI_H/(N_H+M) per susceptible vector",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible vectors become exposed through biting infectious humans, rate \u03b2bI_H/(N_H+M) per susceptible vector"
+    },
+    {
+      "source": "Exposed Vectors",
+      "target": "Infectious Vectors",
+      "flow_type": "RateFlow",
+      "raw_text": "Exposed vectors become infectious after incubation period, rate \u03b1_V",
+      "page_number": 0,
+      "text_span": "Exposed vectors become infectious after incubation period, rate \u03b1_V",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed vectors become infectious after incubation period, rate \u03b1_V"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2b",
+      "raw_text": "\u03b2b",
+      "value": "0.05 - 0.12",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Number of infectious bites delivered per vector per day (product of transmission probability \u03b2 and biting rate b)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of infectious bites delivered per vector per day (product of transmission probability \u03b2 and biting rate b)"
+    },
+    {
+      "normalized_name": "1/\u03b1_H",
+      "raw_text": "1/\u03b1_H",
+      "value": "2 - 4",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Incubation time of ZIKV in humans",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Incubation time of ZIKV in humans"
+    },
+    {
+      "normalized_name": "1/\u03b1_V",
+      "raw_text": "1/\u03b1_V",
+      "value": "8 - 12",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Incubation time of ZIKV in vectors",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Incubation time of ZIKV in vectors"
+    },
+    {
+      "normalized_name": "1/\u03b3",
+      "raw_text": "1/\u03b3",
+      "value": "5 - 7",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Recovery time of infectious humans",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery time of infectious humans"
+    },
+    {
+      "normalized_name": "e_V",
+      "raw_text": "e_V",
+      "value": "80",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Number of eggs laid per female mosquito per unit time",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of eggs laid per female mosquito per unit time"
+    },
+    {
+      "normalized_name": "1/\u03c41",
+      "raw_text": "1/\u03c41",
+      "value": "3",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Egg development time",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Egg development time"
+    },
+    {
+      "normalized_name": "\u03bc1",
+      "raw_text": "\u03bc1",
+      "value": "0.05",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Egg mortality rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Egg mortality rate"
+    },
+    {
+      "normalized_name": "1/\u03c42",
+      "raw_text": "1/\u03c42",
+      "value": "9",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Larval development time",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Larval development time"
+    },
+    {
+      "normalized_name": "\u03bc2",
+      "raw_text": "\u03bc2",
+      "value": "0.025",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Larval mortality rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Larval mortality rate"
+    },
+    {
+      "normalized_name": "1/\u03c43",
+      "raw_text": "1/\u03c43",
+      "value": "3",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Pupal development time",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pupal development time"
+    },
+    {
+      "normalized_name": "\u03bc3",
+      "raw_text": "\u03bc3",
+      "value": "0.0025",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Pupal mortality rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pupal mortality rate"
+    },
+    {
+      "normalized_name": "\u03bc_V",
+      "raw_text": "\u03bc_V",
+      "value": "0.05",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Adult vector mortality rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Adult vector mortality rate"
+    },
+    {
+      "normalized_name": "q",
+      "raw_text": "q",
+      "value": "0.68",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Female adult percentage among adult vectors",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Female adult percentage among adult vectors"
+    },
+    {
+      "normalized_name": "\u03ba",
+      "raw_text": "\u03ba",
+      "value": "1",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Larvae mortality rate due to limited carrying capacity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Larvae mortality rate due to limited carrying capacity"
+    },
+    {
+      "normalized_name": "K_H",
+      "raw_text": "K_H",
+      "value": "30000000",
+      "unit": "individuals",
+      "page_number": 0,
+      "text_span": "Carrying capacity for human population (Rio de Janeiro State)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Carrying capacity for human population (Rio de Janeiro State)"
+    },
+    {
+      "normalized_name": "K_V",
+      "raw_text": "K_V",
+      "value": "100000000",
+      "unit": "individuals",
+      "page_number": 0,
+      "text_span": "Carrying capacity for larvae",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Carrying capacity for larvae"
+    },
+    {
+      "normalized_name": "M",
+      "raw_text": "M",
+      "value": "100000",
+      "unit": "individuals",
+      "page_number": 0,
+      "text_span": "Number of alternative hosts besides humans in the environment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of alternative hosts besides humans in the environment"
+    },
+    {
+      "normalized_name": "\u03bb",
+      "raw_text": "\u03bb",
+      "value": "0.00005",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Human population growth rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human population growth rate"
+    },
+    {
+      "normalized_name": "R0",
+      "raw_text": "R0",
+      "value": "1.1139",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number estimated from parameters (Rio de Janeiro State)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number estimated from parameters (Rio de Janeiro State)"
+    }
+  ],
+  "stratifications": [],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 4,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 4,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 10,
+    "num_flows": 8,
+    "num_parameters": 19,
+    "num_stratifications": 0,
+    "num_interventions": 3
+  }
+}
