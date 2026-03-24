@@ -12,9 +12,9 @@ Phase 2 report  ──►  Gap detection  ──►  Gap filling  ──►  Val
 
 1. **Gap detection** — Missing **compartments**, **parameters**, **stratifications**, and **flows** (`Source->Target` from XML / `extracted_entities`) vs baseline (preferred) or vs `paper_promises.json` (fallback).
 2. **Gap filling (3-tier)** — **Parameters:** RAG → LLM inference → flag. **Compartments / flows:** RAG (`structure_lookup`: text evidence + `flow_index`) → LLM (`infer_compartment_llm` / `infer_flow_llm`) → flag. New compartment shells may be written to `model_filled.compmodel`; **flow wiring** is left to manual edit or **Phase RLM** (full-XML repair).
-3. **Validation** — **Numeric:** each filled **parameter value** vs gold (exact / close / approximate / poor). **Structural:** precision / recall / **F1** for **compartments** and **flows** between draft/filled model and gold `.compmodel` (both appear in `phase3_validation.json` and `gap_report.md`).
+3. **Validation** — **Numeric:** each filled **parameter value** vs gold (exact / close / approximate / poor). **Structural:** precision / recall / F1 for **compartments** and **flows** between draft/filled model and gold `.compmodel` (both appear in `phase3_validation.json` and `gap_report.md`). For cross-phase comparisons in this project, we report **fuzzy recall** as the primary metric.
 4. **Outputs** — `model_filled.compmodel`, `phase3_gaps.json`, `phase3_filled.json`, `phase3_validation.json`, `phase3_improvement.json`, and `gap_report.md` per run.
-5. **Showcase comparison (optional)** — `run_phase3_showcase.py` compares `rag_only` / `llm_only` / `both` on the best Phase 2 report per disease.
+5. **Showcase comparison (optional)** — `run_phase3_showcase.py` compares `rag_only` / `llm_only` / `both` on the best Phase 2 report per disease from `../phase 2/reports/` (enhanced pipeline).
 
 ---
 
@@ -115,7 +115,7 @@ For a missing parameter, `parameter_lookup` (`src/rag/parameter_lookup.py`):
 2. **Unstructured:** Search **text chunks** for the parameter symbol/name; optionally **regex-extract** a numeric value from the chunk (`extract_value_from_chunk`).
 3. If regex finds a value in a chunk, that becomes the RAG **`extracted_value`**; else a strong **index** hit’s value may be used.
 
-This is **lexical / regex RAG**, not embedding-based retrieval unless you extend the codebase.
+This is **lexical / regex RAG** in the current implementation.
 
 ---
 
@@ -164,10 +164,10 @@ Nothing is hardcoded: providers and diseases are inferred from directory names. 
 
 **Why Phase RLM matters:** Phase 3 fills **values** and suggests **labels** and **flow narratives**; **Phase RLM** (`phase_rlm/`) is designed for **iterative structural repair** of `.compmodel` XML (flows, self-referential contacts, populations, etc.) using semantic search over the paper. A practical pipeline is:
 
-1. Run Phase 3 (RAG + inference + structural validation) → inspect `phase3_validation.json` (parameter accuracy + **compartments/flows F1**).
+1. Run Phase 3 (RAG + inference + structural validation) → inspect `phase3_validation.json` (parameter accuracy + compartments/flows quality metrics).
 2. Run **Phase RLM** on the same Phase 2 report when XML structure is still invalid or flows are incomplete.
 3. Re-run Phase 3 **evaluation** on the RLM output if you add a script, or compare `gap_report.md` before/after.
 
 **Database (`build_database.py`):** Re-run after Phase 1/2 changes. The index now includes **`flow_index`** (signatures from all indexed `.compmodel` files), **`version`** 3, and Phase 1’s **`data/papers/*/metadata.json`** entries plus **`papers/epimde/`** as the primary model directory.
 
-**Future improvements (ideas):** embedding-based RAG for flows; automatic XML flow insertion with validated compartment indices; joint scoring in Phase 4 reports.
+**Future improvements (ideas):** stronger flow retrieval/ranking; automatic XML flow insertion with validated compartment indices; joint scoring in Phase 4 reports.

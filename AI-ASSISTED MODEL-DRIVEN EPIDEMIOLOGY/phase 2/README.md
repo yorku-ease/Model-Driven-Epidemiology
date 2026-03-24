@@ -19,10 +19,12 @@ For each run, outputs go under `reports/{disease}_llm_{provider}_{timestamp}/`. 
 | `evaluation_report.json` | Traceability, faithfulness, gaps; **gold_standard_comparison** (P/R/F1) if a baseline was found |
 | `extracted_entities.json`, `traceability.json`, `paper_sections.json` | Evidence and intermediate structure |
 
-Aggregated metrics: `python3 build_results_md.py` → **`RESULTS_REPORT.md`** from `evaluation_report.json` in each latest run under `reports/`. The report is **recall-first**.
+Aggregated metrics: `python3 build_results_md.py` → Markdown summary from the chosen evaluation JSON in each latest run under `reports/`. The report is **recall-first**.
 
-- **Which evaluation JSON:** `-e` / `--evaluation-json` (default `evaluation_report.json`). After `rerun_evaluation_only.py`, use `-e evaluation_report_rerun.json -o RESULTS_REPORT_RERUN.md`.
-- **Old vs current dirs:** `--reports-dir old-reports -o RESULTS_REPORT_OLD.md` vs `--reports-dir reports -o RESULTS_REPORT_CURRENT.md`.
+- **Recommended for paper numbers (fuzzy):** `-e evaluation_report_fuzzy_temp.json`.
+- **Canonical report naming in this project:**  
+  - `RESULTS_REPORT Enhanced Fuzzy.md` (from `reports/`, fuzzy evaluation)  
+  - `RESULTS_REPORT Original Fuzzy.md` (from `old-reports/`, fuzzy evaluation)
 
 ## Pipeline shape (9 steps)
 

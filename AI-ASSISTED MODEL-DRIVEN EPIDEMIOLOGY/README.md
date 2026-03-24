@@ -99,7 +99,7 @@ Create `phase 2/.api_key.txt` with your LLM API key. Phase 3 reads the same file
 echo "your-api-key-here" > "phase 2/.api_key.txt"
 ```
 
-Supported providers: **Gemini** (default), **OpenAI**, **Claude**.
+Supported providers: **Gemini**, **OpenAI**, **Claude**.
 
 ## Phase 1: Model Analysis
 
@@ -160,7 +160,7 @@ python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_pa
 - **Steps 2 & 3:** Extract what the paper promises and identify model entities (compartments, flows, parameters) with evidence
 - **Step 7:** Suggest gap fills from domain knowledge
 - **Fallback:** If LLM unavailable, falls back to pattern-based extraction (less accurate)
-- **Temperature:** 0.3 (low for consistency)
+- **Temperature:** 0 (deterministic extraction)
 
 ---
 
@@ -178,7 +178,7 @@ Phase 2 report  →  Gap Detection  →  Gap Filling  →  Validation  →  Repo
 ### Gap Filling: 3-tier approach
 
 1. **RAG** — searches indexed paper database (585+ parameters, 894+ text chunks) for matching values
-2. **LLM Inference** — uses the same LLM provider from Phase 2 (auto-detected from report directory name) to suggest plausible values with reasoning
+2. **LLM Inference** — uses a selected Phase 3 provider (Gemini recommended from Phase 2 results) to suggest plausible values with reasoning
 3. **Flag** — marks for manual review when both tiers fail
 
 ### Validation
@@ -211,15 +211,15 @@ python3 run_phase3.py --all --output reports
 
 ### Best model per disease (optional)
 
-Run Phase 3 with each LLM provider into separate output dirs (`reports/gemini`, `reports/openai`, `reports/claude`), then run the selector to pick one filled model per disease using Phase 2 evaluation and Phase 3 validation (no hardcoded diseases or providers):
+Run Phase 3 in showcase mode to select the best Phase 2 input per disease from `phase 2/reports/`, then compare `rag_only`, `llm_only`, and `both`:
 
 ```bash
 cd "phase 3"
-python3 select_best_model.py --phase2-reports "../phase 2/reports" \
-  --phase3-roots reports/gemini reports/openai reports/claude --output selected_models
+python3 run_phase3_showcase.py --phase2-reports-dir "../phase 2/reports" \
+  --output-dir showcase_phase3 --llm-provider gemini
 ```
 
-Result: `selected_models/<disease>/model_filled.compmodel` plus `selection_report.json` and `SELECTION_REPORT.md`. See **`phase 3/INSTRUCTIONS.md`** for the full workflow.
+Result: `showcase_phase3/<disease>/...` outputs plus `SHOWCASE_REPORT.md` and `showcase_summary.json`. See **`phase 3/INSTRUCTIONS.md`** for the full workflow.
 
 ---
 
@@ -293,7 +293,7 @@ No code changes required:
 - **Traceability** — every model element links back to paper evidence
 - **Dynamic** — no hardcoded disease names; fully data-driven
 - **Honest Evaluation** — gold standard used only for validation, not filling
-- **Multi-Provider** — works with Gemini, OpenAI, or Claude; Phase 3 auto-matches the Phase 2 provider
+- **Multi-Provider** — works with Gemini, OpenAI, or Claude; Phase 2 compares providers and Phase 3 runs on the selected best Phase 2 drafts
 
 ## Documentation
 
