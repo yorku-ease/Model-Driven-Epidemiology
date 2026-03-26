@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="βb" expression="0.05 - 0.12" type="CONSTANT" description="Number of infectious bites delivered per vector per day (biting rate times transmission probability)" unit="per day" />
+  <parameters name="1/α_H" expression="2 - 4" type="CONSTANT" description="Incubation time of ZIKV in humans" unit="days" />
+  <parameters name="1/α_V" expression="8 - 12" type="CONSTANT" description="Incubation time of ZIKV in vectors" unit="days" />
+  <parameters name="1/γ" expression="5 - 7" type="CONSTANT" description="Recovery time of infectious humans" unit="days" />
+  <parameters name="e_V" expression="80" type="CONSTANT" description="Number of eggs laid per female mosquito per unit time" unit="per day" />
+  <parameters name="1/τ1" expression="3" type="CONSTANT" description="Egg development time" unit="days" />
+  <parameters name="μ1" expression="0.05" type="CONSTANT" description="Egg mortality rate" unit="per day" />
+  <parameters name="1/τ2" expression="9" type="CONSTANT" description="Larval development time" unit="days" />
+  <parameters name="μ2" expression="0.025" type="CONSTANT" description="Larval mortality rate" unit="per day" />
+  <parameters name="1/τ3" expression="3" type="CONSTANT" description="Pupal development time" unit="days" />
+  <parameters name="μ3" expression="0.0025" type="CONSTANT" description="Pupal mortality rate" unit="per day" />
+  <parameters name="μ_V" expression="0.05" type="CONSTANT" description="Adult vector mortality rate" unit="per day" />
+  <parameters name="q" expression="0.68" type="CONSTANT" description="Female adult percentage among emerging adult vectors" unit="dimensionless" />
+  <parameters name="K_H" expression="30000000" type="CONSTANT" description="Carrying capacity for human population (Rio de Janeiro State)" unit="persons" />
+  <parameters name="K_V" expression="100000000" type="CONSTANT" description="Carrying capacity for larvae (Rio de Janeiro State)" unit="larvae" />
+  <parameters name="κ" expression="1" type="CONSTANT" description="Larvae mortality rate due to limited carrying capacity" unit="per day" />
+  <parameters name="M" expression="100000" type="CONSTANT" description="Number of alternative hosts besides humans (Rio de Janeiro State)" unit="hosts" />
+  <parameters name="λ" expression="0.00005" type="CONSTANT" description="Human population growth rate" unit="per day" />
+  <parameters name="R0" expression="1.1139" type="CONSTANT" description="Basic reproduction number estimated from parameters (Rio de Janeiro State)" unit="dimensionless" />
+  <parameters name="1/τ_h" expression="0.2" type="CONSTANT" unit="day^-1" />
+  <parameters name="b_v" expression="0.5" type="CONSTANT" unit="per day" />
+  <parameters name="1/τ_v" expression="10" type="CONSTANT" unit="days" />
+  <parameters name="r_h" expression="0.1" type="CONSTANT" unit="1/day" />
+  <parameters name="f" expression="0.5" type="CONSTANT" unit="dimensionless" />
+  <parameters name="δ_l" expression="0.1" type="CONSTANT" unit="1/day" />
+  <parameters name="φ" expression="0.5" type="CONSTANT" unit="1/day" />
+  <compartments PrimaryName="Susceptible Humans" population="1000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.8" description="Humans become exposed through bites from infectious vectors, rate βb·I_V·S_H/(N_H + M)" />
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.2" description="Exposed humans become infectious after incubation period, rate α_H" />
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.3" description="Infectious humans recover, rate γ" />
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0" />
+  <compartments PrimaryName="Eggs" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Eggs develop into larvae, rate τ1" rateParameter="//@parameters.1" />
+  </compartments>
+  <compartments PrimaryName="Larvae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Larvae develop into pupae, rate τ2" rateParameter="//@parameters.2" />
+  </compartments>
+  <compartments PrimaryName="Pupae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.7" description="Pupae emerge as susceptible female adult vectors, rate q·τ3 (q is female percentage)" />
+    <outgoingFlows target="//@compartments.10" rateParameter="//@parameters.19" />
+  </compartments>
+  <compartments PrimaryName="Susceptible Vectors" population="1000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible vectors become exposed through biting infectious humans, rate βb·I_H·S_V/(N_H + M)" />
+  </compartments>
+  <compartments PrimaryName="Exposed Vectors" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.9" description="Exposed vectors become infectious after incubation period, rate α_V" />
+  </compartments>
+  <compartments PrimaryName="Infectious Vectors" population="0"><outgoingFlows target="//@compartments.3" description="Auto-added: Infectious Vectors → Recovered Humans" rateParameter="//@parameters.3" /></compartments>
+  <compartments PrimaryName="Susceptible Female Adults">
+    <outgoingFlows target="//@compartments.11" rateParameter="//@parameters.20" />
+  </compartments>
+  <compartments PrimaryName="Exposed Female Adults">
+    <outgoingFlows target="//@compartments.12" rateParameter="//@parameters.21" />
+  <outgoingFlows target="//@compartments.2" description="Auto-added: Exposed Female Adults → Infectious Humans" rateParameter="//@parameters.1" /><outgoingFlows target="//@compartments.2" description="Auto-added: Exposed Female Adults → Infectious Humans" rateParameter="//@parameters.1" /></compartments>
+  <compartments PrimaryName="Infectious Female Adults" />
+</ns0:CompartmentalModel>

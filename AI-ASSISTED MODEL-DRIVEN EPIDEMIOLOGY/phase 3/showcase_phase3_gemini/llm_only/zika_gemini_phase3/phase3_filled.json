@@ -1,0 +1,64 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "exposed female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Pregnant Exposed",
+        "description": "",
+        "reasoning": "The model",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible female adults->Exposed female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible female adults transition to the exposed compartment after being bitten by infectious Aedes mosquitoes.",
+        "reasoning": "The paper explicitly states that ZIKV is",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Exposed female adults->Infectious female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed female adults complete their intrinsic incubation period and become infectious, capable of transmitting the Zika virus.",
+        "reasoning": "This transition represents the progression of infected individuals from the latent (exposed) state to the infectious state, which is a time-dependent biological process typically modeled as a rate.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 16,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

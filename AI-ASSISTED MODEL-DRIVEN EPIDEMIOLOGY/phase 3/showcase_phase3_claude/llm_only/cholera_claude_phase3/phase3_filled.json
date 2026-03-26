@@ -1,0 +1,47 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Bacterial Concentration",
+        "description": "Concentration of Vibrio cholerae in the aquatic/environmental reservoir",
+        "reasoning": "Cholera compartmental models typically include a compartment representing the concentration of Vibrio cholerae bacteria in the water/environment, which mediates indirect transmission from the environment to susceptible individuals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Shedding of Vibrio cholerae bacteria by infectious individuals into the water/environment, increasing the bacterial concentration in the aquatic reservoir.",
+        "reasoning": "Infectious individuals excrete large quantities of V. cholerae into the environment (water sources), contributing to the environmental bacterial concentration compartment, which is a standard feature of cholera transmission models linking human infection to environmental pathogen dynamics.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 2,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="L" expression="Recruitment rate to children group" type="CONSTANT" description="Recruitment rate into the susceptible children class." unit="per time" />
+  <parameters name="xU" expression="0.087" type="CONSTANT" description="Un-monitored children vaccination rate." unit="per week" />
+  <parameters name="xM" expression="4.77 × 10^-5" type="CONSTANT" description="Monitored children vaccination rate." unit="per week" />
+  <parameters name="xA" expression="0" type="CONSTANT" description="Adult vaccination rate." unit="per week" />
+  <parameters name="bC" expression="0.00188" type="CONSTANT" description="Transmission rate for children." unit="per week" />
+  <parameters name="bA" expression="1.00 × 10^-5" type="CONSTANT" description="Transmission rate for adults." unit="per week" />
+  <parameters name="m" expression="1/(72 × 52)" type="CONSTANT" description="Natural death rate." unit="per week" />
+  <parameters name="g" expression="1/2" type="CONSTANT" description="Rate of becoming immune after recovery from infection." unit="per week" />
+  <parameters name="j" expression="1/(15 × 52)" type="CONSTANT" description="Maturation rate from child to adult." unit="per week" />
+  <parameters name="e" expression="0.2" type="CONSTANT" description="Vaccine effectiveness factor; breakthrough infection occurs at rate e times the transmission rate." unit="dimensionless" />
+  <parameters name="hA" expression="0" type="CONSTANT" description="Rate of becoming immune of un-monitored vaccinated adults." unit="per week" />
+  <parameters name="hU" expression="3 × 10^-6" type="CONSTANT" description="Rate of becoming immune of un-monitored vaccinated children." unit="per week" />
+  <parameters name="hM" expression="0.167" type="CONSTANT" description="Rate of becoming immune of monitored vaccinated children." unit="per week" />
+  <parameters name="d" expression="0.7" type="CONSTANT" description="Incubation period parameter (progression rate from exposed to infectious)." unit="per week" />
+  <parameters name="q" expression="0.15" type="CONSTANT" description="Proportion of infection recorded in the data fitting." unit="dimensionless" />
+  <parameters name="a" expression="0.01253" type="CONSTANT" description="Proportion of the total population included in the measles transmission contact network." unit="dimensionless" />
+  <parameters name="ξu" expression="0.05" type="CONSTANT" unit="per year" />
+  <parameters name="φ" expression="0.8" type="CONSTANT" unit="dimensionless" />
+  <compartments PrimaryName="Susceptible Children" population="1000">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.1" description="Un-monitored vaccination of children at rate xU." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Monitored vaccination of children at rate xM." />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.15" target="//@compartments.9" description="Infection of susceptible children by infectious children and infectious adults at rate bC." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.6" description="Maturation of susceptible children into adults at rate j." />
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Children" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.9" target="//@compartments.9" description="Breakthrough infection of un-monitored vaccinated children at reduced rate e bC." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Maturation of un-monitored vaccinated children into adults at rate j." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Acquisition of immunity in un-monitored vaccinated children at rate hU." />
+  </compartments>
+  <compartments PrimaryName="Monitored Vaccinated Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Acquisition of immunity in monitored vaccinated children at rate hM." />
+  </compartments>
+  <compartments PrimaryName="Exposed Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.4" description="Progression from exposed to infectious children at rate d." />
+    <outgoingFlows target="//@compartments.9" rateParameter="//@parameters.9" />
+  </compartments>
+  <compartments PrimaryName="Infectious Children" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.5" description="Recovery of infectious children to immunity at rate g." />
+    <outgoingFlows target="//@compartments.10" rateParameter="//@parameters.9" />
+  </compartments>
+  <compartments PrimaryName="Immune Children" population="0">
+    <outgoingFlows target="//@compartments.11" rateParameter="//@parameters.16" />
+  </compartments>
+  <compartments PrimaryName="Susceptible Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.15" target="//@compartments.3" description="Infection of susceptible adults by infectious children and infectious adults at rate bA." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Un-monitored vaccination of adults at rate xA." />
+    <outgoingFlows target="//@compartments.8" rateParameter="//@parameters.17" />
+  </compartments>
+  <compartments PrimaryName="Un-monitored Vaccinated Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.9" target="//@compartments.3" description="Breakthrough infection of un-monitored vaccinated adults at reduced rate e bA." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.11" description="Acquisition of immunity in un-monitored vaccinated adults at rate hA." />
+  </compartments>
+  <compartments PrimaryName="Vaccinated Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.11" description="Vaccinated adults become immune at rate hA." />
+  </compartments>
+  <compartments PrimaryName="Exposed Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.10" description="Progression from exposed to infectious adults at rate d." />
+  </compartments>
+  <compartments PrimaryName="Infectious Adults" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.11" description="Recovery of infectious adults to immunity at rate g." />
+  </compartments>
+  <compartments PrimaryName="Immune Adults" population="0" />
+</ns0:CompartmentalModel>

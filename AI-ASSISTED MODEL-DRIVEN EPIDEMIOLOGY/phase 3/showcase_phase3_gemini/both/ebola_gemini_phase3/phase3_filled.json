@@ -1,0 +1,206 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "environment pathogens",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Environment",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Deceased",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Infectious->Deceased",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Infectious->Deceased",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Quarantine",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Environment pathogens",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Quarantine->Deceased",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Recovered humans",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Environment pathogens",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Infectious->Environment pathogens",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Infectious->Environment pathogens",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Quarantine",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Deceased",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Deceased->Environment pathogens",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Recovered humans",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Quarantine->Deceased",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Quarantine->Deceased",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Quarantine->Deceased",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Deceased",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Quarantine->Recovered",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [
+          {
+            "paper_id": "p2_ebola_llm_claude_20260321_234954",
+            "chunk_index": 0,
+            "chunk": "Introduction\n\nEbola Virus Disease (EVD), commonly known as Ebola Hemorrhagic Fever (EHF)\n\nModel formulation\n\nTo look at how the Ebola Virus Disease spread, persisted, and recurred in Africa. There could be assumptions; i) Deceased human beings are one of the sources of Ebola Virus Disease virus distribution. Because they departed, dead people might spread the disease during burial ceremonies. ii) The disease can enter the environment through the urine and faeces of infected or deceased individuals. iii) Infection can be transmitted via direct touch and indirect interactions, such as contaminated environments and surfaces. iv) The presence of Ebola Virus Disease in the environment due to consuming infected bush meat. v) Permanent disease-induced immunity exists.\n\nA mathematical model depicted in Fig.\n\nThe proportion at which infected people are recruitment\n\nThe rate of contact (effective) of infected human\n\nThe rate contact of Ebola virus pathogens in the environment\n\nRate of contact (effective) of deceased (human)\n\n\ud835\udf16\n\nNatural death rate of humans \ud835\udf0c 1\n\nRate of deaths of human individuals due to infection\n\nRate at which shedding of infected humans\n\nThe rate at which infected people quarantined\n\nThe rate at which quarantined people are recovered\n\nThe rate at which quarantine people are in deceased \u210e proportion of shedding of deceased people\n\n\ud835\udc50\n\nThe proportion rate of burial deceased people\n\n\ud835\udc4f\n\nThe rate at which EVD in the environment\n\nwith initial conditions,\n\nLet \ud835\udc64 \u2236 (0, \u221e) \u2192 \u211c the conformable fractional derivative of \ud835\udc54 (of order \ud835\udf0d) can be defined as,\n\n(\n\nThe new definition, Eq. (\n\nThe non-linear model (1), as Khalilzadeh's conformable derivative\n\n(\n\nInitial condition of non-linear system of equations,\n\nThe conservation law is obtained by adding the first four equations of the above non-linear system of equations (3),\n\nbe the sum of the total alive /active population.\n\nWell-Posedness and Equilibria\n\nTheorem 2.1. Now suppose the non-linear system of equations (\n\nProof."
+          },
+          {
+            "paper_id": "p2_ebola_llm_gemini_20260321_233208",
+            "chunk_index": 0,
+            "chunk": "Introduction\n\nEbola Virus Disease (EVD), commonly known as Ebola Hemorrhagic Fever (EHF)\n\nModel formulation\n\nTo look at how the Ebola Virus Disease spread, persisted, and recurred in Africa. There could be assumptions; i) Deceased human beings are one of the sources of Ebola Virus Disease virus distribution. Because they departed, dead people might spread the disease during burial ceremonies. ii) The disease can enter the environment through the urine and faeces of infected or deceased individuals. iii) Infection can be transmitted via direct touch and indirect interactions, such as contaminated environments and surfaces. iv) The presence of Ebola Virus Disease in the environment due to consuming infected bush meat. v) Permanent disease-induced immunity exists.\n\nA mathematical model depicted in Fig.\n\nThe proportion at which infected people are recruitment\n\nThe rate of contact (effective) of infected human\n\nThe rate contact of Ebola virus pathogens in the environment\n\nRate of contact (effective) of deceased (human)\n\n\ud835\udf16\n\nNatural death rate of humans \ud835\udf0c 1\n\nRate of deaths of human individuals due to infection\n\nRate at which shedding of infected humans\n\nThe rate at which infected people quarantined\n\nThe rate at which quarantined people are recovered\n\nThe rate at which quarantine people are in deceased \u210e proportion of shedding of deceased people\n\n\ud835\udc50\n\nThe proportion rate of burial deceased people\n\n\ud835\udc4f\n\nThe rate at which EVD in the environment\n\nwith initial conditions,\n\nLet \ud835\udc64 \u2236 (0, \u221e) \u2192 \u211c the conformable fractional derivative of \ud835\udc54 (of order \ud835\udf0d) can be defined as,\n\n(\n\nThe new definition, Eq. (\n\nThe non-linear model (1), as Khalilzadeh's conformable derivative\n\n(\n\nInitial condition of non-linear system of equations,\n\nThe conservation law is obtained by adding the first four equations of the above non-linear system of equations (3),\n\nbe the sum of the total alive /active population.\n\nWell-Posedness and Equilibria\n\nTheorem 2.1. Now suppose the non-linear system of equations (\n\nProof."
+          }
+        ],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Deceased->Environment pathogens",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Deceased->Environment pathogens",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Deceased->Environment pathogens",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Environment pathogens",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [
+          {
+            "paper_id": "p2_ebola_llm_claude_20260321_234954",
+            "chunk_index": 0,
+            "chunk": "Introduction\n\nEbola Virus Disease (EVD), commonly known as Ebola Hemorrhagic Fever (EHF)\n\nModel formulation\n\nTo look at how the Ebola Virus Disease spread, persisted, and recurred in Africa. There could be assumptions; i) Deceased human beings are one of the sources of Ebola Virus Disease virus distribution. Because they departed, dead people might spread the disease during burial ceremonies. ii) The disease can enter the environment through the urine and faeces of infected or deceased individuals. iii) Infection can be transmitted via direct touch and indirect interactions, such as contaminated environments and surfaces. iv) The presence of Ebola Virus Disease in the environment due to consuming infected bush meat. v) Permanent disease-induced immunity exists.\n\nA mathematical model depicted in Fig.\n\nThe proportion at which infected people are recruitment\n\nThe rate of contact (effective) of infected human\n\nThe rate contact of Ebola virus pathogens in the environment\n\nRate of contact (effective) of deceased (human)\n\n\ud835\udf16\n\nNatural death rate of humans \ud835\udf0c 1\n\nRate of deaths of human individuals due to infection\n\nRate at which shedding of infected humans\n\nThe rate at which infected people quarantined\n\nThe rate at which quarantined people are recovered\n\nThe rate at which quarantine people are in deceased \u210e proportion of shedding of deceased people\n\n\ud835\udc50\n\nThe proportion rate of burial deceased people\n\n\ud835\udc4f\n\nThe rate at which EVD in the environment\n\nwith initial conditions,\n\nLet \ud835\udc64 \u2236 (0, \u221e) \u2192 \u211c the conformable fractional derivative of \ud835\udc54 (of order \ud835\udf0d) can be defined as,\n\n(\n\nThe new definition, Eq. (\n\nThe non-linear model (1), as Khalilzadeh's conformable derivative\n\n(\n\nInitial condition of non-linear system of equations,\n\nThe conservation law is obtained by adding the first four equations of the above non-linear system of equations (3),\n\nbe the sum of the total alive /active population.\n\nWell-Posedness and Equilibria\n\nTheorem 2.1. Now suppose the non-linear system of equations (\n\nProof."
+          },
+          {
+            "paper_id": "p2_ebola_llm_gemini_20260321_233208",
+            "chunk_index": 0,
+            "chunk": "Introduction\n\nEbola Virus Disease (EVD), commonly known as Ebola Hemorrhagic Fever (EHF)\n\nModel formulation\n\nTo look at how the Ebola Virus Disease spread, persisted, and recurred in Africa. There could be assumptions; i) Deceased human beings are one of the sources of Ebola Virus Disease virus distribution. Because they departed, dead people might spread the disease during burial ceremonies. ii) The disease can enter the environment through the urine and faeces of infected or deceased individuals. iii) Infection can be transmitted via direct touch and indirect interactions, such as contaminated environments and surfaces. iv) The presence of Ebola Virus Disease in the environment due to consuming infected bush meat. v) Permanent disease-induced immunity exists.\n\nA mathematical model depicted in Fig.\n\nThe proportion at which infected people are recruitment\n\nThe rate of contact (effective) of infected human\n\nThe rate contact of Ebola virus pathogens in the environment\n\nRate of contact (effective) of deceased (human)\n\n\ud835\udf16\n\nNatural death rate of humans \ud835\udf0c 1\n\nRate of deaths of human individuals due to infection\n\nRate at which shedding of infected humans\n\nThe rate at which infected people quarantined\n\nThe rate at which quarantined people are recovered\n\nThe rate at which quarantine people are in deceased \u210e proportion of shedding of deceased people\n\n\ud835\udc50\n\nThe proportion rate of burial deceased people\n\n\ud835\udc4f\n\nThe rate at which EVD in the environment\n\nwith initial conditions,\n\nLet \ud835\udc64 \u2236 (0, \u221e) \u2192 \u211c the conformable fractional derivative of \ud835\udc54 (of order \ud835\udf0d) can be defined as,\n\n(\n\nThe new definition, Eq. (\n\nThe non-linear model (1), as Khalilzadeh's conformable derivative\n\n(\n\nInitial condition of non-linear system of equations,\n\nThe conservation law is obtained by adding the first four equations of the above non-linear system of equations (3),\n\nbe the sum of the total alive /active population.\n\nWell-Posedness and Equilibria\n\nTheorem 2.1. Now suppose the non-linear system of equations (\n\nProof."
+          }
+        ],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 10,
+    "inference_count": 7,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

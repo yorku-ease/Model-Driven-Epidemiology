@@ -1,0 +1,248 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "susceptible female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Female Adults",
+        "description": "Adult women who are not infected and can become exposed to ZIKV.",
+        "reasoning": "The model\u2019s missing human compartment corresponds to the susceptible adult female population in the Zika host structure, which is the key at-risk group emphasized in the paper context.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposed female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Female Adults",
+        "description": "Female adults who have been infected but are not yet infectious.",
+        "reasoning": "The missing compartment refers to the human exposed class in the Zika SEIR host model, specifically the exposed female adult subgroup.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectious female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Female Adults",
+        "description": "Adult female mosquitoes capable of transmitting Zika virus.",
+        "reasoning": "The missing compartment in the Zika compartmental model corresponds to the infectious adult female vector population, which transmits ZIKV to humans.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "1/\u03c4_h",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.2,
+        "unit": "day^-1",
+        "reasoning": "For Zika, the human infectious period is typically about 5 days, so the recovery/removal rate 1/\u03c4_h is plausibly around 0.2 per day. Reported symptomatic and viremic periods commonly fall in the ~3\u20137 day range, corresponding to roughly 0.14\u20130.33 day^-1.",
+        "range_low": 0.14,
+        "range_high": 0.33,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "b_v",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.5,
+        "unit": "per day",
+        "reasoning": "For Zika vector-borne transmission models, a mosquito biting/contact rate on the order of 0.3\u20131.0 bites per mosquito per day is commonly used; 0.5/day is a reasonable mid-range default for Aedes mosquitoes. This reflects frequent daytime biting behavior while staying within typical arboviral model assumptions.",
+        "range_low": 0.3,
+        "range_high": 1.0,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "1/\u03c4_v",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 10,
+        "unit": "days",
+        "reasoning": "For Zika, the intrinsic incubation period in humans is typically about 3\u201314 days, with a central value around 5\u201310 days. If 1/\u03c4_v is being used as a latent/incubation timescale in the vector-related SEI/SEIR framework, a default of about 10 days is a reasonable conservative midpoint within common epidemiologic ranges.",
+        "range_low": 3,
+        "range_high": 14,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "r_h",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.1,
+        "unit": "1/day",
+        "reasoning": "For Zika SEIR-type human models, the human recovery rate is typically on the order of 1/7 to 1/14 per day, reflecting about 1\u20132 weeks of infectiousness/viremia. A default of 0.1/day corresponds to an average infectious period of about 10 days, which is biologically plausible.",
+        "range_low": 0.07,
+        "range_high": 0.14,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "f",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.5,
+        "unit": "dimensionless",
+        "reasoning": "For Zika compartmental models, a parameter f is commonly used as the fraction of exposed humans who become symptomatic or progress to the clinically apparent infectious class. A default of 0.5 is a plausible midpoint within typical epidemiologic ranges, since a substantial fraction of Zika infections are asymptomatic but many models assume roughly half are symptomatic for baseline analyses.",
+        "range_low": 0.3,
+        "range_high": 0.7,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "\u03b4_l",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.1,
+        "unit": "1/day",
+        "reasoning": "A plausible default for \u03b4_l is a low-to-moderate per-capita transition/removal rate on the order of weeks, consistent with typical Zika-related compartmental models where latent or progression processes occur over several days to a couple of weeks. Using 0.1/day corresponds to an average timescale of about 10 days, which is biologically reasonable for ZIKV dynamics.",
+        "range_low": 0.05,
+        "range_high": 0.2,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "\u03c6",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.5,
+        "unit": "1/day",
+        "reasoning": "For Zika compartmental models, \u03c6 is commonly used as the progression rate from exposed to infectious, so a plausible default is the inverse of the intrinsic incubation period. Zika incubation is typically about 3\u201314 days, giving a central daily rate near 0.5/day.",
+        "range_low": 0.07,
+        "range_high": 0.33,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Pupae (non-infectious)->Susceptible female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Maturation of non-infectious pupae into susceptible female adult mosquitoes entering the vector population",
+        "reasoning": "This is a demographic development transition in the mosquito life cycle, not an infection-driven contact process.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible female adults->Exposed female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Female susceptible adults become exposed after being bitten by infectious Zika-infected mosquitoes, initiating infection in the adult female human compartment.",
+        "reasoning": "Zika is primarily mosquito-borne, so the transition from susceptible to exposed in adult females is driven by infectious vector contact rather than an internal progression rate.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Exposed female adults->Infectious female adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed female adults to infectious female adults after the intrinsic incubation period of Zika infection.",
+        "reasoning": "In the SEIR human model, exposed individuals become infectious at the incubation rate, so exposed female adults transition to infectious female adults.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 13,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

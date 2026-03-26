@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="α1" expression="10" type="CONSTANT" description="The proportion at which susceptible people are recruited" unit="people per unit time" />
+  <parameters name="α2" expression="3" type="CONSTANT" description="The proportion at which infected people are recruited" unit="people per unit time" />
+  <parameters name="ψ1" expression="0.006" type="CONSTANT" description="The rate of contact (effective) of infected human" unit="per unit time" />
+  <parameters name="ψ2" expression="0.0012" type="CONSTANT" description="The rate of contact of Ebola virus pathogens in the environment" unit="per unit time" />
+  <parameters name="ψ3" expression="0.006" type="CONSTANT" description="Rate of contact (effective) of deceased (human)" unit="per unit time" />
+  <parameters name="ε" expression="0.5" type="CONSTANT" description="Natural death rate of humans" unit="per unit time" />
+  <parameters name="ρ1" expression="0.123" type="CONSTANT" description="Rate of deaths of human individuals due to infection" unit="per unit time" />
+  <parameters name="ρ2" expression="0.04" type="CONSTANT" description="Rate at which shedding of infected humans" unit="per unit time" />
+  <parameters name="ρ3" expression="0.12" type="CONSTANT" description="The rate at which infected people quarantined" unit="per unit time" />
+  <parameters name="w1" expression="0.04" type="CONSTANT" description="The rate at which quarantined people are recovered" unit="per unit time" />
+  <parameters name="w2" expression="0.22" type="CONSTANT" description="The rate at which quarantine people are in deceased" unit="per unit time" />
+  <parameters name="h" expression="0.04" type="CONSTANT" description="Proportion of shedding of deceased people" unit="per unit time" />
+  <parameters name="c" expression="0.8" type="CONSTANT" description="The proportion rate of burial deceased people" unit="per unit time" />
+  <parameters name="b" expression="0" type="CONSTANT" description="The rate at which EVD in the environment decays" unit="per unit time" />
+  <parameters name="d" expression="0.0015" type="CONSTANT" description="Additional input of pathogens into the environment" unit="per unit time" />
+  <parameters name="μ" expression="0.00038461" type="CONSTANT" unit="1/time" description="Natural human death rate (μ)" />
+  <compartments PrimaryName="Susceptible" population="1000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.2" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious people, deceased people, and environmental pathogens at rates ψ1, ψ3, ψ2 respectively [S→I direct: no E stage] [S→I direct: no E stage]" />
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.2" description="Infected people entering quarantine at rate ρ3" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.4" description="Shedding of pathogens by infected humans into the environment at rate ρ2" />
+    <outgoingFlows target="//@compartments.3" />
+    <outgoingFlows target="//@compartments.6" />
+  </compartments>
+  <compartments PrimaryName="Quarantine" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.3" description="Recovery of quarantined individuals at rate w1" />
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0" />
+  <compartments PrimaryName="Ebola Virus Pathogens in Environment" population="0"><outgoingFlows target="//@compartments.3" description="Auto-added: Ebola Virus Pathogens in Environment → Recovered" rateParameter="//@parameters.0" /></compartments>
+  <compartments PrimaryName="Dead" population="0"><outgoingFlows target="//@compartments.3" description="Auto-added: Dead → Recovered" rateParameter="//@parameters.1" /></compartments>
+  <compartments PrimaryName="environment pathogens"><outgoingFlows target="//@compartments.3" description="Auto-added: environment pathogens → Recovered" rateParameter="//@parameters.3" /></compartments>
+</ns0:CompartmentalModel>

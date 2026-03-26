@@ -1,0 +1,98 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "environment pathogens",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Environmental Pathogens",
+        "description": "Represents the concentration or presence of",
+        "reasoning": "The text explicitly mentions 'Ebola virus pathogens in the environment' and transmission through 'contaminated environments and surfaces,' indicating a need to model the pathogen's presence outside human hosts.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Deceased",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Rate of deaths of human individuals due to infection",
+        "reasoning": "The text explicitly states 'Rate of deaths of human individuals due to infection', which describes the transition from the Infectious compartment to the Deceased state as a rate.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Environment pathogens",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Shedding of Ebola virus pathogens from infected humans into the environment.",
+        "reasoning": "The text explicitly mentions 'The rate at which shedding of infected humans' and describes how 'the disease can enter the environment through the urine and faeces of infected... individuals.'",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Quarantine->Deceased",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Rate at",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Deceased->Environment pathogens",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Pathogens shed from deceased individuals into the environment.",
+        "reasoning": "The excerpt states that 'The disease can enter the environment through the urine and faeces of ... deceased individuals,' indicating a shedding rate from the deceased compartment to the environmental pathogens compartment.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 17,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

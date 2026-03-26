@@ -1,0 +1,85 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "susceptible mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "Mosquitoes that have not yet been infected with the dengue virus and are capable of acquiring infection upon biting an infectious human host.",
+        "reasoning": "In a dengue compartmental model, the mosquito population must include a susceptible compartment to capture vector-borne transmission dynamics between humans and Aedes mosquitoes.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "\u03b31",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.1429,
+        "unit": "per day",
+        "reasoning": "In dengue compartmental models, \u03b31 typically represents the recovery rate from the first infectious stage (or the rate of progression from one infectious compartment to the next). The intrinsic infectious period of dengue is approximately 4-7 days, giving a recovery/transition rate of about 1/7 \u2248 0.1429 per day.",
+        "range_low": 0.1,
+        "range_high": 0.25,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "\u03b32",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.1429,
+        "unit": "per day",
+        "reasoning": "In dengue compartmental models, \u03b32 typically represents the recovery rate from a second infection or from a later infectious stage. The infectious period for dengue is commonly around 5-7 days, giving a recovery rate of approximately 1/7 \u2248 0.1429 per day, which is consistent with clinical observations of dengue viremia duration.",
+        "range_low": 0.1,
+        "range_high": 0.25,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible mosquitoes->Infectious mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Transmission of dengue virus from infectious humans to susceptible mosquitoes through blood-feeding contact, converting susceptible mosquitoes into infectious mosquitoes",
+        "reasoning": "Susceptible mosquitoes become infectious after biting and feeding on infectious humans, which is a contact-dependent transmission process requiring interaction between mosquito and human populations.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 4,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

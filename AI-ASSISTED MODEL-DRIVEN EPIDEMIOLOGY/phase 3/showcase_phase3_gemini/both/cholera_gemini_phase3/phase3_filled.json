@@ -1,0 +1,76 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Environmental Bacterial Concentration",
+        "description": "",
+        "reasoning": "Chol",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Infectious->Chollerae bacterial concentration",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Infectious->Chollerae bacterial concentration",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Recovered humans",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Infectious",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Isolated",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Recovered",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 2,
+    "inference_count": 2,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

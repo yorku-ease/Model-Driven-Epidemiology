@@ -1,0 +1,58 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "covid deaths",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Covid Deaths",
+        "description": "Cumulative deaths due to COVID-19, representing individuals who die after progressing through severe disease states such as ICU.",
+        "reasoning": "In a COVID-19 compartmental model tracking hospitalizations and ICU cases, a deaths compartment is essential to capture mortality outcomes, which is a standard terminal compartment in such models.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ICU->COVID Deaths",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "ICU->COVID Deaths",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "ICU->COVID Deaths",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "ICU->Admitted to hospital",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 1,
+    "inference_count": 1,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}

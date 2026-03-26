@@ -1,0 +1,47 @@
+{
+  "filled_gaps": [
+    {
+      "gap": {
+        "expected": "chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Cholerae Bacterial Concentration",
+        "description": "Environmental bacterial load of cholera-causing organisms.",
+        "reasoning": "Cholera transmission models commonly include an environmental reservoir representing the concentration of Vibrio cholerae bacteria in water, which is the missing compartment here.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Shedding of Vibrio cholerae into the environmental bacterial concentration by infectious individuals, increasing the pathogen reservoir.",
+        "reasoning": "In cholera models, infectious people contaminate the environment by excreting bacteria, so the flow is a continuous rate from Infectious to bacterial concentration.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ],
+  "summary": {
+    "rag_count": 0,
+    "inference_count": 4,
+    "spec_entity_count": 0,
+    "flagged_count": 0,
+    "total_filled": 0,
+    "fill_iterations": 2
+  },
+  "filled": []
+}
