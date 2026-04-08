@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="H" expression="10000" type="CONSTANT" description="Total human population." unit="persons"/>
+  <parameters name="n" expression="0.0001 or 0.001" type="CONSTANT" description="Human birth and death rates." unit="day-1"/>
+  <parameters name="a" expression="0.5 or 1" type="CONSTANT" description="Rate of exposure to contaminated water." unit="day-1"/>
+  <parameters name="K" expression="1e6" type="CONSTANT" description="Concentration of V. cholerae in water that yields a 50% chance of catching cholera." unit="cells/ml"/>
+  <parameters name="r" expression="0.2" type="CONSTANT" description="Rate at which people recover from cholera." unit="day-1"/>
+  <parameters name="nb" expression="0.0" type="CONSTANT" description="Growth rate of V. cholerae in the aquatic environment." unit="day-1"/>
+  <parameters name="mb" expression="0.0" type="CONSTANT" description="Loss rate of V. cholerae in the aquatic environment." unit="day-1"/>
+  <parameters name="nb-mb" expression="-0.33" type="CONSTANT" description="Net loss rate of V. cholerae in the aquatic environment (value from Table 2)." unit="day-1"/>
+  <parameters name="e" expression="10" type="CONSTANT" description="Contribution of each infected person to the population of V. cholerae in the aquatic environment." unit="cell/ml day-1 person-1"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Contribution of each infected person to the aquatic population of V. cholerae through excretion."/>
+  </compartments>
+  <compartments PrimaryName="Bacteria in Water" population="0"/>
+</compartmental:CompartmentalModel>

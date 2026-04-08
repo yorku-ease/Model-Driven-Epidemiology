@@ -1,0 +1,405 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "HIV-uninfected individuals in the population aged 15-49 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-uninfected individuals in the population aged 15-49 years"
+    },
+    {
+      "normalized_name": "Early Infection",
+      "raw_text": "Early Infection",
+      "page_number": 0,
+      "text_span": "Individuals in the acute/primary phase of HIV infection with elevated infectiousness (first few weeks of infection)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the acute/primary phase of HIV infection with elevated infectiousness (first few weeks of infection)"
+    },
+    {
+      "normalized_name": "Asymptomatic CD4 >350",
+      "raw_text": "Asymptomatic CD4 >350",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals with CD4 count above 350 cells/ml in asymptomatic stage",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals with CD4 count above 350 cells/ml in asymptomatic stage"
+    },
+    {
+      "normalized_name": "Asymptomatic CD4 200-350",
+      "raw_text": "Asymptomatic CD4 200-350",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals with CD4 count between 200 and 350 cells/ml",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals with CD4 count between 200 and 350 cells/ml"
+    },
+    {
+      "normalized_name": "Symptomatic CD4 \u2264200",
+      "raw_text": "Symptomatic CD4 \u2264200",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals with CD4 count at or below 200 cells/ml, late-stage/AIDS",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals with CD4 count at or below 200 cells/ml, late-stage/AIDS"
+    },
+    {
+      "normalized_name": "On ART",
+      "raw_text": "On ART",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals currently receiving antiretroviral therapy with reduced transmissibility",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals currently receiving antiretroviral therapy with reduced transmissibility"
+    },
+    {
+      "normalized_name": "Dropped Out",
+      "raw_text": "Dropped Out",
+      "page_number": 0,
+      "text_span": "Individuals who have dropped out from ART treatment programme",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have dropped out from ART treatment programme"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Early Infection",
+      "flow_type": "ContactFlow",
+      "raw_text": "HIV transmission through sexual contact with infectious individuals",
+      "page_number": 0,
+      "text_span": "HIV transmission through sexual contact with infectious individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV transmission through sexual contact with infectious individuals"
+    },
+    {
+      "source": "Early Infection",
+      "target": "Asymptomatic CD4 >350",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from acute/early infection to asymptomatic chronic infection",
+      "page_number": 0,
+      "text_span": "Progression from acute/early infection to asymptomatic chronic infection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from acute/early infection to asymptomatic chronic infection"
+    },
+    {
+      "source": "Asymptomatic CD4 >350",
+      "target": "Asymptomatic CD4 200-350",
+      "flow_type": "RateFlow",
+      "raw_text": "CD4 decline from above 350 to 200-350 cells/ml",
+      "page_number": 0,
+      "text_span": "CD4 decline from above 350 to 200-350 cells/ml",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "CD4 decline from above 350 to 200-350 cells/ml"
+    },
+    {
+      "source": "Asymptomatic CD4 200-350",
+      "target": "Symptomatic CD4 \u2264200",
+      "flow_type": "RateFlow",
+      "raw_text": "CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease",
+      "page_number": 0,
+      "text_span": "CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease"
+    },
+    {
+      "source": "Asymptomatic CD4 >350",
+      "target": "On ART",
+      "flow_type": "RateFlow",
+      "raw_text": "ART initiation for individuals with CD4 >350 (under immediate/all HIV+ eligibility scenario)",
+      "page_number": 0,
+      "text_span": "ART initiation for individuals with CD4 >350 (under immediate/all HIV+ eligibility scenario)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "ART initiation for individuals with CD4 >350 (under immediate/all HIV+ eligibility scenario)"
+    },
+    {
+      "source": "Asymptomatic CD4 200-350",
+      "target": "On ART",
+      "flow_type": "RateFlow",
+      "raw_text": "ART initiation for individuals with CD4 200-350 (under CD4 \u2264350 or all HIV+ eligibility)",
+      "page_number": 0,
+      "text_span": "ART initiation for individuals with CD4 200-350 (under CD4 \u2264350 or all HIV+ eligibility)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "ART initiation for individuals with CD4 200-350 (under CD4 \u2264350 or all HIV+ eligibility)"
+    },
+    {
+      "source": "Symptomatic CD4 \u2264200",
+      "target": "On ART",
+      "flow_type": "RateFlow",
+      "raw_text": "ART initiation for individuals with CD4 \u2264200 (under all eligibility scenarios)",
+      "page_number": 0,
+      "text_span": "ART initiation for individuals with CD4 \u2264200 (under all eligibility scenarios)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "ART initiation for individuals with CD4 \u2264200 (under all eligibility scenarios)"
+    },
+    {
+      "source": "On ART",
+      "target": "Dropped Out",
+      "flow_type": "RateFlow",
+      "raw_text": "Dropout from ART programme at a constant rate",
+      "page_number": 0,
+      "text_span": "Dropout from ART programme at a constant rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dropout from ART programme at a constant rate"
+    },
+    {
+      "source": "Symptomatic CD4 \u2264200",
+      "target": "Dropped Out",
+      "flow_type": "RateFlow",
+      "raw_text": "Death due to AIDS in untreated late-stage individuals",
+      "page_number": 0,
+      "text_span": "Death due to AIDS in untreated late-stage individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death due to AIDS in untreated late-stage individuals"
+    },
+    {
+      "source": "On ART",
+      "target": "On ART",
+      "flow_type": "RateFlow",
+      "raw_text": "Death while on ART (reduced mortality rate compared to untreated)",
+      "page_number": 0,
+      "text_span": "Death while on ART (reduced mortality rate compared to untreated)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death while on ART (reduced mortality rate compared to untreated)"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "ART eligibility CD4 threshold",
+      "raw_text": "ART eligibility CD4 threshold",
+      "value": "200, 350, or all HIV+",
+      "unit": "cells/ml",
+      "page_number": 0,
+      "text_span": "CD4 count threshold below which individuals become eligible for ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "CD4 count threshold below which individuals become eligible for ART"
+    },
+    {
+      "normalized_name": "ART access",
+      "raw_text": "ART access",
+      "value": "50-100",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Proportion of eligible individuals who eventually initiate treatment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of eligible individuals who eventually initiate treatment"
+    },
+    {
+      "normalized_name": "Time from eligibility to ART initiation",
+      "raw_text": "Time from eligibility to ART initiation",
+      "value": "1",
+      "unit": "year",
+      "page_number": 0,
+      "text_span": "Average time from reaching eligibility to starting ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average time from reaching eligibility to starting ART"
+    },
+    {
+      "normalized_name": "3-year retention on ART",
+      "raw_text": "3-year retention on ART",
+      "value": "75-100",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Percentage of individuals remaining on treatment after 3 years, excluding deaths",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Percentage of individuals remaining on treatment after 3 years, excluding deaths"
+    },
+    {
+      "normalized_name": "ART transmission reduction",
+      "raw_text": "ART transmission reduction",
+      "value": "90-99",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Reduction in HIV transmissibility for individuals on ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in HIV transmissibility for individuals on ART"
+    },
+    {
+      "normalized_name": "Early infection relative transmissibility (Boily estimate)",
+      "raw_text": "Early infection relative transmissibility (Boily estimate)",
+      "value": "10",
+      "unit": "fold increase",
+      "page_number": 0,
+      "text_span": "Relative increase in transmission during early infection compared to asymptomatic, based on Boily et al. meta-analysis",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative increase in transmission during early infection compared to asymptomatic, based on Boily et al. meta-analysis"
+    },
+    {
+      "normalized_name": "Early infection relative transmissibility (Hollingsworth estimate)",
+      "raw_text": "Early infection relative transmissibility (Hollingsworth estimate)",
+      "value": "26",
+      "unit": "fold increase",
+      "page_number": 0,
+      "text_span": "Relative increase in transmission during early infection compared to asymptomatic, based on Hollingsworth et al. reanalysis",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative increase in transmission during early infection compared to asymptomatic, based on Hollingsworth et al. reanalysis"
+    },
+    {
+      "normalized_name": "Late-stage relative transmissibility",
+      "raw_text": "Late-stage relative transmissibility",
+      "value": "1.4-4",
+      "unit": "fold increase",
+      "page_number": 0,
+      "text_span": "Relative increase in transmissibility during late-stage/AIDS compared to asymptomatic infection, varies by model",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative increase in transmissibility during late-stage/AIDS compared to asymptomatic infection, varies by model"
+    },
+    {
+      "normalized_name": "ART introduction year",
+      "raw_text": "ART introduction year",
+      "value": "2012",
+      "unit": "year",
+      "page_number": 0,
+      "text_span": "Year in which ART is introduced into the population in standardised scenarios",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Year in which ART is introduced into the population in standardised scenarios"
+    },
+    {
+      "normalized_name": "Male HIV prevalence 2012 (no ART)",
+      "raw_text": "Male HIV prevalence 2012 (no ART)",
+      "value": "10-16",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Range of estimated adult male HIV prevalence in 2012 across models under no-ART counterfactual",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Range of estimated adult male HIV prevalence in 2012 across models under no-ART counterfactual"
+    },
+    {
+      "normalized_name": "Female HIV prevalence 2012 (no ART)",
+      "raw_text": "Female HIV prevalence 2012 (no ART)",
+      "value": "17-23",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Range of estimated adult female HIV prevalence in 2012 across models under no-ART counterfactual",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Range of estimated adult female HIV prevalence in 2012 across models under no-ART counterfactual"
+    },
+    {
+      "normalized_name": "Male HIV incidence 2012 (no ART)",
+      "raw_text": "Male HIV incidence 2012 (no ART)",
+      "value": "1.1-2.0",
+      "unit": "per 100 person-years",
+      "page_number": 0,
+      "text_span": "Range of male HIV incidence rate in 2012 across models",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Range of male HIV incidence rate in 2012 across models"
+    },
+    {
+      "normalized_name": "Female HIV incidence 2012 (no ART)",
+      "raw_text": "Female HIV incidence 2012 (no ART)",
+      "value": "1.7-2.6",
+      "unit": "per 100 person-years",
+      "page_number": 0,
+      "text_span": "Range of female HIV incidence rate in 2012 across models",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Range of female HIV incidence rate in 2012 across models"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 2,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 17,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 10,
+    "num_parameters": 13,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

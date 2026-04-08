@@ -1,0 +1,382 @@
+{
+  "paper_name": "Ebola2",
+  "summary": {
+    "extraction": {
+      "compartments": 8,
+      "flows": 10,
+      "parameters": 11,
+      "stratifications": 2,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious in the Community",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Hospitalized Patients",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead Patients Not Yet Buried",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cumulative Cases",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Burials",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious in the Community",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious in the Community",
+        "target": "Hospitalized Patients",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious in the Community",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious in the Community",
+        "target": "Dead Patients Not Yet Buried",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized Patients",
+        "target": "Infectious in the Community",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized Patients",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized Patients",
+        "target": "Dead Patients Not Yet Buried",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Dead Patients Not Yet Buried",
+        "target": "Burials",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2",
+        "value": "0.532",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b8",
+        "value": "0.328",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c6",
+        "value": "2.104",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b7",
+        "value": "4.8 days",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b",
+        "value": "5.4 days",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "10.4 days",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b1",
+        "value": "10 days",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3H",
+        "value": "4.6 days",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b4",
+        "value": "73%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b4H",
+        "value": "61%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03ba",
+        "value": "0.0025",
+        "unit": "per week",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 8,
+    "flows": 10,
+    "parameters": 11,
+    "stratifications": 2,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 32,
+    "items_with_evidence": 32,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 32,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 32,
+      "items_with_evidence": 32,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 32,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 4,
+        "fp": 4,
+        "fn": 2,
+        "precision": 0.5,
+        "recall": 0.6667,
+        "f1": 0.5714
+      },
+      "flows": {
+        "tp": 6,
+        "fp": 4,
+        "fn": 3,
+        "precision": 0.6,
+        "recall": 0.6667,
+        "f1": 0.6316
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 11,
+        "fn": 10,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.5113,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious in the Community",
+          "score": 0.8133902549743652
+        },
+        {
+          "gold": "Hospitalized",
+          "extracted": "Hospitalized Patients",
+          "score": 0.9100257158279419
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed",
+          "score": 0.9999998807907104
+        },
+        {
+          "gold": "Infectious->Hospitalized",
+          "extracted": "Hospitalized Patients->Infectious in the Community",
+          "score": 0.9221717119216919
+        },
+        {
+          "gold": "Infectious->Removed",
+          "extracted": "Infectious in the Community->Recovered",
+          "score": 0.7442706227302551
+        },
+        {
+          "gold": "Infectious->Dead",
+          "extracted": "Infectious in the Community->Dead Patients Not Yet Buried",
+          "score": 0.7867083549499512
+        },
+        {
+          "gold": "Hospitalized->Removed",
+          "extracted": "Hospitalized Patients->Recovered",
+          "score": 0.7265455722808838
+        },
+        {
+          "gold": "Hospitalized->Dead",
+          "extracted": "Hospitalized Patients->Dead Patients Not Yet Buried",
+          "score": 0.764097273349762
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

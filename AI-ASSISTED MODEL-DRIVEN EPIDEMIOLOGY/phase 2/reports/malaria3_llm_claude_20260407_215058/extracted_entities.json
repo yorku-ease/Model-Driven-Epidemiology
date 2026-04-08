@@ -1,0 +1,457 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Susceptible and uninfected humans (state S)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible and uninfected humans (state S)"
+    },
+    {
+      "normalized_name": "Symptomatic Infectious Humans",
+      "raw_text": "Symptomatic Infectious Humans",
+      "page_number": 0,
+      "text_span": "Symptomatic and infectious humans (state D), highest probability of human-to-mosquito transmission",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Symptomatic and infectious humans (state D), highest probability of human-to-mosquito transmission"
+    },
+    {
+      "normalized_name": "Asymptomatic Infectious Humans",
+      "raw_text": "Asymptomatic Infectious Humans",
+      "page_number": 0,
+      "text_span": "Asymptomatic and infectious humans (state A), approximately 3-fold less likely to infect a biting mosquito than state D",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Asymptomatic and infectious humans (state A), approximately 3-fold less likely to infect a biting mosquito than state D"
+    },
+    {
+      "normalized_name": "Subpatent Infectious Humans",
+      "raw_text": "Subpatent Infectious Humans",
+      "page_number": 0,
+      "text_span": "Infectious humans undetectable by standard microscopy (state U), approximately 17-fold less likely to infect mosquitoes than state D",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious humans undetectable by standard microscopy (state U), approximately 17-fold less likely to infect mosquitoes than state D"
+    },
+    {
+      "normalized_name": "Treated Infectious Humans",
+      "raw_text": "Treated Infectious Humans",
+      "page_number": 0,
+      "text_span": "Treated and infectious humans (state T), clearing parasites more quickly after treatment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treated and infectious humans (state T), clearing parasites more quickly after treatment"
+    },
+    {
+      "normalized_name": "Prophylactically Protected Humans",
+      "raw_text": "Prophylactically Protected Humans",
+      "page_number": 0,
+      "text_span": "Uninfected humans protected by antimalarial prophylaxis (state P), duration dependent on drug half-life",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Uninfected humans protected by antimalarial prophylaxis (state P), duration dependent on drug half-life"
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Susceptible mosquitoes in the vector population (SEI model)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible mosquitoes in the vector population (SEI model)"
+    },
+    {
+      "normalized_name": "Exposed Mosquitoes",
+      "raw_text": "Exposed Mosquitoes",
+      "page_number": 0,
+      "text_span": "Exposed (latently infected) mosquitoes in the vector population (SEI model)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Exposed (latently infected) mosquitoes in the vector population (SEI model)"
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Infectious mosquitoes capable of transmitting malaria to humans (SEI model)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectious mosquitoes capable of transmitting malaria to humans (SEI model)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Symptomatic Infectious Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity",
+      "page_number": 0,
+      "text_span": "Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity"
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Asymptomatic Infectious Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)",
+      "page_number": 0,
+      "text_span": "Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)"
+    },
+    {
+      "source": "Symptomatic Infectious Humans",
+      "target": "Treated Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Treatment of symptomatic cases with antimalarials",
+      "page_number": 0,
+      "text_span": "Treatment of symptomatic cases with antimalarials",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment of symptomatic cases with antimalarials"
+    },
+    {
+      "source": "Symptomatic Infectious Humans",
+      "target": "Asymptomatic Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure",
+      "page_number": 0,
+      "text_span": "Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure"
+    },
+    {
+      "source": "Asymptomatic Infectious Humans",
+      "target": "Subpatent Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity",
+      "page_number": 0,
+      "text_span": "Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity"
+    },
+    {
+      "source": "Subpatent Infectious Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from subpatent infection to susceptible state",
+      "page_number": 0,
+      "text_span": "Recovery from subpatent infection to susceptible state",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from subpatent infection to susceptible state"
+    },
+    {
+      "source": "Treated Infectious Humans",
+      "target": "Prophylactically Protected Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful parasite clearance followed by prophylactic protection dependent on drug half-life",
+      "page_number": 0,
+      "text_span": "Successful parasite clearance followed by prophylactic protection dependent on drug half-life",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful parasite clearance followed by prophylactic protection dependent on drug half-life"
+    },
+    {
+      "source": "Treated Infectious Humans",
+      "target": "Asymptomatic Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Treatment failure, entering asymptomatic infection state",
+      "page_number": 0,
+      "text_span": "Treatment failure, entering asymptomatic infection state",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment failure, entering asymptomatic infection state"
+    },
+    {
+      "source": "Prophylactically Protected Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of prophylactic drug protection, return to susceptible state",
+      "page_number": 0,
+      "text_span": "Loss of prophylactic drug protection, return to susceptible state",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of prophylactic drug protection, return to susceptible state"
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)",
+      "page_number": 0,
+      "text_span": "Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)"
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Completion of extrinsic incubation period in mosquito, becoming infectious",
+      "page_number": 0,
+      "text_span": "Completion of extrinsic incubation period in mosquito, becoming infectious",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Completion of extrinsic incubation period in mosquito, becoming infectious"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Drug efficacy (ACT)",
+      "raw_text": "Drug efficacy (ACT)",
+      "value": "95",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Percentage of treated individuals with no parasitological treatment failure for ACT",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Percentage of treated individuals with no parasitological treatment failure for ACT"
+    },
+    {
+      "normalized_name": "Duration of gametocytaemia after non-artemisinin treatment",
+      "raw_text": "Duration of gametocytaemia after non-artemisinin treatment",
+      "value": "55.6",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Duration of gametocytaemia in treated infection for non-artemisinins",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of gametocytaemia in treated infection for non-artemisinins"
+    },
+    {
+      "normalized_name": "Duration of gametocytaemia after ACT treatment",
+      "raw_text": "Duration of gametocytaemia after ACT treatment",
+      "value": "13.4",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Duration of gametocytaemia in treated infection for ACT",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of gametocytaemia in treated infection for ACT"
+    },
+    {
+      "normalized_name": "Duration of gametocytaemia after ACT-PQ treatment",
+      "raw_text": "Duration of gametocytaemia after ACT-PQ treatment",
+      "value": "3.0",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Duration of gametocytaemia in treated infection for ACT with primaquine",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of gametocytaemia in treated infection for ACT with primaquine"
+    },
+    {
+      "normalized_name": "Duration of prophylaxis (short-acting drug)",
+      "raw_text": "Duration of prophylaxis (short-acting drug)",
+      "value": "10",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Duration of inhibitory antimalarial blood concentration for short-acting drug",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of inhibitory antimalarial blood concentration for short-acting drug"
+    },
+    {
+      "normalized_name": "Duration of prophylaxis (long-acting drug)",
+      "raw_text": "Duration of prophylaxis (long-acting drug)",
+      "value": "30",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Duration of inhibitory antimalarial blood concentration for long-acting drug",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of inhibitory antimalarial blood concentration for long-acting drug"
+    },
+    {
+      "normalized_name": "Reduction in infectiousness after non-artemisinin treatment",
+      "raw_text": "Reduction in infectiousness after non-artemisinin treatment",
+      "value": "70",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment"
+    },
+    {
+      "normalized_name": "Reduction in infectiousness after ACT/ACT-PQ treatment",
+      "raw_text": "Reduction in infectiousness after ACT/ACT-PQ treatment",
+      "value": "80.6",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment"
+    },
+    {
+      "normalized_name": "Pregnancy prevalence in population aged 15-45",
+      "raw_text": "Pregnancy prevalence in population aged 15-45",
+      "value": "7.1",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA"
+    },
+    {
+      "normalized_name": "Correlation in participation between MDA rounds",
+      "raw_text": "Correlation in participation between MDA rounds",
+      "value": "0.5",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)"
+    },
+    {
+      "normalized_name": "MDA coverage",
+      "raw_text": "MDA coverage",
+      "value": "80",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)"
+    },
+    {
+      "normalized_name": "ACT coverage for symptomatic treatment",
+      "raw_text": "ACT coverage for symptomatic treatment",
+      "value": "20",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Percentage of symptomatic cases receiving ACTs at baseline",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Percentage of symptomatic cases receiving ACTs at baseline"
+    },
+    {
+      "normalized_name": "Non-ACT treatment efficacy",
+      "raw_text": "Non-ACT treatment efficacy",
+      "value": "60",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Efficacy of non-ACT treatments at clearing parasites due to resistance",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Efficacy of non-ACT treatments at clearing parasites due to resistance"
+    },
+    {
+      "normalized_name": "ACT treatment efficacy",
+      "raw_text": "ACT treatment efficacy",
+      "value": "95",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Efficacy of ACTs at clearing parasites",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Efficacy of ACTs at clearing parasites"
+    },
+    {
+      "normalized_name": "Relative infectivity of asymptomatic vs symptomatic",
+      "raw_text": "Relative infectivity of asymptomatic vs symptomatic",
+      "value": "0.33",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)"
+    },
+    {
+      "normalized_name": "Relative infectivity of subpatent vs symptomatic",
+      "raw_text": "Relative infectivity of subpatent vs symptomatic",
+      "value": "0.06",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 4,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 9,
+    "num_flows": 11,
+    "num_parameters": 16,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

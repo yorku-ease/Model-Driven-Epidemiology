@@ -1,0 +1,248 @@
+{
+  "modelName": "Influenza3",
+  "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings — assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+  "totalParameters": 13,
+  "parametersWithUncertainty": 13,
+  "parameters": [
+    {
+      "parameter": "kappa",
+      "yourValue": "1/1.9",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Rate of progression from latent to infectious state (1/kappa is the mean latent period)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "gamma_1",
+      "yourValue": "1/1.5",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Recovery rate for infectious class (range 1/4 to 1)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "gamma_2",
+      "yourValue": "1/1.5",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Recovery rate for hospitalized class (range 1/4 to 1)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "alpha_i",
+      "yourValue": "(p_Hi / (1 - p_Hi)) * gamma_1",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Age-specific hospitalization rate derived from probability of hospitalization given clinical illness",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "delta_i",
+      "yourValue": "(CFP_i / (1 - CFP_i)) * gamma_2",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Age-specific influenza mortality rate for hospitalized individuals derived from case fatality proportion",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "q",
+      "yourValue": "calibrated to R0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "dimensionless",
+      "description": "Transmission probability per contact, constant across age groups",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "beta_ij",
+      "yourValue": "q * c_ij",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Transmission rate between age groups i and j, product of transmission probability and age-specific contact rate",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "R0",
+      "yourValue": "1.4-1.8",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "dimensionless",
+      "description": "Basic reproduction number for the 2009 H1N1 pandemic in Mexico",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "e_i",
+      "yourValue": "0.775 (<65y), 0.35 (>=65y)",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "dimensionless",
+      "description": "Age-specific vaccine efficacy (77.5% for <65y, 35% for >=65y)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "gamma",
+      "yourValue": "1/10",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Rate at which successfully vaccinated individuals develop protection (mean 10 days)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "nu(t)",
+      "yourValue": "exponential with mean 5 days",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "1/day",
+      "description": "Vaccination rate, applied t* days after epidemic onset",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "vaccination_coverage",
+      "yourValue": "5-20",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "%",
+      "description": "Vaccination coverage with full course of 1-2 doses",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "t*",
+      "yourValue": "25 or 37",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Influenza3",
+      "unit": "days",
+      "description": "Time after epidemic onset when vaccination is initiated",
+      "type": "CONSTANT"
+    }
+  ],
+  "summary": {
+    "highConfidence": 0,
+    "mediumConfidence": 0,
+    "lowConfidence": 0,
+    "unknownConfidence": 13
+  }
+}

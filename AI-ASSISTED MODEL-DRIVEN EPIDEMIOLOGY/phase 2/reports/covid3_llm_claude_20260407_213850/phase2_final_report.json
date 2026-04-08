@@ -1,0 +1,278 @@
+{
+  "paper_name": "Covid3",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 1,
+      "parameters": 12,
+      "stratifications": 2,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Symptomatic",
+        "target": "Dead",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "R0",
+        "value": "3.8",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rt",
+        "value": "0.66",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ifr",
+        "value": "country-specific",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "infection_to_onset",
+        "value": "5.1",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "onset_to_death",
+        "value": "17.8",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "generation_interval",
+        "value": "6.5",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "lockdown_effect",
+        "value": "81",
+        "unit": "percent reduction in Rt",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "alpha_lockdown",
+        "value": "country-specific",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "alpha_school_closure",
+        "value": "shared",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "alpha_public_events",
+        "value": "shared",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "alpha_self_isolation",
+        "value": "shared",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "alpha_social_distancing",
+        "value": "shared",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 1,
+    "parameters": 12,
+    "stratifications": 2,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 20,
+    "items_with_evidence": 20,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 20,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 20,
+      "items_with_evidence": 20,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 20,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.75,
+        "recall": 0.75,
+        "f1": 0.75
+      },
+      "flows": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 11,
+        "fn": 13,
+        "precision": 0.0833,
+        "recall": 0.0714,
+        "f1": 0.0769
+      },
+      "composite_score": 0.3303,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Infected",
+          "extracted": "Infectious",
+          "score": 0.8296633362770081
+        },
+        {
+          "gold": "Dead",
+          "extracted": "Dead",
+          "score": 0.9999998807907104
+        }
+      ],
+      "flow_matches": [],
+      "parameter_matches": [
+        {
+          "gold": "InitialRt 3.8 Average initial reproduction number estimated across the 11 countries before interventions",
+          "extracted": "R0 3.8 Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
+          "score": 0.8834366798400879
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

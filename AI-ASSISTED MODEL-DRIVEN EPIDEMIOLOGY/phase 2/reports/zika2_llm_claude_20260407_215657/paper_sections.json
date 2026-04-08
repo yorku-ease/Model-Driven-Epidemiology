@@ -1,0 +1,6583 @@
+{
+  "sections": {
+    "section_1": {
+      "heading": "Introduction",
+      "text": "The Zika Virus (ZIKV) is a flavivirus similar to dengue, chikungunya and yellow fever, that is primarily transmitted by Aedes mosquitoes\n\nIt was long assumed that ZIKV was a typical vector-borne disease, transmitted only by Aedes mosquitoes\n\nWhile ZIKV can be transmitted by various pathways, the most influential with respect to overall disease spread are by mosquito and sexual contact. Concerning the latter, ZIKV has a causal relationship with Guillain Barre ´syndrome (GBS)\n\nThe research agenda of the World Health Organization (WHO) on prevention and control is focused on vaccine development, vector control, treatment and regulatory support\n\nAccording to the WHO, as of February 2018, interrupted transmission with potential reintroduction of ZIKV has been observed in 15 areas in the Western Pacific Region and the Americas\n\nIn the context of ZIKV circulation, various mathematical models and parameter estimations have been proposed\n\nIn this paper, we construct a compartmental model to represent the spread dynamics of ZIKV including its two main transmission pathways: mosquito bites and sexual contact. The structure of our model allows the simultaneous estimation of cases disaggregated by the presence of symptoms, transmission route, and sex. Symptomatic and asymptomatic individuals are able to spread the virus infecting mosquitoes and other humans. Following the kinetics of ZIKV, humans are infectious to mosquitoes for a shorter period than they are for other humans. Likewise, the infectious period of women and men is different and according to the persistence if the ZIKV is in semen or vaginal fluids. In consideration of the observed pattern of ZIKV sexual infections\n\nIn summary, the purpose of this study is multifaceted. One aim is to determine how significant is the contribution of the sexual transmission pathway to the spread dynamics of the ZIKV. To do this, we fit our model to the number of infections reported in 27 municipalities of Colombia",
+      "level": 1
+    },
+    "section_2": {
+      "heading": "Materials and methods",
+      "text": "",
+      "level": 1
+    },
+    "section_3": {
+      "heading": "Mathematical model",
+      "text": "In order to assess the impact of the sexual transmission pathway we build upon the model presented in\n\nFig\n\nEqs 1 to 16 describe ZIKV infectious dynamics as depicted in the mathematical model shown in\n\nA summary of the parameter bounds are shown in Table\n\nThe transmission rate from mosquitoes to humans β vh (Eq 18) is the product of the blood feeding rate (a), the virus transmissibility to humans (b), and the ratio of mosquitoes to humans (m).\n\nThe ranges for a, b and c correspond to the values used in\n\nThe person-to-person transmission rates (β wm , β mw ) are in the range suggested in\n\nAccording to the proposed mathematical model, an exposed individual becomes infectious with Zika viral load in blood and genital fluids. The viral clearance from blood occurs in (1/γ 1 ). Whereas, the virus remains in semen for (1/γ 2 ) days, and in vaginal fluids for (1/γ 3 ) days. Most of the sexually transmitted ZIKV infections reported occurred between an infectious man and his partner\n\nAlthough the Zika virus can be transmitted to people of all ages, only sexually active people can be horizontally infected. According to the Colombia Demographic and Health Survey 2015\n\nThus, in Eq 19 the proportion of risky sexual interactions in the population (ρ) was calculated as the sum of the proportion of sexually active women of reproductive age who do not use condoms (W nc ) and the proportion of sexually active men of reproductive age who do not use condoms (M nc ), multiplied by the contact rate (CR), which was assumed to be monogamous and 2.5 times per week, assuming slight variations from the estimates in\n\nApproximately 7% of sexual interactions per person per day are risky encounters, which might lead to the horizontal transmission of the ZIKV. This calculation was made using the population estimates from years 1985-2005 and projections for 2005-2020 disaggregated by sex, area and five-year age groups",
+      "level": 1
+    },
+    "section_4": {
+      "heading": "Data sources",
+      "text": "The political and administrative division of Colombia includes departments, intendencias, comisarías, municipalities, and population centers. Considering the heterogeneity of the population and the availability of data, municipalities were selected as cases of study. In order to show the impact of sexual transmission in representative territories within the 1,122 municipalities in Colombia, the largest 27 municipalities by number of reported infections will be used. These 27 municipalities each had at least 500 reported infections and accounted for 69.65% of the total infections reported on a national level.",
+      "level": 1
+    },
+    "section_5": {
+      "heading": "Population at risk.",
+      "text": "The susceptible, exposed, infectious, and recovered compartments, are defined as proportions with respect to the population at risk (Nh), which is defined as the group of individuals residing in areas with average temperatures above 18˚C and whose living conditions make them especially susceptible to vector-borne diseases. High temperatures are strongly correlated with a large number of vectors, and the occurrence of outbreaks\n\nThe population of mosquitoes at risk was calculated using the proportions of female mosquitoes to humans reported in\n\nTable\n\n2.2.2 Weekly incidence. The used weekly incidence data was reported to the Colombian National Public Health Surveillance System (SIVIGILA) from 2015 to 2017 as General Zika Disease (code 895), which includes neurological disorders probably associated with a ZIKV infection, and is available to the public in",
+      "level": 1
+    },
+    "section_6": {
+      "heading": "Fitting procedure",
+      "text": "A multi-step fitting strategy is used whereby the first step performs a global search to obtain a suitable set of parameters that then is used as the initial estimate for the second (local search) step of the fitting process. In the former step, the cumulative symptomatic incidence (C) is fit to the cumulative number of reported infections per week. The result is a set of parameters that do not describe the incidence of the ZIKV. For that reason, in the latter step the symptomatic incidence per week is fit to the number of reported infections per week. A quasi-Newton method\n\nBecause our model accounts for under-reporting, the weights are distributed so that the fitted points at the peak of the incidence curve have a greater penalty.\n\nA Markov Chain Monte Carlo simulation that includes an adaptive Metropolis algorithm with a delayed rejection procedure is also leveraged to fit the data, which provides a confidence bound about its most probably parameterization. The method is executed for a maximum of 15000 iterations with a burn-in period of 3000 iterations.\n\nThe symptomatic incidence was fit to the reported infections, noting that the public health surveillance for the ZIKV in Colombia prior to and during the epidemic was based on the symptomatology exhibited by the patient\n\nThe compartments of the model describe the prevalence of the ZIKV; not the incidence. In particular, the infectious compartments (I wa , I ws , I w , I ma , I ms , I m ) describe the number of individuals that became infected at a given time (present or past) and remain infected at the current time. Taking that into account, the cumulative number of symptomatic infections per week (C) is recorded, and from that, it is possible to calculate the symptomatic incidence",
+      "level": 1
+    },
+    "section_7": {
+      "heading": "Under-reporting.",
+      "text": "In addition to estimating model parameters, the degree of underreporting is also estimated. As discussed above, under-reporting seems likely to occur given that approximately 80% of ZIKV cases seem asymptomatic\n\nThe general idea is to artificially boost observed data to levels one would observe with full reporting. In order to estimate the total number of symptomatic cases, the data from SIVI-GILA\n\nThen, an expansion factor (EF) for each of the 27 municipalities was calculated using the estimates for the proportion of symptomatic infections (ϕ) and the value of EF s :\n\nHence, if the model is perfectly fit to reported data then CF = EF s and CF � ϕEF.",
+      "level": 1
+    },
+    "section_8": {
+      "heading": "Results",
+      "text": "For presentation purposes only figures for the municipalities af Barranquilla (8001), Giron (68307), Monteria (23001), Santa Marta (47001), Sincelejo (70001), Ibague (73001), Cali (76001), and Arauca (81001) are shown. These were empirically selected as a representative sub-sample by distribution of population sizes. The complete set of plots can be found in the S1 Appendix.",
+      "level": 1
+    },
+    "section_9": {
+      "heading": "Estimated parameters for ZIKV infection",
+      "text": "Using the best-fit parameters and correction factor from the Monte Carlo procedure, the number of weekly ZIKV infections from epidemiological week 1, 2015 through 52, 2017 was estimated. Infections were disaggregated by sex, symptomatology, and transmission pathway. The expansion factor was calculated for the symptomatic infections (EF s ) and for the total number of infections (EF) are shown in Table\n\nFig",
+      "level": 1
+    },
+    "section_10": {
+      "heading": "Reporting degree",
+      "text": "Table\n\nThe proportion of symptomatic infections reported is smaller than 50% in municipalities except Los Patios (55%), Bucaramanga (80%), Floridablanca (85%), Cali (51%) and Guadalajara de Buga. Our estimates imply significant disparities in the rates of reporting across the municipalities and in general very low reporting rates reiterating the mildness of ZIKV symptoms.\n\nThe variation of the parameters and the expansion factor between different regions can be attributed to distinct geographic and socioeconomic conditions that favor transmission and might allow for superspreading events to occur. In these events, a small proportion of the population is responsible for a large proportion of cases. On the one hand, Colombia, being one of the countries that lie near the equator, has a very diverse climate that varies with the elevation and is more or less constant throughout the year. Thus, regions in lower elevations are much more suitable for mosquito breeding. On the other hand, the living conditions and the lack of access to water and sewage systems make some populations more likely to be exposed to mosquito clusters than others.",
+      "level": 1
+    },
+    "section_11": {
+      "heading": "ZIKV infections disaggregated by symptomatology",
+      "text": "Table",
+      "level": 1
+    },
+    "section_12": {
+      "heading": "ZIKV infections disaggregated by transmission pathway",
+      "text": "Table",
+      "level": 1
+    },
+    "section_13": {
+      "heading": "Implementation of public health policies",
+      "text": "One important use of disease spread models is to inform potential public policy decisions. To this end we simulated three hypothetical scenarios where a set of health policies are applied at specific points during the outbreak and assess the impact of the policy for mitigating ZIKV spread. These are not intended to be exhaustive, nor hyper-realistic. Rather, to further the discussion concerning uses of the proposed model. The best-fit model for each municipality was used as a null model. Three time points were selected as the point where an intervention would occur by public policy, intended to coincide with levels of aggressiveness with respect to policy implementation: (a) Threshold(th) = 20%: when there were at least 20% of the maximum number of cases per week for the first time ( 1. Policy one: Promoting the use of condoms during sexual encounters regardless of the marital status and the use of other non-barrier contraception methods. Scenario simulated: The proportion of risky sexual encounters (rho) decreases by 50%.",
+      "level": 1
+    },
+    "section_14": {
+      "heading": "Policy two:",
+      "text": "Promoting the use of insecticides and the destruction of larval breeding sites using public broadcasting. Scenario simulated: The population of mosquitoes is reduced by 10%.",
+      "level": 1
+    },
+    "section_15": {
+      "heading": "Policy three:",
+      "text": "Promoting the use of insecticides and the destruction of larval breeding sites more extensively, using public broadcasting and making visits to areas where poverty limits or restring the access to information media. Scenario simulated: The population of mosquitoes is reduced by 20%.   Table",
+      "level": 1
+    },
+    "section_16": {
+      "heading": "Variation of the number of risky sexual interactions",
+      "text": "We also explored two feasible scenarios where the proportion of sexual interaction without the use of sexual protection (e.g., condoms) increases. On the one hand, we explore the case in which the number of sexual encounters per week increases resulting in a proportion of unsafe sexual interactions of 10%. Secondly, we additionally assume that individuals have two sexual partners per year, then rho increases to 20%. The second scenario will also occur if the number of sexual encounters per week increases.  fit results and the output of the model when the proportion of unprotected sexual interaction increases and shows significant increases if ρ � 0.2, and for example Sincelejo (70001) and Arauca (81001) see nearly doubles proportions. Table",
+      "level": 1
+    },
+    "section_17": {
+      "heading": "Discussion",
+      "text": "We presented a deterministic model for the Zika Virus spread as both a vector-borne and sexually transmitted disease. Our model encompasses transmission of the virus between humans and mosquitoes, and between women and men regardless of the presence or absence of symptoms. Our analysis disaggregated the estimated infections according to the sex, symptomatology and transmission pathway. We also evaluated the reporting degree for the symptomatic infections and the total ZIKV infections. While the proposed model has been demonstrated to well-fit the observed patterns for most of the municipalities, there are some important aspects to discuss concerning the model, its assumptions, and potential influential external factors.\n\nFirstly, the proposed transmission model does not consider male-male, or female-female transmission, which although comprise a small proportion of all cases, does contribute to the spread dynamics. The model also does not consider environmental factors such as sea level that have been observed to be high related to ZIKV incidence, mostly by influencing the mosquito population (more below). Moreover, the model does not consider cross-immunity directly as it assumes the population of susceptible men and women is relatively well known, similar for the susceptible mosquito population. Due to the number of parameters the fitting procedure needed to be multiple-stages to avoid being trapped at local optimal that may not have practical relevance. Increased data or improved knowledge of the parameterization will reduce this issue. Additionally, the model was fit for each of the 27 municipalities independently, however, there are model parameters that should have similar values independent of the location such as the mean time to viral clearance in semen or vaginal fluid. Perhaps a more sophisticated higher-order model could be constructed and fit that is able to better make use of the data and represent such constraints.\n\nThe population at risk is estimated based on the average temperature and Index of Unsatisfied Basic Needs, which impacts the number of susceptible individuals and hence is an important factor to the overall disease spread. In this paper we assumed previous literature values, but calibrating this value is of critical importance. Of course, there are a variety of risk factors behind the geographical spread and transmission of ZIKV, for instance the inverse relationship between ZIKV and gross domestic product\n\nThe data could be limited in a number of ways as well. The National System of Public Health Surveillance in Colombia (SIVIGILA) publishes time series of the number of symptomatic Zika infections that are confirmed clinically or through laboratory tests\n\nIn cases where ZIKV is transmitted to a pregnant woman, her child may develop a variety of neurological disorders, such as GBS. In recording and comparing these numbers it is critical to be cognizant of potential false positives. For instance\n\nWe also used the proposed model to provide some insight into the impact public policies could have on mitigating ZIKV spread. The experiments did not explicitly implement a policy, such as mosquito spraying, but instead simulated an estimate of what such a policy could mean with respect to changes in model parameterization. Given the relatively few cases of ZIKV due to sexual transmission, policies aimed at that particular pathway did not significantly impact overall spread. However, the associated risk of not putting resources toward mitigating sexual transmission is large given both potential immediate and long-term consequences and associated costs. In order to gain more granular insight the policies could be more concretely studied and related to specific value changes in parameterization. Moreover, the proposed model could instead form a basis for an network or agent-based simulation that would provide much more detailed feedback (e.g.,",
+      "level": 1
+    },
+    "section_18": {
+      "heading": "Conclusions",
+      "text": "We constructed a compartmental model to represent the spread dynamics of ZIKV, including its two main transmission pathways: mosquito bites and sexual contact. The structure of our model allows for the estimation of cases by symptoms and sex. This is an important feature that can be utilized in the future to study specific populations, such as pregnant women who could be affected by the congenital diseases associated with ZIKV. We can also use it to study specific simulation scenarios, for example, the use of condoms as a health policy against the spread of Zika.\n\nThe ZIKV is a very atypical flavivirus, not only because of its causal association with severe disorders but also because of its multiple transmission pathways. The mathematical model we presented can be easily modified to add mechanisms that have not been explored, including non-sexual person-to-person transmission, which appears to be the pathway of the case reported in",
+      "level": 1
+    }
+  },
+  "tables": [
+    {
+      "source": "camelot-stream",
+      "table_index": 7,
+      "page": 6,
+      "shape": [
+        16,
+        4
+      ],
+      "data": [
+        [
+          "",
+          "asymptomatically infectious. The intrinsic incubation period for the Zika Virus was estimated",
+          "",
+          ""
+        ],
+        [
+          "",
+          "in [81, 82], using those confidence we assume a constant λh = 6.8.",
+          "",
+          ""
+        ],
+        [
+          "Table 1. Model parameters and their estimated realistic range.",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Symbol",
+          "Definition",
+          "Range",
+          "Reference"
+        ],
+        [
+          "βvh",
+          "Mosquito to human transmission rate",
+          "0.01–0.4",
+          "[59, 74, 77]"
+        ],
+        [
+          "βhv",
+          "Human to mosquito transmission rate",
+          "0.09–0.5",
+          "[59]"
+        ],
+        [
+          "βwm",
+          "Women to men transmission rate",
+          "0.001–0.1",
+          "[59]"
+        ],
+        [
+          "βmw",
+          "Men to women transmission rate",
+          "0.01–0.1",
+          "[59]"
+        ],
+        [
+          "ϕ",
+          "Proportion of symptomatic infections",
+          "0.10–0.27",
+          "[7]"
+        ],
+        [
+          "1/λh",
+          "Intrinsic latent period (days)",
+          "3–14",
+          "[81]"
+        ],
+        [
+          "1/λv",
+          "Extrinsic latent period (days)",
+          "8–12",
+          "[83]"
+        ],
+        [
+          "1/γ1",
+          "Mean time to viral clearance from blood (days)",
+          "10–20",
+          "[88, 89]"
+        ],
+        [
+          "1/γ2",
+          "Mean time to viral clearance from semen (days)",
+          "10–30",
+          "[89]"
+        ],
+        [
+          "1/γ3",
+          "Mean time to viral clearance from vaginal fluids (days)",
+          "1–20",
+          "[61]"
+        ],
+        [
+          "1/ν",
+          "Mosquito life span (days)",
+          "4–50",
+          "[83]"
+        ],
+        [
+          "https://doi.org/10.1371/journal.pone.0270127.t001",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 9,
+      "page": 8,
+      "shape": [
+        31,
+        6
+      ],
+      "data": [
+        [
+          "PLOS ONE",
+          "",
+          "",
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission",
+          ""
+        ],
+        [
+          "",
+          "Table 2. Estimated at risk population by municipality.",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Code",
+          "Municipality",
+          "Department",
+          "Population at risk",
+          "Risky sexual encounters ρ(%)",
+          "Elevation (m)"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "Atlantico",
+          "210234",
+          "7.24",
+          "18"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "Atlantico",
+          "128930",
+          "7.40",
+          "58"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "Bolivar",
+          "245239",
+          "7.30",
+          "2"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "Caqueta",
+          "36864",
+          "7.27",
+          "243"
+        ],
+        [
+          "23001",
+          "Monteria",
+          "Cordoba",
+          "182250",
+          "7.33",
+          "50"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "Huila",
+          "57461",
+          "7.40",
+          "442"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "Huila",
+          "21342",
+          "6.96",
+          "829"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "Magdalena",
+          "126642",
+          "7.18",
+          "2"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "Meta",
+          "73525",
+          "7.48",
+          "467"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "Meta",
+          "13243",
+          "7.26",
+          "499"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "Norte de Santander",
+          "143381",
+          "7.29",
+          "321"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "Norte de Santander",
+          "13452",
+          "7.37",
+          "412"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "Norte de Santander",
+          "17247",
+          "7.41",
+          "441"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "Santander",
+          "60300",
+          "7.29",
+          "959"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "Santander",
+          "42763",
+          "7.19",
+          "75"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "Santander",
+          "23708",
+          "7.39",
+          "926"
+        ],
+        [
+          "68307",
+          "Giron",
+          "Santander",
+          "24142",
+          "7.37",
+          "706"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "Santander",
+          "16858",
+          "7.32",
+          "1005"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "Sucre",
+          "107681",
+          "7.26",
+          "180"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "Tolima",
+          "76510",
+          "6.95",
+          "1286"
+        ],
+        [
+          "76001",
+          "Cali",
+          "Valle del Cauca",
+          "243657",
+          "7.33",
+          "1019"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "Valle del Cauca",
+          "12237",
+          "6.96",
+          "969"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "Valle del Cauca",
+          "20170",
+          "6.77",
+          "918"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "Valle del Cauca",
+          "36748",
+          "7.22",
+          "1001"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "Arauca",
+          "27506",
+          "6.73",
+          "125"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "Casanare",
+          "30187",
+          "7.76",
+          "351"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "San Andres",
+          "28987",
+          "7",
+          "85"
+        ],
+        [
+          "",
+          "https://doi.org/10.1371/journal.pone.0270127.t002",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 14,
+      "page": 11,
+      "shape": [
+        31,
+        11
+      ],
+      "data": [
+        [
+          "",
+          "",
+          "",
+          "female (βmw) transmission probabilities exhibited any particularly obvious pattern or bias",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Table 3. Estimated errors, parameters, and correction factor for the symptomatic ZIKV infections.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Code",
+          "Municipality",
+          "CF",
+          "RMSE",
+          "βvh",
+          "βhv",
+          "βwm",
+          "βmw",
+          "ϕ",
+          "γ2",
+          "γ3"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "7.4",
+          "0.00",
+          "0.1",
+          "0.4",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.09",
+          "0.13"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "20.60",
+          "0.00",
+          "0.23",
+          "0.16",
+          "0.01",
+          "0.04",
+          "0.16",
+          "0.08",
+          "0.39"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "20.90",
+          "0.00",
+          "0.19",
+          "0.23",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.06",
+          "0.49"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "4.40",
+          "0.00",
+          "0.26",
+          "0.15",
+          "0.02",
+          "0.08",
+          "0.16",
+          "0.07",
+          "0.39"
+        ],
+        [
+          "23001",
+          "Monteria",
+          "9.30",
+          "0.00",
+          "0.17",
+          "0.40",
+          "0.03",
+          "0.10",
+          "0.16",
+          "0.10",
+          "0.14"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "1.90",
+          "0.00",
+          "0.22",
+          "0.36",
+          "0.02",
+          "0.10",
+          "0.16",
+          "0.09",
+          "0.15"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "2.50",
+          "0.00",
+          "0.16",
+          "0.28",
+          "0.02",
+          "0.09",
+          "0.16",
+          "0.06",
+          "0.20"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "9.20",
+          "0.00",
+          "0.25",
+          "0.15",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.09",
+          "0.11"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "2.90",
+          "0.00",
+          "0.28",
+          "0.11",
+          "0.01",
+          "0.05",
+          "0.16",
+          "0.06",
+          "0.14"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "2.40",
+          "0.00",
+          "0.19",
+          "0.27",
+          "0.02",
+          "0.04",
+          "0.16",
+          "0.09",
+          "0.46"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "2.10",
+          "0.00",
+          "0.18",
+          "0.30",
+          "0.00",
+          "0.02",
+          "0.16",
+          "0.09",
+          "0.23"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "1.90",
+          "0.00",
+          "0.30",
+          "0.39",
+          "0.02",
+          "0.07",
+          "0.16",
+          "0.09",
+          "0.34"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "1.60",
+          "0.00",
+          "0.13",
+          "0.33",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.10",
+          "0.37"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "1.20",
+          "0.00",
+          "0.23",
+          "0.13",
+          "0.01",
+          "0.06",
+          "0.16",
+          "0.06",
+          "0.11"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "4.40",
+          "0.00",
+          "0.28",
+          "0.09",
+          "0.01",
+          "0.07",
+          "0.16",
+          "0.09",
+          "0.48"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "1.20",
+          "0.00",
+          "0.26",
+          "0.14",
+          "0.02",
+          "0.04",
+          "0.16",
+          "0.06",
+          "0.18"
+        ],
+        [
+          "68307",
+          "Giron",
+          "1.90",
+          "0.00",
+          "0.26",
+          "0.11",
+          "0.00",
+          "0.06",
+          "0.16",
+          "0.08",
+          "0.16"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "2.30",
+          "0.00",
+          "0.15",
+          "0.20",
+          "0.03",
+          "0.01",
+          "0.16",
+          "0.06",
+          "0.13"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "13.70",
+          "0.00",
+          "0.10",
+          "0.40",
+          "0.03",
+          "0.10",
+          "0.16",
+          "0.10",
+          "0.12"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "4.60",
+          "0.00",
+          "0.12",
+          "0.32",
+          "0.01",
+          "0.09",
+          "0.16",
+          "0.06",
+          "0.11"
+        ],
+        [
+          "76001",
+          "Cali",
+          "2.00",
+          "0.00",
+          "0.09",
+          "0.32",
+          "0.02",
+          "0.02",
+          "0.21",
+          "0.08",
+          "0.36"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "1.10",
+          "0.00",
+          "0.19",
+          "0.28",
+          "0.02",
+          "0.02",
+          "0.17",
+          "0.07",
+          "0.39"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "1.80",
+          "0.00",
+          "0.22",
+          "0.18",
+          "0.01",
+          "0.03",
+          "0.16",
+          "0.07",
+          "0.26"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "2.10",
+          "0.00",
+          "0.15",
+          "0.23",
+          "0.02",
+          "0.04",
+          "0.16",
+          "0.08",
+          "0.17"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "4.00",
+          "0.00",
+          "0.24",
+          "0.12",
+          "0.03",
+          "0.07",
+          "0.16",
+          "0.06",
+          "0.17"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "3.40",
+          "0.00",
+          "0.12",
+          "0.30",
+          "0.02",
+          "0.02",
+          "0.16",
+          "0.07",
+          "0.30"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "2.30",
+          "0.00",
+          "0.28",
+          "0.31",
+          "0.01",
+          "0.08",
+          "0.16",
+          "0.06",
+          "0.28"
+        ],
+        [
+          "",
+          "https://doi.org/10.1371/journal.pone.0270127.t003",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 17,
+      "page": 14,
+      "shape": [
+        31,
+        8
+      ],
+      "data": [
+        [
+          "Table 4. Comparison between the number of reported infections and estimated infections.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Code",
+          "Municipality",
+          "Reported infections",
+          "Estimated infections",
+          "",
+          "",
+          "Expansion factor",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Symptomatic",
+          "Total",
+          "CF",
+          "Efs",
+          "EF"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "2294",
+          "19534",
+          "121700",
+          "7.40",
+          "8.52",
+          "53.05"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "513",
+          "12157",
+          "75428",
+          "20.60",
+          "23.70",
+          "147.03"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "921",
+          "23607",
+          "146627",
+          "20.90",
+          "25.63",
+          "159.20"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "542",
+          "3517",
+          "21855",
+          "4.40",
+          "6.49",
+          "40.32"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "1208",
+          "17980",
+          "112383",
+          "9.30",
+          "14.88",
+          "93.03"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "2268",
+          "5733",
+          "35735",
+          "1.90",
+          "2.53",
+          "15.76"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "723",
+          "2068",
+          "12825",
+          "2.50",
+          "2.86",
+          "17.74"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "1101",
+          "11997",
+          "74157",
+          "9.20",
+          "10.90",
+          "67.35"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "2061",
+          "6467",
+          "40247",
+          "2.90",
+          "3.14",
+          "19.53"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "511",
+          "1291",
+          "8053",
+          "2.40",
+          "2.53",
+          "15.76"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "5462",
+          "14028",
+          "87462",
+          "2.10",
+          "2.57",
+          "16.01"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "736",
+          "1346",
+          "8404",
+          "1.90",
+          "1.83",
+          "11.42"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "659",
+          "1650",
+          "10223",
+          "1.60",
+          "2.50",
+          "15.51"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "4282",
+          "5350",
+          "33225",
+          "1.20",
+          "1.25",
+          "7.76"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "729",
+          "3496",
+          "21826",
+          "4.40",
+          "4.80",
+          "29.94"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "1872",
+          "2202",
+          "13738",
+          "1.20",
+          "1.18",
+          "7.34"
+        ],
+        [
+          "68307",
+          "Giron",
+          "1019",
+          "2100",
+          "13080",
+          "1.90",
+          "2.06",
+          "12.84"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "595",
+          "1485",
+          "9247",
+          "2.30",
+          "2.50",
+          "15.54"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "572",
+          "9902",
+          "61890",
+          "13.70",
+          "17.31",
+          "108.20"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "1386",
+          "7250",
+          "44578",
+          "4.60",
+          "5.23",
+          "32.16"
+        ],
+        [
+          "76001",
+          "Cali",
+          "16053",
+          "31544",
+          "147798",
+          "2.00",
+          "1.96",
+          "9.21"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "1391",
+          "1328",
+          "7758",
+          "1.10",
+          "0.95",
+          "5.58"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "915",
+          "1949",
+          "11941",
+          "1.80",
+          "2.13",
+          "13.05"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "1524",
+          "3429",
+          "21131",
+          "2.10",
+          "2.25",
+          "13.87"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "557",
+          "2438",
+          "15178",
+          "4.00",
+          "4.38",
+          "27.25"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "690",
+          "2798",
+          "17326",
+          "3.40",
+          "4.06",
+          "25.11"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "1088",
+          "2999",
+          "18312",
+          "2.30",
+          "2.76",
+          "16.83"
+        ],
+        [
+          "https://doi.org/10.1371/journal.pone.0270127.t004",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 19,
+      "page": 15,
+      "shape": [
+        31,
+        9
+      ],
+      "data": [
+        [
+          "",
+          "Table 5. ZIKV infections disaggregated by symptomatology.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Code Municipality",
+          "",
+          "Estimated infections",
+          "",
+          "Symptomatic (%)",
+          "",
+          "",
+          "Asymptomatic (%)",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Women",
+          "Men",
+          "Total",
+          "Women",
+          "Men",
+          "Total"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "121700",
+          "8.23",
+          "7.82",
+          "16.05",
+          "43.02",
+          "40.93",
+          "83.95"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "75428",
+          "8.14",
+          "7.98",
+          "16.12",
+          "42.36",
+          "41.52",
+          "83.88"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146627",
+          "8.29",
+          "7.81",
+          "16.10",
+          "43.20",
+          "40.70",
+          "83.90"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21855",
+          "8.19",
+          "7.91",
+          "16.09",
+          "42.68",
+          "41.23",
+          "83.91"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112383",
+          "8.23",
+          "7.77",
+          "16.00",
+          "43.19",
+          "40.81",
+          "84.00"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35735",
+          "8.36",
+          "7.68",
+          "16.04",
+          "43.75",
+          "40.21",
+          "83.96"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12825",
+          "7.74",
+          "8.38",
+          "16.12",
+          "40.27",
+          "43.60",
+          "83.88"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "74157",
+          "8.25",
+          "7.92",
+          "16.18",
+          "42.76",
+          "41.06",
+          "83.82"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "40247",
+          "8.23",
+          "7.83",
+          "16.07",
+          "43.01",
+          "40.92",
+          "83.93"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8053",
+          "7.97",
+          "8.06",
+          "16.03",
+          "41.74",
+          "42.23",
+          "83.97"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87462",
+          "8.26",
+          "7.78",
+          "16.04",
+          "43.23",
+          "40.73",
+          "83.96"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8404",
+          "8.32",
+          "7.70",
+          "16.02",
+          "43.62",
+          "40.36",
+          "83.98"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10223",
+          "8.15",
+          "7.99",
+          "16.14",
+          "42.34",
+          "41.52",
+          "83.86"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "33225",
+          "8.31",
+          "7.79",
+          "16.10",
+          "43.30",
+          "40.60",
+          "83.90"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21826",
+          "8.13",
+          "7.89",
+          "16.02",
+          "42.61",
+          "41.37",
+          "83.98"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13738",
+          "8.34",
+          "7.69",
+          "16.03",
+          "43.71",
+          "40.26",
+          "83.97"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13080",
+          "8.08",
+          "7.97",
+          "16.06",
+          "42.26",
+          "41.68",
+          "83.94"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9247",
+          "8.19",
+          "7.87",
+          "16.06",
+          "42.78",
+          "41.16",
+          "83.94"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61890",
+          "8.14",
+          "7.86",
+          "16.00",
+          "42.72",
+          "41.28",
+          "84.00"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44578",
+          "8.36",
+          "7.91",
+          "16.26",
+          "43.03",
+          "40.71",
+          "83.74"
+        ],
+        [
+          "76001",
+          "Cali",
+          "147798",
+          "10.99",
+          "10.36",
+          "21.34",
+          "40.49",
+          "38.17",
+          "78.66"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "7758",
+          "8.71",
+          "8.40",
+          "17.12",
+          "42.20",
+          "40.68",
+          "82.88"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "11941",
+          "8.42",
+          "7.90",
+          "16.32",
+          "43.20",
+          "40.48",
+          "83.68"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "21131",
+          "8.34",
+          "7.89",
+          "16.23",
+          "43.04",
+          "40.73",
+          "83.77"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15178",
+          "8.11",
+          "7.95",
+          "16.06",
+          "42.38",
+          "41.56",
+          "83.94"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17326",
+          "8.07",
+          "8.08",
+          "16.15",
+          "41.89",
+          "41.96",
+          "83.85"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18312",
+          "8.24",
+          "8.14",
+          "16.38",
+          "42.05",
+          "41.57",
+          "83.62"
+        ],
+        [
+          "https://doi.org/10.1371/journal.pone.0270127.t005",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 21,
+      "page": 16,
+      "shape": [
+        31,
+        9
+      ],
+      "data": [
+        [
+          "Table 6. ZIKV infections disaggregated by transmission pathway.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Code Municipality",
+          "",
+          "Estimated infections",
+          "",
+          "Symptomatic (%)",
+          "",
+          "",
+          "Asymptomatic (%)",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Women",
+          "Men",
+          "Total",
+          "Women",
+          "Men",
+          "Total"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "121700",
+          "1.03",
+          "0.42",
+          "1.45",
+          "41.04",
+          "37.37",
+          "78.41"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "75428",
+          "0.96",
+          "0.14",
+          "1.10",
+          "39.65",
+          "38.89",
+          "78.54"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146627",
+          "1.08",
+          "0.24",
+          "1.33",
+          "41.25",
+          "37.14",
+          "78.40"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21855",
+          "1.75",
+          "0.20",
+          "1.95",
+          "39.43",
+          "38.30",
+          "77.73"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112383",
+          "1.39",
+          "0.35",
+          "1.74",
+          "40.86",
+          "37.40",
+          "78.26"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35735",
+          "1.37",
+          "0.21",
+          "1.58",
+          "41.92",
+          "36.40",
+          "78.32"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12825",
+          "1.62",
+          "0.24",
+          "1.86",
+          "34.89",
+          "43.14",
+          "78.04"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "74157",
+          "1.03",
+          "0.45",
+          "1.48",
+          "40.43",
+          "37.58",
+          "78.00"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "40247",
+          "1.38",
+          "0.26",
+          "1.64",
+          "40.65",
+          "37.49",
+          "78.14"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8053",
+          "0.68",
+          "0.15",
+          "0.83",
+          "38.74",
+          "40.30",
+          "79.04"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87462",
+          "0.32",
+          "0.01",
+          "0.34",
+          "42.13",
+          "37.47",
+          "79.60"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8404",
+          "0.73",
+          "0.10",
+          "0.82",
+          "42.35",
+          "36.83",
+          "79.18"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10223",
+          "0.94",
+          "0.27",
+          "1.21",
+          "39.62",
+          "38.72",
+          "78.33"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "33225",
+          "1.63",
+          "0.23",
+          "1.86",
+          "40.96",
+          "36.86",
+          "77.82"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21826",
+          "1.60",
+          "0.17",
+          "1.77",
+          "39.46",
+          "38.69",
+          "78.15"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13738",
+          "1.20",
+          "0.23",
+          "1.43",
+          "42.31",
+          "36.24",
+          "78.54"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13080",
+          "1.36",
+          "0.05",
+          "1.41",
+          "38.95",
+          "39.46",
+          "78.41"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9247",
+          "0.42",
+          "0.50",
+          "0.92",
+          "41.33",
+          "37.60",
+          "78.93"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61890",
+          "1.85",
+          "0.50",
+          "2.35",
+          "39.49",
+          "38.13",
+          "77.63"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44578",
+          "2.14",
+          "0.11",
+          "2.25",
+          "39.61",
+          "37.30",
+          "76.91"
+        ],
+        [
+          "76001",
+          "Cali",
+          "147798",
+          "0.36",
+          "0.22",
+          "0.58",
+          "36.98",
+          "32.07",
+          "69.05"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "7758",
+          "0.39",
+          "0.14",
+          "0.53",
+          "39.57",
+          "36.88",
+          "76.45"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "11941",
+          "0.59",
+          "0.04",
+          "0.64",
+          "41.73",
+          "36.73",
+          "78.46"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "21131",
+          "0.94",
+          "0.26",
+          "1.19",
+          "41.12",
+          "37.03",
+          "78.16"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15178",
+          "1.83",
+          "0.40",
+          "2.23",
+          "38.70",
+          "38.86",
+          "77.56"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17326",
+          "0.42",
+          "0.29",
+          "0.71",
+          "39.26",
+          "39.58",
+          "78.84"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18312",
+          "1.04",
+          "0.07",
+          "1.11",
+          "38.84",
+          "38.94",
+          "77.77"
+        ],
+        [
+          "https://doi.org/10.1371/journal.pone.0270127.t006",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 26,
+      "page": 20,
+      "shape": [
+        31,
+        12
+      ],
+      "data": [
+        [
+          "Table 7. Percentage of reduction of ZIKV infections by policy.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Code",
+          "Municipality",
+          "Infections",
+          "",
+          "th = 20%",
+          "",
+          "",
+          "th = 50%",
+          "",
+          "",
+          "th = 80%",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Policy 1",
+          "Policy 2",
+          "Policy 3",
+          "Policy 1",
+          "Policy 2",
+          "Policy 3",
+          "Policy 1",
+          "Policy 2",
+          "Policy 3"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "121721",
+          "0.27",
+          "2.46",
+          "5.88",
+          "0.26",
+          "2.36",
+          "5.59",
+          "0.24",
+          "2.25",
+          "5.26"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "74885",
+          "0.33",
+          "2.51",
+          "6.04",
+          "0.31",
+          "2.41",
+          "5.74",
+          "0.28",
+          "2.22",
+          "5.20"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146565",
+          "0.17",
+          "1.81",
+          "4.44",
+          "0.16",
+          "1.74",
+          "4.24",
+          "0.14",
+          "1.59",
+          "3.79"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21616",
+          "0.24",
+          "2.41",
+          "5.85",
+          "0.23",
+          "2.32",
+          "5.58",
+          "0.20",
+          "2.13",
+          "5.03"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112385",
+          "0.04",
+          "0.63",
+          "1.60",
+          "0.04",
+          "0.62",
+          "1.56",
+          "0.04",
+          "0.59",
+          "1.45"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35659",
+          "0.02",
+          "0.39",
+          "1.00",
+          "0.02",
+          "0.38",
+          "0.98",
+          "0.02",
+          "0.36",
+          "0.91"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12730",
+          "0.11",
+          "1.66",
+          "4.02",
+          "0.10",
+          "1.61",
+          "3.86",
+          "0.10",
+          "1.53",
+          "3.62"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "73505",
+          "0.29",
+          "2.71",
+          "6.57",
+          "0.27",
+          "2.56",
+          "6.11",
+          "0.25",
+          "2.41",
+          "5.67"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "39999",
+          "0.63",
+          "4.60",
+          "10.94",
+          "0.60",
+          "4.38",
+          "10.30",
+          "0.52",
+          "3.92",
+          "9.00"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8011",
+          "0.10",
+          "1.40",
+          "3.47",
+          "0.09",
+          "1.34",
+          "3.29",
+          "0.09",
+          "1.26",
+          "3.04"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87314",
+          "0.15",
+          "1.09",
+          "2.69",
+          "0.15",
+          "1.07",
+          "2.62",
+          "0.14",
+          "1.02",
+          "2.48"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8399",
+          "0.00",
+          "0.07",
+          "0.21",
+          "0.00",
+          "0.07",
+          "0.21",
+          "0.00",
+          "0.07",
+          "0.20"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10123",
+          "0.26",
+          "2.10",
+          "5.03",
+          "0.25",
+          "2.01",
+          "4.79",
+          "0.23",
+          "1.92",
+          "4.50"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "32873",
+          "0.63",
+          "4.53",
+          "10.79",
+          "0.59",
+          "4.32",
+          "10.15",
+          "0.52",
+          "3.86",
+          "8.86"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21276",
+          "1.12",
+          "7.18",
+          "16.89",
+          "1.04",
+          "6.71",
+          "15.46",
+          "0.90",
+          "5.86",
+          "13.08"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13662",
+          "0.32",
+          "2.93",
+          "7.09",
+          "0.30",
+          "2.79",
+          "6.67",
+          "0.27",
+          "2.55",
+          "5.98"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13122",
+          "0.59",
+          "4.52",
+          "10.73",
+          "0.55",
+          "4.25",
+          "9.96",
+          "0.50",
+          "3.93",
+          "9.02"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9095",
+          "0.68",
+          "4.86",
+          "11.57",
+          "0.64",
+          "4.59",
+          "10.77",
+          "0.56",
+          "4.11",
+          "9.40"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61892",
+          "0.28",
+          "2.65",
+          "6.31",
+          "0.27",
+          "2.57",
+          "6.08",
+          "0.25",
+          "2.40",
+          "5.59"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44024",
+          "0.27",
+          "2.63",
+          "6.28",
+          "0.26",
+          "2.54",
+          "6.00",
+          "0.24",
+          "2.36",
+          "5.48"
+        ],
+        [
+          "76001",
+          "Cali",
+          "154490",
+          "0.28",
+          "5.48",
+          "12.95",
+          "0.27",
+          "5.21",
+          "12.14",
+          "0.24",
+          "4.74",
+          "10.80"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "8000",
+          "0.07",
+          "1.01",
+          "2.54",
+          "0.06",
+          "0.97",
+          "2.40",
+          "0.06",
+          "0.90",
+          "2.19"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "11755",
+          "0.32",
+          "2.28",
+          "5.44",
+          "0.31",
+          "2.19",
+          "5.18",
+          "0.29",
+          "2.09",
+          "4.89"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "20685",
+          "0.44",
+          "3.63",
+          "8.70",
+          "0.41",
+          "3.45",
+          "8.19",
+          "0.37",
+          "3.18",
+          "7.41"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15131",
+          "0.50",
+          "4.30",
+          "10.28",
+          "0.46",
+          "4.03",
+          "9.46",
+          "0.41",
+          "3.68",
+          "8.46"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17089",
+          "0.40",
+          "3.05",
+          "7.24",
+          "0.39",
+          "2.95",
+          "6.94",
+          "0.36",
+          "2.76",
+          "6.40"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18041",
+          "0.01",
+          "0.26",
+          "0.68",
+          "0.01",
+          "0.25",
+          "0.67",
+          "0.01",
+          "0.25",
+          "0.65"
+        ],
+        [
+          "",
+          "https://doi.org/10.1371/journal.pone.0270127.t007",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 30,
+      "page": 23,
+      "shape": [
+        31,
+        7
+      ],
+      "data": [
+        [
+          "",
+          "Table 8. Percentage of increment of ZIKV infections according to the proportion of unprotected sexual interactions.",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "Municipality",
+          "Infections",
+          "",
+          "",
+          "Increment (%)",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "ρ = 10%",
+          "",
+          "ρ = 20%"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "",
+          "121841",
+          "2.96",
+          "",
+          "4.82"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "",
+          "75626",
+          "2.16",
+          "",
+          "3.44"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "",
+          "146952",
+          "1.84",
+          "",
+          "2.82"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "",
+          "21905",
+          "2.55",
+          "",
+          "3.44"
+        ],
+        [
+          "",
+          "23001 Monteria",
+          "",
+          "112385",
+          "0.61",
+          "",
+          "0.88"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "",
+          "35773",
+          "0.31",
+          "",
+          "0.42"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "",
+          "12862",
+          "1.65",
+          "",
+          "2.28"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "",
+          "74448",
+          "3.05",
+          "",
+          "4.81"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "",
+          "40313",
+          "5.82",
+          "",
+          "8.76"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "",
+          "8062",
+          "0.70",
+          "",
+          "1.19"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "",
+          "87541",
+          "0.33",
+          "",
+          "0.60"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "",
+          "8410",
+          "0.03",
+          "",
+          "0.05"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "",
+          "10256",
+          "1.84",
+          "",
+          "3.03"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "",
+          "33303",
+          "6.06",
+          "",
+          "8.70"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "",
+          "21837",
+          "8.80",
+          "",
+          "12.86"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "",
+          "13749",
+          "3.19",
+          "",
+          "4.81"
+        ],
+        [
+          "68307",
+          "Giron",
+          "",
+          "13101",
+          "5.00",
+          "",
+          "7.36"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "",
+          "9261",
+          "3.74",
+          "",
+          "6.62"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "",
+          "61892",
+          "4.11",
+          "",
+          "5.95"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "",
+          "44832",
+          "3.71",
+          "",
+          "4.65"
+        ],
+        [
+          "76001",
+          "Cali",
+          "",
+          "155347",
+          "3.36",
+          "",
+          "6.23"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "",
+          "7917",
+          "0.50",
+          "",
+          "0.90"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "",
+          "12024",
+          "1.56",
+          "",
+          "2.61"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "",
+          "21237",
+          "3.14",
+          "",
+          "5.12"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "",
+          "15202",
+          "6.81",
+          "",
+          "9.41"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "",
+          "17387",
+          "1.83",
+          "",
+          "3.39"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "",
+          "18459",
+          "0.11",
+          "",
+          "0.14"
+        ],
+        [
+          "https://doi.org/10.1371/journal.pone.0270127.t008",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 34,
+      "page": 26,
+      "shape": [
+        29,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "2016; 55(4):228. https://doi.org/10.1515/sjph-2016-0031 PMID: 27703544"
+        ],
+        [
+          "9.",
+          "Besnard M, Lastère S, Teissier A, Cao-Lormeau VM, Musso D. Evidence of perinatal transmission of"
+        ],
+        [
+          "",
+          "zika virus, French Polynesia, December 2013 and February 2014. Eurosurveillance. 2014; 19(13):8–"
+        ],
+        [
+          "",
+          "11. https://doi.org/10.2807/1560-7917.ES2014.19.13.20751 PMID: 24721538"
+        ],
+        [
+          "10.",
+          "Colt S, Garcia-Casal MN, Peña-Rosas JP, Finkelstein JL, Rayco-Solon P, Weise Prinzo ZC, et al."
+        ],
+        [
+          "",
+          "Transmission of Zika virus through breast milk and other breastfeeding-related bodily-fluids: A system-"
+        ],
+        [
+          "",
+          "atic review. PLoS Neglected Tropical Diseases. 2017; 11(4):e0005528. https://doi.org/10.1371/"
+        ],
+        [
+          "",
+          "journal.pntd.0005528 PMID: 28394887"
+        ],
+        [
+          "11.",
+          "Musso D, Nhan T, Robin E, Roche C. Potential for Zika virus transmission through blood transfusion"
+        ],
+        [
+          "",
+          "demonstrated during an outbreak in French Polynesia. Euro Surveill. 2014; 19(November"
+        ],
+        [
+          "",
+          "2013):20761. https://doi.org/10.2807/1560-7917.ES2014.19.14.20761"
+        ],
+        [
+          "12.",
+          "Nogueira ML, Estofolete CF, Terzian ACB, Mascarin do Vale EPB, da Silva RCMA, da Silva RF, et al."
+        ],
+        [
+          "",
+          "Zika Virus Infection and Solid Organ Transplantation: A New Challenge. American Journal of Trans-"
+        ],
+        [
+          "",
+          "plantation. 2017; 17(3):791–795. https://doi.org/10.1111/ajt.14047 PMID: 27629942"
+        ],
+        [
+          "13.",
+          "Moreira J, Peixoto TM, Siqueira AM, Lamas CC. Sexually acquired Zika virus: a systematic review."
+        ],
+        [
+          "",
+          "Clinical Microbiology and Infection. 2017; 23(5):296–305. https://doi.org/10.1016/j.cmi.2016.12.027"
+        ],
+        [
+          "",
+          "PMID: 28062314"
+        ],
+        [
+          "14.",
+          "Krow-Lucal ER, Novosad SA, Dunn AC, Brent CR, Savage HM, Faraji A, et al. Zika virus infection in"
+        ],
+        [
+          "",
+          "patient with no known risk factors, Utah, USA, 2016. Emerging Infectious Diseases. 2017; 23"
+        ],
+        [
+          "",
+          "(8):1260–1267. https://doi.org/10.3201/eid2308.170479 PMID: 28726601"
+        ],
+        [
+          "15.",
+          "Gourinat AC, O’Connor O, Calvez E, Goarant C, Dupont-Rouzeyrol M. Detection of zika virus in urine."
+        ],
+        [
+          "",
+          "Emerging Infectious Diseases. 2015; 21(1):84–86. https://doi.org/10.3201/eid2101.140894 PMID:"
+        ],
+        [
+          "",
+          "25530324"
+        ],
+        [
+          "16.",
+          "Joguet G, Mansuy JM, Matusali G, Hamdi S, Walschaerts M, Pavili L, et al. Effect of acute Zika virus"
+        ],
+        [
+          "",
+          "infection on sperm and virus clearance in body fluids: a prospective observational study. The Lancet"
+        ],
+        [
+          "",
+          "Infectious Diseases. 2017; 17(11):1200–1208. https://doi.org/10.1016/S1473-3099(17)30444-9"
+        ],
+        [
+          "",
+          "PMID: 28838639"
+        ],
+        [
+          "17.",
+          "Musso D, Roche C, Nhan TX, Robin E, Teissier A, Cao-Lormeau VM. Detection of Zika virus in saliva."
+        ],
+        [
+          "",
+          "Journal of Clinical Virology. 2015; 68:53–55. https://doi.org/10.1016/j.jcv.2015.04.021 PMID: 26071336"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 35,
+      "page": 26,
+      "shape": [
+        52,
+        2
+      ],
+      "data": [
+        [
+          "References",
+          ""
+        ],
+        [
+          "1.",
+          "Weaver SC, Costa F, Garcia-Blanco MA, Ko AI, Ribeiro GS, Saade G, et al. Zika virus: History, emer-"
+        ],
+        [
+          "",
+          "gence, biology, and prospects for control. Antiviral Research. 2016; 130:69–80. https://doi.org/10."
+        ],
+        [
+          "",
+          "1016/j.antiviral.2016.03.010 PMID: 26996139"
+        ],
+        [
+          "2.",
+          "Kindhauser MK, Allen T, Frank V, Santhana RS, Dye C. Zika: the origin and spread of a mosquito-"
+        ],
+        [
+          "",
+          "borne virus. Bulletin of the World Health Organization. 2016; 94(9):675–686C. https://doi.org/10.2471/"
+        ],
+        [
+          "",
+          "BLT.16.171082 PMID: 27708473"
+        ],
+        [
+          "3.",
+          "Wikan N, Smith DR. Zika virus: History of a newly emerging arbovirus. The Lancet Infectious Diseases."
+        ],
+        [
+          "",
+          "2016; 16(7):e119–e126. https://doi.org/10.1016/S1473-3099(16)30010-X PMID: 27282424"
+        ],
+        [
+          "4.",
+          "Charrel RN, Leparc-Goffart I, Pas S, de Lamballerie X, Koopmans M, Reusken C. Background review"
+        ],
+        [
+          "",
+          "for diagnostic test development for Zika virus infection. Bulletin of the World Health Organization."
+        ],
+        [
+          "",
+          "2016; 94(8):574–584D. https://doi.org/10.2471/BLT.16.171207 PMID: 27516635"
+        ],
+        [
+          "5.",
+          "Paixão ES, Barreto F, Da Glo´ ria Teixeira M, Da Conceic¸ão N Costa M, Rodrigues LC. History,"
+        ],
+        [
+          "",
+          "epidemiology, and clinical manifestations of Zika: A systematic review. American Journal of"
+        ],
+        [
+          "",
+          "Public Health. 2016; 106(4):606–612. https://doi.org/10.2105/AJPH.2016.303112 PMID:"
+        ],
+        [
+          "",
+          "26959260"
+        ],
+        [
+          "6.",
+          "Haby MM, Pinart M, Elias V, Reveiz L. Prevalence of asymptomatic Zika virus infection: a systematic"
+        ],
+        [
+          "",
+          "review. Bulletin of the World Health Organization. 2018; 96(6):402–413D. https://doi.org/10.2471/BLT."
+        ],
+        [
+          "",
+          "17.201541 PMID: 29904223"
+        ],
+        [
+          "7.",
+          "Duffy MR, Chen THH, Hancock WT, Powers AM, Kool JL, Lanciotti RS, et al. Zika virus outbreak on"
+        ],
+        [
+          "",
+          "Yap Island, federated states of Micronesia. New England Journal of Medicine. 2009; 360(24):2536–"
+        ],
+        [
+          "",
+          "2543. https://doi.org/10.1056/NEJMoa0805715 PMID: 19516034"
+        ],
+        [
+          "8.",
+          "Avsˇic Zˇ upanc T, Petrovec M. Zika: an old virus with a new face. Slovenian Journal of Public Health."
+        ],
+        [
+          "",
+          "2016; 55(4):228. https://doi.org/10.1515/sjph-2016-0031 PMID: 27703544"
+        ],
+        [
+          "9.",
+          "Besnard M, Lastère S, Teissier A, Cao-Lormeau VM, Musso D. Evidence of perinatal transmission of"
+        ],
+        [
+          "",
+          "zika virus, French Polynesia, December 2013 and February 2014. Eurosurveillance. 2014; 19(13):8–"
+        ],
+        [
+          "",
+          "11. https://doi.org/10.2807/1560-7917.ES2014.19.13.20751 PMID: 24721538"
+        ],
+        [
+          "10.",
+          "Colt S, Garcia-Casal MN, Peña-Rosas JP, Finkelstein JL, Rayco-Solon P, Weise Prinzo ZC, et al."
+        ],
+        [
+          "",
+          "Transmission of Zika virus through breast milk and other breastfeeding-related bodily-fluids: A system-"
+        ],
+        [
+          "",
+          "atic review. PLoS Neglected Tropical Diseases. 2017; 11(4):e0005528. https://doi.org/10.1371/"
+        ],
+        [
+          "",
+          "journal.pntd.0005528 PMID: 28394887"
+        ],
+        [
+          "11.",
+          "Musso D, Nhan T, Robin E, Roche C. Potential for Zika virus transmission through blood transfusion"
+        ],
+        [
+          "",
+          "demonstrated during an outbreak in French Polynesia. Euro Surveill. 2014; 19(November"
+        ],
+        [
+          "",
+          "2013):20761. https://doi.org/10.2807/1560-7917.ES2014.19.14.20761"
+        ],
+        [
+          "12.",
+          "Nogueira ML, Estofolete CF, Terzian ACB, Mascarin do Vale EPB, da Silva RCMA, da Silva RF, et al."
+        ],
+        [
+          "",
+          "Zika Virus Infection and Solid Organ Transplantation: A New Challenge. American Journal of Trans-"
+        ],
+        [
+          "",
+          "plantation. 2017; 17(3):791–795. https://doi.org/10.1111/ajt.14047 PMID: 27629942"
+        ],
+        [
+          "13.",
+          "Moreira J, Peixoto TM, Siqueira AM, Lamas CC. Sexually acquired Zika virus: a systematic review."
+        ],
+        [
+          "",
+          "Clinical Microbiology and Infection. 2017; 23(5):296–305. https://doi.org/10.1016/j.cmi.2016.12.027"
+        ],
+        [
+          "",
+          "PMID: 28062314"
+        ],
+        [
+          "14.",
+          "Krow-Lucal ER, Novosad SA, Dunn AC, Brent CR, Savage HM, Faraji A, et al. Zika virus infection in"
+        ],
+        [
+          "",
+          "patient with no known risk factors, Utah, USA, 2016. Emerging Infectious Diseases. 2017; 23"
+        ],
+        [
+          "",
+          "(8):1260–1267. https://doi.org/10.3201/eid2308.170479 PMID: 28726601"
+        ],
+        [
+          "15.",
+          "Gourinat AC, O’Connor O, Calvez E, Goarant C, Dupont-Rouzeyrol M. Detection of zika virus in urine."
+        ],
+        [
+          "",
+          "Emerging Infectious Diseases. 2015; 21(1):84–86. https://doi.org/10.3201/eid2101.140894 PMID:"
+        ],
+        [
+          "",
+          "25530324"
+        ],
+        [
+          "16.",
+          "Joguet G, Mansuy JM, Matusali G, Hamdi S, Walschaerts M, Pavili L, et al. Effect of acute Zika virus"
+        ],
+        [
+          "",
+          "infection on sperm and virus clearance in body fluids: a prospective observational study. The Lancet"
+        ],
+        [
+          "",
+          "Infectious Diseases. 2017; 17(11):1200–1208. https://doi.org/10.1016/S1473-3099(17)30444-9"
+        ],
+        [
+          "",
+          "PMID: 28838639"
+        ],
+        [
+          "17.",
+          "Musso D, Roche C, Nhan TX, Robin E, Teissier A, Cao-Lormeau VM. Detection of Zika virus in saliva."
+        ],
+        [
+          "",
+          "Journal of Clinical Virology. 2015; 68:53–55. https://doi.org/10.1016/j.jcv.2015.04.021 PMID: 26071336"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 36,
+      "page": 27,
+      "shape": [
+        60,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission"
+        ],
+        [
+          "18.",
+          "Atkinson B, Hearn P, Afrough B, Lumley S, Carter D, Aarons EJ, et al. Detection of zika virus in semen."
+        ],
+        [
+          "",
+          "Emerging Infectious Diseases. 2016; 22(5):940. https://doi.org/10.3201/eid2205.160107 PMID: 27088817"
+        ],
+        [
+          "19.",
+          "Dupont-Rouzeyrol M, Biron A, OConnor O, Huguon E, Descloux E. Infectious Zika viral particles in"
+        ],
+        [
+          "",
+          "breastmilk. The Lancet. 2016; 387(10023):1056. https://doi.org/10.1016/S0140-6736(16)00624-3"
+        ],
+        [
+          "",
+          "PMID: 26944028"
+        ],
+        [
+          "20.",
+          "Prisant N, Bujan L, Benichou H, Hayot PH, Pavili L, Lurel S, et al. Zika virus in the female genital tract."
+        ],
+        [
+          "",
+          "The Lancet Infectious Diseases. 2016; 16(9):1000–1001. https://doi.org/10.1016/S1473-3099(16)"
+        ],
+        [
+          "",
+          "30193-1 PMID: 27427201"
+        ],
+        [
+          "21.",
+          "Fre´our T, Mirallie´ S, Hubert B, Splingart C, Barrière P, Maquart M, et al. Sexual transmission of Zika"
+        ],
+        [
+          "",
+          "virus in an entirely asymptomatic couple returning from a Zika epidemic area, France, April 2016. Euro-"
+        ],
+        [
+          "",
+          "surveillance. 2016; 21(23):8–10. https://doi.org/10.2807/1560-7917.ES.2016.21.23.30254"
+        ],
+        [
+          "22.",
+          "Brooks RB, Carlos MP, Myers RA, White MG, Bobo-Lenoci T, Aplan D, et al. Likely Sexual Transmis-"
+        ],
+        [
+          "",
+          "sion of Zika Virus from a Man with No Symptoms of Infection—Maryland, 2016. MMWR Morbidity and"
+        ],
+        [
+          "",
+          "Mortality Weekly Report. 2016; 65(34):915–916. https://doi.org/10.15585/mmwr.mm6534e2 PMID:"
+        ],
+        [
+          "",
+          "27585037"
+        ],
+        [
+          "23.",
+          "Deckard DT, Chung WM, Brooks JT, Smith JC, Woldai S, Hennessey M, et al. Male-to-Male Sexual"
+        ],
+        [
+          "",
+          "Transmission of Zika Virus—Texas, January 2016. MMWR Morbidity and Mortality Weekly Report."
+        ],
+        [
+          "",
+          "2016; 65(14):372–374. https://doi.org/10.15585/mmwr.mm6514a3 PMID: 27078057"
+        ],
+        [
+          "24.",
+          "Davidson A, Slavinski S, Komoto K, Rakeman J, Weiss D. Suspected Female-to-Male Sexual Trans-"
+        ],
+        [
+          "",
+          "mission of Zika Virus—New York City, 2016. MMWR Morbidity and Mortality Weekly Report. 2016; 65"
+        ],
+        [
+          "",
+          "(28):716–717. https://doi.org/10.15585/mmwr.mm6528e2 PMID: 27442327"
+        ],
+        [
+          "25.",
+          "Krauer F, Riesen M, Reveiz L, Oladapo OT, Martı´nez-Vega R, Porgo TV, et al. Zika Virus Infection as"
+        ],
+        [
+          "",
+          "a Cause of Congenital Brain Abnormalities and Guillain–Barre´ Syndrome: Systematic Review. PLoS"
+        ],
+        [
+          "",
+          "Medicine. 2017; 14(1):1–27. https://doi.org/10.1371/journal.pmed.1002203 PMID: 28045901"
+        ],
+        [
+          "26.",
+          "Yuki N, Hartung HP. Guillain Barre´ syndrome. Autoimmunity Reviews. 2017; 16(1):96–101. https://doi."
+        ],
+        [
+          "",
+          "org/10.1016/j.autrev.2016.09.022"
+        ],
+        [
+          "27.",
+          "Ogden SC, Hammack C, Tang H. Zika virus and neural developmental defects: building a case for a"
+        ],
+        [
+          "",
+          "cause. Science China Life Sciences. 2016; 59(5):536–538. https://doi.org/10.1007/s11427-016-5053-"
+        ],
+        [
+          "",
+          "2 PMID: 27066795"
+        ],
+        [
+          "28.",
+          "Moore CA, Staples JE, Dobyns WB, Pessoa A, Ventura CV, da Fonseca EB, et al. Characterizing the"
+        ],
+        [
+          "",
+          "Pattern of Anomalies in Congenital Zika Syndrome for Pediatric Clinicians. JAMA Pediatrics. 2017;"
+        ],
+        [
+          "",
+          "171(3):288. https://doi.org/10.1001/jamapediatrics.2016.3982 PMID: 27812690"
+        ],
+        [
+          "29.",
+          "World Health Organization. Zika Virus. Research agenda (Oct. 2016); 2016. https://apps.who.int/iris/"
+        ],
+        [
+          "",
+          "bitstream/handle/10665/250615/WHO-ZIKV-PHR-16.1-eng.pdf?sequence=1."
+        ],
+        [
+          "30.",
+          "Poland GA, Kennedy RB, Ovsyannikova IG, Palacios R, Ho PL, Kalil J. Development of vaccines"
+        ],
+        [
+          "",
+          "against Zika virus. The Lancet Infectious Diseases. 2018; 18(7):e211–e219. https://doi.org/10.1016/"
+        ],
+        [
+          "",
+          "S1473-3099(18)30063-X PMID: 29396004"
+        ],
+        [
+          "31.",
+          "World Health Organization. Prevention of sexual transmission of Zika virus. Interim guidance update;"
+        ],
+        [
+          "",
+          "2016. https://apps.who.int/iris/bitstream/handle/10665/204421/WHO_ZIKV_MOC_16.1_eng.pdf?"
+        ],
+        [
+          "",
+          "sequence=1."
+        ],
+        [
+          "32.",
+          "Raman, Velayudhan, Yadav A, Mnzava M, Quinones, Knox. Vector control operations framework for"
+        ],
+        [
+          "",
+          "Zika virus; 2016."
+        ],
+        [
+          "33.",
+          "Oladapo OT, Souza JP, De Mucio B, de Leo´ n RGP, Perea W, Gu¨lmezoglu AM. WHO interim guidance"
+        ],
+        [
+          "",
+          "on pregnancy management in the context of Zika virus infection; 2016. https://www.thelancet.com/"
+        ],
+        [
+          "",
+          "journals/langlo/article/PIIS2214-109X(16)30098-5/fulltext."
+        ],
+        [
+          "34.",
+          "World Health Organization. Psychosocial support for pregnant women and for families with microceph-"
+        ],
+        [
+          "",
+          "aly and other neurological complications in the context of Zika virus—Interim guidance for health-care"
+        ],
+        [
+          "",
+          "providers; 2016. http://apps.who.int/iris/bitstream/10665/204492/1/WHO_ZIKV_MOC_16.6_eng.pdf"
+        ],
+        [
+          "",
+          "%0Ahttp://apps.who.int/iris/bitstream/10665/204492/1/WHO_ZIKV_MOC_16.6_eng.pdf?ua=1."
+        ],
+        [
+          "35.",
+          "World Health Organization. Infant feeding in areas of Zika virus transmission. Guideline; 2016. https://"
+        ],
+        [
+          "",
+          "apps.who.int/iris/bitstream/handle/10665/208875/9789241549660_eng.pdf?sequence=1."
+        ],
+        [
+          "36.",
+          "World Health Organization. Maintaining a safe and adequate blood supply during Zika virus outbreaks."
+        ],
+        [
+          "",
+          "Interim guidance. February 2016.; 2016. http://apps.who.int/iris/bitstream/10665/204436/1/."
+        ],
+        [
+          "37.",
+          "World Health Organization. Report of the WHO Ad-hoc Advisory Group on aircraft disinsection for con-"
+        ],
+        [
+          "",
+          "trolling the international spread of vector- borne diseases; 2016. https://apps.who.int/iris/bitstream/"
+        ],
+        [
+          "",
+          "handle/10665/205795/WHO_HSE_GCR_2016.12_eng.pdf?sequence=1."
+        ],
+        [
+          "38.",
+          "World Health Organization. Surveillance for Zika virus infection, microcephaly and Guillain-Barre´ syn-"
+        ],
+        [
+          "",
+          "drome; 2016. https://apps.who.int/iris/bitstream/handle/10665/204897/WHO_ZIKV_SUR_16.2_eng."
+        ],
+        [
+          "",
+          "pdf?sequence=1&isAllowed=y."
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 37,
+      "page": 28,
+      "shape": [
+        60,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission"
+        ],
+        [
+          "39.",
+          "World Health Organization. Birth defects surveillance training: facilitator’s guide; 2015. https://apps."
+        ],
+        [
+          "",
+          "who.int/iris/bitstream/handle/10665/177871/9789241549288_eng.pdf?sequence=1."
+        ],
+        [
+          "40.",
+          "World Health Organization. Laboratory testing for Zika virus infection. Interim guidance; 2016. https://"
+        ],
+        [
+          "",
+          "apps.who.int/iris/bitstream/handle/10665/204671/WHO_ZIKV_LAB_16.1_eng.pdf?sequence=1."
+        ],
+        [
+          "41.",
+          "World Health Organization. Zika Virus (ZIKV) Classification Table—Data as of 15 Frebruary 2018;"
+        ],
+        [
+          "",
+          "2018. http://apps.who.int/iris/bitstream/handle/10665/260419/zika-classification-15Feb18-eng.pdf?"
+        ],
+        [
+          "",
+          "sequence=1."
+        ],
+        [
+          "42.",
+          "National Ministry of Health and Social Protection (Colombia). Press relase No 274, 2015. Ministry of"
+        ],
+        [
+          "",
+          "Health and Social Protection confirms the first nine Zika cases in Colombia.; 2015. https://www."
+        ],
+        [
+          "",
+          "minsalud.gov.co/Paginas/Confirmados-primeros-casos-de-virus-del-zika-en-Colombia.aspx."
+        ],
+        [
+          "43.",
+          "National Ministry of Health and Social Protection (Colombia). Press release No 155, 2016."
+        ],
+        [
+          "",
+          "Colombia, the first country on the continent to declare a close to the Zika epidemic; 2016. https://"
+        ],
+        [
+          "",
+          "www.minsalud.gov.co/Paginas/Colombia-primer-pais-del-continente-que-cierra-epidemia-de-zika."
+        ],
+        [
+          "",
+          "aspx."
+        ],
+        [
+          "44.",
+          "World Health Organization, Pan American Health Organization. Alerta Epidemiolo´gica—Sı´ndrome"
+        ],
+        [
+          "",
+          "neurolo´ gico, anomalı´as conge´nitas e infeccio´ n por virus Zika. Implicaciones para la salud pu´ blica en"
+        ],
+        [
+          "",
+          "las Ame´ ricas.; 2015. https://www.paho.org/hq/dmdocuments/2015/2015-dic-1-cha-alerta-epi-zika-"
+        ],
+        [
+          "",
+          "sindrome-neuro.pdf."
+        ],
+        [
+          "45.",
+          "National Institute of Health (Colombia). Circular Externa 063 de 2016; 2016. https://www.minsalud."
+        ],
+        [
+          "",
+          "gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/IA/INS/Circular-externa-063-de-2015-ins.pdf."
+        ],
+        [
+          "46.",
+          "National Institute of Health (Colombia). Colombia Weekly Epidemiological Bulletin, Week 52, 2016.;"
+        ],
+        [
+          "",
+          "2016. http://www.ins.gov.co/buscador-eventos/BoletinEpidemiologico/2016%20Bolet%C3%ADn%"
+        ],
+        [
+          "",
+          "20epidemiol%C3%B3gico%20semana%2052%20-.pdf."
+        ],
+        [
+          "47.",
+          "National Institute of Health (Colombia). Colombia Weekly Epidemiological Bulletin, Week 52, 2017.;"
+        ],
+        [
+          "",
+          "2017. http://www.ins.gov.co/buscador-eventos/BoletinEpidemiologico/2017%20Bolet%C3%ADn%"
+        ],
+        [
+          "",
+          "20epidemiol%C3%B3gico%20semana%2052.pdf."
+        ],
+        [
+          "48.",
+          "National Institute of Health (Colombia). Colombia Weekly Epidemiological Bulletin, Week 24, 2018.;"
+        ],
+        [
+          "",
+          "2018. http://www.ins.gov.co/buscador-eventos/BoletinEpidemiologico/2018%20Bolet%C3%ADn%"
+        ],
+        [
+          "",
+          "20epidemiol%C3%B3gico%20semana%2024.pdf."
+        ],
+        [
+          "49.",
+          "Sarmiento-Ospina A, Va´ squez-Serna H, Jimenez-Canizales CE, Villamil-Go´ mez WE, Rodriguez-"
+        ],
+        [
+          "",
+          "Morales AJ. Zika virus associated deaths in Colombia. The Lancet Infectious Diseases. 2016; 16"
+        ],
+        [
+          "",
+          "(5):523–524. https://doi.org/10.1016/S1473-3099(16)30006-8 PMID: 27068488"
+        ],
+        [
+          "50.",
+          "Arzuza-Ortega L, Polo A, Pe´rez-Tatis G, Lo´pez-Garcı´a H, Parra E, Pardo-Herrera LC, et al. Fatal"
+        ],
+        [
+          "",
+          "sickle cell disease and zika virus infection in girl from Colombia. Emerging Infectious Diseases. 2016;"
+        ],
+        [
+          "",
+          "22(5):925–927. https://doi.org/10.3201/eid2205.151934 PMID: 27089120"
+        ],
+        [
+          "51.",
+          "Wilson J, Malone R, Gagen JS, Pabayo R. Zika Virus Disease: A Simple Model Approach to Rapid"
+        ],
+        [
+          "",
+          "Impact Assessment. bioRxiv. 2016; p. 044248."
+        ],
+        [
+          "52.",
+          "Ding C, Tao N, Zhu Y. A mathematical model of Zika virus and its optimal control. Chinese Control"
+        ],
+        [
+          "",
+          "Conference, CCC. 2016; 2016-Augus(1):2642–2645. https://doi.org/10.1101/044248"
+        ],
+        [
+          "53.",
+          "Perkins TA, Siraj AS, Ruktanonchai CW, Kraemer MUG, Tatem AJ. Model-based projections of Zika"
+        ],
+        [
+          "",
+          "virus infections in childbearing women in the Americas. Nature Microbiology. 2016; 2(12):16126."
+        ],
+        [
+          "",
+          "https://doi.org/10.1038/nmicrobiol.2016.126 PMID: 27562260"
+        ],
+        [
+          "54.",
+          "Nishiura H, Mizumoto K, Villamil-Go´ mez WE, Rodrı´guez-Morales AJ. Preliminary estimation of the"
+        ],
+        [
+          "",
+          "basic reproduction number of Zika virus infection during Colombia epidemic, 2015-2016. Travel Medi-"
+        ],
+        [
+          "",
+          "cine and Infectious Disease. 2016; 14(3):274–276. https://doi.org/10.1016/j.tmaid.2016.03.016 PMID:"
+        ],
+        [
+          "",
+          "27060613"
+        ],
+        [
+          "55.",
+          "Kucharski AJ, Funk S, Eggo RM, Mallet HP, Edmunds WJ, Nilles EJ. Transmission Dynamics of Zika"
+        ],
+        [
+          "",
+          "Virus in Island Populations: A Modelling Analysis of the 2013-14 French Polynesia Outbreak. PLoS"
+        ],
+        [
+          "",
+          "Neglected Tropical Diseases. 2016; 10(5):1–15. https://doi.org/10.1371/journal.pntd.0004726 PMID:"
+        ],
+        [
+          "",
+          "27186984"
+        ],
+        [
+          "56.",
+          "Moreno VM, Espinoza B, Bichara D, Holechek SA, Castillo-Chavez C. Role of short-term dispersal on"
+        ],
+        [
+          "",
+          "the dynamics of Zika virus in an extreme idealized environment. Infectious Disease Modelling. 2017; 2"
+        ],
+        [
+          "",
+          "(1):21–34. https://doi.org/10.1016/j.idm.2016.12.002 PMID: 29928727"
+        ],
+        [
+          "57.",
+          "Zhang Q, Sun K, Chinazzi M, Pastore y Piontti A, Dean NE, Rojas DP, et al. Spread of Zika virus in the"
+        ],
+        [
+          "",
+          "Americas. Proceedings of the National Academy of Sciences. 2017; 114(22):E4334–E4343. https://"
+        ],
+        [
+          "",
+          "doi.org/10.1073/pnas.1620161114"
+        ],
+        [
+          "58.",
+          "Reilly KMO, Lowe R, Edmunds WJ, Mayaud P, Eggo RM, Funk S, et al. Projecting the end of the Zika"
+        ],
+        [
+          "",
+          "virus epidemic in Latin America: a modelling analysis. bioRxiv. 2018; p. 1–25. https://doi.org/10.1101/"
+        ],
+        [
+          "",
+          "323915"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 38,
+      "page": 29,
+      "shape": [
+        60,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission"
+        ],
+        [
+          "59.",
+          "Gao D, Lou Y, He D, Porco TC, Kuang Y, Chowell G, et al. Prevention and Control of Zika as a Mos-"
+        ],
+        [
+          "",
+          "quito-Borne and Sexually Transmitted Disease: A Mathematical Modeling Analysis. Scientific Reports."
+        ],
+        [
+          "",
+          "2016; 6(1):28070. https://doi.org/10.1038/srep28070 PMID: 27312324"
+        ],
+        [
+          "60.",
+          "Towers S, Brauer F, Castillo-Chavez C, Falconar AKI, Mubayi A, Romero-Vivas CME. Estimate of the"
+        ],
+        [
+          "",
+          "reproduction number of the 2015 Zika virus outbreak in Barranquilla, Colombia, and estimation of the"
+        ],
+        [
+          "",
+          "relative role of sexual transmission. Epidemics. 2016; 17:50–55. https://doi.org/10.1016/j.epidem."
+        ],
+        [
+          "",
+          "2016.10.003 PMID: 27846442"
+        ],
+        [
+          "61.",
+          "Sa´ nchez-Montalva´ A, Pou D, Sulleiro E, Salvador F, Bocanegra C, Treviño B, et al. Zika virus dynam-"
+        ],
+        [
+          "",
+          "ics in body fluids and risk of sexual transmission in a non-endemic area. Tropical Medicine and Interna-"
+        ],
+        [
+          "",
+          "tional Health. 2018; 23(1):92–100. https://doi.org/10.1111/tmi.13019 PMID: 29194880"
+        ],
+        [
+          "62.",
+          "Nicastri E, Castilletti C, Liuzzi G, Iannetta M, Capobianchi MR, Ippolito G. Persistent detection of Zika"
+        ],
+        [
+          "",
+          "virus RNA in semen for six months after symptom onset in a traveller returning from Haiti to Italy, Feb-"
+        ],
+        [
+          "",
+          "ruary 2016. Eurosurveillance. 2016; 21(32):1–4. https://doi.org/10.2807/1560-7917.ES.2016.21.32."
+        ],
+        [
+          "",
+          "30314"
+        ],
+        [
+          "63.",
+          "Agusto FB, Bewick S, Fagan WF. Mathematical model for Zika virus dynamics with sexual trans-"
+        ],
+        [
+          "",
+          "mission route. Ecological Complexity. 2017; 29:61–81. https://doi.org/10.1016/j.ecocom.2016.12."
+        ],
+        [
+          "",
+          "007"
+        ],
+        [
+          "64.",
+          "Maxian O, Neufeld A, Talis EJ, Childs LM, Blackwood JC. Zika virus dynamics: When does sexual"
+        ],
+        [
+          "",
+          "transmission matter? Epidemics. 2017; 21:48–55. https://doi.org/0.1016/j.epidem.2017.06.003 PMID:"
+        ],
+        [
+          "",
+          "28688996"
+        ],
+        [
+          "65.",
+          "National System of Public Health Surveillance (Colombia). Routine Surveillance by Event Minicipality"
+        ],
+        [
+          "",
+          "2015; 2015. http://portalsivigila.ins.gov.co/rutinaria/historica/rutinaria_2015.xlsx."
+        ],
+        [
+          "66.",
+          "National System of Public Health Surveillance (Colombia). Routine Surveillance by Event Minicipality"
+        ],
+        [
+          "",
+          "2016; 2016. http://portalsivigila.ins.gov.co/rutinaria/historica/rutinaria_2016.xlsx."
+        ],
+        [
+          "67.",
+          "National System of Public Health Surveillance (Colombia). Routine Surveillance by Event Minicipality"
+        ],
+        [
+          "",
+          "2017; 2017. http://portalsivigila.ins.gov.co/rutinaria/historica/rutinaria_2017.xlsx."
+        ],
+        [
+          "68.",
+          "Yakob L, Clements ACA. A Mathematical Model of Chikungunya Dynamics and Control: The Major"
+        ],
+        [
+          "",
+          "Epidemic on Re´union Island. PLoS ONE. 2013; 8(3):1–6. https://doi.org/10.1371/journal.pone."
+        ],
+        [
+          "",
+          "0057448 PMID: 23554860"
+        ],
+        [
+          "69.",
+          "Sim S, Jupatanakul N, Dimopoulos G. Mosquito immunity against arboviruses. Viruses. 2014; 6"
+        ],
+        [
+          "",
+          "(11):4479–4504. https://doi.org/10.3390/v6114479 PMID: 25415198"
+        ],
+        [
+          "70.",
+          "Smith DL, Battle KE, Hay SI, Barker CM, Scott TW, McKenzie FE. Ross, Macdonald, and a theory for"
+        ],
+        [
+          "",
+          "the dynamics and control of mosquito-transmitted pathogens. PLoS Pathogens. 2012; 8(4). https://doi."
+        ],
+        [
+          "",
+          "org/10.1371/journal.ppat.1002588"
+        ],
+        [
+          "71.",
+          "Reiner RC Jr, Perkins TA, Barker CM, Niu T, Chaves LF, Ellis AM, et al. A systematic review of mathe-"
+        ],
+        [
+          "",
+          "matical models of mosquito-borne pathogen transmission: 1970–2010. Journal of The Royal Society"
+        ],
+        [
+          "",
+          "Interface. 2013; 10(81):20120921. https://doi.org/10.1098/rsif.2012.0921 PMID: 23407571"
+        ],
+        [
+          "72.",
+          "Focks DA, Brenner RJ, Hayes J, Daniels E. Transmission thresholds for dengue in terms of Aedes"
+        ],
+        [
+          "",
+          "aegypti pupae per person with discussion of their utility in source reduction efforts. American Journal"
+        ],
+        [
+          "",
+          "of Tropical Medicine and Hygiene. 2000; 62(1):11–18. https://doi.org/10.4269/ajtmh.2000.62.11"
+        ],
+        [
+          "",
+          "PMID: 10761719"
+        ],
+        [
+          "73.",
+          "Focks DA, Alexander N. Multicountry study of Aedes aegypti pupal productivity survey methodology."
+        ],
+        [
+          "",
+          "Tropical Medicine. 2006; 31:56."
+        ],
+        [
+          "74.",
+          "Romero-Vivas CME, Arango-Padilla P, Falconar aKI. Pupal-productivity surveys to identify the key"
+        ],
+        [
+          "",
+          "container habitats of Aedes aegypti (L.) in Barranquilla, the principal seaport of Colombia. Annals of"
+        ],
+        [
+          "",
+          "tropical medicine and parasitology. 2006; 100 Suppl(1):S87–S95. https://doi.org/10.1179/"
+        ],
+        [
+          "",
+          "136485906X105543 PMID: 16630394"
+        ],
+        [
+          "75.",
+          "Alcala´ L, Quintero J, Gonza´ lez-Uribe C, Brochero H. Productividad de Aedes aegypti (L.) (Diptera:"
+        ],
+        [
+          "",
+          "Culicidae) en viviendas y espacios pu´ blicos en una ciudad ende´ mica para dengue en Colombia. Bio-"
+        ],
+        [
+          "",
+          "me´ dica. 2015; 35(2):258–268. https://doi.org/10.7705/biomedica.v35i2.2567"
+        ],
+        [
+          "76.",
+          "Fuentes-Vallejo M, Higuera-Mendieta DR, Garcı´a-Betancourt T, Alcala´ -Espinosa LA, Garcı´a-Sa´nchez"
+        ],
+        [
+          "",
+          "D, Mune´var-Cagigas DA, et al. Territorial analysis of Aedes aegypti distribution in two Colombian cit-"
+        ],
+        [
+          "",
+          "ies: a chorematic and ecosystem approach. Cadernos de Sau´ de Pu´ blica. 2015; 31(3):517–530."
+        ],
+        [
+          "",
+          "https://doi.org/10.1590/0102-311x00057214 PMID: 25859719"
+        ],
+        [
+          "77.",
+          "Padmanabha H, Durham D, Correa F, Diuk-Wasser M, Galvani A. The Interactive Roles of Aedes"
+        ],
+        [
+          "",
+          "aegypti Super-Production and Human Density in Dengue Transmission. PLoS Neglected Tropical Dis-"
+        ],
+        [
+          "",
+          "eases. 2012; 6(8). https://doi.org/10.1371/journal.pntd.0001799 PMID: 22953017"
+        ],
+        [
+          "78.",
+          "Gray RH, Wawer MJ, Brookmeyer R, Sewankambo NK, Serwadda D, Wabwire-Mangen F, et al. Prob-"
+        ],
+        [
+          "",
+          "ability of HIV-1 transmission per coital act in monogamous, heterosexual, HIV-1-discordant couples in"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 39,
+      "page": 30,
+      "shape": [
+        60,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission"
+        ],
+        [
+          "",
+          "Rakai, Uganda. Lancet. 2001; 357(9263):1149–1153. https://doi.org/10.1016/S0140-6736(00)04331-"
+        ],
+        [
+          "",
+          "2 PMID: 11323041"
+        ],
+        [
+          "79.",
+          "de Vincenzi I. A longitudinal study of human immunodeficiency virus transmission by heterosexual"
+        ],
+        [
+          "",
+          "partners. European Study Group on Heterosexual Transmission of HIV. The New England Journal of"
+        ],
+        [
+          "",
+          "Medicine. 1994; 331(6):341–346. https://doi.org/10.1056/NEJM199408113310601 PMID: 8028613"
+        ],
+        [
+          "80.",
+          "Patel P, Borkowf CB, Brooks JT, Lasry A, Lansky A, Mermin J. Estimating per-act HIV transmission"
+        ],
+        [
+          "",
+          "risk: A systematic review. Aids. 2014; 28(10):1509–1519. https://doi.org/10.1097/QAD."
+        ],
+        [
+          "",
+          "0000000000000298 PMID: 24809629"
+        ],
+        [
+          "81.",
+          "Krow-Lucal ER, Biggerstaff BJ, Staples JE. Estimated incubation period for zika virus disease. Emerging"
+        ],
+        [
+          "",
+          "Infectious Diseases. 2017; 23(5):841–844. https://doi.org/10.3201/eid2305.161715 PMID: 28277198"
+        ],
+        [
+          "82.",
+          "Fourie´ T, Grard G, Leparc-Goffart I, Briolant S, Fontaine A. Variability of Zika Virus Incubation Period"
+        ],
+        [
+          "",
+          "in Humans. Open forum infectious diseases. 2018; 5(11):ofy261–ofy261. https://doi.org/10.1093/ofid/"
+        ],
+        [
+          "",
+          "ofy261 PMID: 30397624"
+        ],
+        [
+          "83.",
+          "Andraud M, Hens N, Marais C, Beutels P. Dynamic epidemiological models for dengue transmission:"
+        ],
+        [
+          "",
+          "a systematic review of structural approaches. PloS one. 2012; 7(11):e49085. https://doi.org/10.1371/"
+        ],
+        [
+          "",
+          "journal.pone.0049085 PMID: 23139836"
+        ],
+        [
+          "84.",
+          "Padmanabhan P, Seshaiyer P, Castillo-Chavez C. Mathematical modeling, analysis and simulation of"
+        ],
+        [
+          "",
+          "the spread of Zika with influence of sexual transmission and preventive measures. Letters in Biomath-"
+        ],
+        [
+          "",
+          "ematics. 2017; 4(1):148–166. https://doi.org/10.30707/LiB4.1Padmanabhan"
+        ],
+        [
+          "85.",
+          "Russell K, Hills SL, Oster AM, Porse CC, Danyluk G, Cone M, et al. Male-to-female sexual transmis-"
+        ],
+        [
+          "",
+          "sion of zika virus-United States, January-April 2016. Clinical Infectious Diseases. 2017; 64(2):211–"
+        ],
+        [
+          "",
+          "213. https://doi.org/10.1093/cid/ciw692 PMID: 27986688"
+        ],
+        [
+          "86.",
+          "Foy BD, Kobylinski KC, Foy JLC, Blitvich BJ, da Rosa AT, Haddow AD, et al. Probable Non-Vector-"
+        ],
+        [
+          "",
+          "borne Transmission of Zika Virus, Colorado, USA. Emerging Infectious Diseases. 2011; 17(5):880–"
+        ],
+        [
+          "",
+          "882. https://doi.org/10.3201/eid1705.101939 PMID: 21529401"
+        ],
+        [
+          "87.",
+          "Arsuaga M, Bujalance SG, Dı´az-Mene´ ndez M, Va´ zquez A, Arribas JR. Probable sexual transmission"
+        ],
+        [
+          "",
+          "of Zika virus from a vasectomised man. The Lancet Infectious diseases. 2016; 16(10):1107. https://"
+        ],
+        [
+          "",
+          "doi.org/10.1016/S1473-3099(16)30320-6 PMID: 27676342"
+        ],
+        [
+          "88.",
+          "Lessler J, Ott CT, Carcelen AC, Konikoff JM, Williamson J, Bi Q, et al. Times to key events in Zika"
+        ],
+        [
+          "",
+          "virus infection and implications for blood donation: A systematic review. Bulletin of the World Health"
+        ],
+        [
+          "",
+          "Organization. 2016; 94(11):841–849. https://doi.org/10.2471/BLT.16.174540 PMID: 27821887"
+        ],
+        [
+          "89.",
+          "Paz-Bailey G, Rosenberg ES, Doyle K, Munoz-Jordan J, Santiago GA, Klein L, et al. Persistence of"
+        ],
+        [
+          "",
+          "Zika Virus in Body Fluids—Preliminary Report. New England Journal of Medicine. 2017; p. NEJ-"
+        ],
+        [
+          "",
+          "Moa1613108. https://doi.org/10.1056/NEJMoa1613108"
+        ],
+        [
+          "90.",
+          "Reusken C, Pas S, Geurtsvankessel C, Mo¨ gling R, van Kampen J, Langerak T, et al. Longitudinal fol-"
+        ],
+        [
+          "",
+          "low-up of Zika virus RNA in semen of a traveller returning from Barbados to the Netherlands with Zika"
+        ],
+        [
+          "",
+          "virus disease, march 2016. Eurosurveillance. 2016; 21(23):2–5. https://doi.org/10.2807/1560-7917."
+        ],
+        [
+          "",
+          "ES.2016.21.23.30251"
+        ],
+        [
+          "91.",
+          "Garcı´a-Bujalance S, Gutie´rrez-Arroyo A, De la Calle F, Dı´az-Mene´ndez M, Arribas JR, Garcı´a-Rodrı´-"
+        ],
+        [
+          "",
+          "guez J, et al. Persistence and infectivity of Zika virus in semen after returning from endemic areas:"
+        ],
+        [
+          "",
+          "Report of 5 cases. Journal of Clinical Virology. 2017; 96:110–115. https://doi.org/10.1016/j.jcv.2017."
+        ],
+        [
+          "",
+          "10.006 PMID: 29053990"
+        ],
+        [
+          "92.",
+          "Gaskell KM, Houlihan C, Nastouli E, Checkley AM. Persistent zika virus detection in semen in a trav-"
+        ],
+        [
+          "",
+          "eler returning to the United Kingdom from Brazil, 2016. Emerging Infectious Diseases. 2017; 23"
+        ],
+        [
+          "",
+          "(1):137–139. https://doi.org/10.3201/eid2301.161300 PMID: 27748650"
+        ],
+        [
+          "93.",
+          "Huits R, De Smet B, Arie¨ n KK, Van Esbroeck M, Bottieau E, Cnops L. Zika virus in semen: a prospec-"
+        ],
+        [
+          "",
+          "tive cohort study of symptomatic travellers returning to Belgium. Bulletin of the World Health Organiza-"
+        ],
+        [
+          "",
+          "tion. 2017; 95(12):802–809. https://doi.org/10.2471/BLT.17.181370 PMID: 29200521"
+        ],
+        [
+          "94.",
+          "Mead PS, Duggal NK, Hook SA, Delorey M, Fischer M, Olzenak McGuire D, et al. Zika Virus Shedding"
+        ],
+        [
+          "",
+          "in Semen of Symptomatic Infected Men. New England Journal of Medicine. 2018; 378(15):1377–"
+        ],
+        [
+          "",
+          "1385. https://doi.org/10.1056/NEJMoa1711038 PMID: 29641964"
+        ],
+        [
+          "95.",
+          "Profamilia, National Ministry of Health and Social Protection (Colombia). Colombia Demographic and"
+        ],
+        [
+          "",
+          "Health Survey 2015—Key Findings; 2015. https://www.dhsprogram.com/pubs/pdf/SR239/SR239.pdf."
+        ],
+        [
+          "96.",
+          "Profamilia, National Ministry of Health and Social Protection (Colombia). Colombia Demographic and"
+        ],
+        [
+          "",
+          "Health Survey 2015—Final Report, part I.; 2015. https://www.dhsprogram.com/pubs/pdf/SR239/"
+        ],
+        [
+          "",
+          "SR239.pdf."
+        ],
+        [
+          "97.",
+          "Profamilia, National Ministry of Health and Social Protection (Colombia). Colombia Demographic and"
+        ],
+        [
+          "",
+          "Health Survey 2015—Final Report, part II; 2015. https://www.dhsprogram.com/pubs/pdf/SR239/"
+        ],
+        [
+          "",
+          "SR239.pdf."
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 40,
+      "page": 31,
+      "shape": [
+        59,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission"
+        ],
+        [
+          "98.",
+          "EL TIEMPO Casa Editorial. Los colombianos en la cama; 2001. http://www.eltiempo.com/archivo/"
+        ],
+        [
+          "",
+          "documento/MAM-709556."
+        ],
+        [
+          "99.",
+          "National Administrative Department of Statistics (Colombia). Population series 1985-2020; 2005."
+        ],
+        [
+          "",
+          "http://www.dane.gov.co/files/investigaciones/poblacion/seriesp85_20/"
+        ],
+        [
+          "",
+          "EstimacionesProyecciones1985__020.xls."
+        ],
+        [
+          "100.",
+          "Da Cruz Ferreira DA, Degener CM, De Almeida Marques-Toledo C, Bendati MM, Fetzer LO, Teixeira"
+        ],
+        [
+          "",
+          "CP, et al. Meteorological variables and mosquito monitoring are good predictors for infestation trends"
+        ],
+        [
+          "",
+          "of Aedes aegypti, the vector of dengue, chikungunya and Zika. Parasites and Vectors. 2017; 10(1):1–"
+        ],
+        [
+          "",
+          "11. https://doi.org/10.1186/s13071-017-2025-8 PMID: 28193291"
+        ],
+        [
+          "101.",
+          "Sutherst RW. Global change and human vulnerability to vector-borne diseases. Clinical microbiology"
+        ],
+        [
+          "",
+          "reviews. 2004; 17(1):136–73. https://doi.org/10.1128/CMR.17.1.136-173.2004 PMID: 14726459"
+        ],
+        [
+          "102.",
+          "España G. Large-scale vector-borne disease agent-based model, with application to Chikungunya in"
+        ],
+        [
+          "",
+          "Colombia [phdthesis]. Universidad Nacional de Colombia; 2015."
+        ],
+        [
+          "103.",
+          "National Administrative Department of Statistics (Colombia). COLOMBIA. Necesidades Ba´sicas Insa-"
+        ],
+        [
+          "",
+          "tisfechas—NBI, por total, cabecera y resto, segu´ n municipio y nacional; 2012. https://www.dane.gov."
+        ],
+        [
+          "",
+          "co/censo/files/resultados/NBI_total_dpto_30_Jun_2012.xls."
+        ],
+        [
+          "104.",
+          "Tolosa N. Protocolo de Vigilancia en Salud Pu´ blica Enfermedad por Virus Zika; 2016. http://bvs."
+        ],
+        [
+          "",
+          "minsa.gob.pe/local/MINSA/3449.pdf."
+        ],
+        [
+          "105.",
+          "Bates D, Sarkar D. R: Optimization using PORT routines;. https://www.rdocumentation.org/packages/"
+        ],
+        [
+          "",
+          "stats/versions/3.6.0/topics/nlminb."
+        ],
+        [
+          "106.",
+          "Gay DM. Usage summary for selected optimization routines; 1990. https://ms.mcmaster.ca/bolker/"
+        ],
+        [
+          "",
+          "misc/port.pdf."
+        ],
+        [
+          "107.",
+          "National Institute of Health (Colombia). Circular Conjunta Externa 043 de 2015; 2015. https://www."
+        ],
+        [
+          "",
+          "minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/DIJ/circular-conjunta-externa-0043.pdf."
+        ],
+        [
+          "108.",
+          "National Institute of Health (Colombia). Circular Conjunta Externa 061 de 2015; 2015. https://www."
+        ],
+        [
+          "",
+          "minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/DE/DIJ/circular-conjunta-061-de-2015-ins.pdf."
+        ],
+        [
+          "109.",
+          "Plourde AR, Bloch EM. A literature review of zika virus. Emerging Infectious Diseases. 2016; 22"
+        ],
+        [
+          "",
+          "(7):1185–1192. https://doi.org/10.3201/eid2207.151990 PMID: 27070380"
+        ],
+        [
+          "110.",
+          "Undurraga EA, Halasa YA, Shepard DS. Use of expansion factors to estimate the burden of dengue in"
+        ],
+        [
+          "",
+          "Southeast Asia: a systematic analysis. PLoS neglected tropical diseases. 2013; 7(2):e2056–e2056."
+        ],
+        [
+          "",
+          "https://doi.org/10.1371/journal.pntd.0002056 PMID: 23437407"
+        ],
+        [
+          "111.",
+          "Pacheco O, Beltra´ n M, Nelson CA, Valencia D, Tolosa N, Farr SL, et al. Zika Virus Disease in Colom-"
+        ],
+        [
+          "",
+          "bia—Preliminary Report. New England Journal of Medicine. 2016; p. NEJMoa1604037. https://doi."
+        ],
+        [
+          "",
+          "org/10.1056/NEJMoa1604037"
+        ],
+        [
+          "112.",
+          "Gardner LM, Bo´ta A, Gangavarapu K, Kraemer MUG, Grubaugh ND. Inferring the risk factors behind"
+        ],
+        [
+          "",
+          "the geographical spread and transmission of Zika in the Americas. PLoS neglected tropical diseases."
+        ],
+        [
+          "",
+          "2018; 12(1):e0006194–e0006194. https://doi.org/10.1371/journal.pntd.0006194 PMID: 29346387"
+        ],
+        [
+          "113.",
+          "Tesla B, Demakovsky LR, Mordecai EA, Ryan SJ, Bonds MH, Ngonghala CN, et al. Temperature"
+        ],
+        [
+          "",
+          "drives Zika virus transmission: evidence from empirical and mathematical models. Proceedings of the"
+        ],
+        [
+          "",
+          "Royal Society B: Biological Sciences. 2018; 285(1884):20180795. https://doi.org/10.1098/rspb.2018."
+        ],
+        [
+          "",
+          "0795 PMID: 30111605"
+        ],
+        [
+          "114.",
+          "Huber JH, Childs ML, Caldwell JM, Mordecai EA. Seasonal temperature variation influences climate"
+        ],
+        [
+          "",
+          "suitability for dengue, chikungunya, and Zika transmission. PLOS Neglected Tropical Diseases. 2018;"
+        ],
+        [
+          "",
+          "12(5):1–20. https://doi.org/10.1371/journal.pntd.0006451 PMID: 29746468"
+        ],
+        [
+          "115.",
+          "Bautista LE, Herrera VM. An assessment of public health surveillance of Zika virus infection and poten-"
+        ],
+        [
+          "",
+          "tially associated outcomes in Latin America. BMC public health. 2018; 18(1):656–656. https://doi.org/"
+        ],
+        [
+          "",
+          "10.1186/s12889-018-5566-7 PMID: 29793453"
+        ],
+        [
+          "116.",
+          "Fischer C, Pedroso C, Mendrone A, Filippis AMBd, Vallinoto ACR, Ribeiro BM, et al. External Quality"
+        ],
+        [
+          "",
+          "Assessment for Zika Virus Molecular Diagnostic Testing, Brazil. 2018; 24(5):888. https://doi.org/10."
+        ],
+        [
+          "",
+          "3201/eid2405.171747"
+        ],
+        [
+          "117.",
+          "Chua A, Prat I, Nuebling CM, Wood D, Moussy F. Update on Zika Diagnostic Tests and WHO’s"
+        ],
+        [
+          "",
+          "Related Activities. PLoS neglected tropical diseases. 2017; 11(2):e0005269–e0005269. https://doi."
+        ],
+        [
+          "",
+          "org/10.1371/journal.pntd.0005269"
+        ],
+        [
+          "118.",
+          "Fischer C, Drosten C, Drexler JF. The difficulties in obtaining reliable Zika virus diagnostics. The Lan-"
+        ],
+        [
+          "",
+          "cet Infectious Diseases. 2019; 19(3):240–241. https://doi.org/10.1016/S1473-3099(19)30049-0 PMID:"
+        ],
+        [
+          "",
+          "30833056"
+        ],
+        [
+          "119.",
+          "Musso D, Gubler DJ. Zika Virus. Clinical Microbiology Reviews. 2016; 29(3):487–524. https://doi.org/"
+        ],
+        [
+          "",
+          "10.1128/CMR.00072-15 PMID: 27029595"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-stream",
+      "table_index": 41,
+      "page": 32,
+      "shape": [
+        17,
+        2
+      ],
+      "data": [
+        [
+          "",
+          "Modeling the spread of the Zika virus by sexual and mosquito transmission"
+        ],
+        [
+          "120.",
+          "Munoz-Jordan JL. Diagnosis of Zika Virus Infections: Challenges and Opportunities. The Journal of"
+        ],
+        [
+          "",
+          "Infectious Diseases. 2017; 216(10):S951–S956. https://doi.org/10.1093/infdis/jix502 PMID: 29267922"
+        ],
+        [
+          "121.",
+          "Hay JA, Nouvellet P, Donnelly CA, Riley S. Potential inconsistencies in Zika surveillance data and our"
+        ],
+        [
+          "",
+          "understanding of risk during pregnancy. PLOS Neglected Tropical Diseases. 2018; 12(12):1–20."
+        ],
+        [
+          "",
+          "https://doi.org/10.1371/journal.pntd.0006991 PMID: 30532143"
+        ],
+        [
+          "122.",
+          "Ventresca M, Aleman D. Evaluation of strategies to mitigate contagion spread using social network"
+        ],
+        [
+          "",
+          "characteristics. Social Networks. 2013; 35(1):75–88. https://doi.org/10.1016/j.socnet.2013.01.002"
+        ],
+        [
+          "123.",
+          "Campos SS, Fernandes RS, Dos Santos AAC, De Miranda RM, Telleria EL, Ferreira-De-Brito A, et al."
+        ],
+        [
+          "",
+          "Zika virus can be venereally transmitted between Aedes aegypti mosquitoes. Parasites and Vectors."
+        ],
+        [
+          "",
+          "2017; 10(1):605. https://doi.org/10.1186/s13071-017-2543-4 PMID: 29246237"
+        ],
+        [
+          "124.",
+          "Ciota AT, Bialosuknia SM, Ehrbar DJ, Kramer LD. Vertical transmission of zika virus by Aedes aegypti"
+        ],
+        [
+          "",
+          "and Ae. Albopictus mosquitoes. Emerging Infectious Diseases. 2017; 23(5):880–882. https://doi.org/"
+        ],
+        [
+          "",
+          "10.3201/eid2305.162041 PMID: 28277199"
+        ],
+        [
+          "125.",
+          "Thangamani S, Huang J, Hart CE, Guzman H, Tesh RB. Vertical transmission of zika virus in aedes"
+        ],
+        [
+          "",
+          "aegypti mosquitoes. American Journal of Tropical Medicine and Hygiene. 2016; 95(5):1169–1173."
+        ],
+        [
+          "",
+          "https://doi.org/10.4269/ajtmh.16-0448 PMID: 27573623"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 1,
+      "page": 6,
+      "shape": [
+        12,
+        4
+      ],
+      "data": [
+        [
+          "Symbol",
+          "Definition",
+          "Range",
+          "Reference"
+        ],
+        [
+          "βvh",
+          "Mosquito to human transmission rate",
+          "0.01–0.4",
+          "[59, 74, 77]"
+        ],
+        [
+          "βhv",
+          "Human to mosquito transmission rate",
+          "0.09–0.5",
+          "[59]"
+        ],
+        [
+          "βwm",
+          "Women to men transmission rate",
+          "0.001–0.1",
+          "[59]"
+        ],
+        [
+          "βmw",
+          "Men to women transmission rate",
+          "0.01–0.1",
+          "[59]"
+        ],
+        [
+          "ϕ",
+          "Proportion of symptomatic infections",
+          "0.10–0.27",
+          "[7]"
+        ],
+        [
+          "1/λh",
+          "Intrinsic latent period (days)",
+          "3–14",
+          "[81]"
+        ],
+        [
+          "1/λv",
+          "Extrinsic latent period (days)",
+          "8–12",
+          "[83]"
+        ],
+        [
+          "1/γ1",
+          "Mean time to viral clearance from blood (days)",
+          "10–20",
+          "[88, 89]"
+        ],
+        [
+          "1/γ2",
+          "Mean time to viral clearance from semen (days)",
+          "10–30",
+          "[89]"
+        ],
+        [
+          "1/γ3",
+          "Mean time to viral clearance from vaginal fluids (days)",
+          "1–20",
+          "[61]"
+        ],
+        [
+          "1/ν",
+          "Mosquito life span (days)",
+          "4–50",
+          "[83]"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 2,
+      "page": 8,
+      "shape": [
+        28,
+        6
+      ],
+      "data": [
+        [
+          "Code",
+          "Municipality",
+          "Department",
+          "Population at risk",
+          "Risky sexual encounters ρ(%)",
+          "Elevation (m)"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "Atlantico",
+          "210234",
+          "7.24",
+          "18"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "Atlantico",
+          "128930",
+          "7.40",
+          "58"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "Bolivar",
+          "245239",
+          "7.30",
+          "2"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "Caqueta",
+          "36864",
+          "7.27",
+          "243"
+        ],
+        [
+          "23001",
+          "Monteria",
+          "Cordoba",
+          "182250",
+          "7.33",
+          "50"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "Huila",
+          "57461",
+          "7.40",
+          "442"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "Huila",
+          "21342",
+          "6.96",
+          "829"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "Magdalena",
+          "126642",
+          "7.18",
+          "2"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "Meta",
+          "73525",
+          "7.48",
+          "467"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "Meta",
+          "13243",
+          "7.26",
+          "499"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "Norte de Santander",
+          "143381",
+          "7.29",
+          "321"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "Norte de Santander",
+          "13452",
+          "7.37",
+          "412"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "Norte de Santander",
+          "17247",
+          "7.41",
+          "441"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "Santander",
+          "60300",
+          "7.29",
+          "959"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "Santander",
+          "42763",
+          "7.19",
+          "75"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "Santander",
+          "23708",
+          "7.39",
+          "926"
+        ],
+        [
+          "68307",
+          "Giron",
+          "Santander",
+          "24142",
+          "7.37",
+          "706"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "Santander",
+          "16858",
+          "7.32",
+          "1005"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "Sucre",
+          "107681",
+          "7.26",
+          "180"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "Tolima",
+          "76510",
+          "6.95",
+          "1286"
+        ],
+        [
+          "76001",
+          "Cali",
+          "Valle del Cauca",
+          "243657",
+          "7.33",
+          "1019"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "Valle del Cauca",
+          "12237",
+          "6.96",
+          "969"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "Valle del Cauca",
+          "20170",
+          "6.77",
+          "918"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "Valle del Cauca",
+          "36748",
+          "7.22",
+          "1001"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "Arauca",
+          "27506",
+          "6.73",
+          "125"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "Casanare",
+          "30187",
+          "7.76",
+          "351"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "San Andres",
+          "28987",
+          "7",
+          "85"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 3,
+      "page": 11,
+      "shape": [
+        28,
+        11
+      ],
+      "data": [
+        [
+          "8001",
+          "Barranquilla",
+          "7.4",
+          "0.00",
+          "0.1",
+          "0.4",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.09",
+          "0.13"
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "8758",
+          "Soledad",
+          "20.60",
+          "0.00",
+          "0.23",
+          "0.16",
+          "0.01",
+          "0.04",
+          "0.16",
+          "0.08",
+          "0.39"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "20.90",
+          "0.00",
+          "0.19",
+          "0.23",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.06",
+          "0.49"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "4.40",
+          "0.00",
+          "0.26",
+          "0.15",
+          "0.02",
+          "0.08",
+          "0.16",
+          "0.07",
+          "0.39"
+        ],
+        [
+          "23001",
+          "Monteria",
+          "9.30",
+          "0.00",
+          "0.17",
+          "0.40",
+          "0.03",
+          "0.10",
+          "0.16",
+          "0.10",
+          "0.14"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "1.90",
+          "0.00",
+          "0.22",
+          "0.36",
+          "0.02",
+          "0.10",
+          "0.16",
+          "0.09",
+          "0.15"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "2.50",
+          "0.00",
+          "0.16",
+          "0.28",
+          "0.02",
+          "0.09",
+          "0.16",
+          "0.06",
+          "0.20"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "9.20",
+          "0.00",
+          "0.25",
+          "0.15",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.09",
+          "0.11"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "2.90",
+          "0.00",
+          "0.28",
+          "0.11",
+          "0.01",
+          "0.05",
+          "0.16",
+          "0.06",
+          "0.14"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "2.40",
+          "0.00",
+          "0.19",
+          "0.27",
+          "0.02",
+          "0.04",
+          "0.16",
+          "0.09",
+          "0.46"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "2.10",
+          "0.00",
+          "0.18",
+          "0.30",
+          "0.00",
+          "0.02",
+          "0.16",
+          "0.09",
+          "0.23"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "1.90",
+          "0.00",
+          "0.30",
+          "0.39",
+          "0.02",
+          "0.07",
+          "0.16",
+          "0.09",
+          "0.34"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "1.60",
+          "0.00",
+          "0.13",
+          "0.33",
+          "0.03",
+          "0.05",
+          "0.16",
+          "0.10",
+          "0.37"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "1.20",
+          "0.00",
+          "0.23",
+          "0.13",
+          "0.01",
+          "0.06",
+          "0.16",
+          "0.06",
+          "0.11"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "4.40",
+          "0.00",
+          "0.28",
+          "0.09",
+          "0.01",
+          "0.07",
+          "0.16",
+          "0.09",
+          "0.48"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "1.20",
+          "0.00",
+          "0.26",
+          "0.14",
+          "0.02",
+          "0.04",
+          "0.16",
+          "0.06",
+          "0.18"
+        ],
+        [
+          "68307",
+          "Giron",
+          "1.90",
+          "0.00",
+          "0.26",
+          "0.11",
+          "0.00",
+          "0.06",
+          "0.16",
+          "0.08",
+          "0.16"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "2.30",
+          "0.00",
+          "0.15",
+          "0.20",
+          "0.03",
+          "0.01",
+          "0.16",
+          "0.06",
+          "0.13"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "13.70",
+          "0.00",
+          "0.10",
+          "0.40",
+          "0.03",
+          "0.10",
+          "0.16",
+          "0.10",
+          "0.12"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "4.60",
+          "0.00",
+          "0.12",
+          "0.32",
+          "0.01",
+          "0.09",
+          "0.16",
+          "0.06",
+          "0.11"
+        ],
+        [
+          "76001",
+          "Cali",
+          "2.00",
+          "0.00",
+          "0.09",
+          "0.32",
+          "0.02",
+          "0.02",
+          "0.21",
+          "0.08",
+          "0.36"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "1.10",
+          "0.00",
+          "0.19",
+          "0.28",
+          "0.02",
+          "0.02",
+          "0.17",
+          "0.07",
+          "0.39"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "1.80",
+          "0.00",
+          "0.22",
+          "0.18",
+          "0.01",
+          "0.03",
+          "0.16",
+          "0.07",
+          "0.26"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "2.10",
+          "0.00",
+          "0.15",
+          "0.23",
+          "0.02",
+          "0.04",
+          "0.16",
+          "0.08",
+          "0.17"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "4.00",
+          "0.00",
+          "0.24",
+          "0.12",
+          "0.03",
+          "0.07",
+          "0.16",
+          "0.06",
+          "0.17"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "3.40",
+          "0.00",
+          "0.12",
+          "0.30",
+          "0.02",
+          "0.02",
+          "0.16",
+          "0.07",
+          "0.30"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "2.30",
+          "0.00",
+          "0.28",
+          "0.31",
+          "0.01",
+          "0.08",
+          "0.16",
+          "0.06",
+          "0.28"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 12,
+      "page": 14,
+      "shape": [
+        29,
+        8
+      ],
+      "data": [
+        [
+          "Code",
+          "Municipality",
+          "Reported infections",
+          "Estimated infections",
+          "",
+          "Expansion factor",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Symptomatic",
+          "Total",
+          "CF",
+          "Efs",
+          "EF"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "2294",
+          "19534",
+          "121700",
+          "7.40",
+          "8.52",
+          "53.05"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "513",
+          "12157",
+          "75428",
+          "20.60",
+          "23.70",
+          "147.03"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "921",
+          "23607",
+          "146627",
+          "20.90",
+          "25.63",
+          "159.20"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "542",
+          "3517",
+          "21855",
+          "4.40",
+          "6.49",
+          "40.32"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "1208",
+          "17980",
+          "112383",
+          "9.30",
+          "14.88",
+          "93.03"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "2268",
+          "5733",
+          "35735",
+          "1.90",
+          "2.53",
+          "15.76"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "723",
+          "2068",
+          "12825",
+          "2.50",
+          "2.86",
+          "17.74"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "1101",
+          "11997",
+          "74157",
+          "9.20",
+          "10.90",
+          "67.35"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "2061",
+          "6467",
+          "40247",
+          "2.90",
+          "3.14",
+          "19.53"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "511",
+          "1291",
+          "8053",
+          "2.40",
+          "2.53",
+          "15.76"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "5462",
+          "14028",
+          "87462",
+          "2.10",
+          "2.57",
+          "16.01"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "736",
+          "1346",
+          "8404",
+          "1.90",
+          "1.83",
+          "11.42"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "659",
+          "1650",
+          "10223",
+          "1.60",
+          "2.50",
+          "15.51"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "4282",
+          "5350",
+          "33225",
+          "1.20",
+          "1.25",
+          "7.76"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "729",
+          "3496",
+          "21826",
+          "4.40",
+          "4.80",
+          "29.94"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "1872",
+          "2202",
+          "13738",
+          "1.20",
+          "1.18",
+          "7.34"
+        ],
+        [
+          "68307",
+          "Giron",
+          "1019",
+          "2100",
+          "13080",
+          "1.90",
+          "2.06",
+          "12.84"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "595",
+          "1485",
+          "9247",
+          "2.30",
+          "2.50",
+          "15.54"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "572",
+          "9902",
+          "61890",
+          "13.70",
+          "17.31",
+          "108.20"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "1386",
+          "7250",
+          "44578",
+          "4.60",
+          "5.23",
+          "32.16"
+        ],
+        [
+          "76001",
+          "Cali",
+          "16053",
+          "31544",
+          "147798",
+          "2.00",
+          "1.96",
+          "9.21"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "1391",
+          "1328",
+          "7758",
+          "1.10",
+          "0.95",
+          "5.58"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "915",
+          "1949",
+          "11941",
+          "1.80",
+          "2.13",
+          "13.05"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "1524",
+          "3429",
+          "21131",
+          "2.10",
+          "2.25",
+          "13.87"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "557",
+          "2438",
+          "15178",
+          "4.00",
+          "4.38",
+          "27.25"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "690",
+          "2798",
+          "17326",
+          "3.40",
+          "4.06",
+          "25.11"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "1088",
+          "2999",
+          "18312",
+          "2.30",
+          "2.76",
+          "16.83"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 13,
+      "page": 15,
+      "shape": [
+        29,
+        9
+      ],
+      "data": [
+        [
+          "",
+          "Code Municipality",
+          "Estimated infections",
+          "Symptomatic (%)",
+          "",
+          "",
+          "Asymptomatic (%)",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Women",
+          "Men",
+          "Total",
+          "Women",
+          "Men",
+          "Total"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "121700",
+          "8.23",
+          "7.82",
+          "16.05",
+          "43.02",
+          "40.93",
+          "83.95"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "75428",
+          "8.14",
+          "7.98",
+          "16.12",
+          "42.36",
+          "41.52",
+          "83.88"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146627",
+          "8.29",
+          "7.81",
+          "16.10",
+          "43.20",
+          "40.70",
+          "83.90"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21855",
+          "8.19",
+          "7.91",
+          "16.09",
+          "42.68",
+          "41.23",
+          "83.91"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112383",
+          "8.23",
+          "7.77",
+          "16.00",
+          "43.19",
+          "40.81",
+          "84.00"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35735",
+          "8.36",
+          "7.68",
+          "16.04",
+          "43.75",
+          "40.21",
+          "83.96"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12825",
+          "7.74",
+          "8.38",
+          "16.12",
+          "40.27",
+          "43.60",
+          "83.88"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "74157",
+          "8.25",
+          "7.92",
+          "16.18",
+          "42.76",
+          "41.06",
+          "83.82"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "40247",
+          "8.23",
+          "7.83",
+          "16.07",
+          "43.01",
+          "40.92",
+          "83.93"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8053",
+          "7.97",
+          "8.06",
+          "16.03",
+          "41.74",
+          "42.23",
+          "83.97"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87462",
+          "8.26",
+          "7.78",
+          "16.04",
+          "43.23",
+          "40.73",
+          "83.96"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8404",
+          "8.32",
+          "7.70",
+          "16.02",
+          "43.62",
+          "40.36",
+          "83.98"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10223",
+          "8.15",
+          "7.99",
+          "16.14",
+          "42.34",
+          "41.52",
+          "83.86"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "33225",
+          "8.31",
+          "7.79",
+          "16.10",
+          "43.30",
+          "40.60",
+          "83.90"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21826",
+          "8.13",
+          "7.89",
+          "16.02",
+          "42.61",
+          "41.37",
+          "83.98"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13738",
+          "8.34",
+          "7.69",
+          "16.03",
+          "43.71",
+          "40.26",
+          "83.97"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13080",
+          "8.08",
+          "7.97",
+          "16.06",
+          "42.26",
+          "41.68",
+          "83.94"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9247",
+          "8.19",
+          "7.87",
+          "16.06",
+          "42.78",
+          "41.16",
+          "83.94"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61890",
+          "8.14",
+          "7.86",
+          "16.00",
+          "42.72",
+          "41.28",
+          "84.00"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44578",
+          "8.36",
+          "7.91",
+          "16.26",
+          "43.03",
+          "40.71",
+          "83.74"
+        ],
+        [
+          "76001",
+          "Cali",
+          "147798",
+          "10.99",
+          "10.36",
+          "21.34",
+          "40.49",
+          "38.17",
+          "78.66"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "7758",
+          "8.71",
+          "8.40",
+          "17.12",
+          "42.20",
+          "40.68",
+          "82.88"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "11941",
+          "8.42",
+          "7.90",
+          "16.32",
+          "43.20",
+          "40.48",
+          "83.68"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "21131",
+          "8.34",
+          "7.89",
+          "16.23",
+          "43.04",
+          "40.73",
+          "83.77"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15178",
+          "8.11",
+          "7.95",
+          "16.06",
+          "42.38",
+          "41.56",
+          "83.94"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17326",
+          "8.07",
+          "8.08",
+          "16.15",
+          "41.89",
+          "41.96",
+          "83.85"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18312",
+          "8.24",
+          "8.14",
+          "16.38",
+          "42.05",
+          "41.57",
+          "83.62"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 14,
+      "page": 16,
+      "shape": [
+        29,
+        9
+      ],
+      "data": [
+        [
+          "",
+          "Code Municipality",
+          "Estimated infections",
+          "Symptomatic (%)",
+          "",
+          "",
+          "Asymptomatic (%)",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "Women",
+          "Men",
+          "Total",
+          "Women",
+          "Men",
+          "Total"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "121700",
+          "1.03",
+          "0.42",
+          "1.45",
+          "41.04",
+          "37.37",
+          "78.41"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "75428",
+          "0.96",
+          "0.14",
+          "1.10",
+          "39.65",
+          "38.89",
+          "78.54"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146627",
+          "1.08",
+          "0.24",
+          "1.33",
+          "41.25",
+          "37.14",
+          "78.40"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21855",
+          "1.75",
+          "0.20",
+          "1.95",
+          "39.43",
+          "38.30",
+          "77.73"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112383",
+          "1.39",
+          "0.35",
+          "1.74",
+          "40.86",
+          "37.40",
+          "78.26"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35735",
+          "1.37",
+          "0.21",
+          "1.58",
+          "41.92",
+          "36.40",
+          "78.32"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12825",
+          "1.62",
+          "0.24",
+          "1.86",
+          "34.89",
+          "43.14",
+          "78.04"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "74157",
+          "1.03",
+          "0.45",
+          "1.48",
+          "40.43",
+          "37.58",
+          "78.00"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "40247",
+          "1.38",
+          "0.26",
+          "1.64",
+          "40.65",
+          "37.49",
+          "78.14"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8053",
+          "0.68",
+          "0.15",
+          "0.83",
+          "38.74",
+          "40.30",
+          "79.04"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87462",
+          "0.32",
+          "0.01",
+          "0.34",
+          "42.13",
+          "37.47",
+          "79.60"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8404",
+          "0.73",
+          "0.10",
+          "0.82",
+          "42.35",
+          "36.83",
+          "79.18"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10223",
+          "0.94",
+          "0.27",
+          "1.21",
+          "39.62",
+          "38.72",
+          "78.33"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "33225",
+          "1.63",
+          "0.23",
+          "1.86",
+          "40.96",
+          "36.86",
+          "77.82"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21826",
+          "1.60",
+          "0.17",
+          "1.77",
+          "39.46",
+          "38.69",
+          "78.15"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13738",
+          "1.20",
+          "0.23",
+          "1.43",
+          "42.31",
+          "36.24",
+          "78.54"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13080",
+          "1.36",
+          "0.05",
+          "1.41",
+          "38.95",
+          "39.46",
+          "78.41"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9247",
+          "0.42",
+          "0.50",
+          "0.92",
+          "41.33",
+          "37.60",
+          "78.93"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61890",
+          "1.85",
+          "0.50",
+          "2.35",
+          "39.49",
+          "38.13",
+          "77.63"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44578",
+          "2.14",
+          "0.11",
+          "2.25",
+          "39.61",
+          "37.30",
+          "76.91"
+        ],
+        [
+          "76001",
+          "Cali",
+          "147798",
+          "0.36",
+          "0.22",
+          "0.58",
+          "36.98",
+          "32.07",
+          "69.05"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "7758",
+          "0.39",
+          "0.14",
+          "0.53",
+          "39.57",
+          "36.88",
+          "76.45"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "11941",
+          "0.59",
+          "0.04",
+          "0.64",
+          "41.73",
+          "36.73",
+          "78.46"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "21131",
+          "0.94",
+          "0.26",
+          "1.19",
+          "41.12",
+          "37.03",
+          "78.16"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15178",
+          "1.83",
+          "0.40",
+          "2.23",
+          "38.70",
+          "38.86",
+          "77.56"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17326",
+          "0.42",
+          "0.29",
+          "0.71",
+          "39.26",
+          "39.58",
+          "78.84"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18312",
+          "1.04",
+          "0.07",
+          "1.11",
+          "38.84",
+          "38.94",
+          "77.77"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 15,
+      "page": 20,
+      "shape": [
+        28,
+        12
+      ],
+      "data": [
+        [
+          "8001",
+          "Barranquilla",
+          "121721",
+          "0.27",
+          "2.46",
+          "5.88",
+          "0.26",
+          "2.36",
+          "5.59",
+          "0.24",
+          "2.25",
+          "5.26"
+        ],
+        [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "8758",
+          "Soledad",
+          "74885",
+          "0.33",
+          "2.51",
+          "6.04",
+          "0.31",
+          "2.41",
+          "5.74",
+          "0.28",
+          "2.22",
+          "5.20"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146565",
+          "0.17",
+          "1.81",
+          "4.44",
+          "0.16",
+          "1.74",
+          "4.24",
+          "0.14",
+          "1.59",
+          "3.79"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21616",
+          "0.24",
+          "2.41",
+          "5.85",
+          "0.23",
+          "2.32",
+          "5.58",
+          "0.20",
+          "2.13",
+          "5.03"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112385",
+          "0.04",
+          "0.63",
+          "1.60",
+          "0.04",
+          "0.62",
+          "1.56",
+          "0.04",
+          "0.59",
+          "1.45"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35659",
+          "0.02",
+          "0.39",
+          "1.00",
+          "0.02",
+          "0.38",
+          "0.98",
+          "0.02",
+          "0.36",
+          "0.91"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12730",
+          "0.11",
+          "1.66",
+          "4.02",
+          "0.10",
+          "1.61",
+          "3.86",
+          "0.10",
+          "1.53",
+          "3.62"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "73505",
+          "0.29",
+          "2.71",
+          "6.57",
+          "0.27",
+          "2.56",
+          "6.11",
+          "0.25",
+          "2.41",
+          "5.67"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "39999",
+          "0.63",
+          "4.60",
+          "10.94",
+          "0.60",
+          "4.38",
+          "10.30",
+          "0.52",
+          "3.92",
+          "9.00"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8011",
+          "0.10",
+          "1.40",
+          "3.47",
+          "0.09",
+          "1.34",
+          "3.29",
+          "0.09",
+          "1.26",
+          "3.04"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87314",
+          "0.15",
+          "1.09",
+          "2.69",
+          "0.15",
+          "1.07",
+          "2.62",
+          "0.14",
+          "1.02",
+          "2.48"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8399",
+          "0.00",
+          "0.07",
+          "0.21",
+          "0.00",
+          "0.07",
+          "0.21",
+          "0.00",
+          "0.07",
+          "0.20"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10123",
+          "0.26",
+          "2.10",
+          "5.03",
+          "0.25",
+          "2.01",
+          "4.79",
+          "0.23",
+          "1.92",
+          "4.50"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "32873",
+          "0.63",
+          "4.53",
+          "10.79",
+          "0.59",
+          "4.32",
+          "10.15",
+          "0.52",
+          "3.86",
+          "8.86"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21276",
+          "1.12",
+          "7.18",
+          "16.89",
+          "1.04",
+          "6.71",
+          "15.46",
+          "0.90",
+          "5.86",
+          "13.08"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13662",
+          "0.32",
+          "2.93",
+          "7.09",
+          "0.30",
+          "2.79",
+          "6.67",
+          "0.27",
+          "2.55",
+          "5.98"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13122",
+          "0.59",
+          "4.52",
+          "10.73",
+          "0.55",
+          "4.25",
+          "9.96",
+          "0.50",
+          "3.93",
+          "9.02"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9095",
+          "0.68",
+          "4.86",
+          "11.57",
+          "0.64",
+          "4.59",
+          "10.77",
+          "0.56",
+          "4.11",
+          "9.40"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61892",
+          "0.28",
+          "2.65",
+          "6.31",
+          "0.27",
+          "2.57",
+          "6.08",
+          "0.25",
+          "2.40",
+          "5.59"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44024",
+          "0.27",
+          "2.63",
+          "6.28",
+          "0.26",
+          "2.54",
+          "6.00",
+          "0.24",
+          "2.36",
+          "5.48"
+        ],
+        [
+          "76001",
+          "Cali",
+          "154490",
+          "0.28",
+          "5.48",
+          "12.95",
+          "0.27",
+          "5.21",
+          "12.14",
+          "0.24",
+          "4.74",
+          "10.80"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "8000",
+          "0.07",
+          "1.01",
+          "2.54",
+          "0.06",
+          "0.97",
+          "2.40",
+          "0.06",
+          "0.90",
+          "2.19"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "11755",
+          "0.32",
+          "2.28",
+          "5.44",
+          "0.31",
+          "2.19",
+          "5.18",
+          "0.29",
+          "2.09",
+          "4.89"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "20685",
+          "0.44",
+          "3.63",
+          "8.70",
+          "0.41",
+          "3.45",
+          "8.19",
+          "0.37",
+          "3.18",
+          "7.41"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15131",
+          "0.50",
+          "4.30",
+          "10.28",
+          "0.46",
+          "4.03",
+          "9.46",
+          "0.41",
+          "3.68",
+          "8.46"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17089",
+          "0.40",
+          "3.05",
+          "7.24",
+          "0.39",
+          "2.95",
+          "6.94",
+          "0.36",
+          "2.76",
+          "6.40"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18041",
+          "0.01",
+          "0.26",
+          "0.68",
+          "0.01",
+          "0.25",
+          "0.67",
+          "0.01",
+          "0.25",
+          "0.65"
+        ]
+      ]
+    },
+    {
+      "source": "camelot-lattice",
+      "table_index": 16,
+      "page": 23,
+      "shape": [
+        29,
+        5
+      ],
+      "data": [
+        [
+          "Code",
+          "Municipality",
+          "Infections",
+          "Increment (%)",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          "ρ = 10%",
+          "ρ = 20%"
+        ],
+        [
+          "8001",
+          "Barranquilla",
+          "121841",
+          "2.96",
+          "4.82"
+        ],
+        [
+          "8758",
+          "Soledad",
+          "75626",
+          "2.16",
+          "3.44"
+        ],
+        [
+          "13001",
+          "Cartagena",
+          "146952",
+          "1.84",
+          "2.82"
+        ],
+        [
+          "18001",
+          "Florencia",
+          "21905",
+          "2.55",
+          "3.44"
+        ],
+        [
+          "23001 Monteria",
+          "",
+          "112385",
+          "0.61",
+          "0.88"
+        ],
+        [
+          "41001",
+          "Neiva",
+          "35773",
+          "0.31",
+          "0.42"
+        ],
+        [
+          "41298",
+          "Garzon",
+          "12862",
+          "1.65",
+          "2.28"
+        ],
+        [
+          "47001",
+          "Santa Marta",
+          "74448",
+          "3.05",
+          "4.81"
+        ],
+        [
+          "50001",
+          "Villavicencio",
+          "40313",
+          "5.82",
+          "8.76"
+        ],
+        [
+          "50006",
+          "Acacias",
+          "8062",
+          "0.70",
+          "1.19"
+        ],
+        [
+          "54001",
+          "Cucuta",
+          "87541",
+          "0.33",
+          "0.60"
+        ],
+        [
+          "54405",
+          "Los Patios",
+          "8410",
+          "0.03",
+          "0.05"
+        ],
+        [
+          "54874",
+          "Villa del Rosario",
+          "10256",
+          "1.84",
+          "3.03"
+        ],
+        [
+          "68001",
+          "Bucaramanga",
+          "33303",
+          "6.06",
+          "8.70"
+        ],
+        [
+          "68081",
+          "Barrancabermeja",
+          "21837",
+          "8.80",
+          "12.86"
+        ],
+        [
+          "68276",
+          "Floridablanca",
+          "13749",
+          "3.19",
+          "4.81"
+        ],
+        [
+          "68307",
+          "Giron",
+          "13101",
+          "5.00",
+          "7.36"
+        ],
+        [
+          "68547",
+          "Piedecuesta",
+          "9261",
+          "3.74",
+          "6.62"
+        ],
+        [
+          "70001",
+          "Sincelejo",
+          "61892",
+          "4.11",
+          "5.95"
+        ],
+        [
+          "73001",
+          "Ibague",
+          "44832",
+          "3.71",
+          "4.65"
+        ],
+        [
+          "76001",
+          "Cali",
+          "155347",
+          "3.36",
+          "6.23"
+        ],
+        [
+          "76111",
+          "Guadalajara de Buga",
+          "7917",
+          "0.50",
+          "0.90"
+        ],
+        [
+          "76147",
+          "Cartago",
+          "12024",
+          "1.56",
+          "2.61"
+        ],
+        [
+          "76520",
+          "Palmira",
+          "21237",
+          "3.14",
+          "5.12"
+        ],
+        [
+          "81001",
+          "Arauca",
+          "15202",
+          "6.81",
+          "9.41"
+        ],
+        [
+          "85001",
+          "Yopal",
+          "17387",
+          "1.83",
+          "3.39"
+        ],
+        [
+          "88001",
+          "San Andres",
+          "18459",
+          "0.11",
+          "0.14"
+        ]
+      ]
+    }
+  ]
+}

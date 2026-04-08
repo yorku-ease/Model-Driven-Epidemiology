@@ -1,0 +1,31 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Hiv2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Early Infection,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Asymptomatic CD4 >350,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Asymptomatic CD4 200-350,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Symptomatic CD4 ≤200,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,On ART,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Dropped Out,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Early Infection,RateFlow,//@parameters.4,False,HIV transmission through sexual contact with infectious individuals,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Asymptomatic CD4 >350,RateFlow,//@parameters.4,False,Progression from acute/early infection to asymptomatic chronic infection,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Asymptomatic CD4 200-350,RateFlow,0.0,False,CD4 decline from above 350 to 200-350 cells/ml,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On ART,RateFlow,0.0,False,ART initiation for individuals with CD4 >350 (under immediate/all HIV+ eligibility scenario),,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Symptomatic CD4 ≤200,RateFlow,0.0,False,"CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease",,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On ART,RateFlow,0.0,False,ART initiation for individuals with CD4 200-350 (under CD4 ≤350 or all HIV+ eligibility),,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On ART,RateFlow,0.0,False,ART initiation for individuals with CD4 ≤200 (under all eligibility scenarios),,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Dropped Out,RateFlow,0.0,False,Death due to AIDS in untreated late-stage individuals,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Dropped Out,RateFlow,0.0,False,Dropout from ART programme at a constant rate,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On ART,RateFlow,0.0,False,Death while on ART (reduced mortality rate compared to untreated),,,
+Hiv2,Parameter,ART eligibility CD4 threshold,,,,,,Model file,Certain,,,,,,CD4 count threshold below which individuals become eligible for ART,CONSTANT,"200, 350, or all HIV+",cells/ml
+Hiv2,Parameter,ART access,,,,,,Model file,Certain,,,,,,Proportion of eligible individuals who eventually initiate treatment,CONSTANT,50-100,%
+Hiv2,Parameter,Time from eligibility to ART initiation,,,,,,Model file,Certain,,,,,,Average time from reaching eligibility to starting ART,CONSTANT,1,year
+Hiv2,Parameter,3-year retention on ART,,,,,,Model file,Certain,,,,,,"Percentage of individuals remaining on treatment after 3 years, excluding deaths",CONSTANT,75-100,%
+Hiv2,Parameter,ART transmission reduction,,,,,,Model file,Certain,,,,,,Reduction in HIV transmissibility for individuals on ART,CONSTANT,90-99,%
+Hiv2,Parameter,Early infection relative transmissibility (Boily estimate),,,,,,Model file,Certain,,,,,,"Relative increase in transmission during early infection compared to asymptomatic, based on Boily et al. meta-analysis",CONSTANT,10,fold increase
+Hiv2,Parameter,Early infection relative transmissibility (Hollingsworth estimate),,,,,,Model file,Certain,,,,,,"Relative increase in transmission during early infection compared to asymptomatic, based on Hollingsworth et al. reanalysis",CONSTANT,26,fold increase
+Hiv2,Parameter,Late-stage relative transmissibility,,,,,,Model file,Certain,,,,,,"Relative increase in transmissibility during late-stage/AIDS compared to asymptomatic infection, varies by model",CONSTANT,1.4-4,fold increase
+Hiv2,Parameter,ART introduction year,,,,,,Model file,Certain,,,,,,Year in which ART is introduced into the population in standardised scenarios,CONSTANT,2012,year
+Hiv2,Parameter,Male HIV prevalence 2012 (no ART),,,,,,Model file,Certain,,,,,,Range of estimated adult male HIV prevalence in 2012 across models under no-ART counterfactual,CONSTANT,10-16,%
+Hiv2,Parameter,Female HIV prevalence 2012 (no ART),,,,,,Model file,Certain,,,,,,Range of estimated adult female HIV prevalence in 2012 across models under no-ART counterfactual,CONSTANT,17-23,%
+Hiv2,Parameter,Male HIV incidence 2012 (no ART),,,,,,Model file,Certain,,,,,,Range of male HIV incidence rate in 2012 across models,CONSTANT,1.1-2.0,per 100 person-years
+Hiv2,Parameter,Female HIV incidence 2012 (no ART),,,,,,Model file,Certain,,,,,,Range of female HIV incidence rate in 2012 across models,CONSTANT,1.7-2.6,per 100 person-years

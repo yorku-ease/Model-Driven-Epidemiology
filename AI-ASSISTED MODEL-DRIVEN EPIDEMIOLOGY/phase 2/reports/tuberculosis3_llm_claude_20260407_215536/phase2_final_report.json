@@ -1,0 +1,462 @@
+{
+  "paper_name": "Tuberculosis3",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 16,
+      "parameters": 19,
+      "stratifications": 1,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Uninfected",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recently Infected Latent TB",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Remotely Infected Latent TB",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Active TB Smear-Positive Pulmonary",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Active TB Smear-Negative Pulmonary",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Active TB Extrapulmonary",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recently Treated and Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Uninfected",
+        "target": "Recently Infected Latent TB",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Infected Latent TB",
+        "target": "Remotely Infected Latent TB",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Infected Latent TB",
+        "target": "Active TB Smear-Positive Pulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Infected Latent TB",
+        "target": "Active TB Smear-Negative Pulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Infected Latent TB",
+        "target": "Active TB Extrapulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Remotely Infected Latent TB",
+        "target": "Active TB Smear-Positive Pulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Remotely Infected Latent TB",
+        "target": "Active TB Smear-Negative Pulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Remotely Infected Latent TB",
+        "target": "Active TB Extrapulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Active TB Smear-Positive Pulmonary",
+        "target": "Recently Treated and Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Active TB Smear-Negative Pulmonary",
+        "target": "Recently Treated and Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Active TB Extrapulmonary",
+        "target": "Recently Treated and Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Treated and Recovered",
+        "target": "Active TB Smear-Positive Pulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Treated and Recovered",
+        "target": "Active TB Smear-Negative Pulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Treated and Recovered",
+        "target": "Active TB Extrapulmonary",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Remotely Infected Latent TB",
+        "target": "Recently Infected Latent TB",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recently Treated and Recovered",
+        "target": "Recently Infected Latent TB",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "beta",
+        "value": "16.1",
+        "unit": "secondary infections per smear-positive person-year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "relative_infectiousness_smear_negative",
+        "value": "0.22",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "relative_rate_early_progression",
+        "value": "0.50",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "rapid_progression_rate",
+        "value": "0.07",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "slow_progression_rate",
+        "value": "0.0005",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "proportion_extrapulmonary",
+        "value": "0.24",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "proportion_smear_positive",
+        "value": "0.65",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "mortality_rate_smear_positive",
+        "value": "0.23",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "mortality_rate_smear_negative_extrapulmonary",
+        "value": "0.07",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "natural_cure_rate_smear_positive",
+        "value": "0.10",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "natural_cure_rate_smear_negative_extrapulmonary",
+        "value": "0.27",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "informal_sector_size",
+        "value": "0.455",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "treatment_success_notified_2008",
+        "value": "0.75",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "treatment_success_informal",
+        "value": "0.5",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "relapse_rate",
+        "value": "0.024",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "population_growth_rate",
+        "value": "0.03",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "diagnostic_rate_smear_positive_2008",
+        "value": "0.41",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "diagnostic_rate_smear_negative_2008",
+        "value": "0.16",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "diagnostic_rate_extrapulmonary_2008",
+        "value": "0.50",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 16,
+    "parameters": 19,
+    "stratifications": 1,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 44,
+    "items_with_evidence": 44,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 44,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 44,
+      "items_with_evidence": 44,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 44,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 6,
+        "fn": 6,
+        "precision": 0.1429,
+        "recall": 0.1429,
+        "f1": 0.1429
+      },
+      "flows": {
+        "tp": 0,
+        "fp": 16,
+        "fn": 18,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "parameters": {
+        "tp": 6,
+        "fp": 13,
+        "fn": 12,
+        "precision": 0.3158,
+        "recall": 0.3333,
+        "f1": 0.3243
+      },
+      "composite_score": 0.1094,
+      "compartment_matches": [
+        {
+          "gold": "Uninfected",
+          "extracted": "Uninfected",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [],
+      "parameter_matches": [
+        {
+          "gold": "InfectionRateFromSmearPositive 0.30 Representative transmission intensity from smear-positive pulmonary TB; the paper fits transmission to incidence and assumes smear-positive disease is the main infectious class",
+          "extracted": "mortality_rate_smear_positive 0.23 TB-specific mortality rate for smear-positive pulmonary TB",
+          "score": 0.7697278261184692
+        },
+        {
+          "gold": "InfectionRateFromSmearNegative 0.066 Transmission intensity from smear-negative pulmonary TB, reflecting relative infectiousness of 0.22 compared with smear-positive cases in the paper",
+          "extracted": "diagnostic_rate_smear_positive_2008 0.41 Diagnostic rate for smear-positive pulmonary TB in 2008 (primary analysis)",
+          "score": 0.7874029278755188
+        },
+        {
+          "gold": "RemoteReactivationToSmearPositiveRate 0.000325 Slow progression / reactivation from remote TB infection to smear-positive disease",
+          "extracted": "slow_progression_rate 0.0005 Rate of slow progression (reactivation) of remote TB infection",
+          "score": 0.8070955276489258
+        },
+        {
+          "gold": "TreatmentOrSelfCureRateSmearNegative 0.43 Net rate of leaving active smear-negative TB through diagnosis and treatment or self-cure",
+          "extracted": "natural_cure_rate_smear_positive 0.10 Natural (spontaneous) cure rate for smear-positive pulmonary TB",
+          "score": 0.766441822052002
+        },
+        {
+          "gold": "TreatmentOrSelfCureRateExtrapulmonary 0.77 Net rate of leaving active extrapulmonary TB through diagnosis and treatment",
+          "extracted": "diagnostic_rate_extrapulmonary_2008 0.50 Diagnostic rate for extrapulmonary TB in 2008 (primary analysis)",
+          "score": 0.7928394079208374
+        },
+        {
+          "gold": "RelapseToExtrapulmonaryRate 0.004 Relapse from recently treated/recovered into active extrapulmonary TB",
+          "extracted": "relapse_rate 0.024 Relapse rate from recently treated/recovered to active TB (fit to proportion of retreatment cases)",
+          "score": 0.7256098389625549
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

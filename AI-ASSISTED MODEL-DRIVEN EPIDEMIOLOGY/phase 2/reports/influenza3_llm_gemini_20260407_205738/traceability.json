@@ -1,0 +1,441 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals susceptible to infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Effectively Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Individuals who received an effective vaccine dose but are not yet protected and can still be infected.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Ineffectively Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Individuals who received an ineffective vaccine dose and remain susceptible to infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Protected": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are protected from infection by vaccination.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Latent": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are infected but not yet infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic and infectious individuals in the community.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized": {
+      "evidence": [
+        {
+          "text_span": "Infectious individuals who are hospitalized.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from infection and are assumed to be immune.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dead": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have died from the infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Latent": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals at the force of infection lambda_i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible -> Effectively Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Vaccination of susceptible individuals who will become protected, occurring at rate e_i * n(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible -> Ineffectively Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Vaccination of susceptible individuals who will not become protected, occurring at rate (1-e_i) * n(t).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Effectively Vaccinated -> Protected": {
+      "evidence": [
+        {
+          "text_span": "Development of protection in effectively vaccinated individuals at rate gamma.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Effectively Vaccinated -> Latent": {
+      "evidence": [
+        {
+          "text_span": "Infection of effectively vaccinated but not yet protected individuals at the force of infection lambda_i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Ineffectively Vaccinated -> Latent": {
+      "evidence": [
+        {
+          "text_span": "Infection of ineffectively vaccinated individuals at the force of infection lambda_i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Latent -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Progression from latent to infectious state at rate k.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Hospitalized": {
+      "evidence": [
+        {
+          "text_span": "Hospitalization of infectious individuals at age-specific rate alpha_i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of non-hospitalized infectious individuals at rate c_1.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of hospitalized individuals at rate c_2.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Death of hospitalized individuals at age-specific rate d_i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "k": {
+      "evidence": [
+        {
+          "text_span": "Rate of progression from latent to infectious state.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1/1.9",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_1": {
+      "evidence": [
+        {
+          "text_span": "Recovery rate for infectious class.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1/1.5",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_2": {
+      "evidence": [
+        {
+          "text_span": "Recovery rate for hospitalized class.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1/1.5",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "g": {
+      "evidence": [
+        {
+          "text_span": "Rate at which effectively vaccinated individuals become protected (mean of 10 days).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1/10",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "e_i": {
+      "evidence": [
+        {
+          "text_span": "Age-specific vaccine efficacy.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "77.5% for <65y, 35% for >=65y",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "n(t)": {
+      "evidence": [
+        {
+          "text_span": "Vaccination rate, administered t* days after epidemic onset.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "q": {
+      "evidence": [
+        {
+          "text_span": "Transmission probability per contact.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Calibrated to R0",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c_ij": {
+      "evidence": [
+        {
+          "text_span": "Age-specific contact rates.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "From [27]",
+          "unit": "contacts/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "b_ij": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate between age groups i and j.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "q * c_ij",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "p_Hi": {
+      "evidence": [
+        {
+          "text_span": "Fraction of clinical cases that are hospitalized for age group i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Varies by age and scenario",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "CFP_i": {
+      "evidence": [
+        {
+          "text_span": "Case fatality proportion (probability of death following hospitalization) for age group i.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Varies by age and scenario",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "a_i": {
+      "evidence": [
+        {
+          "text_span": "Age-specific hospitalization rate for infectious individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "(p_Hi / (1 - p_Hi)) * c_1",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "d_i": {
+      "evidence": [
+        {
+          "text_span": "Age-specific influenza mortality rate for hospitalized individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "(CFP_i / (1 - CFP_i)) * c_2",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 7,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 36,
+    "items_with_evidence": 36,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 36,
+    "faithfulness_percentage": 100.0
+  }
+}

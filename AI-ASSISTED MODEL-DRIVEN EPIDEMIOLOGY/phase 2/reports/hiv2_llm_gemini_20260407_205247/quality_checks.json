@@ -1,0 +1,388 @@
+{
+  "model_analysis": {
+    "modelName": "Hiv2",
+    "summary": {
+      "modelName": "Hiv2",
+      "totalPopulation": null,
+      "numCompartments": 6,
+      "numParameters": 6,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.4",
+              "contactCompartment": "//@compartments.1",
+              "description": "Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infected (Early)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from early to chronic HIV infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infected (Chronic, CD4 > 350)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Disease progression marked by decline in CD4 count.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Initiation of ART for eligible individuals with CD4 > 350 cells/ml (e.g., under 'treat all' scenarios).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infected (Chronic, CD4 200-350)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Further disease progression to a lower CD4 count.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infected (Late Stage, CD4 <= 200)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Initiation of ART for eligible individuals with CD4 count <= 200 cells/ml.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "On Antiretroviral Therapy (ART)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation.",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "CD4 Eligibility Threshold",
+          "type": "CONSTANT",
+          "expression": "<=200, <=350, or all infected",
+          "description": "The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios.",
+          "unit": "cells/ml"
+        },
+        {
+          "index": 1,
+          "name": "Treatment Access",
+          "type": "CONSTANT",
+          "expression": "50, 60, 70, 80, 90, 95, 100",
+          "description": "The proportion of eligible individuals who eventually initiate treatment.",
+          "unit": "percent"
+        },
+        {
+          "index": 2,
+          "name": "3-year Retention on ART",
+          "type": "CONSTANT",
+          "expression": "75, 85, 95, 100",
+          "description": "The percentage of individuals remaining on treatment after 3 years, excluding those who had died.",
+          "unit": "percent"
+        },
+        {
+          "index": 3,
+          "name": "Average time to ART initiation",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year.",
+          "unit": "year"
+        },
+        {
+          "index": 4,
+          "name": "Relative Transmissibility (Early Infection)",
+          "type": "CONSTANT",
+          "expression": "10-26",
+          "description": "Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range.",
+          "unit": "fold increase"
+        },
+        {
+          "index": 5,
+          "name": "Transmissibility Reduction on ART",
+          "type": "CONSTANT",
+          "expression": ">90",
+          "description": "The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%.",
+          "unit": "percent"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Hiv2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 6,
+    "parametersWithUncertainty": 6,
+    "parameters": [
+      {
+        "parameter": "CD4 Eligibility Threshold",
+        "yourValue": "<=200, <=350, or all infected",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv2",
+        "unit": "cells/ml",
+        "description": "The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Treatment Access",
+        "yourValue": "50, 60, 70, 80, 90, 95, 100",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv2",
+        "unit": "percent",
+        "description": "The proportion of eligible individuals who eventually initiate treatment.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "3-year Retention on ART",
+        "yourValue": "75, 85, 95, 100",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv2",
+        "unit": "percent",
+        "description": "The percentage of individuals remaining on treatment after 3 years, excluding those who had died.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Average time to ART initiation",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv2",
+        "unit": "year",
+        "description": "The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative Transmissibility (Early Infection)",
+        "yourValue": "10-26",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv2",
+        "unit": "fold increase",
+        "description": "Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Transmissibility Reduction on ART",
+        "yourValue": ">90",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv2",
+        "unit": "percent",
+        "description": "The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 6
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Hiv2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Average time to ART initiation",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Average time to ART initiation"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Average time to ART initiation"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Average time to ART initiation": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

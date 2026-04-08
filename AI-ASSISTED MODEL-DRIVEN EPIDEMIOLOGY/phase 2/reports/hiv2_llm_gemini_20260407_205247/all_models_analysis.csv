@@ -1,0 +1,21 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Hiv2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Infected (Early),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,"Infected (Chronic, CD4 > 350)",,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,"Infected (Chronic, CD4 200-350)",,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,"Infected (Late Stage, CD4 <= 200)",,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,On Antiretroviral Therapy (ART),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Infected (Early),RateFlow,//@parameters.4,False,"Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART.",,,
+Hiv2,Flow,,,,,,,Model file,Certain,,"Infected (Chronic, CD4 > 350)",RateFlow,//@parameters.4,False,Progression from early to chronic HIV infection.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,"Infected (Chronic, CD4 200-350)",RateFlow,0.0,False,Disease progression marked by decline in CD4 count.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy (ART),RateFlow,0.0,False,"Initiation of ART for eligible individuals with CD4 > 350 cells/ml (e.g., under 'treat all' scenarios).",,,
+Hiv2,Flow,,,,,,,Model file,Certain,,"Infected (Late Stage, CD4 <= 200)",RateFlow,0.0,False,Further disease progression to a lower CD4 count.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy (ART),RateFlow,0.0,False,Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy (ART),RateFlow,0.0,False,Initiation of ART for eligible individuals with CD4 count <= 200 cells/ml.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,"Infected (Late Stage, CD4 <= 200)",RateFlow,0.0,False,"Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation.",,,
+Hiv2,Parameter,CD4 Eligibility Threshold,,,,,,Model file,Certain,,,,,,"The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios.",CONSTANT,"<=200, <=350, or all infected",cells/ml
+Hiv2,Parameter,Treatment Access,,,,,,Model file,Certain,,,,,,The proportion of eligible individuals who eventually initiate treatment.,CONSTANT,"50, 60, 70, 80, 90, 95, 100",percent
+Hiv2,Parameter,3-year Retention on ART,,,,,,Model file,Certain,,,,,,"The percentage of individuals remaining on treatment after 3 years, excluding those who had died.",CONSTANT,"75, 85, 95, 100",percent
+Hiv2,Parameter,Average time to ART initiation,,,,,,Model file,Certain,,,,,,"The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year.",CONSTANT,1,year
+Hiv2,Parameter,Relative Transmissibility (Early Infection),,,,,,Model file,Certain,,,,,,Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range.,CONSTANT,10-26,fold increase
+Hiv2,Parameter,Transmissibility Reduction on ART,,,,,,Model file,Certain,,,,,,"The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%.",CONSTANT,>90,percent

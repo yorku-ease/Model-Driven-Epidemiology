@@ -1,0 +1,457 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who are susceptible to influenza infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who are susceptible to influenza infection."
+    },
+    {
+      "normalized_name": "Effectively Vaccinated but Not Yet Protected",
+      "raw_text": "Effectively Vaccinated but Not Yet Protected",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who have been vaccinated successfully but have not yet developed protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who have been vaccinated successfully but have not yet developed protection."
+    },
+    {
+      "normalized_name": "Ineffectively Vaccinated",
+      "raw_text": "Ineffectively Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who were vaccinated but did not gain protection and remain susceptible to infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who were vaccinated but did not gain protection and remain susceptible to infection."
+    },
+    {
+      "normalized_name": "Protected by Vaccination",
+      "raw_text": "Protected by Vaccination",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who have developed vaccine-induced protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who have developed vaccine-induced protection."
+    },
+    {
+      "normalized_name": "Latent",
+      "raw_text": "Latent",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who are infected but not yet infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who are infected but not yet infectious."
+    },
+    {
+      "normalized_name": "Symptomatic and Infectious in the Community",
+      "raw_text": "Symptomatic and Infectious in the Community",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who are infectious in the community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who are infectious in the community."
+    },
+    {
+      "normalized_name": "Hospitalized",
+      "raw_text": "Hospitalized",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who are hospitalized due to influenza.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who are hospitalized due to influenza."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who have recovered and are assumed protected for the duration of the epidemic.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who have recovered and are assumed protected for the duration of the epidemic."
+    },
+    {
+      "normalized_name": "Dead",
+      "raw_text": "Dead",
+      "page_number": 0,
+      "text_span": "Individuals in age group i who die from influenza after hospitalization.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in age group i who die from influenza after hospitalization."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Effectively Vaccinated but Not Yet Protected",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptible individuals at rate e_i n(t).",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptible individuals at rate e_i n(t).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptible individuals at rate e_i n(t)."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Ineffectively Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination failure among susceptible individuals at rate (1-e_i) n(t).",
+      "page_number": 0,
+      "text_span": "Vaccination failure among susceptible individuals at rate (1-e_i) n(t).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination failure among susceptible individuals at rate (1-e_i) n(t)."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals by the age-specific force of infection lambda_i.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals by the age-specific force of infection lambda_i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals by the age-specific force of infection lambda_i."
+    },
+    {
+      "source": "Effectively Vaccinated but Not Yet Protected",
+      "target": "Protected by Vaccination",
+      "flow_type": "RateFlow",
+      "raw_text": "Development of vaccine-induced protection at rate g_i.",
+      "page_number": 0,
+      "text_span": "Development of vaccine-induced protection at rate g_i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Development of vaccine-induced protection at rate g_i."
+    },
+    {
+      "source": "Effectively Vaccinated but Not Yet Protected",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Breakthrough infection of vaccinated but not yet protected individuals by lambda_i.",
+      "page_number": 0,
+      "text_span": "Breakthrough infection of vaccinated but not yet protected individuals by lambda_i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Breakthrough infection of vaccinated but not yet protected individuals by lambda_i."
+    },
+    {
+      "source": "Ineffectively Vaccinated",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of ineffectively vaccinated individuals by lambda_i.",
+      "page_number": 0,
+      "text_span": "Infection of ineffectively vaccinated individuals by lambda_i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of ineffectively vaccinated individuals by lambda_i."
+    },
+    {
+      "source": "Latent",
+      "target": "Symptomatic and Infectious in the Community",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from latent to infectious at rate k.",
+      "page_number": 0,
+      "text_span": "Progression from latent to infectious at rate k.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from latent to infectious at rate k."
+    },
+    {
+      "source": "Symptomatic and Infectious in the Community",
+      "target": "Hospitalized",
+      "flow_type": "RateFlow",
+      "raw_text": "Hospitalization at age-specific rate a_i.",
+      "page_number": 0,
+      "text_span": "Hospitalization at age-specific rate a_i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalization at age-specific rate a_i."
+    },
+    {
+      "source": "Symptomatic and Infectious in the Community",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infectious state at rate c_1.",
+      "page_number": 0,
+      "text_span": "Recovery from infectious state at rate c_1.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infectious state at rate c_1."
+    },
+    {
+      "source": "Hospitalized",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from hospitalization at rate c_2.",
+      "page_number": 0,
+      "text_span": "Recovery from hospitalization at rate c_2.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from hospitalization at rate c_2."
+    },
+    {
+      "source": "Hospitalized",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Influenza mortality among hospitalized individuals at age-specific rate d_i.",
+      "page_number": 0,
+      "text_span": "Influenza mortality among hospitalized individuals at age-specific rate d_i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Influenza mortality among hospitalized individuals at age-specific rate d_i."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "k",
+      "raw_text": "k",
+      "value": "1/1.9",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Rate of progression from latent to infectious state; mean latent period 1.9 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of progression from latent to infectious state; mean latent period 1.9 days."
+    },
+    {
+      "normalized_name": "a_i",
+      "raw_text": "a_i",
+      "value": "a_i=(p_Hi/(1-p_Hi))c_1",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Age-specific hospitalization rate for age group i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific hospitalization rate for age group i."
+    },
+    {
+      "normalized_name": "p_Hi",
+      "raw_text": "p_Hi",
+      "value": "Figure 2, Figure S2",
+      "unit": "probability",
+      "page_number": 0,
+      "text_span": "Fraction of clinical cases hospitalized for age group i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fraction of clinical cases hospitalized for age group i."
+    },
+    {
+      "normalized_name": "c_1",
+      "raw_text": "c_1",
+      "value": "1/1.5",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Recovery rate for infectious class; mean infectious period 1.5 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate for infectious class; mean infectious period 1.5 days."
+    },
+    {
+      "normalized_name": "c_2",
+      "raw_text": "c_2",
+      "value": "1/1.5",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Recovery rate for hospitalized class; mean hospitalized period 1.5 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate for hospitalized class; mean hospitalized period 1.5 days."
+    },
+    {
+      "normalized_name": "d_i",
+      "raw_text": "d_i",
+      "value": "d_i=(CFP_i/(1-CFP_i))c_2",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Influenza mortality rate for age group i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Influenza mortality rate for age group i."
+    },
+    {
+      "normalized_name": "CFP_i",
+      "raw_text": "CFP_i",
+      "value": "Figure 2, Figure S3",
+      "unit": "probability",
+      "page_number": 0,
+      "text_span": "Case fatality proportion for age group i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Case fatality proportion for age group i."
+    },
+    {
+      "normalized_name": "lambda_i",
+      "raw_text": "lambda_i",
+      "value": "lambda_i=\\sum_j b_ij I_j/N(t) + H_j/N(t)",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection acting on age group i.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection acting on age group i."
+    },
+    {
+      "normalized_name": "b_ij",
+      "raw_text": "b_ij",
+      "value": "q c_ij",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Transmission rate between age groups i and j.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate between age groups i and j."
+    },
+    {
+      "normalized_name": "q",
+      "raw_text": "q",
+      "value": "calibrated to R_0",
+      "unit": "probability per contact",
+      "page_number": 0,
+      "text_span": "Transmission probability per contact.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission probability per contact."
+    },
+    {
+      "normalized_name": "c_ij",
+      "raw_text": "c_ij",
+      "value": "Table S1",
+      "unit": "contacts per week",
+      "page_number": 0,
+      "text_span": "Age-specific contact rates between age groups i and j.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific contact rates between age groups i and j."
+    },
+    {
+      "normalized_name": "n(t)",
+      "raw_text": "n(t)",
+      "value": "0 for t<t*",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Vaccination rate; vaccination begins t* days after epidemic onset.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination rate; vaccination begins t* days after epidemic onset."
+    },
+    {
+      "normalized_name": "t*",
+      "raw_text": "t*",
+      "value": "25 or 37",
+      "unit": "day",
+      "page_number": 0,
+      "text_span": "Vaccination start time in the adaptive strategy scenarios.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination start time in the adaptive strategy scenarios."
+    },
+    {
+      "normalized_name": "e_i",
+      "raw_text": "e_i",
+      "value": "77.5% for individuals <65 y; 35% for seniors >65 y",
+      "unit": "probability",
+      "page_number": 0,
+      "text_span": "Age-specific vaccine efficacy.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific vaccine efficacy."
+    },
+    {
+      "normalized_name": "g_i",
+      "raw_text": "g_i",
+      "value": "1/10",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Rate at which effectively vaccinated individuals become protected; mean 10 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which effectively vaccinated individuals become protected; mean 10 days."
+    },
+    {
+      "normalized_name": "R_0",
+      "raw_text": "R_0",
+      "value": "1.4-1.8 (Mexico 2009 scenario); 1.8 (historical scenarios)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number used in scenario analyses.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number used in scenario analyses."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 7,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 9,
+    "num_flows": 11,
+    "num_parameters": 16,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

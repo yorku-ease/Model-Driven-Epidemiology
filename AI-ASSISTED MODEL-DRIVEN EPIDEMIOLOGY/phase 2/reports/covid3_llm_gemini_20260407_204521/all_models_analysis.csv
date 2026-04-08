@@ -1,0 +1,10 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid3,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid3,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid3,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,"Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution.",,,
+Covid3,Parameter,R_t,,,,,,Model file,Certain,,,,,,"Time-varying reproduction number, modelled as a piecewise constant function that changes when an intervention occurs.",CONSTANT,0.0,dimensionless
+Covid3,Parameter,Initial R_t,,,,,,Model file,Certain,,,,,,"Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6).",CONSTANT,3.8,dimensionless
+Covid3,Parameter,Serial Interval Distribution,,,,,,Model file,Certain,,,,,,Distribution of the time between successive cases in a chain of transmission. Used to approximate the generation time distribution.,CONSTANT,0.0,days
+Covid3,Parameter,Infection Fatality Ratio,,,,,,Model file,Certain,,,,,,"Population-averaged infection fatality ratio, adjusted for the age structure and contact patterns of each country. Based on previous work.",CONSTANT,0.0,dimensionless
+Covid3,Parameter,Infection-to-death distribution,,,,,,Model file,Certain,,,,,,"Time lag distribution from infection to death, derived from assumptions about infection-to-symptom and symptom-to-death distributions.",CONSTANT,0.0,days
+Covid3,Parameter,Lockdown effect,,,,,,Model file,Certain,,,,,,The relative reduction in the reproduction number attributed to a lockdown intervention (95% credible interval: 75-87%).,CONSTANT,81%,percent reduction in R_t

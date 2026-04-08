@@ -1,0 +1,197 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals not yet infected and at risk of infection in the global compartmental transmission model used to estimate international seeding.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not yet infected and at risk of infection in the global compartmental transmission model used to estimate international seeding."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals infected with influenza and capable of transmitting infection in the global compartmental transmission model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected with influenza and capable of transmitting infection in the global compartmental transmission model."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals no longer infectious and assumed immune in the global compartmental transmission model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals no longer infectious and assumed immune in the global compartmental transmission model."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection/transmission from susceptible to infectious individuals.",
+      "page_number": 0,
+      "text_span": "Infection/transmission from susceptible to infectious individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection/transmission from susceptible to infectious individuals."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery/removal from the infectious state.",
+      "page_number": 0,
+      "text_span": "Recovery/removal from the infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery/removal from the infectious state."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "R0",
+      "raw_text": "R0",
+      "value": "1.4 to 2.0",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number explored for pandemic influenza; moderate scenario 1.7 and high scenario 2.0.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number explored for pandemic influenza; moderate scenario 1.7 and high scenario 2.0."
+    },
+    {
+      "normalized_name": "Generation time",
+      "raw_text": "Generation time",
+      "value": "2.6",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Assumed generation time for the pandemic influenza simulations.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed generation time for the pandemic influenza simulations."
+    },
+    {
+      "normalized_name": "Clinical fraction",
+      "raw_text": "Clinical fraction",
+      "value": "50%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Assumed proportion of infected individuals ill enough to be classified as clinical cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed proportion of infected individuals ill enough to be classified as clinical cases."
+    },
+    {
+      "normalized_name": "Household transmission proportion",
+      "raw_text": "Household transmission proportion",
+      "value": "30%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Estimated proportion of transmission occurring within households in the United States model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Estimated proportion of transmission occurring within households in the United States model."
+    },
+    {
+      "normalized_name": "Non-household transmission proportion",
+      "raw_text": "Non-household transmission proportion",
+      "value": "70%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Estimated proportion of transmission occurring outside the household in the United States model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Estimated proportion of transmission occurring outside the household in the United States model."
+    },
+    {
+      "normalized_name": "Community transmission proportion",
+      "raw_text": "Community transmission proportion",
+      "value": "33% of non-household transmission",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Assumed share of non-household transmission occurring in the general community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed share of non-household transmission occurring in the general community."
+    },
+    {
+      "normalized_name": "School/workplace transmission proportion",
+      "raw_text": "School/workplace transmission proportion",
+      "value": "37% of non-household transmission",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Assumed share of non-household transmission occurring in schools and workplaces.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed share of non-household transmission occurring in schools and workplaces."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 1,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 3,
+    "num_flows": 2,
+    "num_parameters": 7,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

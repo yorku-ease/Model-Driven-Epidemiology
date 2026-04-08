@@ -1,0 +1,636 @@
+{
+  "model_analysis": {
+    "modelName": "Dengue3",
+    "summary": {
+      "modelName": "Dengue3",
+      "totalPopulation": null,
+      "numCompartments": 8,
+      "numParameters": 13,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious Humans (Primary)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from a primary dengue infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Recovered Humans (Primary)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.3",
+              "description": "Transmission of dengue from an infectious mosquito to a human who has had one prior infection, resulting in a secondary infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious Humans (Secondary)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from a secondary dengue infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Recovered Humans (Post-Secondary)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.6",
+              "description": "Transmission of dengue from an infectious human (primary or secondary) to a susceptible mosquito.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression of infected mosquitoes to an infectious state after the extrinsic incubation period.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03b2_hv",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Transmission rate from infectious mosquitoes to humans, related to mosquito biting rate.",
+          "unit": ""
+        },
+        {
+          "index": 1,
+          "name": "\u03b2_vh",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Transmission rate from infectious humans to susceptible mosquitoes.",
+          "unit": ""
+        },
+        {
+          "index": 2,
+          "name": "\u03b3_h",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Recovery rate for infectious humans (inverse of infectious period).",
+          "unit": "1/day"
+        },
+        {
+          "index": 3,
+          "name": "\u03c3_v",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Rate of progression from exposed to infectious for mosquitoes (inverse of extrinsic incubation period).",
+          "unit": "1/day"
+        },
+        {
+          "index": 4,
+          "name": "\u03bc_h",
+          "type": "CONSTANT",
+          "expression": "1/(67.5 * 365.25)",
+          "description": "Natural mortality rate for humans, based on a mean lifespan of 67.5 years.",
+          "unit": "1/day"
+        },
+        {
+          "index": 5,
+          "name": "\u03bc_v",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Natural mortality rate for mosquitoes.",
+          "unit": "1/day"
+        },
+        {
+          "index": 6,
+          "name": "Case fatality rate",
+          "type": "CONSTANT",
+          "expression": "0.0003 to 0.0009",
+          "description": "Assumed proportion of symptomatic dengue cases that result in death.",
+          "unit": "deaths per symptomatic case"
+        },
+        {
+          "index": 7,
+          "name": "Default vaccine coverage",
+          "type": "CONSTANT",
+          "expression": "0.80",
+          "description": "Default coverage for routine vaccination of 9-year-olds.",
+          "unit": "proportion"
+        },
+        {
+          "index": 8,
+          "name": "Default vaccination age",
+          "type": "CONSTANT",
+          "expression": "9",
+          "description": "Default age for routine vaccination.",
+          "unit": "years"
+        },
+        {
+          "index": 9,
+          "name": "Discount rate",
+          "type": "CONSTANT",
+          "expression": "0.03",
+          "description": "Discount rate for costs and health effects in economic evaluation.",
+          "unit": "per year"
+        },
+        {
+          "index": 10,
+          "name": "DALYs per symptomatic dengue case",
+          "type": "CONSTANT",
+          "expression": "0.006",
+          "description": "Disability-Adjusted Life Years incurred per symptomatic dengue case.",
+          "unit": "DALYs"
+        },
+        {
+          "index": 11,
+          "name": "DALYs per severe dengue case",
+          "type": "CONSTANT",
+          "expression": "0.02",
+          "description": "Disability-Adjusted Life Years incurred per severe dengue case.",
+          "unit": "DALYs"
+        },
+        {
+          "index": 12,
+          "name": "Cost per hospitalised case (public payer, Latin America)",
+          "type": "CONSTANT",
+          "expression": "200",
+          "description": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.",
+          "unit": "USD (2014)"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Dengue3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 13,
+    "parametersWithUncertainty": 13,
+    "parameters": [
+      {
+        "parameter": "\u03b2_hv",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "",
+        "description": "Transmission rate from infectious mosquitoes to humans, related to mosquito biting rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2_vh",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "",
+        "description": "Transmission rate from infectious humans to susceptible mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3_h",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "1/day",
+        "description": "Recovery rate for infectious humans (inverse of infectious period).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c3_v",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "1/day",
+        "description": "Rate of progression from exposed to infectious for mosquitoes (inverse of extrinsic incubation period).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bc_h",
+        "yourValue": "1/(67.5 * 365.25)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "1/day",
+        "description": "Natural mortality rate for humans, based on a mean lifespan of 67.5 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bc_v",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "1/day",
+        "description": "Natural mortality rate for mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Case fatality rate",
+        "yourValue": "0.0003 to 0.0009",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "deaths per symptomatic case",
+        "description": "Assumed proportion of symptomatic dengue cases that result in death.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Default vaccine coverage",
+        "yourValue": "0.80",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "proportion",
+        "description": "Default coverage for routine vaccination of 9-year-olds.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Default vaccination age",
+        "yourValue": "9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "years",
+        "description": "Default age for routine vaccination.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Discount rate",
+        "yourValue": "0.03",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "per year",
+        "description": "Discount rate for costs and health effects in economic evaluation.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "DALYs per symptomatic dengue case",
+        "yourValue": "0.006",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "DALYs",
+        "description": "Disability-Adjusted Life Years incurred per symptomatic dengue case.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "DALYs per severe dengue case",
+        "yourValue": "0.02",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "DALYs",
+        "description": "Disability-Adjusted Life Years incurred per severe dengue case.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Cost per hospitalised case (public payer, Latin America)",
+        "yourValue": "200",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "USD (2014)",
+        "description": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 13
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Dengue3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Default vaccine coverage",
+        "type": "other",
+        "currentValue": 0.8,
+        "description": "Default coverage for routine vaccination of 9-year-olds.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Default vaccination age",
+        "type": "other",
+        "currentValue": 9.0,
+        "description": "Default age for routine vaccination.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Discount rate",
+        "type": "other",
+        "currentValue": 0.03,
+        "description": "Discount rate for costs and health effects in economic evaluation.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "DALYs per symptomatic dengue case",
+        "type": "other",
+        "currentValue": 0.006,
+        "description": "Disability-Adjusted Life Years incurred per symptomatic dengue case.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "DALYs per severe dengue case",
+        "type": "other",
+        "currentValue": 0.02,
+        "description": "Disability-Adjusted Life Years incurred per severe dengue case.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Cost per hospitalised case (public payer, Latin America)",
+        "type": "other",
+        "currentValue": 200.0,
+        "description": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Default vaccine coverage",
+      "Default vaccination age",
+      "Discount rate",
+      "DALYs per symptomatic dengue case",
+      "DALYs per severe dengue case"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Default vaccine coverage",
+        "Default vaccination age",
+        "Discount rate",
+        "DALYs per symptomatic dengue case",
+        "DALYs per severe dengue case"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Default vaccine coverage": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Default vaccination age": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Discount rate": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "DALYs per symptomatic dengue case": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "DALYs per severe dengue case": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

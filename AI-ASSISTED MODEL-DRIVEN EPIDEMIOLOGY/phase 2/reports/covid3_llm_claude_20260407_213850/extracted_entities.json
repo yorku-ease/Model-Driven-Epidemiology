@@ -1,0 +1,239 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals in the population who have not yet been infected with SARS-CoV-2",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the population who have not yet been infected with SARS-CoV-2"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected with SARS-CoV-2, modelled via a discrete renewal process",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected with SARS-CoV-2, modelled via a discrete renewal process"
+    },
+    {
+      "normalized_name": "Symptomatic",
+      "raw_text": "Symptomatic",
+      "page_number": 0,
+      "text_span": "Infected individuals who develop symptoms (implicit stage in the infection-to-death pathway)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infected individuals who develop symptoms (implicit stage in the infection-to-death pathway)"
+    },
+    {
+      "normalized_name": "Dead",
+      "raw_text": "Dead",
+      "page_number": 0,
+      "text_span": "Individuals who have died from COVID-19",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have died from COVID-19"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Symptomatic",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio",
+      "page_number": 0,
+      "text_span": "Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "R0",
+      "raw_text": "R0",
+      "value": "3.8",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)"
+    },
+    {
+      "normalized_name": "Rt",
+      "raw_text": "Rt",
+      "value": "0.66",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Average time-varying reproduction number across 11 countries after interventions",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average time-varying reproduction number across 11 countries after interventions"
+    },
+    {
+      "normalized_name": "ifr",
+      "raw_text": "ifr",
+      "value": "country-specific",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country"
+    },
+    {
+      "normalized_name": "infection_to_onset",
+      "raw_text": "infection_to_onset",
+      "value": "5.1",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution"
+    },
+    {
+      "normalized_name": "onset_to_death",
+      "raw_text": "onset_to_death",
+      "value": "17.8",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean time from onset of symptoms to death, used in the infection-to-death distribution"
+    },
+    {
+      "normalized_name": "generation_interval",
+      "raw_text": "generation_interval",
+      "value": "6.5",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another"
+    },
+    {
+      "normalized_name": "lockdown_effect",
+      "raw_text": "lockdown_effect",
+      "value": "81",
+      "unit": "percent reduction in Rt",
+      "page_number": 0,
+      "text_span": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75\u201387%)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75\u201387%)"
+    },
+    {
+      "normalized_name": "alpha_lockdown",
+      "raw_text": "alpha_lockdown",
+      "value": "country-specific",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Country-specific effect of lockdown via partial pooling",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Country-specific effect of lockdown via partial pooling"
+    },
+    {
+      "normalized_name": "alpha_school_closure",
+      "raw_text": "alpha_school_closure",
+      "value": "shared",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Shared effect size parameter for school closure intervention across countries",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shared effect size parameter for school closure intervention across countries"
+    },
+    {
+      "normalized_name": "alpha_public_events",
+      "raw_text": "alpha_public_events",
+      "value": "shared",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Shared effect size parameter for banning public events across countries",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shared effect size parameter for banning public events across countries"
+    },
+    {
+      "normalized_name": "alpha_self_isolation",
+      "raw_text": "alpha_self_isolation",
+      "value": "shared",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Shared effect size parameter for case-based self-isolation measures across countries",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shared effect size parameter for case-based self-isolation measures across countries"
+    },
+    {
+      "normalized_name": "alpha_social_distancing",
+      "raw_text": "alpha_social_distancing",
+      "value": "shared",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Shared effect size parameter for social distancing encouraged across countries",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shared effect size parameter for social distancing encouraged across countries"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 5,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 1,
+    "num_parameters": 12,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

@@ -1,0 +1,377 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Humans with no current dengue infection and no vaccine-induced or infection-induced protection relevant to the model state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans with no current dengue infection and no vaccine-induced or infection-induced protection relevant to the model state."
+    },
+    {
+      "normalized_name": "Infected Humans",
+      "raw_text": "Infected Humans",
+      "page_number": 0,
+      "text_span": "Humans experiencing a dengue infection; the paper\u2019s primary model description aggregates infection states by disease-risk class rather than a detailed SEIR human structure.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans experiencing a dengue infection; the paper\u2019s primary model description aggregates infection states by disease-risk class rather than a detailed SEIR human structure."
+    },
+    {
+      "normalized_name": "Recovered Humans",
+      "raw_text": "Recovered Humans",
+      "page_number": 0,
+      "text_span": "Humans with post-infection immunity after prior dengue infection(s), including those with long-lasting homologous immunity and transient heterologous protection as represented in the model framework.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Humans with post-infection immunity after prior dengue infection(s), including those with long-lasting homologous immunity and transient heterologous protection as represented in the model framework."
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Vector population not yet infected with dengue virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vector population not yet infected with dengue virus."
+    },
+    {
+      "normalized_name": "Infected Mosquitoes",
+      "raw_text": "Infected Mosquitoes",
+      "page_number": 0,
+      "text_span": "Vector population infected with dengue virus and capable of transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vector population infected with dengue virus and capable of transmission."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Infected Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Dengue infection of humans via infectious mosquito bites.",
+      "page_number": 0,
+      "text_span": "Dengue infection of humans via infectious mosquito bites.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dengue infection of humans via infectious mosquito bites."
+    },
+    {
+      "source": "Infected Humans",
+      "target": "Recovered Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from dengue infection and acquisition of post-infection immunity/protection.",
+      "page_number": 0,
+      "text_span": "Recovery from dengue infection and acquisition of post-infection immunity/protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from dengue infection and acquisition of post-infection immunity/protection."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Infected Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Mosquito infection after biting infectious humans.",
+      "page_number": 0,
+      "text_span": "Mosquito infection after biting infectious humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito infection after biting infectious humans."
+    },
+    {
+      "source": "Infected Mosquitoes",
+      "target": "Susceptible Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Mosquito death and replacement through vector turnover, returning the vector population to susceptibility in the aggregate model structure.",
+      "page_number": 0,
+      "text_span": "Mosquito death and replacement through vector turnover, returning the vector population to susceptibility in the aggregate model structure.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito death and replacement through vector turnover, returning the vector population to susceptibility in the aggregate model structure."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Vaccination coverage",
+      "raw_text": "Vaccination coverage",
+      "value": "80%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Default routine vaccination coverage for 9-year-old children.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Default routine vaccination coverage for 9-year-old children."
+    },
+    {
+      "normalized_name": "Vaccination schedule",
+      "raw_text": "Vaccination schedule",
+      "value": "3 doses, 6 months apart",
+      "unit": "schedule",
+      "page_number": 0,
+      "text_span": "Default Dengvaxia routine vaccination schedule.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Default Dengvaxia routine vaccination schedule."
+    },
+    {
+      "normalized_name": "Catch-up campaign coverage",
+      "raw_text": "Catch-up campaign coverage",
+      "value": "80%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Coverage used for the optional one-off catch-up campaign in 10- to 17-year-olds.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Coverage used for the optional one-off catch-up campaign in 10- to 17-year-olds."
+    },
+    {
+      "normalized_name": "Age at routine vaccination",
+      "raw_text": "Age at routine vaccination",
+      "value": "9 years",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Default age for routine vaccination.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Default age for routine vaccination."
+    },
+    {
+      "normalized_name": "Alternative vaccination ages",
+      "raw_text": "Alternative vaccination ages",
+      "value": "10 to 18 years",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Age range explored in sensitivity analyses.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age range explored in sensitivity analyses."
+    },
+    {
+      "normalized_name": "Transmission intensity (SP9)",
+      "raw_text": "Transmission intensity (SP9)",
+      "value": "10%, 30%, 50%, 70%, 90%",
+      "unit": "proportion seropositive by age 9",
+      "page_number": 0,
+      "text_span": "Average proportion of 9-year-olds seropositive prior to vaccine introduction, used to characterize endemicity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average proportion of 9-year-olds seropositive prior to vaccine introduction, used to characterize endemicity."
+    },
+    {
+      "normalized_name": "Time horizon after vaccination",
+      "raw_text": "Time horizon after vaccination",
+      "value": "30 years",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Primary post-vaccination evaluation horizon for population impact and cost-effectiveness.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Primary post-vaccination evaluation horizon for population impact and cost-effectiveness."
+    },
+    {
+      "normalized_name": "Trial simulation horizon",
+      "raw_text": "Trial simulation horizon",
+      "value": "3 years",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Simulation horizon for the Phase III trial comparison, including active and first year of passive follow-up.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Simulation horizon for the Phase III trial comparison, including active and first year of passive follow-up."
+    },
+    {
+      "normalized_name": "Dose interval",
+      "raw_text": "Dose interval",
+      "value": "6 months",
+      "unit": "months",
+      "page_number": 0,
+      "text_span": "Interval between vaccine doses in the three-dose schedule.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Interval between vaccine doses in the three-dose schedule."
+    },
+    {
+      "normalized_name": "Discount rate",
+      "raw_text": "Discount rate",
+      "value": "3%",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Discount rate applied to costs and health effects in the base-case economic analysis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Discount rate applied to costs and health effects in the base-case economic analysis."
+    },
+    {
+      "normalized_name": "DALY cost threshold",
+      "raw_text": "DALY cost threshold",
+      "value": "US$2,000",
+      "unit": "USD per DALY averted",
+      "page_number": 0,
+      "text_span": "Base-case threshold used to assess cost-effectiveness.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Base-case threshold used to assess cost-effectiveness."
+    },
+    {
+      "normalized_name": "Symptomatic dengue DALY burden",
+      "raw_text": "Symptomatic dengue DALY burden",
+      "value": "0.006",
+      "unit": "DALYs per case",
+      "page_number": 0,
+      "text_span": "DALYs incurred per symptomatic dengue case in the middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "DALYs incurred per symptomatic dengue case in the middle-income Latin American-like setting."
+    },
+    {
+      "normalized_name": "Severe dengue DALY burden",
+      "raw_text": "Severe dengue DALY burden",
+      "value": "0.02",
+      "unit": "DALYs per case",
+      "page_number": 0,
+      "text_span": "DALYs incurred per severe dengue case.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "DALYs incurred per severe dengue case."
+    },
+    {
+      "normalized_name": "Public payer cost, symptomatic case",
+      "raw_text": "Public payer cost, symptomatic case",
+      "value": "60",
+      "unit": "USD",
+      "page_number": 0,
+      "text_span": "Treatment cost per symptomatic dengue case in the middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment cost per symptomatic dengue case in the middle-income Latin American-like setting."
+    },
+    {
+      "normalized_name": "Public payer cost, hospitalised case",
+      "raw_text": "Public payer cost, hospitalised case",
+      "value": "200",
+      "unit": "USD",
+      "page_number": 0,
+      "text_span": "Treatment cost per hospitalised dengue case in the middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment cost per hospitalised dengue case in the middle-income Latin American-like setting."
+    },
+    {
+      "normalized_name": "Societal cost, symptomatic case",
+      "raw_text": "Societal cost, symptomatic case",
+      "value": "200",
+      "unit": "USD",
+      "page_number": 0,
+      "text_span": "Societal cost per symptomatic dengue case in the middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Societal cost per symptomatic dengue case in the middle-income Latin American-like setting."
+    },
+    {
+      "normalized_name": "Societal cost, hospitalised case",
+      "raw_text": "Societal cost, hospitalised case",
+      "value": "500",
+      "unit": "USD",
+      "page_number": 0,
+      "text_span": "Societal cost per hospitalised dengue case in the middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Societal cost per hospitalised dengue case in the middle-income Latin American-like setting."
+    },
+    {
+      "normalized_name": "Societal cost, fatal case",
+      "raw_text": "Societal cost, fatal case",
+      "value": "11,000",
+      "unit": "USD",
+      "page_number": 0,
+      "text_span": "Societal cost per fatal dengue case in the middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Societal cost per fatal dengue case in the middle-income Latin American-like setting."
+    },
+    {
+      "normalized_name": "Probability of death among symptomatic dengue cases",
+      "raw_text": "Probability of death among symptomatic dengue cases",
+      "value": "0.03% to 0.09%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Assumed probability of death for symptomatic dengue cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed probability of death for symptomatic dengue cases."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 2,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 7,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 4,
+    "num_parameters": 19,
+    "num_stratifications": 2,
+    "num_interventions": 2
+  }
+}

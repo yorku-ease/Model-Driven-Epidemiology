@@ -1,0 +1,235 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Number of susceptible individuals in the human population.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Number of infected individuals, including cholera cases as well as those with asymptomatic and mild infections.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Bacteria in Water": {
+      "evidence": [
+        {
+          "text_span": "Concentration of toxigenic Vibrio cholerae in the aquatic reservoir.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Bacteria in Water": {
+      "evidence": [
+        {
+          "text_span": "Contribution of each infected person to the aquatic population of V. cholerae through excretion.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "H": {
+      "evidence": [
+        {
+          "text_span": "Total human population.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10000",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "n": {
+      "evidence": [
+        {
+          "text_span": "Human birth and death rates.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.0001 or 0.001",
+          "unit": "day-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "a": {
+      "evidence": [
+        {
+          "text_span": "Rate of exposure to contaminated water.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5 or 1",
+          "unit": "day-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "K": {
+      "evidence": [
+        {
+          "text_span": "Concentration of V. cholerae in water that yields a 50% chance of catching cholera.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1e6",
+          "unit": "cells/ml"
+        }
+      ],
+      "paper_backed": true
+    },
+    "r": {
+      "evidence": [
+        {
+          "text_span": "Rate at which people recover from cholera.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.2",
+          "unit": "day-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "nb": {
+      "evidence": [
+        {
+          "text_span": "Growth rate of V. cholerae in the aquatic environment.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "day-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "mb": {
+      "evidence": [
+        {
+          "text_span": "Loss rate of V. cholerae in the aquatic environment.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "day-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "nb-mb": {
+      "evidence": [
+        {
+          "text_span": "Net loss rate of V. cholerae in the aquatic environment (value from Table 2).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "-0.33",
+          "unit": "day-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "e": {
+      "evidence": [
+        {
+          "text_span": "Contribution of each infected person to the population of V. cholerae in the aquatic environment.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "cell/ml day-1 person-1"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 14,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 14,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 14,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 18,
+    "items_with_evidence": 18,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 18,
+    "faithfulness_percentage": 100.0
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are susceptible to cholera infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are susceptible to cholera infection."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who are infected with Vibrio cholerae and can transmit the disease, including both reported and unreported infections.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infected with Vibrio cholerae and can transmit the disease, including both reported and unreported infections."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from cholera and have temporary natural immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from cholera and have temporary natural immunity."
+    },
+    {
+      "normalized_name": "Vaccinated",
+      "raw_text": "Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals who have received the oral cholera vaccine and have temporary vaccine-induced protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received the oral cholera vaccine and have temporary vaccine-induced protection."
+    },
+    {
+      "normalized_name": "Environmental Bacteria",
+      "raw_text": "Environmental Bacteria",
+      "page_number": 0,
+      "text_span": "Concentration of Vibrio cholerae in environmental reservoirs, such as water supplies, which drives transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of Vibrio cholerae in environmental reservoirs, such as water supplies, which drives transmission."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals through exposure to the environmental reservoir of V. cholerae.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals through exposure to the environmental reservoir of V. cholerae.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals through exposure to the environmental reservoir of V. cholerae."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infection, leading to temporary natural immunity.",
+      "page_number": 0,
+      "text_span": "Recovery from infection, leading to temporary natural immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infection, leading to temporary natural immunity."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of natural immunity, returning individuals to the susceptible state.",
+      "page_number": 0,
+      "text_span": "Waning of natural immunity, returning individuals to the susceptible state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of natural immunity, returning individuals to the susceptible state."
+    },
+    {
+      "source": "Infectious",
+      "target": "Environmental Bacteria",
+      "flow_type": "RateFlow",
+      "raw_text": "Shedding of V. cholerae into the environment by infectious individuals.",
+      "page_number": 0,
+      "text_span": "Shedding of V. cholerae into the environment by infectious individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shedding of V. cholerae into the environment by infectious individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptible individuals with oral cholera vaccine (OCV).",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptible individuals with oral cholera vaccine (OCV).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptible individuals with oral cholera vaccine (OCV)."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of vaccine-induced protection over time.",
+      "page_number": 0,
+      "text_span": "Waning of vaccine-induced protection over time.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of vaccine-induced protection over time."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Initial vaccine protection (two-dose, adults)",
+      "raw_text": "Initial vaccine protection (two-dose, adults)",
+      "value": "76%",
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Initial vaccine protection against clinical disease for adults receiving a two-dose regimen.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initial vaccine protection against clinical disease for adults receiving a two-dose regimen."
+    },
+    {
+      "normalized_name": "Vaccine protection duration (two-dose)",
+      "raw_text": "Vaccine protection duration (two-dose)",
+      "value": "5",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Duration of protection from a two-dose vaccine regimen, after which protection is assumed to be zero.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of protection from a two-dose vaccine regimen, after which protection is assumed to be zero."
+    },
+    {
+      "normalized_name": "Vaccine protection duration (single-dose)",
+      "raw_text": "Vaccine protection duration (single-dose)",
+      "value": "1",
+      "unit": "year",
+      "page_number": 0,
+      "text_span": "Duration of protection from a single vaccine dose, after which protection is assumed to drop to zero.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of protection from a single vaccine dose, after which protection is assumed to drop to zero."
+    },
+    {
+      "normalized_name": "Relative vaccine effectiveness in children < 5 years",
+      "raw_text": "Relative vaccine effectiveness in children < 5 years",
+      "value": "46.9%",
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Multiplier for adult vaccine protection to calculate protection for children younger than 5 years.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Multiplier for adult vaccine protection to calculate protection for children younger than 5 years."
+    },
+    {
+      "normalized_name": "Baseline two-dose vaccine coverage",
+      "raw_text": "Baseline two-dose vaccine coverage",
+      "value": "70%",
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Assumed two-dose coverage in baseline vaccination campaign scenarios.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed two-dose coverage in baseline vaccination campaign scenarios."
+    },
+    {
+      "normalized_name": "Baseline one-dose vaccine coverage",
+      "raw_text": "Baseline one-dose vaccine coverage",
+      "value": "10%",
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Assumed one-dose coverage in baseline vaccination campaign scenarios.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed one-dose coverage in baseline vaccination campaign scenarios."
+    },
+    {
+      "normalized_name": "High two-dose vaccine coverage",
+      "raw_text": "High two-dose vaccine coverage",
+      "value": "95%",
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Assumed two-dose coverage in the high-coverage national campaign scenario.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed two-dose coverage in the high-coverage national campaign scenario."
+    },
+    {
+      "normalized_name": "High one-dose vaccine coverage",
+      "raw_text": "High one-dose vaccine coverage",
+      "value": "1.67%",
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Assumed one-dose coverage in the high-coverage national campaign scenario.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed one-dose coverage in the high-coverage national campaign scenario."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 8,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 7,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 5,
+    "num_flows": 6,
+    "num_parameters": 8,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

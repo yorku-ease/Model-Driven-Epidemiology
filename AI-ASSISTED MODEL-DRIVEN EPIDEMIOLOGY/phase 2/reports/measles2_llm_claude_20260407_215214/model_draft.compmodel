@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Primary vaccine failure rate (no waning)" expression="5.2%" type="CONSTANT" description="Risk of primary vaccine failure estimated from model fitting without waning (95% CI: 4.9%–5.5%)" unit="proportion"/>
+  <parameters name="Primary vaccine failure rate (with waning)" expression="2.5%" type="CONSTANT" description="Risk of primary vaccine failure estimated from model fitting with waning (95% CI: 2.2%–2.9%)" unit="proportion"/>
+  <parameters name="MMR1 vaccine effectiveness" expression="&gt;=95%" type="CONSTANT" description="Effectiveness of a single dose of measles-containing vaccine in preventing clinical measles in preschool children" unit="proportion"/>
+  <parameters name="Waning start age" expression="5" type="CONSTANT" description="Age at which waning of vaccine-induced immunity begins in the sensitivity analysis" unit="years"/>
+  <parameters name="Waning start age (early MMR2 sensitivity)" expression="3" type="CONSTANT" description="Age at which waning begins in the sensitivity analysis for early MMR2 scenario" unit="years"/>
+  <parameters name="Number of age groups" expression="12" type="CONSTANT" description="Age stratification: &lt;1, 1–2, 2–3, 3–4, 4–5, 5–6, 6–10, 10–15, 15–20, 20–30, 30–40, 40+" unit="groups"/>
+  <parameters name="Number of regions" expression="9" type="CONSTANT" description="Spatial stratification by regions of England" unit="regions"/>
+  <parameters name="Number of simulations" expression="2500" type="CONSTANT" description="Total stochastic simulations per vaccination strategy (100 parameter sets × 25 simulations each)" unit="simulations"/>
+  <parameters name="Simulation period" expression="2010–2019" type="CONSTANT" description="Time period over which measles outbreaks were simulated" unit="years"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Transmission of measles from infectious individuals to susceptible individuals"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Vaccination with first dose of MMR (MMR1)"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0"/>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Vaccinated Single Dose" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Vaccination with second dose of MMR (MMR2)"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Infection of single-dose vaccinated individuals due to primary vaccine failure"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated Double Dose" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Infection of double-dose vaccinated individuals due to primary vaccine failure"/>
+  </compartments>
+</compartmental:CompartmentalModel>

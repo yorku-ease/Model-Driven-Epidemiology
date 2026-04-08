@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="0.767" type="CONSTANT" description="Initial transmission parameter" unit="/yr"/>
+  <parameters name="λ (location)" expression="0.055" type="CONSTANT" description="Transmission parameter location (shape of transmission curve)" unit="dimensionless"/>
+  <parameters name="n (shape)" expression="0.996" type="CONSTANT" description="Transmission parameter shape" unit="dimensionless"/>
+  <parameters name="ε (relative transmission on ART)" expression="0.01" type="CONSTANT" description="Relative transmissibility of individuals on ART compared to untreated" unit="dimensionless"/>
+  <parameters name="Birth rate μ" expression="0.029" type="CONSTANT" description="Birth/recruitment rate into the population" unit="/yr"/>
+  <parameters name="Background mortality rate δ" expression="0.018" type="CONSTANT" description="Background (non-HIV) mortality rate" unit="/yr"/>
+  <parameters name="Progression rate untreated φ" expression="0.303" type="CONSTANT" description="Disease progression rate for untreated individuals" unit="/yr"/>
+  <parameters name="Progression rate treated γ" expression="0.165" type="CONSTANT" description="Disease progression rate for individuals on ART" unit="/yr"/>
+  <parameters name="Intervention timing t" expression="2011" type="CONSTANT" description="Year when intervention (universal testing and ART) begins" unit="yr"/>
+  <parameters name="Intervention rate r" expression="1.00" type="CONSTANT" description="Rate of roll-out of the intervention" unit="/yr"/>
+  <parameters name="Intervention maximum m" expression="0.90" type="CONSTANT" description="Maximum coverage of the intervention" unit="dimensionless"/>
+  <parameters name="Testing rate σ" expression="1.00" type="CONSTANT" description="Rate of HIV testing" unit="/yr"/>
+  <parameters name="Testing refusal θ" expression="0.08" type="CONSTANT" description="Proportion refusing HIV testing" unit="dimensionless"/>
+  <parameters name="Drop-out rate ω" expression="0.015" type="CONSTANT" description="Rate of dropping out of ART" unit="/yr"/>
+  <parameters name="Treatment failure rate κ" expression="0.10" type="CONSTANT" description="Rate of virological treatment failure on ART" unit="/yr"/>
+  <parameters name="Other interventions reduction ψ" expression="0.40" type="CONSTANT" description="Reduction in transmission from other interventions (e.g. condoms, circumcision)" unit="dimensionless"/>
+  <parameters name="Survival median" expression="10.0" type="CONSTANT" description="Median survival time without treatment (Weibull distribution)" unit="years"/>
+  <parameters name="Survival shape" expression="2.25" type="CONSTANT" description="Shape parameter of Weibull survival distribution" unit="dimensionless"/>
+  <parameters name="Acute phase duration" expression="2" type="CONSTANT" description="Duration of the acute phase of HIV infection" unit="months"/>
+  <parameters name="Acute phase infectivity" expression="4.50" type="CONSTANT" description="Infectivity during the acute phase" unit="number/year"/>
+  <parameters name="Chronic phase infectivity" expression="0.45" type="CONSTANT" description="Infectivity during the chronic phase" unit="number/year"/>
+  <parameters name="Final phase infectivity" expression="2.25" type="CONSTANT" description="Infectivity during the final phase" unit="number/year"/>
+  <parameters name="Final phase duration" expression="0.15" type="CONSTANT" description="Duration of the final phase as a proportion of expected survival" unit="proportion of expected life"/>
+  <parameters name="Concurrency number" expression="4" type="CONSTANT" description="Number of concurrent sexual partners" unit="number"/>
+  <parameters name="Partnership duration" expression="6" type="CONSTANT" description="Mean duration of a sexual partnership" unit="months"/>
+  <parameters name="Initial CD4 mu" expression="6.98" type="CONSTANT" description="Location parameter for initial CD4 count distribution" unit="log-normal location parameter"/>
+  <parameters name="Initial CD4 sigma" expression="0.34" type="CONSTANT" description="Shape parameter for initial CD4 count distribution" unit="log-normal shape parameter"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="New HIV infection through sexual contact with infected individuals; transmission probability varies by phase (acute, chronic, final)"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Birth/recruitment into susceptible population at birth rate"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.3" description="Background mortality of susceptible individuals"/>
+  </compartments>
+  <compartments PrimaryName="Infected Untreated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Testing and initiation of antiretroviral therapy after screening"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.3" description="Death from HIV disease progression (Weibull survival) and background mortality"/>
+  </compartments>
+  <compartments PrimaryName="Infected on ART" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Drop-out from ART or treatment failure"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.3" description="Death from disease progression on treatment and background mortality"/>
+  </compartments>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

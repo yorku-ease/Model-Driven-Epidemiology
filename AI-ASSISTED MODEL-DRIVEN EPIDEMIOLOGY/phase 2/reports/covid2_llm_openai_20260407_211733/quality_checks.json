@@ -1,0 +1,388 @@
+{
+  "model_analysis": {
+    "modelName": "Covid2",
+    "summary": {
+      "modelName": "Covid2",
+      "totalPopulation": null,
+      "numCompartments": 4,
+      "numParameters": 7,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection/transmission from infectious individuals to susceptible individuals within a city, proportional to contact rate and the fraction infectious.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from exposed to infectious at rate epsilon.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery or removal from the infectious state at rate r, representing self-isolation/effective removal and recovery.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered/Removed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "c",
+          "type": "CONSTANT",
+          "expression": "daily contact rate",
+          "description": "Average number of daily contacts used in transmission.",
+          "unit": "contacts per person per day"
+        },
+        {
+          "index": 1,
+          "name": "r",
+          "type": "CONSTANT",
+          "expression": "inverse of average infectious period",
+          "description": "Rate of recovery/removal from the infectious state.",
+          "unit": "per day"
+        },
+        {
+          "index": 2,
+          "name": "epsilon",
+          "type": "CONSTANT",
+          "expression": "inverse of average incubation period",
+          "description": "Rate of progression from exposed to infectious.",
+          "unit": "per day"
+        },
+        {
+          "index": 3,
+          "name": "R0",
+          "type": "CONSTANT",
+          "expression": "2.2",
+          "description": "Basic reproduction number used to calculate the daily contact rate.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 4,
+          "name": "average infectious period",
+          "type": "CONSTANT",
+          "expression": "5.8",
+          "description": "Average time spent infectious, used to derive r.",
+          "unit": "days"
+        },
+        {
+          "index": 5,
+          "name": "average time spent exposed but not infectious",
+          "type": "CONSTANT",
+          "expression": "5.2",
+          "description": "Average incubation period, used to derive epsilon.",
+          "unit": "days"
+        },
+        {
+          "index": 6,
+          "name": "time from onset to first medical visit and isolation",
+          "type": "CONSTANT",
+          "expression": "5.8",
+          "description": "Used as a proxy for average infectious period under improved case identification and isolation.",
+          "unit": "days"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Covid2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 7,
+    "parametersWithUncertainty": 7,
+    "parameters": [
+      {
+        "parameter": "c",
+        "yourValue": "daily contact rate",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "contacts per person per day",
+        "description": "Average number of daily contacts used in transmission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "r",
+        "yourValue": "inverse of average infectious period",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "per day",
+        "description": "Rate of recovery/removal from the infectious state.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "epsilon",
+        "yourValue": "inverse of average incubation period",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "per day",
+        "description": "Rate of progression from exposed to infectious.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "R0",
+        "yourValue": "2.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "dimensionless",
+        "description": "Basic reproduction number used to calculate the daily contact rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "average infectious period",
+        "yourValue": "5.8",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "days",
+        "description": "Average time spent infectious, used to derive r.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "average time spent exposed but not infectious",
+        "yourValue": "5.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "days",
+        "description": "Average incubation period, used to derive epsilon.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "time from onset to first medical visit and isolation",
+        "yourValue": "5.8",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid2",
+        "unit": "days",
+        "description": "Used as a proxy for average infectious period under improved case identification and isolation.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 7
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Covid2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "R0",
+        "type": "other",
+        "currentValue": 2.2,
+        "description": "Basic reproduction number used to calculate the daily contact rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "average infectious period",
+        "type": "other",
+        "currentValue": 5.8,
+        "description": "Average time spent infectious, used to derive r.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "average time spent exposed but not infectious",
+        "type": "other",
+        "currentValue": 5.2,
+        "description": "Average incubation period, used to derive epsilon.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "time from onset to first medical visit and isolation",
+        "type": "other",
+        "currentValue": 5.8,
+        "description": "Used as a proxy for average infectious period under improved case identification and isolation.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "R0",
+      "average infectious period",
+      "average time spent exposed but not infectious",
+      "time from onset to first medical visit and isolation"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "R0",
+        "average infectious period",
+        "average time spent exposed but not infectious",
+        "time from onset to first medical visit and isolation"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "R0": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "average infectious period": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "average time spent exposed but not infectious": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "time from onset to first medical visit and isolation": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

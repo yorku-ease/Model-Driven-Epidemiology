@@ -1,0 +1,264 @@
+{
+  "modelName": "Hiv3",
+  "summary": {
+    "modelName": "Hiv3",
+    "totalPopulation": null,
+    "numCompartments": 3,
+    "numParameters": 26,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 2,
+        "primaryName": "Treated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Birth rate",
+        "type": "CONSTANT",
+        "expression": "0.029",
+        "description": "Per-capita birth rate.",
+        "unit": "/yr"
+      },
+      {
+        "index": 1,
+        "name": "Background mortality rate",
+        "type": "CONSTANT",
+        "expression": "0.018",
+        "description": "Background mortality rate.",
+        "unit": "/yr"
+      },
+      {
+        "index": 2,
+        "name": "Transmission parameter",
+        "type": "CONSTANT",
+        "expression": "0.767",
+        "description": "Initial value of the transmission parameter.",
+        "unit": "/yr"
+      },
+      {
+        "index": 3,
+        "name": "Transmission parameter location",
+        "type": "CONSTANT",
+        "expression": "0.055",
+        "description": "Location parameter for transmission parameter distribution.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 4,
+        "name": "Transmission parameter shape",
+        "type": "CONSTANT",
+        "expression": "0.996",
+        "description": "Shape parameter for transmission parameter distribution.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "Relative transmission on ART",
+        "type": "CONSTANT",
+        "expression": "0.010",
+        "description": "Transmission relative to untreated infection while on ART.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "Progression untreated",
+        "type": "CONSTANT",
+        "expression": "0.303",
+        "description": "Disease progression rate for untreated infected individuals.",
+        "unit": "/yr"
+      },
+      {
+        "index": 7,
+        "name": "Progression treated",
+        "type": "CONSTANT",
+        "expression": "0.165",
+        "description": "Disease progression rate for treated infected individuals.",
+        "unit": "/yr"
+      },
+      {
+        "index": 8,
+        "name": "Intervention timing",
+        "type": "CONSTANT",
+        "expression": "2011",
+        "description": "Year when intervention rollout begins.",
+        "unit": "yr"
+      },
+      {
+        "index": 9,
+        "name": "Intervention rate",
+        "type": "CONSTANT",
+        "expression": "1.00",
+        "description": "Rate of intervention rollout.",
+        "unit": "/yr"
+      },
+      {
+        "index": 10,
+        "name": "Intervention maximum",
+        "type": "CONSTANT",
+        "expression": "0.90",
+        "description": "Maximum coverage of intervention.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "Testing rate",
+        "type": "CONSTANT",
+        "expression": "1.00",
+        "description": "Rate of HIV testing.",
+        "unit": "/yr"
+      },
+      {
+        "index": 12,
+        "name": "Testing refusal",
+        "type": "CONSTANT",
+        "expression": "0.08",
+        "description": "Proportion refusing testing.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "Drop-out rate",
+        "type": "CONSTANT",
+        "expression": "0.015",
+        "description": "Rate of dropout from treatment.",
+        "unit": "/yr"
+      },
+      {
+        "index": 14,
+        "name": "CD4 on/off",
+        "type": "CONSTANT",
+        "expression": "Off",
+        "description": "Whether CD4-based treatment initiation is enabled.",
+        "unit": "indicator"
+      },
+      {
+        "index": 15,
+        "name": "Failure rate",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Treatment failure rate.",
+        "unit": "/yr"
+      },
+      {
+        "index": 16,
+        "name": "Reduction in transmission",
+        "type": "CONSTANT",
+        "expression": "0.40",
+        "description": "Other intervention effect reducing transmission.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 17,
+        "name": "Acute phase duration",
+        "type": "CONSTANT",
+        "expression": "2",
+        "description": "Duration of acute phase.",
+        "unit": "months"
+      },
+      {
+        "index": 18,
+        "name": "Acute phase infectivity",
+        "type": "CONSTANT",
+        "expression": "4.50",
+        "description": "Infectivity during acute phase.",
+        "unit": "number/year"
+      },
+      {
+        "index": 19,
+        "name": "Chronic phase infectivity",
+        "type": "CONSTANT",
+        "expression": "0.45",
+        "description": "Infectivity during chronic phase.",
+        "unit": "number/year"
+      },
+      {
+        "index": 20,
+        "name": "Final phase infectivity",
+        "type": "CONSTANT",
+        "expression": "2.25",
+        "description": "Infectivity during final phase.",
+        "unit": "number/year"
+      },
+      {
+        "index": 21,
+        "name": "Final phase duration",
+        "type": "CONSTANT",
+        "expression": "0.15",
+        "description": "Duration of final phase as a proportion of expected life.",
+        "unit": "proportion of expected life"
+      },
+      {
+        "index": 22,
+        "name": "Concurrency number",
+        "type": "CONSTANT",
+        "expression": "4",
+        "description": "Number of concurrent partnerships.",
+        "unit": "number"
+      },
+      {
+        "index": 23,
+        "name": "Partnership duration",
+        "type": "CONSTANT",
+        "expression": "6",
+        "description": "Mean duration of a partnership.",
+        "unit": "months"
+      },
+      {
+        "index": 24,
+        "name": "Start ART CD4",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "CD4 threshold for starting ART in the table as presented.",
+        "unit": "/micro-litre"
+      },
+      {
+        "index": 25,
+        "name": "Monte Carlo repeats",
+        "type": "CONSTANT",
+        "expression": "10000",
+        "description": "Number of Monte Carlo simulation repeats.",
+        "unit": "number"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

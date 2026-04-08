@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R0" expression="3.8" type="CONSTANT" description="Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4–5.6)" unit="dimensionless"/>
+  <parameters name="Rt" expression="0.66" type="CONSTANT" description="Average time-varying reproduction number across 11 countries after interventions" unit="dimensionless"/>
+  <parameters name="ifr" expression="country-specific" type="CONSTANT" description="Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country" unit="dimensionless"/>
+  <parameters name="infection_to_onset" expression="5.1" type="CONSTANT" description="Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution" unit="days"/>
+  <parameters name="onset_to_death" expression="17.8" type="CONSTANT" description="Mean time from onset of symptoms to death, used in the infection-to-death distribution" unit="days"/>
+  <parameters name="generation_interval" expression="6.5" type="CONSTANT" description="Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another" unit="days"/>
+  <parameters name="lockdown_effect" expression="81" type="CONSTANT" description="Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)" unit="percent reduction in Rt"/>
+  <parameters name="alpha_lockdown" expression="country-specific" type="CONSTANT" description="Country-specific effect of lockdown via partial pooling" unit="dimensionless"/>
+  <parameters name="alpha_school_closure" expression="shared" type="CONSTANT" description="Shared effect size parameter for school closure intervention across countries" unit="dimensionless"/>
+  <parameters name="alpha_public_events" expression="shared" type="CONSTANT" description="Shared effect size parameter for banning public events across countries" unit="dimensionless"/>
+  <parameters name="alpha_self_isolation" expression="shared" type="CONSTANT" description="Shared effect size parameter for case-based self-isolation measures across countries" unit="dimensionless"/>
+  <parameters name="alpha_social_distancing" expression="shared" type="CONSTANT" description="Shared effect size parameter for social distancing encouraged across countries" unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="0"/>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Symptomatic" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.3" description="Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio"/>
+  </compartments>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

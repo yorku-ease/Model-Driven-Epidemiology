@@ -1,0 +1,229 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals not currently infected and at risk of cholera infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not currently infected and at risk of cholera infection."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals infected with cholera and capable of contributing to transmission; the paper discusses reported and unreported infections but presents them as part of overall infection dynamics rather than separate primary compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected with cholera and capable of contributing to transmission; the paper discusses reported and unreported infections but presents them as part of overall infection dynamics rather than separate primary compartments."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered and have temporary immunity that wanes over time.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered and have temporary immunity that wanes over time."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Cholera infection/transmission from exposure to Vibrio cholerae.",
+      "page_number": 0,
+      "text_span": "Cholera infection/transmission from exposure to Vibrio cholerae.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Cholera infection/transmission from exposure to Vibrio cholerae."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from cholera infection.",
+      "page_number": 0,
+      "text_span": "Recovery from cholera infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from cholera infection."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of natural immunity back to susceptibility.",
+      "page_number": 0,
+      "text_span": "Waning of natural immunity back to susceptibility.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of natural immunity back to susceptibility."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Initial vaccine protection",
+      "raw_text": "Initial vaccine protection",
+      "value": "76%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Assumed initial protection after vaccination, estimated from a recent case-control study in Haiti.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed initial protection after vaccination, estimated from a recent case-control study in Haiti."
+    },
+    {
+      "normalized_name": "Vaccine protection duration",
+      "raw_text": "Vaccine protection duration",
+      "value": "60",
+      "unit": "months",
+      "page_number": 0,
+      "text_span": "Protection was modeled to wane over 60 months after vaccination.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Protection was modeled to wane over 60 months after vaccination."
+    },
+    {
+      "normalized_name": "Single-dose protection duration",
+      "raw_text": "Single-dose protection duration",
+      "value": "1",
+      "unit": "year",
+      "page_number": 0,
+      "text_span": "Single-dose protection was assumed to be the same as two-dose protection for the first year after vaccination, then drop to zero.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Single-dose protection was assumed to be the same as two-dose protection for the first year after vaccination, then drop to zero."
+    },
+    {
+      "normalized_name": "Children under 5 vaccine effectiveness multiplier",
+      "raw_text": "Children under 5 vaccine effectiveness multiplier",
+      "value": "46.9%",
+      "unit": "relative to adults",
+      "page_number": 0,
+      "text_span": "Children younger than 5 years were assumed to have 46.9% of adult vaccine effectiveness.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Children younger than 5 years were assumed to have 46.9% of adult vaccine effectiveness."
+    },
+    {
+      "normalized_name": "Baseline two-dose vaccine coverage",
+      "raw_text": "Baseline two-dose vaccine coverage",
+      "value": "70%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Baseline campaign coverage assumption.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline campaign coverage assumption."
+    },
+    {
+      "normalized_name": "Baseline one-dose vaccine coverage",
+      "raw_text": "Baseline one-dose vaccine coverage",
+      "value": "10%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Baseline campaign coverage assumption.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline campaign coverage assumption."
+    },
+    {
+      "normalized_name": "No vaccine coverage",
+      "raw_text": "No vaccine coverage",
+      "value": "20%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Baseline campaign coverage assumption.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline campaign coverage assumption."
+    },
+    {
+      "normalized_name": "High-coverage two-dose vaccine coverage",
+      "raw_text": "High-coverage two-dose vaccine coverage",
+      "value": "95%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Coverage assumption for the high-coverage campaign.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Coverage assumption for the high-coverage campaign."
+    },
+    {
+      "normalized_name": "High-coverage one-dose vaccine coverage",
+      "raw_text": "High-coverage one-dose vaccine coverage",
+      "value": "1.67%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Coverage assumption for the high-coverage campaign.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Coverage assumption for the high-coverage campaign."
+    },
+    {
+      "normalized_name": "High-coverage no vaccine coverage",
+      "raw_text": "High-coverage no vaccine coverage",
+      "value": "3.33%",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "Coverage assumption for the high-coverage campaign.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Coverage assumption for the high-coverage campaign."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 8,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 7,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 3,
+    "num_flows": 3,
+    "num_parameters": 10,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

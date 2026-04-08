@@ -1,0 +1,30 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebola2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Infectious in the Community,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Hospitalized Patients,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Dead Patients Not Yet Buried,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Recovered,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Cumulative Cases,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola2,Compartment,Burials,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.4,False,"Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried.",,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Infectious in the Community,RateFlow,//@parameters.4,False,Progression from latent infection to symptomatic infectious stage after the incubation period.,,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Hospitalized Patients,RateFlow,//@parameters.0,False,Hospitalization of infectious community cases.,,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.5,False,Recovery from infection in the community.,,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Dead Patients Not Yet Buried,RateFlow,//@parameters.4,False,"Death from Ebola in the community, remaining infectious until burial.",,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Infectious in the Community,RateFlow,//@parameters.4,False,Hospitalized patients abandoning healthcare facilities and returning to the community.,,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.5,False,Recovery from infection while hospitalized.,,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Dead Patients Not Yet Buried,RateFlow,//@parameters.4,False,"Death from Ebola while hospitalized, remaining infectious until burial.",,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Burials,RateFlow,//@parameters.4,False,"Burial of deceased patients, removing them from the chain of transmission.",,,
+Ebola2,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.5,False,No outgoing transition shown; recovered individuals are removed from transmission.,,,
+Ebola2,Parameter,β,,,,,,Model file,Certain,,,,,,Transmission rate in the community before intervention.,CONSTANT,0.532,per week
+Ebola2,Parameter,θ,,,,,,Model file,Certain,,,,,,Transmission rate in hospitals before intervention.,CONSTANT,0.328,per week
+Ebola2,Parameter,φ,,,,,,Model file,Certain,,,,,,Transmission rate at funerals before intervention.,CONSTANT,2.104,per week
+Ebola2,Parameter,η,,,,,,Model file,Certain,,,,,,Mean time from symptoms onset to hospitalization (table reports 1/η).,CONSTANT,4.8 days,days
+Ebola2,Parameter,b,,,,,,Model file,Certain,,,,,,Mean time from death to burial (table reports 1/b).,CONSTANT,5.4 days,days
+Ebola2,Parameter,γ,,,,,,Model file,Certain,,,,,,Mean duration of the infection (table reports 1/γ).,CONSTANT,10.4 days,days
+Ebola2,Parameter,α,,,,,,Model file,Certain,,,,,,Mean duration of the incubation period (table reports 1/α).,CONSTANT,10 days,days
+Ebola2,Parameter,γH,,,,,,Model file,Certain,,,,,,Average permanence in the hospital (table reports 1/γH).,CONSTANT,4.6 days,days
+Ebola2,Parameter,δ,,,,,,Model file,Certain,,,,,,Case fatality ratio in the community.,CONSTANT,73%,proportion
+Ebola2,Parameter,δH,,,,,,Model file,Certain,,,,,,Case fatality ratio in hospitals.,CONSTANT,61%,proportion
+Ebola2,Parameter,κ,,,,,,Model file,Certain,,,,,,Hospital leaving rate.,CONSTANT,0.0025,per week

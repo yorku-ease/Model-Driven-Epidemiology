@@ -1,0 +1,282 @@
+{
+  "modelName": "Hiv2",
+  "summary": {
+    "modelName": "Hiv2",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 11,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.9",
+            "contactCompartment": "//@compartments.1",
+            "description": "HIV acquisition through sexual transmission.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Early Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from early infection to asymptomatic infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from asymptomatic infection to pre-AIDS infection.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Initiation of ART after meeting eligibility criteria.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Pre-AIDS Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from pre-AIDS infection to AIDS.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Initiation of ART after meeting eligibility criteria.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "AIDS",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Initiation of ART after meeting eligibility criteria.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "On Antiretroviral Therapy",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Dropout from ART at a constant rate to achieve the specified retention level.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Dropped Out of Treatment",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Return to treatment after dropout in models that allow re-initiation.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "CD4 treatment eligibility threshold",
+        "type": "CONSTANT",
+        "expression": "200 cells/ml; 350 cells/ml; all HIV-infected individuals",
+        "description": "Eligibility scenarios evaluated for ART initiation.",
+        "unit": "cells/ml or categorical"
+      },
+      {
+        "index": 1,
+        "name": "Average time from eligibility to treatment initiation",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Eligible individuals with access initiate ART at a constant rate such that the mean delay is 1 year.",
+        "unit": "year"
+      },
+      {
+        "index": 2,
+        "name": "Treatment access",
+        "type": "CONSTANT",
+        "expression": "50%, 60%, 70%, 80%, 90%, 95%, 100%",
+        "description": "Proportion of eligible individuals who eventually initiate treatment.",
+        "unit": "proportion"
+      },
+      {
+        "index": 3,
+        "name": "Retention on treatment after 3 years",
+        "type": "CONSTANT",
+        "expression": "75%, 85%, 95%, 100%",
+        "description": "Proportion remaining on ART after 3 years, excluding deaths on treatment.",
+        "unit": "proportion"
+      },
+      {
+        "index": 4,
+        "name": "ART introduction time",
+        "type": "CONSTANT",
+        "expression": "2012",
+        "description": "ART assumed to be introduced from the beginning of 2012.",
+        "unit": "year"
+      },
+      {
+        "index": 5,
+        "name": "Baseline future scale-up ART starts",
+        "type": "CONSTANT",
+        "expression": "400,000 per year",
+        "description": "Number of adults starting ART each year in the baseline future scale-up scenario.",
+        "unit": "adults/year"
+      },
+      {
+        "index": 6,
+        "name": "Low future scale-up ART starts",
+        "type": "CONSTANT",
+        "expression": "1,200,000 total over 2012-2016",
+        "description": "Total adults initiating ART in the low future scale-up scenario.",
+        "unit": "adults"
+      },
+      {
+        "index": 7,
+        "name": "Medium future scale-up ART starts",
+        "type": "CONSTANT",
+        "expression": "3,000,000 total over 2012-2016",
+        "description": "Total adults initiating ART in the medium future scale-up scenario.",
+        "unit": "adults"
+      },
+      {
+        "index": 8,
+        "name": "High future scale-up ART starts",
+        "type": "CONSTANT",
+        "expression": "3,900,000 total over 2012-2016",
+        "description": "Total adults initiating ART in the high future scale-up scenario.",
+        "unit": "adults"
+      },
+      {
+        "index": 9,
+        "name": "ART transmission reduction",
+        "type": "CONSTANT",
+        "expression": "greater than 90%",
+        "description": "Most models assume ART reduces transmissibility by more than 90%.",
+        "unit": "proportion reduction"
+      },
+      {
+        "index": 10,
+        "name": "Early infection transmissibility increase",
+        "type": "CONSTANT",
+        "expression": "10-fold or 26-fold relative to asymptomatic infection",
+        "description": "Alternative assumptions used across models for early infection infectiousness.",
+        "unit": "relative risk"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

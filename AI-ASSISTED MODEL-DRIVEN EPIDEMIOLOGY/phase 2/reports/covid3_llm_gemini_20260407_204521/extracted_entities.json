@@ -1,0 +1,147 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Represents the population of infected individuals. The model calculates the number of new infections per day based on past infections via a renewal equation, as shown in the 'modelled infections' box in the model diagram.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Represents the population of infected individuals. The model calculates the number of new infections per day based on past infections via a renewal equation, as shown in the 'modelled infections' box in the model diagram."
+    },
+    {
+      "normalized_name": "Dead",
+      "raw_text": "Deceased",
+      "page_number": 0,
+      "text_span": "Represents the population of individuals who have died from the infection. The model calculates daily deaths based on past infections, an infection-to-death distribution, and an infection fatality ratio, as shown in the 'modelled deaths' box in the model diagram.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Represents the population of individuals who have died from the infection. The model calculates daily deaths based on past infections, an infection-to-death distribution, and an infection fatality ratio, as shown in the 'modelled deaths' box in the model diagram."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Infectious",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution.",
+      "page_number": 0,
+      "text_span": "Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "R_t",
+      "raw_text": "R_t",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Time-varying reproduction number, modelled as a piecewise constant function that changes when an intervention occurs.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Time-varying reproduction number, modelled as a piecewise constant function that changes when an intervention occurs."
+    },
+    {
+      "normalized_name": "Initial R_t",
+      "raw_text": "Initial R_t",
+      "value": "3.8",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4\u20135.6).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4\u20135.6)."
+    },
+    {
+      "normalized_name": "Serial Interval Distribution",
+      "raw_text": "Serial Interval Distribution",
+      "value": null,
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Distribution of the time between successive cases in a chain of transmission. Used to approximate the generation time distribution.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Distribution of the time between successive cases in a chain of transmission. Used to approximate the generation time distribution."
+    },
+    {
+      "normalized_name": "Infection Fatality Ratio",
+      "raw_text": "Infection Fatality Ratio",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Population-averaged infection fatality ratio, adjusted for the age structure and contact patterns of each country. Based on previous work.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Population-averaged infection fatality ratio, adjusted for the age structure and contact patterns of each country. Based on previous work."
+    },
+    {
+      "normalized_name": "Infection-to-death distribution",
+      "raw_text": "Infection-to-death distribution",
+      "value": null,
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Time lag distribution from infection to death, derived from assumptions about infection-to-symptom and symptom-to-death distributions.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Time lag distribution from infection to death, derived from assumptions about infection-to-symptom and symptom-to-death distributions."
+    },
+    {
+      "normalized_name": "Lockdown effect",
+      "raw_text": "Lockdown effect",
+      "value": "81%",
+      "unit": "percent reduction in R_t",
+      "page_number": 0,
+      "text_span": "The relative reduction in the reproduction number attributed to a lockdown intervention (95% credible interval: 75-87%).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The relative reduction in the reproduction number attributed to a lockdown intervention (95% credible interval: 75-87%)."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 5,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 2,
+    "num_flows": 1,
+    "num_parameters": 6,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

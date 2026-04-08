@@ -1,0 +1,156 @@
+{
+  "traceability_coverage": {
+    "total_items": 33,
+    "items_with_evidence": 33,
+    "coverage_percentage": 100.0
+  },
+  "faithfulness": {
+    "paper_backed_items": 33,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "total_gaps": 0,
+    "critical_gaps": 0,
+    "high_gaps": 0,
+    "medium_gaps": 0,
+    "gap_breakdown": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_stratifications": 0,
+      "missing_interventions": 0
+    }
+  },
+  "gold_standard_comparison": {
+    "compartments": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "tp": 5,
+      "fp": 1,
+      "fn": 1,
+      "matches": [
+        {
+          "extracted": "Recovered",
+          "gold": "Removed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Exposed",
+          "gold": "Exposed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Hospitalized",
+          "gold": "Hospitalized",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious",
+          "gold": "FuneralInfectious",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [
+        "Dead but not yet buried"
+      ],
+      "unmatched_gold": [
+        "InfectiousCommunity"
+      ]
+    },
+    "parameters": {
+      "precision": 0.2631578947368421,
+      "recall": 0.5,
+      "f1": 0.3448275862068966,
+      "tp": 5,
+      "fp": 14,
+      "fn": 5,
+      "matches": [
+        {
+          "extracted": "d_1",
+          "gold": "HospitalDeathRate",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "beta_H",
+          "gold": "BetaCommunity",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "beta_I",
+          "gold": "BetaFuneral",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "beta_F",
+          "gold": "BetaHospital",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "d_2",
+          "gold": "CommunityDeathRate",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [
+        "N",
+        "1/c_i",
+        "1/c_f",
+        "R_0I",
+        "1/c_h",
+        "R_0H",
+        "h",
+        "d",
+        "R_0",
+        "h_1",
+        "1-z",
+        "alpha",
+        "1/c_d",
+        "R_0F"
+      ],
+      "unmatched_gold": [
+        "HospitalRecoveryRate",
+        "IncubationRate",
+        "HospitalizationRate",
+        "CommunityRecoveryRate",
+        "BurialRate"
+      ]
+    },
+    "flows": {
+      "precision": 0.2,
+      "recall": 0.125,
+      "f1": 0.15384615384615385,
+      "tp": 1,
+      "fp": 4,
+      "fn": 7,
+      "matches": [
+        {
+          "extracted": "Susceptible->Exposed",
+          "gold": "Susceptible->Exposed",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "FuneralInfectious->Hospitalized",
+        "Hospitalized->Dead but not yet buried",
+        "FuneralInfectious->Dead but not yet buried",
+        "Exposed->FuneralInfectious"
+      ],
+      "unmatched_gold": [
+        "FuneralInfectious->Removed",
+        "Exposed->InfectiousCommunity",
+        "Hospitalized->Removed",
+        "InfectiousCommunity->Hospitalized",
+        "InfectiousCommunity->FuneralInfectious",
+        "InfectiousCommunity->Removed",
+        "Hospitalized->FuneralInfectious"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
+  }
+}

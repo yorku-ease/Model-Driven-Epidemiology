@@ -1,0 +1,146 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Latent infection process representing the number of people infected over time; used as the modelled infections in the renewal equation and as the source of deaths through the infection-to-death distribution.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Latent infection process representing the number of people infected over time; used as the modelled infections in the renewal equation and as the source of deaths through the infection-to-death distribution."
+    },
+    {
+      "normalized_name": "Deaths",
+      "raw_text": "Deaths",
+      "page_number": 0,
+      "text_span": "Observed and modelled COVID-19-related deaths used to fit the model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Observed and modelled COVID-19-related deaths used to fit the model."
+    }
+  ],
+  "flows": [],
+  "parameters": [
+    {
+      "normalized_name": "R_t",
+      "raw_text": "R_t",
+      "value": "time-varying; piecewise constant with changes at interventions",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Effective reproduction number; modeled as a function of the initial reproduction number and intervention effects.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effective reproduction number; modeled as a function of the initial reproduction number and intervention effects."
+    },
+    {
+      "normalized_name": "R_0",
+      "raw_text": "R_0",
+      "value": "country-specific initial value before interventions",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Initial reproduction number before interventions took effect.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initial reproduction number before interventions took effect."
+    },
+    {
+      "normalized_name": "infection fatality ratio",
+      "raw_text": "infection fatality ratio",
+      "value": "population-averaged; adjusted for age structure and contact patterns",
+      "unit": "probability",
+      "page_number": 0,
+      "text_span": "Fraction of infections resulting in death.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fraction of infections resulting in death."
+    },
+    {
+      "normalized_name": "infection-to-death distribution",
+      "raw_text": "infection-to-death distribution",
+      "value": "derived from onset-to-symptoms and symptoms-to-death distributions",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Delay distribution linking infections to observed deaths.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Delay distribution linking infections to observed deaths."
+    },
+    {
+      "normalized_name": "generation time distribution",
+      "raw_text": "generation time distribution",
+      "value": "approximated using the serial interval distribution",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Distribution weighting the discrete convolution of previous infections in the renewal equation.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Distribution weighting the discrete convolution of previous infections in the renewal equation."
+    },
+    {
+      "normalized_name": "serial interval distribution",
+      "raw_text": "serial interval distribution",
+      "value": "used as approximation to generation time distribution",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Distribution of time between symptom onset in a primary case and a secondary case.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Distribution of time between symptom onset in a primary case and a secondary case."
+    },
+    {
+      "normalized_name": "intervention effects",
+      "raw_text": "intervention effects",
+      "value": "country-shared with partial pooling for the last intervention",
+      "unit": "relative reduction in R_t",
+      "page_number": 0,
+      "text_span": "Covariate effects of governmental interventions on transmission, including lockdown, public events banned, school closure, self isolation, and social distancing encouraged.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Covariate effects of governmental interventions on transmission, including lockdown, public events banned, school closure, self isolation, and social distancing encouraged."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 5,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 2,
+    "num_flows": 0,
+    "num_parameters": 7,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

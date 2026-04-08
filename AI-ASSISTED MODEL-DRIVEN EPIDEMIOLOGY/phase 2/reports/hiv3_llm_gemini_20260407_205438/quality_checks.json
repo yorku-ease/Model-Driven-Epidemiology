@@ -1,0 +1,718 @@
+{
+  "model_analysis": {
+    "modelName": "Hiv3",
+    "summary": {
+      "modelName": "Hiv3",
+      "totalPopulation": null,
+      "numCompartments": 3,
+      "numParameters": 16,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.9",
+              "contactCompartment": "//@compartments.1",
+              "description": "Transmission of HIV from infectious individuals (both treated and untreated) to susceptible individuals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious Untreated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.9",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Rate at which untreated individuals are tested and initiate ART.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious Treated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "//@parameters.9",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Rate at which treated individuals drop out of ART.",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03b4",
+          "type": "CONSTANT",
+          "expression": "0.029",
+          "description": "Birth rate",
+          "unit": "/yr"
+        },
+        {
+          "index": 1,
+          "name": "\u03bc",
+          "type": "CONSTANT",
+          "expression": "0.018",
+          "description": "Background mortality rate",
+          "unit": "/yr"
+        },
+        {
+          "index": 2,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "0.767",
+          "description": "Transmission parameter (Initial value)",
+          "unit": "/yr"
+        },
+        {
+          "index": 3,
+          "name": "\u03c1",
+          "type": "CONSTANT",
+          "expression": "0.055",
+          "description": "Location parameter for transmission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 4,
+          "name": "\u03bd",
+          "type": "CONSTANT",
+          "expression": "0.996",
+          "description": "Shape parameter for transmission",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 5,
+          "name": "\u03b5",
+          "type": "CONSTANT",
+          "expression": "0.010",
+          "description": "Relative transmission on ART",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 6,
+          "name": "\u03b3_U",
+          "type": "CONSTANT",
+          "expression": "0.303",
+          "description": "Progression rate for untreated individuals",
+          "unit": "/yr"
+        },
+        {
+          "index": 7,
+          "name": "\u03b3_T",
+          "type": "CONSTANT",
+          "expression": "0.165",
+          "description": "Progression rate for treated individuals",
+          "unit": "/yr"
+        },
+        {
+          "index": 8,
+          "name": "\u03c4",
+          "type": "CONSTANT",
+          "expression": "2011",
+          "description": "Intervention timing",
+          "unit": "yr"
+        },
+        {
+          "index": 9,
+          "name": "r",
+          "type": "CONSTANT",
+          "expression": "1.00",
+          "description": "Intervention rate",
+          "unit": "/yr"
+        },
+        {
+          "index": 10,
+          "name": "m",
+          "type": "CONSTANT",
+          "expression": "0.90",
+          "description": "Maximum intervention coverage",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 11,
+          "name": "\u03c8",
+          "type": "CONSTANT",
+          "expression": "1.00",
+          "description": "Testing rate",
+          "unit": "/yr"
+        },
+        {
+          "index": 12,
+          "name": "\u03b8",
+          "type": "CONSTANT",
+          "expression": "0.08",
+          "description": "Testing refusal proportion",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 13,
+          "name": "\u03c9",
+          "type": "CONSTANT",
+          "expression": "0.015",
+          "description": "Drop-out rate from treatment",
+          "unit": "/yr"
+        },
+        {
+          "index": 14,
+          "name": "\u03b1",
+          "type": "CONSTANT",
+          "expression": "0.10",
+          "description": "Treatment failure rate",
+          "unit": "/yr"
+        },
+        {
+          "index": 15,
+          "name": "\u03c6",
+          "type": "CONSTANT",
+          "expression": "0.40",
+          "description": "Reduction in transmission from other interventions",
+          "unit": "dimensionless"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Hiv3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 16,
+    "parametersWithUncertainty": 16,
+    "parameters": [
+      {
+        "parameter": "\u03b4",
+        "yourValue": "0.029",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Birth rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bc",
+        "yourValue": "0.018",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Background mortality rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2",
+        "yourValue": "0.767",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Transmission parameter (Initial value)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c1",
+        "yourValue": "0.055",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "dimensionless",
+        "description": "Location parameter for transmission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03bd",
+        "yourValue": "0.996",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "dimensionless",
+        "description": "Shape parameter for transmission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b5",
+        "yourValue": "0.010",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "dimensionless",
+        "description": "Relative transmission on ART",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3_U",
+        "yourValue": "0.303",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Progression rate for untreated individuals",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3_T",
+        "yourValue": "0.165",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Progression rate for treated individuals",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c4",
+        "yourValue": "2011",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "yr",
+        "description": "Intervention timing",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "r",
+        "yourValue": "1.00",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Intervention rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "m",
+        "yourValue": "0.90",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "dimensionless",
+        "description": "Maximum intervention coverage",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c8",
+        "yourValue": "1.00",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Testing rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b8",
+        "yourValue": "0.08",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "dimensionless",
+        "description": "Testing refusal proportion",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c9",
+        "yourValue": "0.015",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Drop-out rate from treatment",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b1",
+        "yourValue": "0.10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Treatment failure rate",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c6",
+        "yourValue": "0.40",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "dimensionless",
+        "description": "Reduction in transmission from other interventions",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 16
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Hiv3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\u03b4",
+        "type": "other",
+        "currentValue": 0.029,
+        "description": "Birth rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03bc",
+        "type": "other",
+        "currentValue": 0.018,
+        "description": "Background mortality rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b2",
+        "type": "other",
+        "currentValue": 0.767,
+        "description": "Transmission parameter (Initial value)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c1",
+        "type": "other",
+        "currentValue": 0.055,
+        "description": "Location parameter for transmission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03bd",
+        "type": "other",
+        "currentValue": 0.996,
+        "description": "Shape parameter for transmission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b5",
+        "type": "other",
+        "currentValue": 0.01,
+        "description": "Relative transmission on ART",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b3_U",
+        "type": "other",
+        "currentValue": 0.303,
+        "description": "Progression rate for untreated individuals",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b3_T",
+        "type": "other",
+        "currentValue": 0.165,
+        "description": "Progression rate for treated individuals",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c4",
+        "type": "other",
+        "currentValue": 2011.0,
+        "description": "Intervention timing",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "r",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Intervention rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "m",
+        "type": "other",
+        "currentValue": 0.9,
+        "description": "Maximum intervention coverage",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c8",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Testing rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b8",
+        "type": "other",
+        "currentValue": 0.08,
+        "description": "Testing refusal proportion",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c9",
+        "type": "other",
+        "currentValue": 0.015,
+        "description": "Drop-out rate from treatment",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b1",
+        "type": "other",
+        "currentValue": 0.1,
+        "description": "Treatment failure rate",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c6",
+        "type": "other",
+        "currentValue": 0.4,
+        "description": "Reduction in transmission from other interventions",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\u03b4",
+      "\u03bc",
+      "\u03b2",
+      "\u03c1",
+      "\u03bd"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\u03b4",
+        "\u03bc",
+        "\u03b2",
+        "\u03c1",
+        "\u03bd"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\u03b4": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03bc": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b2": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c1": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03bd": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

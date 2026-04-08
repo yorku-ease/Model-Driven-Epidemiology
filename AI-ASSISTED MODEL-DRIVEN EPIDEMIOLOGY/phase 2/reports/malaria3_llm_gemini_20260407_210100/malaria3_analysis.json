@@ -1,0 +1,359 @@
+{
+  "modelName": "Malaria3",
+  "summary": {
+    "modelName": "Malaria3",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 13,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of susceptible humans by an infectious mosquito, leading to symptomatic disease.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.2",
+            "description": "Infection of susceptible humans by an infectious mosquito, leading to asymptomatic disease.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Prophylaxis given to uninfected individuals during mass drug administration (MDA).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Symptomatic and Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from symptomatic to asymptomatic infection, either naturally or due to treatment failure.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment of symptomatic individuals.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic and Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from asymptomatic patent infection to sub-patent infection.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment of asymptomatic individuals during mass drug administration (MDA) or mass screen and treat (MSAT).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious and Undetectable by Microscopy Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural recovery from sub-patent infection back to a susceptible state.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment of sub-patent individuals during mass drug administration (MDA) or mass screen and treat (MSAT).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Treated and Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infection following treatment, leading to a period of prophylactic protection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Protected Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of prophylactic protection, returning individuals to a susceptible state.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.7",
+            "description": "Infection of susceptible mosquitoes from biting an infectious human (D, A, U, or T).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Exposed Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Development of parasites within the mosquito, after which the mosquito becomes infectious.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "ACT efficacy",
+        "type": "CONSTANT",
+        "expression": "95",
+        "description": "Efficacy of Artemisinin-combination therapies (ACTs) at clearing parasites.",
+        "unit": "%"
+      },
+      {
+        "index": 1,
+        "name": "Non-ACT efficacy",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Efficacy of non-ACT treatments at clearing parasites, assuming resistance.",
+        "unit": "%"
+      },
+      {
+        "index": 2,
+        "name": "Duration of gametocytaemia (non-artemisinins)",
+        "type": "CONSTANT",
+        "expression": "55.6",
+        "description": "Duration of infectiousness to mosquitoes after treatment with non-artemisinins.",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "Duration of gametocytaemia (ACT)",
+        "type": "CONSTANT",
+        "expression": "13.4",
+        "description": "Duration of infectiousness to mosquitoes after treatment with ACT.",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "Duration of gametocytaemia (ACT-PQ)",
+        "type": "CONSTANT",
+        "expression": "3.0",
+        "description": "Duration of infectiousness to mosquitoes after treatment with ACT plus primaquine.",
+        "unit": "days"
+      },
+      {
+        "index": 5,
+        "name": "Prophylaxis duration (short-acting)",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Duration of inhibitory antimalarial blood concentration for a short-acting drug.",
+        "unit": "days"
+      },
+      {
+        "index": 6,
+        "name": "Prophylaxis duration (long-acting)",
+        "type": "CONSTANT",
+        "expression": "30",
+        "description": "Duration of inhibitory antimalarial blood concentration for a long-acting drug.",
+        "unit": "days"
+      },
+      {
+        "index": 7,
+        "name": "Infectiousness reduction (non-artemisinins)",
+        "type": "CONSTANT",
+        "expression": "70",
+        "description": "Reduction in average infectiousness to mosquitoes following treatment with non-artemisinins.",
+        "unit": "%"
+      },
+      {
+        "index": 8,
+        "name": "Infectiousness reduction (ACT, ACT-PQ)",
+        "type": "CONSTANT",
+        "expression": "80.6",
+        "description": "Reduction in average infectiousness to mosquitoes following treatment with ACT or ACT-PQ.",
+        "unit": "%"
+      },
+      {
+        "index": 9,
+        "name": "Correlation in MDA participation",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Correlation in an individual's probability of participating in successive rounds of MDA.",
+        "unit": "none"
+      },
+      {
+        "index": 10,
+        "name": "Relative infectivity of Asymptomatic Humans",
+        "type": "CONSTANT",
+        "expression": "1/3",
+        "description": "Infectivity of asymptomatic cases (A) relative to symptomatic cases (D).",
+        "unit": "none"
+      },
+      {
+        "index": 11,
+        "name": "Relative infectivity of Subpatent Humans",
+        "type": "CONSTANT",
+        "expression": "1/17",
+        "description": "Infectivity of subpatent cases (U) relative to symptomatic cases (D).",
+        "unit": "none"
+      },
+      {
+        "index": 12,
+        "name": "MDA coverage",
+        "type": "CONSTANT",
+        "expression": "80",
+        "description": "Assumed coverage for mass drug administration simulations.",
+        "unit": "%"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

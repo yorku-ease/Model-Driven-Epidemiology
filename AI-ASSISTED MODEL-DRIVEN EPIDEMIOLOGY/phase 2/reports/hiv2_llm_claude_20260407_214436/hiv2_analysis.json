@@ -1,0 +1,308 @@
+{
+  "modelName": "Hiv2",
+  "summary": {
+    "modelName": "Hiv2",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 13,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.1",
+            "description": "HIV transmission through sexual contact with infectious individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Early Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from acute/early infection to asymptomatic chronic infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic CD4 >350",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "CD4 decline from above 350 to 200-350 cells/ml",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "ART initiation for individuals with CD4 >350 (under immediate/all HIV+ eligibility scenario)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Asymptomatic CD4 200-350",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "ART initiation for individuals with CD4 200-350 (under CD4 ≤350 or all HIV+ eligibility)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Symptomatic CD4 ≤200",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "ART initiation for individuals with CD4 ≤200 (under all eligibility scenarios)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death due to AIDS in untreated late-stage individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "On ART",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Dropout from ART programme at a constant rate",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death while on ART (reduced mortality rate compared to untreated)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Dropped Out",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "ART eligibility CD4 threshold",
+        "type": "CONSTANT",
+        "expression": "200, 350, or all HIV+",
+        "description": "CD4 count threshold below which individuals become eligible for ART",
+        "unit": "cells/ml"
+      },
+      {
+        "index": 1,
+        "name": "ART access",
+        "type": "CONSTANT",
+        "expression": "50-100",
+        "description": "Proportion of eligible individuals who eventually initiate treatment",
+        "unit": "%"
+      },
+      {
+        "index": 2,
+        "name": "Time from eligibility to ART initiation",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Average time from reaching eligibility to starting ART",
+        "unit": "year"
+      },
+      {
+        "index": 3,
+        "name": "3-year retention on ART",
+        "type": "CONSTANT",
+        "expression": "75-100",
+        "description": "Percentage of individuals remaining on treatment after 3 years, excluding deaths",
+        "unit": "%"
+      },
+      {
+        "index": 4,
+        "name": "ART transmission reduction",
+        "type": "CONSTANT",
+        "expression": "90-99",
+        "description": "Reduction in HIV transmissibility for individuals on ART",
+        "unit": "%"
+      },
+      {
+        "index": 5,
+        "name": "Early infection relative transmissibility (Boily estimate)",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Relative increase in transmission during early infection compared to asymptomatic, based on Boily et al. meta-analysis",
+        "unit": "fold increase"
+      },
+      {
+        "index": 6,
+        "name": "Early infection relative transmissibility (Hollingsworth estimate)",
+        "type": "CONSTANT",
+        "expression": "26",
+        "description": "Relative increase in transmission during early infection compared to asymptomatic, based on Hollingsworth et al. reanalysis",
+        "unit": "fold increase"
+      },
+      {
+        "index": 7,
+        "name": "Late-stage relative transmissibility",
+        "type": "CONSTANT",
+        "expression": "1.4-4",
+        "description": "Relative increase in transmissibility during late-stage/AIDS compared to asymptomatic infection, varies by model",
+        "unit": "fold increase"
+      },
+      {
+        "index": 8,
+        "name": "ART introduction year",
+        "type": "CONSTANT",
+        "expression": "2012",
+        "description": "Year in which ART is introduced into the population in standardised scenarios",
+        "unit": "year"
+      },
+      {
+        "index": 9,
+        "name": "Male HIV prevalence 2012 (no ART)",
+        "type": "CONSTANT",
+        "expression": "10-16",
+        "description": "Range of estimated adult male HIV prevalence in 2012 across models under no-ART counterfactual",
+        "unit": "%"
+      },
+      {
+        "index": 10,
+        "name": "Female HIV prevalence 2012 (no ART)",
+        "type": "CONSTANT",
+        "expression": "17-23",
+        "description": "Range of estimated adult female HIV prevalence in 2012 across models under no-ART counterfactual",
+        "unit": "%"
+      },
+      {
+        "index": 11,
+        "name": "Male HIV incidence 2012 (no ART)",
+        "type": "CONSTANT",
+        "expression": "1.1-2.0",
+        "description": "Range of male HIV incidence rate in 2012 across models",
+        "unit": "per 100 person-years"
+      },
+      {
+        "index": 12,
+        "name": "Female HIV incidence 2012 (no ART)",
+        "type": "CONSTANT",
+        "expression": "1.7-2.6",
+        "description": "Range of female HIV incidence rate in 2012 across models",
+        "unit": "per 100 person-years"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,43 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Tuberculosis3,Compartment,Uninfected,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Compartment,Recently Infected Latent TB,,0,False,4.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Compartment,Remotely Infected Latent TB,,0,False,4.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Compartment,Active TB Smear-Positive Pulmonary,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Compartment,Active TB Smear-Negative Pulmonary,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Compartment,Active TB Extrapulmonary,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Compartment,Recently Treated and Recovered,,0,False,4.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Recently Infected Latent TB,RateFlow,//@parameters.0,False,New TB infection through contact with infectious individuals (smear-positive and smear-negative pulmonary TB cases),,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Remotely Infected Latent TB,RateFlow,//@parameters.0,False,Transition from recent to remote latent infection after approximately two years,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Smear-Positive Pulmonary,RateFlow,//@parameters.0,False,Rapid progression from recent latent infection to smear-positive pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Smear-Negative Pulmonary,RateFlow,//@parameters.0,False,Rapid progression from recent latent infection to smear-negative pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Extrapulmonary,RateFlow,//@parameters.0,False,Rapid progression from recent latent infection to extrapulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Smear-Positive Pulmonary,RateFlow,//@parameters.0,False,Slow reactivation from remote latent infection to smear-positive pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Smear-Negative Pulmonary,RateFlow,//@parameters.0,False,Slow reactivation from remote latent infection to smear-negative pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Extrapulmonary,RateFlow,//@parameters.0,False,Slow reactivation from remote latent infection to extrapulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Recently Infected Latent TB,RateFlow,//@parameters.0,False,"Reinfection of remotely infected individuals through contact with infectious cases, returning them to recent latent infection state",,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Recently Treated and Recovered,RateFlow,//@parameters.14,False,Diagnosis and successful treatment of smear-positive pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Recently Treated and Recovered,RateFlow,//@parameters.14,False,Diagnosis and successful treatment of smear-negative pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Recently Treated and Recovered,RateFlow,//@parameters.14,False,Diagnosis and successful treatment of extrapulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Smear-Positive Pulmonary,RateFlow,//@parameters.14,False,Relapse from recently treated/recovered state to smear-positive pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Smear-Negative Pulmonary,RateFlow,//@parameters.14,False,Relapse from recently treated/recovered state to smear-negative pulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Active TB Extrapulmonary,RateFlow,//@parameters.14,False,Relapse from recently treated/recovered state to extrapulmonary TB,,,
+Tuberculosis3,Flow,,,,,,,Model file,Certain,,Recently Infected Latent TB,RateFlow,//@parameters.14,False,Reinfection of recovered individuals through contact with infectious cases,,,
+Tuberculosis3,Parameter,beta,,,,,,Model file,Certain,,,,,,Number of secondary infections per smear-positive person-year (fit to incidence in Pakistan),CONSTANT,16.1,secondary infections per smear-positive person-year
+Tuberculosis3,Parameter,relative_infectiousness_smear_negative,,,,,,Model file,Certain,,,,,,Relative infectiousness of smear-negative cases compared to smear-positive,CONSTANT,0.22,dimensionless
+Tuberculosis3,Parameter,relative_rate_early_progression,,,,,,Model file,Certain,,,,,,Relative rate of progression to high-risk (early) infection vs latent TB,CONSTANT,0.50,dimensionless
+Tuberculosis3,Parameter,rapid_progression_rate,,,,,,Model file,Certain,,,,,,Rate of rapid progression during first two years after infection,CONSTANT,0.07,per year
+Tuberculosis3,Parameter,slow_progression_rate,,,,,,Model file,Certain,,,,,,Rate of slow progression (reactivation) of remote TB infection,CONSTANT,0.0005,per year
+Tuberculosis3,Parameter,proportion_extrapulmonary,,,,,,Model file,Certain,,,,,,Proportion of incident TB that is extrapulmonary,CONSTANT,0.24,dimensionless
+Tuberculosis3,Parameter,proportion_smear_positive,,,,,,Model file,Certain,,,,,,Proportion of incident pulmonary TB that is smear-positive,CONSTANT,0.65,dimensionless
+Tuberculosis3,Parameter,mortality_rate_smear_positive,,,,,,Model file,Certain,,,,,,TB-specific mortality rate for smear-positive pulmonary TB,CONSTANT,0.23,per year
+Tuberculosis3,Parameter,mortality_rate_smear_negative_extrapulmonary,,,,,,Model file,Certain,,,,,,TB-specific mortality rate for smear-negative and extrapulmonary TB,CONSTANT,0.07,per year
+Tuberculosis3,Parameter,natural_cure_rate_smear_positive,,,,,,Model file,Certain,,,,,,Natural (spontaneous) cure rate for smear-positive pulmonary TB,CONSTANT,0.10,per year
+Tuberculosis3,Parameter,natural_cure_rate_smear_negative_extrapulmonary,,,,,,Model file,Certain,,,,,,Natural cure rate for smear-negative and extrapulmonary TB,CONSTANT,0.27,per year
+Tuberculosis3,Parameter,informal_sector_size,,,,,,Model file,Certain,,,,,,"Size of informal sector that does not notify TB, relative to notifications",CONSTANT,0.455,dimensionless
+Tuberculosis3,Parameter,treatment_success_notified_2008,,,,,,Model file,Certain,,,,,,Treatment success proportion in 2008 for notified cases,CONSTANT,0.75,dimensionless
+Tuberculosis3,Parameter,treatment_success_informal,,,,,,Model file,Certain,,,,,,Treatment success proportion in the informal sector,CONSTANT,0.5,dimensionless
+Tuberculosis3,Parameter,relapse_rate,,,,,,Model file,Certain,,,,,,Relapse rate from recently treated/recovered to active TB (fit to proportion of retreatment cases),CONSTANT,0.024,per year
+Tuberculosis3,Parameter,population_growth_rate,,,,,,Model file,Certain,,,,,,Annual population growth rate of 3%,CONSTANT,0.03,per year
+Tuberculosis3,Parameter,diagnostic_rate_smear_positive_2008,,,,,,Model file,Certain,,,,,,Diagnostic rate for smear-positive pulmonary TB in 2008 (primary analysis),CONSTANT,0.41,per year
+Tuberculosis3,Parameter,diagnostic_rate_smear_negative_2008,,,,,,Model file,Certain,,,,,,Diagnostic rate for smear-negative pulmonary TB in 2008 (primary analysis),CONSTANT,0.16,per year
+Tuberculosis3,Parameter,diagnostic_rate_extrapulmonary_2008,,,,,,Model file,Certain,,,,,,Diagnostic rate for extrapulmonary TB in 2008 (primary analysis),CONSTANT,0.50,per year

@@ -1,0 +1,290 @@
+{
+  "paper_name": "Influenza2",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 3,
+      "parameters": 10,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination",
+      "quarantine"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "R0",
+        "value": "1.4-2.0",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Generation time",
+        "value": "2.6",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Proportion of clinical cases",
+        "value": "0.5",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Household transmission proportion",
+        "value": "0.3",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Community transmission proportion",
+        "value": "0.231",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "School and workplace transmission proportion",
+        "value": "0.259",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Matched vaccine efficacy (susceptibility reduction)",
+        "value": "0.7",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Matched vaccine efficacy (infectiousness reduction)",
+        "value": "0.3",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Matched vaccine efficacy (clinical case reduction)",
+        "value": "0.5",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+        "value": "0.3",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 3,
+    "parameters": 10,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 22,
+    "items_with_evidence": 22,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 22,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 22,
+      "items_with_evidence": 22,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 22,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 4,
+        "precision": 0.75,
+        "recall": 0.4286,
+        "f1": 0.5455
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 7,
+        "precision": 1.0,
+        "recall": 0.3,
+        "f1": 0.4615
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 10,
+        "fn": 10,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.428,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "InfectiousClinical",
+          "extracted": "Infectious",
+          "score": 0.7990452647209167
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed->InfectiousClinical",
+          "extracted": "Exposed->Infectious",
+          "score": 0.93229079246521
+        },
+        {
+          "gold": "InfectiousClinical->Removed",
+          "extracted": "Infectious->Recovered",
+          "score": 0.7795999050140381
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

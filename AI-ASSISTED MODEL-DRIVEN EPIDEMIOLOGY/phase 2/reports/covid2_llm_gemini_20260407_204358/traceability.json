@@ -1,0 +1,218 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals in a city's subpopulation who are susceptible to infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been infected but are not yet infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Individuals who are infected and can transmit the disease.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered/Removed": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered from the infection or were removed (e.g., through isolation) and are no longer infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "Transmission of the virus from infectious to susceptible individuals, dependent on the daily contact rate c.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Progression from the exposed to the infectious state at a rate \u03b5.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Recovered/Removed": {
+      "evidence": [
+        {
+          "text_span": "Recovery or removal of infectious individuals from the population at a rate r.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "r": {
+      "evidence": [
+        {
+          "text_span": "Average rate of recovery or removal. Proxied by the median of time lags from illness onset to reported case.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Inverse of the average infectious period",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b5": {
+      "evidence": [
+        {
+          "text_span": "Rate of progression from exposed to infectious, equal to the inverse of the average time spent exposed (incubation period).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1 / 5.2",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c": {
+      "evidence": [
+        {
+          "text_span": "Daily contact rate, calculated as the basic reproduction rate (R0) divided by the average days from onset to first medical visit and isolation.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "R0 / 5.8",
+          "unit": "1/day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R0": {
+      "evidence": [
+        {
+          "text_span": "Basic reproduction number.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.2 (95% CI 1.4 - 3.9)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Incubation Period": {
+      "evidence": [
+        {
+          "text_span": "The average time spent exposed but not infectious (1/\u03b5).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.2 (95% CI 4.1 - 7.0)",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Period": {
+      "evidence": [
+        {
+          "text_span": "Average days from onset to first medical visit and isolation, used to calculate the contact rate c.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.8 (95% CI 4.3 - 7.5)",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "contact_tracing": {
+      "evidence": [
+        {
+          "text_span": "contact_tracing mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 17,
+    "items_with_evidence": 17,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 17,
+    "faithfulness_percentage": 100.0
+  }
+}

@@ -1,0 +1,597 @@
+{
+  "modelName": "Tuberculosis2",
+  "summary": {
+    "modelName": "Tuberculosis2",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 38,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "New infection with M. tuberculosis through contact with infectious cases",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.27",
+            "contactCompartment": "//@compartments.2",
+            "description": "Progressive primary disease developing directly after new infection (infectious form)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.27",
+            "contactCompartment": "//@compartments.3",
+            "description": "Progressive primary disease developing directly after new infection (non-infectious form)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Latent Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Endogenous reactivation from latent infection to infectious tuberculosis",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Endogenous reactivation from latent infection to non-infectious tuberculosis",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious Tuberculosis",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment and cure through DOTS or chemotherapy",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Treatment failure including fail, default, or transfer out",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Spontaneous resolution of tuberculosis without treatment",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Tuberculosis-related death (higher mortality rate for infectious form)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Non-infectious Tuberculosis",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment and cure through DOTS or chemotherapy",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Treatment failure including fail, default, or transfer out",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Spontaneous resolution of tuberculosis without treatment",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Tuberculosis-related death (lower mortality rate for non-infectious forms)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Treatment Failure",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from treatment failure to active infectious tuberculosis",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from treatment failure to active non-infectious tuberculosis",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Self-cured",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from self-cure to active infectious tuberculosis",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from self-cure to active non-infectious tuberculosis",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Cured",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Cured patients return to latent class as they remain infected and may reactivate",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Case detection rate (WHO target)",
+        "type": "CONSTANT",
+        "expression": "70",
+        "description": "Target proportion of infectious cases diagnosed and treated per year divided by estimated annual incidence of new infectious cases",
+        "unit": "%"
+      },
+      {
+        "index": 1,
+        "name": "Cure rate (WHO target)",
+        "type": "CONSTANT",
+        "expression": "85",
+        "description": "Target proportion of detected cases successfully cured under DOTS",
+        "unit": "%"
+      },
+      {
+        "index": 2,
+        "name": "Current global case detection rate",
+        "type": "CONSTANT",
+        "expression": "63",
+        "description": "Estimated current worldwide case detection rate (1998)",
+        "unit": "%"
+      },
+      {
+        "index": 3,
+        "name": "Current global cure rate",
+        "type": "CONSTANT",
+        "expression": "57",
+        "description": "Estimated current worldwide cure rate (1998)",
+        "unit": "%"
+      },
+      {
+        "index": 4,
+        "name": "ARI Sub-Saharan Africa",
+        "type": "CONSTANT",
+        "expression": "2.6",
+        "description": "Annual risk of infection in Sub-Saharan Africa (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 5,
+        "name": "ARI Americas",
+        "type": "CONSTANT",
+        "expression": "0.6",
+        "description": "Annual risk of infection in the Americas (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 6,
+        "name": "ARI Eastern Mediterranean",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Annual risk of infection in Eastern Mediterranean (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 7,
+        "name": "ARI Western Europe",
+        "type": "CONSTANT",
+        "expression": "0.1",
+        "description": "Annual risk of infection in Western Europe (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 8,
+        "name": "ARI Eastern Europe",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Annual risk of infection in Eastern Europe (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 9,
+        "name": "ARI Southeast Asia",
+        "type": "CONSTANT",
+        "expression": "2.0",
+        "description": "Annual risk of infection in Southeast Asia (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 10,
+        "name": "ARI Western Pacific",
+        "type": "CONSTANT",
+        "expression": "0.9",
+        "description": "Annual risk of infection in Western Pacific (1995)",
+        "unit": "% per year"
+      },
+      {
+        "index": 11,
+        "name": "Ratio ARI to smear-positive incidence",
+        "type": "CONSTANT",
+        "expression": "1/50",
+        "description": "Observed ratio of ARI (%) to smear-positive incidence per 100,000 at steady state",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "Ratio deaths:incidence:prevalence",
+        "type": "CONSTANT",
+        "expression": "1:2:4",
+        "description": "Approximate ratio of TB deaths to incidence to prevalence before 1940s",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "Old programme cure rate Sub-Saharan Africa",
+        "type": "CONSTANT",
+        "expression": "40",
+        "description": "Cure rate under old programme in Sub-Saharan Africa",
+        "unit": "%"
+      },
+      {
+        "index": 14,
+        "name": "Old programme cure rate Americas",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Cure rate under old programme in the Americas",
+        "unit": "%"
+      },
+      {
+        "index": 15,
+        "name": "Old programme cure rate Eastern Mediterranean",
+        "type": "CONSTANT",
+        "expression": "50",
+        "description": "Cure rate under old programme in Eastern Mediterranean",
+        "unit": "%"
+      },
+      {
+        "index": 16,
+        "name": "Old programme cure rate Western Europe",
+        "type": "CONSTANT",
+        "expression": "75",
+        "description": "Cure rate under old programme in Western Europe",
+        "unit": "%"
+      },
+      {
+        "index": 17,
+        "name": "Old programme cure rate Eastern Europe",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Cure rate under old programme in Eastern Europe",
+        "unit": "%"
+      },
+      {
+        "index": 18,
+        "name": "Old programme cure rate Southeast Asia",
+        "type": "CONSTANT",
+        "expression": "50",
+        "description": "Cure rate under old programme in Southeast Asia",
+        "unit": "%"
+      },
+      {
+        "index": 19,
+        "name": "Old programme cure rate Western Pacific",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Cure rate under old programme in Western Pacific",
+        "unit": "%"
+      },
+      {
+        "index": 20,
+        "name": "Old programme case detection Sub-Saharan Africa",
+        "type": "CONSTANT",
+        "expression": "50",
+        "description": "Case detection rate under old programme in Sub-Saharan Africa",
+        "unit": "%"
+      },
+      {
+        "index": 21,
+        "name": "Old programme case detection Americas",
+        "type": "CONSTANT",
+        "expression": "70",
+        "description": "Case detection rate under old programme in the Americas",
+        "unit": "%"
+      },
+      {
+        "index": 22,
+        "name": "Old programme case detection Eastern Mediterranean",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Case detection rate under old programme in Eastern Mediterranean",
+        "unit": "%"
+      },
+      {
+        "index": 23,
+        "name": "Old programme case detection Western Europe",
+        "type": "CONSTANT",
+        "expression": "80",
+        "description": "Case detection rate under old programme in Western Europe",
+        "unit": "%"
+      },
+      {
+        "index": 24,
+        "name": "Old programme case detection Eastern Europe",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Case detection rate under old programme in Eastern Europe",
+        "unit": "%"
+      },
+      {
+        "index": 25,
+        "name": "Old programme case detection Southeast Asia",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Case detection rate under old programme in Southeast Asia",
+        "unit": "%"
+      },
+      {
+        "index": 26,
+        "name": "Old programme case detection Western Pacific",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Case detection rate under old programme in Western Pacific",
+        "unit": "%"
+      },
+      {
+        "index": 27,
+        "name": "Relative case detection rate of non-infectious cases Sub-Saharan Africa",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Fraction of case detection rate applied to non-infectious cases in Sub-Saharan Africa",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 28,
+        "name": "Relative case detection rate of non-infectious cases Americas",
+        "type": "CONSTANT",
+        "expression": "0.7",
+        "description": "Fraction of case detection rate applied to non-infectious cases in the Americas",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 29,
+        "name": "HIV-1 infection in TB cases 2020 Sub-Saharan Africa",
+        "type": "CONSTANT",
+        "expression": "21",
+        "description": "Projected proportion of TB cases with HIV-1 in Sub-Saharan Africa by 2020",
+        "unit": "%"
+      },
+      {
+        "index": 30,
+        "name": "HIV-1 infection in TB cases 2020 Southeast Asia",
+        "type": "CONSTANT",
+        "expression": "4.0",
+        "description": "Projected proportion of TB cases with HIV-1 in Southeast Asia by 2020",
+        "unit": "%"
+      },
+      {
+        "index": 31,
+        "name": "Proportion treatment failures remaining infectious (low)",
+        "type": "CONSTANT",
+        "expression": "25",
+        "description": "Lower estimate of proportion of treatment failures that remain infectious",
+        "unit": "%"
+      },
+      {
+        "index": 32,
+        "name": "Proportion treatment failures remaining infectious (high)",
+        "type": "CONSTANT",
+        "expression": "100",
+        "description": "Upper estimate of proportion of treatment failures that remain infectious",
+        "unit": "%"
+      },
+      {
+        "index": 33,
+        "name": "Time step",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Discrete time step used in difference equations",
+        "unit": "year"
+      },
+      {
+        "index": 34,
+        "name": "Age step",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Age step used in age-structured model",
+        "unit": "year"
+      },
+      {
+        "index": 35,
+        "name": "Incidence decline rate at 70% detection and 85% cure from steady state",
+        "type": "CONSTANT",
+        "expression": "11",
+        "description": "Expected annual decline in TB incidence from steady state under WHO targets (range 8-12%)",
+        "unit": "% per year"
+      },
+      {
+        "index": 36,
+        "name": "Death rate decline at 70% detection and 85% cure from steady state",
+        "type": "CONSTANT",
+        "expression": "12",
+        "description": "Expected annual decline in TB death rate from steady state under WHO targets (range 9-13%)",
+        "unit": "% per year"
+      },
+      {
+        "index": 37,
+        "name": "HIV-1 duration before increased TB breakdown",
+        "type": "CONSTANT",
+        "expression": "6",
+        "description": "Duration of HIV-1 infection after which rates of breakdown to TB increase",
+        "unit": "years"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,483 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals not infected with HIV",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not infected with HIV"
+    },
+    {
+      "normalized_name": "Infected Untreated",
+      "raw_text": "Infected Untreated",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals not on antiretroviral therapy (ART), progressing through acute, chronic, and final phases of infection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals not on antiretroviral therapy (ART), progressing through acute, chronic, and final phases of infection"
+    },
+    {
+      "normalized_name": "Infected on ART",
+      "raw_text": "Infected on ART",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals receiving antiretroviral therapy with reduced transmissibility",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals receiving antiretroviral therapy with reduced transmissibility"
+    },
+    {
+      "normalized_name": "Dead",
+      "raw_text": "Dead",
+      "page_number": 0,
+      "text_span": "Individuals who have died from HIV/AIDS or background mortality",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have died from HIV/AIDS or background mortality"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infected Untreated",
+      "flow_type": "ContactFlow",
+      "raw_text": "New HIV infection through sexual contact with infected individuals; transmission probability varies by phase (acute, chronic, final)",
+      "page_number": 0,
+      "text_span": "New HIV infection through sexual contact with infected individuals; transmission probability varies by phase (acute, chronic, final)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "New HIV infection through sexual contact with infected individuals; transmission probability varies by phase (acute, chronic, final)"
+    },
+    {
+      "source": "Infected Untreated",
+      "target": "Infected on ART",
+      "flow_type": "RateFlow",
+      "raw_text": "Testing and initiation of antiretroviral therapy after screening",
+      "page_number": 0,
+      "text_span": "Testing and initiation of antiretroviral therapy after screening",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Testing and initiation of antiretroviral therapy after screening"
+    },
+    {
+      "source": "Infected on ART",
+      "target": "Infected Untreated",
+      "flow_type": "RateFlow",
+      "raw_text": "Drop-out from ART or treatment failure",
+      "page_number": 0,
+      "text_span": "Drop-out from ART or treatment failure",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Drop-out from ART or treatment failure"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Birth/recruitment into susceptible population at birth rate",
+      "page_number": 0,
+      "text_span": "Birth/recruitment into susceptible population at birth rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Birth/recruitment into susceptible population at birth rate"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Background mortality of susceptible individuals",
+      "page_number": 0,
+      "text_span": "Background mortality of susceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Background mortality of susceptible individuals"
+    },
+    {
+      "source": "Infected Untreated",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Death from HIV disease progression (Weibull survival) and background mortality",
+      "page_number": 0,
+      "text_span": "Death from HIV disease progression (Weibull survival) and background mortality",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death from HIV disease progression (Weibull survival) and background mortality"
+    },
+    {
+      "source": "Infected on ART",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Death from disease progression on treatment and background mortality",
+      "page_number": 0,
+      "text_span": "Death from disease progression on treatment and background mortality",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death from disease progression on treatment and background mortality"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "0.767",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Initial transmission parameter",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initial transmission parameter"
+    },
+    {
+      "normalized_name": "\u03bb (location)",
+      "raw_text": "\u03bb (location)",
+      "value": "0.055",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Transmission parameter location (shape of transmission curve)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission parameter location (shape of transmission curve)"
+    },
+    {
+      "normalized_name": "n (shape)",
+      "raw_text": "n (shape)",
+      "value": "0.996",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Transmission parameter shape",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission parameter shape"
+    },
+    {
+      "normalized_name": "\u03b5 (relative transmission on ART)",
+      "raw_text": "\u03b5 (relative transmission on ART)",
+      "value": "0.01",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Relative transmissibility of individuals on ART compared to untreated",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative transmissibility of individuals on ART compared to untreated"
+    },
+    {
+      "normalized_name": "Birth rate \u03bc",
+      "raw_text": "Birth rate \u03bc",
+      "value": "0.029",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Birth/recruitment rate into the population",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Birth/recruitment rate into the population"
+    },
+    {
+      "normalized_name": "Background mortality rate \u03b4",
+      "raw_text": "Background mortality rate \u03b4",
+      "value": "0.018",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Background (non-HIV) mortality rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Background (non-HIV) mortality rate"
+    },
+    {
+      "normalized_name": "Progression rate untreated \u03c6",
+      "raw_text": "Progression rate untreated \u03c6",
+      "value": "0.303",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Disease progression rate for untreated individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Disease progression rate for untreated individuals"
+    },
+    {
+      "normalized_name": "Progression rate treated \u03b3",
+      "raw_text": "Progression rate treated \u03b3",
+      "value": "0.165",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Disease progression rate for individuals on ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Disease progression rate for individuals on ART"
+    },
+    {
+      "normalized_name": "Intervention timing t",
+      "raw_text": "Intervention timing t",
+      "value": "2011",
+      "unit": "yr",
+      "page_number": 0,
+      "text_span": "Year when intervention (universal testing and ART) begins",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Year when intervention (universal testing and ART) begins"
+    },
+    {
+      "normalized_name": "Intervention rate r",
+      "raw_text": "Intervention rate r",
+      "value": "1.00",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Rate of roll-out of the intervention",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of roll-out of the intervention"
+    },
+    {
+      "normalized_name": "Intervention maximum m",
+      "raw_text": "Intervention maximum m",
+      "value": "0.90",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Maximum coverage of the intervention",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Maximum coverage of the intervention"
+    },
+    {
+      "normalized_name": "Testing rate \u03c3",
+      "raw_text": "Testing rate \u03c3",
+      "value": "1.00",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Rate of HIV testing",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of HIV testing"
+    },
+    {
+      "normalized_name": "Testing refusal \u03b8",
+      "raw_text": "Testing refusal \u03b8",
+      "value": "0.08",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Proportion refusing HIV testing",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion refusing HIV testing"
+    },
+    {
+      "normalized_name": "Drop-out rate \u03c9",
+      "raw_text": "Drop-out rate \u03c9",
+      "value": "0.015",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Rate of dropping out of ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of dropping out of ART"
+    },
+    {
+      "normalized_name": "Treatment failure rate \u03ba",
+      "raw_text": "Treatment failure rate \u03ba",
+      "value": "0.10",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Rate of virological treatment failure on ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of virological treatment failure on ART"
+    },
+    {
+      "normalized_name": "Other interventions reduction \u03c8",
+      "raw_text": "Other interventions reduction \u03c8",
+      "value": "0.40",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Reduction in transmission from other interventions (e.g. condoms, circumcision)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in transmission from other interventions (e.g. condoms, circumcision)"
+    },
+    {
+      "normalized_name": "Survival median",
+      "raw_text": "Survival median",
+      "value": "10.0",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Median survival time without treatment (Weibull distribution)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Median survival time without treatment (Weibull distribution)"
+    },
+    {
+      "normalized_name": "Survival shape",
+      "raw_text": "Survival shape",
+      "value": "2.25",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Shape parameter of Weibull survival distribution",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shape parameter of Weibull survival distribution"
+    },
+    {
+      "normalized_name": "Acute phase duration",
+      "raw_text": "Acute phase duration",
+      "value": "2",
+      "unit": "months",
+      "page_number": 0,
+      "text_span": "Duration of the acute phase of HIV infection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of the acute phase of HIV infection"
+    },
+    {
+      "normalized_name": "Acute phase infectivity",
+      "raw_text": "Acute phase infectivity",
+      "value": "4.50",
+      "unit": "number/year",
+      "page_number": 0,
+      "text_span": "Infectivity during the acute phase",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectivity during the acute phase"
+    },
+    {
+      "normalized_name": "Chronic phase infectivity",
+      "raw_text": "Chronic phase infectivity",
+      "value": "0.45",
+      "unit": "number/year",
+      "page_number": 0,
+      "text_span": "Infectivity during the chronic phase",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectivity during the chronic phase"
+    },
+    {
+      "normalized_name": "Final phase infectivity",
+      "raw_text": "Final phase infectivity",
+      "value": "2.25",
+      "unit": "number/year",
+      "page_number": 0,
+      "text_span": "Infectivity during the final phase",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infectivity during the final phase"
+    },
+    {
+      "normalized_name": "Final phase duration",
+      "raw_text": "Final phase duration",
+      "value": "0.15",
+      "unit": "proportion of expected life",
+      "page_number": 0,
+      "text_span": "Duration of the final phase as a proportion of expected survival",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of the final phase as a proportion of expected survival"
+    },
+    {
+      "normalized_name": "Concurrency number",
+      "raw_text": "Concurrency number",
+      "value": "4",
+      "unit": "number",
+      "page_number": 0,
+      "text_span": "Number of concurrent sexual partners",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of concurrent sexual partners"
+    },
+    {
+      "normalized_name": "Partnership duration",
+      "raw_text": "Partnership duration",
+      "value": "6",
+      "unit": "months",
+      "page_number": 0,
+      "text_span": "Mean duration of a sexual partnership",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration of a sexual partnership"
+    },
+    {
+      "normalized_name": "Initial CD4 mu",
+      "raw_text": "Initial CD4 mu",
+      "value": "6.98",
+      "unit": "log-normal location parameter",
+      "page_number": 0,
+      "text_span": "Location parameter for initial CD4 count distribution",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Location parameter for initial CD4 count distribution"
+    },
+    {
+      "normalized_name": "Initial CD4 sigma",
+      "raw_text": "Initial CD4 sigma",
+      "value": "0.34",
+      "unit": "log-normal shape parameter",
+      "page_number": 0,
+      "text_span": "Shape parameter for initial CD4 count distribution",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shape parameter for initial CD4 count distribution"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 17,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 16,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 7,
+    "num_parameters": 27,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

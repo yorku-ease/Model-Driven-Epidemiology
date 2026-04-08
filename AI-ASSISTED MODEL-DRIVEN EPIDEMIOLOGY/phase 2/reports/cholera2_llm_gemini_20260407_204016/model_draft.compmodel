@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Initial vaccine protection (two-dose, adults)" expression="76%" type="CONSTANT" description="Initial vaccine protection against clinical disease for adults receiving a two-dose regimen."/>
+  <parameters name="Vaccine protection duration (two-dose)" expression="5" type="CONSTANT" description="Duration of protection from a two-dose vaccine regimen, after which protection is assumed to be zero." unit="years"/>
+  <parameters name="Vaccine protection duration (single-dose)" expression="1" type="CONSTANT" description="Duration of protection from a single vaccine dose, after which protection is assumed to drop to zero." unit="year"/>
+  <parameters name="Relative vaccine effectiveness in children &lt; 5 years" expression="46.9%" type="CONSTANT" description="Multiplier for adult vaccine protection to calculate protection for children younger than 5 years."/>
+  <parameters name="Baseline two-dose vaccine coverage" expression="70%" type="CONSTANT" description="Assumed two-dose coverage in baseline vaccination campaign scenarios."/>
+  <parameters name="Baseline one-dose vaccine coverage" expression="10%" type="CONSTANT" description="Assumed one-dose coverage in baseline vaccination campaign scenarios."/>
+  <parameters name="High two-dose vaccine coverage" expression="95%" type="CONSTANT" description="Assumed two-dose coverage in the high-coverage national campaign scenario."/>
+  <parameters name="High one-dose vaccine coverage" expression="1.67%" type="CONSTANT" description="Assumed one-dose coverage in the high-coverage national campaign scenario."/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Infection of susceptible individuals through exposure to the environmental reservoir of V. cholerae."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Vaccination of susceptible individuals with oral cholera vaccine (OCV)."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Recovery from infection, leading to temporary natural immunity."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Shedding of V. cholerae into the environment by infectious individuals."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Waning of natural immunity, returning individuals to the susceptible state."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Waning of vaccine-induced protection over time."/>
+  </compartments>
+  <compartments PrimaryName="Environmental Bacteria" population="0"/>
+</compartmental:CompartmentalModel>

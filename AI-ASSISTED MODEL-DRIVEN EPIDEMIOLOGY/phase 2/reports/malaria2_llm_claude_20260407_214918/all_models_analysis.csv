@@ -1,0 +1,44 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria2,Compartment,Susceptible Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Treated Clinical Disease,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Untreated Clinical Disease,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Prophylaxis,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Asymptomatic Patent Infection,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Asymptomatic Sub-patent Infection,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Latent Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease,RateFlow,//@parameters.0,False,"Infection from infectious mosquito bite leading to clinical disease with probability φ, followed by successful treatment with probability fT",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Untreated Clinical Disease,RateFlow,//@parameters.0,False,"Infection from infectious mosquito bite leading to clinical disease with probability φ, treatment failure with probability (1-fT)",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection,RateFlow,//@parameters.0,False,Infection from infectious mosquito bite leading to asymptomatic patent infection with probability (1-φ),,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Prophylaxis,RateFlow,//@parameters.2,False,Recovery from treated clinical disease to prophylactic protection at rate rT,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection,RateFlow,//@parameters.4,False,Clearance of clinical disease to patent asymptomatic infection at rate rD,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease,RateFlow,0.0,False,Superinfection: new infection in presence of existing untreated clinical disease leading to treated clinical disease,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.3,False,"End of prophylactic protection, return to susceptible at rate rP",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Sub-patent Infection,RateFlow,//@parameters.5,False,"Transition from patent to sub-patent infection at rate rA, dependent on anti-parasite immunity",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease,RateFlow,//@parameters.7,False,Superinfection: new infection leading to clinical disease from patent asymptomatic state,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.5,False,"Clearance of sub-patent infection, return to susceptible at rate rU",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease,RateFlow,0.0,False,Superinfection: new infection leading to clinical disease from sub-patent state,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection,RateFlow,//@parameters.7,False,Superinfection: new infection leading to asymptomatic patent infection from sub-patent state,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Latent Mosquitoes,RateFlow,0.0,False,"Mosquito takes an infectious blood meal from an infectious human (T, D, A, or U states)",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.7,False,"Completion of extrinsic incubation period, mosquito becomes infectious",,,
+Malaria2,Parameter,φ,,,,,,Model file,Certain,,,,,,"Probability of developing clinical disease on infection, determined by level of anti-disease immunity",CONSTANT,0.0,dimensionless
+Malaria2,Parameter,fT,,,,,,Model file,Certain,,,,,,Fixed probability of being successfully treated given clinical disease,CONSTANT,0.0,dimensionless
+Malaria2,Parameter,rT,,,,,,Model file,Certain,,,,,,Rate of transition from treated clinical disease to prophylactic protection,CONSTANT,0.0,per day
+Malaria2,Parameter,rP,,,,,,Model file,Certain,,,,,,Rate of return from prophylactic protection to susceptible,CONSTANT,0.0,per day
+Malaria2,Parameter,rD,,,,,,Model file,Certain,,,,,,Rate of clearance of untreated clinical disease to patent asymptomatic infection,CONSTANT,0.0,per day
+Malaria2,Parameter,rA,,,,,,Model file,Certain,,,,,,"Rate of transition from patent asymptomatic to sub-patent infection, depends on anti-parasite immunity",CONSTANT,0.0,per day
+Malaria2,Parameter,rU,,,,,,Model file,Certain,,,,,,Rate of clearance of sub-patent infection to susceptible,CONSTANT,0.0,per day
+Malaria2,Parameter,Λ,,,,,,Model file,Certain,,,,,,"Force of infection on humans, determined by vector-to-human ratio, biting rate, proportion of infectious mosquitoes, and anti-infection immunity",CONSTANT,0.0,per day
+Malaria2,Parameter,EIR,,,,,,Model file,Certain,,,,,,"Entomological inoculation rate, varies by setting",CONSTANT,3-675,infectious bites per person per year
+Malaria2,Parameter,HBI,,,,,,Model file,Certain,,,,,,"Human blood index of mosquito species, determines infectivity to humans",CONSTANT,0.0,dimensionless
+Malaria2,Parameter,LLIN_half_life,,,,,,Model file,Certain,,,,,,Half-life of LLIN protective efficacy due to decaying insecticide and wear-and-tear,CONSTANT,2.64,years
+Malaria2,Parameter,LLIN_adherence_decay,,,,,,Model file,Certain,,,,,,Exponential decay rate of LLIN usage/adherence over time,CONSTANT,0.2,per year
+Malaria2,Parameter,DDT_half_life,,,,,,Model file,Certain,,,,,,Half-life of DDT insecticidal effect for IRS,CONSTANT,6,months
+Malaria2,Parameter,ACT_prophylaxis_duration,,,,,,Model file,Certain,,,,,,Duration of prophylactic protection provided by ACT in MSAT,CONSTANT,25,days
+Malaria2,Parameter,vaccine_efficacy,,,,,,Model file,Certain,,,,,,"Initial efficacy of RTS,S/AS01 pre-erythrocytic vaccine",CONSTANT,0.50,dimensionless
+Malaria2,Parameter,vaccine_half_life,,,,,,Model file,Certain,,,,,,Half-life of exponential decay of vaccine efficacy,CONSTANT,3,years
+Malaria2,Parameter,LLIN_coverage,,,,,,Model file,Certain,,,,,,Target coverage level for LLIN distribution,CONSTANT,0.80,dimensionless
+Malaria2,Parameter,IRS_coverage,,,,,,Model file,Certain,,,,,,Coverage level for IRS,CONSTANT,0.80,dimensionless
+Malaria2,Parameter,MSAT_coverage,,,,,,Model file,Certain,,,,,,Coverage level for MSAT (proportion screened),CONSTANT,0.80,dimensionless
+Malaria2,Parameter,vaccine_coverage,,,,,,Model file,Certain,,,,,,Coverage level for vaccine based on EPI distribution,CONSTANT,0.90,dimensionless

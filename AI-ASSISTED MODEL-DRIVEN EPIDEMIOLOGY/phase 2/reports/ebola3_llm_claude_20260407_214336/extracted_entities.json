@@ -1,0 +1,391 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who can be infected by Ebola virus following contact with infectious cases",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who can be infected by Ebola virus following contact with infectious cases"
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected by Ebola virus but are not yet infectious or symptomatic",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected by Ebola virus but are not yet infectious or symptomatic"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Symptomatic and infectious individuals in the community",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Symptomatic and infectious individuals in the community"
+    },
+    {
+      "normalized_name": "Hospitalized",
+      "raw_text": "Hospitalized",
+      "page_number": 0,
+      "text_span": "Hospitalized Ebola cases who are infectious",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalized Ebola cases who are infectious"
+    },
+    {
+      "normalized_name": "Dead but not yet buried",
+      "raw_text": "Dead but not yet buried",
+      "page_number": 0,
+      "text_span": "Dead Ebola cases who may transmit the disease during funerals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dead Ebola cases who may transmit the disease during funerals"
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Removed",
+      "page_number": 0,
+      "text_span": "Individuals removed from the chain of transmission (cured or dead and buried)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals removed from the chain of transmission (cured or dead and buried)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection through contact with infectious individuals in community, hospital, or during funerals; rate = (beta_I * S * I + beta_H * S * H + beta_F * S * F) / N",
+      "page_number": 0,
+      "text_span": "Infection through contact with infectious individuals in community, hospital, or during funerals; rate = (beta_I * S * I + beta_H * S * H + beta_F * S * F) / N",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection through contact with infectious individuals in community, hospital, or during funerals; rate = (beta_I * S * I + beta_H * S * H + beta_F * S * F) / N"
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "End of incubation period, becoming symptomatic and infectious; rate = alpha * E",
+      "page_number": 0,
+      "text_span": "End of incubation period, becoming symptomatic and infectious; rate = alpha * E",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "End of incubation period, becoming symptomatic and infectious; rate = alpha * E"
+    },
+    {
+      "source": "Infectious",
+      "target": "Hospitalized",
+      "flow_type": "RateFlow",
+      "raw_text": "Hospitalization of infectious cases; rate = c_h * h_1 * I",
+      "page_number": 0,
+      "text_span": "Hospitalization of infectious cases; rate = c_h * h_1 * I",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalization of infectious cases; rate = c_h * h_1 * I"
+    },
+    {
+      "source": "Hospitalized",
+      "target": "Dead but not yet buried",
+      "flow_type": "RateFlow",
+      "raw_text": "Death of hospitalized cases; rate = c_dh * d_2 * H",
+      "page_number": 0,
+      "text_span": "Death of hospitalized cases; rate = c_dh * d_2 * H",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death of hospitalized cases; rate = c_dh * d_2 * H"
+    },
+    {
+      "source": "Infectious",
+      "target": "Dead but not yet buried",
+      "flow_type": "RateFlow",
+      "raw_text": "Death of non-hospitalized cases in the community; rate = c_d * (1 - h_1) * d_1 * I",
+      "page_number": 0,
+      "text_span": "Death of non-hospitalized cases in the community; rate = c_d * (1 - h_1) * d_1 * I",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death of non-hospitalized cases in the community; rate = c_d * (1 - h_1) * d_1 * I"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "beta_I",
+      "raw_text": "beta_I",
+      "value": "0.588 (DRC 1995); 3.532 (Uganda 2000)",
+      "unit": "week^-1",
+      "page_number": 0,
+      "text_span": "Transmission coefficient in the community",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission coefficient in the community"
+    },
+    {
+      "normalized_name": "beta_H",
+      "raw_text": "beta_H",
+      "value": "0.794 (DRC 1995); 0.012 (Uganda 2000)",
+      "unit": "week^-1",
+      "page_number": 0,
+      "text_span": "Transmission coefficient at the hospital",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission coefficient at the hospital"
+    },
+    {
+      "normalized_name": "beta_F",
+      "raw_text": "beta_F",
+      "value": "7.653 (DRC 1995); 0.462 (Uganda 2000)",
+      "unit": "week^-1",
+      "page_number": 0,
+      "text_span": "Transmission coefficient during funerals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission coefficient during funerals"
+    },
+    {
+      "normalized_name": "alpha",
+      "raw_text": "alpha",
+      "value": "1/7 (DRC 1995); 1/12 (Uganda 2000)",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Inverse of the mean duration of the incubation period",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Inverse of the mean duration of the incubation period"
+    },
+    {
+      "normalized_name": "1/c_h",
+      "raw_text": "1/c_h",
+      "value": "5 (DRC 1995); 4.2 (Uganda 2000)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from symptom onset to hospitalization",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from symptom onset to hospitalization"
+    },
+    {
+      "normalized_name": "1/c_d",
+      "raw_text": "1/c_d",
+      "value": "9.6 (DRC 1995); 8 (Uganda 2000)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from symptom onset to death",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from symptom onset to death"
+    },
+    {
+      "normalized_name": "1/c_i",
+      "raw_text": "1/c_i",
+      "value": "10",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration of the infectious period for survivors (onset to end of infectiousness)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration of the infectious period for survivors (onset to end of infectiousness)"
+    },
+    {
+      "normalized_name": "1/c_f",
+      "raw_text": "1/c_f",
+      "value": "2",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from death to traditional burial",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from death to traditional burial"
+    },
+    {
+      "normalized_name": "h",
+      "raw_text": "h",
+      "value": "80",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Proportion of cases hospitalized",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of cases hospitalized"
+    },
+    {
+      "normalized_name": "d",
+      "raw_text": "d",
+      "value": "81 (DRC 1995); 53 (Uganda 2000)",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Case-fatality ratio",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Case-fatality ratio"
+    },
+    {
+      "normalized_name": "h_1",
+      "raw_text": "h_1",
+      "value": "0.67 (DRC 1995); 0.65 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Computed parameter so that h% of infectious cases are hospitalized",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Computed parameter so that h% of infectious cases are hospitalized"
+    },
+    {
+      "normalized_name": "d_1",
+      "raw_text": "d_1",
+      "value": "0.80 (DRC 1995); 0.47 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Computed death probability for non-hospitalized infectious cases to achieve overall CFR d",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Computed death probability for non-hospitalized infectious cases to achieve overall CFR d"
+    },
+    {
+      "normalized_name": "d_2",
+      "raw_text": "d_2",
+      "value": "0.80 (DRC 1995); 0.42 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Computed death probability for hospitalized cases to achieve overall CFR d",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Computed death probability for hospitalized cases to achieve overall CFR d"
+    },
+    {
+      "normalized_name": "N",
+      "raw_text": "N",
+      "value": "200000 (DRC 1995); 470000 (Uganda 2000)",
+      "unit": "individuals",
+      "page_number": 0,
+      "text_span": "Size of the population",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Size of the population"
+    },
+    {
+      "normalized_name": "R_0",
+      "raw_text": "R_0",
+      "value": "2.7 (DRC 1995, 95% CI 1.9-2.8); 2.7 (Uganda 2000, 95% CI 2.5-4.1)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number"
+    },
+    {
+      "normalized_name": "R_0I",
+      "raw_text": "R_0I",
+      "value": "0.5 (DRC 1995); 2.6 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Community component of R_0",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Community component of R_0"
+    },
+    {
+      "normalized_name": "R_0H",
+      "raw_text": "R_0H",
+      "value": "0.4 (DRC 1995); 0.01 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Hospitalization component of R_0",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalization component of R_0"
+    },
+    {
+      "normalized_name": "R_0F",
+      "raw_text": "R_0F",
+      "value": "1.8 (DRC 1995); 0.1 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Traditional burial component of R_0",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Traditional burial component of R_0"
+    },
+    {
+      "normalized_name": "1-z",
+      "raw_text": "1-z",
+      "value": "12 (DRC 1995); 88 (Uganda 2000)",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Decrease in community transmission after interventions",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Decrease in community transmission after interventions"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 12,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 2,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 5,
+    "num_parameters": 19,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

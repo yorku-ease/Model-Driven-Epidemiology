@@ -1,0 +1,336 @@
+{
+  "compartments": {
+    "Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "Number of susceptible people (S^H)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Humans": {
+      "evidence": [
+        {
+          "text_span": "Number of people currently in their incubation period (E^H)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Number of infectious people (I^H)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered Humans": {
+      "evidence": [
+        {
+          "text_span": "Number of people that have recovered (R^H)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Proportion of mosquitoes currently susceptible (S^V)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Proportion of mosquitoes currently in their extrinsic incubation period (E^V)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Proportion of mosquitoes currently infectious (I^V); mosquitoes are assumed to remain infectious for life",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible Humans -> Exposed Humans": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible humans by infectious mosquitoes at rate \u03b2_H * S^H * I^V",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Humans -> Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Progression from latent to infectious period in humans at rate \u03b1_H * E^H",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Humans -> Recovered Humans": {
+      "evidence": [
+        {
+          "text_span": "Recovery of infectious humans at rate \u03b3 * I^H",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes -> Exposed Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible mosquitoes by infectious humans at rate \u03b2_V * S^V * I^H / N",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Mosquitoes -> Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Progression from extrinsic incubation to infectious in mosquitoes at rate \u03b1_V * E^V",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes -> Susceptible Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Death of susceptible mosquitoes at rate \u03b4 * S^V, balanced by constant birth rate \u03b4",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Mosquitoes -> Exposed Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Death of exposed mosquitoes at rate \u03b4 * E^V (included in the outflow)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Mosquitoes -> Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Death of infectious mosquitoes at rate \u03b4 * I^V",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03b2_H": {
+      "evidence": [
+        {
+          "text_span": "Vector-to-human transmission rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "U(0,1)",
+          "unit": "days^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2_V": {
+      "evidence": [
+        {
+          "text_span": "Human-to-vector transmission rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "U(0,1)",
+          "unit": "days^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b1_H": {
+      "evidence": [
+        {
+          "text_span": "Intrinsic (human) incubation/latent period, prior Gamma(\u03bc=5.9, \u03c3=0.5)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.9",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b1_V": {
+      "evidence": [
+        {
+          "text_span": "Extrinsic (vector) incubation period, prior Gamma(\u03bc=10.5, \u03c3=0.5)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10.5",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Human infectious period, prior Gamma(\u03bc=5, \u03c3=0.5)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b4": {
+      "evidence": [
+        {
+          "text_span": "Mosquito lifespan, prior Gamma(\u03bc=7.8, \u03c3=0.5)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "7.8",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "r": {
+      "evidence": [
+        {
+          "text_span": "Proportion of cases reported (both symptomatic and asymptomatic that seek treatment)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "U(0,1)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03d5": {
+      "evidence": [
+        {
+          "text_span": "Reporting dispersion parameter for negative binomial distribution",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "U(0,1)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N": {
+      "evidence": [
+        {
+          "text_span": "Human population size",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "varies by region",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R_0": {
+      "evidence": [
+        {
+          "text_span": "Basic reproduction number, R_0 = (\u03b2_V * \u03b1_V * \u03b2_H) / (\u03b3 * (\u03b4 + \u03b1_V) * \u03b4)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.6\u20134.8",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 5,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 27,
+    "items_with_evidence": 27,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 27,
+    "faithfulness_percentage": 100.0
+  }
+}

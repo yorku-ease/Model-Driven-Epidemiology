@@ -1,0 +1,660 @@
+{
+  "model_analysis": {
+    "modelName": "Measles3",
+    "summary": {
+      "modelName": "Measles3",
+      "totalPopulation": null,
+      "numCompartments": 7,
+      "numParameters": 12,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Maternal Antibody Protected",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Loss of passive maternal immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection following contact with infectious individuals.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful vaccination leading to long-lasting immunity.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination without seroconversion; vaccine efficacy is less than 100%.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Latent",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent/pre-patent infection to infectiousness.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection with acquisition of lasting immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Immune",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 6,
+          "primaryName": "Vaccine Failure",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of vaccine failures following contact with infectious individuals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "p",
+          "type": "CONSTANT",
+          "expression": "0.90",
+          "description": "Vaccine efficacy; proportion of vaccinated susceptibles who become immune.",
+          "unit": "proportion"
+        },
+        {
+          "index": 1,
+          "name": "Rate of progression from latency",
+          "type": "CONSTANT",
+          "expression": "52.14",
+          "description": "Average latent period of 7 days.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 2,
+          "name": "Rate of recovery from infection",
+          "type": "CONSTANT",
+          "expression": "52.14",
+          "description": "Average infectious period of 7 days.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 3,
+          "name": "Rate of loss of passive immunity",
+          "type": "CONSTANT",
+          "expression": "40",
+          "description": "Average duration of maternal protection of 3 months.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 4,
+          "name": "Force of infection, age 1",
+          "type": "CONSTANT",
+          "expression": "0.0690",
+          "description": "Age-specific force of infection for upper age 1 year.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 5,
+          "name": "Force of infection, age 2",
+          "type": "CONSTANT",
+          "expression": "0.41075",
+          "description": "Age-specific force of infection for upper age 2 years.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 6,
+          "name": "Force of infection, age 3",
+          "type": "CONSTANT",
+          "expression": "0.1572",
+          "description": "Age-specific force of infection for upper age 3 years.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 7,
+          "name": "Force of infection, age 4",
+          "type": "CONSTANT",
+          "expression": "0.2005",
+          "description": "Age-specific force of infection for upper age 4 years.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 8,
+          "name": "Force of infection, age 5",
+          "type": "CONSTANT",
+          "expression": "0.2582",
+          "description": "Age-specific force of infection for upper age 5 years.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 9,
+          "name": "Force of infection, age 10",
+          "type": "CONSTANT",
+          "expression": "0.5167",
+          "description": "Age-specific force of infection for upper age 10 years.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 10,
+          "name": "Force of infection, age 15",
+          "type": "CONSTANT",
+          "expression": "0.2549",
+          "description": "Age-specific force of infection for upper age 15 years.",
+          "unit": "per person per year"
+        },
+        {
+          "index": 11,
+          "name": "Force of infection, age 75",
+          "type": "CONSTANT",
+          "expression": "0.0989",
+          "description": "Age-specific force of infection for upper age 75 years.",
+          "unit": "per person per year"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Measles3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 12,
+    "parametersWithUncertainty": 12,
+    "parameters": [
+      {
+        "parameter": "p",
+        "yourValue": "0.90",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "proportion",
+        "description": "Vaccine efficacy; proportion of vaccinated susceptibles who become immune.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rate of progression from latency",
+        "yourValue": "52.14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Average latent period of 7 days.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rate of recovery from infection",
+        "yourValue": "52.14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Average infectious period of 7 days.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rate of loss of passive immunity",
+        "yourValue": "40",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Average duration of maternal protection of 3 months.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 1",
+        "yourValue": "0.0690",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 1 year.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 2",
+        "yourValue": "0.41075",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 2 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 3",
+        "yourValue": "0.1572",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 3 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 4",
+        "yourValue": "0.2005",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 4 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 5",
+        "yourValue": "0.2582",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 5 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 10",
+        "yourValue": "0.5167",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 10 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 15",
+        "yourValue": "0.2549",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 15 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Force of infection, age 75",
+        "yourValue": "0.0989",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "per person per year",
+        "description": "Age-specific force of infection for upper age 75 years.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 12
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Measles3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "p",
+        "type": "other",
+        "currentValue": 0.9,
+        "description": "Vaccine efficacy; proportion of vaccinated susceptibles who become immune.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Rate of progression from latency",
+        "type": "progression",
+        "currentValue": 52.14,
+        "description": "Average latent period of 7 days.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Rate of recovery from infection",
+        "type": "recovery",
+        "currentValue": 52.14,
+        "description": "Average infectious period of 7 days.",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Rate of loss of passive immunity",
+        "type": "mortality",
+        "currentValue": 40.0,
+        "description": "Average duration of maternal protection of 3 months.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 1",
+        "type": "other",
+        "currentValue": 0.069,
+        "description": "Age-specific force of infection for upper age 1 year.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 2",
+        "type": "other",
+        "currentValue": 0.41075,
+        "description": "Age-specific force of infection for upper age 2 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 3",
+        "type": "other",
+        "currentValue": 0.1572,
+        "description": "Age-specific force of infection for upper age 3 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 4",
+        "type": "other",
+        "currentValue": 0.2005,
+        "description": "Age-specific force of infection for upper age 4 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 5",
+        "type": "other",
+        "currentValue": 0.2582,
+        "description": "Age-specific force of infection for upper age 5 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 10",
+        "type": "other",
+        "currentValue": 0.5167,
+        "description": "Age-specific force of infection for upper age 10 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 15",
+        "type": "other",
+        "currentValue": 0.2549,
+        "description": "Age-specific force of infection for upper age 15 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Force of infection, age 75",
+        "type": "other",
+        "currentValue": 0.0989,
+        "description": "Age-specific force of infection for upper age 75 years.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "p",
+      "Rate of progression from latency",
+      "Rate of recovery from infection",
+      "Rate of loss of passive immunity",
+      "Force of infection, age 1"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "p",
+        "Rate of progression from latency",
+        "Rate of recovery from infection",
+        "Rate of loss of passive immunity",
+        "Force of infection, age 1"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "p": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Rate of progression from latency": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Rate of recovery from infection": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Rate of loss of passive immunity": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Force of infection, age 1": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

@@ -1,0 +1,257 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Number of susceptible individuals in the human population (S)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Number of infected individuals in the human population, including symptomatic, asymptomatic, and mild infections (I)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovered individuals; not explicitly tracked but estimated as H-I-S since total population is constant",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Bacteria in Aquatic Reservoir": {
+      "evidence": [
+        {
+          "text_span": "Concentration of toxigenic V. cholerae in the aquatic environment (B), measured in cells/ml",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Recovered -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Renewal of susceptibles through birth, immigration, and/or loss of acquired immunity at rate n*H (total inflow to susceptible compartment)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Natural death of susceptibles at rate n (removed from susceptible pool)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Bacteria in Aquatic Reservoir -> Bacteria in Aquatic Reservoir": {
+      "evidence": [
+        {
+          "text_span": "Net growth/loss of V. cholerae in the aquatic environment at rate (nb - mb), where nb is the growth rate and mb is the loss rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "H": {
+      "evidence": [
+        {
+          "text_span": "Total human population size (constant)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10000",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "n": {
+      "evidence": [
+        {
+          "text_span": "Human birth and death rate (susceptible renewal rate)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.0001-0.001",
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "a": {
+      "evidence": [
+        {
+          "text_span": "Rate of exposure to contaminated water (contact rate)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5-1",
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "K": {
+      "evidence": [
+        {
+          "text_span": "Concentration of V. cholerae in water that yields 50% chance of catching cholera (half-saturation constant)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1000000",
+          "unit": "cells/ml"
+        }
+      ],
+      "paper_backed": true
+    },
+    "r": {
+      "evidence": [
+        {
+          "text_span": "Rate at which people recover from cholera",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.2",
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "nb": {
+      "evidence": [
+        {
+          "text_span": "Growth rate of V. cholerae in the aquatic environment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "mb": {
+      "evidence": [
+        {
+          "text_span": "Loss rate of V. cholerae in the aquatic environment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "nb-mb": {
+      "evidence": [
+        {
+          "text_span": "Net growth rate of V. cholerae in the aquatic environment (negative indicates net loss)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "-0.33",
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "e": {
+      "evidence": [
+        {
+          "text_span": "Contribution of each infected person to the population of V. cholerae in the aquatic environment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "cells/ml day^-1 person^-1"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 14,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 14,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 14,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 20,
+    "items_with_evidence": 20,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 20,
+    "faithfulness_percentage": 100.0
+  }
+}

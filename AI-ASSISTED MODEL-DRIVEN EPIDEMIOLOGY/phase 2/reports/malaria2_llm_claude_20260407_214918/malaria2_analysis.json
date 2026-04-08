@@ -1,0 +1,426 @@
+{
+  "modelName": "Malaria2",
+  "summary": {
+    "modelName": "Malaria2",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 20,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection from infectious mosquito bite leading to clinical disease with probability φ, followed by successful treatment with probability fT",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.2",
+            "description": "Infection from infectious mosquito bite leading to clinical disease with probability φ, treatment failure with probability (1-fT)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.4",
+            "description": "Infection from infectious mosquito bite leading to asymptomatic patent infection with probability (1-φ)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Treated Clinical Disease",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from treated clinical disease to prophylactic protection at rate rT",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Untreated Clinical Disease",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of clinical disease to patent asymptomatic infection at rate rD",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Superinfection: new infection in presence of existing untreated clinical disease leading to treated clinical disease",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Prophylaxis",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "End of prophylactic protection, return to susceptible at rate rP",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Asymptomatic Patent Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Transition from patent to sub-patent infection at rate rA, dependent on anti-parasite immunity",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.7",
+            "contactCompartment": "//@compartments.1",
+            "description": "Superinfection: new infection leading to clinical disease from patent asymptomatic state",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Asymptomatic Sub-patent Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of sub-patent infection, return to susceptible at rate rU",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Superinfection: new infection leading to clinical disease from sub-patent state",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.7",
+            "contactCompartment": "//@compartments.4",
+            "description": "Superinfection: new infection leading to asymptomatic patent infection from sub-patent state",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.7",
+            "description": "Mosquito takes an infectious blood meal from an infectious human (T, D, A, or U states)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Latent Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Completion of extrinsic incubation period, mosquito becomes infectious",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "φ",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Probability of developing clinical disease on infection, determined by level of anti-disease immunity",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "fT",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Fixed probability of being successfully treated given clinical disease",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "rT",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Rate of transition from treated clinical disease to prophylactic protection",
+        "unit": "per day"
+      },
+      {
+        "index": 3,
+        "name": "rP",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Rate of return from prophylactic protection to susceptible",
+        "unit": "per day"
+      },
+      {
+        "index": 4,
+        "name": "rD",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Rate of clearance of untreated clinical disease to patent asymptomatic infection",
+        "unit": "per day"
+      },
+      {
+        "index": 5,
+        "name": "rA",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Rate of transition from patent asymptomatic to sub-patent infection, depends on anti-parasite immunity",
+        "unit": "per day"
+      },
+      {
+        "index": 6,
+        "name": "rU",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Rate of clearance of sub-patent infection to susceptible",
+        "unit": "per day"
+      },
+      {
+        "index": 7,
+        "name": "Λ",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Force of infection on humans, determined by vector-to-human ratio, biting rate, proportion of infectious mosquitoes, and anti-infection immunity",
+        "unit": "per day"
+      },
+      {
+        "index": 8,
+        "name": "EIR",
+        "type": "CONSTANT",
+        "expression": "3-675",
+        "description": "Entomological inoculation rate, varies by setting",
+        "unit": "infectious bites per person per year"
+      },
+      {
+        "index": 9,
+        "name": "HBI",
+        "type": "CONSTANT",
+        "expression": "0.0",
+        "description": "Human blood index of mosquito species, determines infectivity to humans",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "LLIN_half_life",
+        "type": "CONSTANT",
+        "expression": "2.64",
+        "description": "Half-life of LLIN protective efficacy due to decaying insecticide and wear-and-tear",
+        "unit": "years"
+      },
+      {
+        "index": 11,
+        "name": "LLIN_adherence_decay",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "Exponential decay rate of LLIN usage/adherence over time",
+        "unit": "per year"
+      },
+      {
+        "index": 12,
+        "name": "DDT_half_life",
+        "type": "CONSTANT",
+        "expression": "6",
+        "description": "Half-life of DDT insecticidal effect for IRS",
+        "unit": "months"
+      },
+      {
+        "index": 13,
+        "name": "ACT_prophylaxis_duration",
+        "type": "CONSTANT",
+        "expression": "25",
+        "description": "Duration of prophylactic protection provided by ACT in MSAT",
+        "unit": "days"
+      },
+      {
+        "index": 14,
+        "name": "vaccine_efficacy",
+        "type": "CONSTANT",
+        "expression": "0.50",
+        "description": "Initial efficacy of RTS,S/AS01 pre-erythrocytic vaccine",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 15,
+        "name": "vaccine_half_life",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "Half-life of exponential decay of vaccine efficacy",
+        "unit": "years"
+      },
+      {
+        "index": 16,
+        "name": "LLIN_coverage",
+        "type": "CONSTANT",
+        "expression": "0.80",
+        "description": "Target coverage level for LLIN distribution",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 17,
+        "name": "IRS_coverage",
+        "type": "CONSTANT",
+        "expression": "0.80",
+        "description": "Coverage level for IRS",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 18,
+        "name": "MSAT_coverage",
+        "type": "CONSTANT",
+        "expression": "0.80",
+        "description": "Coverage level for MSAT (proportion screened)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 19,
+        "name": "vaccine_coverage",
+        "type": "CONSTANT",
+        "expression": "0.90",
+        "description": "Coverage level for vaccine based on EPI distribution",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

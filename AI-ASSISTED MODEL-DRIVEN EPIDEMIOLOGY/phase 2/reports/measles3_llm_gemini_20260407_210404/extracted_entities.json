@@ -1,0 +1,275 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Maternally Immune",
+      "raw_text": "Maternally Immune",
+      "page_number": 0,
+      "text_span": "Newborns protected from measles by specific antibodies passed transplacentally from the mother (class M).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Newborns protected from measles by specific antibodies passed transplacentally from the mother (class M)."
+    },
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to infection after maternal immunity wanes (class X).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to infection after maternal immunity wanes (class X)."
+    },
+    {
+      "normalized_name": "Latent",
+      "raw_text": "Latent",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected but are not yet infectious (class H).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected but are not yet infectious (class H)."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who are infectious to others (class Y).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infectious to others (class Y)."
+    },
+    {
+      "normalized_name": "Immune",
+      "raw_text": "Immune",
+      "page_number": 0,
+      "text_span": "Individuals with lasting immunity from infection or successful vaccination (class Z).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with lasting immunity from infection or successful vaccination (class Z)."
+    },
+    {
+      "normalized_name": "Vaccine Failure",
+      "raw_text": "Vaccine Failure",
+      "page_number": 0,
+      "text_span": "Individuals who received vaccine but were not effectively protected, remaining susceptible to infection (class Xv).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who received vaccine but were not effectively protected, remaining susceptible to infection (class Xv)."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Maternally Immune",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of passive maternal immunity.",
+      "page_number": 0,
+      "text_span": "Waning of passive maternal immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of passive maternal immunity."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals through contact with infectious individuals.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals through contact with infectious individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals through contact with infectious individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Immune",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful vaccination leading to immunity.",
+      "page_number": 0,
+      "text_span": "Successful vaccination leading to immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful vaccination leading to immunity."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccine Failure",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination that fails to confer protection.",
+      "page_number": 0,
+      "text_span": "Vaccination that fails to confer protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination that fails to confer protection."
+    },
+    {
+      "source": "Latent",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from latent to infectious state.",
+      "page_number": 0,
+      "text_span": "Progression from latent to infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from latent to infectious state."
+    },
+    {
+      "source": "Infectious",
+      "target": "Immune",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infection leading to immunity.",
+      "page_number": 0,
+      "text_span": "Recovery from infection leading to immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infection leading to immunity."
+    },
+    {
+      "source": "Vaccine Failure",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of individuals with vaccine failure through contact with infectious individuals.",
+      "page_number": 0,
+      "text_span": "Infection of individuals with vaccine failure through contact with infectious individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of individuals with vaccine failure through contact with infectious individuals."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Force of infection",
+      "raw_text": "Force of infection",
+      "value": "Age-specific, see Table 1",
+      "unit": "/person/year",
+      "page_number": 0,
+      "text_span": "Age-specific per capita rate at which susceptible individuals (X and Xv) acquire infection. Values range from 0.0690 to 0.5167.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific per capita rate at which susceptible individuals (X and Xv) acquire infection. Values range from 0.0690 to 0.5167."
+    },
+    {
+      "normalized_name": "Rate of progression from latency",
+      "raw_text": "Rate of progression from latency",
+      "value": "52.14",
+      "unit": "/person/year",
+      "page_number": 0,
+      "text_span": "Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days."
+    },
+    {
+      "normalized_name": "Rate of recovery from infection",
+      "raw_text": "Rate of recovery from infection",
+      "value": "52.14",
+      "unit": "/person/year",
+      "page_number": 0,
+      "text_span": "Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days."
+    },
+    {
+      "normalized_name": "Rate of loss of passive immunity",
+      "raw_text": "Rate of loss of passive immunity",
+      "value": "40",
+      "unit": "/person/year",
+      "page_number": 0,
+      "text_span": "Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year)."
+    },
+    {
+      "normalized_name": "Vaccine efficacy",
+      "raw_text": "Vaccine efficacy",
+      "value": "0.9",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "The proportion (p) of vaccinated individuals who become immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion (p) of vaccinated individuals who become immune."
+    },
+    {
+      "normalized_name": "Birth rate",
+      "raw_text": "Birth rate",
+      "value": "666666",
+      "unit": "persons/year",
+      "page_number": 0,
+      "text_span": "Annual birth cohort in England and Wales.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Annual birth cohort in England and Wales."
+    },
+    {
+      "normalized_name": "Background death rate",
+      "raw_text": "Background death rate",
+      "value": "1/60",
+      "unit": "/person/year",
+      "page_number": 0,
+      "text_span": "Background death rate assumed for the residual age group (15-75 years).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Background death rate assumed for the residual age group (15-75 years)."
+    },
+    {
+      "normalized_name": "Contact rates",
+      "raw_text": "Contact rates",
+      "value": "Defined by WAIFW matrices",
+      "unit": "N/A",
+      "page_number": 0,
+      "text_span": "Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 7,
+    "num_parameters": 8,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

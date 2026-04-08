@@ -1,0 +1,430 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "HIV-uninfected individuals in the population aged 15-49 years",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Early Infection": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the acute/primary phase of HIV infection with elevated infectiousness (first few weeks of infection)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic CD4 >350": {
+      "evidence": [
+        {
+          "text_span": "HIV-infected individuals with CD4 count above 350 cells/ml in asymptomatic stage",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic CD4 200-350": {
+      "evidence": [
+        {
+          "text_span": "HIV-infected individuals with CD4 count between 200 and 350 cells/ml",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic CD4 \u2264200": {
+      "evidence": [
+        {
+          "text_span": "HIV-infected individuals with CD4 count at or below 200 cells/ml, late-stage/AIDS",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "On ART": {
+      "evidence": [
+        {
+          "text_span": "HIV-infected individuals currently receiving antiretroviral therapy with reduced transmissibility",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dropped Out": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have dropped out from ART treatment programme",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Early Infection": {
+      "evidence": [
+        {
+          "text_span": "HIV transmission through sexual contact with infectious individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Early Infection -> Asymptomatic CD4 >350": {
+      "evidence": [
+        {
+          "text_span": "Progression from acute/early infection to asymptomatic chronic infection",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic CD4 >350 -> Asymptomatic CD4 200-350": {
+      "evidence": [
+        {
+          "text_span": "CD4 decline from above 350 to 200-350 cells/ml",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic CD4 200-350 -> Symptomatic CD4 \u2264200": {
+      "evidence": [
+        {
+          "text_span": "CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic CD4 >350 -> On ART": {
+      "evidence": [
+        {
+          "text_span": "ART initiation for individuals with CD4 >350 (under immediate/all HIV+ eligibility scenario)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic CD4 200-350 -> On ART": {
+      "evidence": [
+        {
+          "text_span": "ART initiation for individuals with CD4 200-350 (under CD4 \u2264350 or all HIV+ eligibility)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic CD4 \u2264200 -> On ART": {
+      "evidence": [
+        {
+          "text_span": "ART initiation for individuals with CD4 \u2264200 (under all eligibility scenarios)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "On ART -> Dropped Out": {
+      "evidence": [
+        {
+          "text_span": "Dropout from ART programme at a constant rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic CD4 \u2264200 -> Dropped Out": {
+      "evidence": [
+        {
+          "text_span": "Death due to AIDS in untreated late-stage individuals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "On ART -> On ART": {
+      "evidence": [
+        {
+          "text_span": "Death while on ART (reduced mortality rate compared to untreated)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "ART eligibility CD4 threshold": {
+      "evidence": [
+        {
+          "text_span": "CD4 count threshold below which individuals become eligible for ART",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "200, 350, or all HIV+",
+          "unit": "cells/ml"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ART access": {
+      "evidence": [
+        {
+          "text_span": "Proportion of eligible individuals who eventually initiate treatment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "50-100",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Time from eligibility to ART initiation": {
+      "evidence": [
+        {
+          "text_span": "Average time from reaching eligibility to starting ART",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "3-year retention on ART": {
+      "evidence": [
+        {
+          "text_span": "Percentage of individuals remaining on treatment after 3 years, excluding deaths",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "75-100",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ART transmission reduction": {
+      "evidence": [
+        {
+          "text_span": "Reduction in HIV transmissibility for individuals on ART",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "90-99",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Early infection relative transmissibility (Boily estimate)": {
+      "evidence": [
+        {
+          "text_span": "Relative increase in transmission during early infection compared to asymptomatic, based on Boily et al. meta-analysis",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "fold increase"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Early infection relative transmissibility (Hollingsworth estimate)": {
+      "evidence": [
+        {
+          "text_span": "Relative increase in transmission during early infection compared to asymptomatic, based on Hollingsworth et al. reanalysis",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "26",
+          "unit": "fold increase"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Late-stage relative transmissibility": {
+      "evidence": [
+        {
+          "text_span": "Relative increase in transmissibility during late-stage/AIDS compared to asymptomatic infection, varies by model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1.4-4",
+          "unit": "fold increase"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ART introduction year": {
+      "evidence": [
+        {
+          "text_span": "Year in which ART is introduced into the population in standardised scenarios",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2012",
+          "unit": "year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Male HIV prevalence 2012 (no ART)": {
+      "evidence": [
+        {
+          "text_span": "Range of estimated adult male HIV prevalence in 2012 across models under no-ART counterfactual",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10-16",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Female HIV prevalence 2012 (no ART)": {
+      "evidence": [
+        {
+          "text_span": "Range of estimated adult female HIV prevalence in 2012 across models under no-ART counterfactual",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "17-23",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Male HIV incidence 2012 (no ART)": {
+      "evidence": [
+        {
+          "text_span": "Range of male HIV incidence rate in 2012 across models",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1.1-2.0",
+          "unit": "per 100 person-years"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Female HIV incidence 2012 (no ART)": {
+      "evidence": [
+        {
+          "text_span": "Range of female HIV incidence rate in 2012 across models",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1.7-2.6",
+          "unit": "per 100 person-years"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 17,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 35,
+    "items_with_evidence": 35,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 35,
+    "faithfulness_percentage": 100.0
+  }
+}

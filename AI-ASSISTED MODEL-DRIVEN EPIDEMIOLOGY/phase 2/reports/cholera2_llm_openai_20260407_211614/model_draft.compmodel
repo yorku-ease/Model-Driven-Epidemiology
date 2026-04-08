@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Initial vaccine protection" expression="76%" type="CONSTANT" description="Assumed initial protection after vaccination, estimated from a recent case-control study in Haiti." unit="percent"/>
+  <parameters name="Vaccine protection duration" expression="60" type="CONSTANT" description="Protection was modeled to wane over 60 months after vaccination." unit="months"/>
+  <parameters name="Single-dose protection duration" expression="1" type="CONSTANT" description="Single-dose protection was assumed to be the same as two-dose protection for the first year after vaccination, then drop to zero." unit="year"/>
+  <parameters name="Children under 5 vaccine effectiveness multiplier" expression="46.9%" type="CONSTANT" description="Children younger than 5 years were assumed to have 46.9% of adult vaccine effectiveness." unit="relative to adults"/>
+  <parameters name="Baseline two-dose vaccine coverage" expression="70%" type="CONSTANT" description="Baseline campaign coverage assumption." unit="percent"/>
+  <parameters name="Baseline one-dose vaccine coverage" expression="10%" type="CONSTANT" description="Baseline campaign coverage assumption." unit="percent"/>
+  <parameters name="No vaccine coverage" expression="20%" type="CONSTANT" description="Baseline campaign coverage assumption." unit="percent"/>
+  <parameters name="High-coverage two-dose vaccine coverage" expression="95%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent"/>
+  <parameters name="High-coverage one-dose vaccine coverage" expression="1.67%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent"/>
+  <parameters name="High-coverage no vaccine coverage" expression="3.33%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Cholera infection/transmission from exposure to Vibrio cholerae."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Recovery from cholera infection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.0" description="Waning of natural immunity back to susceptibility."/>
+  </compartments>
+</compartmental:CompartmentalModel>

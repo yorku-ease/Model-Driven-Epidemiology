@@ -1,0 +1,367 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Susceptible individuals who can be infected by Ebola virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible individuals who can be infected by Ebola virus."
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected by Ebola virus but are not yet infectious or symptomatic.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected by Ebola virus but are not yet infectious or symptomatic."
+    },
+    {
+      "normalized_name": "Infectious in community",
+      "raw_text": "Infectious in community",
+      "page_number": 0,
+      "text_span": "Symptomatic and infectious individuals in the community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Symptomatic and infectious individuals in the community."
+    },
+    {
+      "normalized_name": "Hospitalized",
+      "raw_text": "Hospitalized",
+      "page_number": 0,
+      "text_span": "Hospitalized Ebola cases who are infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalized Ebola cases who are infectious."
+    },
+    {
+      "normalized_name": "Dead",
+      "raw_text": "Dead",
+      "page_number": 0,
+      "text_span": "Dead Ebola cases who may transmit the disease during funerals, but are not yet buried.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dead Ebola cases who may transmit the disease during funerals, but are not yet buried."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Removed",
+      "page_number": 0,
+      "text_span": "Individuals removed from the chain of transmission (cured or dead and buried).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals removed from the chain of transmission (cured or dead and buried)."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals through contact with infectious individuals in the community (I), hospitalized cases (H), or during funerals (F). Rate: (b_I*S*I + b_H*S*H + b_F*S*F)/N.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals through contact with infectious individuals in the community (I), hospitalized cases (H), or during funerals (F). Rate: (b_I*S*I + b_H*S*H + b_F*S*F)/N.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals through contact with infectious individuals in the community (I), hospitalized cases (H), or during funerals (F). Rate: (b_I*S*I + b_H*S*H + b_F*S*F)/N."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious in community",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of exposed individuals to become infectious. Rate: a*E.",
+      "page_number": 0,
+      "text_span": "Progression of exposed individuals to become infectious. Rate: a*E.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of exposed individuals to become infectious. Rate: a*E."
+    },
+    {
+      "source": "Infectious in community",
+      "target": "Hospitalized",
+      "flow_type": "RateFlow",
+      "raw_text": "Hospitalization of infectious individuals. Rate: c_h*h_1*I.",
+      "page_number": 0,
+      "text_span": "Hospitalization of infectious individuals. Rate: c_h*h_1*I.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalization of infectious individuals. Rate: c_h*h_1*I."
+    },
+    {
+      "source": "Infectious in community",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Death of infectious individuals in the community. Rate: d_1*(1-h_1)*c_d*I.",
+      "page_number": 0,
+      "text_span": "Death of infectious individuals in the community. Rate: d_1*(1-h_1)*c_d*I.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death of infectious individuals in the community. Rate: d_1*(1-h_1)*c_d*I."
+    },
+    {
+      "source": "Hospitalized",
+      "target": "Dead",
+      "flow_type": "RateFlow",
+      "raw_text": "Death of hospitalized individuals. Rate: c_dh*d_2*H.",
+      "page_number": 0,
+      "text_span": "Death of hospitalized individuals. Rate: c_dh*d_2*H.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death of hospitalized individuals. Rate: c_dh*d_2*H."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "N",
+      "raw_text": "N",
+      "value": "200000 (DRC 1995); 470000 (Uganda 2000)",
+      "unit": "persons",
+      "page_number": 0,
+      "text_span": "Size of the population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Size of the population."
+    },
+    {
+      "normalized_name": "b_I",
+      "raw_text": "b_I",
+      "value": "0.588 (DRC 1995); 3.532 (Uganda 2000)",
+      "unit": "week^-1",
+      "page_number": 0,
+      "text_span": "Transmission coefficient in the community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission coefficient in the community."
+    },
+    {
+      "normalized_name": "b_H",
+      "raw_text": "b_H",
+      "value": "0.794 (DRC 1995); 0.012 (Uganda 2000)",
+      "unit": "week^-1",
+      "page_number": 0,
+      "text_span": "Transmission coefficient at the hospital.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission coefficient at the hospital."
+    },
+    {
+      "normalized_name": "b_F",
+      "raw_text": "b_F",
+      "value": "7.653 (DRC 1995); 0.462 (Uganda 2000)",
+      "unit": "week^-1",
+      "page_number": 0,
+      "text_span": "Transmission coefficient during funerals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission coefficient during funerals."
+    },
+    {
+      "normalized_name": "1/a",
+      "raw_text": "1/a",
+      "value": "7 (DRC 1995); 12 (Uganda 2000)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration of the incubation period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration of the incubation period."
+    },
+    {
+      "normalized_name": "1/c_h",
+      "raw_text": "1/c_h",
+      "value": "5 (DRC 1995); 4.2 (Uganda 2000)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from symptom onset to hospitalization.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from symptom onset to hospitalization."
+    },
+    {
+      "normalized_name": "1/c_d",
+      "raw_text": "1/c_d",
+      "value": "9.6 (DRC 1995); 8 (Uganda 2000)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from onset to death for patients who die.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from onset to death for patients who die."
+    },
+    {
+      "normalized_name": "1/c_i",
+      "raw_text": "1/c_i",
+      "value": "10",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from onset to end of infectiousness for survivors.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from onset to end of infectiousness for survivors."
+    },
+    {
+      "normalized_name": "1/c_f",
+      "raw_text": "1/c_f",
+      "value": "2",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from death to traditional burial.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from death to traditional burial."
+    },
+    {
+      "normalized_name": "h",
+      "raw_text": "h",
+      "value": "80",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Proportion of cases hospitalized.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of cases hospitalized."
+    },
+    {
+      "normalized_name": "d",
+      "raw_text": "d",
+      "value": "81 (DRC 1995); 53 (Uganda 2000)",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Overall case-fatality ratio.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Overall case-fatality ratio."
+    },
+    {
+      "normalized_name": "h_1",
+      "raw_text": "h_1",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Proportion of infectious cases that are hospitalized, computed to match the overall hospitalization proportion h.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of infectious cases that are hospitalized, computed to match the overall hospitalization proportion h."
+    },
+    {
+      "normalized_name": "d_1",
+      "raw_text": "d_1",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Proportion of non-hospitalized cases that die, computed to match the overall case-fatality ratio d.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of non-hospitalized cases that die, computed to match the overall case-fatality ratio d."
+    },
+    {
+      "normalized_name": "d_2",
+      "raw_text": "d_2",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Proportion of hospitalized cases that die, computed to match the overall case-fatality ratio d.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of hospitalized cases that die, computed to match the overall case-fatality ratio d."
+    },
+    {
+      "normalized_name": "1/c_dh",
+      "raw_text": "1/c_dh",
+      "value": null,
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from hospitalization to death.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from hospitalization to death."
+    },
+    {
+      "normalized_name": "1/c_ih",
+      "raw_text": "1/c_ih",
+      "value": null,
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration from hospitalization to end of infectiousness for survivors.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration from hospitalization to end of infectiousness for survivors."
+    },
+    {
+      "normalized_name": "z",
+      "raw_text": "z",
+      "value": "0.12 (DRC 1995); 0.88 (Uganda 2000)",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Efficacy of interventions in the community, where the transmission coefficient is decreased by a factor (1-z).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Efficacy of interventions in the community, where the transmission coefficient is decreased by a factor (1-z)."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 12,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 2,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 5,
+    "num_parameters": 17,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

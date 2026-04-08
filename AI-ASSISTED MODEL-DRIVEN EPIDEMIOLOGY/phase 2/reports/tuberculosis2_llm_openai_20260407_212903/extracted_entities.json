@@ -1,0 +1,429 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals not currently infected with Mycobacterium tuberculosis and at risk of infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not currently infected with Mycobacterium tuberculosis and at risk of infection."
+    },
+    {
+      "normalized_name": "Latent Infection",
+      "raw_text": "Latent Infection",
+      "page_number": 0,
+      "text_span": "Individuals infected with tuberculosis who are not currently diseased; includes remote infections that may later reactivate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected with tuberculosis who are not currently diseased; includes remote infections that may later reactivate."
+    },
+    {
+      "normalized_name": "Infectious Tuberculosis",
+      "raw_text": "Infectious Tuberculosis",
+      "page_number": 0,
+      "text_span": "Pulmonary, sputum-smear positive tuberculosis cases that can transmit infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pulmonary, sputum-smear positive tuberculosis cases that can transmit infection."
+    },
+    {
+      "normalized_name": "Non-infectious Tuberculosis",
+      "raw_text": "Non-infectious Tuberculosis",
+      "page_number": 0,
+      "text_span": "Pulmonary smear-negative or extrapulmonary tuberculosis cases that are not infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Pulmonary smear-negative or extrapulmonary tuberculosis cases that are not infectious."
+    },
+    {
+      "normalized_name": "Treatment Failure",
+      "raw_text": "Treatment Failure",
+      "page_number": 0,
+      "text_span": "Individuals who fail, default, or transfer out of treatment; some remain infectious and all have elevated risk of redeveloping full tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who fail, default, or transfer out of treatment; some remain infectious and all have elevated risk of redeveloping full tuberculosis."
+    },
+    {
+      "normalized_name": "Cured but Latently Infected",
+      "raw_text": "Cured but Latently Infected",
+      "page_number": 0,
+      "text_span": "Individuals cured of active tuberculosis by short-course chemotherapy but who remain infected and return to the latent class.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals cured of active tuberculosis by short-course chemotherapy but who remain infected and return to the latent class."
+    },
+    {
+      "normalized_name": "Self-cured",
+      "raw_text": "Self-cured",
+      "page_number": 0,
+      "text_span": "Individuals whose tuberculosis resolves without treatment but who remain at increased risk of relapse to full tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals whose tuberculosis resolves without treatment but who remain at increased risk of relapse to full tuberculosis."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Latent Infection",
+      "flow_type": "ContactFlow",
+      "raw_text": "New infection with Mycobacterium tuberculosis.",
+      "page_number": 0,
+      "text_span": "New infection with Mycobacterium tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "New infection with Mycobacterium tuberculosis."
+    },
+    {
+      "source": "Latent Infection",
+      "target": "Infectious Tuberculosis",
+      "flow_type": "RateFlow",
+      "raw_text": "Endogenous reactivation or progression to active disease.",
+      "page_number": 0,
+      "text_span": "Endogenous reactivation or progression to active disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Endogenous reactivation or progression to active disease."
+    },
+    {
+      "source": "Infectious Tuberculosis",
+      "target": "Treatment Failure",
+      "flow_type": "RateFlow",
+      "raw_text": "Patients diagnosed and treated who do not complete treatment (fail, default, or transfer out).",
+      "page_number": 0,
+      "text_span": "Patients diagnosed and treated who do not complete treatment (fail, default, or transfer out).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Patients diagnosed and treated who do not complete treatment (fail, default, or transfer out)."
+    },
+    {
+      "source": "Infectious Tuberculosis",
+      "target": "Cured but Latently Infected",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful completion of short-course chemotherapy with cure of active disease but persistence of infection.",
+      "page_number": 0,
+      "text_span": "Successful completion of short-course chemotherapy with cure of active disease but persistence of infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful completion of short-course chemotherapy with cure of active disease but persistence of infection."
+    },
+    {
+      "source": "Non-infectious Tuberculosis",
+      "target": "Treatment Failure",
+      "flow_type": "RateFlow",
+      "raw_text": "Non-infectious cases enrolled in treatment who do not complete treatment.",
+      "page_number": 0,
+      "text_span": "Non-infectious cases enrolled in treatment who do not complete treatment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Non-infectious cases enrolled in treatment who do not complete treatment."
+    },
+    {
+      "source": "Non-infectious Tuberculosis",
+      "target": "Cured but Latently Infected",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful completion of short-course chemotherapy for non-infectious tuberculosis.",
+      "page_number": 0,
+      "text_span": "Successful completion of short-course chemotherapy for non-infectious tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful completion of short-course chemotherapy for non-infectious tuberculosis."
+    },
+    {
+      "source": "Treatment Failure",
+      "target": "Infectious Tuberculosis",
+      "flow_type": "RateFlow",
+      "raw_text": "A proportion of treatment failures remain infectious and may progress back to full tuberculosis.",
+      "page_number": 0,
+      "text_span": "A proportion of treatment failures remain infectious and may progress back to full tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "A proportion of treatment failures remain infectious and may progress back to full tuberculosis."
+    },
+    {
+      "source": "Treatment Failure",
+      "target": "Latent Infection",
+      "flow_type": "RateFlow",
+      "raw_text": "Treatment failures that are not infectious may remain infected and later relapse/reactivate.",
+      "page_number": 0,
+      "text_span": "Treatment failures that are not infectious may remain infected and later relapse/reactivate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment failures that are not infectious may remain infected and later relapse/reactivate."
+    },
+    {
+      "source": "Self-cured",
+      "target": "Latent Infection",
+      "flow_type": "RateFlow",
+      "raw_text": "Self-cured individuals return to the latent class while remaining infected.",
+      "page_number": 0,
+      "text_span": "Self-cured individuals return to the latent class while remaining infected.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Self-cured individuals return to the latent class while remaining infected."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Case detection rate",
+      "raw_text": "Case detection rate",
+      "value": "70% (WHO target for new programme)",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Target proportion of infectious cases diagnosed and treated per year.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Target proportion of infectious cases diagnosed and treated per year."
+    },
+    {
+      "normalized_name": "Cure rate",
+      "raw_text": "Cure rate",
+      "value": "85% (WHO target for new programme)",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Fraction of treated cases cured under the new DOTS programme.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fraction of treated cases cured under the new DOTS programme."
+    },
+    {
+      "normalized_name": "Case detection rate, old programme",
+      "raw_text": "Case detection rate, old programme",
+      "value": "50% to 80% depending on region",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Baseline case detection rate under the pre-DOTS programme.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline case detection rate under the pre-DOTS programme."
+    },
+    {
+      "normalized_name": "Fraction cured, old programme",
+      "raw_text": "Fraction cured, old programme",
+      "value": "40% to 75% depending on region",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Baseline cure fraction under the pre-DOTS programme.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline cure fraction under the pre-DOTS programme."
+    },
+    {
+      "normalized_name": "Relative case detection rate of non-infectious cases",
+      "raw_text": "Relative case detection rate of non-infectious cases",
+      "value": "0.5 to 0.8 depending on region",
+      "unit": "ratio",
+      "page_number": 0,
+      "text_span": "Detection rate for non-infectious cases relative to infectious cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Detection rate for non-infectious cases relative to infectious cases."
+    },
+    {
+      "normalized_name": "Annual risk of infection",
+      "raw_text": "Annual risk of infection",
+      "value": "2.6, 0.6, 1.0, 0.1, 0.5, 2.0, 0.9",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Regional annual risk of tuberculosis infection for the WHO regions listed in the table.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional annual risk of tuberculosis infection for the WHO regions listed in the table."
+    },
+    {
+      "normalized_name": "Incidence rate, all forms",
+      "raw_text": "Incidence rate, all forms",
+      "value": "215, 62, 102, 13, 61, 188, 94",
+      "unit": "per 100000 per year",
+      "page_number": 0,
+      "text_span": "Regional incidence of all forms of tuberculosis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional incidence of all forms of tuberculosis."
+    },
+    {
+      "normalized_name": "Incidence rate, infectious cases",
+      "raw_text": "Incidence rate, infectious cases",
+      "value": "106, 34, 55, 7, 34, 102, 52",
+      "unit": "per 100000 per year",
+      "page_number": 0,
+      "text_span": "Regional incidence of infectious tuberculosis cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional incidence of infectious tuberculosis cases."
+    },
+    {
+      "normalized_name": "Prevalence rate, infectious cases",
+      "raw_text": "Prevalence rate, infectious cases",
+      "value": "201, 55, 101, 8, 55, 184, 83",
+      "unit": "per 100000 people",
+      "page_number": 0,
+      "text_span": "Regional prevalence of infectious tuberculosis cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional prevalence of infectious tuberculosis cases."
+    },
+    {
+      "normalized_name": "Death rate, all forms",
+      "raw_text": "Death rate, all forms",
+      "value": "92, 21, 40, 3, 21, 73, 33",
+      "unit": "per 100000 people per year",
+      "page_number": 0,
+      "text_span": "Regional tuberculosis death rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional tuberculosis death rate."
+    },
+    {
+      "normalized_name": "Population growth",
+      "raw_text": "Population growth",
+      "value": "2.8, 1.4, 2.7, 0.4, 0.4, 1.7, 1.1",
+      "unit": "% per year",
+      "page_number": 0,
+      "text_span": "Regional population growth rates.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional population growth rates."
+    },
+    {
+      "normalized_name": "Change in annual risk of infection",
+      "raw_text": "Change in annual risk of infection",
+      "value": "-0.3, -2.2, -2.9, -5.6, -1.3, -0.9, -1.8",
+      "unit": "% per year",
+      "page_number": 0,
+      "text_span": "Regional annual change in annual risk of infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional annual change in annual risk of infection."
+    },
+    {
+      "normalized_name": "Change in incidence rate",
+      "raw_text": "Change in incidence rate",
+      "value": "2.7, -2.5, -2.1, -5.0, -1.1, -0.3, -1.2",
+      "unit": "% per year",
+      "page_number": 0,
+      "text_span": "Regional annual change in incidence rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional annual change in incidence rate."
+    },
+    {
+      "normalized_name": "Change in death rate",
+      "raw_text": "Change in death rate",
+      "value": "2.9, -2.7, -2.2, -4.6, -0.7, -0.7, -1.6",
+      "unit": "% per year",
+      "page_number": 0,
+      "text_span": "Regional annual change in death rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional annual change in death rate."
+    },
+    {
+      "normalized_name": "Change in contact rate",
+      "raw_text": "Change in contact rate",
+      "value": "-0.7, -0.8, -1.0, -0.5, -0.9, -0.5, -0.6",
+      "unit": "% per year",
+      "page_number": 0,
+      "text_span": "Regional annual change in contact rate used to represent declining transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Regional annual change in contact rate used to represent declining transmission."
+    },
+    {
+      "normalized_name": "HIV-1 infection in tuberculosis cases, 2020",
+      "raw_text": "HIV-1 infection in tuberculosis cases, 2020",
+      "value": "21, 2.5, 0.2, 0.5, 0.5, 4.0, 1.4",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Projected proportion of tuberculosis cases that are HIV-1 positive in 2020 by region.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Projected proportion of tuberculosis cases that are HIV-1 positive in 2020 by region."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 6,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 2,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 6,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 9,
+    "num_parameters": 16,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

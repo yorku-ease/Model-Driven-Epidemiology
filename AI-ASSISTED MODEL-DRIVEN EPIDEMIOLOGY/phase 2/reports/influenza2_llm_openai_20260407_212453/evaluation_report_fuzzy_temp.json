@@ -1,0 +1,117 @@
+{
+  "traceability_coverage": {
+    "total_items": 17,
+    "items_with_evidence": 17,
+    "coverage_percentage": 100.0
+  },
+  "faithfulness": {
+    "paper_backed_items": 17,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "total_gaps": 0,
+    "critical_gaps": 0,
+    "high_gaps": 0,
+    "medium_gaps": 0,
+    "gap_breakdown": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_stratifications": 0,
+      "missing_interventions": 0
+    }
+  },
+  "gold_standard_comparison": {
+    "compartments": {
+      "precision": 1.0,
+      "recall": 0.42857142857142855,
+      "f1": 0.6,
+      "tp": 3,
+      "fp": 0,
+      "fn": 4,
+      "matches": [
+        {
+          "extracted": "Infectious",
+          "gold": "InfectiousClinical",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Recovered",
+          "gold": "Removed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": [
+        "Protected",
+        "InfectiousSubclinical",
+        "Exposed",
+        "TreatedClinical"
+      ]
+    },
+    "parameters": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0,
+      "tp": 0,
+      "fp": 7,
+      "fn": 10,
+      "matches": [],
+      "unmatched_extracted": [
+        "Household transmission proportion",
+        "Clinical fraction",
+        "School/workplace transmission proportion",
+        "Generation time",
+        "Community transmission proportion",
+        "R0",
+        "Non-household transmission proportion"
+      ],
+      "unmatched_gold": [
+        "SubclinicalProgressionRate",
+        "SubclinicalRecoveryRate",
+        "TreatedRecoveryRate",
+        "ClinicalProgressionRate",
+        "SubclinicalTransmissionRate",
+        "TreatmentRate",
+        "ClinicalRecoveryRate",
+        "ProtectionAcquisitionRate",
+        "ProtectionLossRate",
+        "ClinicalTransmissionRate"
+      ]
+    },
+    "flows": {
+      "precision": 0.5,
+      "recall": 0.1111111111111111,
+      "f1": 0.1818181818181818,
+      "tp": 1,
+      "fp": 1,
+      "fn": 8,
+      "matches": [
+        {
+          "extracted": "InfectiousClinical->Removed",
+          "gold": "InfectiousClinical->Removed",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Susceptible->InfectiousClinical"
+      ],
+      "unmatched_gold": [
+        "Susceptible->Protected",
+        "InfectiousClinical->TreatedClinical",
+        "Exposed->InfectiousSubclinical",
+        "InfectiousSubclinical->Removed",
+        "Protected->Susceptible",
+        "Susceptible->Exposed",
+        "Exposed->InfectiousClinical",
+        "TreatedClinical->Removed"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
+  }
+}

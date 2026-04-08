@@ -1,0 +1,343 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are not infected and can acquire measles infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are not infected and can acquire measles infection."
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected but are not yet infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected but are not yet infectious."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who are infected and capable of transmitting measles.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infected and capable of transmitting measles."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered and are immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered and are immune."
+    },
+    {
+      "normalized_name": "Single Vaccinated",
+      "raw_text": "Single Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals who have received one dose of measles-containing vaccine.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received one dose of measles-containing vaccine."
+    },
+    {
+      "normalized_name": "Double Vaccinated",
+      "raw_text": "Double Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals who have received two doses of measles-containing vaccine.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received two doses of measles-containing vaccine."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Measles infection through transmission/contact.",
+      "page_number": 0,
+      "text_span": "Measles infection through transmission/contact.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Measles infection through transmission/contact."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from latent infection to infectiousness.",
+      "page_number": 0,
+      "text_span": "Progression from latent infection to infectiousness.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from latent infection to infectiousness."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infection with acquisition of immunity.",
+      "page_number": 0,
+      "text_span": "Recovery from infection with acquisition of immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infection with acquisition of immunity."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Single Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Receipt of the first measles-containing vaccine dose.",
+      "page_number": 0,
+      "text_span": "Receipt of the first measles-containing vaccine dose.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Receipt of the first measles-containing vaccine dose."
+    },
+    {
+      "source": "Single Vaccinated",
+      "target": "Double Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Receipt of the second measles-containing vaccine dose.",
+      "page_number": 0,
+      "text_span": "Receipt of the second measles-containing vaccine dose.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Receipt of the second measles-containing vaccine dose."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "infection rate",
+      "raw_text": "infection rate",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Transmission intensity parameter used in the fitted transmission model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission intensity parameter used in the fitted transmission model."
+    },
+    {
+      "normalized_name": "duration of maternal immunity",
+      "raw_text": "duration of maternal immunity",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Average duration of maternally derived protection before susceptibility.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average duration of maternally derived protection before susceptibility."
+    },
+    {
+      "normalized_name": "seasonality of transmission",
+      "raw_text": "seasonality of transmission",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Parameters governing seasonal variation in measles transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameters governing seasonal variation in measles transmission."
+    },
+    {
+      "normalized_name": "importation parameters",
+      "raw_text": "importation parameters",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Parameters governing imported measles cases and their reporting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameters governing imported measles cases and their reporting."
+    },
+    {
+      "normalized_name": "report rate of imported cases",
+      "raw_text": "report rate of imported cases",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Probability that imported cases are reported.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability that imported cases are reported."
+    },
+    {
+      "normalized_name": "vaccine effectiveness",
+      "raw_text": "vaccine effectiveness",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Effectiveness of measles vaccination in preventing infection/clinical disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effectiveness of measles vaccination in preventing infection/clinical disease."
+    },
+    {
+      "normalized_name": "existing immunity in older generations",
+      "raw_text": "existing immunity in older generations",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Background immunity among older age groups.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Background immunity among older age groups."
+    },
+    {
+      "normalized_name": "parameters of spatial spread",
+      "raw_text": "parameters of spatial spread",
+      "value": "estimated from model fitting",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Parameters describing geographic spread between regions.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameters describing geographic spread between regions."
+    },
+    {
+      "normalized_name": "waning rate",
+      "raw_text": "waning rate",
+      "value": "estimated from previous work",
+      "unit": "not stated",
+      "page_number": 0,
+      "text_span": "Rate of waning of vaccine-induced immunity in the sensitivity analysis with waning.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of waning of vaccine-induced immunity in the sensitivity analysis with waning."
+    },
+    {
+      "normalized_name": "MMR1 coverage increase",
+      "raw_text": "MMR1 coverage increase",
+      "value": "0.25%, 0.5%, 1%",
+      "unit": "absolute percentage points",
+      "page_number": 0,
+      "text_span": "Scenario changes in annual first-dose coverage.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Scenario changes in annual first-dose coverage."
+    },
+    {
+      "normalized_name": "MMR2 coverage increase",
+      "raw_text": "MMR2 coverage increase",
+      "value": "up to 3%",
+      "unit": "absolute percentage points",
+      "page_number": 0,
+      "text_span": "Scenario changes in annual second-dose coverage.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Scenario changes in annual second-dose coverage."
+    },
+    {
+      "normalized_name": "MMR2 schedule age",
+      "raw_text": "MMR2 schedule age",
+      "value": "2 years",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Alternative second-dose timing used in simulations instead of 3 years and 4 months.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Alternative second-dose timing used in simulations instead of 3 years and 4 months."
+    },
+    {
+      "normalized_name": "MMR2 school-entry age",
+      "raw_text": "MMR2 school-entry age",
+      "value": "5 years",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Alternative second-dose timing at school entry.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Alternative second-dose timing at school entry."
+    },
+    {
+      "normalized_name": "current MMR2 schedule age",
+      "raw_text": "current MMR2 schedule age",
+      "value": "3 years and 4 months",
+      "unit": "years and months",
+      "page_number": 0,
+      "text_span": "Reference second-dose timing in England.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reference second-dose timing in England."
+    },
+    {
+      "normalized_name": "MMR1 schedule age",
+      "raw_text": "MMR1 schedule age",
+      "value": "1 year",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Reference first-dose timing in England.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reference first-dose timing in England."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 6,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 5,
+    "num_parameters": 15,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

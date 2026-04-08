@@ -1,0 +1,435 @@
+{
+  "paper_name": "Dengue3",
+  "summary": {
+    "extraction": {
+      "compartments": 11,
+      "flows": 13,
+      "parameters": 19,
+      "stratifications": 2,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "S"
+    ],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans (Temporary Cross-Protection)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans (Single Serotype Immunity)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans (Multiple Serotype Immunity)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated Seronegative Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated Seropositive Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Humans",
+        "target": "Recovered Humans (Temporary Cross-Protection)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Temporary Cross-Protection)",
+        "target": "Recovered Humans (Single Serotype Immunity)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Single Serotype Immunity)",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Multiple Serotype Immunity)",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Humans",
+        "target": "Vaccinated Seronegative Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Single Serotype Immunity)",
+        "target": "Vaccinated Seropositive Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Seronegative Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Seropositive Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Mosquitoes",
+        "target": "Susceptible Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Vaccine coverage (routine)",
+        "value": "80%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccine coverage (reduced)",
+        "value": "50%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Catch-up campaign coverage",
+        "value": "80%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Age of routine vaccination",
+        "value": "9",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Number of vaccine doses",
+        "value": "3",
+        "unit": "doses",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dose interval",
+        "value": "6",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Overall vaccine efficacy (active phase)",
+        "value": "60.3",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "SP9 very low transmission",
+        "value": "10",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "SP9 low transmission",
+        "value": "30",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "SP9 moderate transmission",
+        "value": "50",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "SP9 high transmission",
+        "value": "70",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "SP9 very high transmission",
+        "value": "90",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Case fatality ratio (symptomatic dengue)",
+        "value": "0.03-0.09",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Discount rate",
+        "value": "3",
+        "unit": "percent per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost-effectiveness threshold",
+        "value": "2000",
+        "unit": "USD per DALY averted",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "DALYs per symptomatic dengue case",
+        "value": "0.006",
+        "unit": "DALYs",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "DALYs per severe dengue case",
+        "value": "0.02",
+        "unit": "DALYs",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Time horizon",
+        "value": "30",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Number of serotypes",
+        "value": "4",
+        "unit": "serotypes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 11,
+    "flows": 13,
+    "parameters": 19,
+    "stratifications": 2,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 47,
+    "items_with_evidence": 47,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 47,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 47,
+      "items_with_evidence": 47,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 47,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 0,
+        "fp": 11,
+        "fn": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "flows": {
+        "tp": 0,
+        "fp": 13,
+        "fn": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 18,
+        "fn": 7,
+        "precision": 0.0526,
+        "recall": 0.125,
+        "f1": 0.0741
+      },
+      "composite_score": 0.0111,
+      "compartment_matches": [],
+      "flow_matches": [],
+      "parameter_matches": [
+        {
+          "gold": "RoutineVaccinationRate 0.05 Routine vaccination of 9-year-olds",
+          "extracted": "Vaccine coverage (routine) 80% Default coverage for routine vaccination of 9-year-old children",
+          "score": 0.8211318254470825
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

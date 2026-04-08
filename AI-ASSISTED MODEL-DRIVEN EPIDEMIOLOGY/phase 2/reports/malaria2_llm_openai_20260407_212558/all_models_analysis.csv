@@ -1,0 +1,36 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria2,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Pre-patent Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Treated Clinical Disease Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Untreated Clinical Disease Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Patent Asymptomatic Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Sub-patent Asymptomatic Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Prophylaxis Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Latent Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Pre-patent Humans,RateFlow,//@parameters.9,False,Humans become infected at the force of infection.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease Humans,RateFlow,//@parameters.0,False,A fraction of infected humans develop clinical disease and are successfully treated.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Patent Asymptomatic Humans,RateFlow,//@parameters.0,False,A fraction of infected humans develop patent asymptomatic infection.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Prophylaxis Humans,RateFlow,//@parameters.0,False,Successfully treated individuals clear infection and enter prophylactic protection.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Patent Asymptomatic Humans,RateFlow,//@parameters.0,False,Individuals who fail treatment eventually clear disease and become patent asymptomatic.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Sub-patent Asymptomatic Humans,RateFlow,//@parameters.9,False,Patent asymptomatic infection progresses to sub-patent infection.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,Sub-patent infection is eventually cleared and individuals return to full susceptibility.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,Individuals return to susceptibility after prophylaxis wanes.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Latent Mosquitoes,RateFlow,//@parameters.1,False,Mosquitoes become infected when taking an infectious bite from humans.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.0,False,Latent mosquitoes become infectious to humans after the extrinsic incubation period.,,,
+Malaria2,Parameter,L,,,,,,Model file,Certain,,,,,,Population force of infection determining human infection risk.,CONSTANT,force of infection,per time
+Malaria2,Parameter,w,,,,,,Model file,Certain,,,,,,Determined by current level of anti-disease immunity.,CONSTANT,probability of developing clinical disease,probability
+Malaria2,Parameter,f_T,,,,,,Model file,Certain,,,,,,Fixed probability that individuals with clinical disease receive effective treatment.,CONSTANT,probability of being treated successfully,probability
+Malaria2,Parameter,r_T,,,,,,Model file,Certain,,,,,,Rate at which successfully treated individuals enter prophylaxis.,CONSTANT,rate of entering prophylactic protection after treatment,per time
+Malaria2,Parameter,r_P,,,,,,Model file,Certain,,,,,,Rate at which prophylaxis wanes and individuals return to susceptibility.,CONSTANT,rate of leaving prophylactic protection,per time
+Malaria2,Parameter,r_D,,,,,,Model file,Certain,,,,,,Rate at which untreated clinical disease resolves into patent asymptomatic infection.,CONSTANT,rate of clearing untreated clinical disease,per time
+Malaria2,Parameter,r_A,,,,,,Model file,Certain,,,,,,Depends on anti-parasite immunity.,CONSTANT,rate of progression from patent asymptomatic infection to sub-patent infection,per time
+Malaria2,Parameter,r_U,,,,,,Model file,Certain,,,,,,Rate at which sub-patent infection is cleared and susceptibility is restored.,CONSTANT,rate of clearing sub-patent infection,per time
+Malaria2,Parameter,HBI,,,,,,Model file,Certain,,,,,,Determines mosquito infectivity to humans together with biting rate.,CONSTANT,human blood index,proportion
+Malaria2,Parameter,EIR,,,,,,Model file,Certain,,,,,,Used to characterize transmission intensity and fit the model.,CONSTANT,entomological inoculation rate,infectious bites per person per year
+Malaria2,Parameter,SP,,,,,,Model file,Certain,,,,,,Assumed first-line therapy before ACT introduction; drug half-life determines prophylaxis duration.,CONSTANT,sulphadoxine-pyrimethamine,drug
+Malaria2,Parameter,ACT,,,,,,Model file,Certain,,,,,,First-line treatment after introduction; also used in MSAT.,CONSTANT,artemisinin-combination therapy,drug
+Malaria2,Parameter,DDT,,,,,,Model file,Certain,,,,,,Used in IRS; assumed half-life of 6 months.,CONSTANT,dichlorodiphenyltrichloroethane,insecticide
+Malaria2,Parameter,LLIN,,,,,,Model file,Certain,,,,,,Vector control intervention with protective efficacy that decays over time.,CONSTANT,long-lasting insecticide-treated net,intervention
+Malaria2,Parameter,"RTS,S/AS01",,,,,,Model file,Certain,,,,,,Assumed to reduce transmission from mosquitoes to people; efficacy half-life of 3 years.,CONSTANT,pre-erythrocytic vaccine,vaccine

@@ -1,0 +1,476 @@
+{
+  "paper_name": "Influenza3",
+  "summary": {
+    "extraction": {
+      "compartments": 9,
+      "flows": 11,
+      "parameters": 13,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Effectively Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Ineffectively Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Protected",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Latent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Hospitalized",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Latent",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Effectively Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Ineffectively Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Effectively Vaccinated",
+        "target": "Protected",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Effectively Vaccinated",
+        "target": "Latent",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Ineffectively Vaccinated",
+        "target": "Latent",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Hospitalized",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized",
+        "target": "Dead",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "k",
+        "value": "1/1.9",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_1",
+        "value": "1/1.5",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_2",
+        "value": "1/1.5",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "g",
+        "value": "1/10",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "e_i",
+        "value": "77.5% for <65y, 35% for >=65y",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "n(t)",
+        "value": null,
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "q",
+        "value": "Calibrated to R0",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_ij",
+        "value": "From [27]",
+        "unit": "contacts/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_ij",
+        "value": "q * c_ij",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "p_Hi",
+        "value": "Varies by age and scenario",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "CFP_i",
+        "value": "Varies by age and scenario",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "a_i",
+        "value": "(p_Hi / (1 - p_Hi)) * c_1",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d_i",
+        "value": "(CFP_i / (1 - CFP_i)) * c_2",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 9,
+    "flows": 11,
+    "parameters": 13,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 36,
+    "items_with_evidence": 36,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 36,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 36,
+      "items_with_evidence": 36,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 36,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 7,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.7778,
+        "recall": 0.7778,
+        "f1": 0.7778
+      },
+      "flows": {
+        "tp": 11,
+        "fp": 0,
+        "fn": 3,
+        "precision": 1.0,
+        "recall": 0.7857,
+        "f1": 0.88
+      },
+      "parameters": {
+        "tp": 5,
+        "fp": 8,
+        "fn": 5,
+        "precision": 0.3846,
+        "recall": 0.5,
+        "f1": 0.4348
+      },
+      "composite_score": 0.7698,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "VaccinatedIneffective",
+          "extracted": "Effectively Vaccinated",
+          "score": 0.7909148931503296
+        },
+        {
+          "gold": "Latent",
+          "extracted": "Latent",
+          "score": 0.9999996423721313
+        },
+        {
+          "gold": "InfectiousCommunity",
+          "extracted": "Infectious",
+          "score": 0.8125841617584229
+        },
+        {
+          "gold": "Hospitalized",
+          "extracted": "Hospitalized",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Recovered",
+          "extracted": "Recovered",
+          "score": 1.0
+        },
+        {
+          "gold": "Dead",
+          "extracted": "Dead",
+          "score": 0.9999999403953552
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Latent",
+          "extracted": "Susceptible->Latent",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Susceptible->VaccinatedEffectiveNotYetProtected",
+          "extracted": "Susceptible->Ineffectively Vaccinated",
+          "score": 0.7580852508544922
+        },
+        {
+          "gold": "Susceptible->VaccinatedIneffective",
+          "extracted": "Susceptible->Effectively Vaccinated",
+          "score": 0.8782750368118286
+        },
+        {
+          "gold": "VaccinatedEffectiveNotYetProtected->ProtectedByVaccination",
+          "extracted": "Effectively Vaccinated->Protected",
+          "score": 0.7859187126159668
+        },
+        {
+          "gold": "VaccinatedIneffective->Latent",
+          "extracted": "Effectively Vaccinated->Latent",
+          "score": 0.9078693389892578
+        },
+        {
+          "gold": "VaccinatedIneffective->Latent",
+          "extracted": "Ineffectively Vaccinated->Latent",
+          "score": 0.8834000825881958
+        },
+        {
+          "gold": "Latent->InfectiousCommunity",
+          "extracted": "Latent->Infectious",
+          "score": 0.9173951148986816
+        },
+        {
+          "gold": "InfectiousCommunity->Hospitalized",
+          "extracted": "Infectious->Hospitalized",
+          "score": 0.920010507106781
+        },
+        {
+          "gold": "InfectiousCommunity->Recovered",
+          "extracted": "Infectious->Recovered",
+          "score": 0.892540693283081
+        },
+        {
+          "gold": "Hospitalized->Recovered",
+          "extracted": "Hospitalized->Recovered",
+          "score": 1.0
+        },
+        {
+          "gold": "Hospitalized->Dead",
+          "extracted": "Hospitalized->Dead",
+          "score": 1.0
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "ProtectionDelayRate 0.10 gamma, rate of becoming protected after vaccination; mean 10 days in the paper",
+          "extracted": "g 1/10 Rate at which effectively vaccinated individuals become protected (mean of 10 days).",
+          "score": 0.7394304275512695
+        },
+        {
+          "gold": "LatentProgressionRate 0.526 kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper",
+          "extracted": "k 1/1.9 Rate of progression from latent to infectious state.",
+          "score": 0.7721819877624512
+        },
+        {
+          "gold": "HospitalizationRate 0.08 a_i, age-specific hospitalization rate among infectious individuals",
+          "extracted": "a_i (p_Hi / (1 - p_Hi)) * c_1 Age-specific hospitalization rate for infectious individuals.",
+          "score": 0.83153235912323
+        },
+        {
+          "gold": "CommunityRecoveryRate 0.667 c_1, recovery rate for infectious individuals in the community; based on mean 1.5 days in the paper",
+          "extracted": "c_1 1/1.5 Recovery rate for infectious class.",
+          "score": 0.7643155455589294
+        },
+        {
+          "gold": "HospitalRecoveryRate 0.667 c_2, recovery rate for hospitalized individuals; based on mean 1.5 days in the paper",
+          "extracted": "c_2 1/1.5 Recovery rate for hospitalized class.",
+          "score": 0.7799180746078491
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

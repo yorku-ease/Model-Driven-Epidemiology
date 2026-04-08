@@ -1,0 +1,212 @@
+{
+  "modelName": "Dengue2",
+  "summary": {
+    "modelName": "Dengue2",
+    "totalPopulation": null,
+    "numCompartments": 5,
+    "numParameters": 13,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Transmission of dengue virus from an infectious mosquito to a susceptible human during a blood-feed.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infection, leading to lifelong immunity to the infecting serotype.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Recovered Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 3,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.4",
+            "description": "Transmission of dengue virus from an infectious human to a susceptible mosquito during a blood-feed.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Per-exposure protection from vaccination for seronegative vaccinees",
+        "type": "CONSTANT",
+        "expression": "0.321",
+        "description": "Per-exposure protection from vaccination for seronegative vaccinees.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "Per-exposure protection from vaccination for seropositive vaccinees",
+        "type": "CONSTANT",
+        "expression": "0.516",
+        "description": "Per-exposure protection from vaccination for seropositive vaccinees.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "Average duration of protection for seronegative vaccinees",
+        "type": "CONSTANT",
+        "expression": "426",
+        "description": "Average duration of temporary cross-immunity after vaccination for seronegative vaccinees.",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "Average duration of protection for seropositive vaccinees",
+        "type": "CONSTANT",
+        "expression": "258",
+        "description": "Average duration of temporary cross-immunity after vaccination for seropositive vaccinees.",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "Probability of symptoms conditional on infection (primary)",
+        "type": "CONSTANT",
+        "expression": "0.405",
+        "description": "Probability that a primary DENV infection results in symptoms.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "Probability of symptoms conditional on infection (secondary)",
+        "type": "CONSTANT",
+        "expression": "0.339",
+        "description": "Probability that a secondary DENV infection results in symptoms.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "Probability of symptoms conditional on infection (post-secondary)",
+        "type": "CONSTANT",
+        "expression": "0.09",
+        "description": "Probability that a post-secondary DENV infection results in symptoms.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "Probability of hospitalization conditional on symptoms (primary)",
+        "type": "CONSTANT",
+        "expression": "0.074",
+        "description": "Probability of hospitalization for a symptomatic primary DENV infection.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 8,
+        "name": "Probability of hospitalization conditional on symptoms (secondary)",
+        "type": "CONSTANT",
+        "expression": "0.376",
+        "description": "Probability of hospitalization for a symptomatic secondary DENV infection.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "Probability of hospitalization conditional on symptoms (post-secondary)",
+        "type": "CONSTANT",
+        "expression": "0.101",
+        "description": "Probability of hospitalization for a symptomatic post-secondary DENV infection.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "Probability of death conditional on symptomatic disease",
+        "type": "CONSTANT",
+        "expression": "0.0078",
+        "description": "Proportion of symptomatic cases that result in death.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "Probability of mosquito to human transmission",
+        "type": "CONSTANT",
+        "expression": "N/A",
+        "description": "The probability of an infectious mosquito infecting a susceptible human during blood-feeding. Value was calibrated to achieve a target seroprevalence.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "Mosquito emergence rate",
+        "type": "CONSTANT",
+        "expression": "N/A",
+        "description": "The emergence rate of adult female mosquitoes. Value was calibrated to achieve a target seroprevalence.",
+        "unit": "mosquitoes per day"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

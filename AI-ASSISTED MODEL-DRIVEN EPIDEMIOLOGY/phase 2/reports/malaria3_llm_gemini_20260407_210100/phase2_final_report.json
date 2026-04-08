@@ -1,0 +1,404 @@
+{
+  "paper_name": "Malaria3",
+  "summary": {
+    "extraction": {
+      "compartments": 9,
+      "flows": 13,
+      "parameters": 13,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "S",
+      "Infectious",
+      "Susceptible",
+      "D"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic and Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic and Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious and Undetectable by Microscopy Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated and Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Protected Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Symptomatic and Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Humans",
+        "target": "Asymptomatic and Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic and Infectious Humans",
+        "target": "Asymptomatic and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic and Infectious Humans",
+        "target": "Infectious and Undetectable by Microscopy Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious and Undetectable by Microscopy Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic and Infectious Humans",
+        "target": "Treated and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic and Infectious Humans",
+        "target": "Treated and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious and Undetectable by Microscopy Humans",
+        "target": "Treated and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated and Infectious Humans",
+        "target": "Protected Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Humans",
+        "target": "Protected Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Protected Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "ACT efficacy",
+        "value": "95",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Non-ACT efficacy",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia (non-artemisinins)",
+        "value": "55.6",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia (ACT)",
+        "value": "13.4",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia (ACT-PQ)",
+        "value": "3.0",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Prophylaxis duration (short-acting)",
+        "value": "10",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Prophylaxis duration (long-acting)",
+        "value": "30",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectiousness reduction (non-artemisinins)",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectiousness reduction (ACT, ACT-PQ)",
+        "value": "80.6",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Correlation in MDA participation",
+        "value": "0.5",
+        "unit": "none",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative infectivity of Asymptomatic Humans",
+        "value": "1/3",
+        "unit": "none",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative infectivity of Subpatent Humans",
+        "value": "1/17",
+        "unit": "none",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "MDA coverage",
+        "value": "80",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 9,
+    "flows": 13,
+    "parameters": 13,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 38,
+    "items_with_evidence": 38,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 38,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 38,
+      "items_with_evidence": 38,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 38,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 2,
+        "fp": 7,
+        "fn": 7,
+        "precision": 0.2222,
+        "recall": 0.2222,
+        "f1": 0.2222
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 10,
+        "fn": 17,
+        "precision": 0.2308,
+        "recall": 0.15,
+        "f1": 0.1818
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 13,
+        "fn": 16,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.1717,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible Humans",
+          "score": 0.8397186994552612
+        },
+        {
+          "gold": "SymptomaticInfectious",
+          "extracted": "Symptomatic and Infectious Humans",
+          "score": 0.7102208733558655
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->SymptomaticInfectious",
+          "extracted": "Susceptible Humans->Symptomatic and Infectious Humans",
+          "score": 0.752021074295044
+        },
+        {
+          "gold": "Susceptible->AsymptomaticPatentInfectious",
+          "extracted": "Susceptible Humans->Asymptomatic and Infectious Humans",
+          "score": 0.7004426717758179
+        },
+        {
+          "gold": "ProtectedByProphylaxis->Susceptible",
+          "extracted": "Protected Humans->Susceptible Humans",
+          "score": 0.7201669216156006
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

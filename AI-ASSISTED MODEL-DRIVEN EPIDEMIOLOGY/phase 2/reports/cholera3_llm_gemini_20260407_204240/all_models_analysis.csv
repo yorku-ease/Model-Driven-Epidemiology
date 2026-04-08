@@ -1,0 +1,15 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Bacteria in Water,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,"Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability.",,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Bacteria in Water,RateFlow,//@parameters.0,False,Contribution of each infected person to the aquatic population of V. cholerae through excretion.,,,
+Cholera3,Parameter,H,,,,,,Model file,Certain,,,,,,Total human population.,CONSTANT,10000,persons
+Cholera3,Parameter,n,,,,,,Model file,Certain,,,,,,Human birth and death rates.,CONSTANT,0.0001 or 0.001,day-1
+Cholera3,Parameter,a,,,,,,Model file,Certain,,,,,,Rate of exposure to contaminated water.,CONSTANT,0.5 or 1,day-1
+Cholera3,Parameter,K,,,,,,Model file,Certain,,,,,,Concentration of V. cholerae in water that yields a 50% chance of catching cholera.,CONSTANT,1e6,cells/ml
+Cholera3,Parameter,r,,,,,,Model file,Certain,,,,,,Rate at which people recover from cholera.,CONSTANT,0.2,day-1
+Cholera3,Parameter,nb,,,,,,Model file,Certain,,,,,,Growth rate of V. cholerae in the aquatic environment.,CONSTANT,0.0,day-1
+Cholera3,Parameter,mb,,,,,,Model file,Certain,,,,,,Loss rate of V. cholerae in the aquatic environment.,CONSTANT,0.0,day-1
+Cholera3,Parameter,nb-mb,,,,,,Model file,Certain,,,,,,Net loss rate of V. cholerae in the aquatic environment (value from Table 2).,CONSTANT,-0.33,day-1
+Cholera3,Parameter,e,,,,,,Model file,Certain,,,,,,Contribution of each infected person to the population of V. cholerae in the aquatic environment.,CONSTANT,10,cell/ml day-1 person-1

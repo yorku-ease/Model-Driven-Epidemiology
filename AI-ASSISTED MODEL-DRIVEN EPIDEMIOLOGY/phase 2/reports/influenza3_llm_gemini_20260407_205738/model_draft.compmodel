@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="k" expression="1/1.9" type="CONSTANT" description="Rate of progression from latent to infectious state." unit="1/day"/>
+  <parameters name="c_1" expression="1/1.5" type="CONSTANT" description="Recovery rate for infectious class." unit="1/day"/>
+  <parameters name="c_2" expression="1/1.5" type="CONSTANT" description="Recovery rate for hospitalized class." unit="1/day"/>
+  <parameters name="g" expression="1/10" type="CONSTANT" description="Rate at which effectively vaccinated individuals become protected (mean of 10 days)." unit="1/day"/>
+  <parameters name="e_i" expression="77.5% for &lt;65y, 35% for &gt;=65y" type="CONSTANT" description="Age-specific vaccine efficacy." unit="dimensionless"/>
+  <parameters name="n(t)" expression="0.0" type="CONSTANT" description="Vaccination rate, administered t* days after epidemic onset." unit="1/day"/>
+  <parameters name="q" expression="Calibrated to R0" type="CONSTANT" description="Transmission probability per contact." unit="dimensionless"/>
+  <parameters name="c_ij" expression="From [27]" type="CONSTANT" description="Age-specific contact rates." unit="contacts/day"/>
+  <parameters name="b_ij" expression="q * c_ij" type="CONSTANT" description="Transmission rate between age groups i and j." unit="1/day"/>
+  <parameters name="p_Hi" expression="Varies by age and scenario" type="CONSTANT" description="Fraction of clinical cases that are hospitalized for age group i." unit="dimensionless"/>
+  <parameters name="CFP_i" expression="Varies by age and scenario" type="CONSTANT" description="Case fatality proportion (probability of death following hospitalization) for age group i." unit="dimensionless"/>
+  <parameters name="a_i" expression="(p_Hi / (1 - p_Hi)) * c_1" type="CONSTANT" description="Age-specific hospitalization rate for infectious individuals." unit="1/day"/>
+  <parameters name="d_i" expression="(CFP_i / (1 - CFP_i)) * c_2" type="CONSTANT" description="Age-specific influenza mortality rate for hospitalized individuals." unit="1/day"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.11" target="//@compartments.4" description="Infection of susceptible individuals at the force of infection lambda_i."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.1" description="Vaccination of susceptible individuals who will become protected, occurring at rate e_i * n(t)."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.2" description="Vaccination of susceptible individuals who will not become protected, occurring at rate (1-e_i) * n(t)."/>
+  </compartments>
+  <compartments PrimaryName="Effectively Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.3" description="Development of protection in effectively vaccinated individuals at rate gamma."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.11" target="//@compartments.4" description="Infection of effectively vaccinated but not yet protected individuals at the force of infection lambda_i."/>
+  </compartments>
+  <compartments PrimaryName="Ineffectively Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.11" target="//@compartments.4" description="Infection of ineffectively vaccinated individuals at the force of infection lambda_i."/>
+  </compartments>
+  <compartments PrimaryName="Protected" population="0"/>
+  <compartments PrimaryName="Latent" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Progression from latent to infectious state at rate k."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.6" description="Hospitalization of infectious individuals at age-specific rate alpha_i."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.7" description="Recovery of non-hospitalized infectious individuals at rate c_1."/>
+  </compartments>
+  <compartments PrimaryName="Hospitalized" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.7" description="Recovery of hospitalized individuals at rate c_2."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.8" description="Death of hospitalized individuals at age-specific rate d_i."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

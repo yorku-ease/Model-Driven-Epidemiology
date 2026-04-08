@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Force of infection (age 0-1)" expression="0.0690" type="CONSTANT" description="Age-specific force of infection for age group 0-1 years, estimated from pre-vaccination notification data" unit="per person per year"/>
+  <parameters name="Force of infection (age 1-2)" expression="0.1075" type="CONSTANT" description="Age-specific force of infection for age group 1-2 years" unit="per person per year"/>
+  <parameters name="Force of infection (age 2-3)" expression="0.1572" type="CONSTANT" description="Age-specific force of infection for age group 2-3 years" unit="per person per year"/>
+  <parameters name="Force of infection (age 3-4)" expression="0.2005" type="CONSTANT" description="Age-specific force of infection for age group 3-4 years" unit="per person per year"/>
+  <parameters name="Force of infection (age 4-5)" expression="0.2582" type="CONSTANT" description="Age-specific force of infection for age group 4-5 years" unit="per person per year"/>
+  <parameters name="Force of infection (age 5-10)" expression="0.5167" type="CONSTANT" description="Age-specific force of infection for age group 5-10 years" unit="per person per year"/>
+  <parameters name="Force of infection (age 10-15)" expression="0.2549" type="CONSTANT" description="Age-specific force of infection for age group 10-15 years" unit="per person per year"/>
+  <parameters name="Force of infection (age 15-75)" expression="0.0989" type="CONSTANT" description="Age-specific force of infection for age group 15-75 years" unit="per person per year"/>
+  <parameters name="Rate of progression from latency" expression="52.14" type="CONSTANT" description="Rate of progression from latent to infectious class; average latent period of 7 days" unit="per person per year"/>
+  <parameters name="Rate of recovery from infection" expression="52.14" type="CONSTANT" description="Rate of recovery from infectious class; average infectious period of 7 days" unit="per person per year"/>
+  <parameters name="Rate of loss of passive immunity" expression="4.0" type="CONSTANT" description="Rate of loss of maternal antibody protection; average duration of maternal protection is 3 months" unit="per person per year"/>
+  <parameters name="Vaccine efficacy (p)" expression="0.90" type="CONSTANT" description="Proportion of vaccinated susceptibles who gain lasting immunity and are no longer able to transmit infection" unit="dimensionless"/>
+  <parameters name="Birth rate" expression="666666" type="CONSTANT" description="Fixed annual birth cohort size approximating births in England and Wales over the study period" unit="per year"/>
+  <parameters name="Background death rate (adults)" expression="0.0167" type="CONSTANT" description="Background death rate for the residual adult age group (1/60 per person per year)" unit="per person per year"/>
+  <parameters name="Average duration of latent period" expression="7" type="CONSTANT" description="Average duration of the latent (pre-patent) period" unit="days"/>
+  <parameters name="Average duration of infectious period" expression="7" type="CONSTANT" description="Average duration of the infectious period" unit="days"/>
+  <parameters name="Average duration of maternal protection" expression="3" type="CONSTANT" description="Average duration of passive maternal antibody protection" unit="months"/>
+  <compartments PrimaryName="Maternally Protected" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Loss of passive maternal antibody protection over the first year of life"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection of susceptibles through contact with infectious individuals, at age-specific force of infection"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Successful vaccination of susceptibles (proportion p) leading to lasting immunity"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Vaccination of susceptibles who fail to gain effective protection (proportion 1-p)"/>
+  </compartments>
+  <compartments PrimaryName="Latent" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.3" description="Progression from latent to infectious period"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.4" description="Recovery from infection establishing lasting immunity"/>
+  </compartments>
+  <compartments PrimaryName="Immune" population="0"/>
+  <compartments PrimaryName="Vaccine Failure" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection of vaccine failures through contact with infectious individuals, following the same course as susceptibles"/>
+  </compartments>
+</compartmental:CompartmentalModel>

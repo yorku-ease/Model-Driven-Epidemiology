@@ -1,0 +1,28 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Hiv2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Early Infection,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Asymptomatic Infection,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Pre-AIDS Infection,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,AIDS,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,On Antiretroviral Therapy,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Compartment,Dropped Out of Treatment,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Early Infection,RateFlow,//@parameters.9,False,HIV acquisition through sexual transmission.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Asymptomatic Infection,RateFlow,//@parameters.9,False,Progression from early infection to asymptomatic infection.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Pre-AIDS Infection,RateFlow,//@parameters.9,False,Progression from asymptomatic infection to pre-AIDS infection.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy,RateFlow,0.0,False,Initiation of ART after meeting eligibility criteria.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,AIDS,RateFlow,//@parameters.9,False,Progression from pre-AIDS infection to AIDS.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy,RateFlow,0.0,False,Initiation of ART after meeting eligibility criteria.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy,RateFlow,0.0,False,Initiation of ART after meeting eligibility criteria.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,Dropped Out of Treatment,RateFlow,0.0,False,Dropout from ART at a constant rate to achieve the specified retention level.,,,
+Hiv2,Flow,,,,,,,Model file,Certain,,On Antiretroviral Therapy,RateFlow,0.0,False,Return to treatment after dropout in models that allow re-initiation.,,,
+Hiv2,Parameter,CD4 treatment eligibility threshold,,,,,,Model file,Certain,,,,,,Eligibility scenarios evaluated for ART initiation.,CONSTANT,200 cells/ml; 350 cells/ml; all HIV-infected individuals,cells/ml or categorical
+Hiv2,Parameter,Average time from eligibility to treatment initiation,,,,,,Model file,Certain,,,,,,Eligible individuals with access initiate ART at a constant rate such that the mean delay is 1 year.,CONSTANT,1,year
+Hiv2,Parameter,Treatment access,,,,,,Model file,Certain,,,,,,Proportion of eligible individuals who eventually initiate treatment.,CONSTANT,"50%, 60%, 70%, 80%, 90%, 95%, 100%",proportion
+Hiv2,Parameter,Retention on treatment after 3 years,,,,,,Model file,Certain,,,,,,"Proportion remaining on ART after 3 years, excluding deaths on treatment.",CONSTANT,"75%, 85%, 95%, 100%",proportion
+Hiv2,Parameter,ART introduction time,,,,,,Model file,Certain,,,,,,ART assumed to be introduced from the beginning of 2012.,CONSTANT,2012,year
+Hiv2,Parameter,Baseline future scale-up ART starts,,,,,,Model file,Certain,,,,,,Number of adults starting ART each year in the baseline future scale-up scenario.,CONSTANT,"400,000 per year",adults/year
+Hiv2,Parameter,Low future scale-up ART starts,,,,,,Model file,Certain,,,,,,Total adults initiating ART in the low future scale-up scenario.,CONSTANT,"1,200,000 total over 2012-2016",adults
+Hiv2,Parameter,Medium future scale-up ART starts,,,,,,Model file,Certain,,,,,,Total adults initiating ART in the medium future scale-up scenario.,CONSTANT,"3,000,000 total over 2012-2016",adults
+Hiv2,Parameter,High future scale-up ART starts,,,,,,Model file,Certain,,,,,,Total adults initiating ART in the high future scale-up scenario.,CONSTANT,"3,900,000 total over 2012-2016",adults
+Hiv2,Parameter,ART transmission reduction,,,,,,Model file,Certain,,,,,,Most models assume ART reduces transmissibility by more than 90%.,CONSTANT,greater than 90%,proportion reduction
+Hiv2,Parameter,Early infection transmissibility increase,,,,,,Model file,Certain,,,,,,Alternative assumptions used across models for early infection infectiousness.,CONSTANT,10-fold or 26-fold relative to asymptomatic infection,relative risk

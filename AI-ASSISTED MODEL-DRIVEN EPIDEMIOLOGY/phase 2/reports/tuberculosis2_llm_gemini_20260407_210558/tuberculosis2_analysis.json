@@ -1,0 +1,283 @@
+{
+  "modelName": "Tuberculosis2",
+  "summary": {
+    "modelName": "Tuberculosis2",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 4,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.2",
+            "description": "Development of progressive primary infectious disease upon new infection.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.3",
+            "description": "Development of progressive primary non-infectious disease upon new infection.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "New infection leading to a latent state without immediate active disease.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Latent",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Endogenous reactivation of latent infection to infectious tuberculosis.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Endogenous reactivation of latent infection to non-infectious tuberculosis.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful cure through chemotherapy, returning the individual to the latent class.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Failure to complete treatment (fail, default, or transfer out).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Resolution of tuberculosis without treatment.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Non-infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful cure through chemotherapy, returning the individual to the latent class.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Failure to complete treatment (fail, default, or transfer out).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Resolution of tuberculosis without treatment.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Treatment Failure",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse to infectious tuberculosis after treatment failure.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse to non-infectious tuberculosis after treatment failure.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Self-Cured",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse to infectious tuberculosis after self-cure.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse to non-infectious tuberculosis after self-cure.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Target case detection rate",
+        "type": "CONSTANT",
+        "expression": "70",
+        "description": "WHO target for the proportion of incident infectious cases detected and treated per year.",
+        "unit": "%"
+      },
+      {
+        "index": 1,
+        "name": "Target cure rate",
+        "type": "CONSTANT",
+        "expression": "85",
+        "description": "WHO target for the proportion of treated cases that are cured under a new DOTS programme.",
+        "unit": "%"
+      },
+      {
+        "index": 2,
+        "name": "Proportion of treatment failures remaining infectious",
+        "type": "CONSTANT",
+        "expression": "25-100",
+        "description": "The proportion of patients who fail treatment that remain infectious, used in sensitivity analysis.",
+        "unit": "%"
+      },
+      {
+        "index": 3,
+        "name": "Relative case detection rate of non-infectious cases",
+        "type": "CONSTANT",
+        "expression": "0.5-0.8",
+        "description": "The case detection rate for non-infectious cases as a fraction of the rate for infectious cases, varies by region.",
+        "unit": "ratio"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

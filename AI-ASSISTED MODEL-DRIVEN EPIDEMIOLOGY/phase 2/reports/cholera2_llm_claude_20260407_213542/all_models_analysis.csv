@@ -1,0 +1,26 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera2,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera2,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera2,Compartment,Recovered,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera2,Compartment,Vaccinated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,0.0,False,"Transmission of Vibrio cholerae through contact, modulated by seasonally varying transmission parameter and potentially environmental reservoir",,,
+Cholera2,Flow,,,,,,,Model file,Certain,,Vaccinated,RateFlow,0.0,False,"Vaccination with oral cholera vaccine (OCV), providing protection against infection or clinical disease",,,
+Cholera2,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,"Recovery from cholera infection, conferring temporary natural immunity",,,
+Cholera2,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.1,False,"Loss of natural immunity after infection, returning to susceptible state",,,
+Cholera2,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,"Waning of vaccine-induced protection over time, with no protection assumed after 5 years",,,
+Cholera2,Parameter,VE_adult_two_dose,,,,,,Model file,Certain,,,,,,"Initial vaccine efficacy (protection) for two-dose OCV in adults, estimated from case-control study in Haiti",CONSTANT,76,%
+Cholera2,Parameter,VE_child_multiplier,,,,,,Model file,Certain,,,,,,Relative effectiveness of OCV in children aged less than 5 years compared to adults,CONSTANT,46.9,%
+Cholera2,Parameter,VE_child_two_dose,,,,,,Model file,Certain,,,,,,Vaccine efficacy in children younger than 5 years,CONSTANT,30,%
+Cholera2,Parameter,vaccine_protection_duration,,,,,,Model file,Certain,,,,,,Maximum duration of vaccine-induced protection; no protection assumed after 5 years,CONSTANT,5,years
+Cholera2,Parameter,baseline_two_dose_coverage,,,,,,Model file,Certain,,,,,,Baseline vaccination coverage with two-dose OCV regimen,CONSTANT,70,%
+Cholera2,Parameter,baseline_one_dose_coverage,,,,,,Model file,Certain,,,,,,Baseline vaccination coverage with single-dose OCV regimen,CONSTANT,10,%
+Cholera2,Parameter,baseline_no_vaccine,,,,,,Model file,Certain,,,,,,Proportion of population receiving no vaccine under baseline scenario,CONSTANT,20,%
+Cholera2,Parameter,high_two_dose_coverage,,,,,,Model file,Certain,,,,,,High vaccination coverage with two-dose OCV regimen,CONSTANT,95,%
+Cholera2,Parameter,high_one_dose_coverage,,,,,,Model file,Certain,,,,,,One-dose coverage under high-coverage campaign scenario,CONSTANT,1.67,%
+Cholera2,Parameter,high_no_vaccine,,,,,,Model file,Certain,,,,,,Proportion receiving no vaccine under high-coverage campaign scenario,CONSTANT,3.33,%
+Cholera2,Parameter,two_dept_doses,,,,,,Model file,Certain,,,,,,Total OCV doses for two-department campaign (Centre and Artibonite),CONSTANT,3.7,million doses
+Cholera2,Parameter,three_dept_doses,,,,,,Model file,Certain,,,,,,Total OCV doses for three-department campaign,CONSTANT,9.8,million doses
+Cholera2,Parameter,national_doses,,,,,,Model file,Certain,,,,,,Total OCV doses for national campaign (baseline coverage),CONSTANT,16.4,million doses
+Cholera2,Parameter,high_coverage_national_doses,,,,,,Model file,Certain,,,,,,Total OCV doses for high-coverage national campaign,CONSTANT,20.9,million doses
+Cholera2,Parameter,elimination_threshold,,,,,,Model file,Certain,,,,,,Elimination defined as less than one V. cholerae infection over at least 52 consecutive weeks,CONSTANT,<1,infections per 52 consecutive weeks
+Cholera2,Parameter,projection_period,,,,,,Model file,Certain,,,,,,"Duration of model projection period from January 19, 2019 to January 13, 2029",CONSTANT,10,years

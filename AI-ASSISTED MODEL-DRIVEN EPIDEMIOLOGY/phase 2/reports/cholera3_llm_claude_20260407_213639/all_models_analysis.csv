@@ -1,0 +1,17 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Recovered,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Bacteria in Aquatic Reservoir,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,Natural death of susceptibles at rate n (removed from susceptible pool),,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,"Renewal of susceptibles through birth, immigration, and/or loss of acquired immunity at rate n*H (total inflow to susceptible compartment)",,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Bacteria in Aquatic Reservoir,RateFlow,//@parameters.0,False,"Net growth/loss of V. cholerae in the aquatic environment at rate (nb - mb), where nb is the growth rate and mb is the loss rate",,,
+Cholera3,Parameter,H,,,,,,Model file,Certain,,,,,,Total human population size (constant),CONSTANT,10000,persons
+Cholera3,Parameter,n,,,,,,Model file,Certain,,,,,,Human birth and death rate (susceptible renewal rate),CONSTANT,0.0001-0.001,day^-1
+Cholera3,Parameter,a,,,,,,Model file,Certain,,,,,,Rate of exposure to contaminated water (contact rate),CONSTANT,0.5-1,day^-1
+Cholera3,Parameter,K,,,,,,Model file,Certain,,,,,,Concentration of V. cholerae in water that yields 50% chance of catching cholera (half-saturation constant),CONSTANT,1000000,cells/ml
+Cholera3,Parameter,r,,,,,,Model file,Certain,,,,,,Rate at which people recover from cholera,CONSTANT,0.2,day^-1
+Cholera3,Parameter,nb,,,,,,Model file,Certain,,,,,,Growth rate of V. cholerae in the aquatic environment,CONSTANT,0.0,day^-1
+Cholera3,Parameter,mb,,,,,,Model file,Certain,,,,,,Loss rate of V. cholerae in the aquatic environment,CONSTANT,0.0,day^-1
+Cholera3,Parameter,nb-mb,,,,,,Model file,Certain,,,,,,Net growth rate of V. cholerae in the aquatic environment (negative indicates net loss),CONSTANT,-0.33,day^-1
+Cholera3,Parameter,e,,,,,,Model file,Certain,,,,,,Contribution of each infected person to the population of V. cholerae in the aquatic environment,CONSTANT,10,cells/ml day^-1 person^-1

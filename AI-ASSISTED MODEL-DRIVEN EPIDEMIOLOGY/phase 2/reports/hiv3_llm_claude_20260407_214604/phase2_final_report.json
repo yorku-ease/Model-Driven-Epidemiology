@@ -1,0 +1,415 @@
+{
+  "paper_name": "Hiv3",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 7,
+      "parameters": 27,
+      "stratifications": 1,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected Untreated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected on ART",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infected Untreated",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Untreated",
+        "target": "Infected on ART",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected on ART",
+        "target": "Infected Untreated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Dead",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Untreated",
+        "target": "Dead",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected on ART",
+        "target": "Dead",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03b2",
+        "value": "0.767",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03bb (location)",
+        "value": "0.055",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "n (shape)",
+        "value": "0.996",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b5 (relative transmission on ART)",
+        "value": "0.01",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Birth rate \u03bc",
+        "value": "0.029",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Background mortality rate \u03b4",
+        "value": "0.018",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Progression rate untreated \u03c6",
+        "value": "0.303",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Progression rate treated \u03b3",
+        "value": "0.165",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Intervention timing t",
+        "value": "2011",
+        "unit": "yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Intervention rate r",
+        "value": "1.00",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Intervention maximum m",
+        "value": "0.90",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Testing rate \u03c3",
+        "value": "1.00",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Testing refusal \u03b8",
+        "value": "0.08",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Drop-out rate \u03c9",
+        "value": "0.015",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treatment failure rate \u03ba",
+        "value": "0.10",
+        "unit": "/yr",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Other interventions reduction \u03c8",
+        "value": "0.40",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Survival median",
+        "value": "10.0",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Survival shape",
+        "value": "2.25",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Acute phase duration",
+        "value": "2",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Acute phase infectivity",
+        "value": "4.50",
+        "unit": "number/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Chronic phase infectivity",
+        "value": "0.45",
+        "unit": "number/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Final phase infectivity",
+        "value": "2.25",
+        "unit": "number/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Final phase duration",
+        "value": "0.15",
+        "unit": "proportion of expected life",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Concurrency number",
+        "value": "4",
+        "unit": "number",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Partnership duration",
+        "value": "6",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Initial CD4 mu",
+        "value": "6.98",
+        "unit": "log-normal location parameter",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Initial CD4 sigma",
+        "value": "0.34",
+        "unit": "log-normal shape parameter",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 7,
+    "parameters": 27,
+    "stratifications": 1,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 40,
+    "items_with_evidence": 40,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 40,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 40,
+      "items_with_evidence": 40,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 40,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 3,
+        "fn": 9,
+        "precision": 0.25,
+        "recall": 0.1,
+        "f1": 0.1429
+      },
+      "flows": {
+        "tp": 0,
+        "fp": 7,
+        "fn": 24,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 26,
+        "fn": 20,
+        "precision": 0.037,
+        "recall": 0.0476,
+        "f1": 0.0417
+      },
+      "composite_score": 0.067,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [],
+      "parameter_matches": [
+        {
+          "gold": "ARTDropoutRate 0.015 Long-term annual ART dropout rate used in the paper's implementation assumptions",
+          "extracted": "Drop-out rate \u03c9 0.015 Rate of dropping out of ART",
+          "score": 0.7814533710479736
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

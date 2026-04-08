@@ -1,0 +1,271 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to measles infection, including unvaccinated and those with no immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to measles infection, including unvaccinated and those with no immunity"
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected with measles but are not yet infectious (latent period)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected with measles but are not yet infectious (latent period)"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Individuals who are infectious with measles",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infectious with measles"
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from measles and have natural immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from measles and have natural immunity"
+    },
+    {
+      "normalized_name": "Vaccinated Single Dose",
+      "raw_text": "Vaccinated Single Dose",
+      "page_number": 0,
+      "text_span": "Individuals who have received a single dose of MMR vaccine",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received a single dose of MMR vaccine"
+    },
+    {
+      "normalized_name": "Vaccinated Double Dose",
+      "raw_text": "Vaccinated Double Dose",
+      "page_number": 0,
+      "text_span": "Individuals who have received two doses of MMR vaccine",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received two doses of MMR vaccine"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of measles from infectious individuals to susceptible individuals",
+      "page_number": 0,
+      "text_span": "Transmission of measles from infectious individuals to susceptible individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of measles from infectious individuals to susceptible individuals"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated Single Dose",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination with first dose of MMR (MMR1)",
+      "page_number": 0,
+      "text_span": "Vaccination with first dose of MMR (MMR1)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination with first dose of MMR (MMR1)"
+    },
+    {
+      "source": "Vaccinated Single Dose",
+      "target": "Vaccinated Double Dose",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination with second dose of MMR (MMR2)",
+      "page_number": 0,
+      "text_span": "Vaccination with second dose of MMR (MMR2)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination with second dose of MMR (MMR2)"
+    },
+    {
+      "source": "Vaccinated Single Dose",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of single-dose vaccinated individuals due to primary vaccine failure",
+      "page_number": 0,
+      "text_span": "Infection of single-dose vaccinated individuals due to primary vaccine failure",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of single-dose vaccinated individuals due to primary vaccine failure"
+    },
+    {
+      "source": "Vaccinated Double Dose",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of double-dose vaccinated individuals due to primary vaccine failure",
+      "page_number": 0,
+      "text_span": "Infection of double-dose vaccinated individuals due to primary vaccine failure",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of double-dose vaccinated individuals due to primary vaccine failure"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Primary vaccine failure rate (no waning)",
+      "raw_text": "Primary vaccine failure rate (no waning)",
+      "value": "5.2%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Risk of primary vaccine failure estimated from model fitting without waning (95% CI: 4.9%\u20135.5%)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Risk of primary vaccine failure estimated from model fitting without waning (95% CI: 4.9%\u20135.5%)"
+    },
+    {
+      "normalized_name": "Primary vaccine failure rate (with waning)",
+      "raw_text": "Primary vaccine failure rate (with waning)",
+      "value": "2.5%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Risk of primary vaccine failure estimated from model fitting with waning (95% CI: 2.2%\u20132.9%)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Risk of primary vaccine failure estimated from model fitting with waning (95% CI: 2.2%\u20132.9%)"
+    },
+    {
+      "normalized_name": "MMR1 vaccine effectiveness",
+      "raw_text": "MMR1 vaccine effectiveness",
+      "value": ">=95%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Effectiveness of a single dose of measles-containing vaccine in preventing clinical measles in preschool children",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Effectiveness of a single dose of measles-containing vaccine in preventing clinical measles in preschool children"
+    },
+    {
+      "normalized_name": "Waning start age",
+      "raw_text": "Waning start age",
+      "value": "5",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Age at which waning of vaccine-induced immunity begins in the sensitivity analysis",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age at which waning of vaccine-induced immunity begins in the sensitivity analysis"
+    },
+    {
+      "normalized_name": "Waning start age (early MMR2 sensitivity)",
+      "raw_text": "Waning start age (early MMR2 sensitivity)",
+      "value": "3",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Age at which waning begins in the sensitivity analysis for early MMR2 scenario",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age at which waning begins in the sensitivity analysis for early MMR2 scenario"
+    },
+    {
+      "normalized_name": "Number of age groups",
+      "raw_text": "Number of age groups",
+      "value": "12",
+      "unit": "groups",
+      "page_number": 0,
+      "text_span": "Age stratification: <1, 1\u20132, 2\u20133, 3\u20134, 4\u20135, 5\u20136, 6\u201310, 10\u201315, 15\u201320, 20\u201330, 30\u201340, 40+",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age stratification: <1, 1\u20132, 2\u20133, 3\u20134, 4\u20135, 5\u20136, 6\u201310, 10\u201315, 15\u201320, 20\u201330, 30\u201340, 40+"
+    },
+    {
+      "normalized_name": "Number of regions",
+      "raw_text": "Number of regions",
+      "value": "9",
+      "unit": "regions",
+      "page_number": 0,
+      "text_span": "Spatial stratification by regions of England",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Spatial stratification by regions of England"
+    },
+    {
+      "normalized_name": "Number of simulations",
+      "raw_text": "Number of simulations",
+      "value": "2500",
+      "unit": "simulations",
+      "page_number": 0,
+      "text_span": "Total stochastic simulations per vaccination strategy (100 parameter sets \u00d7 25 simulations each)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total stochastic simulations per vaccination strategy (100 parameter sets \u00d7 25 simulations each)"
+    },
+    {
+      "normalized_name": "Simulation period",
+      "raw_text": "Simulation period",
+      "value": "2010\u20132019",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Time period over which measles outbreaks were simulated",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Time period over which measles outbreaks were simulated"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 6,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 5,
+    "num_parameters": 9,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

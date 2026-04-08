@@ -1,0 +1,14 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Recovered/Removed,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.0,False,"Transmission of the virus from infectious to susceptible individuals, dependent on the daily contact rate c.",,,
+Covid2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Progression from the exposed to the infectious state at a rate ε.,,,
+Covid2,Flow,,,,,,,Model file,Certain,,Recovered/Removed,RateFlow,//@parameters.0,False,Recovery or removal of infectious individuals from the population at a rate r.,,,
+Covid2,Parameter,r,,,,,,Model file,Certain,,,,,,Average rate of recovery or removal. Proxied by the median of time lags from illness onset to reported case.,CONSTANT,Inverse of the average infectious period,1/day
+Covid2,Parameter,ε,,,,,,Model file,Certain,,,,,,"Rate of progression from exposed to infectious, equal to the inverse of the average time spent exposed (incubation period).",CONSTANT,1 / 5.2,1/day
+Covid2,Parameter,c,,,,,,Model file,Certain,,,,,,"Daily contact rate, calculated as the basic reproduction rate (R0) divided by the average days from onset to first medical visit and isolation.",CONSTANT,R0 / 5.8,1/day
+Covid2,Parameter,R0,,,,,,Model file,Certain,,,,,,Basic reproduction number.,CONSTANT,2.2 (95% CI 1.4 - 3.9),dimensionless
+Covid2,Parameter,Incubation Period,,,,,,Model file,Certain,,,,,,The average time spent exposed but not infectious (1/ε).,CONSTANT,5.2 (95% CI 4.1 - 7.0),days
+Covid2,Parameter,Infectious Period,,,,,,Model file,Certain,,,,,,"Average days from onset to first medical visit and isolation, used to calculate the contact rate c.",CONSTANT,5.8 (95% CI 4.3 - 7.5),days

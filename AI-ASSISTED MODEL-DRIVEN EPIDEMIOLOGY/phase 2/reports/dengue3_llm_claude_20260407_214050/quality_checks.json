@@ -1,0 +1,970 @@
+{
+  "model_analysis": {
+    "modelName": "Dengue3",
+    "summary": {
+      "modelName": "Dengue3",
+      "totalPopulation": null,
+      "numCompartments": 11,
+      "numParameters": 19,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.1",
+              "description": "Primary dengue infection through bite from infectious mosquito",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.7",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination of seronegative 9-year-old children; vaccine mimics silent primary infection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.7",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent to infectious state (intrinsic incubation period)",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.7",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection with temporary cross-reactive heterologous protection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered Humans (Temporary Cross-Protection)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Waning of temporary heterologous cross-protection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Recovered Humans (Single Serotype Immunity)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.1",
+              "description": "Secondary infection by a different serotype through bite from infectious mosquito (higher disease risk)",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.7",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination of seropositive individuals; subsequent infections behave as postsecondary",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Recovered Humans (Multiple Serotype Immunity)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.1",
+              "description": "Postsecondary infection by remaining serotypes (lower disease risk)",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Vaccinated Seronegative Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.1",
+              "description": "First natural infection post-vaccination in seronegatives behaves immunologically as secondary infection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Vaccinated Seropositive Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.1",
+              "description": "Natural infection post-vaccination in seropositives behaves as postsecondary infection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.9",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.9",
+              "description": "Mosquito acquires dengue virus by biting infectious human",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.10",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression through extrinsic incubation period in mosquito",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.0",
+              "description": "Transmission of dengue virus from infectious mosquito to susceptible human via bite",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Vaccine coverage (routine)",
+          "type": "CONSTANT",
+          "expression": "80%",
+          "description": "Default coverage for routine vaccination of 9-year-old children",
+          "unit": "proportion"
+        },
+        {
+          "index": 1,
+          "name": "Vaccine coverage (reduced)",
+          "type": "CONSTANT",
+          "expression": "50%",
+          "description": "Alternative reduced vaccine coverage scenario",
+          "unit": "proportion"
+        },
+        {
+          "index": 2,
+          "name": "Catch-up campaign coverage",
+          "type": "CONSTANT",
+          "expression": "80%",
+          "description": "Coverage for one-off catch-up campaign in 10-17 year olds",
+          "unit": "proportion"
+        },
+        {
+          "index": 3,
+          "name": "Age of routine vaccination",
+          "type": "CONSTANT",
+          "expression": "9",
+          "description": "Default age for routine vaccination",
+          "unit": "years"
+        },
+        {
+          "index": 4,
+          "name": "Number of vaccine doses",
+          "type": "CONSTANT",
+          "expression": "3",
+          "description": "Three-dose schedule administered at 6-month intervals",
+          "unit": "doses"
+        },
+        {
+          "index": 5,
+          "name": "Dose interval",
+          "type": "CONSTANT",
+          "expression": "6",
+          "description": "Interval between vaccine doses",
+          "unit": "months"
+        },
+        {
+          "index": 6,
+          "name": "Overall vaccine efficacy (active phase)",
+          "type": "CONSTANT",
+          "expression": "60.3",
+          "description": "Average efficacy against virologically confirmed clinical dengue over 25-month active surveillance (95% CI: 55.7%-64.5%)",
+          "unit": "percent"
+        },
+        {
+          "index": 7,
+          "name": "SP9 very low transmission",
+          "type": "CONSTANT",
+          "expression": "10",
+          "description": "Seroprevalence among 9-year-olds for very low transmission intensity scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 8,
+          "name": "SP9 low transmission",
+          "type": "CONSTANT",
+          "expression": "30",
+          "description": "Seroprevalence among 9-year-olds for low transmission intensity scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 9,
+          "name": "SP9 moderate transmission",
+          "type": "CONSTANT",
+          "expression": "50",
+          "description": "Seroprevalence among 9-year-olds for moderate transmission intensity scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 10,
+          "name": "SP9 high transmission",
+          "type": "CONSTANT",
+          "expression": "70",
+          "description": "Seroprevalence among 9-year-olds for high transmission intensity scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 11,
+          "name": "SP9 very high transmission",
+          "type": "CONSTANT",
+          "expression": "90",
+          "description": "Seroprevalence among 9-year-olds for very high transmission intensity scenario",
+          "unit": "percent"
+        },
+        {
+          "index": 12,
+          "name": "Case fatality ratio (symptomatic dengue)",
+          "type": "CONSTANT",
+          "expression": "0.03-0.09",
+          "description": "Probability of death among symptomatic dengue cases",
+          "unit": "percent"
+        },
+        {
+          "index": 13,
+          "name": "Discount rate",
+          "type": "CONSTANT",
+          "expression": "3",
+          "description": "Annual discount rate for costs and health effects",
+          "unit": "percent per year"
+        },
+        {
+          "index": 14,
+          "name": "Cost-effectiveness threshold",
+          "type": "CONSTANT",
+          "expression": "2000",
+          "description": "Base case threshold cost per DALY averted",
+          "unit": "USD per DALY averted"
+        },
+        {
+          "index": 15,
+          "name": "DALYs per symptomatic dengue case",
+          "type": "CONSTANT",
+          "expression": "0.006",
+          "description": "Disability-adjusted life years incurred per symptomatic dengue case",
+          "unit": "DALYs"
+        },
+        {
+          "index": 16,
+          "name": "DALYs per severe dengue case",
+          "type": "CONSTANT",
+          "expression": "0.02",
+          "description": "Disability-adjusted life years incurred per severe/hospitalised dengue case",
+          "unit": "DALYs"
+        },
+        {
+          "index": 17,
+          "name": "Time horizon",
+          "type": "CONSTANT",
+          "expression": "30",
+          "description": "Time horizon for evaluating vaccination impact post-introduction",
+          "unit": "years"
+        },
+        {
+          "index": 18,
+          "name": "Number of serotypes",
+          "type": "CONSTANT",
+          "expression": "4",
+          "description": "Four dengue virus serotypes (DENV1-4)",
+          "unit": "serotypes"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Dengue3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 19,
+    "parametersWithUncertainty": 19,
+    "parameters": [
+      {
+        "parameter": "Vaccine coverage (routine)",
+        "yourValue": "80%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "proportion",
+        "description": "Default coverage for routine vaccination of 9-year-old children",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine coverage (reduced)",
+        "yourValue": "50%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "proportion",
+        "description": "Alternative reduced vaccine coverage scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Catch-up campaign coverage",
+        "yourValue": "80%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "proportion",
+        "description": "Coverage for one-off catch-up campaign in 10-17 year olds",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Age of routine vaccination",
+        "yourValue": "9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "years",
+        "description": "Default age for routine vaccination",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Number of vaccine doses",
+        "yourValue": "3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "doses",
+        "description": "Three-dose schedule administered at 6-month intervals",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Dose interval",
+        "yourValue": "6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "months",
+        "description": "Interval between vaccine doses",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Overall vaccine efficacy (active phase)",
+        "yourValue": "60.3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Average efficacy against virologically confirmed clinical dengue over 25-month active surveillance (95% CI: 55.7%-64.5%)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "SP9 very low transmission",
+        "yourValue": "10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Seroprevalence among 9-year-olds for very low transmission intensity scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "SP9 low transmission",
+        "yourValue": "30",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Seroprevalence among 9-year-olds for low transmission intensity scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "SP9 moderate transmission",
+        "yourValue": "50",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Seroprevalence among 9-year-olds for moderate transmission intensity scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "SP9 high transmission",
+        "yourValue": "70",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Seroprevalence among 9-year-olds for high transmission intensity scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "SP9 very high transmission",
+        "yourValue": "90",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Seroprevalence among 9-year-olds for very high transmission intensity scenario",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Case fatality ratio (symptomatic dengue)",
+        "yourValue": "0.03-0.09",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent",
+        "description": "Probability of death among symptomatic dengue cases",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Discount rate",
+        "yourValue": "3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "percent per year",
+        "description": "Annual discount rate for costs and health effects",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Cost-effectiveness threshold",
+        "yourValue": "2000",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "USD per DALY averted",
+        "description": "Base case threshold cost per DALY averted",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "DALYs per symptomatic dengue case",
+        "yourValue": "0.006",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "DALYs",
+        "description": "Disability-adjusted life years incurred per symptomatic dengue case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "DALYs per severe dengue case",
+        "yourValue": "0.02",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "DALYs",
+        "description": "Disability-adjusted life years incurred per severe/hospitalised dengue case",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Time horizon",
+        "yourValue": "30",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "years",
+        "description": "Time horizon for evaluating vaccination impact post-introduction",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Number of serotypes",
+        "yourValue": "4",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue3",
+        "unit": "serotypes",
+        "description": "Four dengue virus serotypes (DENV1-4)",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 19
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Dengue3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Age of routine vaccination",
+        "type": "other",
+        "currentValue": 9.0,
+        "description": "Default age for routine vaccination",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Number of vaccine doses",
+        "type": "other",
+        "currentValue": 3.0,
+        "description": "Three-dose schedule administered at 6-month intervals",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Dose interval",
+        "type": "other",
+        "currentValue": 6.0,
+        "description": "Interval between vaccine doses",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Overall vaccine efficacy (active phase)",
+        "type": "other",
+        "currentValue": 60.3,
+        "description": "Average efficacy against virologically confirmed clinical dengue over 25-month active surveillance (95% CI: 55.7%-64.5%)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "SP9 very low transmission",
+        "type": "transmission",
+        "currentValue": 10.0,
+        "description": "Seroprevalence among 9-year-olds for very low transmission intensity scenario",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "SP9 low transmission",
+        "type": "transmission",
+        "currentValue": 30.0,
+        "description": "Seroprevalence among 9-year-olds for low transmission intensity scenario",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "SP9 moderate transmission",
+        "type": "transmission",
+        "currentValue": 50.0,
+        "description": "Seroprevalence among 9-year-olds for moderate transmission intensity scenario",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "SP9 high transmission",
+        "type": "transmission",
+        "currentValue": 70.0,
+        "description": "Seroprevalence among 9-year-olds for high transmission intensity scenario",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "SP9 very high transmission",
+        "type": "transmission",
+        "currentValue": 90.0,
+        "description": "Seroprevalence among 9-year-olds for very high transmission intensity scenario",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Discount rate",
+        "type": "other",
+        "currentValue": 3.0,
+        "description": "Annual discount rate for costs and health effects",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Cost-effectiveness threshold",
+        "type": "other",
+        "currentValue": 2000.0,
+        "description": "Base case threshold cost per DALY averted",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "DALYs per symptomatic dengue case",
+        "type": "other",
+        "currentValue": 0.006,
+        "description": "Disability-adjusted life years incurred per symptomatic dengue case",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "DALYs per severe dengue case",
+        "type": "other",
+        "currentValue": 0.02,
+        "description": "Disability-adjusted life years incurred per severe/hospitalised dengue case",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Time horizon",
+        "type": "other",
+        "currentValue": 30.0,
+        "description": "Time horizon for evaluating vaccination impact post-introduction",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Number of serotypes",
+        "type": "other",
+        "currentValue": 4.0,
+        "description": "Four dengue virus serotypes (DENV1-4)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Age of routine vaccination",
+      "Number of vaccine doses",
+      "Dose interval",
+      "Overall vaccine efficacy (active phase)",
+      "SP9 very low transmission"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Age of routine vaccination",
+        "Number of vaccine doses",
+        "Dose interval",
+        "Overall vaccine efficacy (active phase)",
+        "SP9 very low transmission"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Age of routine vaccination": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Number of vaccine doses": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Dose interval": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Overall vaccine efficacy (active phase)": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "SP9 very low transmission": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

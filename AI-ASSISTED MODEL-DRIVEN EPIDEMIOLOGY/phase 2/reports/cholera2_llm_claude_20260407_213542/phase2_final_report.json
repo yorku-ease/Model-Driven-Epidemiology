@@ -1,0 +1,350 @@
+{
+  "paper_name": "Cholera2",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 5,
+      "parameters": 16,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "VE_adult_two_dose",
+        "value": "76",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "VE_child_multiplier",
+        "value": "46.9",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "VE_child_two_dose",
+        "value": "30",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "vaccine_protection_duration",
+        "value": "5",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "baseline_two_dose_coverage",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "baseline_one_dose_coverage",
+        "value": "10",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "baseline_no_vaccine",
+        "value": "20",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "high_two_dose_coverage",
+        "value": "95",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "high_one_dose_coverage",
+        "value": "1.67",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "high_no_vaccine",
+        "value": "3.33",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "two_dept_doses",
+        "value": "3.7",
+        "unit": "million doses",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "three_dept_doses",
+        "value": "9.8",
+        "unit": "million doses",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "national_doses",
+        "value": "16.4",
+        "unit": "million doses",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "high_coverage_national_doses",
+        "value": "20.9",
+        "unit": "million doses",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "elimination_threshold",
+        "value": "<1",
+        "unit": "infections per 52 consecutive weeks",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "projection_period",
+        "value": "10",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 5,
+    "parameters": 16,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 28,
+    "items_with_evidence": 28,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 28,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 28,
+      "items_with_evidence": 28,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 28,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 2,
+        "fp": 2,
+        "fn": 9,
+        "precision": 0.5,
+        "recall": 0.1818,
+        "f1": 0.2667
+      },
+      "flows": {
+        "tp": 4,
+        "fp": 1,
+        "fn": 17,
+        "precision": 0.8,
+        "recall": 0.1905,
+        "f1": 0.3077
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 15,
+        "fn": 24,
+        "precision": 0.0625,
+        "recall": 0.04,
+        "f1": 0.0488
+      },
+      "composite_score": 0.2514,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible adults",
+          "extracted": "Susceptible",
+          "score": 0.7623840570449829
+        },
+        {
+          "gold": "Symptomatic infectious",
+          "extracted": "Infectious",
+          "score": 0.7419862151145935
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible adults->Exposed / recently infected",
+          "extracted": "Susceptible->Infectious",
+          "score": 0.7169755101203918
+        },
+        {
+          "gold": "Susceptible adults->Vaccinated adults (one dose)",
+          "extracted": "Susceptible->Vaccinated",
+          "score": 0.7108601331710815
+        },
+        {
+          "gold": "Vaccinated adults (one dose)->Susceptible adults",
+          "extracted": "Vaccinated->Susceptible",
+          "score": 0.7306115627288818
+        },
+        {
+          "gold": "Symptomatic infectious->Recovered / naturally immune",
+          "extracted": "Infectious->Recovered",
+          "score": 0.7411535978317261
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "VE2C 0.469 * VE2A Two-dose vaccine effectiveness in children under 5, scaled as 46.9% of adult protection",
+          "extracted": "VE_child_two_dose 30 Vaccine efficacy in children younger than 5 years",
+          "score": 0.8307862281799316
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="a" expression="1/7 per day (DRC 1995); 1/12 per day (Uganda 2000)" type="CONSTANT" description="Inverse of the mean incubation period." unit="day^-1"/>
+  <parameters name="c_h" expression="1/5 per day (DRC 1995); 1/4.2 per day (Uganda 2000)" type="CONSTANT" description="Inverse of the mean duration from symptom onset to hospitalization." unit="day^-1"/>
+  <parameters name="c_d" expression="1/9.6 per day (DRC 1995); 1/8 per day (Uganda 2000)" type="CONSTANT" description="Inverse of the mean duration from symptom onset to death." unit="day^-1"/>
+  <parameters name="c_i" expression="1/10 per day" type="CONSTANT" description="Inverse of the mean duration from symptom onset to end of infectiousness for survivors." unit="day^-1"/>
+  <parameters name="c_f" expression="1/2 per day" type="CONSTANT" description="Inverse of the mean duration from death to traditional burial." unit="day^-1"/>
+  <parameters name="h" expression="80% (DRC 1995); 80% (Uganda 2000)" type="CONSTANT" description="Proportion of infectious cases hospitalized." unit="%"/>
+  <parameters name="d" expression="81% (DRC 1995); 53% (Uganda 2000)" type="CONSTANT" description="Case-fatality ratio." unit="%"/>
+  <parameters name="b_I" expression="0.588 per week (DRC 1995); 3.532 per week (Uganda 2000)" type="CONSTANT" description="Transmission rate in the community." unit="week^-1"/>
+  <parameters name="b_H" expression="0.794 per week (DRC 1995); 0.012 per week (Uganda 2000)" type="CONSTANT" description="Transmission rate in hospital." unit="week^-1"/>
+  <parameters name="b_F" expression="7.653 per week (DRC 1995); 0.462 per week (Uganda 2000)" type="CONSTANT" description="Transmission rate during traditional burial." unit="week^-1"/>
+  <parameters name="N" expression="200000 (DRC 1995); 470000 (Uganda 2000)" type="CONSTANT" description="Population size." unit="individuals"/>
+  <parameters name="z" expression="12% decrease in community transmission after interventions (DRC 1995); 88% decrease in community transmission after interventions (Uganda 2000)" type="CONSTANT" description="Efficacy of interventions in reducing community transmission." unit="%"/>
+  <parameters name="h_1" expression="Computed from h, c_i, c_d, c_h, and d to match the hospitalization proportion" type="CONSTANT" description="Probability parameter used so that h% of infectious cases are hospitalized." unit="dimensionless"/>
+  <parameters name="d_1" expression="Computed from d, c_i, c_d, and c_h" type="CONSTANT" description="Probability parameter used so that the overall case-fatality ratio equals d." unit="dimensionless"/>
+  <parameters name="d_2" expression="Computed from d, c_i, c_d, and c_h" type="CONSTANT" description="Probability parameter used so that the overall case-fatality ratio equals d." unit="dimensionless"/>
+  <parameters name="R_0" expression="2.7 (DRC 1995); 2.7 (Uganda 2000)" type="CONSTANT" description="Basic reproduction number." unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection through contact with infectious individuals in the community, in hospital, or during funerals."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Progression from latent infection to symptomatic infectiousness."/>
+  </compartments>
+  <compartments PrimaryName="Infectious in the Community" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Hospitalization of infectious community cases."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Death of infectious community cases before hospitalization."/>
+  </compartments>
+  <compartments PrimaryName="Hospitalized Ebola Cases" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Death of hospitalized cases."/>
+  </compartments>
+  <compartments PrimaryName="Dead Ebola Cases" population="0"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

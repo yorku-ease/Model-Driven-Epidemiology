@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="primary vaccine failure" expression="5.2" type="CONSTANT" description="The risk of primary vaccine failure estimated by the model in the reference scenario without waning." unit="%"/>
+  <parameters name="infection rate" expression="Not specified" type="CONSTANT" description="Parameter drawn from model fits to determine the rate of infection." unit="Not specified"/>
+  <parameters name="duration of maternal immunity" expression="Not specified" type="CONSTANT" description="Parameter drawn from model fits for the duration of passive immunity in newborns." unit="Not specified"/>
+  <parameters name="parameters for seasonality of transmission" expression="Not specified" type="CONSTANT" description="Parameters drawn from model fits to account for seasonality in transmission." unit="Not specified"/>
+  <parameters name="importation" expression="Not specified" type="CONSTANT" description="Parameter drawn from model fits for the importation of cases." unit="Not specified"/>
+  <parameters name="report rate of imported cases" expression="Not specified" type="CONSTANT" description="Parameter drawn from model fits for the reporting rate of imported cases." unit="Not specified"/>
+  <parameters name="vaccine effectiveness" expression="Not specified" type="CONSTANT" description="Parameter drawn from model fits for vaccine effectiveness, related to primary vaccine failure." unit="Not specified"/>
+  <parameters name="existing immunity in older generations" expression="Not specified" type="CONSTANT" description="Parameter drawn from model fits for pre-existing immunity in older age groups." unit="Not specified"/>
+  <parameters name="parameters of spatial spread" expression="Not specified" type="CONSTANT" description="Parameters drawn from model fits to govern the spatial spread of measles." unit="Not specified"/>
+  <compartments PrimaryName="Maternally Immune" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Loss of maternal immunity."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.3" target="//@compartments.2" description="Infection of susceptible individuals through contact with infected individuals."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Administration of the first dose of vaccine (MMR1)."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0"/>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Vaccinated (1 dose)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Administration of the second dose of vaccine (MMR2)."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated (2 doses)" population="0"/>
+</compartmental:CompartmentalModel>

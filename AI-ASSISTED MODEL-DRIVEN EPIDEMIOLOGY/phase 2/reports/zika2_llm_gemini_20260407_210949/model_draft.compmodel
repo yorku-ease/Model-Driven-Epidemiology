@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β_vh" expression="0.01–0.4" type="CONSTANT" description="Mosquito to human transmission rate." unit="per day"/>
+  <parameters name="β_hv" expression="0.09–0.5" type="CONSTANT" description="Human to mosquito transmission rate." unit="per day"/>
+  <parameters name="β_wm" expression="0.001–0.1" type="CONSTANT" description="Women to men sexual transmission rate." unit="per day"/>
+  <parameters name="β_mw" expression="0.01–0.1" type="CONSTANT" description="Men to women sexual transmission rate." unit="per day"/>
+  <parameters name="ϕ" expression="0.10–0.27" type="CONSTANT" description="Proportion of human infections that become symptomatic." unit="dimensionless"/>
+  <parameters name="λ_h" expression="1/6.8" type="CONSTANT" description="Rate of progression from exposed to infectious in humans (inverse of intrinsic latent period of 6.8 days)." unit="per day"/>
+  <parameters name="λ_v" expression="1/10" type="CONSTANT" description="Rate of progression from exposed to infectious in mosquitoes (inverse of extrinsic latent period of 10 days)." unit="per day"/>
+  <parameters name="γ_1" expression="1/20 to 1/10" type="CONSTANT" description="Rate of viral clearance from blood in humans (inverse of mean time of 10-20 days)." unit="per day"/>
+  <parameters name="γ_2" expression="1/30 to 1/10" type="CONSTANT" description="Rate of viral clearance from semen in men (inverse of mean time of 10-30 days)." unit="per day"/>
+  <parameters name="γ_3" expression="1/20 to 1/1" type="CONSTANT" description="Rate of viral clearance from vaginal fluids in women (inverse of mean time of 1-20 days)." unit="per day"/>
+  <parameters name="ν" expression="1/14" type="CONSTANT" description="Mosquito birth and death rate (inverse of mosquito lifespan of 14 days)." unit="per day"/>
+  <parameters name="ρ" expression="Varies by municipality (e.g., 6.73% - 7.76%)" type="CONSTANT" description="Proportion of risky sexual interactions in the population (denoted as 'r' in equations)." unit="dimensionless"/>
+  <parameters name="N_h" expression="Varies by municipality" type="CONSTANT" description="Human population at risk." unit="persons"/>
+  <parameters name="N_v" expression="Not specified" type="CONSTANT" description="Total mosquito population size, used to determine the constant birth rate of mosquitoes." unit="mosquitoes"/>
+  <compartments PrimaryName="Susceptible Women" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible women via the bite of an infectious mosquito."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.2" description="Progression of exposed women to the symptomatically infectious stage."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.3" description="Progression of exposed women to the asymptomatically infectious stage."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatically Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.4" description="Transition of symptomatically infectious women to a state where virus is cleared from blood but remains in genital fluids."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatically Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.4" description="Transition of asymptomatically infectious women to a state where virus is cleared from blood but remains in genital fluids."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Women (Genital Fluids Only)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Recovery of women after viral clearance from genital fluids."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Women" population="0"/>
+  <compartments PrimaryName="Susceptible Men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRateParameter="//@parameters.0" target="//@compartments.7" description="Infection of susceptible men via the bite of an infectious mosquito."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.8" description="Progression of exposed men to the symptomatically infectious stage."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.9" description="Progression of exposed men to the asymptomatically infectious stage."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatically Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.10" description="Transition of symptomatically infectious men to a state where virus is cleared from blood but remains in genital fluids."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatically Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.10" description="Transition of asymptomatically infectious men to a state where virus is cleared from blood but remains in genital fluids."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Men (Genital Fluids Only)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.11" description="Recovery of men after viral clearance from genital fluids."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Men" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.13" contactRateParameter="//@parameters.0" target="//@compartments.13" description="Infection of susceptible mosquitoes by biting infectious humans with viral load in their blood."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.14" description="Progression of exposed mosquitoes to the infectious stage."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

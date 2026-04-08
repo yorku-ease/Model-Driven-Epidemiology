@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R_t" expression="0.0" type="CONSTANT" description="Time-varying reproduction number, modelled as a piecewise constant function that changes when an intervention occurs." unit="dimensionless"/>
+  <parameters name="Initial R_t" expression="3.8" type="CONSTANT" description="Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6)." unit="dimensionless"/>
+  <parameters name="Serial Interval Distribution" expression="0.0" type="CONSTANT" description="Distribution of the time between successive cases in a chain of transmission. Used to approximate the generation time distribution." unit="days"/>
+  <parameters name="Infection Fatality Ratio" expression="0.0" type="CONSTANT" description="Population-averaged infection fatality ratio, adjusted for the age structure and contact patterns of each country. Based on previous work." unit="dimensionless"/>
+  <parameters name="Infection-to-death distribution" expression="0.0" type="CONSTANT" description="Time lag distribution from infection to death, derived from assumptions about infection-to-symptom and symptom-to-death distributions." unit="days"/>
+  <parameters name="Lockdown effect" expression="81%" type="CONSTANT" description="The relative reduction in the reproduction number attributed to a lockdown intervention (95% credible interval: 75-87%)." unit="percent reduction in R_t"/>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.0" contactRateParameter="//@parameters.0" target="//@compartments.0" description="Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution."/>
+  </compartments>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

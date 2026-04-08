@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β_H" expression="U(0,1)" type="CONSTANT" description="Vector-to-human transmission rate" unit="days^-1"/>
+  <parameters name="β_V" expression="U(0,1)" type="CONSTANT" description="Human-to-vector transmission rate" unit="days^-1"/>
+  <parameters name="1/α_H" expression="5.9" type="CONSTANT" description="Intrinsic (human) incubation/latent period, prior Gamma(μ=5.9, σ=0.5)" unit="days"/>
+  <parameters name="1/α_V" expression="10.5" type="CONSTANT" description="Extrinsic (vector) incubation period, prior Gamma(μ=10.5, σ=0.5)" unit="days"/>
+  <parameters name="1/γ" expression="5" type="CONSTANT" description="Human infectious period, prior Gamma(μ=5, σ=0.5)" unit="days"/>
+  <parameters name="1/δ" expression="7.8" type="CONSTANT" description="Mosquito lifespan, prior Gamma(μ=7.8, σ=0.5)" unit="days"/>
+  <parameters name="r" expression="U(0,1)" type="CONSTANT" description="Proportion of cases reported (both symptomatic and asymptomatic that seek treatment)" unit="dimensionless"/>
+  <parameters name="ϕ" expression="U(0,1)" type="CONSTANT" description="Reporting dispersion parameter for negative binomial distribution" unit="dimensionless"/>
+  <parameters name="N" expression="varies by region" type="CONSTANT" description="Human population size" unit="persons"/>
+  <parameters name="R_0" expression="2.6–4.8" type="CONSTANT" description="Basic reproduction number, R_0 = (β_V * α_V * β_H) / (γ * (δ + α_V) * δ)" unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible humans by infectious mosquitoes at rate β_H * S^H * I^V"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.2" description="Progression from latent to infectious period in humans at rate α_H * E^H"/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.3" description="Recovery of infectious humans at rate γ * I^H"/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRateParameter="//@parameters.1" target="//@compartments.5" description="Infection of susceptible mosquitoes by infectious humans at rate β_V * S^V * I^H / N"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.4" description="Death of susceptible mosquitoes at rate δ * S^V, balanced by constant birth rate δ"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.6" description="Progression from extrinsic incubation to infectious in mosquitoes at rate α_V * E^V"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.5" description="Death of exposed mosquitoes at rate δ * E^V (included in the outflow)"/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.6" description="Death of infectious mosquitoes at rate δ * I^V"/>
+  </compartments>
+</compartmental:CompartmentalModel>

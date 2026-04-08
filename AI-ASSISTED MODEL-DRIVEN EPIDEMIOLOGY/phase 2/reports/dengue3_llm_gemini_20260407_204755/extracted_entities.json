@@ -1,0 +1,359 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Individuals with no prior dengue infection and no vaccine-induced immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with no prior dengue infection and no vaccine-induced immunity."
+    },
+    {
+      "normalized_name": "Infectious Humans (Primary)",
+      "raw_text": "Infectious Humans (Primary)",
+      "page_number": 0,
+      "text_span": "Individuals experiencing their first dengue infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals experiencing their first dengue infection."
+    },
+    {
+      "normalized_name": "Recovered Humans (Primary)",
+      "raw_text": "Recovered Humans (Primary)",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from one dengue infection, possessing homotypic immunity but susceptible to a secondary infection with a different serotype.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from one dengue infection, possessing homotypic immunity but susceptible to a secondary infection with a different serotype."
+    },
+    {
+      "normalized_name": "Infectious Humans (Secondary)",
+      "raw_text": "Infectious Humans (Secondary)",
+      "page_number": 0,
+      "text_span": "Individuals experiencing their second dengue infection with a different serotype, associated with a higher risk of severe disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals experiencing their second dengue infection with a different serotype, associated with a higher risk of severe disease."
+    },
+    {
+      "normalized_name": "Recovered Humans (Post-Secondary)",
+      "raw_text": "Recovered Humans (Post-Secondary)",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from two or more dengue infections and are assumed to have a low risk of subsequent severe disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from two or more dengue infections and are assumed to have a low risk of subsequent severe disease."
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes capable of acquiring dengue virus from an infectious human.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes capable of acquiring dengue virus from an infectious human."
+    },
+    {
+      "normalized_name": "Exposed Mosquitoes",
+      "raw_text": "Exposed Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes that have acquired the virus but are in the extrinsic incubation period and not yet infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes that have acquired the virus but are in the extrinsic incubation period and not yet infectious."
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes capable of transmitting dengue virus to humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes capable of transmitting dengue virus to humans."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Infectious Humans (Primary)",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection.",
+      "page_number": 0,
+      "text_span": "Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection."
+    },
+    {
+      "source": "Infectious Humans (Primary)",
+      "target": "Recovered Humans (Primary)",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from a primary dengue infection.",
+      "page_number": 0,
+      "text_span": "Recovery from a primary dengue infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from a primary dengue infection."
+    },
+    {
+      "source": "Recovered Humans (Primary)",
+      "target": "Infectious Humans (Secondary)",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of dengue from an infectious mosquito to a human who has had one prior infection, resulting in a secondary infection.",
+      "page_number": 0,
+      "text_span": "Transmission of dengue from an infectious mosquito to a human who has had one prior infection, resulting in a secondary infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of dengue from an infectious mosquito to a human who has had one prior infection, resulting in a secondary infection."
+    },
+    {
+      "source": "Infectious Humans (Secondary)",
+      "target": "Recovered Humans (Post-Secondary)",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from a secondary dengue infection.",
+      "page_number": 0,
+      "text_span": "Recovery from a secondary dengue infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from a secondary dengue infection."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of dengue from an infectious human (primary or secondary) to a susceptible mosquito.",
+      "page_number": 0,
+      "text_span": "Transmission of dengue from an infectious human (primary or secondary) to a susceptible mosquito.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of dengue from an infectious human (primary or secondary) to a susceptible mosquito."
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of infected mosquitoes to an infectious state after the extrinsic incubation period.",
+      "page_number": 0,
+      "text_span": "Progression of infected mosquitoes to an infectious state after the extrinsic incubation period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of infected mosquitoes to an infectious state after the extrinsic incubation period."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2_hv",
+      "raw_text": "\u03b2_hv",
+      "value": null,
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Transmission rate from infectious mosquitoes to humans, related to mosquito biting rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate from infectious mosquitoes to humans, related to mosquito biting rate."
+    },
+    {
+      "normalized_name": "\u03b2_vh",
+      "raw_text": "\u03b2_vh",
+      "value": null,
+      "unit": null,
+      "page_number": 0,
+      "text_span": "Transmission rate from infectious humans to susceptible mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate from infectious humans to susceptible mosquitoes."
+    },
+    {
+      "normalized_name": "\u03b3_h",
+      "raw_text": "\u03b3_h",
+      "value": null,
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "Recovery rate for infectious humans (inverse of infectious period).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate for infectious humans (inverse of infectious period)."
+    },
+    {
+      "normalized_name": "\u03c3_v",
+      "raw_text": "\u03c3_v",
+      "value": null,
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "Rate of progression from exposed to infectious for mosquitoes (inverse of extrinsic incubation period).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of progression from exposed to infectious for mosquitoes (inverse of extrinsic incubation period)."
+    },
+    {
+      "normalized_name": "\u03bc_h",
+      "raw_text": "\u03bc_h",
+      "value": "1/(67.5 * 365.25)",
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "Natural mortality rate for humans, based on a mean lifespan of 67.5 years.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural mortality rate for humans, based on a mean lifespan of 67.5 years."
+    },
+    {
+      "normalized_name": "\u03bc_v",
+      "raw_text": "\u03bc_v",
+      "value": null,
+      "unit": "1/day",
+      "page_number": 0,
+      "text_span": "Natural mortality rate for mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural mortality rate for mosquitoes."
+    },
+    {
+      "normalized_name": "Case fatality rate",
+      "raw_text": "Case fatality rate",
+      "value": "0.0003 to 0.0009",
+      "unit": "deaths per symptomatic case",
+      "page_number": 0,
+      "text_span": "Assumed proportion of symptomatic dengue cases that result in death.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Assumed proportion of symptomatic dengue cases that result in death."
+    },
+    {
+      "normalized_name": "Default vaccine coverage",
+      "raw_text": "Default vaccine coverage",
+      "value": "0.80",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Default coverage for routine vaccination of 9-year-olds.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Default coverage for routine vaccination of 9-year-olds."
+    },
+    {
+      "normalized_name": "Default vaccination age",
+      "raw_text": "Default vaccination age",
+      "value": "9",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Default age for routine vaccination.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Default age for routine vaccination."
+    },
+    {
+      "normalized_name": "Discount rate",
+      "raw_text": "Discount rate",
+      "value": "0.03",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Discount rate for costs and health effects in economic evaluation.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Discount rate for costs and health effects in economic evaluation."
+    },
+    {
+      "normalized_name": "DALYs per symptomatic dengue case",
+      "raw_text": "DALYs per symptomatic dengue case",
+      "value": "0.006",
+      "unit": "DALYs",
+      "page_number": 0,
+      "text_span": "Disability-Adjusted Life Years incurred per symptomatic dengue case.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Disability-Adjusted Life Years incurred per symptomatic dengue case."
+    },
+    {
+      "normalized_name": "DALYs per severe dengue case",
+      "raw_text": "DALYs per severe dengue case",
+      "value": "0.02",
+      "unit": "DALYs",
+      "page_number": 0,
+      "text_span": "Disability-Adjusted Life Years incurred per severe dengue case.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Disability-Adjusted Life Years incurred per severe dengue case."
+    },
+    {
+      "normalized_name": "Cost per hospitalised case (public payer, Latin America)",
+      "raw_text": "Cost per hospitalised case (public payer, Latin America)",
+      "value": "200",
+      "unit": "USD (2014)",
+      "page_number": 0,
+      "text_span": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 2,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 7,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 8,
+    "num_flows": 6,
+    "num_parameters": 13,
+    "num_stratifications": 2,
+    "num_interventions": 2
+  }
+}

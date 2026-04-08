@@ -1,0 +1,213 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Number of susceptible individuals in the human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of susceptible individuals in the human population."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Number of infected individuals, including cholera cases as well as those with asymptomatic and mild infections.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of infected individuals, including cholera cases as well as those with asymptomatic and mild infections."
+    },
+    {
+      "normalized_name": "Bacteria in Water",
+      "raw_text": "Bacteria in Water",
+      "page_number": 0,
+      "text_span": "Concentration of toxigenic Vibrio cholerae in the aquatic reservoir.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of toxigenic Vibrio cholerae in the aquatic reservoir."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability."
+    },
+    {
+      "source": "Infectious",
+      "target": "Bacteria in Water",
+      "flow_type": "RateFlow",
+      "raw_text": "Contribution of each infected person to the aquatic population of V. cholerae through excretion.",
+      "page_number": 0,
+      "text_span": "Contribution of each infected person to the aquatic population of V. cholerae through excretion.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Contribution of each infected person to the aquatic population of V. cholerae through excretion."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "H",
+      "raw_text": "H",
+      "value": "10000",
+      "unit": "persons",
+      "page_number": 0,
+      "text_span": "Total human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total human population."
+    },
+    {
+      "normalized_name": "n",
+      "raw_text": "n",
+      "value": "0.0001 or 0.001",
+      "unit": "day-1",
+      "page_number": 0,
+      "text_span": "Human birth and death rates.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human birth and death rates."
+    },
+    {
+      "normalized_name": "a",
+      "raw_text": "a",
+      "value": "0.5 or 1",
+      "unit": "day-1",
+      "page_number": 0,
+      "text_span": "Rate of exposure to contaminated water.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of exposure to contaminated water."
+    },
+    {
+      "normalized_name": "K",
+      "raw_text": "K",
+      "value": "1e6",
+      "unit": "cells/ml",
+      "page_number": 0,
+      "text_span": "Concentration of V. cholerae in water that yields a 50% chance of catching cholera.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of V. cholerae in water that yields a 50% chance of catching cholera."
+    },
+    {
+      "normalized_name": "r",
+      "raw_text": "r",
+      "value": "0.2",
+      "unit": "day-1",
+      "page_number": 0,
+      "text_span": "Rate at which people recover from cholera.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which people recover from cholera."
+    },
+    {
+      "normalized_name": "nb",
+      "raw_text": "nb",
+      "value": null,
+      "unit": "day-1",
+      "page_number": 0,
+      "text_span": "Growth rate of V. cholerae in the aquatic environment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Growth rate of V. cholerae in the aquatic environment."
+    },
+    {
+      "normalized_name": "mb",
+      "raw_text": "mb",
+      "value": null,
+      "unit": "day-1",
+      "page_number": 0,
+      "text_span": "Loss rate of V. cholerae in the aquatic environment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss rate of V. cholerae in the aquatic environment."
+    },
+    {
+      "normalized_name": "nb-mb",
+      "raw_text": "nb-mb",
+      "value": "-0.33",
+      "unit": "day-1",
+      "page_number": 0,
+      "text_span": "Net loss rate of V. cholerae in the aquatic environment (value from Table 2).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Net loss rate of V. cholerae in the aquatic environment (value from Table 2)."
+    },
+    {
+      "normalized_name": "e",
+      "raw_text": "e",
+      "value": "10",
+      "unit": "cell/ml day-1 person-1",
+      "page_number": 0,
+      "text_span": "Contribution of each infected person to the population of V. cholerae in the aquatic environment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Contribution of each infected person to the population of V. cholerae in the aquatic environment."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 14,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 14,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 14,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 3,
+    "num_flows": 2,
+    "num_parameters": 9,
+    "num_stratifications": 1,
+    "num_interventions": 3
+  }
+}

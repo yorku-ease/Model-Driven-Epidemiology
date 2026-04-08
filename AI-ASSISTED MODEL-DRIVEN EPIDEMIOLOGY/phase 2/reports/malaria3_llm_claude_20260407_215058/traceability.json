@@ -1,0 +1,480 @@
+{
+  "compartments": {
+    "Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "Susceptible and uninfected humans (state S)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic and infectious humans (state D), highest probability of human-to-mosquito transmission",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Asymptomatic and infectious humans (state A), approximately 3-fold less likely to infect a biting mosquito than state D",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Subpatent Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Infectious humans undetectable by standard microscopy (state U), approximately 17-fold less likely to infect mosquitoes than state D",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treated Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Treated and infectious humans (state T), clearing parasites more quickly after treatment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Prophylactically Protected Humans": {
+      "evidence": [
+        {
+          "text_span": "Uninfected humans protected by antimalarial prophylaxis (state P), duration dependent on drug half-life",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Susceptible mosquitoes in the vector population (SEI model)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Exposed (latently infected) mosquitoes in the vector population (SEI model)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Infectious mosquitoes capable of transmitting malaria to humans (SEI model)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible Humans -> Symptomatic Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Humans -> Asymptomatic Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic Infectious Humans -> Treated Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Treatment of symptomatic cases with antimalarials",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic Infectious Humans -> Asymptomatic Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Infectious Humans -> Subpatent Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Subpatent Infectious Humans -> Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "Recovery from subpatent infection to susceptible state",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treated Infectious Humans -> Prophylactically Protected Humans": {
+      "evidence": [
+        {
+          "text_span": "Successful parasite clearance followed by prophylactic protection dependent on drug half-life",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treated Infectious Humans -> Asymptomatic Infectious Humans": {
+      "evidence": [
+        {
+          "text_span": "Treatment failure, entering asymptomatic infection state",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Prophylactically Protected Humans -> Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "Loss of prophylactic drug protection, return to susceptible state",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes -> Exposed Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed Mosquitoes -> Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Completion of extrinsic incubation period in mosquito, becoming infectious",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "Drug efficacy (ACT)": {
+      "evidence": [
+        {
+          "text_span": "Percentage of treated individuals with no parasitological treatment failure for ACT",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "95",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Duration of gametocytaemia after non-artemisinin treatment": {
+      "evidence": [
+        {
+          "text_span": "Duration of gametocytaemia in treated infection for non-artemisinins",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "55.6",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Duration of gametocytaemia after ACT treatment": {
+      "evidence": [
+        {
+          "text_span": "Duration of gametocytaemia in treated infection for ACT",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "13.4",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Duration of gametocytaemia after ACT-PQ treatment": {
+      "evidence": [
+        {
+          "text_span": "Duration of gametocytaemia in treated infection for ACT with primaquine",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "3.0",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Duration of prophylaxis (short-acting drug)": {
+      "evidence": [
+        {
+          "text_span": "Duration of inhibitory antimalarial blood concentration for short-acting drug",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Duration of prophylaxis (long-acting drug)": {
+      "evidence": [
+        {
+          "text_span": "Duration of inhibitory antimalarial blood concentration for long-acting drug",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "30",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Reduction in infectiousness after non-artemisinin treatment": {
+      "evidence": [
+        {
+          "text_span": "Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "70",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Reduction in infectiousness after ACT/ACT-PQ treatment": {
+      "evidence": [
+        {
+          "text_span": "Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "80.6",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Pregnancy prevalence in population aged 15-45": {
+      "evidence": [
+        {
+          "text_span": "Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "7.1",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Correlation in participation between MDA rounds": {
+      "evidence": [
+        {
+          "text_span": "Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "MDA coverage": {
+      "evidence": [
+        {
+          "text_span": "Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "80",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ACT coverage for symptomatic treatment": {
+      "evidence": [
+        {
+          "text_span": "Percentage of symptomatic cases receiving ACTs at baseline",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "20",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Non-ACT treatment efficacy": {
+      "evidence": [
+        {
+          "text_span": "Efficacy of non-ACT treatments at clearing parasites due to resistance",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "60",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ACT treatment efficacy": {
+      "evidence": [
+        {
+          "text_span": "Efficacy of ACTs at clearing parasites",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "95",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Relative infectivity of asymptomatic vs symptomatic": {
+      "evidence": [
+        {
+          "text_span": "Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.33",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Relative infectivity of subpatent vs symptomatic": {
+      "evidence": [
+        {
+          "text_span": "Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.06",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 4,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 39,
+    "items_with_evidence": 39,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 39,
+    "faithfulness_percentage": 100.0
+  }
+}

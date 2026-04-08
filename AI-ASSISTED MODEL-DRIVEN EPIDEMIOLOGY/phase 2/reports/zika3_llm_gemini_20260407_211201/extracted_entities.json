@@ -1,0 +1,249 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Number of susceptible people (SH)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of susceptible people (SH)"
+    },
+    {
+      "normalized_name": "Exposed Humans",
+      "raw_text": "Exposed Humans",
+      "page_number": 0,
+      "text_span": "Number of people in their incubation period (EH)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of people in their incubation period (EH)"
+    },
+    {
+      "normalized_name": "Infectious Humans",
+      "raw_text": "Infectious Humans",
+      "page_number": 0,
+      "text_span": "Number of infectious people (IH)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of infectious people (IH)"
+    },
+    {
+      "normalized_name": "Recovered Humans",
+      "raw_text": "Recovered Humans",
+      "page_number": 0,
+      "text_span": "Number of people that have recovered and are immune (RH)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of people that have recovered and are immune (RH)"
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Proportion of mosquitoes currently susceptible (SV)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of mosquitoes currently susceptible (SV)"
+    },
+    {
+      "normalized_name": "Exposed Mosquitoes",
+      "raw_text": "Exposed Mosquitoes",
+      "page_number": 0,
+      "text_span": "Proportion of mosquitoes in their incubation period (EV)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of mosquitoes in their incubation period (EV)"
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Proportion of mosquitoes currently infectious (IV)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of mosquitoes currently infectious (IV)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible humans by infectious mosquitoes.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible humans by infectious mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible humans by infectious mosquitoes."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Infectious Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of humans from latent to infectious state.",
+      "page_number": 0,
+      "text_span": "Progression of humans from latent to infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of humans from latent to infectious state."
+    },
+    {
+      "source": "Infectious Humans",
+      "target": "Recovered Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery of infectious humans.",
+      "page_number": 0,
+      "text_span": "Recovery of infectious humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery of infectious humans."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible mosquitoes by infectious humans.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible mosquitoes by infectious humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible mosquitoes by infectious humans."
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of mosquitoes from latent to infectious state.",
+      "page_number": 0,
+      "text_span": "Progression of mosquitoes from latent to infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of mosquitoes from latent to infectious state."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "1/\u03b1V",
+      "raw_text": "1/\u03b1V",
+      "value": "Gamma(\u03bc = 10.5, \u03c3 = 0.5)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Extrinsic incubation period in mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Extrinsic incubation period in mosquitoes."
+    },
+    {
+      "normalized_name": "1/\u03b1H",
+      "raw_text": "1/\u03b1H",
+      "value": "Gamma(\u03bc = 5.9, \u03c3 = 0.5)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Intrinsic incubation period in humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Intrinsic incubation period in humans."
+    },
+    {
+      "normalized_name": "1/\u03b3",
+      "raw_text": "1/\u03b3",
+      "value": "Gamma(\u03bc = 5, \u03c3 = 0.5)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Human infectious period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human infectious period."
+    },
+    {
+      "normalized_name": "1/\u03b4",
+      "raw_text": "1/\u03b4",
+      "value": "Gamma(\u03bc = 7.8, \u03c3 = 0.5)",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mosquito lifespan. The rate \u03b4 is also the mosquito birth rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquito lifespan. The rate \u03b4 is also the mosquito birth rate."
+    },
+    {
+      "normalized_name": "\u03b2H",
+      "raw_text": "\u03b2H",
+      "value": "U(0, 1)",
+      "unit": "days^-1",
+      "page_number": 0,
+      "text_span": "Vector-to-human transmission rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vector-to-human transmission rate."
+    },
+    {
+      "normalized_name": "\u03b2V",
+      "raw_text": "\u03b2V",
+      "value": "U(0, 1)",
+      "unit": "days^-1",
+      "page_number": 0,
+      "text_span": "Human-to-vector transmission rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human-to-vector transmission rate."
+    },
+    {
+      "normalized_name": "N",
+      "raw_text": "N",
+      "value": null,
+      "unit": "individuals",
+      "page_number": 0,
+      "text_span": "Human population size.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human population size."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 1,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 5,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 5,
+    "num_parameters": 7,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

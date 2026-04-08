@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Vaccine coverage (routine)" expression="80%" type="CONSTANT" description="Default coverage for routine vaccination of 9-year-old children" unit="proportion"/>
+  <parameters name="Vaccine coverage (reduced)" expression="50%" type="CONSTANT" description="Alternative reduced vaccine coverage scenario" unit="proportion"/>
+  <parameters name="Catch-up campaign coverage" expression="80%" type="CONSTANT" description="Coverage for one-off catch-up campaign in 10-17 year olds" unit="proportion"/>
+  <parameters name="Age of routine vaccination" expression="9" type="CONSTANT" description="Default age for routine vaccination" unit="years"/>
+  <parameters name="Number of vaccine doses" expression="3" type="CONSTANT" description="Three-dose schedule administered at 6-month intervals" unit="doses"/>
+  <parameters name="Dose interval" expression="6" type="CONSTANT" description="Interval between vaccine doses" unit="months"/>
+  <parameters name="Overall vaccine efficacy (active phase)" expression="60.3" type="CONSTANT" description="Average efficacy against virologically confirmed clinical dengue over 25-month active surveillance (95% CI: 55.7%-64.5%)" unit="percent"/>
+  <parameters name="SP9 very low transmission" expression="10" type="CONSTANT" description="Seroprevalence among 9-year-olds for very low transmission intensity scenario" unit="percent"/>
+  <parameters name="SP9 low transmission" expression="30" type="CONSTANT" description="Seroprevalence among 9-year-olds for low transmission intensity scenario" unit="percent"/>
+  <parameters name="SP9 moderate transmission" expression="50" type="CONSTANT" description="Seroprevalence among 9-year-olds for moderate transmission intensity scenario" unit="percent"/>
+  <parameters name="SP9 high transmission" expression="70" type="CONSTANT" description="Seroprevalence among 9-year-olds for high transmission intensity scenario" unit="percent"/>
+  <parameters name="SP9 very high transmission" expression="90" type="CONSTANT" description="Seroprevalence among 9-year-olds for very high transmission intensity scenario" unit="percent"/>
+  <parameters name="Case fatality ratio (symptomatic dengue)" expression="0.03-0.09" type="CONSTANT" description="Probability of death among symptomatic dengue cases" unit="percent"/>
+  <parameters name="Discount rate" expression="3" type="CONSTANT" description="Annual discount rate for costs and health effects" unit="percent per year"/>
+  <parameters name="Cost-effectiveness threshold" expression="2000" type="CONSTANT" description="Base case threshold cost per DALY averted" unit="USD per DALY averted"/>
+  <parameters name="DALYs per symptomatic dengue case" expression="0.006" type="CONSTANT" description="Disability-adjusted life years incurred per symptomatic dengue case" unit="DALYs"/>
+  <parameters name="DALYs per severe dengue case" expression="0.02" type="CONSTANT" description="Disability-adjusted life years incurred per severe/hospitalised dengue case" unit="DALYs"/>
+  <parameters name="Time horizon" expression="30" type="CONSTANT" description="Time horizon for evaluating vaccination impact post-introduction" unit="years"/>
+  <parameters name="Number of serotypes" expression="4" type="CONSTANT" description="Four dengue virus serotypes (DENV1-4)" unit="serotypes"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.7" target="//@compartments.1" description="Primary dengue infection through bite from infectious mosquito"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.6" description="Vaccination of seronegative 9-year-old children; vaccine mimics silent primary infection"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.2" description="Progression from latent to infectious state (intrinsic incubation period)"/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.3" description="Recovery from infection with temporary cross-reactive heterologous protection"/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Temporary Cross-Protection)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Waning of temporary heterologous cross-protection"/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Single Serotype Immunity)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.7" target="//@compartments.1" description="Secondary infection by a different serotype through bite from infectious mosquito (higher disease risk)"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.7" description="Vaccination of seropositive individuals; subsequent infections behave as postsecondary"/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Multiple Serotype Immunity)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.7" target="//@compartments.1" description="Postsecondary infection by remaining serotypes (lower disease risk)"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated Seronegative Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.7" target="//@compartments.1" description="First natural infection post-vaccination in seronegatives behaves immunologically as secondary infection"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated Seropositive Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.7" target="//@compartments.1" description="Natural infection post-vaccination in seropositives behaves as postsecondary infection"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.7" target="//@compartments.9" description="Mosquito acquires dengue virus by biting infectious human"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.10" description="Progression through extrinsic incubation period in mosquito"/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.0" contactRateParameter="//@parameters.7" target="//@compartments.0" description="Transmission of dengue virus from infectious mosquito to susceptible human via bite"/>
+  </compartments>
+</compartmental:CompartmentalModel>

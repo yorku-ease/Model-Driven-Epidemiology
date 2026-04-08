@@ -1,0 +1,375 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who can be infected with Ebola virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who can be infected with Ebola virus."
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals infected with Ebola virus but not yet infectious or symptomatic; latent phase.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected with Ebola virus but not yet infectious or symptomatic; latent phase."
+    },
+    {
+      "normalized_name": "Infectious in the Community",
+      "raw_text": "Infectious in the Community",
+      "page_number": 0,
+      "text_span": "Infective Ebola patients in the community after symptom onset.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infective Ebola patients in the community after symptom onset."
+    },
+    {
+      "normalized_name": "Hospitalized Patients",
+      "raw_text": "Hospitalized Patients",
+      "page_number": 0,
+      "text_span": "Infective patients in healthcare facilities.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infective patients in healthcare facilities."
+    },
+    {
+      "normalized_name": "Dead Patients Not Yet Buried",
+      "raw_text": "Dead Patients Not Yet Buried",
+      "page_number": 0,
+      "text_span": "Patients who died of Ebola disease and remain infectious until burial.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Patients who died of Ebola disease and remain infectious until burial."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals removed from the chain of transmission after recovery.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals removed from the chain of transmission after recovery."
+    },
+    {
+      "normalized_name": "Cumulative Cases",
+      "raw_text": "Cumulative Cases",
+      "page_number": 0,
+      "text_span": "Additional tracking variable for the cumulative number of cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Additional tracking variable for the cumulative number of cases."
+    },
+    {
+      "normalized_name": "Burials",
+      "raw_text": "Burials",
+      "page_number": 0,
+      "text_span": "Additional tracking variable for burials.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Additional tracking variable for burials."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried.",
+      "page_number": 0,
+      "text_span": "Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious in the Community",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from latent infection to symptomatic infectious stage after the incubation period.",
+      "page_number": 0,
+      "text_span": "Progression from latent infection to symptomatic infectious stage after the incubation period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from latent infection to symptomatic infectious stage after the incubation period."
+    },
+    {
+      "source": "Infectious in the Community",
+      "target": "Hospitalized Patients",
+      "flow_type": "RateFlow",
+      "raw_text": "Hospitalization of infectious community cases.",
+      "page_number": 0,
+      "text_span": "Hospitalization of infectious community cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalization of infectious community cases."
+    },
+    {
+      "source": "Infectious in the Community",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infection in the community.",
+      "page_number": 0,
+      "text_span": "Recovery from infection in the community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infection in the community."
+    },
+    {
+      "source": "Infectious in the Community",
+      "target": "Dead Patients Not Yet Buried",
+      "flow_type": "RateFlow",
+      "raw_text": "Death from Ebola in the community, remaining infectious until burial.",
+      "page_number": 0,
+      "text_span": "Death from Ebola in the community, remaining infectious until burial.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death from Ebola in the community, remaining infectious until burial."
+    },
+    {
+      "source": "Hospitalized Patients",
+      "target": "Infectious in the Community",
+      "flow_type": "RateFlow",
+      "raw_text": "Hospitalized patients abandoning healthcare facilities and returning to the community.",
+      "page_number": 0,
+      "text_span": "Hospitalized patients abandoning healthcare facilities and returning to the community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospitalized patients abandoning healthcare facilities and returning to the community."
+    },
+    {
+      "source": "Hospitalized Patients",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infection while hospitalized.",
+      "page_number": 0,
+      "text_span": "Recovery from infection while hospitalized.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infection while hospitalized."
+    },
+    {
+      "source": "Hospitalized Patients",
+      "target": "Dead Patients Not Yet Buried",
+      "flow_type": "RateFlow",
+      "raw_text": "Death from Ebola while hospitalized, remaining infectious until burial.",
+      "page_number": 0,
+      "text_span": "Death from Ebola while hospitalized, remaining infectious until burial.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Death from Ebola while hospitalized, remaining infectious until burial."
+    },
+    {
+      "source": "Dead Patients Not Yet Buried",
+      "target": "Burials",
+      "flow_type": "RateFlow",
+      "raw_text": "Burial of deceased patients, removing them from the chain of transmission.",
+      "page_number": 0,
+      "text_span": "Burial of deceased patients, removing them from the chain of transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Burial of deceased patients, removing them from the chain of transmission."
+    },
+    {
+      "source": "Recovered",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "No outgoing transition shown; recovered individuals are removed from transmission.",
+      "page_number": 0,
+      "text_span": "No outgoing transition shown; recovered individuals are removed from transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "No outgoing transition shown; recovered individuals are removed from transmission."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "0.532",
+      "unit": "per week",
+      "page_number": 0,
+      "text_span": "Transmission rate in the community before intervention.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate in the community before intervention."
+    },
+    {
+      "normalized_name": "\u03b8",
+      "raw_text": "\u03b8",
+      "value": "0.328",
+      "unit": "per week",
+      "page_number": 0,
+      "text_span": "Transmission rate in hospitals before intervention.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate in hospitals before intervention."
+    },
+    {
+      "normalized_name": "\u03c6",
+      "raw_text": "\u03c6",
+      "value": "2.104",
+      "unit": "per week",
+      "page_number": 0,
+      "text_span": "Transmission rate at funerals before intervention.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission rate at funerals before intervention."
+    },
+    {
+      "normalized_name": "\u03b7",
+      "raw_text": "\u03b7",
+      "value": "4.8 days",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean time from symptoms onset to hospitalization (table reports 1/\u03b7).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean time from symptoms onset to hospitalization (table reports 1/\u03b7)."
+    },
+    {
+      "normalized_name": "b",
+      "raw_text": "b",
+      "value": "5.4 days",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean time from death to burial (table reports 1/b).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean time from death to burial (table reports 1/b)."
+    },
+    {
+      "normalized_name": "\u03b3",
+      "raw_text": "\u03b3",
+      "value": "10.4 days",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration of the infection (table reports 1/\u03b3).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration of the infection (table reports 1/\u03b3)."
+    },
+    {
+      "normalized_name": "\u03b1",
+      "raw_text": "\u03b1",
+      "value": "10 days",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Mean duration of the incubation period (table reports 1/\u03b1).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mean duration of the incubation period (table reports 1/\u03b1)."
+    },
+    {
+      "normalized_name": "\u03b3H",
+      "raw_text": "\u03b3H",
+      "value": "4.6 days",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average permanence in the hospital (table reports 1/\u03b3H).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average permanence in the hospital (table reports 1/\u03b3H)."
+    },
+    {
+      "normalized_name": "\u03b4",
+      "raw_text": "\u03b4",
+      "value": "73%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Case fatality ratio in the community.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Case fatality ratio in the community."
+    },
+    {
+      "normalized_name": "\u03b4H",
+      "raw_text": "\u03b4H",
+      "value": "61%",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Case fatality ratio in hospitals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Case fatality ratio in hospitals."
+    },
+    {
+      "normalized_name": "\u03ba",
+      "raw_text": "\u03ba",
+      "value": "0.0025",
+      "unit": "per week",
+      "page_number": 0,
+      "text_span": "Hospital leaving rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Hospital leaving rate."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 2,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "age",
+      "page_number": 11,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "quarantine",
+      "page_number": 4,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 8,
+    "num_flows": 10,
+    "num_parameters": 11,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

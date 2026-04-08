@@ -1,0 +1,21 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Measles2,Compartment,Susceptible,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles2,Compartment,Exposed,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles2,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles2,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles2,Compartment,Vaccinated Single Dose,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles2,Compartment,Vaccinated Double Dose,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,0.0,False,Transmission of measles from infectious individuals to susceptible individuals,,,
+Measles2,Flow,,,,,,,Model file,Certain,,Vaccinated Single Dose,RateFlow,0.0,False,Vaccination with first dose of MMR (MMR1),,,
+Measles2,Flow,,,,,,,Model file,Certain,,Vaccinated Double Dose,RateFlow,0.0,False,Vaccination with second dose of MMR (MMR2),,,
+Measles2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,0.0,False,Infection of single-dose vaccinated individuals due to primary vaccine failure,,,
+Measles2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,0.0,False,Infection of double-dose vaccinated individuals due to primary vaccine failure,,,
+Measles2,Parameter,Primary vaccine failure rate (no waning),,,,,,Model file,Certain,,,,,,Risk of primary vaccine failure estimated from model fitting without waning (95% CI: 4.9%–5.5%),CONSTANT,5.2%,proportion
+Measles2,Parameter,Primary vaccine failure rate (with waning),,,,,,Model file,Certain,,,,,,Risk of primary vaccine failure estimated from model fitting with waning (95% CI: 2.2%–2.9%),CONSTANT,2.5%,proportion
+Measles2,Parameter,MMR1 vaccine effectiveness,,,,,,Model file,Certain,,,,,,Effectiveness of a single dose of measles-containing vaccine in preventing clinical measles in preschool children,CONSTANT,>=95%,proportion
+Measles2,Parameter,Waning start age,,,,,,Model file,Certain,,,,,,Age at which waning of vaccine-induced immunity begins in the sensitivity analysis,CONSTANT,5,years
+Measles2,Parameter,Waning start age (early MMR2 sensitivity),,,,,,Model file,Certain,,,,,,Age at which waning begins in the sensitivity analysis for early MMR2 scenario,CONSTANT,3,years
+Measles2,Parameter,Number of age groups,,,,,,Model file,Certain,,,,,,"Age stratification: <1, 1–2, 2–3, 3–4, 4–5, 5–6, 6–10, 10–15, 15–20, 20–30, 30–40, 40+",CONSTANT,12,groups
+Measles2,Parameter,Number of regions,,,,,,Model file,Certain,,,,,,Spatial stratification by regions of England,CONSTANT,9,regions
+Measles2,Parameter,Number of simulations,,,,,,Model file,Certain,,,,,,Total stochastic simulations per vaccination strategy (100 parameter sets × 25 simulations each),CONSTANT,2500,simulations
+Measles2,Parameter,Simulation period,,,,,,Model file,Certain,,,,,,Time period over which measles outbreaks were simulated,CONSTANT,2010–2019,years

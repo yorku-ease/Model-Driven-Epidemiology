@@ -1,0 +1,414 @@
+{
+  "paper_name": "Malaria2",
+  "summary": {
+    "extraction": {
+      "compartments": 10,
+      "flows": 10,
+      "parameters": 15,
+      "stratifications": 2,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pre-patent Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated Clinical Disease Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Untreated Clinical Disease Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Patent Asymptomatic Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Sub-patent Asymptomatic Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Prophylaxis Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Latent Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Pre-patent Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pre-patent Humans",
+        "target": "Treated Clinical Disease Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pre-patent Humans",
+        "target": "Patent Asymptomatic Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated Clinical Disease Humans",
+        "target": "Prophylaxis Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Prophylaxis Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Untreated Clinical Disease Humans",
+        "target": "Patent Asymptomatic Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Patent Asymptomatic Humans",
+        "target": "Sub-patent Asymptomatic Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Sub-patent Asymptomatic Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Latent Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "L",
+        "value": "force of infection",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "w",
+        "value": "probability of developing clinical disease",
+        "unit": "probability",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "f_T",
+        "value": "probability of being treated successfully",
+        "unit": "probability",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "r_T",
+        "value": "rate of entering prophylactic protection after treatment",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "r_P",
+        "value": "rate of leaving prophylactic protection",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "r_D",
+        "value": "rate of clearing untreated clinical disease",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "r_A",
+        "value": "rate of progression from patent asymptomatic infection to sub-patent infection",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "r_U",
+        "value": "rate of clearing sub-patent infection",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "HBI",
+        "value": "human blood index",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "EIR",
+        "value": "entomological inoculation rate",
+        "unit": "infectious bites per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "SP",
+        "value": "sulphadoxine-pyrimethamine",
+        "unit": "drug",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ACT",
+        "value": "artemisinin-combination therapy",
+        "unit": "drug",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "DDT",
+        "value": "dichlorodiphenyltrichloroethane",
+        "unit": "insecticide",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "LLIN",
+        "value": "long-lasting insecticide-treated net",
+        "unit": "intervention",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "RTS,S/AS01",
+        "value": "pre-erythrocytic vaccine",
+        "unit": "vaccine",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 10,
+    "flows": 10,
+    "parameters": 15,
+    "stratifications": 2,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 39,
+    "items_with_evidence": 39,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 39,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 39,
+      "items_with_evidence": 39,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 39,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 2,
+        "fp": 8,
+        "fn": 4,
+        "precision": 0.2,
+        "recall": 0.3333,
+        "f1": 0.25
+      },
+      "flows": {
+        "tp": 1,
+        "fp": 9,
+        "fn": 7,
+        "precision": 0.1,
+        "recall": 0.125,
+        "f1": 0.1111
+      },
+      "parameters": {
+        "tp": 5,
+        "fp": 10,
+        "fn": 3,
+        "precision": 0.3333,
+        "recall": 0.625,
+        "f1": 0.4348
+      },
+      "composite_score": 0.2187,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible Humans",
+          "score": 0.8397186994552612
+        },
+        {
+          "gold": "Prophylaxis",
+          "extracted": "Prophylaxis Humans",
+          "score": 0.8530706167221069
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Prophylaxis->Susceptible",
+          "extracted": "Prophylaxis Humans->Susceptible Humans",
+          "score": 0.8258190155029297
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "TreatmentToProphylaxisRate 1.0 Rate r_T from treated clinical disease to prophylaxis",
+          "extracted": "r_T rate of entering prophylactic protection after treatment Rate at which successfully treated individuals enter prophylaxis.",
+          "score": 0.8214566707611084
+        },
+        {
+          "gold": "UntreatedDiseaseResolutionRate 0.35 Rate r_D from untreated clinical disease to patent asymptomatic infection",
+          "extracted": "r_D rate of clearing untreated clinical disease Rate at which untreated clinical disease resolves into patent asymptomatic infection.",
+          "score": 0.912409245967865
+        },
+        {
+          "gold": "ProphylaxisLossRate 0.20 Rate r_P for loss of prophylactic protection and return to susceptibility",
+          "extracted": "r_P rate of leaving prophylactic protection Rate at which prophylaxis wanes and individuals return to susceptibility.",
+          "score": 0.871183454990387
+        },
+        {
+          "gold": "PatentToSubPatentRate 0.12 Rate r_A from patent asymptomatic infection to sub-patent infection",
+          "extracted": "r_A rate of progression from patent asymptomatic infection to sub-patent infection Depends on anti-parasite immunity.",
+          "score": 0.802415132522583
+        },
+        {
+          "gold": "SubPatentClearanceRate 0.10 Rate r_U from sub-patent infection to susceptible",
+          "extracted": "r_U rate of clearing sub-patent infection Rate at which sub-patent infection is cleared and susceptibility is restored.",
+          "score": 0.7672207951545715
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

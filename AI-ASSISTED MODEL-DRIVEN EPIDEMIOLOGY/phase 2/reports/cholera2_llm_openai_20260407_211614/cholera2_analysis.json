@@ -1,0 +1,172 @@
+{
+  "modelName": "Cholera2",
+  "summary": {
+    "modelName": "Cholera2",
+    "totalPopulation": null,
+    "numCompartments": 3,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Cholera infection/transmission from exposure to Vibrio cholerae.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from cholera infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of natural immunity back to susceptibility.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Initial vaccine protection",
+        "type": "CONSTANT",
+        "expression": "76%",
+        "description": "Assumed initial protection after vaccination, estimated from a recent case-control study in Haiti.",
+        "unit": "percent"
+      },
+      {
+        "index": 1,
+        "name": "Vaccine protection duration",
+        "type": "CONSTANT",
+        "expression": "60",
+        "description": "Protection was modeled to wane over 60 months after vaccination.",
+        "unit": "months"
+      },
+      {
+        "index": 2,
+        "name": "Single-dose protection duration",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Single-dose protection was assumed to be the same as two-dose protection for the first year after vaccination, then drop to zero.",
+        "unit": "year"
+      },
+      {
+        "index": 3,
+        "name": "Children under 5 vaccine effectiveness multiplier",
+        "type": "CONSTANT",
+        "expression": "46.9%",
+        "description": "Children younger than 5 years were assumed to have 46.9% of adult vaccine effectiveness.",
+        "unit": "relative to adults"
+      },
+      {
+        "index": 4,
+        "name": "Baseline two-dose vaccine coverage",
+        "type": "CONSTANT",
+        "expression": "70%",
+        "description": "Baseline campaign coverage assumption.",
+        "unit": "percent"
+      },
+      {
+        "index": 5,
+        "name": "Baseline one-dose vaccine coverage",
+        "type": "CONSTANT",
+        "expression": "10%",
+        "description": "Baseline campaign coverage assumption.",
+        "unit": "percent"
+      },
+      {
+        "index": 6,
+        "name": "No vaccine coverage",
+        "type": "CONSTANT",
+        "expression": "20%",
+        "description": "Baseline campaign coverage assumption.",
+        "unit": "percent"
+      },
+      {
+        "index": 7,
+        "name": "High-coverage two-dose vaccine coverage",
+        "type": "CONSTANT",
+        "expression": "95%",
+        "description": "Coverage assumption for the high-coverage campaign.",
+        "unit": "percent"
+      },
+      {
+        "index": 8,
+        "name": "High-coverage one-dose vaccine coverage",
+        "type": "CONSTANT",
+        "expression": "1.67%",
+        "description": "Coverage assumption for the high-coverage campaign.",
+        "unit": "percent"
+      },
+      {
+        "index": 9,
+        "name": "High-coverage no vaccine coverage",
+        "type": "CONSTANT",
+        "expression": "3.33%",
+        "description": "Coverage assumption for the high-coverage campaign.",
+        "unit": "percent"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

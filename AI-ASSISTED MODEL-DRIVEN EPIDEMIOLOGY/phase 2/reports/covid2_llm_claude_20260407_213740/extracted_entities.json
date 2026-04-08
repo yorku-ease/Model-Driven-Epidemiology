@@ -1,0 +1,223 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to COVID-19 infection in a given city",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to COVID-19 infection in a given city"
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been exposed to COVID-19 but are not yet infectious (incubation period)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been exposed to COVID-19 but are not yet infectious (incubation period)"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who are infected with COVID-19 and capable of transmitting the disease",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infected with COVID-19 and capable of transmitting the disease"
+    },
+    {
+      "normalized_name": "Recovered/Removed",
+      "raw_text": "Recovered/Removed",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from COVID-19 or been removed through isolation/reporting",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from COVID-19 or been removed through isolation/reporting"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "New exposures based on contact between susceptible and infectious individuals; rate is c*S*I/N where c is the daily contact rate",
+      "page_number": 0,
+      "text_span": "New exposures based on contact between susceptible and infectious individuals; rate is c*S*I/N where c is the daily contact rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "New exposures based on contact between susceptible and infectious individuals; rate is c*S*I/N where c is the daily contact rate"
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from exposed to infectious at rate epsilon (inverse of incubation period)",
+      "page_number": 0,
+      "text_span": "Progression from exposed to infectious at rate epsilon (inverse of incubation period)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from exposed to infectious at rate epsilon (inverse of incubation period)"
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered/Removed",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery or removal (isolation) of infectious individuals at rate r (inverse of average infectious period, proxied by time from onset to case report)",
+      "page_number": 0,
+      "text_span": "Recovery or removal (isolation) of infectious individuals at rate r (inverse of average infectious period, proxied by time from onset to case report)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery or removal (isolation) of infectious individuals at rate r (inverse of average infectious period, proxied by time from onset to case report)"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "R0",
+      "raw_text": "R0",
+      "value": "2.2",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number (95% CI 1.4\u20133.9)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number (95% CI 1.4\u20133.9)"
+    },
+    {
+      "normalized_name": "incubation_period",
+      "raw_text": "incubation_period",
+      "value": "5.2",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average incubation period, time spent exposed but not yet infectious (95% CI 4.1\u20137.0 days); epsilon = 1/5.2",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average incubation period, time spent exposed but not yet infectious (95% CI 4.1\u20137.0 days); epsilon = 1/5.2"
+    },
+    {
+      "normalized_name": "onset_to_first_medical_visit",
+      "raw_text": "onset_to_first_medical_visit",
+      "value": "5.8",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average days from symptom onset to first medical visit and isolation (95% CI 4.3\u20137.5 days); used to derive daily contact rate c = R0 / 5.8",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average days from symptom onset to first medical visit and isolation (95% CI 4.3\u20137.5 days); used to derive daily contact rate c = R0 / 5.8"
+    },
+    {
+      "normalized_name": "r",
+      "raw_text": "r",
+      "value": "varies over time",
+      "unit": "1/days",
+      "page_number": 0,
+      "text_span": "Removal/recovery rate, equal to inverse of average infectious period proxied by median time from illness onset to reported case; decreased from 12 days early in outbreak to 3 days in early February due to improved case identification",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Removal/recovery rate, equal to inverse of average infectious period proxied by median time from illness onset to reported case; decreased from 12 days early in outbreak to 3 days in early February due to improved case identification"
+    },
+    {
+      "normalized_name": "epsilon",
+      "raw_text": "epsilon",
+      "value": "0.192",
+      "unit": "1/days",
+      "page_number": 0,
+      "text_span": "Rate of progression from exposed to infectious (1/5.2 days)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of progression from exposed to infectious (1/5.2 days)"
+    },
+    {
+      "normalized_name": "c",
+      "raw_text": "c",
+      "value": "derived from R0",
+      "unit": "contacts/day",
+      "page_number": 0,
+      "text_span": "Daily contact rate calculated as R0 divided by average days from onset to first medical visit (5.8 days), weighted by relative level of daily contact from Baidu movement data",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Daily contact rate calculated as R0 divided by average days from onset to first medical visit (5.8 days), weighted by relative level of daily contact from Baidu movement data"
+    },
+    {
+      "normalized_name": "initial_infected",
+      "raw_text": "initial_infected",
+      "value": "5",
+      "unit": "persons",
+      "page_number": 0,
+      "text_span": "Number of initially infected people seeded in Wuhan on December 1, 2019",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of initially infected people seeded in Wuhan on December 1, 2019"
+    },
+    {
+      "normalized_name": "simulation_runs",
+      "raw_text": "simulation_runs",
+      "value": "1000",
+      "unit": "runs",
+      "page_number": 0,
+      "text_span": "Number of stochastic simulation runs performed",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of stochastic simulation runs performed"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 2,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "contact_tracing",
+      "page_number": 2,
+      "text_span": "contact_tracing mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 8,
+    "num_stratifications": 1,
+    "num_interventions": 3
+  }
+}

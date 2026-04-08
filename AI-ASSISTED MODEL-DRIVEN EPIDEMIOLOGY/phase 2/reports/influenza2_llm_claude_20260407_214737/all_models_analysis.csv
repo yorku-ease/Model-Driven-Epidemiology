@@ -1,0 +1,27 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza2,Compartment,Latent,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza2,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza2,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza2,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,//@parameters.1,False,"Infection through contact in households, schools, workplaces, and the general community",,,
+Influenza2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.1,False,Progression from latent to infectious state after incubation period,,,
+Influenza2,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Recovery from infection,,,
+Influenza2,Parameter,R0,,,,,,Model file,Certain,,,,,,"Basic reproduction number; moderate scenario R0=1.7, high scenario R0=2.0",CONSTANT,1.4-2.0,dimensionless
+Influenza2,Parameter,Generation time,,,,,,Model file,Certain,,,,,,Mean generation time of influenza transmission,CONSTANT,2.6,days
+Influenza2,Parameter,Clinical fraction,,,,,,Model file,Certain,,,,,,Proportion of infected individuals who become clinical cases (ill enough to seek medical care),CONSTANT,0.5,dimensionless
+Influenza2,Parameter,Household transmission fraction,,,,,,Model file,Certain,,,,,,Proportion of transmission occurring within the household,CONSTANT,0.30,dimensionless
+Influenza2,Parameter,Community transmission fraction,,,,,,Model file,Certain,,,,,,Proportion of non-household transmission occurring in the general community,CONSTANT,0.33,proportion of non-household transmission
+Influenza2,Parameter,School and workplace transmission fraction,,,,,,Model file,Certain,,,,,,Proportion of non-household transmission occurring in schools and workplaces,CONSTANT,0.37,proportion of non-household transmission
+Influenza2,Parameter,School contact rate multiplier,,,,,,Model file,Certain,,,,,,Per-capita contact rates in schools assumed to be double that in workplaces,CONSTANT,2.0,dimensionless
+Influenza2,Parameter,Vaccine efficacy (susceptibility reduction),,,,,,Model file,Certain,,,,,,Reduction in susceptibility conferred by a matched pandemic vaccine,CONSTANT,0.70,dimensionless
+Influenza2,Parameter,Vaccine efficacy (infectiousness reduction),,,,,,Model file,Certain,,,,,,Reduction in infectiousness for vaccinated individuals who still get infected,CONSTANT,0.30,dimensionless
+Influenza2,Parameter,Vaccine efficacy (clinical case reduction),,,,,,Model file,Certain,,,,,,Reduction in probability of becoming a clinical case for vaccinated individuals who get infected,CONSTANT,0.50,dimensionless
+Influenza2,Parameter,Pre-pandemic vaccine efficacy (susceptibility reduction),,,,,,Model file,Certain,,,,,,Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus,CONSTANT,0.30,dimensionless
+Influenza2,Parameter,Vaccination rate,,,,,,Model file,Certain,,,,,,Rate at which population can be vaccinated per day,CONSTANT,0.01,per day (fraction of population)
+Influenza2,Parameter,Vaccine protection delay,,,,,,Model file,Certain,,,,,,Time after vaccination for protection to develop,CONSTANT,14,days
+Influenza2,Parameter,US population size,,,,,,Model file,Certain,,,,,,Assumed population size of the United States,CONSTANT,300000000,persons
+Influenza2,Parameter,GB population size,,,,,,Model file,Certain,,,,,,Assumed population size of Great Britain,CONSTANT,58100000,persons
+Influenza2,Parameter,Household quarantine compliance,,,,,,Model file,Certain,,,,,,Proportion of households assumed to comply with voluntary quarantine policy,CONSTANT,0.50,dimensionless
+Influenza2,Parameter,Household quarantine external contact reduction,,,,,,Model file,Certain,,,,,,Reduction in external contact rates for quarantined households,CONSTANT,0.75,dimensionless
+Influenza2,Parameter,Household quarantine internal contact increase,,,,,,Model file,Certain,,,,,,Increase (100%) in within-household contact rates during quarantine,CONSTANT,1.0,dimensionless
+Influenza2,Parameter,Quarantine duration,,,,,,Model file,Certain,,,,,,Duration of voluntary household quarantine,CONSTANT,14,days

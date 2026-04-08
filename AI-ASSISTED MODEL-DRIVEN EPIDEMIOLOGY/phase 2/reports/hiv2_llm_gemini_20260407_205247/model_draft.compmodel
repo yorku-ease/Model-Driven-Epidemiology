@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="CD4 Eligibility Threshold" expression="&lt;=200, &lt;=350, or all infected" type="CONSTANT" description="The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios." unit="cells/ml"/>
+  <parameters name="Treatment Access" expression="50, 60, 70, 80, 90, 95, 100" type="CONSTANT" description="The proportion of eligible individuals who eventually initiate treatment." unit="percent"/>
+  <parameters name="3-year Retention on ART" expression="75, 85, 95, 100" type="CONSTANT" description="The percentage of individuals remaining on treatment after 3 years, excluding those who had died." unit="percent"/>
+  <parameters name="Average time to ART initiation" expression="1" type="CONSTANT" description="The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year." unit="year"/>
+  <parameters name="Relative Transmissibility (Early Infection)" expression="10-26" type="CONSTANT" description="Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range." unit="fold increase"/>
+  <parameters name="Transmissibility Reduction on ART" expression="&gt;90" type="CONSTANT" description="The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%." unit="percent"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.4" target="//@compartments.1" description="Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART."/>
+  </compartments>
+  <compartments PrimaryName="Infected (Early)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.2" description="Progression from early to chronic HIV infection."/>
+  </compartments>
+  <compartments PrimaryName="Infected (Chronic, CD4 &gt; 350)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Disease progression marked by decline in CD4 count."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Initiation of ART for eligible individuals with CD4 &gt; 350 cells/ml (e.g., under 'treat all' scenarios)."/>
+  </compartments>
+  <compartments PrimaryName="Infected (Chronic, CD4 200-350)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Further disease progression to a lower CD4 count."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml."/>
+  </compartments>
+  <compartments PrimaryName="Infected (Late Stage, CD4 &lt;= 200)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Initiation of ART for eligible individuals with CD4 count &lt;= 200 cells/ml."/>
+  </compartments>
+  <compartments PrimaryName="On Antiretroviral Therapy (ART)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation."/>
+  </compartments>
+</compartmental:CompartmentalModel>

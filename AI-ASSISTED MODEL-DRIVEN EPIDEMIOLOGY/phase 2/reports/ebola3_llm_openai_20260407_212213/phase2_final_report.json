@@ -1,0 +1,352 @@
+{
+  "paper_name": "Ebola3",
+  "summary": {
+    "extraction": {
+      "compartments": 6,
+      "flows": 5,
+      "parameters": 16,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious in the Community",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Hospitalized Ebola Cases",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead Ebola Cases",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious in the Community",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious in the Community",
+        "target": "Hospitalized Ebola Cases",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized Ebola Cases",
+        "target": "Dead Ebola Cases",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious in the Community",
+        "target": "Dead Ebola Cases",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "a",
+        "value": "1/7 per day (DRC 1995); 1/12 per day (Uganda 2000)",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_h",
+        "value": "1/5 per day (DRC 1995); 1/4.2 per day (Uganda 2000)",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_d",
+        "value": "1/9.6 per day (DRC 1995); 1/8 per day (Uganda 2000)",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_i",
+        "value": "1/10 per day",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c_f",
+        "value": "1/2 per day",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "h",
+        "value": "80% (DRC 1995); 80% (Uganda 2000)",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d",
+        "value": "81% (DRC 1995); 53% (Uganda 2000)",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_I",
+        "value": "0.588 per week (DRC 1995); 3.532 per week (Uganda 2000)",
+        "unit": "week^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_H",
+        "value": "0.794 per week (DRC 1995); 0.012 per week (Uganda 2000)",
+        "unit": "week^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b_F",
+        "value": "7.653 per week (DRC 1995); 0.462 per week (Uganda 2000)",
+        "unit": "week^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "N",
+        "value": "200000 (DRC 1995); 470000 (Uganda 2000)",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "z",
+        "value": "12% decrease in community transmission after interventions (DRC 1995); 88% decrease in community transmission after interventions (Uganda 2000)",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "h_1",
+        "value": "Computed from h, c_i, c_d, c_h, and d to match the hospitalization proportion",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d_1",
+        "value": "Computed from d, c_i, c_d, and c_h",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d_2",
+        "value": "Computed from d, c_i, c_d, and c_h",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R_0",
+        "value": "2.7 (DRC 1995); 2.7 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 6,
+    "flows": 5,
+    "parameters": 16,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 30,
+    "items_with_evidence": 30,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 30,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 30,
+      "items_with_evidence": 30,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 30,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 3,
+        "fp": 3,
+        "fn": 3,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 7,
+        "precision": 0.6,
+        "recall": 0.3,
+        "f1": 0.4
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 16,
+        "fn": 10,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.3825,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed",
+          "score": 0.9999998807907104
+        },
+        {
+          "gold": "InfectiousCommunity",
+          "extracted": "Infectious in the Community",
+          "score": 0.7601811289787292
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed",
+          "score": 0.9999997615814209
+        },
+        {
+          "gold": "Exposed->InfectiousCommunity",
+          "extracted": "Exposed->Infectious in the Community",
+          "score": 0.8567715287208557
+        },
+        {
+          "gold": "InfectiousCommunity->Hospitalized",
+          "extracted": "Infectious in the Community->Hospitalized Ebola Cases",
+          "score": 0.7025580406188965
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

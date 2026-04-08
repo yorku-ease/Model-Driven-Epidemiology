@@ -1,0 +1,300 @@
+{
+  "modelName": "Ebola2",
+  "summary": {
+    "modelName": "Ebola2",
+    "totalPopulation": null,
+    "numCompartments": 8,
+    "numParameters": 11,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from latent infection to symptomatic infectious stage after the incubation period.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious in the Community",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospitalization of infectious community cases.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infection in the community.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death from Ebola in the community, remaining infectious until burial.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Hospitalized Patients",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospitalized patients abandoning healthcare facilities and returning to the community.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infection while hospitalized.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death from Ebola while hospitalized, remaining infectious until burial.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Dead Patients Not Yet Buried",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Burial of deceased patients, removing them from the chain of transmission.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "No outgoing transition shown; recovered individuals are removed from transmission.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Cumulative Cases",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 7,
+        "primaryName": "Burials",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "0.532",
+        "description": "Transmission rate in the community before intervention.",
+        "unit": "per week"
+      },
+      {
+        "index": 1,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "0.328",
+        "description": "Transmission rate in hospitals before intervention.",
+        "unit": "per week"
+      },
+      {
+        "index": 2,
+        "name": "φ",
+        "type": "CONSTANT",
+        "expression": "2.104",
+        "description": "Transmission rate at funerals before intervention.",
+        "unit": "per week"
+      },
+      {
+        "index": 3,
+        "name": "η",
+        "type": "CONSTANT",
+        "expression": "4.8 days",
+        "description": "Mean time from symptoms onset to hospitalization (table reports 1/η).",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "b",
+        "type": "CONSTANT",
+        "expression": "5.4 days",
+        "description": "Mean time from death to burial (table reports 1/b).",
+        "unit": "days"
+      },
+      {
+        "index": 5,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "10.4 days",
+        "description": "Mean duration of the infection (table reports 1/γ).",
+        "unit": "days"
+      },
+      {
+        "index": 6,
+        "name": "α",
+        "type": "CONSTANT",
+        "expression": "10 days",
+        "description": "Mean duration of the incubation period (table reports 1/α).",
+        "unit": "days"
+      },
+      {
+        "index": 7,
+        "name": "γH",
+        "type": "CONSTANT",
+        "expression": "4.6 days",
+        "description": "Average permanence in the hospital (table reports 1/γH).",
+        "unit": "days"
+      },
+      {
+        "index": 8,
+        "name": "δ",
+        "type": "CONSTANT",
+        "expression": "73%",
+        "description": "Case fatality ratio in the community.",
+        "unit": "proportion"
+      },
+      {
+        "index": 9,
+        "name": "δH",
+        "type": "CONSTANT",
+        "expression": "61%",
+        "description": "Case fatality ratio in hospitals.",
+        "unit": "proportion"
+      },
+      {
+        "index": 10,
+        "name": "κ",
+        "type": "CONSTANT",
+        "expression": "0.0025",
+        "description": "Hospital leaving rate.",
+        "unit": "per week"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

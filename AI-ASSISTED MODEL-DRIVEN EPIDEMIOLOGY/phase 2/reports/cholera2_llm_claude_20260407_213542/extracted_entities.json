@@ -1,0 +1,335 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to infection with Vibrio cholerae",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to infection with Vibrio cholerae"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals infected with Vibrio cholerae (including reported and unreported/asymptomatic infections)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected with Vibrio cholerae (including reported and unreported/asymptomatic infections)"
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from cholera infection and have temporary natural immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from cholera infection and have temporary natural immunity"
+    },
+    {
+      "normalized_name": "Vaccinated",
+      "raw_text": "Vaccinated",
+      "page_number": 0,
+      "text_span": "Individuals who have received oral cholera vaccine (OCV) and have vaccine-induced protection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received oral cholera vaccine (OCV) and have vaccine-induced protection"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of Vibrio cholerae through contact, modulated by seasonally varying transmission parameter and potentially environmental reservoir",
+      "page_number": 0,
+      "text_span": "Transmission of Vibrio cholerae through contact, modulated by seasonally varying transmission parameter and potentially environmental reservoir",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of Vibrio cholerae through contact, modulated by seasonally varying transmission parameter and potentially environmental reservoir"
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from cholera infection, conferring temporary natural immunity",
+      "page_number": 0,
+      "text_span": "Recovery from cholera infection, conferring temporary natural immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from cholera infection, conferring temporary natural immunity"
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of natural immunity after infection, returning to susceptible state",
+      "page_number": 0,
+      "text_span": "Loss of natural immunity after infection, returning to susceptible state",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of natural immunity after infection, returning to susceptible state"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination with oral cholera vaccine (OCV), providing protection against infection or clinical disease",
+      "page_number": 0,
+      "text_span": "Vaccination with oral cholera vaccine (OCV), providing protection against infection or clinical disease",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination with oral cholera vaccine (OCV), providing protection against infection or clinical disease"
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning of vaccine-induced protection over time, with no protection assumed after 5 years",
+      "page_number": 0,
+      "text_span": "Waning of vaccine-induced protection over time, with no protection assumed after 5 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning of vaccine-induced protection over time, with no protection assumed after 5 years"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "VE_adult_two_dose",
+      "raw_text": "VE_adult_two_dose",
+      "value": "76",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Initial vaccine efficacy (protection) for two-dose OCV in adults, estimated from case-control study in Haiti",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initial vaccine efficacy (protection) for two-dose OCV in adults, estimated from case-control study in Haiti"
+    },
+    {
+      "normalized_name": "VE_child_multiplier",
+      "raw_text": "VE_child_multiplier",
+      "value": "46.9",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Relative effectiveness of OCV in children aged less than 5 years compared to adults",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative effectiveness of OCV in children aged less than 5 years compared to adults"
+    },
+    {
+      "normalized_name": "VE_child_two_dose",
+      "raw_text": "VE_child_two_dose",
+      "value": "30",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Vaccine efficacy in children younger than 5 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccine efficacy in children younger than 5 years"
+    },
+    {
+      "normalized_name": "vaccine_protection_duration",
+      "raw_text": "vaccine_protection_duration",
+      "value": "5",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Maximum duration of vaccine-induced protection; no protection assumed after 5 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Maximum duration of vaccine-induced protection; no protection assumed after 5 years"
+    },
+    {
+      "normalized_name": "baseline_two_dose_coverage",
+      "raw_text": "baseline_two_dose_coverage",
+      "value": "70",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Baseline vaccination coverage with two-dose OCV regimen",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline vaccination coverage with two-dose OCV regimen"
+    },
+    {
+      "normalized_name": "baseline_one_dose_coverage",
+      "raw_text": "baseline_one_dose_coverage",
+      "value": "10",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Baseline vaccination coverage with single-dose OCV regimen",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline vaccination coverage with single-dose OCV regimen"
+    },
+    {
+      "normalized_name": "baseline_no_vaccine",
+      "raw_text": "baseline_no_vaccine",
+      "value": "20",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Proportion of population receiving no vaccine under baseline scenario",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of population receiving no vaccine under baseline scenario"
+    },
+    {
+      "normalized_name": "high_two_dose_coverage",
+      "raw_text": "high_two_dose_coverage",
+      "value": "95",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "High vaccination coverage with two-dose OCV regimen",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "High vaccination coverage with two-dose OCV regimen"
+    },
+    {
+      "normalized_name": "high_one_dose_coverage",
+      "raw_text": "high_one_dose_coverage",
+      "value": "1.67",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "One-dose coverage under high-coverage campaign scenario",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "One-dose coverage under high-coverage campaign scenario"
+    },
+    {
+      "normalized_name": "high_no_vaccine",
+      "raw_text": "high_no_vaccine",
+      "value": "3.33",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "Proportion receiving no vaccine under high-coverage campaign scenario",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion receiving no vaccine under high-coverage campaign scenario"
+    },
+    {
+      "normalized_name": "two_dept_doses",
+      "raw_text": "two_dept_doses",
+      "value": "3.7",
+      "unit": "million doses",
+      "page_number": 0,
+      "text_span": "Total OCV doses for two-department campaign (Centre and Artibonite)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total OCV doses for two-department campaign (Centre and Artibonite)"
+    },
+    {
+      "normalized_name": "three_dept_doses",
+      "raw_text": "three_dept_doses",
+      "value": "9.8",
+      "unit": "million doses",
+      "page_number": 0,
+      "text_span": "Total OCV doses for three-department campaign",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total OCV doses for three-department campaign"
+    },
+    {
+      "normalized_name": "national_doses",
+      "raw_text": "national_doses",
+      "value": "16.4",
+      "unit": "million doses",
+      "page_number": 0,
+      "text_span": "Total OCV doses for national campaign (baseline coverage)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total OCV doses for national campaign (baseline coverage)"
+    },
+    {
+      "normalized_name": "high_coverage_national_doses",
+      "raw_text": "high_coverage_national_doses",
+      "value": "20.9",
+      "unit": "million doses",
+      "page_number": 0,
+      "text_span": "Total OCV doses for high-coverage national campaign",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total OCV doses for high-coverage national campaign"
+    },
+    {
+      "normalized_name": "elimination_threshold",
+      "raw_text": "elimination_threshold",
+      "value": "<1",
+      "unit": "infections per 52 consecutive weeks",
+      "page_number": 0,
+      "text_span": "Elimination defined as less than one V. cholerae infection over at least 52 consecutive weeks",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Elimination defined as less than one V. cholerae infection over at least 52 consecutive weeks"
+    },
+    {
+      "normalized_name": "projection_period",
+      "raw_text": "projection_period",
+      "value": "10",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Duration of model projection period from January 19, 2019 to January 13, 2029",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of model projection period from January 19, 2019 to January 13, 2029"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 8,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 7,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 5,
+    "num_parameters": 16,
+    "num_stratifications": 1,
+    "num_interventions": 2
+  }
+}

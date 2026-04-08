@@ -1,0 +1,820 @@
+{
+  "model_analysis": {
+    "modelName": "Influenza2",
+    "summary": {
+      "modelName": "Influenza2",
+      "totalPopulation": null,
+      "numCompartments": 4,
+      "numParameters": 19,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.1",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection through contact in households, schools, workplaces, and the general community",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Latent",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent to infectious state after incubation period",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "R0",
+          "type": "CONSTANT",
+          "expression": "1.4-2.0",
+          "description": "Basic reproduction number; moderate scenario R0=1.7, high scenario R0=2.0",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 1,
+          "name": "Generation time",
+          "type": "CONSTANT",
+          "expression": "2.6",
+          "description": "Mean generation time of influenza transmission",
+          "unit": "days"
+        },
+        {
+          "index": 2,
+          "name": "Clinical fraction",
+          "type": "CONSTANT",
+          "expression": "0.5",
+          "description": "Proportion of infected individuals who become clinical cases (ill enough to seek medical care)",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 3,
+          "name": "Household transmission fraction",
+          "type": "CONSTANT",
+          "expression": "0.30",
+          "description": "Proportion of transmission occurring within the household",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 4,
+          "name": "Community transmission fraction",
+          "type": "CONSTANT",
+          "expression": "0.33",
+          "description": "Proportion of non-household transmission occurring in the general community",
+          "unit": "proportion of non-household transmission"
+        },
+        {
+          "index": 5,
+          "name": "School and workplace transmission fraction",
+          "type": "CONSTANT",
+          "expression": "0.37",
+          "description": "Proportion of non-household transmission occurring in schools and workplaces",
+          "unit": "proportion of non-household transmission"
+        },
+        {
+          "index": 6,
+          "name": "School contact rate multiplier",
+          "type": "CONSTANT",
+          "expression": "2.0",
+          "description": "Per-capita contact rates in schools assumed to be double that in workplaces",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 7,
+          "name": "Vaccine efficacy (susceptibility reduction)",
+          "type": "CONSTANT",
+          "expression": "0.70",
+          "description": "Reduction in susceptibility conferred by a matched pandemic vaccine",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 8,
+          "name": "Vaccine efficacy (infectiousness reduction)",
+          "type": "CONSTANT",
+          "expression": "0.30",
+          "description": "Reduction in infectiousness for vaccinated individuals who still get infected",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 9,
+          "name": "Vaccine efficacy (clinical case reduction)",
+          "type": "CONSTANT",
+          "expression": "0.50",
+          "description": "Reduction in probability of becoming a clinical case for vaccinated individuals who get infected",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 10,
+          "name": "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+          "type": "CONSTANT",
+          "expression": "0.30",
+          "description": "Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 11,
+          "name": "Vaccination rate",
+          "type": "CONSTANT",
+          "expression": "0.01",
+          "description": "Rate at which population can be vaccinated per day",
+          "unit": "per day (fraction of population)"
+        },
+        {
+          "index": 12,
+          "name": "Vaccine protection delay",
+          "type": "CONSTANT",
+          "expression": "14",
+          "description": "Time after vaccination for protection to develop",
+          "unit": "days"
+        },
+        {
+          "index": 13,
+          "name": "US population size",
+          "type": "CONSTANT",
+          "expression": "300000000",
+          "description": "Assumed population size of the United States",
+          "unit": "persons"
+        },
+        {
+          "index": 14,
+          "name": "GB population size",
+          "type": "CONSTANT",
+          "expression": "58100000",
+          "description": "Assumed population size of Great Britain",
+          "unit": "persons"
+        },
+        {
+          "index": 15,
+          "name": "Household quarantine compliance",
+          "type": "CONSTANT",
+          "expression": "0.50",
+          "description": "Proportion of households assumed to comply with voluntary quarantine policy",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 16,
+          "name": "Household quarantine external contact reduction",
+          "type": "CONSTANT",
+          "expression": "0.75",
+          "description": "Reduction in external contact rates for quarantined households",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 17,
+          "name": "Household quarantine internal contact increase",
+          "type": "CONSTANT",
+          "expression": "1.0",
+          "description": "Increase (100%) in within-household contact rates during quarantine",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 18,
+          "name": "Quarantine duration",
+          "type": "CONSTANT",
+          "expression": "14",
+          "description": "Duration of voluntary household quarantine",
+          "unit": "days"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Influenza2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 19,
+    "parametersWithUncertainty": 19,
+    "parameters": [
+      {
+        "parameter": "R0",
+        "yourValue": "1.4-2.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Basic reproduction number; moderate scenario R0=1.7, high scenario R0=2.0",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Generation time",
+        "yourValue": "2.6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "days",
+        "description": "Mean generation time of influenza transmission",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Clinical fraction",
+        "yourValue": "0.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Proportion of infected individuals who become clinical cases (ill enough to seek medical care)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Household transmission fraction",
+        "yourValue": "0.30",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Proportion of transmission occurring within the household",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Community transmission fraction",
+        "yourValue": "0.33",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion of non-household transmission",
+        "description": "Proportion of non-household transmission occurring in the general community",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "School and workplace transmission fraction",
+        "yourValue": "0.37",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion of non-household transmission",
+        "description": "Proportion of non-household transmission occurring in schools and workplaces",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "School contact rate multiplier",
+        "yourValue": "2.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Per-capita contact rates in schools assumed to be double that in workplaces",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine efficacy (susceptibility reduction)",
+        "yourValue": "0.70",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Reduction in susceptibility conferred by a matched pandemic vaccine",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine efficacy (infectiousness reduction)",
+        "yourValue": "0.30",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Reduction in infectiousness for vaccinated individuals who still get infected",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine efficacy (clinical case reduction)",
+        "yourValue": "0.50",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Reduction in probability of becoming a clinical case for vaccinated individuals who get infected",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+        "yourValue": "0.30",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccination rate",
+        "yourValue": "0.01",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "per day (fraction of population)",
+        "description": "Rate at which population can be vaccinated per day",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine protection delay",
+        "yourValue": "14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "days",
+        "description": "Time after vaccination for protection to develop",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "US population size",
+        "yourValue": "300000000",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "persons",
+        "description": "Assumed population size of the United States",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "GB population size",
+        "yourValue": "58100000",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "persons",
+        "description": "Assumed population size of Great Britain",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Household quarantine compliance",
+        "yourValue": "0.50",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Proportion of households assumed to comply with voluntary quarantine policy",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Household quarantine external contact reduction",
+        "yourValue": "0.75",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Reduction in external contact rates for quarantined households",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Household quarantine internal contact increase",
+        "yourValue": "1.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Increase (100%) in within-household contact rates during quarantine",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Quarantine duration",
+        "yourValue": "14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "days",
+        "description": "Duration of voluntary household quarantine",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 19
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Influenza2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Generation time",
+        "type": "other",
+        "currentValue": 2.6,
+        "description": "Mean generation time of influenza transmission",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Clinical fraction",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "Proportion of infected individuals who become clinical cases (ill enough to seek medical care)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Household transmission fraction",
+        "type": "transmission",
+        "currentValue": 0.3,
+        "description": "Proportion of transmission occurring within the household",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Community transmission fraction",
+        "type": "transmission",
+        "currentValue": 0.33,
+        "description": "Proportion of non-household transmission occurring in the general community",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "School and workplace transmission fraction",
+        "type": "transmission",
+        "currentValue": 0.37,
+        "description": "Proportion of non-household transmission occurring in schools and workplaces",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "School contact rate multiplier",
+        "type": "transmission",
+        "currentValue": 2.0,
+        "description": "Per-capita contact rates in schools assumed to be double that in workplaces",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccine efficacy (susceptibility reduction)",
+        "type": "other",
+        "currentValue": 0.7,
+        "description": "Reduction in susceptibility conferred by a matched pandemic vaccine",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccine efficacy (infectiousness reduction)",
+        "type": "other",
+        "currentValue": 0.3,
+        "description": "Reduction in infectiousness for vaccinated individuals who still get infected",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccine efficacy (clinical case reduction)",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "Reduction in probability of becoming a clinical case for vaccinated individuals who get infected",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+        "type": "other",
+        "currentValue": 0.3,
+        "description": "Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccination rate",
+        "type": "other",
+        "currentValue": 0.01,
+        "description": "Rate at which population can be vaccinated per day",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccine protection delay",
+        "type": "other",
+        "currentValue": 14.0,
+        "description": "Time after vaccination for protection to develop",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "US population size",
+        "type": "other",
+        "currentValue": 300000000.0,
+        "description": "Assumed population size of the United States",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "GB population size",
+        "type": "other",
+        "currentValue": 58100000.0,
+        "description": "Assumed population size of Great Britain",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Household quarantine compliance",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "Proportion of households assumed to comply with voluntary quarantine policy",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Household quarantine external contact reduction",
+        "type": "transmission",
+        "currentValue": 0.75,
+        "description": "Reduction in external contact rates for quarantined households",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Household quarantine internal contact increase",
+        "type": "transmission",
+        "currentValue": 1.0,
+        "description": "Increase (100%) in within-household contact rates during quarantine",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Quarantine duration",
+        "type": "other",
+        "currentValue": 14.0,
+        "description": "Duration of voluntary household quarantine",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Generation time",
+      "Clinical fraction",
+      "Household transmission fraction",
+      "Community transmission fraction",
+      "School and workplace transmission fraction"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Generation time",
+        "Clinical fraction",
+        "Household transmission fraction",
+        "Community transmission fraction",
+        "School and workplace transmission fraction"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Generation time": {
+          "mu": 28.69534466498198,
+          "mu_star": 28.69534466498198,
+          "sigma": 0.1576259636520119,
+          "n_samples": 20
+        },
+        "Clinical fraction": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Household transmission fraction": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Community transmission fraction": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "School and workplace transmission fraction": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

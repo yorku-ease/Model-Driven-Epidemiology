@@ -1,0 +1,28 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Dengue3,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infectious Humans (Primary),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Recovered Humans (Primary),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infectious Humans (Secondary),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Recovered Humans (Post-Secondary),,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infectious Humans (Primary),RateFlow,//@parameters.0,False,"Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection.",,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Recovered Humans (Primary),RateFlow,//@parameters.2,False,Recovery from a primary dengue infection.,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infectious Humans (Secondary),RateFlow,//@parameters.0,False,"Transmission of dengue from an infectious mosquito to a human who has had one prior infection, resulting in a secondary infection.",,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Recovered Humans (Post-Secondary),RateFlow,//@parameters.2,False,Recovery from a secondary dengue infection.,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.0,False,Transmission of dengue from an infectious human (primary or secondary) to a susceptible mosquito.,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.0,False,Progression of infected mosquitoes to an infectious state after the extrinsic incubation period.,,,
+Dengue3,Parameter,β_hv,,,,,,Model file,Certain,,,,,,"Transmission rate from infectious mosquitoes to humans, related to mosquito biting rate.",CONSTANT,0.0,
+Dengue3,Parameter,β_vh,,,,,,Model file,Certain,,,,,,Transmission rate from infectious humans to susceptible mosquitoes.,CONSTANT,0.0,
+Dengue3,Parameter,γ_h,,,,,,Model file,Certain,,,,,,Recovery rate for infectious humans (inverse of infectious period).,CONSTANT,0.0,1/day
+Dengue3,Parameter,σ_v,,,,,,Model file,Certain,,,,,,Rate of progression from exposed to infectious for mosquitoes (inverse of extrinsic incubation period).,CONSTANT,0.0,1/day
+Dengue3,Parameter,μ_h,,,,,,Model file,Certain,,,,,,"Natural mortality rate for humans, based on a mean lifespan of 67.5 years.",CONSTANT,1/(67.5 * 365.25),1/day
+Dengue3,Parameter,μ_v,,,,,,Model file,Certain,,,,,,Natural mortality rate for mosquitoes.,CONSTANT,0.0,1/day
+Dengue3,Parameter,Case fatality rate,,,,,,Model file,Certain,,,,,,Assumed proportion of symptomatic dengue cases that result in death.,CONSTANT,0.0003 to 0.0009,deaths per symptomatic case
+Dengue3,Parameter,Default vaccine coverage,,,,,,Model file,Certain,,,,,,Default coverage for routine vaccination of 9-year-olds.,CONSTANT,0.80,proportion
+Dengue3,Parameter,Default vaccination age,,,,,,Model file,Certain,,,,,,Default age for routine vaccination.,CONSTANT,9,years
+Dengue3,Parameter,Discount rate,,,,,,Model file,Certain,,,,,,Discount rate for costs and health effects in economic evaluation.,CONSTANT,0.03,per year
+Dengue3,Parameter,DALYs per symptomatic dengue case,,,,,,Model file,Certain,,,,,,Disability-Adjusted Life Years incurred per symptomatic dengue case.,CONSTANT,0.006,DALYs
+Dengue3,Parameter,DALYs per severe dengue case,,,,,,Model file,Certain,,,,,,Disability-Adjusted Life Years incurred per severe dengue case.,CONSTANT,0.02,DALYs
+Dengue3,Parameter,"Cost per hospitalised case (public payer, Latin America)",,,,,,Model file,Certain,,,,,,Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.,CONSTANT,200,USD (2014)

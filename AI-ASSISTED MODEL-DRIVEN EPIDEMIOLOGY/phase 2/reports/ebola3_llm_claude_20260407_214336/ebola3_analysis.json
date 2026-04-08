@@ -1,0 +1,291 @@
+{
+  "modelName": "Ebola3",
+  "summary": {
+    "modelName": "Ebola3",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 19,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection through contact with infectious individuals in community, hospital, or during funerals; rate = (beta_I * S * I + beta_H * S * H + beta_F * S * F) / N",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "End of incubation period, becoming symptomatic and infectious; rate = alpha * E",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospitalization of infectious cases; rate = c_h * h_1 * I",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death of non-hospitalized cases in the community; rate = c_d * (1 - h_1) * d_1 * I",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Hospitalized",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death of hospitalized cases; rate = c_dh * d_2 * H",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Dead but not yet buried",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "beta_I",
+        "type": "CONSTANT",
+        "expression": "0.588 (DRC 1995); 3.532 (Uganda 2000)",
+        "description": "Transmission coefficient in the community",
+        "unit": "week^-1"
+      },
+      {
+        "index": 1,
+        "name": "beta_H",
+        "type": "CONSTANT",
+        "expression": "0.794 (DRC 1995); 0.012 (Uganda 2000)",
+        "description": "Transmission coefficient at the hospital",
+        "unit": "week^-1"
+      },
+      {
+        "index": 2,
+        "name": "beta_F",
+        "type": "CONSTANT",
+        "expression": "7.653 (DRC 1995); 0.462 (Uganda 2000)",
+        "description": "Transmission coefficient during funerals",
+        "unit": "week^-1"
+      },
+      {
+        "index": 3,
+        "name": "alpha",
+        "type": "CONSTANT",
+        "expression": "1/7 (DRC 1995); 1/12 (Uganda 2000)",
+        "description": "Inverse of the mean duration of the incubation period",
+        "unit": "day^-1"
+      },
+      {
+        "index": 4,
+        "name": "1/c_h",
+        "type": "CONSTANT",
+        "expression": "5 (DRC 1995); 4.2 (Uganda 2000)",
+        "description": "Mean duration from symptom onset to hospitalization",
+        "unit": "days"
+      },
+      {
+        "index": 5,
+        "name": "1/c_d",
+        "type": "CONSTANT",
+        "expression": "9.6 (DRC 1995); 8 (Uganda 2000)",
+        "description": "Mean duration from symptom onset to death",
+        "unit": "days"
+      },
+      {
+        "index": 6,
+        "name": "1/c_i",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Mean duration of the infectious period for survivors (onset to end of infectiousness)",
+        "unit": "days"
+      },
+      {
+        "index": 7,
+        "name": "1/c_f",
+        "type": "CONSTANT",
+        "expression": "2",
+        "description": "Mean duration from death to traditional burial",
+        "unit": "days"
+      },
+      {
+        "index": 8,
+        "name": "h",
+        "type": "CONSTANT",
+        "expression": "80",
+        "description": "Proportion of cases hospitalized",
+        "unit": "%"
+      },
+      {
+        "index": 9,
+        "name": "d",
+        "type": "CONSTANT",
+        "expression": "81 (DRC 1995); 53 (Uganda 2000)",
+        "description": "Case-fatality ratio",
+        "unit": "%"
+      },
+      {
+        "index": 10,
+        "name": "h_1",
+        "type": "CONSTANT",
+        "expression": "0.67 (DRC 1995); 0.65 (Uganda 2000)",
+        "description": "Computed parameter so that h% of infectious cases are hospitalized",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "d_1",
+        "type": "CONSTANT",
+        "expression": "0.80 (DRC 1995); 0.47 (Uganda 2000)",
+        "description": "Computed death probability for non-hospitalized infectious cases to achieve overall CFR d",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "d_2",
+        "type": "CONSTANT",
+        "expression": "0.80 (DRC 1995); 0.42 (Uganda 2000)",
+        "description": "Computed death probability for hospitalized cases to achieve overall CFR d",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "N",
+        "type": "CONSTANT",
+        "expression": "200000 (DRC 1995); 470000 (Uganda 2000)",
+        "description": "Size of the population",
+        "unit": "individuals"
+      },
+      {
+        "index": 14,
+        "name": "R_0",
+        "type": "CONSTANT",
+        "expression": "2.7 (DRC 1995, 95% CI 1.9-2.8); 2.7 (Uganda 2000, 95% CI 2.5-4.1)",
+        "description": "Basic reproduction number",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 15,
+        "name": "R_0I",
+        "type": "CONSTANT",
+        "expression": "0.5 (DRC 1995); 2.6 (Uganda 2000)",
+        "description": "Community component of R_0",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 16,
+        "name": "R_0H",
+        "type": "CONSTANT",
+        "expression": "0.4 (DRC 1995); 0.01 (Uganda 2000)",
+        "description": "Hospitalization component of R_0",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 17,
+        "name": "R_0F",
+        "type": "CONSTANT",
+        "expression": "1.8 (DRC 1995); 0.1 (Uganda 2000)",
+        "description": "Traditional burial component of R_0",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 18,
+        "name": "1-z",
+        "type": "CONSTANT",
+        "expression": "12 (DRC 1995); 88 (Uganda 2000)",
+        "description": "Decrease in community transmission after interventions",
+        "unit": "%"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="βvh" expression="0.01–0.4" type="CONSTANT" description="Mosquito-to-human transmission rate." unit="per bite / transmission probability"/>
+  <parameters name="βhv" expression="0.09–0.5" type="CONSTANT" description="Human-to-mosquito transmission rate." unit="per bite / transmission probability"/>
+  <parameters name="βwm" expression="0.001–0.1" type="CONSTANT" description="Women-to-men transmission rate." unit="per sexual contact / transmission probability"/>
+  <parameters name="βmw" expression="0.01–0.1" type="CONSTANT" description="Men-to-women transmission rate." unit="per sexual contact / transmission probability"/>
+  <parameters name="ϕ" expression="0.10–0.27" type="CONSTANT" description="Proportion of symptomatic infections." unit="proportion"/>
+  <parameters name="1/λh" expression="3–14" type="CONSTANT" description="Intrinsic latent period in humans." unit="days"/>
+  <parameters name="1/λv" expression="8–12" type="CONSTANT" description="Extrinsic latent period in mosquitoes." unit="days"/>
+  <parameters name="1/γ1" expression="10–20" type="CONSTANT" description="Mean time to viral clearance from blood." unit="days"/>
+  <parameters name="1/γ2" expression="10–30" type="CONSTANT" description="Mean time to viral clearance from semen." unit="days"/>
+  <parameters name="1/γ3" expression="1–20" type="CONSTANT" description="Mean time to viral clearance from vaginal fluids." unit="days"/>
+  <parameters name="1/ν" expression="4–50" type="CONSTANT" description="Mosquito life span." unit="days"/>
+  <parameters name="λh" expression="6.8" type="CONSTANT" description="Intrinsic latent rate used as a constant in fitting." unit="per day"/>
+  <parameters name="λv" expression="10" type="CONSTANT" description="Extrinsic latent rate used as a constant in fitting." unit="per day"/>
+  <parameters name="ν" expression="14" type="CONSTANT" description="Assumed constant mosquito life span used in fitting." unit="days"/>
+  <parameters name="γ1" expression="10–20 days clearance time" type="CONSTANT" description="Blood clearance rate parameter, inverse of mean clearance time." unit="per day"/>
+  <parameters name="γ2" expression="0.06–0.10" type="CONSTANT" description="Inverse of mean time to viral clearance from semen; table reports fitted values by municipality." unit="per day"/>
+  <parameters name="γ3" expression="0.11–0.49" type="CONSTANT" description="Inverse of mean time to viral clearance from vaginal fluids; table reports fitted values by municipality." unit="per day"/>
+  <compartments PrimaryName="Susceptible Women" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Women become exposed through bites from infectious mosquitoes or sexual contact with infectious men."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="A fraction of exposed women progress to symptomatic infectious women after the latent period."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="The remaining exposed women progress to asymptomatically infectious women after the latent period."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatically Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Symptomatic women transition to the post-viremia infectious stage after blood clearance."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatically Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Asymptomatic women transition to the post-viremia infectious stage after blood clearance."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Women recover after the period of viral persistence in vaginal fluids."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Women" population="0"/>
+  <compartments PrimaryName="Susceptible Men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRateParameter="//@parameters.0" target="//@compartments.7" description="Men become exposed through bites from infectious mosquitoes or sexual contact with infectious women."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.8" description="A fraction of exposed men progress to symptomatic infectious men after the latent period."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.9" description="The remaining exposed men progress to asymptomatically infectious men after the latent period."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatically Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.10" description="Symptomatic men transition to the post-viremia infectious stage after blood clearance."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatically Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.10" description="Asymptomatic men transition to the post-viremia infectious stage after blood clearance."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.11" description="Men recover after the period of viral persistence in semen."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Men" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.13" contactRateParameter="//@parameters.0" target="//@compartments.13" description="Mosquitoes become exposed by biting infectious humans."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.14" description="Exposed mosquitoes become infectious after the extrinsic latent period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Target case detection rate" expression="70" type="CONSTANT" description="WHO target for the proportion of incident infectious cases detected and treated per year." unit="%"/>
+  <parameters name="Target cure rate" expression="85" type="CONSTANT" description="WHO target for the proportion of treated cases that are cured under a new DOTS programme." unit="%"/>
+  <parameters name="Proportion of treatment failures remaining infectious" expression="25-100" type="CONSTANT" description="The proportion of patients who fail treatment that remain infectious, used in sensitivity analysis." unit="%"/>
+  <parameters name="Relative case detection rate of non-infectious cases" expression="0.5-0.8" type="CONSTANT" description="The case detection rate for non-infectious cases as a fraction of the rate for infectious cases, varies by region." unit="ratio"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.3" target="//@compartments.2" description="Development of progressive primary infectious disease upon new infection."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.3" target="//@compartments.3" description="Development of progressive primary non-infectious disease upon new infection."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="New infection leading to a latent state without immediate active disease."/>
+  </compartments>
+  <compartments PrimaryName="Latent" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Endogenous reactivation of latent infection to infectious tuberculosis."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Endogenous reactivation of latent infection to non-infectious tuberculosis."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Successful cure through chemotherapy, returning the individual to the latent class."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Failure to complete treatment (fail, default, or transfer out)."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Resolution of tuberculosis without treatment."/>
+  </compartments>
+  <compartments PrimaryName="Non-infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Successful cure through chemotherapy, returning the individual to the latent class."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Failure to complete treatment (fail, default, or transfer out)."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Resolution of tuberculosis without treatment."/>
+  </compartments>
+  <compartments PrimaryName="Treatment Failure" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Relapse to infectious tuberculosis after treatment failure."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Relapse to non-infectious tuberculosis after treatment failure."/>
+  </compartments>
+  <compartments PrimaryName="Self-Cured" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Relapse to infectious tuberculosis after self-cure."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Relapse to non-infectious tuberculosis after self-cure."/>
+  </compartments>
+</compartmental:CompartmentalModel>

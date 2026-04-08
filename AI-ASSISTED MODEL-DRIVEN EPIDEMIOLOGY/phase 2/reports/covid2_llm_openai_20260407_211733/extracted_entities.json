@@ -1,0 +1,211 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals in a city who are not yet infected and can become exposed.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in a city who are not yet infected and can become exposed."
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals infected but not yet infectious during the incubation period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected but not yet infectious during the incubation period."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals capable of transmitting infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals capable of transmitting infection."
+    },
+    {
+      "normalized_name": "Recovered/Removed",
+      "raw_text": "Recovered/Removed",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered or been removed from the infectious pool through isolation or recovery.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered or been removed from the infectious pool through isolation or recovery."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection/transmission from infectious individuals to susceptible individuals within a city, proportional to contact rate and the fraction infectious.",
+      "page_number": 0,
+      "text_span": "Infection/transmission from infectious individuals to susceptible individuals within a city, proportional to contact rate and the fraction infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection/transmission from infectious individuals to susceptible individuals within a city, proportional to contact rate and the fraction infectious."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from exposed to infectious at rate epsilon.",
+      "page_number": 0,
+      "text_span": "Progression from exposed to infectious at rate epsilon.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from exposed to infectious at rate epsilon."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered/Removed",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery or removal from the infectious state at rate r, representing self-isolation/effective removal and recovery.",
+      "page_number": 0,
+      "text_span": "Recovery or removal from the infectious state at rate r, representing self-isolation/effective removal and recovery.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery or removal from the infectious state at rate r, representing self-isolation/effective removal and recovery."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "c",
+      "raw_text": "c",
+      "value": "daily contact rate",
+      "unit": "contacts per person per day",
+      "page_number": 0,
+      "text_span": "Average number of daily contacts used in transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average number of daily contacts used in transmission."
+    },
+    {
+      "normalized_name": "r",
+      "raw_text": "r",
+      "value": "inverse of average infectious period",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of recovery/removal from the infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of recovery/removal from the infectious state."
+    },
+    {
+      "normalized_name": "epsilon",
+      "raw_text": "epsilon",
+      "value": "inverse of average incubation period",
+      "unit": "per day",
+      "page_number": 0,
+      "text_span": "Rate of progression from exposed to infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of progression from exposed to infectious."
+    },
+    {
+      "normalized_name": "R0",
+      "raw_text": "R0",
+      "value": "2.2",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number used to calculate the daily contact rate.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number used to calculate the daily contact rate."
+    },
+    {
+      "normalized_name": "average infectious period",
+      "raw_text": "average infectious period",
+      "value": "5.8",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average time spent infectious, used to derive r.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average time spent infectious, used to derive r."
+    },
+    {
+      "normalized_name": "average time spent exposed but not infectious",
+      "raw_text": "average time spent exposed but not infectious",
+      "value": "5.2",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average incubation period, used to derive epsilon.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average incubation period, used to derive epsilon."
+    },
+    {
+      "normalized_name": "time from onset to first medical visit and isolation",
+      "raw_text": "time from onset to first medical visit and isolation",
+      "value": "5.8",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Used as a proxy for average infectious period under improved case identification and isolation.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Used as a proxy for average infectious period under improved case identification and isolation."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 2,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 2,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "contact_tracing",
+      "page_number": 2,
+      "text_span": "contact_tracing mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 7,
+    "num_stratifications": 1,
+    "num_interventions": 3
+  }
+}

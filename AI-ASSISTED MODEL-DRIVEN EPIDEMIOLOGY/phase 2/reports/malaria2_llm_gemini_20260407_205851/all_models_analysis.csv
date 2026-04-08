@@ -1,0 +1,34 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria2,Compartment,Susceptible Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Untreated Clinical Disease Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Asymptomatic Patent Infection Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Treated Clinical Disease Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Prophylaxis Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Asymptomatic Sub-patent Infection Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Latent Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Untreated Clinical Disease Humans,RateFlow,//@parameters.0,False,"Infection of susceptible humans by an infectious mosquito, leading to clinical disease with a probability (w) dependent on anti-disease immunity.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection Humans,RateFlow,//@parameters.0,False,"Infection of susceptible humans by an infectious mosquito, leading to asymptomatic patent infection with a probability (1-w) dependent on anti-disease immunity.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease Humans,RateFlow,//@parameters.0,False,Successful treatment of clinical disease with a fixed probability (fT).,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection Humans,RateFlow,//@parameters.0,False,Natural recovery from untreated clinical disease to become patently asymptomatic at rate rD.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Untreated Clinical Disease Humans,RateFlow,//@parameters.0,False,"Superinfection of an individual with untreated clinical disease, leading to a new clinical disease episode.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Sub-patent Infection Humans,RateFlow,//@parameters.6,False,Progression from patent to sub-patent asymptomatic infection at a rate (rA) that depends on anti-parasite immunity.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Untreated Clinical Disease Humans,RateFlow,//@parameters.0,False,"Superinfection of an individual with asymptomatic patent infection, leading to a new clinical disease episode.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection Humans,RateFlow,//@parameters.0,False,"Superinfection of an individual with asymptomatic patent infection, leading to a new asymptomatic patent infection.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Prophylaxis Humans,RateFlow,//@parameters.0,False,"Clearing of infection following treatment, entering a period of prophylactic protection at rate rT.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,Loss of prophylactic protection and return to susceptibility at rate rP.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,Clearing of sub-patent infection and return to full susceptibility at rate rU.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Untreated Clinical Disease Humans,RateFlow,//@parameters.0,False,"Superinfection of an individual with asymptomatic sub-patent infection, leading to a new clinical disease episode.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Asymptomatic Patent Infection Humans,RateFlow,//@parameters.0,False,"Superinfection of an individual with asymptomatic sub-patent infection, leading to a new asymptomatic patent infection.",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Latent Mosquitoes,RateFlow,//@parameters.0,False,"Infection of a susceptible mosquito from biting an infectious human (from states T, D, A, or U).",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.0,False,Progression of a mosquito from the latent to the infectious state after an extrinsic incubation period.,,,
+Malaria2,Parameter,L,,,,,,Model file,Certain,,,,,,Force of infection in the human population.,CONSTANT,0.0,per time
+Malaria2,Parameter,w,,,,,,Model file,Certain,,,,,,"Probability of developing clinical disease upon infection, dependent on the individual's level of anti-disease immunity.",CONSTANT,0.0,dimensionless
+Malaria2,Parameter,fT,,,,,,Model file,Certain,,,,,,Fixed probability of being treated successfully for clinical disease.,CONSTANT,0.0,dimensionless
+Malaria2,Parameter,rT,,,,,,Model file,Certain,,,,,,Rate at which successfully treated individuals clear infection and enter a period of prophylactic protection.,CONSTANT,0.0,per time
+Malaria2,Parameter,rP,,,,,,Model file,Certain,,,,,,Rate at which individuals under prophylaxis return to being susceptible to new infection.,CONSTANT,0.0,per time
+Malaria2,Parameter,rD,,,,,,Model file,Certain,,,,,,Rate at which individuals with untreated clinical disease clear disease and become patently asymptomatic.,CONSTANT,0.0,per time
+Malaria2,Parameter,rA,,,,,,Model file,Certain,,,,,,"Rate at which individuals with patent asymptomatic infection move to a sub-patent stage, dependent on anti-parasite immunity.",CONSTANT,0.0,per time
+Malaria2,Parameter,rU,,,,,,Model file,Certain,,,,,,Rate at which sub-patent infection is cleared and individuals return to being fully susceptible.,CONSTANT,0.0,per time
+Malaria2,Parameter,HBI,,,,,,Model file,Certain,,,,,,"Human Blood Index, the proportion of mosquito blood meals taken from humans, which determines infectivity.",CONSTANT,0.0,dimensionless

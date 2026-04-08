@@ -1,0 +1,287 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals not infected with HIV and susceptible to infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not infected with HIV and susceptible to infection."
+    },
+    {
+      "normalized_name": "Infected (Early)",
+      "raw_text": "Infected (Early)",
+      "page_number": 0,
+      "text_span": "Individuals in the acute/early stage of HIV infection with high transmissibility, as described in Box 1 and Figure 5A.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the acute/early stage of HIV infection with high transmissibility, as described in Box 1 and Figure 5A."
+    },
+    {
+      "normalized_name": "Infected (Chronic, CD4 > 350)",
+      "raw_text": "Infected (Chronic, CD4 > 350)",
+      "page_number": 0,
+      "text_span": "Individuals in the chronic stage of HIV infection with CD4 count > 350 cells/ml.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the chronic stage of HIV infection with CD4 count > 350 cells/ml."
+    },
+    {
+      "normalized_name": "Infected (Chronic, CD4 200-350)",
+      "raw_text": "Infected (Chronic, CD4 200-350)",
+      "page_number": 0,
+      "text_span": "Individuals in the chronic stage of HIV infection with CD4 count between 200 and 350 cells/ml.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the chronic stage of HIV infection with CD4 count between 200 and 350 cells/ml."
+    },
+    {
+      "normalized_name": "Infected (Late Stage, CD4 <= 200)",
+      "raw_text": "Infected (Late Stage, CD4 <= 200)",
+      "page_number": 0,
+      "text_span": "Individuals in the late stage of HIV infection with CD4 count <= 200 cells/ml.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the late stage of HIV infection with CD4 count <= 200 cells/ml."
+    },
+    {
+      "normalized_name": "On Antiretroviral Therapy (ART)",
+      "raw_text": "On Antiretroviral Therapy (ART)",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals receiving antiretroviral therapy, with suppressed viral load and reduced transmissibility.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals receiving antiretroviral therapy, with suppressed viral load and reduced transmissibility."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infected (Early)",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART.",
+      "page_number": 0,
+      "text_span": "Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART."
+    },
+    {
+      "source": "Infected (Early)",
+      "target": "Infected (Chronic, CD4 > 350)",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from early to chronic HIV infection.",
+      "page_number": 0,
+      "text_span": "Progression from early to chronic HIV infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from early to chronic HIV infection."
+    },
+    {
+      "source": "Infected (Chronic, CD4 > 350)",
+      "target": "Infected (Chronic, CD4 200-350)",
+      "flow_type": "RateFlow",
+      "raw_text": "Disease progression marked by decline in CD4 count.",
+      "page_number": 0,
+      "text_span": "Disease progression marked by decline in CD4 count.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Disease progression marked by decline in CD4 count."
+    },
+    {
+      "source": "Infected (Chronic, CD4 200-350)",
+      "target": "Infected (Late Stage, CD4 <= 200)",
+      "flow_type": "RateFlow",
+      "raw_text": "Further disease progression to a lower CD4 count.",
+      "page_number": 0,
+      "text_span": "Further disease progression to a lower CD4 count.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Further disease progression to a lower CD4 count."
+    },
+    {
+      "source": "Infected (Chronic, CD4 > 350)",
+      "target": "On Antiretroviral Therapy (ART)",
+      "flow_type": "RateFlow",
+      "raw_text": "Initiation of ART for eligible individuals with CD4 > 350 cells/ml (e.g., under 'treat all' scenarios).",
+      "page_number": 0,
+      "text_span": "Initiation of ART for eligible individuals with CD4 > 350 cells/ml (e.g., under 'treat all' scenarios).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initiation of ART for eligible individuals with CD4 > 350 cells/ml (e.g., under 'treat all' scenarios)."
+    },
+    {
+      "source": "Infected (Chronic, CD4 200-350)",
+      "target": "On Antiretroviral Therapy (ART)",
+      "flow_type": "RateFlow",
+      "raw_text": "Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml.",
+      "page_number": 0,
+      "text_span": "Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml."
+    },
+    {
+      "source": "Infected (Late Stage, CD4 <= 200)",
+      "target": "On Antiretroviral Therapy (ART)",
+      "flow_type": "RateFlow",
+      "raw_text": "Initiation of ART for eligible individuals with CD4 count <= 200 cells/ml.",
+      "page_number": 0,
+      "text_span": "Initiation of ART for eligible individuals with CD4 count <= 200 cells/ml.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Initiation of ART for eligible individuals with CD4 count <= 200 cells/ml."
+    },
+    {
+      "source": "On Antiretroviral Therapy (ART)",
+      "target": "Infected (Late Stage, CD4 <= 200)",
+      "flow_type": "RateFlow",
+      "raw_text": "Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation.",
+      "page_number": 0,
+      "text_span": "Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "CD4 Eligibility Threshold",
+      "raw_text": "CD4 Eligibility Threshold",
+      "value": "<=200, <=350, or all infected",
+      "unit": "cells/ml",
+      "page_number": 0,
+      "text_span": "The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios."
+    },
+    {
+      "normalized_name": "Treatment Access",
+      "raw_text": "Treatment Access",
+      "value": "50, 60, 70, 80, 90, 95, 100",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "The proportion of eligible individuals who eventually initiate treatment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion of eligible individuals who eventually initiate treatment."
+    },
+    {
+      "normalized_name": "3-year Retention on ART",
+      "raw_text": "3-year Retention on ART",
+      "value": "75, 85, 95, 100",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "The percentage of individuals remaining on treatment after 3 years, excluding those who had died.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The percentage of individuals remaining on treatment after 3 years, excluding those who had died."
+    },
+    {
+      "normalized_name": "Average time to ART initiation",
+      "raw_text": "Average time to ART initiation",
+      "value": "1",
+      "unit": "year",
+      "page_number": 0,
+      "text_span": "The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year."
+    },
+    {
+      "normalized_name": "Relative Transmissibility (Early Infection)",
+      "raw_text": "Relative Transmissibility (Early Infection)",
+      "value": "10-26",
+      "unit": "fold increase",
+      "page_number": 0,
+      "text_span": "Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range."
+    },
+    {
+      "normalized_name": "Transmissibility Reduction on ART",
+      "raw_text": "Transmissibility Reduction on ART",
+      "value": ">90",
+      "unit": "percent",
+      "page_number": 0,
+      "text_span": "The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 2,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 17,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 8,
+    "num_parameters": 6,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

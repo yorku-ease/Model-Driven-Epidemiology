@@ -1,0 +1,44 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Dengue3,Compartment,Susceptible Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Recovered Humans (Temporary Cross-Protection),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Recovered Humans (Single Serotype Immunity),,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Recovered Humans (Multiple Serotype Immunity),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Vaccinated Seronegative Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Vaccinated Seropositive Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infectious Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.7,False,Primary dengue infection through bite from infectious mosquito,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Vaccinated Seronegative Humans,RateFlow,//@parameters.7,False,Vaccination of seronegative 9-year-old children; vaccine mimics silent primary infection,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.7,False,Progression from latent to infectious state (intrinsic incubation period),,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Recovered Humans (Temporary Cross-Protection),RateFlow,//@parameters.7,False,Recovery from infection with temporary cross-reactive heterologous protection,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Recovered Humans (Single Serotype Immunity),RateFlow,0.0,False,Waning of temporary heterologous cross-protection,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.7,False,Secondary infection by a different serotype through bite from infectious mosquito (higher disease risk),,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Vaccinated Seropositive Humans,RateFlow,//@parameters.7,False,Vaccination of seropositive individuals; subsequent infections behave as postsecondary,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.7,False,Postsecondary infection by remaining serotypes (lower disease risk),,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.7,False,First natural infection post-vaccination in seronegatives behaves immunologically as secondary infection,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.7,False,Natural infection post-vaccination in seropositives behaves as postsecondary infection,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.7,False,Mosquito acquires dengue virus by biting infectious human,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,0.0,False,Progression through extrinsic incubation period in mosquito,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.7,False,Transmission of dengue virus from infectious mosquito to susceptible human via bite,,,
+Dengue3,Parameter,Vaccine coverage (routine),,,,,,Model file,Certain,,,,,,Default coverage for routine vaccination of 9-year-old children,CONSTANT,80%,proportion
+Dengue3,Parameter,Vaccine coverage (reduced),,,,,,Model file,Certain,,,,,,Alternative reduced vaccine coverage scenario,CONSTANT,50%,proportion
+Dengue3,Parameter,Catch-up campaign coverage,,,,,,Model file,Certain,,,,,,Coverage for one-off catch-up campaign in 10-17 year olds,CONSTANT,80%,proportion
+Dengue3,Parameter,Age of routine vaccination,,,,,,Model file,Certain,,,,,,Default age for routine vaccination,CONSTANT,9,years
+Dengue3,Parameter,Number of vaccine doses,,,,,,Model file,Certain,,,,,,Three-dose schedule administered at 6-month intervals,CONSTANT,3,doses
+Dengue3,Parameter,Dose interval,,,,,,Model file,Certain,,,,,,Interval between vaccine doses,CONSTANT,6,months
+Dengue3,Parameter,Overall vaccine efficacy (active phase),,,,,,Model file,Certain,,,,,,Average efficacy against virologically confirmed clinical dengue over 25-month active surveillance (95% CI: 55.7%-64.5%),CONSTANT,60.3,percent
+Dengue3,Parameter,SP9 very low transmission,,,,,,Model file,Certain,,,,,,Seroprevalence among 9-year-olds for very low transmission intensity scenario,CONSTANT,10,percent
+Dengue3,Parameter,SP9 low transmission,,,,,,Model file,Certain,,,,,,Seroprevalence among 9-year-olds for low transmission intensity scenario,CONSTANT,30,percent
+Dengue3,Parameter,SP9 moderate transmission,,,,,,Model file,Certain,,,,,,Seroprevalence among 9-year-olds for moderate transmission intensity scenario,CONSTANT,50,percent
+Dengue3,Parameter,SP9 high transmission,,,,,,Model file,Certain,,,,,,Seroprevalence among 9-year-olds for high transmission intensity scenario,CONSTANT,70,percent
+Dengue3,Parameter,SP9 very high transmission,,,,,,Model file,Certain,,,,,,Seroprevalence among 9-year-olds for very high transmission intensity scenario,CONSTANT,90,percent
+Dengue3,Parameter,Case fatality ratio (symptomatic dengue),,,,,,Model file,Certain,,,,,,Probability of death among symptomatic dengue cases,CONSTANT,0.03-0.09,percent
+Dengue3,Parameter,Discount rate,,,,,,Model file,Certain,,,,,,Annual discount rate for costs and health effects,CONSTANT,3,percent per year
+Dengue3,Parameter,Cost-effectiveness threshold,,,,,,Model file,Certain,,,,,,Base case threshold cost per DALY averted,CONSTANT,2000,USD per DALY averted
+Dengue3,Parameter,DALYs per symptomatic dengue case,,,,,,Model file,Certain,,,,,,Disability-adjusted life years incurred per symptomatic dengue case,CONSTANT,0.006,DALYs
+Dengue3,Parameter,DALYs per severe dengue case,,,,,,Model file,Certain,,,,,,Disability-adjusted life years incurred per severe/hospitalised dengue case,CONSTANT,0.02,DALYs
+Dengue3,Parameter,Time horizon,,,,,,Model file,Certain,,,,,,Time horizon for evaluating vaccination impact post-introduction,CONSTANT,30,years
+Dengue3,Parameter,Number of serotypes,,,,,,Model file,Certain,,,,,,Four dengue virus serotypes (DENV1-4),CONSTANT,4,serotypes

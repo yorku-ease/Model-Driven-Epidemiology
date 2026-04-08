@@ -18,28 +18,28 @@ DEFAULT_OUT_MD = Path(__file__).resolve().parent / "RESULTS_REPORT.md"
 DEFAULT_EVAL_JSON = "evaluation_report.json"
 
 DISEASES = [
-    "cholera",
-    "covid",
-    "dengue",
-    "ebola",
-    "flu",
-    "hiv",
-    "malaria",
-    "measles",
-    "tuberculosis",
-    "zika",
+    "cholera1", "cholera2", "cholera3",
+    "covid1", "covid2", "covid3",
+    "dengue1", "dengue2", "dengue3",
+    "ebola1", "ebola2", "ebola3",
+    "hiv1", "hiv2", "hiv3",
+    "influenza1", "influenza2", "influenza3",
+    "malaria1", "malaria2", "malaria3",
+    "measles1", "measles2", "measles3",
+    "tuberculosis1", "tuberculosis2", "tuberculosis3",
+    "zika1", "zika2", "zika3",
 ]
 DISEASE_DISPLAY = {
-    "cholera": "Cholera",
-    "covid": "COVID-19",
-    "dengue": "Dengue",
-    "ebola": "Ebola",
-    "flu": "Flu",
-    "hiv": "HIV",
-    "malaria": "Malaria",
-    "measles": "Measles",
-    "tuberculosis": "Tuberculosis",
-    "zika": "Zika",
+    "cholera1": "Cholera (Paper 1)", "cholera2": "Cholera (Paper 2)", "cholera3": "Cholera (Paper 3)",
+    "covid1": "COVID-19 (Paper 1)", "covid2": "COVID-19 (Paper 2)", "covid3": "COVID-19 (Paper 3)",
+    "dengue1": "Dengue (Paper 1)", "dengue2": "Dengue (Paper 2)", "dengue3": "Dengue (Paper 3)",
+    "ebola1": "Ebola (Paper 1)", "ebola2": "Ebola (Paper 2)", "ebola3": "Ebola (Paper 3)",
+    "hiv1": "HIV (Paper 1)", "hiv2": "HIV (Paper 2)", "hiv3": "HIV (Paper 3)",
+    "influenza1": "Influenza (Paper 1)", "influenza2": "Influenza (Paper 2)", "influenza3": "Influenza (Paper 3)",
+    "malaria1": "Malaria (Paper 1)", "malaria2": "Malaria (Paper 2)", "malaria3": "Malaria (Paper 3)",
+    "measles1": "Measles (Paper 1)", "measles2": "Measles (Paper 2)", "measles3": "Measles (Paper 3)",
+    "tuberculosis1": "Tuberculosis (Paper 1)", "tuberculosis2": "Tuberculosis (Paper 2)", "tuberculosis3": "Tuberculosis (Paper 3)",
+    "zika1": "Zika (Paper 1)", "zika2": "Zika (Paper 2)", "zika3": "Zika (Paper 3)",
 }
 
 

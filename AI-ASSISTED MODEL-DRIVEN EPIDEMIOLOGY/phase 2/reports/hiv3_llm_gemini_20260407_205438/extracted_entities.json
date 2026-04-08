@@ -1,0 +1,293 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to HIV infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to HIV infection."
+    },
+    {
+      "normalized_name": "Infectious Untreated",
+      "raw_text": "Infectious Untreated",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals not receiving antiretroviral therapy (ART).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals not receiving antiretroviral therapy (ART)."
+    },
+    {
+      "normalized_name": "Infectious Treated",
+      "raw_text": "Infectious Treated",
+      "page_number": 0,
+      "text_span": "HIV-infected individuals receiving antiretroviral therapy (ART).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "HIV-infected individuals receiving antiretroviral therapy (ART)."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Infectious Untreated",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of HIV from infectious individuals (both treated and untreated) to susceptible individuals.",
+      "page_number": 0,
+      "text_span": "Transmission of HIV from infectious individuals (both treated and untreated) to susceptible individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of HIV from infectious individuals (both treated and untreated) to susceptible individuals."
+    },
+    {
+      "source": "Infectious Untreated",
+      "target": "Infectious Treated",
+      "flow_type": "RateFlow",
+      "raw_text": "Rate at which untreated individuals are tested and initiate ART.",
+      "page_number": 0,
+      "text_span": "Rate at which untreated individuals are tested and initiate ART.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which untreated individuals are tested and initiate ART."
+    },
+    {
+      "source": "Infectious Treated",
+      "target": "Infectious Untreated",
+      "flow_type": "RateFlow",
+      "raw_text": "Rate at which treated individuals drop out of ART.",
+      "page_number": 0,
+      "text_span": "Rate at which treated individuals drop out of ART.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which treated individuals drop out of ART."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "\u03b4",
+      "raw_text": "\u03b4",
+      "value": "0.029",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Birth rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Birth rate"
+    },
+    {
+      "normalized_name": "\u03bc",
+      "raw_text": "\u03bc",
+      "value": "0.018",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Background mortality rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Background mortality rate"
+    },
+    {
+      "normalized_name": "\u03b2",
+      "raw_text": "\u03b2",
+      "value": "0.767",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Transmission parameter (Initial value)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission parameter (Initial value)"
+    },
+    {
+      "normalized_name": "\u03c1",
+      "raw_text": "\u03c1",
+      "value": "0.055",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Location parameter for transmission",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Location parameter for transmission"
+    },
+    {
+      "normalized_name": "\u03bd",
+      "raw_text": "\u03bd",
+      "value": "0.996",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Shape parameter for transmission",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Shape parameter for transmission"
+    },
+    {
+      "normalized_name": "\u03b5",
+      "raw_text": "\u03b5",
+      "value": "0.010",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Relative transmission on ART",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative transmission on ART"
+    },
+    {
+      "normalized_name": "\u03b3_U",
+      "raw_text": "\u03b3_U",
+      "value": "0.303",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Progression rate for untreated individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression rate for untreated individuals"
+    },
+    {
+      "normalized_name": "\u03b3_T",
+      "raw_text": "\u03b3_T",
+      "value": "0.165",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Progression rate for treated individuals",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression rate for treated individuals"
+    },
+    {
+      "normalized_name": "\u03c4",
+      "raw_text": "\u03c4",
+      "value": "2011",
+      "unit": "yr",
+      "page_number": 0,
+      "text_span": "Intervention timing",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Intervention timing"
+    },
+    {
+      "normalized_name": "r",
+      "raw_text": "r",
+      "value": "1.00",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Intervention rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Intervention rate"
+    },
+    {
+      "normalized_name": "m",
+      "raw_text": "m",
+      "value": "0.90",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Maximum intervention coverage",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Maximum intervention coverage"
+    },
+    {
+      "normalized_name": "\u03c8",
+      "raw_text": "\u03c8",
+      "value": "1.00",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Testing rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Testing rate"
+    },
+    {
+      "normalized_name": "\u03b8",
+      "raw_text": "\u03b8",
+      "value": "0.08",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Testing refusal proportion",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Testing refusal proportion"
+    },
+    {
+      "normalized_name": "\u03c9",
+      "raw_text": "\u03c9",
+      "value": "0.015",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Drop-out rate from treatment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Drop-out rate from treatment"
+    },
+    {
+      "normalized_name": "\u03b1",
+      "raw_text": "\u03b1",
+      "value": "0.10",
+      "unit": "/yr",
+      "page_number": 0,
+      "text_span": "Treatment failure rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment failure rate"
+    },
+    {
+      "normalized_name": "\u03c6",
+      "raw_text": "\u03c6",
+      "value": "0.40",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Reduction in transmission from other interventions",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in transmission from other interventions"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 17,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 16,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 3,
+    "num_flows": 3,
+    "num_parameters": 16,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

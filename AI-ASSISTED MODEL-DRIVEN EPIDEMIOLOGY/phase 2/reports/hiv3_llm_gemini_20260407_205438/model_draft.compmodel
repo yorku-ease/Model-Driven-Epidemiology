@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="δ" expression="0.029" type="CONSTANT" description="Birth rate" unit="/yr"/>
+  <parameters name="μ" expression="0.018" type="CONSTANT" description="Background mortality rate" unit="/yr"/>
+  <parameters name="β" expression="0.767" type="CONSTANT" description="Transmission parameter (Initial value)" unit="/yr"/>
+  <parameters name="ρ" expression="0.055" type="CONSTANT" description="Location parameter for transmission" unit="dimensionless"/>
+  <parameters name="ν" expression="0.996" type="CONSTANT" description="Shape parameter for transmission" unit="dimensionless"/>
+  <parameters name="ε" expression="0.010" type="CONSTANT" description="Relative transmission on ART" unit="dimensionless"/>
+  <parameters name="γ_U" expression="0.303" type="CONSTANT" description="Progression rate for untreated individuals" unit="/yr"/>
+  <parameters name="γ_T" expression="0.165" type="CONSTANT" description="Progression rate for treated individuals" unit="/yr"/>
+  <parameters name="τ" expression="2011" type="CONSTANT" description="Intervention timing" unit="yr"/>
+  <parameters name="r" expression="1.00" type="CONSTANT" description="Intervention rate" unit="/yr"/>
+  <parameters name="m" expression="0.90" type="CONSTANT" description="Maximum intervention coverage" unit="dimensionless"/>
+  <parameters name="ψ" expression="1.00" type="CONSTANT" description="Testing rate" unit="/yr"/>
+  <parameters name="θ" expression="0.08" type="CONSTANT" description="Testing refusal proportion" unit="dimensionless"/>
+  <parameters name="ω" expression="0.015" type="CONSTANT" description="Drop-out rate from treatment" unit="/yr"/>
+  <parameters name="α" expression="0.10" type="CONSTANT" description="Treatment failure rate" unit="/yr"/>
+  <parameters name="φ" expression="0.40" type="CONSTANT" description="Reduction in transmission from other interventions" unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.9" target="//@compartments.1" description="Transmission of HIV from infectious individuals (both treated and untreated) to susceptible individuals."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Untreated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.2" description="Rate at which untreated individuals are tested and initiate ART."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Treated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.1" description="Rate at which treated individuals drop out of ART."/>
+  </compartments>
+</compartmental:CompartmentalModel>

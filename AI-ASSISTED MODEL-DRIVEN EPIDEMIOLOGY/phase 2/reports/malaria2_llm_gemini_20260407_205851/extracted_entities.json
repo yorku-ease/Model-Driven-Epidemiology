@@ -1,0 +1,429 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Susceptible individuals (S), who may have partial maternal immunity at birth which decays.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible individuals (S), who may have partial maternal immunity at birth which decays."
+    },
+    {
+      "normalized_name": "Untreated Clinical Disease Humans",
+      "raw_text": "Untreated Clinical Disease Humans",
+      "page_number": 0,
+      "text_span": "Individuals with clinical disease who are not treated or for whom treatment fails (D).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with clinical disease who are not treated or for whom treatment fails (D)."
+    },
+    {
+      "normalized_name": "Asymptomatic Patent Infection Humans",
+      "raw_text": "Asymptomatic Patent Infection Humans",
+      "page_number": 0,
+      "text_span": "Individuals with asymptomatic infection detectable by microscopy (A).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with asymptomatic infection detectable by microscopy (A)."
+    },
+    {
+      "normalized_name": "Treated Clinical Disease Humans",
+      "raw_text": "Treated Clinical Disease Humans",
+      "page_number": 0,
+      "text_span": "Individuals with clinical disease who are successfully treated (T).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with clinical disease who are successfully treated (T)."
+    },
+    {
+      "normalized_name": "Prophylaxis Humans",
+      "raw_text": "Prophylaxis Humans",
+      "page_number": 0,
+      "text_span": "Individuals under prophylactic protection from a drug after treatment (P).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals under prophylactic protection from a drug after treatment (P)."
+    },
+    {
+      "normalized_name": "Asymptomatic Sub-patent Infection Humans",
+      "raw_text": "Asymptomatic Sub-patent Infection Humans",
+      "page_number": 0,
+      "text_span": "Individuals with asymptomatic infection not detectable by microscopy but still part of the infectious reservoir (U).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with asymptomatic infection not detectable by microscopy but still part of the infectious reservoir (U)."
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Susceptible vectors that can become infected by biting an infectious human.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Susceptible vectors that can become infected by biting an infectious human."
+    },
+    {
+      "normalized_name": "Latent Mosquitoes",
+      "raw_text": "Latent Mosquitoes",
+      "page_number": 0,
+      "text_span": "Vectors that have been infected but are not yet infectious (exposed).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vectors that have been infected but are not yet infectious (exposed)."
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Vectors that are infectious to humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vectors that are infectious to humans."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Untreated Clinical Disease Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible humans by an infectious mosquito, leading to clinical disease with a probability (w) dependent on anti-disease immunity.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible humans by an infectious mosquito, leading to clinical disease with a probability (w) dependent on anti-disease immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible humans by an infectious mosquito, leading to clinical disease with a probability (w) dependent on anti-disease immunity."
+    },
+    {
+      "source": "Susceptible Humans",
+      "target": "Asymptomatic Patent Infection Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible humans by an infectious mosquito, leading to asymptomatic patent infection with a probability (1-w) dependent on anti-disease immunity.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible humans by an infectious mosquito, leading to asymptomatic patent infection with a probability (1-w) dependent on anti-disease immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible humans by an infectious mosquito, leading to asymptomatic patent infection with a probability (1-w) dependent on anti-disease immunity."
+    },
+    {
+      "source": "Untreated Clinical Disease Humans",
+      "target": "Treated Clinical Disease Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful treatment of clinical disease with a fixed probability (fT).",
+      "page_number": 0,
+      "text_span": "Successful treatment of clinical disease with a fixed probability (fT).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful treatment of clinical disease with a fixed probability (fT)."
+    },
+    {
+      "source": "Untreated Clinical Disease Humans",
+      "target": "Asymptomatic Patent Infection Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Natural recovery from untreated clinical disease to become patently asymptomatic at rate rD.",
+      "page_number": 0,
+      "text_span": "Natural recovery from untreated clinical disease to become patently asymptomatic at rate rD.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural recovery from untreated clinical disease to become patently asymptomatic at rate rD."
+    },
+    {
+      "source": "Treated Clinical Disease Humans",
+      "target": "Prophylaxis Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Clearing of infection following treatment, entering a period of prophylactic protection at rate rT.",
+      "page_number": 0,
+      "text_span": "Clearing of infection following treatment, entering a period of prophylactic protection at rate rT.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Clearing of infection following treatment, entering a period of prophylactic protection at rate rT."
+    },
+    {
+      "source": "Prophylaxis Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of prophylactic protection and return to susceptibility at rate rP.",
+      "page_number": 0,
+      "text_span": "Loss of prophylactic protection and return to susceptibility at rate rP.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of prophylactic protection and return to susceptibility at rate rP."
+    },
+    {
+      "source": "Asymptomatic Patent Infection Humans",
+      "target": "Asymptomatic Sub-patent Infection Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from patent to sub-patent asymptomatic infection at a rate (rA) that depends on anti-parasite immunity.",
+      "page_number": 0,
+      "text_span": "Progression from patent to sub-patent asymptomatic infection at a rate (rA) that depends on anti-parasite immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from patent to sub-patent asymptomatic infection at a rate (rA) that depends on anti-parasite immunity."
+    },
+    {
+      "source": "Asymptomatic Sub-patent Infection Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Clearing of sub-patent infection and return to full susceptibility at rate rU.",
+      "page_number": 0,
+      "text_span": "Clearing of sub-patent infection and return to full susceptibility at rate rU.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Clearing of sub-patent infection and return to full susceptibility at rate rU."
+    },
+    {
+      "source": "Untreated Clinical Disease Humans",
+      "target": "Untreated Clinical Disease Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Superinfection of an individual with untreated clinical disease, leading to a new clinical disease episode.",
+      "page_number": 0,
+      "text_span": "Superinfection of an individual with untreated clinical disease, leading to a new clinical disease episode.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Superinfection of an individual with untreated clinical disease, leading to a new clinical disease episode."
+    },
+    {
+      "source": "Asymptomatic Patent Infection Humans",
+      "target": "Untreated Clinical Disease Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Superinfection of an individual with asymptomatic patent infection, leading to a new clinical disease episode.",
+      "page_number": 0,
+      "text_span": "Superinfection of an individual with asymptomatic patent infection, leading to a new clinical disease episode.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Superinfection of an individual with asymptomatic patent infection, leading to a new clinical disease episode."
+    },
+    {
+      "source": "Asymptomatic Patent Infection Humans",
+      "target": "Asymptomatic Patent Infection Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Superinfection of an individual with asymptomatic patent infection, leading to a new asymptomatic patent infection.",
+      "page_number": 0,
+      "text_span": "Superinfection of an individual with asymptomatic patent infection, leading to a new asymptomatic patent infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Superinfection of an individual with asymptomatic patent infection, leading to a new asymptomatic patent infection."
+    },
+    {
+      "source": "Asymptomatic Sub-patent Infection Humans",
+      "target": "Untreated Clinical Disease Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Superinfection of an individual with asymptomatic sub-patent infection, leading to a new clinical disease episode.",
+      "page_number": 0,
+      "text_span": "Superinfection of an individual with asymptomatic sub-patent infection, leading to a new clinical disease episode.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Superinfection of an individual with asymptomatic sub-patent infection, leading to a new clinical disease episode."
+    },
+    {
+      "source": "Asymptomatic Sub-patent Infection Humans",
+      "target": "Asymptomatic Patent Infection Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Superinfection of an individual with asymptomatic sub-patent infection, leading to a new asymptomatic patent infection.",
+      "page_number": 0,
+      "text_span": "Superinfection of an individual with asymptomatic sub-patent infection, leading to a new asymptomatic patent infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Superinfection of an individual with asymptomatic sub-patent infection, leading to a new asymptomatic patent infection."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Latent Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of a susceptible mosquito from biting an infectious human (from states T, D, A, or U).",
+      "page_number": 0,
+      "text_span": "Infection of a susceptible mosquito from biting an infectious human (from states T, D, A, or U).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of a susceptible mosquito from biting an infectious human (from states T, D, A, or U)."
+    },
+    {
+      "source": "Latent Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of a mosquito from the latent to the infectious state after an extrinsic incubation period.",
+      "page_number": 0,
+      "text_span": "Progression of a mosquito from the latent to the infectious state after an extrinsic incubation period.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of a mosquito from the latent to the infectious state after an extrinsic incubation period."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "L",
+      "raw_text": "L",
+      "value": null,
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Force of infection in the human population.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Force of infection in the human population."
+    },
+    {
+      "normalized_name": "w",
+      "raw_text": "w",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Probability of developing clinical disease upon infection, dependent on the individual's level of anti-disease immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability of developing clinical disease upon infection, dependent on the individual's level of anti-disease immunity."
+    },
+    {
+      "normalized_name": "fT",
+      "raw_text": "fT",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Fixed probability of being treated successfully for clinical disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fixed probability of being treated successfully for clinical disease."
+    },
+    {
+      "normalized_name": "rT",
+      "raw_text": "rT",
+      "value": null,
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate at which successfully treated individuals clear infection and enter a period of prophylactic protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which successfully treated individuals clear infection and enter a period of prophylactic protection."
+    },
+    {
+      "normalized_name": "rP",
+      "raw_text": "rP",
+      "value": null,
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate at which individuals under prophylaxis return to being susceptible to new infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which individuals under prophylaxis return to being susceptible to new infection."
+    },
+    {
+      "normalized_name": "rD",
+      "raw_text": "rD",
+      "value": null,
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate at which individuals with untreated clinical disease clear disease and become patently asymptomatic.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which individuals with untreated clinical disease clear disease and become patently asymptomatic."
+    },
+    {
+      "normalized_name": "rA",
+      "raw_text": "rA",
+      "value": null,
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate at which individuals with patent asymptomatic infection move to a sub-patent stage, dependent on anti-parasite immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which individuals with patent asymptomatic infection move to a sub-patent stage, dependent on anti-parasite immunity."
+    },
+    {
+      "normalized_name": "rU",
+      "raw_text": "rU",
+      "value": null,
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate at which sub-patent infection is cleared and individuals return to being fully susceptible.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which sub-patent infection is cleared and individuals return to being fully susceptible."
+    },
+    {
+      "normalized_name": "HBI",
+      "raw_text": "HBI",
+      "value": null,
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Human Blood Index, the proportion of mosquito blood meals taken from humans, which determines infectivity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human Blood Index, the proportion of mosquito blood meals taken from humans, which determines infectivity."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 6,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 9,
+    "num_flows": 15,
+    "num_parameters": 9,
+    "num_stratifications": 2,
+    "num_interventions": 2
+  }
+}

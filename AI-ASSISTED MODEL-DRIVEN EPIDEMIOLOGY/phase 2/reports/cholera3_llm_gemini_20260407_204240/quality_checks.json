@@ -1,0 +1,420 @@
+{
+  "model_analysis": {
+    "modelName": "Cholera3",
+    "summary": {
+      "modelName": "Cholera3",
+      "totalPopulation": null,
+      "numCompartments": 3,
+      "numParameters": 9,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals through exposure to contaminated water, with a dose-dependent probability.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Contribution of each infected person to the aquatic population of V. cholerae through excretion.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Bacteria in Water",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "H",
+          "type": "CONSTANT",
+          "expression": "10000",
+          "description": "Total human population.",
+          "unit": "persons"
+        },
+        {
+          "index": 1,
+          "name": "n",
+          "type": "CONSTANT",
+          "expression": "0.0001 or 0.001",
+          "description": "Human birth and death rates.",
+          "unit": "day-1"
+        },
+        {
+          "index": 2,
+          "name": "a",
+          "type": "CONSTANT",
+          "expression": "0.5 or 1",
+          "description": "Rate of exposure to contaminated water.",
+          "unit": "day-1"
+        },
+        {
+          "index": 3,
+          "name": "K",
+          "type": "CONSTANT",
+          "expression": "1e6",
+          "description": "Concentration of V. cholerae in water that yields a 50% chance of catching cholera.",
+          "unit": "cells/ml"
+        },
+        {
+          "index": 4,
+          "name": "r",
+          "type": "CONSTANT",
+          "expression": "0.2",
+          "description": "Rate at which people recover from cholera.",
+          "unit": "day-1"
+        },
+        {
+          "index": 5,
+          "name": "nb",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Growth rate of V. cholerae in the aquatic environment.",
+          "unit": "day-1"
+        },
+        {
+          "index": 6,
+          "name": "mb",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Loss rate of V. cholerae in the aquatic environment.",
+          "unit": "day-1"
+        },
+        {
+          "index": 7,
+          "name": "nb-mb",
+          "type": "CONSTANT",
+          "expression": "-0.33",
+          "description": "Net loss rate of V. cholerae in the aquatic environment (value from Table 2).",
+          "unit": "day-1"
+        },
+        {
+          "index": 8,
+          "name": "e",
+          "type": "CONSTANT",
+          "expression": "10",
+          "description": "Contribution of each infected person to the population of V. cholerae in the aquatic environment.",
+          "unit": "cell/ml day-1 person-1"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Cholera3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 9,
+    "parametersWithUncertainty": 9,
+    "parameters": [
+      {
+        "parameter": "H",
+        "yourValue": "10000",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "persons",
+        "description": "Total human population.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "n",
+        "yourValue": "0.0001 or 0.001",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "day-1",
+        "description": "Human birth and death rates.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "a",
+        "yourValue": "0.5 or 1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "day-1",
+        "description": "Rate of exposure to contaminated water.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "K",
+        "yourValue": "1e6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "cells/ml",
+        "description": "Concentration of V. cholerae in water that yields a 50% chance of catching cholera.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "r",
+        "yourValue": "0.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "day-1",
+        "description": "Rate at which people recover from cholera.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "nb",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "day-1",
+        "description": "Growth rate of V. cholerae in the aquatic environment.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "mb",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "day-1",
+        "description": "Loss rate of V. cholerae in the aquatic environment.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "nb-mb",
+        "yourValue": "-0.33",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "day-1",
+        "description": "Net loss rate of V. cholerae in the aquatic environment (value from Table 2).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "e",
+        "yourValue": "10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera3",
+        "unit": "cell/ml day-1 person-1",
+        "description": "Contribution of each infected person to the population of V. cholerae in the aquatic environment.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 9
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Cholera3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "H",
+        "type": "other",
+        "currentValue": 10000.0,
+        "description": "Total human population.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "K",
+        "type": "other",
+        "currentValue": 1000000.0,
+        "description": "Concentration of V. cholerae in water that yields a 50% chance of catching cholera.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "r",
+        "type": "other",
+        "currentValue": 0.2,
+        "description": "Rate at which people recover from cholera.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "e",
+        "type": "other",
+        "currentValue": 10.0,
+        "description": "Contribution of each infected person to the population of V. cholerae in the aquatic environment.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "H",
+      "K",
+      "r",
+      "e"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "H",
+        "K",
+        "r",
+        "e"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "H": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "K": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "r": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "e": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

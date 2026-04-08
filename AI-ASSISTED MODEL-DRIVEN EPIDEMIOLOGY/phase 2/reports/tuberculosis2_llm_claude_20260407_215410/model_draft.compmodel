@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Case detection rate (WHO target)" expression="70" type="CONSTANT" description="Target proportion of infectious cases diagnosed and treated per year divided by estimated annual incidence of new infectious cases" unit="%"/>
+  <parameters name="Cure rate (WHO target)" expression="85" type="CONSTANT" description="Target proportion of detected cases successfully cured under DOTS" unit="%"/>
+  <parameters name="Current global case detection rate" expression="63" type="CONSTANT" description="Estimated current worldwide case detection rate (1998)" unit="%"/>
+  <parameters name="Current global cure rate" expression="57" type="CONSTANT" description="Estimated current worldwide cure rate (1998)" unit="%"/>
+  <parameters name="ARI Sub-Saharan Africa" expression="2.6" type="CONSTANT" description="Annual risk of infection in Sub-Saharan Africa (1995)" unit="% per year"/>
+  <parameters name="ARI Americas" expression="0.6" type="CONSTANT" description="Annual risk of infection in the Americas (1995)" unit="% per year"/>
+  <parameters name="ARI Eastern Mediterranean" expression="1.0" type="CONSTANT" description="Annual risk of infection in Eastern Mediterranean (1995)" unit="% per year"/>
+  <parameters name="ARI Western Europe" expression="0.1" type="CONSTANT" description="Annual risk of infection in Western Europe (1995)" unit="% per year"/>
+  <parameters name="ARI Eastern Europe" expression="0.5" type="CONSTANT" description="Annual risk of infection in Eastern Europe (1995)" unit="% per year"/>
+  <parameters name="ARI Southeast Asia" expression="2.0" type="CONSTANT" description="Annual risk of infection in Southeast Asia (1995)" unit="% per year"/>
+  <parameters name="ARI Western Pacific" expression="0.9" type="CONSTANT" description="Annual risk of infection in Western Pacific (1995)" unit="% per year"/>
+  <parameters name="Ratio ARI to smear-positive incidence" expression="1/50" type="CONSTANT" description="Observed ratio of ARI (%) to smear-positive incidence per 100,000 at steady state" unit="dimensionless"/>
+  <parameters name="Ratio deaths:incidence:prevalence" expression="1:2:4" type="CONSTANT" description="Approximate ratio of TB deaths to incidence to prevalence before 1940s" unit="dimensionless"/>
+  <parameters name="Old programme cure rate Sub-Saharan Africa" expression="40" type="CONSTANT" description="Cure rate under old programme in Sub-Saharan Africa" unit="%"/>
+  <parameters name="Old programme cure rate Americas" expression="60" type="CONSTANT" description="Cure rate under old programme in the Americas" unit="%"/>
+  <parameters name="Old programme cure rate Eastern Mediterranean" expression="50" type="CONSTANT" description="Cure rate under old programme in Eastern Mediterranean" unit="%"/>
+  <parameters name="Old programme cure rate Western Europe" expression="75" type="CONSTANT" description="Cure rate under old programme in Western Europe" unit="%"/>
+  <parameters name="Old programme cure rate Eastern Europe" expression="60" type="CONSTANT" description="Cure rate under old programme in Eastern Europe" unit="%"/>
+  <parameters name="Old programme cure rate Southeast Asia" expression="50" type="CONSTANT" description="Cure rate under old programme in Southeast Asia" unit="%"/>
+  <parameters name="Old programme cure rate Western Pacific" expression="60" type="CONSTANT" description="Cure rate under old programme in Western Pacific" unit="%"/>
+  <parameters name="Old programme case detection Sub-Saharan Africa" expression="50" type="CONSTANT" description="Case detection rate under old programme in Sub-Saharan Africa" unit="%"/>
+  <parameters name="Old programme case detection Americas" expression="70" type="CONSTANT" description="Case detection rate under old programme in the Americas" unit="%"/>
+  <parameters name="Old programme case detection Eastern Mediterranean" expression="60" type="CONSTANT" description="Case detection rate under old programme in Eastern Mediterranean" unit="%"/>
+  <parameters name="Old programme case detection Western Europe" expression="80" type="CONSTANT" description="Case detection rate under old programme in Western Europe" unit="%"/>
+  <parameters name="Old programme case detection Eastern Europe" expression="60" type="CONSTANT" description="Case detection rate under old programme in Eastern Europe" unit="%"/>
+  <parameters name="Old programme case detection Southeast Asia" expression="60" type="CONSTANT" description="Case detection rate under old programme in Southeast Asia" unit="%"/>
+  <parameters name="Old programme case detection Western Pacific" expression="60" type="CONSTANT" description="Case detection rate under old programme in Western Pacific" unit="%"/>
+  <parameters name="Relative case detection rate of non-infectious cases Sub-Saharan Africa" expression="0.5" type="CONSTANT" description="Fraction of case detection rate applied to non-infectious cases in Sub-Saharan Africa" unit="dimensionless"/>
+  <parameters name="Relative case detection rate of non-infectious cases Americas" expression="0.7" type="CONSTANT" description="Fraction of case detection rate applied to non-infectious cases in the Americas" unit="dimensionless"/>
+  <parameters name="HIV-1 infection in TB cases 2020 Sub-Saharan Africa" expression="21" type="CONSTANT" description="Projected proportion of TB cases with HIV-1 in Sub-Saharan Africa by 2020" unit="%"/>
+  <parameters name="HIV-1 infection in TB cases 2020 Southeast Asia" expression="4.0" type="CONSTANT" description="Projected proportion of TB cases with HIV-1 in Southeast Asia by 2020" unit="%"/>
+  <parameters name="Proportion treatment failures remaining infectious (low)" expression="25" type="CONSTANT" description="Lower estimate of proportion of treatment failures that remain infectious" unit="%"/>
+  <parameters name="Proportion treatment failures remaining infectious (high)" expression="100" type="CONSTANT" description="Upper estimate of proportion of treatment failures that remain infectious" unit="%"/>
+  <parameters name="Time step" expression="1" type="CONSTANT" description="Discrete time step used in difference equations" unit="year"/>
+  <parameters name="Age step" expression="1" type="CONSTANT" description="Age step used in age-structured model" unit="year"/>
+  <parameters name="Incidence decline rate at 70% detection and 85% cure from steady state" expression="11" type="CONSTANT" description="Expected annual decline in TB incidence from steady state under WHO targets (range 8-12%)" unit="% per year"/>
+  <parameters name="Death rate decline at 70% detection and 85% cure from steady state" expression="12" type="CONSTANT" description="Expected annual decline in TB death rate from steady state under WHO targets (range 9-13%)" unit="% per year"/>
+  <parameters name="HIV-1 duration before increased TB breakdown" expression="6" type="CONSTANT" description="Duration of HIV-1 infection after which rates of breakdown to TB increase" unit="years"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="New infection with M. tuberculosis through contact with infectious cases"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.27" target="//@compartments.2" description="Progressive primary disease developing directly after new infection (infectious form)"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.27" target="//@compartments.3" description="Progressive primary disease developing directly after new infection (non-infectious form)"/>
+  </compartments>
+  <compartments PrimaryName="Latent Infection" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Endogenous reactivation from latent infection to infectious tuberculosis"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Endogenous reactivation from latent infection to non-infectious tuberculosis"/>
+  </compartments>
+  <compartments PrimaryName="Infectious Tuberculosis" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Successful treatment and cure through DOTS or chemotherapy"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Treatment failure including fail, default, or transfer out"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Spontaneous resolution of tuberculosis without treatment"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Tuberculosis-related death (higher mortality rate for infectious form)"/>
+  </compartments>
+  <compartments PrimaryName="Non-infectious Tuberculosis" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Successful treatment and cure through DOTS or chemotherapy"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Treatment failure including fail, default, or transfer out"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Spontaneous resolution of tuberculosis without treatment"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Tuberculosis-related death (lower mortality rate for non-infectious forms)"/>
+  </compartments>
+  <compartments PrimaryName="Treatment Failure" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Relapse from treatment failure to active infectious tuberculosis"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Relapse from treatment failure to active non-infectious tuberculosis"/>
+  </compartments>
+  <compartments PrimaryName="Self-cured" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Relapse from self-cure to active infectious tuberculosis"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Relapse from self-cure to active non-infectious tuberculosis"/>
+  </compartments>
+  <compartments PrimaryName="Cured" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Cured patients return to latent class as they remain infected and may reactivate"/>
+  </compartments>
+</compartmental:CompartmentalModel>

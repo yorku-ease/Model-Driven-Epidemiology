@@ -1,0 +1,427 @@
+{
+  "model_analysis": {
+    "modelName": "Measles2",
+    "summary": {
+      "modelName": "Measles2",
+      "totalPopulation": null,
+      "numCompartments": 7,
+      "numParameters": 9,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Maternally Immune",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Loss of maternal immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.3",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of susceptible individuals through contact with infected individuals.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Administration of the first dose of vaccine (MMR1).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Exposed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Vaccinated (1 dose)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Administration of the second dose of vaccine (MMR2).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Vaccinated (2 doses)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "primary vaccine failure",
+          "type": "CONSTANT",
+          "expression": "5.2",
+          "description": "The risk of primary vaccine failure estimated by the model in the reference scenario without waning.",
+          "unit": "%"
+        },
+        {
+          "index": 1,
+          "name": "infection rate",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameter drawn from model fits to determine the rate of infection.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 2,
+          "name": "duration of maternal immunity",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameter drawn from model fits for the duration of passive immunity in newborns.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 3,
+          "name": "parameters for seasonality of transmission",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameters drawn from model fits to account for seasonality in transmission.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 4,
+          "name": "importation",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameter drawn from model fits for the importation of cases.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 5,
+          "name": "report rate of imported cases",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameter drawn from model fits for the reporting rate of imported cases.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 6,
+          "name": "vaccine effectiveness",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameter drawn from model fits for vaccine effectiveness, related to primary vaccine failure.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 7,
+          "name": "existing immunity in older generations",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameter drawn from model fits for pre-existing immunity in older age groups.",
+          "unit": "Not specified"
+        },
+        {
+          "index": 8,
+          "name": "parameters of spatial spread",
+          "type": "CONSTANT",
+          "expression": "Not specified",
+          "description": "Parameters drawn from model fits to govern the spatial spread of measles.",
+          "unit": "Not specified"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Measles2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 9,
+    "parametersWithUncertainty": 9,
+    "parameters": [
+      {
+        "parameter": "primary vaccine failure",
+        "yourValue": "5.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "%",
+        "description": "The risk of primary vaccine failure estimated by the model in the reference scenario without waning.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "infection rate",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameter drawn from model fits to determine the rate of infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "duration of maternal immunity",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameter drawn from model fits for the duration of passive immunity in newborns.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "parameters for seasonality of transmission",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameters drawn from model fits to account for seasonality in transmission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "importation",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameter drawn from model fits for the importation of cases.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "report rate of imported cases",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameter drawn from model fits for the reporting rate of imported cases.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "vaccine effectiveness",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameter drawn from model fits for vaccine effectiveness, related to primary vaccine failure.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "existing immunity in older generations",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameter drawn from model fits for pre-existing immunity in older age groups.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "parameters of spatial spread",
+        "yourValue": "Not specified",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles2",
+        "unit": "Not specified",
+        "description": "Parameters drawn from model fits to govern the spatial spread of measles.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 9
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Measles2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "primary vaccine failure",
+        "type": "other",
+        "currentValue": 5.2,
+        "description": "The risk of primary vaccine failure estimated by the model in the reference scenario without waning.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "primary vaccine failure"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "primary vaccine failure"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "primary vaccine failure": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="CD4 treatment eligibility threshold" expression="200 cells/ml; 350 cells/ml; all HIV-infected individuals" type="CONSTANT" description="Eligibility scenarios evaluated for ART initiation." unit="cells/ml or categorical"/>
+  <parameters name="Average time from eligibility to treatment initiation" expression="1" type="CONSTANT" description="Eligible individuals with access initiate ART at a constant rate such that the mean delay is 1 year." unit="year"/>
+  <parameters name="Treatment access" expression="50%, 60%, 70%, 80%, 90%, 95%, 100%" type="CONSTANT" description="Proportion of eligible individuals who eventually initiate treatment." unit="proportion"/>
+  <parameters name="Retention on treatment after 3 years" expression="75%, 85%, 95%, 100%" type="CONSTANT" description="Proportion remaining on ART after 3 years, excluding deaths on treatment." unit="proportion"/>
+  <parameters name="ART introduction time" expression="2012" type="CONSTANT" description="ART assumed to be introduced from the beginning of 2012." unit="year"/>
+  <parameters name="Baseline future scale-up ART starts" expression="400,000 per year" type="CONSTANT" description="Number of adults starting ART each year in the baseline future scale-up scenario." unit="adults/year"/>
+  <parameters name="Low future scale-up ART starts" expression="1,200,000 total over 2012-2016" type="CONSTANT" description="Total adults initiating ART in the low future scale-up scenario." unit="adults"/>
+  <parameters name="Medium future scale-up ART starts" expression="3,000,000 total over 2012-2016" type="CONSTANT" description="Total adults initiating ART in the medium future scale-up scenario." unit="adults"/>
+  <parameters name="High future scale-up ART starts" expression="3,900,000 total over 2012-2016" type="CONSTANT" description="Total adults initiating ART in the high future scale-up scenario." unit="adults"/>
+  <parameters name="ART transmission reduction" expression="greater than 90%" type="CONSTANT" description="Most models assume ART reduces transmissibility by more than 90%." unit="proportion reduction"/>
+  <parameters name="Early infection transmissibility increase" expression="10-fold or 26-fold relative to asymptomatic infection" type="CONSTANT" description="Alternative assumptions used across models for early infection infectiousness." unit="relative risk"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.9" target="//@compartments.1" description="HIV acquisition through sexual transmission."/>
+  </compartments>
+  <compartments PrimaryName="Early Infection" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.2" description="Progression from early infection to asymptomatic infection."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infection" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.3" description="Progression from asymptomatic infection to pre-AIDS infection."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Initiation of ART after meeting eligibility criteria."/>
+  </compartments>
+  <compartments PrimaryName="Pre-AIDS Infection" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.4" description="Progression from pre-AIDS infection to AIDS."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Initiation of ART after meeting eligibility criteria."/>
+  </compartments>
+  <compartments PrimaryName="AIDS" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Initiation of ART after meeting eligibility criteria."/>
+  </compartments>
+  <compartments PrimaryName="On Antiretroviral Therapy" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Dropout from ART at a constant rate to achieve the specified retention level."/>
+  </compartments>
+  <compartments PrimaryName="Dropped Out of Treatment" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Return to treatment after dropout in models that allow re-initiation."/>
+  </compartments>
+</compartmental:CompartmentalModel>

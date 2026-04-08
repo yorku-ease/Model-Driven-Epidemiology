@@ -1,0 +1,605 @@
+{
+  "paper_name": "Tuberculosis2",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 18,
+      "parameters": 38,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Latent Infection",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Tuberculosis",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Non-infectious Tuberculosis",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treatment Failure",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Self-cured",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cured",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Latent Infection",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Infectious Tuberculosis",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Non-infectious Tuberculosis",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent Infection",
+        "target": "Infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent Infection",
+        "target": "Non-infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Tuberculosis",
+        "target": "Cured",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious Tuberculosis",
+        "target": "Cured",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Tuberculosis",
+        "target": "Treatment Failure",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious Tuberculosis",
+        "target": "Treatment Failure",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Tuberculosis",
+        "target": "Self-cured",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious Tuberculosis",
+        "target": "Self-cured",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Cured",
+        "target": "Latent Infection",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treatment Failure",
+        "target": "Infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treatment Failure",
+        "target": "Non-infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Self-cured",
+        "target": "Infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Self-cured",
+        "target": "Non-infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Tuberculosis",
+        "target": "Infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious Tuberculosis",
+        "target": "Non-infectious Tuberculosis",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Case detection rate (WHO target)",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cure rate (WHO target)",
+        "value": "85",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Current global case detection rate",
+        "value": "63",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Current global cure rate",
+        "value": "57",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Sub-Saharan Africa",
+        "value": "2.6",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Americas",
+        "value": "0.6",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Eastern Mediterranean",
+        "value": "1.0",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Western Europe",
+        "value": "0.1",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Eastern Europe",
+        "value": "0.5",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Southeast Asia",
+        "value": "2.0",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ARI Western Pacific",
+        "value": "0.9",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Ratio ARI to smear-positive incidence",
+        "value": "1/50",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Ratio deaths:incidence:prevalence",
+        "value": "1:2:4",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Sub-Saharan Africa",
+        "value": "40",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Americas",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Eastern Mediterranean",
+        "value": "50",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Western Europe",
+        "value": "75",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Eastern Europe",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Southeast Asia",
+        "value": "50",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme cure rate Western Pacific",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Sub-Saharan Africa",
+        "value": "50",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Americas",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Eastern Mediterranean",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Western Europe",
+        "value": "80",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Eastern Europe",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Southeast Asia",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Old programme case detection Western Pacific",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative case detection rate of non-infectious cases Sub-Saharan Africa",
+        "value": "0.5",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative case detection rate of non-infectious cases Americas",
+        "value": "0.7",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "HIV-1 infection in TB cases 2020 Sub-Saharan Africa",
+        "value": "21",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "HIV-1 infection in TB cases 2020 Southeast Asia",
+        "value": "4.0",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Proportion treatment failures remaining infectious (low)",
+        "value": "25",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Proportion treatment failures remaining infectious (high)",
+        "value": "100",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Time step",
+        "value": "1",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Age step",
+        "value": "1",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Incidence decline rate at 70% detection and 85% cure from steady state",
+        "value": "11",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Death rate decline at 70% detection and 85% cure from steady state",
+        "value": "12",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "HIV-1 duration before increased TB breakdown",
+        "value": "6",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 18,
+    "parameters": 38,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 68,
+    "items_with_evidence": 68,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 68,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 68,
+      "items_with_evidence": 68,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 68,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 6,
+        "fn": 6,
+        "precision": 0.1429,
+        "recall": 0.1429,
+        "f1": 0.1429
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 15,
+        "fn": 14,
+        "precision": 0.1667,
+        "recall": 0.1765,
+        "f1": 0.1714
+      },
+      "parameters": {
+        "tp": 2,
+        "fp": 36,
+        "fn": 15,
+        "precision": 0.0526,
+        "recall": 0.1176,
+        "f1": 0.0727
+      },
+      "composite_score": 0.1445,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->LatentInfection",
+          "extracted": "Susceptible->Latent Infection",
+          "score": 0.82352614402771
+        },
+        {
+          "gold": "Susceptible->InfectiousTuberculosis",
+          "extracted": "Susceptible->Infectious Tuberculosis",
+          "score": 0.702073335647583
+        },
+        {
+          "gold": "LatentInfection->InfectiousTuberculosis",
+          "extracted": "Latent Infection->Infectious Tuberculosis",
+          "score": 0.7174564003944397
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "NonInfectiousCaseDetectionRate 0.42 Detection of non-infectious cases represented as a fraction of infectious case detection, reflecting the paper's region-specific relative detection of non-infectious cases",
+          "extracted": "Relative case detection rate of non-infectious cases Americas 0.7 Fraction of case detection rate applied to non-infectious cases in the Americas",
+          "score": 0.7757623791694641
+        },
+        {
+          "gold": "TreatmentFailureRate 0.15 Treatment failure / default / transfer-out complementing the DOTS cure target",
+          "extracted": "Cure rate (WHO target) 85 Target proportion of detected cases successfully cured under DOTS",
+          "score": 0.7271943092346191
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

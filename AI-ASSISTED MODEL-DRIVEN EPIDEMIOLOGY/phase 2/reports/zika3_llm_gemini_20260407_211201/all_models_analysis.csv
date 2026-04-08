@@ -1,0 +1,20 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Zika3,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.6,False,Infection of susceptible humans by infectious mosquitoes.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.6,False,Progression of humans from latent to infectious state.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.6,False,Recovery of infectious humans.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.6,False,Infection of susceptible mosquitoes by infectious humans.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.6,False,Progression of mosquitoes from latent to infectious state.,,,
+Zika3,Parameter,1/αV,,,,,,Model file,Certain,,,,,,Extrinsic incubation period in mosquitoes.,CONSTANT,"Gamma(μ = 10.5, σ = 0.5)",days
+Zika3,Parameter,1/αH,,,,,,Model file,Certain,,,,,,Intrinsic incubation period in humans.,CONSTANT,"Gamma(μ = 5.9, σ = 0.5)",days
+Zika3,Parameter,1/γ,,,,,,Model file,Certain,,,,,,Human infectious period.,CONSTANT,"Gamma(μ = 5, σ = 0.5)",days
+Zika3,Parameter,1/δ,,,,,,Model file,Certain,,,,,,Mosquito lifespan. The rate δ is also the mosquito birth rate.,CONSTANT,"Gamma(μ = 7.8, σ = 0.5)",days
+Zika3,Parameter,βH,,,,,,Model file,Certain,,,,,,Vector-to-human transmission rate.,CONSTANT,"U(0, 1)",days^-1
+Zika3,Parameter,βV,,,,,,Model file,Certain,,,,,,Human-to-vector transmission rate.,CONSTANT,"U(0, 1)",days^-1
+Zika3,Parameter,N,,,,,,Model file,Certain,,,,,,Human population size.,CONSTANT,0.0,individuals

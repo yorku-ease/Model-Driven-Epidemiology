@@ -1,0 +1,255 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are not immune and can be infected with the influenza virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are not immune and can be infected with the influenza virus."
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected but are in a latent period and not yet infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected but are in a latent period and not yet infectious."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals who are currently infected and can transmit the virus to susceptible individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are currently infected and can transmit the virus to susceptible individuals."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from the infection and are assumed to be immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from the infection and are assumed to be immune."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Transmission of the influenza virus from infectious to susceptible individuals through contact.",
+      "page_number": 0,
+      "text_span": "Transmission of the influenza virus from infectious to susceptible individuals through contact.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission of the influenza virus from infectious to susceptible individuals through contact."
+    },
+    {
+      "source": "Exposed",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression of individuals from the latent (Exposed) state to the infectious state.",
+      "page_number": 0,
+      "text_span": "Progression of individuals from the latent (Exposed) state to the infectious state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression of individuals from the latent (Exposed) state to the infectious state."
+    },
+    {
+      "source": "Infectious",
+      "target": "Recovered",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery of individuals from the infectious state, after which they are no longer infectious and are immune.",
+      "page_number": 0,
+      "text_span": "Recovery of individuals from the infectious state, after which they are no longer infectious and are immune.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery of individuals from the infectious state, after which they are no longer infectious and are immune."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "R0",
+      "raw_text": "R0",
+      "value": "1.4-2.0",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Basic reproduction number. The paper focuses on a 'moderate' scenario of 1.7 and a 'high' scenario of 2.0.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Basic reproduction number. The paper focuses on a 'moderate' scenario of 1.7 and a 'high' scenario of 2.0."
+    },
+    {
+      "normalized_name": "Generation time",
+      "raw_text": "Generation time",
+      "value": "2.6",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "The assumed generation time of the influenza virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The assumed generation time of the influenza virus."
+    },
+    {
+      "normalized_name": "Proportion of clinical cases",
+      "raw_text": "Proportion of clinical cases",
+      "value": "0.5",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "The proportion of infected individuals who become ill enough to be classified as clinical cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion of infected individuals who become ill enough to be classified as clinical cases."
+    },
+    {
+      "normalized_name": "Household transmission proportion",
+      "raw_text": "Household transmission proportion",
+      "value": "0.3",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "The proportion of total transmission estimated to occur within households for the United States.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion of total transmission estimated to occur within households for the United States."
+    },
+    {
+      "normalized_name": "Community transmission proportion",
+      "raw_text": "Community transmission proportion",
+      "value": "0.231",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "The proportion of total transmission estimated to occur in the general community (33% of the 70% of transmission outside the household).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion of total transmission estimated to occur in the general community (33% of the 70% of transmission outside the household)."
+    },
+    {
+      "normalized_name": "School and workplace transmission proportion",
+      "raw_text": "School and workplace transmission proportion",
+      "value": "0.259",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "The proportion of total transmission estimated to occur in schools and workplaces (37% of the 70% of transmission outside the household).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The proportion of total transmission estimated to occur in schools and workplaces (37% of the 70% of transmission outside the household)."
+    },
+    {
+      "normalized_name": "Matched vaccine efficacy (susceptibility reduction)",
+      "raw_text": "Matched vaccine efficacy (susceptibility reduction)",
+      "value": "0.7",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Reduction in susceptibility to infection for individuals who receive a matched pandemic vaccine.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in susceptibility to infection for individuals who receive a matched pandemic vaccine."
+    },
+    {
+      "normalized_name": "Matched vaccine efficacy (infectiousness reduction)",
+      "raw_text": "Matched vaccine efficacy (infectiousness reduction)",
+      "value": "0.3",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Reduction in infectiousness for vaccinated individuals who still become infected.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in infectiousness for vaccinated individuals who still become infected."
+    },
+    {
+      "normalized_name": "Matched vaccine efficacy (clinical case reduction)",
+      "raw_text": "Matched vaccine efficacy (clinical case reduction)",
+      "value": "0.5",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Reduction in the probability of becoming a clinical case for vaccinated individuals who still become infected.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in the probability of becoming a clinical case for vaccinated individuals who still become infected."
+    },
+    {
+      "normalized_name": "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+      "raw_text": "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+      "value": "0.3",
+      "unit": "proportion",
+      "page_number": 0,
+      "text_span": "Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "gender",
+      "page_number": 1,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 1,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 10,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

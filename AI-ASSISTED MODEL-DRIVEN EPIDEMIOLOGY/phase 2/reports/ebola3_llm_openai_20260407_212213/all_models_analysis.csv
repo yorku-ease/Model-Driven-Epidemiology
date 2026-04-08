@@ -1,0 +1,28 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebola3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Infectious in the Community,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Hospitalized Ebola Cases,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Dead Ebola Cases,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.0,False,"Infection through contact with infectious individuals in the community, in hospital, or during funerals.",,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Infectious in the Community,RateFlow,//@parameters.0,False,Progression from latent infection to symptomatic infectiousness.,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Hospitalized Ebola Cases,RateFlow,//@parameters.0,False,Hospitalization of infectious community cases.,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Dead Ebola Cases,RateFlow,//@parameters.0,False,Death of infectious community cases before hospitalization.,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Dead Ebola Cases,RateFlow,//@parameters.0,False,Death of hospitalized cases.,,,
+Ebola3,Parameter,a,,,,,,Model file,Certain,,,,,,Inverse of the mean incubation period.,CONSTANT,1/7 per day (DRC 1995); 1/12 per day (Uganda 2000),day^-1
+Ebola3,Parameter,c_h,,,,,,Model file,Certain,,,,,,Inverse of the mean duration from symptom onset to hospitalization.,CONSTANT,1/5 per day (DRC 1995); 1/4.2 per day (Uganda 2000),day^-1
+Ebola3,Parameter,c_d,,,,,,Model file,Certain,,,,,,Inverse of the mean duration from symptom onset to death.,CONSTANT,1/9.6 per day (DRC 1995); 1/8 per day (Uganda 2000),day^-1
+Ebola3,Parameter,c_i,,,,,,Model file,Certain,,,,,,Inverse of the mean duration from symptom onset to end of infectiousness for survivors.,CONSTANT,1/10 per day,day^-1
+Ebola3,Parameter,c_f,,,,,,Model file,Certain,,,,,,Inverse of the mean duration from death to traditional burial.,CONSTANT,1/2 per day,day^-1
+Ebola3,Parameter,h,,,,,,Model file,Certain,,,,,,Proportion of infectious cases hospitalized.,CONSTANT,80% (DRC 1995); 80% (Uganda 2000),%
+Ebola3,Parameter,d,,,,,,Model file,Certain,,,,,,Case-fatality ratio.,CONSTANT,81% (DRC 1995); 53% (Uganda 2000),%
+Ebola3,Parameter,b_I,,,,,,Model file,Certain,,,,,,Transmission rate in the community.,CONSTANT,0.588 per week (DRC 1995); 3.532 per week (Uganda 2000),week^-1
+Ebola3,Parameter,b_H,,,,,,Model file,Certain,,,,,,Transmission rate in hospital.,CONSTANT,0.794 per week (DRC 1995); 0.012 per week (Uganda 2000),week^-1
+Ebola3,Parameter,b_F,,,,,,Model file,Certain,,,,,,Transmission rate during traditional burial.,CONSTANT,7.653 per week (DRC 1995); 0.462 per week (Uganda 2000),week^-1
+Ebola3,Parameter,N,,,,,,Model file,Certain,,,,,,Population size.,CONSTANT,200000 (DRC 1995); 470000 (Uganda 2000),individuals
+Ebola3,Parameter,z,,,,,,Model file,Certain,,,,,,Efficacy of interventions in reducing community transmission.,CONSTANT,12% decrease in community transmission after interventions (DRC 1995); 88% decrease in community transmission after interventions (Uganda 2000),%
+Ebola3,Parameter,h_1,,,,,,Model file,Certain,,,,,,Probability parameter used so that h% of infectious cases are hospitalized.,CONSTANT,"Computed from h, c_i, c_d, c_h, and d to match the hospitalization proportion",dimensionless
+Ebola3,Parameter,d_1,,,,,,Model file,Certain,,,,,,Probability parameter used so that the overall case-fatality ratio equals d.,CONSTANT,"Computed from d, c_i, c_d, and c_h",dimensionless
+Ebola3,Parameter,d_2,,,,,,Model file,Certain,,,,,,Probability parameter used so that the overall case-fatality ratio equals d.,CONSTANT,"Computed from d, c_i, c_d, and c_h",dimensionless
+Ebola3,Parameter,R_0,,,,,,Model file,Certain,,,,,,Basic reproduction number.,CONSTANT,2.7 (DRC 1995); 2.7 (Uganda 2000),dimensionless

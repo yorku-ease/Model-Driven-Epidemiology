@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R_t" expression="time-varying; piecewise constant with changes at interventions" type="CONSTANT" description="Effective reproduction number; modeled as a function of the initial reproduction number and intervention effects." unit="dimensionless"/>
+  <parameters name="R_0" expression="country-specific initial value before interventions" type="CONSTANT" description="Initial reproduction number before interventions took effect." unit="dimensionless"/>
+  <parameters name="infection fatality ratio" expression="population-averaged; adjusted for age structure and contact patterns" type="CONSTANT" description="Fraction of infections resulting in death." unit="probability"/>
+  <parameters name="infection-to-death distribution" expression="derived from onset-to-symptoms and symptoms-to-death distributions" type="CONSTANT" description="Delay distribution linking infections to observed deaths." unit="days"/>
+  <parameters name="generation time distribution" expression="approximated using the serial interval distribution" type="CONSTANT" description="Distribution weighting the discrete convolution of previous infections in the renewal equation." unit="days"/>
+  <parameters name="serial interval distribution" expression="used as approximation to generation time distribution" type="CONSTANT" description="Distribution of time between symptom onset in a primary case and a secondary case." unit="days"/>
+  <parameters name="intervention effects" expression="country-shared with partial pooling for the last intervention" type="CONSTANT" description="Covariate effects of governmental interventions on transmission, including lockdown, public events banned, school closure, self isolation, and social distancing encouraged." unit="relative reduction in R_t"/>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Deaths" population="0"/>
+</compartmental:CompartmentalModel>

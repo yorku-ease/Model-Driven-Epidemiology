@@ -1,0 +1,518 @@
+{
+  "model_analysis": {
+    "modelName": "Covid3",
+    "summary": {
+      "modelName": "Covid3",
+      "totalPopulation": null,
+      "numCompartments": 4,
+      "numParameters": 12,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 2,
+          "primaryName": "Symptomatic",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Dead",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "R0",
+          "type": "CONSTANT",
+          "expression": "3.8",
+          "description": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 1,
+          "name": "Rt",
+          "type": "CONSTANT",
+          "expression": "0.66",
+          "description": "Average time-varying reproduction number across 11 countries after interventions",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 2,
+          "name": "ifr",
+          "type": "CONSTANT",
+          "expression": "country-specific",
+          "description": "Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 3,
+          "name": "infection_to_onset",
+          "type": "CONSTANT",
+          "expression": "5.1",
+          "description": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "onset_to_death",
+          "type": "CONSTANT",
+          "expression": "17.8",
+          "description": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+          "unit": "days"
+        },
+        {
+          "index": 5,
+          "name": "generation_interval",
+          "type": "CONSTANT",
+          "expression": "6.5",
+          "description": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+          "unit": "days"
+        },
+        {
+          "index": 6,
+          "name": "lockdown_effect",
+          "type": "CONSTANT",
+          "expression": "81",
+          "description": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75\u201387%)",
+          "unit": "percent reduction in Rt"
+        },
+        {
+          "index": 7,
+          "name": "alpha_lockdown",
+          "type": "CONSTANT",
+          "expression": "country-specific",
+          "description": "Country-specific effect of lockdown via partial pooling",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 8,
+          "name": "alpha_school_closure",
+          "type": "CONSTANT",
+          "expression": "shared",
+          "description": "Shared effect size parameter for school closure intervention across countries",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 9,
+          "name": "alpha_public_events",
+          "type": "CONSTANT",
+          "expression": "shared",
+          "description": "Shared effect size parameter for banning public events across countries",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 10,
+          "name": "alpha_self_isolation",
+          "type": "CONSTANT",
+          "expression": "shared",
+          "description": "Shared effect size parameter for case-based self-isolation measures across countries",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 11,
+          "name": "alpha_social_distancing",
+          "type": "CONSTANT",
+          "expression": "shared",
+          "description": "Shared effect size parameter for social distancing encouraged across countries",
+          "unit": "dimensionless"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Covid3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 12,
+    "parametersWithUncertainty": 12,
+    "parameters": [
+      {
+        "parameter": "R0",
+        "yourValue": "3.8",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rt",
+        "yourValue": "0.66",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Average time-varying reproduction number across 11 countries after interventions",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "ifr",
+        "yourValue": "country-specific",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "infection_to_onset",
+        "yourValue": "5.1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "days",
+        "description": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "onset_to_death",
+        "yourValue": "17.8",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "days",
+        "description": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "generation_interval",
+        "yourValue": "6.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "days",
+        "description": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "lockdown_effect",
+        "yourValue": "81",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "percent reduction in Rt",
+        "description": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75\u201387%)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "alpha_lockdown",
+        "yourValue": "country-specific",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Country-specific effect of lockdown via partial pooling",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "alpha_school_closure",
+        "yourValue": "shared",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Shared effect size parameter for school closure intervention across countries",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "alpha_public_events",
+        "yourValue": "shared",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Shared effect size parameter for banning public events across countries",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "alpha_self_isolation",
+        "yourValue": "shared",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Shared effect size parameter for case-based self-isolation measures across countries",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "alpha_social_distancing",
+        "yourValue": "shared",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Covid3",
+        "unit": "dimensionless",
+        "description": "Shared effect size parameter for social distancing encouraged across countries",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 12
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Covid3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "R0",
+        "type": "other",
+        "currentValue": 3.8,
+        "description": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Rt",
+        "type": "other",
+        "currentValue": 0.66,
+        "description": "Average time-varying reproduction number across 11 countries after interventions",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "infection_to_onset",
+        "type": "other",
+        "currentValue": 5.1,
+        "description": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "onset_to_death",
+        "type": "mortality",
+        "currentValue": 17.8,
+        "description": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "generation_interval",
+        "type": "other",
+        "currentValue": 6.5,
+        "description": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "lockdown_effect",
+        "type": "other",
+        "currentValue": 81.0,
+        "description": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75\u201387%)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "R0",
+      "Rt",
+      "infection_to_onset",
+      "onset_to_death",
+      "generation_interval"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "R0",
+        "Rt",
+        "infection_to_onset",
+        "onset_to_death",
+        "generation_interval"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "R0": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Rt": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "infection_to_onset": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "onset_to_death": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "generation_interval": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

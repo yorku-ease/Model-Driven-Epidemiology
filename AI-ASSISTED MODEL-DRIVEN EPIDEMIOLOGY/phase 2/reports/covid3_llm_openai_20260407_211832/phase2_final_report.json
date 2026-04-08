@@ -1,0 +1,215 @@
+{
+  "paper_name": "Covid3",
+  "summary": {
+    "extraction": {
+      "compartments": 2,
+      "flows": 0,
+      "parameters": 7,
+      "stratifications": 2,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Deaths",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [],
+    "parameters": [
+      {
+        "name": "R_t",
+        "value": "time-varying; piecewise constant with changes at interventions",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R_0",
+        "value": "country-specific initial value before interventions",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "infection fatality ratio",
+        "value": "population-averaged; adjusted for age structure and contact patterns",
+        "unit": "probability",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "infection-to-death distribution",
+        "value": "derived from onset-to-symptoms and symptoms-to-death distributions",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "generation time distribution",
+        "value": "approximated using the serial interval distribution",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "serial interval distribution",
+        "value": "used as approximation to generation time distribution",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "intervention effects",
+        "value": "country-shared with partial pooling for the last intervention",
+        "unit": "relative reduction in R_t",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 2,
+    "flows": 0,
+    "parameters": 7,
+    "stratifications": 2,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 12,
+    "items_with_evidence": 12,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 12,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 12,
+      "items_with_evidence": 12,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 12,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 1,
+        "fn": 3,
+        "precision": 0.5,
+        "recall": 0.25,
+        "f1": 0.3333
+      },
+      "flows": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 3,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 6,
+        "fn": 13,
+        "precision": 0.1429,
+        "recall": 0.0714,
+        "f1": 0.0952
+      },
+      "composite_score": 0.156,
+      "compartment_matches": [
+        {
+          "gold": "Infected",
+          "extracted": "Infectious",
+          "score": 0.8296632766723633
+        }
+      ],
+      "flow_matches": [],
+      "parameter_matches": [
+        {
+          "gold": "InitialRt 3.8 Average initial reproduction number estimated across the 11 countries before interventions",
+          "extracted": "R_0 country-specific initial value before interventions Initial reproduction number before interventions took effect.",
+          "score": 0.7949568629264832
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

@@ -1,0 +1,15 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Recovered/Removed,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.0,False,"Infection/transmission from infectious individuals to susceptible individuals within a city, proportional to contact rate and the fraction infectious.",,,
+Covid2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Progression from exposed to infectious at rate epsilon.,,,
+Covid2,Flow,,,,,,,Model file,Certain,,Recovered/Removed,RateFlow,//@parameters.0,False,"Recovery or removal from the infectious state at rate r, representing self-isolation/effective removal and recovery.",,,
+Covid2,Parameter,c,,,,,,Model file,Certain,,,,,,Average number of daily contacts used in transmission.,CONSTANT,daily contact rate,contacts per person per day
+Covid2,Parameter,r,,,,,,Model file,Certain,,,,,,Rate of recovery/removal from the infectious state.,CONSTANT,inverse of average infectious period,per day
+Covid2,Parameter,epsilon,,,,,,Model file,Certain,,,,,,Rate of progression from exposed to infectious.,CONSTANT,inverse of average incubation period,per day
+Covid2,Parameter,R0,,,,,,Model file,Certain,,,,,,Basic reproduction number used to calculate the daily contact rate.,CONSTANT,2.2,dimensionless
+Covid2,Parameter,average infectious period,,,,,,Model file,Certain,,,,,,"Average time spent infectious, used to derive r.",CONSTANT,5.8,days
+Covid2,Parameter,average time spent exposed but not infectious,,,,,,Model file,Certain,,,,,,"Average incubation period, used to derive epsilon.",CONSTANT,5.2,days
+Covid2,Parameter,time from onset to first medical visit and isolation,,,,,,Model file,Certain,,,,,,Used as a proxy for average infectious period under improved case identification and isolation.,CONSTANT,5.8,days

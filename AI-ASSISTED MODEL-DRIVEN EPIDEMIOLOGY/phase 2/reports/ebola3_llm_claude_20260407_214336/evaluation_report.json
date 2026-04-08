@@ -1,0 +1,115 @@
+{
+  "traceability_coverage": {
+    "total_items": 33,
+    "items_with_evidence": 33,
+    "coverage_percentage": 100.0
+  },
+  "faithfulness": {
+    "paper_backed_items": 33,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "total_gaps": 0,
+    "critical_gaps": 0,
+    "high_gaps": 0,
+    "medium_gaps": 0,
+    "gap_breakdown": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_stratifications": 0,
+      "missing_interventions": 0
+    }
+  },
+  "gold_standard_comparison": {
+    "threshold": 0.7,
+    "compartments": {
+      "tp": 4,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.6667,
+      "recall": 0.6667,
+      "f1": 0.6667
+    },
+    "flows": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 5,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6667
+    },
+    "parameters": {
+      "tp": 2,
+      "fp": 17,
+      "fn": 8,
+      "precision": 0.1053,
+      "recall": 0.2,
+      "f1": 0.1379
+    },
+    "composite_score": 0.5874,
+    "compartment_matches": [
+      {
+        "gold": "Susceptible",
+        "extracted": "Susceptible",
+        "score": 0.9999999403953552
+      },
+      {
+        "gold": "Exposed",
+        "extracted": "Exposed",
+        "score": 0.9999998807907104
+      },
+      {
+        "gold": "InfectiousCommunity",
+        "extracted": "Infectious",
+        "score": 0.8125842213630676
+      },
+      {
+        "gold": "Hospitalized",
+        "extracted": "Hospitalized",
+        "score": 1.000000238418579
+      }
+    ],
+    "flow_matches": [
+      {
+        "gold": "Susceptible->Exposed",
+        "extracted": "Susceptible->Exposed",
+        "score": 0.9999997615814209
+      },
+      {
+        "gold": "Exposed->InfectiousCommunity",
+        "extracted": "Exposed->Infectious",
+        "score": 0.9035357236862183
+      },
+      {
+        "gold": "InfectiousCommunity->Hospitalized",
+        "extracted": "Infectious->Hospitalized",
+        "score": 0.9200104475021362
+      },
+      {
+        "gold": "InfectiousCommunity->FuneralInfectious",
+        "extracted": "Infectious->Dead but not yet buried",
+        "score": 0.7407131195068359
+      },
+      {
+        "gold": "Hospitalized->FuneralInfectious",
+        "extracted": "Hospitalized->Dead but not yet buried",
+        "score": 0.7562525272369385
+      }
+    ],
+    "parameter_matches": [
+      {
+        "gold": "BetaCommunity 0.588 Transmission coefficient in the community, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+        "extracted": "beta_I 0.588 (DRC 1995); 3.532 (Uganda 2000) Transmission coefficient in the community",
+        "score": 0.7480744123458862
+      },
+      {
+        "gold": "BetaHospital 0.794 Transmission coefficient at hospital, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+        "extracted": "beta_H 0.794 (DRC 1995); 0.012 (Uganda 2000) Transmission coefficient at the hospital",
+        "score": 0.7758556604385376
+      }
+    ],
+    "direction_errors": [],
+    "value_errors": [],
+    "matching_method": "cosine_similarity"
+  }
+}

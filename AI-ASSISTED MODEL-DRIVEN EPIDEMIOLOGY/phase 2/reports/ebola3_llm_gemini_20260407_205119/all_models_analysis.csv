@@ -1,0 +1,29 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebola3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Infectious in community,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Hospitalized,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.0,False,"Infection of susceptible individuals through contact with infectious individuals in the community (I), hospitalized cases (H), or during funerals (F). Rate: (b_I*S*I + b_H*S*H + b_F*S*F)/N.",,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Infectious in community,RateFlow,//@parameters.0,False,Progression of exposed individuals to become infectious. Rate: a*E.,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Hospitalized,RateFlow,//@parameters.0,False,Hospitalization of infectious individuals. Rate: c_h*h_1*I.,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.0,False,Death of infectious individuals in the community. Rate: d_1*(1-h_1)*c_d*I.,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.0,False,Death of hospitalized individuals. Rate: c_dh*d_2*H.,,,
+Ebola3,Parameter,N,,,,,,Model file,Certain,,,,,,Size of the population.,CONSTANT,200000 (DRC 1995); 470000 (Uganda 2000),persons
+Ebola3,Parameter,b_I,,,,,,Model file,Certain,,,,,,Transmission coefficient in the community.,CONSTANT,0.588 (DRC 1995); 3.532 (Uganda 2000),week^-1
+Ebola3,Parameter,b_H,,,,,,Model file,Certain,,,,,,Transmission coefficient at the hospital.,CONSTANT,0.794 (DRC 1995); 0.012 (Uganda 2000),week^-1
+Ebola3,Parameter,b_F,,,,,,Model file,Certain,,,,,,Transmission coefficient during funerals.,CONSTANT,7.653 (DRC 1995); 0.462 (Uganda 2000),week^-1
+Ebola3,Parameter,1/a,,,,,,Model file,Certain,,,,,,Mean duration of the incubation period.,CONSTANT,7 (DRC 1995); 12 (Uganda 2000),days
+Ebola3,Parameter,1/c_h,,,,,,Model file,Certain,,,,,,Mean duration from symptom onset to hospitalization.,CONSTANT,5 (DRC 1995); 4.2 (Uganda 2000),days
+Ebola3,Parameter,1/c_d,,,,,,Model file,Certain,,,,,,Mean duration from onset to death for patients who die.,CONSTANT,9.6 (DRC 1995); 8 (Uganda 2000),days
+Ebola3,Parameter,1/c_i,,,,,,Model file,Certain,,,,,,Mean duration from onset to end of infectiousness for survivors.,CONSTANT,10,days
+Ebola3,Parameter,1/c_f,,,,,,Model file,Certain,,,,,,Mean duration from death to traditional burial.,CONSTANT,2,days
+Ebola3,Parameter,h,,,,,,Model file,Certain,,,,,,Proportion of cases hospitalized.,CONSTANT,80,%
+Ebola3,Parameter,d,,,,,,Model file,Certain,,,,,,Overall case-fatality ratio.,CONSTANT,81 (DRC 1995); 53 (Uganda 2000),%
+Ebola3,Parameter,h_1,,,,,,Model file,Certain,,,,,,"Proportion of infectious cases that are hospitalized, computed to match the overall hospitalization proportion h.",CONSTANT,0.0,dimensionless
+Ebola3,Parameter,d_1,,,,,,Model file,Certain,,,,,,"Proportion of non-hospitalized cases that die, computed to match the overall case-fatality ratio d.",CONSTANT,0.0,dimensionless
+Ebola3,Parameter,d_2,,,,,,Model file,Certain,,,,,,"Proportion of hospitalized cases that die, computed to match the overall case-fatality ratio d.",CONSTANT,0.0,dimensionless
+Ebola3,Parameter,1/c_dh,,,,,,Model file,Certain,,,,,,Mean duration from hospitalization to death.,CONSTANT,0.0,days
+Ebola3,Parameter,1/c_ih,,,,,,Model file,Certain,,,,,,Mean duration from hospitalization to end of infectiousness for survivors.,CONSTANT,0.0,days
+Ebola3,Parameter,z,,,,,,Model file,Certain,,,,,,"Efficacy of interventions in the community, where the transmission coefficient is decreased by a factor (1-z).",CONSTANT,0.12 (DRC 1995); 0.88 (Uganda 2000),dimensionless

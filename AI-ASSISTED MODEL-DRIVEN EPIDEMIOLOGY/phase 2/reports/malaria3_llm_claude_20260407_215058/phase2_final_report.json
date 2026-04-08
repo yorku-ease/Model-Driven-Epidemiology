@@ -1,0 +1,412 @@
+{
+  "paper_name": "Malaria3",
+  "summary": {
+    "extraction": {
+      "compartments": 9,
+      "flows": 11,
+      "parameters": 16,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "D",
+      "Infectious",
+      "S",
+      "Susceptible"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Subpatent Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Prophylactically Protected Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Symptomatic Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Humans",
+        "target": "Asymptomatic Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic Infectious Humans",
+        "target": "Treated Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic Infectious Humans",
+        "target": "Asymptomatic Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infectious Humans",
+        "target": "Subpatent Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Subpatent Infectious Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated Infectious Humans",
+        "target": "Prophylactically Protected Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated Infectious Humans",
+        "target": "Asymptomatic Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Prophylactically Protected Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Drug efficacy (ACT)",
+        "value": "95",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia after non-artemisinin treatment",
+        "value": "55.6",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia after ACT treatment",
+        "value": "13.4",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia after ACT-PQ treatment",
+        "value": "3.0",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of prophylaxis (short-acting drug)",
+        "value": "10",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of prophylaxis (long-acting drug)",
+        "value": "30",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Reduction in infectiousness after non-artemisinin treatment",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Reduction in infectiousness after ACT/ACT-PQ treatment",
+        "value": "80.6",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pregnancy prevalence in population aged 15-45",
+        "value": "7.1",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Correlation in participation between MDA rounds",
+        "value": "0.5",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "MDA coverage",
+        "value": "80",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ACT coverage for symptomatic treatment",
+        "value": "20",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Non-ACT treatment efficacy",
+        "value": "60",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ACT treatment efficacy",
+        "value": "95",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative infectivity of asymptomatic vs symptomatic",
+        "value": "0.33",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative infectivity of subpatent vs symptomatic",
+        "value": "0.06",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 9,
+    "flows": 11,
+    "parameters": 16,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 39,
+    "items_with_evidence": 39,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 39,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 39,
+      "items_with_evidence": 39,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 39,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 8,
+        "fn": 8,
+        "precision": 0.1111,
+        "recall": 0.1111,
+        "f1": 0.1111
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 8,
+        "fn": 17,
+        "precision": 0.2727,
+        "recall": 0.15,
+        "f1": 0.1935
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 15,
+        "fn": 15,
+        "precision": 0.0625,
+        "recall": 0.0625,
+        "f1": 0.0625
+      },
+      "composite_score": 0.1389,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible Humans",
+          "score": 0.8397186994552612
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->SymptomaticInfectious",
+          "extracted": "Susceptible Humans->Symptomatic Infectious Humans",
+          "score": 0.727855920791626
+        },
+        {
+          "gold": "SubpatentInfectious->Susceptible",
+          "extracted": "Subpatent Infectious Humans->Susceptible Humans",
+          "score": 0.7769021987915039
+        },
+        {
+          "gold": "ProtectedByProphylaxis->Susceptible",
+          "extracted": "Prophylactically Protected Humans->Susceptible Humans",
+          "score": 0.7162071466445923
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "SusceptibleToAsymptomaticInfectionRate 0.030 Representative force-of-infection term from infectious mosquito bites leading to asymptomatic patent infection",
+          "extracted": "Relative infectivity of asymptomatic vs symptomatic 0.33 Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)",
+          "score": 0.7880694270133972
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

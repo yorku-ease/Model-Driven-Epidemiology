@@ -1,0 +1,353 @@
+{
+  "paper_name": "Hiv2",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 10,
+      "parameters": 13,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Early Infection",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic CD4 >350",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic CD4 200-350",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic CD4 \u2264200",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "On ART",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dropped Out",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Early Infection",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Early Infection",
+        "target": "Asymptomatic CD4 >350",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic CD4 >350",
+        "target": "Asymptomatic CD4 200-350",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic CD4 200-350",
+        "target": "Symptomatic CD4 \u2264200",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic CD4 >350",
+        "target": "On ART",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic CD4 200-350",
+        "target": "On ART",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic CD4 \u2264200",
+        "target": "On ART",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "On ART",
+        "target": "Dropped Out",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic CD4 \u2264200",
+        "target": "Dropped Out",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "On ART",
+        "target": "On ART",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "ART eligibility CD4 threshold",
+        "value": "200, 350, or all HIV+",
+        "unit": "cells/ml",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ART access",
+        "value": "50-100",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Time from eligibility to ART initiation",
+        "value": "1",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "3-year retention on ART",
+        "value": "75-100",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ART transmission reduction",
+        "value": "90-99",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Early infection relative transmissibility (Boily estimate)",
+        "value": "10",
+        "unit": "fold increase",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Early infection relative transmissibility (Hollingsworth estimate)",
+        "value": "26",
+        "unit": "fold increase",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Late-stage relative transmissibility",
+        "value": "1.4-4",
+        "unit": "fold increase",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ART introduction year",
+        "value": "2012",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Male HIV prevalence 2012 (no ART)",
+        "value": "10-16",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Female HIV prevalence 2012 (no ART)",
+        "value": "17-23",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Male HIV incidence 2012 (no ART)",
+        "value": "1.1-2.0",
+        "unit": "per 100 person-years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Female HIV incidence 2012 (no ART)",
+        "value": "1.7-2.6",
+        "unit": "per 100 person-years",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 10,
+    "parameters": 13,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 35,
+    "items_with_evidence": 35,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 35,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 35,
+      "items_with_evidence": 35,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 35,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 6,
+        "fn": 5,
+        "precision": 0.1429,
+        "recall": 0.1667,
+        "f1": 0.1538
+      },
+      "flows": {
+        "tp": 1,
+        "fp": 9,
+        "fn": 9,
+        "precision": 0.1,
+        "recall": 0.1,
+        "f1": 0.1
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 13,
+        "fn": 10,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.1079,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->EarlyInfection",
+          "extracted": "Susceptible->Early Infection",
+          "score": 0.8901576995849609
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

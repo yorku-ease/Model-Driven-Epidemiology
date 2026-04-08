@@ -1,0 +1,306 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals not infected with HIV and susceptible to infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Early)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the acute/early stage of HIV infection with high transmissibility, as described in Box 1 and Figure 5A.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Chronic, CD4 > 350)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the chronic stage of HIV infection with CD4 count > 350 cells/ml.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Chronic, CD4 200-350)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the chronic stage of HIV infection with CD4 count between 200 and 350 cells/ml.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Late Stage, CD4 <= 200)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the late stage of HIV infection with CD4 count <= 200 cells/ml.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "On Antiretroviral Therapy (ART)": {
+      "evidence": [
+        {
+          "text_span": "HIV-infected individuals receiving antiretroviral therapy, with suppressed viral load and reduced transmissibility.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Infected (Early)": {
+      "evidence": [
+        {
+          "text_span": "Transmission of HIV to susceptible individuals from contact with infected individuals in any stage, including those on ART.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Early) -> Infected (Chronic, CD4 > 350)": {
+      "evidence": [
+        {
+          "text_span": "Progression from early to chronic HIV infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Chronic, CD4 > 350) -> Infected (Chronic, CD4 200-350)": {
+      "evidence": [
+        {
+          "text_span": "Disease progression marked by decline in CD4 count.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Chronic, CD4 200-350) -> Infected (Late Stage, CD4 <= 200)": {
+      "evidence": [
+        {
+          "text_span": "Further disease progression to a lower CD4 count.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Chronic, CD4 > 350) -> On Antiretroviral Therapy (ART)": {
+      "evidence": [
+        {
+          "text_span": "Initiation of ART for eligible individuals with CD4 > 350 cells/ml (e.g., under 'treat all' scenarios).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Chronic, CD4 200-350) -> On Antiretroviral Therapy (ART)": {
+      "evidence": [
+        {
+          "text_span": "Initiation of ART for eligible individuals with CD4 count between 200-350 cells/ml.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infected (Late Stage, CD4 <= 200) -> On Antiretroviral Therapy (ART)": {
+      "evidence": [
+        {
+          "text_span": "Initiation of ART for eligible individuals with CD4 count <= 200 cells/ml.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "On Antiretroviral Therapy (ART) -> Infected (Late Stage, CD4 <= 200)": {
+      "evidence": [
+        {
+          "text_span": "Dropout from ART, returning to an untreated state. Models varied on the exact return state and possibility of re-initiation.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "CD4 Eligibility Threshold": {
+      "evidence": [
+        {
+          "text_span": "The CD4 cell count threshold at which an individual becomes eligible for ART, varied across intervention scenarios.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "<=200, <=350, or all infected",
+          "unit": "cells/ml"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treatment Access": {
+      "evidence": [
+        {
+          "text_span": "The proportion of eligible individuals who eventually initiate treatment.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "50, 60, 70, 80, 90, 95, 100",
+          "unit": "percent"
+        }
+      ],
+      "paper_backed": true
+    },
+    "3-year Retention on ART": {
+      "evidence": [
+        {
+          "text_span": "The percentage of individuals remaining on treatment after 3 years, excluding those who had died.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "75, 85, 95, 100",
+          "unit": "percent"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Average time to ART initiation": {
+      "evidence": [
+        {
+          "text_span": "The average time from an individual becoming eligible for ART to starting treatment, corresponding to an initiation rate of 1/year.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Relative Transmissibility (Early Infection)": {
+      "evidence": [
+        {
+          "text_span": "Factor increase in HIV transmissibility during early/acute infection compared to the asymptomatic chronic stage. Different models used different values in this range.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10-26",
+          "unit": "fold increase"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Transmissibility Reduction on ART": {
+      "evidence": [
+        {
+          "text_span": "The percentage reduction in HIV transmissibility for individuals on ART, with most models assuming values between 90% and 99%.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": ">90",
+          "unit": "percent"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 17,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 25,
+    "items_with_evidence": 25,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 25,
+    "faithfulness_percentage": 100.0
+  }
+}

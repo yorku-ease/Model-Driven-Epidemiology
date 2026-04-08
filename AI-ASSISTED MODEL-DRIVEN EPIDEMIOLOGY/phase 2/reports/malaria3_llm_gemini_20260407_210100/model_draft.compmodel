@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="ACT efficacy" expression="95" type="CONSTANT" description="Efficacy of Artemisinin-combination therapies (ACTs) at clearing parasites." unit="%"/>
+  <parameters name="Non-ACT efficacy" expression="60" type="CONSTANT" description="Efficacy of non-ACT treatments at clearing parasites, assuming resistance." unit="%"/>
+  <parameters name="Duration of gametocytaemia (non-artemisinins)" expression="55.6" type="CONSTANT" description="Duration of infectiousness to mosquitoes after treatment with non-artemisinins." unit="days"/>
+  <parameters name="Duration of gametocytaemia (ACT)" expression="13.4" type="CONSTANT" description="Duration of infectiousness to mosquitoes after treatment with ACT." unit="days"/>
+  <parameters name="Duration of gametocytaemia (ACT-PQ)" expression="3.0" type="CONSTANT" description="Duration of infectiousness to mosquitoes after treatment with ACT plus primaquine." unit="days"/>
+  <parameters name="Prophylaxis duration (short-acting)" expression="10" type="CONSTANT" description="Duration of inhibitory antimalarial blood concentration for a short-acting drug." unit="days"/>
+  <parameters name="Prophylaxis duration (long-acting)" expression="30" type="CONSTANT" description="Duration of inhibitory antimalarial blood concentration for a long-acting drug." unit="days"/>
+  <parameters name="Infectiousness reduction (non-artemisinins)" expression="70" type="CONSTANT" description="Reduction in average infectiousness to mosquitoes following treatment with non-artemisinins." unit="%"/>
+  <parameters name="Infectiousness reduction (ACT, ACT-PQ)" expression="80.6" type="CONSTANT" description="Reduction in average infectiousness to mosquitoes following treatment with ACT or ACT-PQ." unit="%"/>
+  <parameters name="Correlation in MDA participation" expression="0.5" type="CONSTANT" description="Correlation in an individual's probability of participating in successive rounds of MDA." unit="none"/>
+  <parameters name="Relative infectivity of Asymptomatic Humans" expression="1/3" type="CONSTANT" description="Infectivity of asymptomatic cases (A) relative to symptomatic cases (D)." unit="none"/>
+  <parameters name="Relative infectivity of Subpatent Humans" expression="1/17" type="CONSTANT" description="Infectivity of subpatent cases (U) relative to symptomatic cases (D)." unit="none"/>
+  <parameters name="MDA coverage" expression="80" type="CONSTANT" description="Assumed coverage for mass drug administration simulations." unit="%"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Infection of susceptible humans by an infectious mosquito, leading to symptomatic disease."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection of susceptible humans by an infectious mosquito, leading to asymptomatic disease."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Prophylaxis given to uninfected individuals during mass drug administration (MDA)."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic and Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Progression from symptomatic to asymptomatic infection, either naturally or due to treatment failure."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Successful treatment of symptomatic individuals."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic and Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Progression from asymptomatic patent infection to sub-patent infection."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Successful treatment of asymptomatic individuals during mass drug administration (MDA) or mass screen and treat (MSAT)."/>
+  </compartments>
+  <compartments PrimaryName="Infectious and Undetectable by Microscopy Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Natural recovery from sub-patent infection back to a susceptible state."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Successful treatment of sub-patent individuals during mass drug administration (MDA) or mass screen and treat (MSAT)."/>
+  </compartments>
+  <compartments PrimaryName="Treated and Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Recovery from infection following treatment, leading to a period of prophylactic protection."/>
+  </compartments>
+  <compartments PrimaryName="Protected Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Waning of prophylactic protection, returning individuals to a susceptible state."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRate="0.0" target="//@compartments.7" description="Infection of susceptible mosquitoes from biting an infectious human (D, A, U, or T)."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.8" description="Development of parasites within the mosquito, after which the mosquito becomes infectious."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

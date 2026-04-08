@@ -1,0 +1,595 @@
+{
+  "model_analysis": {
+    "modelName": "Influenza3",
+    "summary": {
+      "modelName": "Influenza3",
+      "totalPopulation": null,
+      "numCompartments": 9,
+      "numParameters": 13,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.11",
+              "contactCompartment": "//@compartments.4",
+              "description": "Infection of susceptible individuals at the force of infection lambda_i.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination of susceptible individuals who will become protected, occurring at rate e_i * n(t).",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination of susceptible individuals who will not become protected, occurring at rate (1-e_i) * n(t).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Effectively Vaccinated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Development of protection in effectively vaccinated individuals at rate gamma.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.11",
+              "contactCompartment": "//@compartments.4",
+              "description": "Infection of effectively vaccinated but not yet protected individuals at the force of infection lambda_i.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Ineffectively Vaccinated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.11",
+              "contactCompartment": "//@compartments.4",
+              "description": "Infection of ineffectively vaccinated individuals at the force of infection lambda_i.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Protected",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "Latent",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent to infectious state at rate k.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospitalization of infectious individuals at age-specific rate alpha_i.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of non-hospitalized infectious individuals at rate c_1.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Hospitalized",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of hospitalized individuals at rate c_2.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death of hospitalized individuals at age-specific rate d_i.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 8,
+          "primaryName": "Dead",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "k",
+          "type": "CONSTANT",
+          "expression": "1/1.9",
+          "description": "Rate of progression from latent to infectious state.",
+          "unit": "1/day"
+        },
+        {
+          "index": 1,
+          "name": "c_1",
+          "type": "CONSTANT",
+          "expression": "1/1.5",
+          "description": "Recovery rate for infectious class.",
+          "unit": "1/day"
+        },
+        {
+          "index": 2,
+          "name": "c_2",
+          "type": "CONSTANT",
+          "expression": "1/1.5",
+          "description": "Recovery rate for hospitalized class.",
+          "unit": "1/day"
+        },
+        {
+          "index": 3,
+          "name": "g",
+          "type": "CONSTANT",
+          "expression": "1/10",
+          "description": "Rate at which effectively vaccinated individuals become protected (mean of 10 days).",
+          "unit": "1/day"
+        },
+        {
+          "index": 4,
+          "name": "e_i",
+          "type": "CONSTANT",
+          "expression": "77.5% for <65y, 35% for >=65y",
+          "description": "Age-specific vaccine efficacy.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 5,
+          "name": "n(t)",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Vaccination rate, administered t* days after epidemic onset.",
+          "unit": "1/day"
+        },
+        {
+          "index": 6,
+          "name": "q",
+          "type": "CONSTANT",
+          "expression": "Calibrated to R0",
+          "description": "Transmission probability per contact.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 7,
+          "name": "c_ij",
+          "type": "CONSTANT",
+          "expression": "From [27]",
+          "description": "Age-specific contact rates.",
+          "unit": "contacts/day"
+        },
+        {
+          "index": 8,
+          "name": "b_ij",
+          "type": "CONSTANT",
+          "expression": "q * c_ij",
+          "description": "Transmission rate between age groups i and j.",
+          "unit": "1/day"
+        },
+        {
+          "index": 9,
+          "name": "p_Hi",
+          "type": "CONSTANT",
+          "expression": "Varies by age and scenario",
+          "description": "Fraction of clinical cases that are hospitalized for age group i.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 10,
+          "name": "CFP_i",
+          "type": "CONSTANT",
+          "expression": "Varies by age and scenario",
+          "description": "Case fatality proportion (probability of death following hospitalization) for age group i.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 11,
+          "name": "a_i",
+          "type": "CONSTANT",
+          "expression": "(p_Hi / (1 - p_Hi)) * c_1",
+          "description": "Age-specific hospitalization rate for infectious individuals.",
+          "unit": "1/day"
+        },
+        {
+          "index": 12,
+          "name": "d_i",
+          "type": "CONSTANT",
+          "expression": "(CFP_i / (1 - CFP_i)) * c_2",
+          "description": "Age-specific influenza mortality rate for hospitalized individuals.",
+          "unit": "1/day"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Influenza3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 13,
+    "parametersWithUncertainty": 13,
+    "parameters": [
+      {
+        "parameter": "k",
+        "yourValue": "1/1.9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Rate of progression from latent to infectious state.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_1",
+        "yourValue": "1/1.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Recovery rate for infectious class.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_2",
+        "yourValue": "1/1.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Recovery rate for hospitalized class.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "g",
+        "yourValue": "1/10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Rate at which effectively vaccinated individuals become protected (mean of 10 days).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "e_i",
+        "yourValue": "77.5% for <65y, 35% for >=65y",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "dimensionless",
+        "description": "Age-specific vaccine efficacy.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "n(t)",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Vaccination rate, administered t* days after epidemic onset.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "q",
+        "yourValue": "Calibrated to R0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "dimensionless",
+        "description": "Transmission probability per contact.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_ij",
+        "yourValue": "From [27]",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "contacts/day",
+        "description": "Age-specific contact rates.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_ij",
+        "yourValue": "q * c_ij",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Transmission rate between age groups i and j.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "p_Hi",
+        "yourValue": "Varies by age and scenario",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "dimensionless",
+        "description": "Fraction of clinical cases that are hospitalized for age group i.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "CFP_i",
+        "yourValue": "Varies by age and scenario",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "dimensionless",
+        "description": "Case fatality proportion (probability of death following hospitalization) for age group i.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "a_i",
+        "yourValue": "(p_Hi / (1 - p_Hi)) * c_1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Age-specific hospitalization rate for infectious individuals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "d_i",
+        "yourValue": "(CFP_i / (1 - CFP_i)) * c_2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza3",
+        "unit": "1/day",
+        "description": "Age-specific influenza mortality rate for hospitalized individuals.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 13
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Influenza3",
+    "message": "No key parameters identified for sensitivity analysis",
+    "note": "This model may have rates embedded in flows rather than explicit parameters"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

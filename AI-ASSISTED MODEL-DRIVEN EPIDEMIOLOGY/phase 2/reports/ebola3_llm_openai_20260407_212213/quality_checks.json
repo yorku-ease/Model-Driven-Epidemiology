@@ -1,0 +1,581 @@
+{
+  "model_analysis": {
+    "modelName": "Ebola3",
+    "summary": {
+      "modelName": "Ebola3",
+      "totalPopulation": null,
+      "numCompartments": 6,
+      "numParameters": 16,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection through contact with infectious individuals in the community, in hospital, or during funerals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent infection to symptomatic infectiousness.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious in the Community",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospitalization of infectious community cases.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death of infectious community cases before hospitalization.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Hospitalized Ebola Cases",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death of hospitalized cases.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Dead Ebola Cases",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "a",
+          "type": "CONSTANT",
+          "expression": "1/7 per day (DRC 1995); 1/12 per day (Uganda 2000)",
+          "description": "Inverse of the mean incubation period.",
+          "unit": "day^-1"
+        },
+        {
+          "index": 1,
+          "name": "c_h",
+          "type": "CONSTANT",
+          "expression": "1/5 per day (DRC 1995); 1/4.2 per day (Uganda 2000)",
+          "description": "Inverse of the mean duration from symptom onset to hospitalization.",
+          "unit": "day^-1"
+        },
+        {
+          "index": 2,
+          "name": "c_d",
+          "type": "CONSTANT",
+          "expression": "1/9.6 per day (DRC 1995); 1/8 per day (Uganda 2000)",
+          "description": "Inverse of the mean duration from symptom onset to death.",
+          "unit": "day^-1"
+        },
+        {
+          "index": 3,
+          "name": "c_i",
+          "type": "CONSTANT",
+          "expression": "1/10 per day",
+          "description": "Inverse of the mean duration from symptom onset to end of infectiousness for survivors.",
+          "unit": "day^-1"
+        },
+        {
+          "index": 4,
+          "name": "c_f",
+          "type": "CONSTANT",
+          "expression": "1/2 per day",
+          "description": "Inverse of the mean duration from death to traditional burial.",
+          "unit": "day^-1"
+        },
+        {
+          "index": 5,
+          "name": "h",
+          "type": "CONSTANT",
+          "expression": "80% (DRC 1995); 80% (Uganda 2000)",
+          "description": "Proportion of infectious cases hospitalized.",
+          "unit": "%"
+        },
+        {
+          "index": 6,
+          "name": "d",
+          "type": "CONSTANT",
+          "expression": "81% (DRC 1995); 53% (Uganda 2000)",
+          "description": "Case-fatality ratio.",
+          "unit": "%"
+        },
+        {
+          "index": 7,
+          "name": "b_I",
+          "type": "CONSTANT",
+          "expression": "0.588 per week (DRC 1995); 3.532 per week (Uganda 2000)",
+          "description": "Transmission rate in the community.",
+          "unit": "week^-1"
+        },
+        {
+          "index": 8,
+          "name": "b_H",
+          "type": "CONSTANT",
+          "expression": "0.794 per week (DRC 1995); 0.012 per week (Uganda 2000)",
+          "description": "Transmission rate in hospital.",
+          "unit": "week^-1"
+        },
+        {
+          "index": 9,
+          "name": "b_F",
+          "type": "CONSTANT",
+          "expression": "7.653 per week (DRC 1995); 0.462 per week (Uganda 2000)",
+          "description": "Transmission rate during traditional burial.",
+          "unit": "week^-1"
+        },
+        {
+          "index": 10,
+          "name": "N",
+          "type": "CONSTANT",
+          "expression": "200000 (DRC 1995); 470000 (Uganda 2000)",
+          "description": "Population size.",
+          "unit": "individuals"
+        },
+        {
+          "index": 11,
+          "name": "z",
+          "type": "CONSTANT",
+          "expression": "12% decrease in community transmission after interventions (DRC 1995); 88% decrease in community transmission after interventions (Uganda 2000)",
+          "description": "Efficacy of interventions in reducing community transmission.",
+          "unit": "%"
+        },
+        {
+          "index": 12,
+          "name": "h_1",
+          "type": "CONSTANT",
+          "expression": "Computed from h, c_i, c_d, c_h, and d to match the hospitalization proportion",
+          "description": "Probability parameter used so that h% of infectious cases are hospitalized.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 13,
+          "name": "d_1",
+          "type": "CONSTANT",
+          "expression": "Computed from d, c_i, c_d, and c_h",
+          "description": "Probability parameter used so that the overall case-fatality ratio equals d.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 14,
+          "name": "d_2",
+          "type": "CONSTANT",
+          "expression": "Computed from d, c_i, c_d, and c_h",
+          "description": "Probability parameter used so that the overall case-fatality ratio equals d.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 15,
+          "name": "R_0",
+          "type": "CONSTANT",
+          "expression": "2.7 (DRC 1995); 2.7 (Uganda 2000)",
+          "description": "Basic reproduction number.",
+          "unit": "dimensionless"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Ebola3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 16,
+    "parametersWithUncertainty": 16,
+    "parameters": [
+      {
+        "parameter": "a",
+        "yourValue": "1/7 per day (DRC 1995); 1/12 per day (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "day^-1",
+        "description": "Inverse of the mean incubation period.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_h",
+        "yourValue": "1/5 per day (DRC 1995); 1/4.2 per day (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "day^-1",
+        "description": "Inverse of the mean duration from symptom onset to hospitalization.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_d",
+        "yourValue": "1/9.6 per day (DRC 1995); 1/8 per day (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "day^-1",
+        "description": "Inverse of the mean duration from symptom onset to death.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_i",
+        "yourValue": "1/10 per day",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "day^-1",
+        "description": "Inverse of the mean duration from symptom onset to end of infectiousness for survivors.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "c_f",
+        "yourValue": "1/2 per day",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "day^-1",
+        "description": "Inverse of the mean duration from death to traditional burial.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "h",
+        "yourValue": "80% (DRC 1995); 80% (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "%",
+        "description": "Proportion of infectious cases hospitalized.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "d",
+        "yourValue": "81% (DRC 1995); 53% (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "%",
+        "description": "Case-fatality ratio.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_I",
+        "yourValue": "0.588 per week (DRC 1995); 3.532 per week (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "week^-1",
+        "description": "Transmission rate in the community.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_H",
+        "yourValue": "0.794 per week (DRC 1995); 0.012 per week (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "week^-1",
+        "description": "Transmission rate in hospital.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b_F",
+        "yourValue": "7.653 per week (DRC 1995); 0.462 per week (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "week^-1",
+        "description": "Transmission rate during traditional burial.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "N",
+        "yourValue": "200000 (DRC 1995); 470000 (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "individuals",
+        "description": "Population size.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "z",
+        "yourValue": "12% decrease in community transmission after interventions (DRC 1995); 88% decrease in community transmission after interventions (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "%",
+        "description": "Efficacy of interventions in reducing community transmission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "h_1",
+        "yourValue": "Computed from h, c_i, c_d, c_h, and d to match the hospitalization proportion",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "dimensionless",
+        "description": "Probability parameter used so that h% of infectious cases are hospitalized.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "d_1",
+        "yourValue": "Computed from d, c_i, c_d, and c_h",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "dimensionless",
+        "description": "Probability parameter used so that the overall case-fatality ratio equals d.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "d_2",
+        "yourValue": "Computed from d, c_i, c_d, and c_h",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "dimensionless",
+        "description": "Probability parameter used so that the overall case-fatality ratio equals d.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "R_0",
+        "yourValue": "2.7 (DRC 1995); 2.7 (Uganda 2000)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola3",
+        "unit": "dimensionless",
+        "description": "Basic reproduction number.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 16
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Ebola3",
+    "message": "No key parameters identified for sensitivity analysis",
+    "note": "This model may have rates embedded in flows rather than explicit parameters"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

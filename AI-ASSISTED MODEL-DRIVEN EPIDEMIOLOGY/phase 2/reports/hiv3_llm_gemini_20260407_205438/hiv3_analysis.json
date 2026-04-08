@@ -1,0 +1,220 @@
+{
+  "modelName": "Hiv3",
+  "summary": {
+    "modelName": "Hiv3",
+    "totalPopulation": null,
+    "numCompartments": 3,
+    "numParameters": 16,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.9",
+            "contactCompartment": "//@compartments.1",
+            "description": "Transmission of HIV from infectious individuals (both treated and untreated) to susceptible individuals.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious Untreated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rate at which untreated individuals are tested and initiate ART.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious Treated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rate at which treated individuals drop out of ART.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "δ",
+        "type": "CONSTANT",
+        "expression": "0.029",
+        "description": "Birth rate",
+        "unit": "/yr"
+      },
+      {
+        "index": 1,
+        "name": "μ",
+        "type": "CONSTANT",
+        "expression": "0.018",
+        "description": "Background mortality rate",
+        "unit": "/yr"
+      },
+      {
+        "index": 2,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "0.767",
+        "description": "Transmission parameter (Initial value)",
+        "unit": "/yr"
+      },
+      {
+        "index": 3,
+        "name": "ρ",
+        "type": "CONSTANT",
+        "expression": "0.055",
+        "description": "Location parameter for transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 4,
+        "name": "ν",
+        "type": "CONSTANT",
+        "expression": "0.996",
+        "description": "Shape parameter for transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "ε",
+        "type": "CONSTANT",
+        "expression": "0.010",
+        "description": "Relative transmission on ART",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "γ_U",
+        "type": "CONSTANT",
+        "expression": "0.303",
+        "description": "Progression rate for untreated individuals",
+        "unit": "/yr"
+      },
+      {
+        "index": 7,
+        "name": "γ_T",
+        "type": "CONSTANT",
+        "expression": "0.165",
+        "description": "Progression rate for treated individuals",
+        "unit": "/yr"
+      },
+      {
+        "index": 8,
+        "name": "τ",
+        "type": "CONSTANT",
+        "expression": "2011",
+        "description": "Intervention timing",
+        "unit": "yr"
+      },
+      {
+        "index": 9,
+        "name": "r",
+        "type": "CONSTANT",
+        "expression": "1.00",
+        "description": "Intervention rate",
+        "unit": "/yr"
+      },
+      {
+        "index": 10,
+        "name": "m",
+        "type": "CONSTANT",
+        "expression": "0.90",
+        "description": "Maximum intervention coverage",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "ψ",
+        "type": "CONSTANT",
+        "expression": "1.00",
+        "description": "Testing rate",
+        "unit": "/yr"
+      },
+      {
+        "index": 12,
+        "name": "θ",
+        "type": "CONSTANT",
+        "expression": "0.08",
+        "description": "Testing refusal proportion",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "ω",
+        "type": "CONSTANT",
+        "expression": "0.015",
+        "description": "Drop-out rate from treatment",
+        "unit": "/yr"
+      },
+      {
+        "index": 14,
+        "name": "α",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Treatment failure rate",
+        "unit": "/yr"
+      },
+      {
+        "index": 15,
+        "name": "φ",
+        "type": "CONSTANT",
+        "expression": "0.40",
+        "description": "Reduction in transmission from other interventions",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

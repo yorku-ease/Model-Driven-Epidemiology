@@ -1,0 +1,274 @@
+{
+  "paper_name": "Covid2",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 3,
+      "parameters": 6,
+      "stratifications": 1,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered/Removed",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered/Removed",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "r",
+        "value": "Inverse of the average infectious period",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b5",
+        "value": "1 / 5.2",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c",
+        "value": "R0 / 5.8",
+        "unit": "1/day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R0",
+        "value": "2.2 (95% CI 1.4 - 3.9)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Incubation Period",
+        "value": "5.2 (95% CI 4.1 - 7.0)",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Period",
+        "value": "5.8 (95% CI 4.3 - 7.5)",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 3,
+    "parameters": 6,
+    "stratifications": 1,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 17,
+    "items_with_evidence": 17,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 17,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 17,
+      "items_with_evidence": 17,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 17,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.75,
+        "recall": 0.75,
+        "f1": 0.75
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "parameters": {
+        "tp": 3,
+        "fp": 3,
+        "fn": 10,
+        "precision": 0.5,
+        "recall": 0.2308,
+        "f1": 0.3158
+      },
+      "composite_score": 0.7911,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious",
+          "score": 1.0000001192092896
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed->Infectious",
+          "extracted": "Exposed->Infectious",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious->Removed",
+          "extracted": "Infectious->Recovered/Removed",
+          "score": 0.910893976688385
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "incubationPeriod 5.2 Average incubation period from the paper",
+          "extracted": "Incubation Period 5.2 (95% CI 4.1 - 7.0) The average time spent exposed but not infectious (1/\u03b5).",
+          "score": 0.7264036536216736
+        },
+        {
+          "gold": "epsilon 1 / incubationPeriod Rate of progression from exposed to infectious",
+          "extracted": "\u03b5 1 / 5.2 Rate of progression from exposed to infectious, equal to the inverse of the average time spent exposed (incubation period).",
+          "score": 0.8317674398422241
+        },
+        {
+          "gold": "baseContactRate R0 / infectiousPeriod Baseline daily contact-transmission rate c derived from R0 divided by infectious period, following the paper",
+          "extracted": "c R0 / 5.8 Daily contact rate, calculated as the basic reproduction rate (R0) divided by the average days from onset to first medical visit and isolation.",
+          "score": 0.7203385829925537
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

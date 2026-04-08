@@ -1,0 +1,336 @@
+{
+  "paper_name": "Tuberculosis2",
+  "summary": {
+    "extraction": {
+      "compartments": 6,
+      "flows": 15,
+      "parameters": 4,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Latent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Non-infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treatment Failure",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Self-Cured",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Non-infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Latent",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent",
+        "target": "Non-infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Latent",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious",
+        "target": "Latent",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Treatment Failure",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious",
+        "target": "Treatment Failure",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Self-Cured",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-infectious",
+        "target": "Self-Cured",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treatment Failure",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treatment Failure",
+        "target": "Non-infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Self-Cured",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Self-Cured",
+        "target": "Non-infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Target case detection rate",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Target cure rate",
+        "value": "85",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Proportion of treatment failures remaining infectious",
+        "value": "25-100",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Relative case detection rate of non-infectious cases",
+        "value": "0.5-0.8",
+        "unit": "ratio",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 6,
+    "flows": 15,
+    "parameters": 4,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 30,
+    "items_with_evidence": 30,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 30,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 30,
+      "items_with_evidence": 30,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 30,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 5,
+        "fn": 6,
+        "precision": 0.1667,
+        "recall": 0.1429,
+        "f1": 0.1538
+      },
+      "flows": {
+        "tp": 1,
+        "fp": 14,
+        "fn": 16,
+        "precision": 0.0667,
+        "recall": 0.0588,
+        "f1": 0.0625
+      },
+      "parameters": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 14,
+        "precision": 0.75,
+        "recall": 0.1765,
+        "f1": 0.2857
+      },
+      "composite_score": 0.1348,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->LatentInfection",
+          "extracted": "Susceptible->Latent",
+          "score": 0.7995709180831909
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "InfectiousCaseDetectionRate 0.70 Representative DOTS case-detection parameter for infectious cases based on WHO target discussed in the paper",
+          "extracted": "Target case detection rate 70 WHO target for the proportion of incident infectious cases detected and treated per year.",
+          "score": 0.7205076217651367
+        },
+        {
+          "gold": "NonInfectiousCaseDetectionRate 0.42 Detection of non-infectious cases represented as a fraction of infectious case detection, reflecting the paper's region-specific relative detection of non-infectious cases",
+          "extracted": "Relative case detection rate of non-infectious cases 0.5-0.8 The case detection rate for non-infectious cases as a fraction of the rate for infectious cases, varies by region.",
+          "score": 0.8252537250518799
+        },
+        {
+          "gold": "TreatmentCureRate 0.85 Cure rate under DOTS-like short-course chemotherapy, matching the WHO target emphasized in the paper",
+          "extracted": "Target cure rate 85 WHO target for the proportion of treated cases that are cured under a new DOTS programme.",
+          "score": 0.7765823602676392
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

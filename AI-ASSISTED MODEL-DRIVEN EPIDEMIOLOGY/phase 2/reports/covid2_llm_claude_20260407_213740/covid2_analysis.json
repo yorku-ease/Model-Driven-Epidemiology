@@ -1,0 +1,164 @@
+{
+  "modelName": "Covid2",
+  "summary": {
+    "modelName": "Covid2",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 8,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.1",
+            "description": "New exposures based on contact between susceptible and infectious individuals; rate is c*S*I/N where c is the daily contact rate",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious at rate epsilon (inverse of incubation period)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery or removal (isolation) of infectious individuals at rate r (inverse of average infectious period, proxied by time from onset to case report)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered/Removed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "R0",
+        "type": "CONSTANT",
+        "expression": "2.2",
+        "description": "Basic reproduction number (95% CI 1.4–3.9)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "incubation_period",
+        "type": "CONSTANT",
+        "expression": "5.2",
+        "description": "Average incubation period, time spent exposed but not yet infectious (95% CI 4.1–7.0 days); epsilon = 1/5.2",
+        "unit": "days"
+      },
+      {
+        "index": 2,
+        "name": "onset_to_first_medical_visit",
+        "type": "CONSTANT",
+        "expression": "5.8",
+        "description": "Average days from symptom onset to first medical visit and isolation (95% CI 4.3–7.5 days); used to derive daily contact rate c = R0 / 5.8",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "r",
+        "type": "CONSTANT",
+        "expression": "varies over time",
+        "description": "Removal/recovery rate, equal to inverse of average infectious period proxied by median time from illness onset to reported case; decreased from 12 days early in outbreak to 3 days in early February due to improved case identification",
+        "unit": "1/days"
+      },
+      {
+        "index": 4,
+        "name": "epsilon",
+        "type": "CONSTANT",
+        "expression": "0.192",
+        "description": "Rate of progression from exposed to infectious (1/5.2 days)",
+        "unit": "1/days"
+      },
+      {
+        "index": 5,
+        "name": "c",
+        "type": "CONSTANT",
+        "expression": "derived from R0",
+        "description": "Daily contact rate calculated as R0 divided by average days from onset to first medical visit (5.8 days), weighted by relative level of daily contact from Baidu movement data",
+        "unit": "contacts/day"
+      },
+      {
+        "index": 6,
+        "name": "initial_infected",
+        "type": "CONSTANT",
+        "expression": "5",
+        "description": "Number of initially infected people seeded in Wuhan on December 1, 2019",
+        "unit": "persons"
+      },
+      {
+        "index": 7,
+        "name": "simulation_runs",
+        "type": "CONSTANT",
+        "expression": "1000",
+        "description": "Number of stochastic simulation runs performed",
+        "unit": "runs"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,458 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals not currently infected with Mycobacterium tuberculosis and at risk of infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Latent Infection": {
+      "evidence": [
+        {
+          "text_span": "Individuals infected with tuberculosis who are not currently diseased; includes remote infections that may later reactivate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Tuberculosis": {
+      "evidence": [
+        {
+          "text_span": "Pulmonary, sputum-smear positive tuberculosis cases that can transmit infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Non-infectious Tuberculosis": {
+      "evidence": [
+        {
+          "text_span": "Pulmonary smear-negative or extrapulmonary tuberculosis cases that are not infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treatment Failure": {
+      "evidence": [
+        {
+          "text_span": "Individuals who fail, default, or transfer out of treatment; some remain infectious and all have elevated risk of redeveloping full tuberculosis.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Cured but Latently Infected": {
+      "evidence": [
+        {
+          "text_span": "Individuals cured of active tuberculosis by short-course chemotherapy but who remain infected and return to the latent class.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Self-cured": {
+      "evidence": [
+        {
+          "text_span": "Individuals whose tuberculosis resolves without treatment but who remain at increased risk of relapse to full tuberculosis.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Latent Infection": {
+      "evidence": [
+        {
+          "text_span": "New infection with Mycobacterium tuberculosis.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Latent Infection -> Infectious Tuberculosis": {
+      "evidence": [
+        {
+          "text_span": "Endogenous reactivation or progression to active disease.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Tuberculosis -> Treatment Failure": {
+      "evidence": [
+        {
+          "text_span": "Patients diagnosed and treated who do not complete treatment (fail, default, or transfer out).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Tuberculosis -> Cured but Latently Infected": {
+      "evidence": [
+        {
+          "text_span": "Successful completion of short-course chemotherapy with cure of active disease but persistence of infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Non-infectious Tuberculosis -> Treatment Failure": {
+      "evidence": [
+        {
+          "text_span": "Non-infectious cases enrolled in treatment who do not complete treatment.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Non-infectious Tuberculosis -> Cured but Latently Infected": {
+      "evidence": [
+        {
+          "text_span": "Successful completion of short-course chemotherapy for non-infectious tuberculosis.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treatment Failure -> Infectious Tuberculosis": {
+      "evidence": [
+        {
+          "text_span": "A proportion of treatment failures remain infectious and may progress back to full tuberculosis.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treatment Failure -> Latent Infection": {
+      "evidence": [
+        {
+          "text_span": "Treatment failures that are not infectious may remain infected and later relapse/reactivate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Self-cured -> Latent Infection": {
+      "evidence": [
+        {
+          "text_span": "Self-cured individuals return to the latent class while remaining infected.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "Case detection rate": {
+      "evidence": [
+        {
+          "text_span": "Target proportion of infectious cases diagnosed and treated per year.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "70% (WHO target for new programme)",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Cure rate": {
+      "evidence": [
+        {
+          "text_span": "Fraction of treated cases cured under the new DOTS programme.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "85% (WHO target for new programme)",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Case detection rate, old programme": {
+      "evidence": [
+        {
+          "text_span": "Baseline case detection rate under the pre-DOTS programme.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "50% to 80% depending on region",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Fraction cured, old programme": {
+      "evidence": [
+        {
+          "text_span": "Baseline cure fraction under the pre-DOTS programme.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "40% to 75% depending on region",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Relative case detection rate of non-infectious cases": {
+      "evidence": [
+        {
+          "text_span": "Detection rate for non-infectious cases relative to infectious cases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5 to 0.8 depending on region",
+          "unit": "ratio"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Annual risk of infection": {
+      "evidence": [
+        {
+          "text_span": "Regional annual risk of tuberculosis infection for the WHO regions listed in the table.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.6, 0.6, 1.0, 0.1, 0.5, 2.0, 0.9",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Incidence rate, all forms": {
+      "evidence": [
+        {
+          "text_span": "Regional incidence of all forms of tuberculosis.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "215, 62, 102, 13, 61, 188, 94",
+          "unit": "per 100000 per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Incidence rate, infectious cases": {
+      "evidence": [
+        {
+          "text_span": "Regional incidence of infectious tuberculosis cases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "106, 34, 55, 7, 34, 102, 52",
+          "unit": "per 100000 per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Prevalence rate, infectious cases": {
+      "evidence": [
+        {
+          "text_span": "Regional prevalence of infectious tuberculosis cases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "201, 55, 101, 8, 55, 184, 83",
+          "unit": "per 100000 people"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Death rate, all forms": {
+      "evidence": [
+        {
+          "text_span": "Regional tuberculosis death rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "92, 21, 40, 3, 21, 73, 33",
+          "unit": "per 100000 people per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Population growth": {
+      "evidence": [
+        {
+          "text_span": "Regional population growth rates.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.8, 1.4, 2.7, 0.4, 0.4, 1.7, 1.1",
+          "unit": "% per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Change in annual risk of infection": {
+      "evidence": [
+        {
+          "text_span": "Regional annual change in annual risk of infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "-0.3, -2.2, -2.9, -5.6, -1.3, -0.9, -1.8",
+          "unit": "% per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Change in incidence rate": {
+      "evidence": [
+        {
+          "text_span": "Regional annual change in incidence rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.7, -2.5, -2.1, -5.0, -1.1, -0.3, -1.2",
+          "unit": "% per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Change in death rate": {
+      "evidence": [
+        {
+          "text_span": "Regional annual change in death rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.9, -2.7, -2.2, -4.6, -0.7, -0.7, -1.6",
+          "unit": "% per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Change in contact rate": {
+      "evidence": [
+        {
+          "text_span": "Regional annual change in contact rate used to represent declining transmission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "-0.7, -0.8, -1.0, -0.5, -0.9, -0.5, -0.6",
+          "unit": "% per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "HIV-1 infection in tuberculosis cases, 2020": {
+      "evidence": [
+        {
+          "text_span": "Projected proportion of tuberculosis cases that are HIV-1 positive in 2020 by region.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "21, 2.5, 0.2, 0.5, 0.5, 4.0, 1.4",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 6,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 6,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 37,
+    "items_with_evidence": 37,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 37,
+    "faithfulness_percentage": 100.0
+  }
+}

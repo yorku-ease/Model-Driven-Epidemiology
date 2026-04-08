@@ -1,0 +1,360 @@
+{
+  "modelName": "Hiv3",
+  "summary": {
+    "modelName": "Hiv3",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 27,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "New HIV infection through sexual contact with infected individuals; transmission probability varies by phase (acute, chronic, final)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Birth/recruitment into susceptible population at birth rate",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Background mortality of susceptible individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infected Untreated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Testing and initiation of antiretroviral therapy after screening",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death from HIV disease progression (Weibull survival) and background mortality",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infected on ART",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Drop-out from ART or treatment failure",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death from disease progression on treatment and background mortality",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Dead",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "β",
+        "type": "CONSTANT",
+        "expression": "0.767",
+        "description": "Initial transmission parameter",
+        "unit": "/yr"
+      },
+      {
+        "index": 1,
+        "name": "λ (location)",
+        "type": "CONSTANT",
+        "expression": "0.055",
+        "description": "Transmission parameter location (shape of transmission curve)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "n (shape)",
+        "type": "CONSTANT",
+        "expression": "0.996",
+        "description": "Transmission parameter shape",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 3,
+        "name": "ε (relative transmission on ART)",
+        "type": "CONSTANT",
+        "expression": "0.01",
+        "description": "Relative transmissibility of individuals on ART compared to untreated",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 4,
+        "name": "Birth rate μ",
+        "type": "CONSTANT",
+        "expression": "0.029",
+        "description": "Birth/recruitment rate into the population",
+        "unit": "/yr"
+      },
+      {
+        "index": 5,
+        "name": "Background mortality rate δ",
+        "type": "CONSTANT",
+        "expression": "0.018",
+        "description": "Background (non-HIV) mortality rate",
+        "unit": "/yr"
+      },
+      {
+        "index": 6,
+        "name": "Progression rate untreated φ",
+        "type": "CONSTANT",
+        "expression": "0.303",
+        "description": "Disease progression rate for untreated individuals",
+        "unit": "/yr"
+      },
+      {
+        "index": 7,
+        "name": "Progression rate treated γ",
+        "type": "CONSTANT",
+        "expression": "0.165",
+        "description": "Disease progression rate for individuals on ART",
+        "unit": "/yr"
+      },
+      {
+        "index": 8,
+        "name": "Intervention timing t",
+        "type": "CONSTANT",
+        "expression": "2011",
+        "description": "Year when intervention (universal testing and ART) begins",
+        "unit": "yr"
+      },
+      {
+        "index": 9,
+        "name": "Intervention rate r",
+        "type": "CONSTANT",
+        "expression": "1.00",
+        "description": "Rate of roll-out of the intervention",
+        "unit": "/yr"
+      },
+      {
+        "index": 10,
+        "name": "Intervention maximum m",
+        "type": "CONSTANT",
+        "expression": "0.90",
+        "description": "Maximum coverage of the intervention",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "Testing rate σ",
+        "type": "CONSTANT",
+        "expression": "1.00",
+        "description": "Rate of HIV testing",
+        "unit": "/yr"
+      },
+      {
+        "index": 12,
+        "name": "Testing refusal θ",
+        "type": "CONSTANT",
+        "expression": "0.08",
+        "description": "Proportion refusing HIV testing",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "Drop-out rate ω",
+        "type": "CONSTANT",
+        "expression": "0.015",
+        "description": "Rate of dropping out of ART",
+        "unit": "/yr"
+      },
+      {
+        "index": 14,
+        "name": "Treatment failure rate κ",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Rate of virological treatment failure on ART",
+        "unit": "/yr"
+      },
+      {
+        "index": 15,
+        "name": "Other interventions reduction ψ",
+        "type": "CONSTANT",
+        "expression": "0.40",
+        "description": "Reduction in transmission from other interventions (e.g. condoms, circumcision)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 16,
+        "name": "Survival median",
+        "type": "CONSTANT",
+        "expression": "10.0",
+        "description": "Median survival time without treatment (Weibull distribution)",
+        "unit": "years"
+      },
+      {
+        "index": 17,
+        "name": "Survival shape",
+        "type": "CONSTANT",
+        "expression": "2.25",
+        "description": "Shape parameter of Weibull survival distribution",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 18,
+        "name": "Acute phase duration",
+        "type": "CONSTANT",
+        "expression": "2",
+        "description": "Duration of the acute phase of HIV infection",
+        "unit": "months"
+      },
+      {
+        "index": 19,
+        "name": "Acute phase infectivity",
+        "type": "CONSTANT",
+        "expression": "4.50",
+        "description": "Infectivity during the acute phase",
+        "unit": "number/year"
+      },
+      {
+        "index": 20,
+        "name": "Chronic phase infectivity",
+        "type": "CONSTANT",
+        "expression": "0.45",
+        "description": "Infectivity during the chronic phase",
+        "unit": "number/year"
+      },
+      {
+        "index": 21,
+        "name": "Final phase infectivity",
+        "type": "CONSTANT",
+        "expression": "2.25",
+        "description": "Infectivity during the final phase",
+        "unit": "number/year"
+      },
+      {
+        "index": 22,
+        "name": "Final phase duration",
+        "type": "CONSTANT",
+        "expression": "0.15",
+        "description": "Duration of the final phase as a proportion of expected survival",
+        "unit": "proportion of expected life"
+      },
+      {
+        "index": 23,
+        "name": "Concurrency number",
+        "type": "CONSTANT",
+        "expression": "4",
+        "description": "Number of concurrent sexual partners",
+        "unit": "number"
+      },
+      {
+        "index": 24,
+        "name": "Partnership duration",
+        "type": "CONSTANT",
+        "expression": "6",
+        "description": "Mean duration of a sexual partnership",
+        "unit": "months"
+      },
+      {
+        "index": 25,
+        "name": "Initial CD4 mu",
+        "type": "CONSTANT",
+        "expression": "6.98",
+        "description": "Location parameter for initial CD4 count distribution",
+        "unit": "log-normal location parameter"
+      },
+      {
+        "index": 26,
+        "name": "Initial CD4 sigma",
+        "type": "CONSTANT",
+        "expression": "0.34",
+        "description": "Shape parameter for initial CD4 count distribution",
+        "unit": "log-normal shape parameter"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

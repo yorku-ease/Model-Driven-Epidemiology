@@ -1,0 +1,383 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Maternally Protected",
+      "raw_text": "Maternally Protected",
+      "page_number": 0,
+      "text_span": "Newborns protected from measles by specific antibodies passed transplacentally from the mother (class M)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Newborns protected from measles by specific antibodies passed transplacentally from the mother (class M)"
+    },
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals susceptible to infection after loss of maternal antibody protection (class X)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals susceptible to infection after loss of maternal antibody protection (class X)"
+    },
+    {
+      "normalized_name": "Latent",
+      "raw_text": "Latent",
+      "page_number": 0,
+      "text_span": "Individuals in the latent or pre-patent class after infection, not yet infectious to others (class H)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals in the latent or pre-patent class after infection, not yet infectious to others (class H)"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infectious",
+      "page_number": 0,
+      "text_span": "Individuals infectious with measles who can transmit the virus (class Y)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infectious with measles who can transmit the virus (class Y)"
+    },
+    {
+      "normalized_name": "Immune",
+      "raw_text": "Immune",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from infection or successfully vaccinated, with lasting immunity to reinfection (class Z)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from infection or successfully vaccinated, with lasting immunity to reinfection (class Z)"
+    },
+    {
+      "normalized_name": "Vaccine Failure",
+      "raw_text": "Vaccine Failure",
+      "page_number": 0,
+      "text_span": "Individuals who received vaccine but are not effectively protected from infection; seropositive but unprotected if exposed (class Xv)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who received vaccine but are not effectively protected from infection; seropositive but unprotected if exposed (class Xv)"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Maternally Protected",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of passive maternal antibody protection over the first year of life",
+      "page_number": 0,
+      "text_span": "Loss of passive maternal antibody protection over the first year of life",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of passive maternal antibody protection over the first year of life"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptibles through contact with infectious individuals, at age-specific force of infection",
+      "page_number": 0,
+      "text_span": "Infection of susceptibles through contact with infectious individuals, at age-specific force of infection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptibles through contact with infectious individuals, at age-specific force of infection"
+    },
+    {
+      "source": "Latent",
+      "target": "Infectious",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from latent to infectious period",
+      "page_number": 0,
+      "text_span": "Progression from latent to infectious period",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from latent to infectious period"
+    },
+    {
+      "source": "Infectious",
+      "target": "Immune",
+      "flow_type": "RateFlow",
+      "raw_text": "Recovery from infection establishing lasting immunity",
+      "page_number": 0,
+      "text_span": "Recovery from infection establishing lasting immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery from infection establishing lasting immunity"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Immune",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful vaccination of susceptibles (proportion p) leading to lasting immunity",
+      "page_number": 0,
+      "text_span": "Successful vaccination of susceptibles (proportion p) leading to lasting immunity",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful vaccination of susceptibles (proportion p) leading to lasting immunity"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccine Failure",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptibles who fail to gain effective protection (proportion 1-p)",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptibles who fail to gain effective protection (proportion 1-p)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptibles who fail to gain effective protection (proportion 1-p)"
+    },
+    {
+      "source": "Vaccine Failure",
+      "target": "Latent",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of vaccine failures through contact with infectious individuals, following the same course as susceptibles",
+      "page_number": 0,
+      "text_span": "Infection of vaccine failures through contact with infectious individuals, following the same course as susceptibles",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of vaccine failures through contact with infectious individuals, following the same course as susceptibles"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Force of infection (age 0-1)",
+      "raw_text": "Force of infection (age 0-1)",
+      "value": "0.0690",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 0-1 years, estimated from pre-vaccination notification data",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 0-1 years, estimated from pre-vaccination notification data"
+    },
+    {
+      "normalized_name": "Force of infection (age 1-2)",
+      "raw_text": "Force of infection (age 1-2)",
+      "value": "0.1075",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 1-2 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 1-2 years"
+    },
+    {
+      "normalized_name": "Force of infection (age 2-3)",
+      "raw_text": "Force of infection (age 2-3)",
+      "value": "0.1572",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 2-3 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 2-3 years"
+    },
+    {
+      "normalized_name": "Force of infection (age 3-4)",
+      "raw_text": "Force of infection (age 3-4)",
+      "value": "0.2005",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 3-4 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 3-4 years"
+    },
+    {
+      "normalized_name": "Force of infection (age 4-5)",
+      "raw_text": "Force of infection (age 4-5)",
+      "value": "0.2582",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 4-5 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 4-5 years"
+    },
+    {
+      "normalized_name": "Force of infection (age 5-10)",
+      "raw_text": "Force of infection (age 5-10)",
+      "value": "0.5167",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 5-10 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 5-10 years"
+    },
+    {
+      "normalized_name": "Force of infection (age 10-15)",
+      "raw_text": "Force of infection (age 10-15)",
+      "value": "0.2549",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 10-15 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 10-15 years"
+    },
+    {
+      "normalized_name": "Force of infection (age 15-75)",
+      "raw_text": "Force of infection (age 15-75)",
+      "value": "0.0989",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Age-specific force of infection for age group 15-75 years",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Age-specific force of infection for age group 15-75 years"
+    },
+    {
+      "normalized_name": "Rate of progression from latency",
+      "raw_text": "Rate of progression from latency",
+      "value": "52.14",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Rate of progression from latent to infectious class; average latent period of 7 days",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of progression from latent to infectious class; average latent period of 7 days"
+    },
+    {
+      "normalized_name": "Rate of recovery from infection",
+      "raw_text": "Rate of recovery from infection",
+      "value": "52.14",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Rate of recovery from infectious class; average infectious period of 7 days",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of recovery from infectious class; average infectious period of 7 days"
+    },
+    {
+      "normalized_name": "Rate of loss of passive immunity",
+      "raw_text": "Rate of loss of passive immunity",
+      "value": "4.0",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Rate of loss of maternal antibody protection; average duration of maternal protection is 3 months",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of loss of maternal antibody protection; average duration of maternal protection is 3 months"
+    },
+    {
+      "normalized_name": "Vaccine efficacy (p)",
+      "raw_text": "Vaccine efficacy (p)",
+      "value": "0.90",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Proportion of vaccinated susceptibles who gain lasting immunity and are no longer able to transmit infection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Proportion of vaccinated susceptibles who gain lasting immunity and are no longer able to transmit infection"
+    },
+    {
+      "normalized_name": "Birth rate",
+      "raw_text": "Birth rate",
+      "value": "666666",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Fixed annual birth cohort size approximating births in England and Wales over the study period",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fixed annual birth cohort size approximating births in England and Wales over the study period"
+    },
+    {
+      "normalized_name": "Background death rate (adults)",
+      "raw_text": "Background death rate (adults)",
+      "value": "0.0167",
+      "unit": "per person per year",
+      "page_number": 0,
+      "text_span": "Background death rate for the residual adult age group (1/60 per person per year)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Background death rate for the residual adult age group (1/60 per person per year)"
+    },
+    {
+      "normalized_name": "Average duration of latent period",
+      "raw_text": "Average duration of latent period",
+      "value": "7",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average duration of the latent (pre-patent) period",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average duration of the latent (pre-patent) period"
+    },
+    {
+      "normalized_name": "Average duration of infectious period",
+      "raw_text": "Average duration of infectious period",
+      "value": "7",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Average duration of the infectious period",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average duration of the infectious period"
+    },
+    {
+      "normalized_name": "Average duration of maternal protection",
+      "raw_text": "Average duration of maternal protection",
+      "value": "3",
+      "unit": "months",
+      "page_number": 0,
+      "text_span": "Average duration of passive maternal antibody protection",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Average duration of passive maternal antibody protection"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 6,
+    "num_flows": 7,
+    "num_parameters": 17,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

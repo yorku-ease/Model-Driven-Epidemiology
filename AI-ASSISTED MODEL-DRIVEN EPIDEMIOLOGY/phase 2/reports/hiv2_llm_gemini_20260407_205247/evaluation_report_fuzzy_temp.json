@@ -1,0 +1,113 @@
+{
+  "traceability_coverage": {
+    "total_items": 25,
+    "items_with_evidence": 25,
+    "coverage_percentage": 100.0
+  },
+  "faithfulness": {
+    "paper_backed_items": 25,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "total_gaps": 0,
+    "critical_gaps": 0,
+    "high_gaps": 0,
+    "medium_gaps": 0,
+    "gap_breakdown": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_stratifications": 0,
+      "missing_interventions": 0
+    }
+  },
+  "gold_standard_comparison": {
+    "compartments": {
+      "precision": 0.16666666666666666,
+      "recall": 0.16666666666666666,
+      "f1": 0.16666666666666666,
+      "tp": 1,
+      "fp": 5,
+      "fn": 5,
+      "matches": [
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Infected (Chronic, CD4 > 350)",
+        "Infected (Early)",
+        "On Antiretroviral Therapy (ART)",
+        "Infected (Chronic, CD4 200-350)",
+        "Infected (Late Stage, CD4 <= 200)"
+      ],
+      "unmatched_gold": [
+        "OnART",
+        "Removed",
+        "ChronicInfection",
+        "EarlyInfection",
+        "LateInfection"
+      ]
+    },
+    "parameters": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0,
+      "tp": 0,
+      "fp": 6,
+      "fn": 10,
+      "matches": [],
+      "unmatched_extracted": [
+        "Average time to ART initiation",
+        "Transmissibility Reduction on ART",
+        "CD4 Eligibility Threshold",
+        "3-year Retention on ART",
+        "Relative Transmissibility (Early Infection)",
+        "Treatment Access"
+      ],
+      "unmatched_gold": [
+        "BetaChronic",
+        "Progression1",
+        "DeathART",
+        "DeathLate",
+        "BetaLate",
+        "BetaEarly",
+        "BetaART",
+        "Progression2",
+        "ARTStart2",
+        "ARTStart1"
+      ]
+    },
+    "flows": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0,
+      "tp": 0,
+      "fp": 8,
+      "fn": 7,
+      "matches": [],
+      "unmatched_extracted": [
+        "Infected (Late Stage, CD4 <= 200)->On Antiretroviral Therapy (ART)",
+        "Infected (Chronic, CD4 > 350)->Infected (Chronic, CD4 200-350)",
+        "Infected (Chronic, CD4 > 350)->On Antiretroviral Therapy (ART)",
+        "Susceptible->Infected (Early)",
+        "Infected (Chronic, CD4 200-350)->On Antiretroviral Therapy (ART)",
+        "Infected (Chronic, CD4 200-350)->Infected (Late Stage, CD4 <= 200)",
+        "On Antiretroviral Therapy (ART)->Infected (Late Stage, CD4 <= 200)",
+        "Infected (Early)->Infected (Chronic, CD4 > 350)"
+      ],
+      "unmatched_gold": [
+        "ChronicInfection->LateInfection",
+        "Susceptible->EarlyInfection",
+        "LateInfection->Removed",
+        "LateInfection->OnART",
+        "EarlyInfection->ChronicInfection",
+        "ChronicInfection->OnART",
+        "OnART->Removed"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
+  }
+}

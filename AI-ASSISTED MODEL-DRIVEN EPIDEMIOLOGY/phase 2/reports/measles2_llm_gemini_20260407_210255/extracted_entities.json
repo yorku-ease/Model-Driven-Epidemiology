@@ -1,0 +1,269 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Maternally Immune",
+      "raw_text": "Maternally Immune",
+      "page_number": 0,
+      "text_span": "Newborns with temporary passive immunity from their mothers, inferred from the 'duration of maternal immunity' parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Newborns with temporary passive immunity from their mothers, inferred from the 'duration of maternal immunity' parameter."
+    },
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals who are susceptible to infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are susceptible to infection."
+    },
+    {
+      "normalized_name": "Exposed",
+      "raw_text": "Exposed",
+      "page_number": 0,
+      "text_span": "Individuals who have been infected but are not yet infectious.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have been infected but are not yet infectious."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Individuals who are infectious and can transmit the disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who are infectious and can transmit the disease."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Individuals who have recovered from infection and have natural immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recovered from infection and have natural immunity."
+    },
+    {
+      "normalized_name": "Vaccinated (1 dose)",
+      "raw_text": "Vaccinated (1 dose)",
+      "page_number": 0,
+      "text_span": "Individuals who have received a single dose of the vaccine.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received a single dose of the vaccine."
+    },
+    {
+      "normalized_name": "Vaccinated (2 doses)",
+      "raw_text": "Vaccinated (2 doses)",
+      "page_number": 0,
+      "text_span": "Individuals who have received two doses of the vaccine.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have received two doses of the vaccine."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Maternally Immune",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of maternal immunity.",
+      "page_number": 0,
+      "text_span": "Loss of maternal immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of maternal immunity."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Exposed",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible individuals through contact with infected individuals.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible individuals through contact with infected individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible individuals through contact with infected individuals."
+    },
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated (1 dose)",
+      "flow_type": "RateFlow",
+      "raw_text": "Administration of the first dose of vaccine (MMR1).",
+      "page_number": 0,
+      "text_span": "Administration of the first dose of vaccine (MMR1).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Administration of the first dose of vaccine (MMR1)."
+    },
+    {
+      "source": "Vaccinated (1 dose)",
+      "target": "Vaccinated (2 doses)",
+      "flow_type": "RateFlow",
+      "raw_text": "Administration of the second dose of vaccine (MMR2).",
+      "page_number": 0,
+      "text_span": "Administration of the second dose of vaccine (MMR2).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Administration of the second dose of vaccine (MMR2)."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "primary vaccine failure",
+      "raw_text": "primary vaccine failure",
+      "value": "5.2",
+      "unit": "%",
+      "page_number": 0,
+      "text_span": "The risk of primary vaccine failure estimated by the model in the reference scenario without waning.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "The risk of primary vaccine failure estimated by the model in the reference scenario without waning."
+    },
+    {
+      "normalized_name": "infection rate",
+      "raw_text": "infection rate",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameter drawn from model fits to determine the rate of infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameter drawn from model fits to determine the rate of infection."
+    },
+    {
+      "normalized_name": "duration of maternal immunity",
+      "raw_text": "duration of maternal immunity",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameter drawn from model fits for the duration of passive immunity in newborns.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameter drawn from model fits for the duration of passive immunity in newborns."
+    },
+    {
+      "normalized_name": "parameters for seasonality of transmission",
+      "raw_text": "parameters for seasonality of transmission",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameters drawn from model fits to account for seasonality in transmission.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameters drawn from model fits to account for seasonality in transmission."
+    },
+    {
+      "normalized_name": "importation",
+      "raw_text": "importation",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameter drawn from model fits for the importation of cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameter drawn from model fits for the importation of cases."
+    },
+    {
+      "normalized_name": "report rate of imported cases",
+      "raw_text": "report rate of imported cases",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameter drawn from model fits for the reporting rate of imported cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameter drawn from model fits for the reporting rate of imported cases."
+    },
+    {
+      "normalized_name": "vaccine effectiveness",
+      "raw_text": "vaccine effectiveness",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameter drawn from model fits for vaccine effectiveness, related to primary vaccine failure.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameter drawn from model fits for vaccine effectiveness, related to primary vaccine failure."
+    },
+    {
+      "normalized_name": "existing immunity in older generations",
+      "raw_text": "existing immunity in older generations",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameter drawn from model fits for pre-existing immunity in older age groups.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameter drawn from model fits for pre-existing immunity in older age groups."
+    },
+    {
+      "normalized_name": "parameters of spatial spread",
+      "raw_text": "parameters of spatial spread",
+      "value": "Not specified",
+      "unit": "Not specified",
+      "page_number": 0,
+      "text_span": "Parameters drawn from model fits to govern the spatial spread of measles.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Parameters drawn from model fits to govern the spatial spread of measles."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 2,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 6,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 7,
+    "num_flows": 4,
+    "num_parameters": 9,
+    "num_stratifications": 2,
+    "num_interventions": 1
+  }
+}

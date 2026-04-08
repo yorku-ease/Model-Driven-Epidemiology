@@ -1,0 +1,267 @@
+{
+  "modelName": "Tuberculosis3",
+  "summary": {
+    "modelName": "Tuberculosis3",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 18,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "TB infection through transmission from infectious active TB cases.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Latent Tuberculosis Infection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from latent infection to active TB disease, including rapid progression in the first two years after infection and slow progression/reactivation from remote infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Active Tuberculosis Disease",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment of active TB disease.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural cure/self-cure from untreated active TB disease.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recently Treated/Recovered Tuberculosis Disease",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from recently treated/recovered TB disease back to active TB disease.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Number of secondary infections per smear-positive person-year",
+        "type": "CONSTANT",
+        "expression": "16.1",
+        "description": "Transmission intensity used to fit incidence in the primary analysis.",
+        "unit": "infections/person-year"
+      },
+      {
+        "index": 1,
+        "name": "Relative infectiousness of smear-negative cases",
+        "type": "CONSTANT",
+        "expression": "0.22",
+        "description": "Smear-negative pulmonary TB infectiousness relative to smear-positive TB.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "Relative rate of progression to high-risk (early) infection, latent TB",
+        "type": "CONSTANT",
+        "expression": "0.50",
+        "description": "Relative progression rate to early latent infection.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 3,
+        "name": "Rate of rapid progression during first two years after infection",
+        "type": "CONSTANT",
+        "expression": "0.07",
+        "description": "Progression rate from recent infection to active TB.",
+        "unit": "per year"
+      },
+      {
+        "index": 4,
+        "name": "Rate of slow progression of remote TB infection",
+        "type": "CONSTANT",
+        "expression": "0.0005",
+        "description": "Reactivation rate from remote latent infection to active TB.",
+        "unit": "per year"
+      },
+      {
+        "index": 5,
+        "name": "Proportion of incident TB that is extrapulmonary",
+        "type": "CONSTANT",
+        "expression": "0.24",
+        "description": "Fraction of incident TB that is extrapulmonary.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "Proportion of incident pulmonary TB that is smear-positive",
+        "type": "CONSTANT",
+        "expression": "0.65",
+        "description": "Fraction of pulmonary TB that is smear-positive.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "Mortality rate per year, smear-positive TB",
+        "type": "CONSTANT",
+        "expression": "0.23",
+        "description": "TB-specific mortality rate for smear-positive disease.",
+        "unit": "per year"
+      },
+      {
+        "index": 8,
+        "name": "Mortality rate per year, smear-negative and extrapulmonary TB",
+        "type": "CONSTANT",
+        "expression": "0.07",
+        "description": "TB-specific mortality rate for smear-negative pulmonary and extrapulmonary disease.",
+        "unit": "per year"
+      },
+      {
+        "index": 9,
+        "name": "Natural cure rate per year, smear-positive TB",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Self-cure rate for smear-positive TB.",
+        "unit": "per year"
+      },
+      {
+        "index": 10,
+        "name": "Natural cure rate per year, smear-negative and extrapulmonary TB",
+        "type": "CONSTANT",
+        "expression": "0.27",
+        "description": "Self-cure rate for smear-negative pulmonary and extrapulmonary TB.",
+        "unit": "per year"
+      },
+      {
+        "index": 11,
+        "name": "Size of informal sector that does not notify TB, relative to notifications",
+        "type": "CONSTANT",
+        "expression": "0.455",
+        "description": "Relative size of the informal TB treatment sector.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "Treatment success proportion in 2008, notified cases",
+        "type": "CONSTANT",
+        "expression": "0.75",
+        "description": "Treatment success among notified cases in 2008.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "Treatment success proportion, informal sector",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Treatment success proportion in the informal sector.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 14,
+        "name": "Relapse rate",
+        "type": "CONSTANT",
+        "expression": "0.024",
+        "description": "Rate of relapse from recently treated/recovered TB disease.",
+        "unit": "per year"
+      },
+      {
+        "index": 15,
+        "name": "Underlying TB incidence in primary analysis",
+        "type": "CONSTANT",
+        "expression": "231",
+        "description": "Baseline incidence used for the primary scenario fit.",
+        "unit": "per 100,000 per year"
+      },
+      {
+        "index": 16,
+        "name": "Underlying TB incidence in high-incidence scenario",
+        "type": "CONSTANT",
+        "expression": "350",
+        "description": "Baseline incidence used for the high-incidence scenario fit.",
+        "unit": "per 100,000 per year"
+      },
+      {
+        "index": 17,
+        "name": "Population growth",
+        "type": "CONSTANT",
+        "expression": "3%",
+        "description": "Annual population growth assumed in the model.",
+        "unit": "per year"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

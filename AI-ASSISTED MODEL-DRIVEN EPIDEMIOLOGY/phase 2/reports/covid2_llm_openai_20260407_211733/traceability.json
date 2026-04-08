@@ -1,0 +1,231 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals in a city who are not yet infected and can become exposed.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Individuals infected but not yet infectious during the incubation period.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Individuals capable of transmitting infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered/Removed": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have recovered or been removed from the infectious pool through isolation or recovery.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "Infection/transmission from infectious individuals to susceptible individuals within a city, proportional to contact rate and the fraction infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Progression from exposed to infectious at rate epsilon.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Recovered/Removed": {
+      "evidence": [
+        {
+          "text_span": "Recovery or removal from the infectious state at rate r, representing self-isolation/effective removal and recovery.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "c": {
+      "evidence": [
+        {
+          "text_span": "Average number of daily contacts used in transmission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "daily contact rate",
+          "unit": "contacts per person per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "r": {
+      "evidence": [
+        {
+          "text_span": "Rate of recovery/removal from the infectious state.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "inverse of average infectious period",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "epsilon": {
+      "evidence": [
+        {
+          "text_span": "Rate of progression from exposed to infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "inverse of average incubation period",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R0": {
+      "evidence": [
+        {
+          "text_span": "Basic reproduction number used to calculate the daily contact rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.2",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "average infectious period": {
+      "evidence": [
+        {
+          "text_span": "Average time spent infectious, used to derive r.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.8",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "average time spent exposed but not infectious": {
+      "evidence": [
+        {
+          "text_span": "Average incubation period, used to derive epsilon.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.2",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "time from onset to first medical visit and isolation": {
+      "evidence": [
+        {
+          "text_span": "Used as a proxy for average infectious period under improved case identification and isolation.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.8",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "contact_tracing": {
+      "evidence": [
+        {
+          "text_span": "contact_tracing mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 18,
+    "items_with_evidence": 18,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 18,
+    "faithfulness_percentage": 100.0
+  }
+}

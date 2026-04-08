@@ -1,0 +1,16 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid2,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid2,Compartment,Recovered/Removed,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid2,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.3,False,New exposures based on contact between susceptible and infectious individuals; rate is c*S*I/N where c is the daily contact rate,,,
+Covid2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.3,False,Progression from exposed to infectious at rate epsilon (inverse of incubation period),,,
+Covid2,Flow,,,,,,,Model file,Certain,,Recovered/Removed,RateFlow,//@parameters.3,False,"Recovery or removal (isolation) of infectious individuals at rate r (inverse of average infectious period, proxied by time from onset to case report)",,,
+Covid2,Parameter,R0,,,,,,Model file,Certain,,,,,,Basic reproduction number (95% CI 1.4–3.9),CONSTANT,2.2,dimensionless
+Covid2,Parameter,incubation_period,,,,,,Model file,Certain,,,,,,"Average incubation period, time spent exposed but not yet infectious (95% CI 4.1–7.0 days); epsilon = 1/5.2",CONSTANT,5.2,days
+Covid2,Parameter,onset_to_first_medical_visit,,,,,,Model file,Certain,,,,,,Average days from symptom onset to first medical visit and isolation (95% CI 4.3–7.5 days); used to derive daily contact rate c = R0 / 5.8,CONSTANT,5.8,days
+Covid2,Parameter,r,,,,,,Model file,Certain,,,,,,"Removal/recovery rate, equal to inverse of average infectious period proxied by median time from illness onset to reported case; decreased from 12 days early in outbreak to 3 days in early February due to improved case identification",CONSTANT,varies over time,1/days
+Covid2,Parameter,epsilon,,,,,,Model file,Certain,,,,,,Rate of progression from exposed to infectious (1/5.2 days),CONSTANT,0.192,1/days
+Covid2,Parameter,c,,,,,,Model file,Certain,,,,,,"Daily contact rate calculated as R0 divided by average days from onset to first medical visit (5.8 days), weighted by relative level of daily contact from Baidu movement data",CONSTANT,derived from R0,contacts/day
+Covid2,Parameter,initial_infected,,,,,,Model file,Certain,,,,,,"Number of initially infected people seeded in Wuhan on December 1, 2019",CONSTANT,5,persons
+Covid2,Parameter,simulation_runs,,,,,,Model file,Certain,,,,,,Number of stochastic simulation runs performed,CONSTANT,1000,runs

@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R0" expression="1.4-2.0" type="CONSTANT" description="Basic reproduction number; moderate scenario R0=1.7, high scenario R0=2.0" unit="dimensionless"/>
+  <parameters name="Generation time" expression="2.6" type="CONSTANT" description="Mean generation time of influenza transmission" unit="days"/>
+  <parameters name="Clinical fraction" expression="0.5" type="CONSTANT" description="Proportion of infected individuals who become clinical cases (ill enough to seek medical care)" unit="dimensionless"/>
+  <parameters name="Household transmission fraction" expression="0.30" type="CONSTANT" description="Proportion of transmission occurring within the household" unit="dimensionless"/>
+  <parameters name="Community transmission fraction" expression="0.33" type="CONSTANT" description="Proportion of non-household transmission occurring in the general community" unit="proportion of non-household transmission"/>
+  <parameters name="School and workplace transmission fraction" expression="0.37" type="CONSTANT" description="Proportion of non-household transmission occurring in schools and workplaces" unit="proportion of non-household transmission"/>
+  <parameters name="School contact rate multiplier" expression="2.0" type="CONSTANT" description="Per-capita contact rates in schools assumed to be double that in workplaces" unit="dimensionless"/>
+  <parameters name="Vaccine efficacy (susceptibility reduction)" expression="0.70" type="CONSTANT" description="Reduction in susceptibility conferred by a matched pandemic vaccine" unit="dimensionless"/>
+  <parameters name="Vaccine efficacy (infectiousness reduction)" expression="0.30" type="CONSTANT" description="Reduction in infectiousness for vaccinated individuals who still get infected" unit="dimensionless"/>
+  <parameters name="Vaccine efficacy (clinical case reduction)" expression="0.50" type="CONSTANT" description="Reduction in probability of becoming a clinical case for vaccinated individuals who get infected" unit="dimensionless"/>
+  <parameters name="Pre-pandemic vaccine efficacy (susceptibility reduction)" expression="0.30" type="CONSTANT" description="Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus" unit="dimensionless"/>
+  <parameters name="Vaccination rate" expression="0.01" type="CONSTANT" description="Rate at which population can be vaccinated per day" unit="per day (fraction of population)"/>
+  <parameters name="Vaccine protection delay" expression="14" type="CONSTANT" description="Time after vaccination for protection to develop" unit="days"/>
+  <parameters name="US population size" expression="300000000" type="CONSTANT" description="Assumed population size of the United States" unit="persons"/>
+  <parameters name="GB population size" expression="58100000" type="CONSTANT" description="Assumed population size of Great Britain" unit="persons"/>
+  <parameters name="Household quarantine compliance" expression="0.50" type="CONSTANT" description="Proportion of households assumed to comply with voluntary quarantine policy" unit="dimensionless"/>
+  <parameters name="Household quarantine external contact reduction" expression="0.75" type="CONSTANT" description="Reduction in external contact rates for quarantined households" unit="dimensionless"/>
+  <parameters name="Household quarantine internal contact increase" expression="1.0" type="CONSTANT" description="Increase (100%) in within-household contact rates during quarantine" unit="dimensionless"/>
+  <parameters name="Quarantine duration" expression="14" type="CONSTANT" description="Duration of voluntary household quarantine" unit="days"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.1" target="//@compartments.1" description="Infection through contact in households, schools, workplaces, and the general community"/>
+  </compartments>
+  <compartments PrimaryName="Latent" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression from latent to infectious state after incubation period"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Recovery from infection"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,284 @@
+{
+  "paper_name": "Cholera2",
+  "summary": {
+    "extraction": {
+      "compartments": 3,
+      "flows": 3,
+      "parameters": 10,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Initial vaccine protection",
+        "value": "76%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccine protection duration",
+        "value": "60",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Single-dose protection duration",
+        "value": "1",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Children under 5 vaccine effectiveness multiplier",
+        "value": "46.9%",
+        "unit": "relative to adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Baseline two-dose vaccine coverage",
+        "value": "70%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Baseline one-dose vaccine coverage",
+        "value": "10%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "No vaccine coverage",
+        "value": "20%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "High-coverage two-dose vaccine coverage",
+        "value": "95%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "High-coverage one-dose vaccine coverage",
+        "value": "1.67%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "High-coverage no vaccine coverage",
+        "value": "3.33%",
+        "unit": "percent",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 3,
+    "flows": 3,
+    "parameters": 10,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 19,
+    "items_with_evidence": 19,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 19,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 19,
+      "items_with_evidence": 19,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 19,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 2,
+        "fp": 1,
+        "fn": 9,
+        "precision": 0.6667,
+        "recall": 0.1818,
+        "f1": 0.2857
+      },
+      "flows": {
+        "tp": 2,
+        "fp": 1,
+        "fn": 19,
+        "precision": 0.6667,
+        "recall": 0.0952,
+        "f1": 0.1667
+      },
+      "parameters": {
+        "tp": 2,
+        "fp": 8,
+        "fn": 23,
+        "precision": 0.2,
+        "recall": 0.08,
+        "f1": 0.1143
+      },
+      "composite_score": 0.2094,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible adults",
+          "extracted": "Susceptible",
+          "score": 0.7623840570449829
+        },
+        {
+          "gold": "Symptomatic infectious",
+          "extracted": "Infectious",
+          "score": 0.7419861555099487
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible adults->Exposed / recently infected",
+          "extracted": "Susceptible->Infectious",
+          "score": 0.7169753909111023
+        },
+        {
+          "gold": "Symptomatic infectious->Recovered / naturally immune",
+          "extracted": "Infectious->Recovered",
+          "score": 0.7411536574363708
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03bd2 0.015 Campaign vaccination rate into two-dose classes; scenario-dependent rollout parameter",
+          "extracted": "Baseline two-dose vaccine coverage 70% Baseline campaign coverage assumption.",
+          "score": 0.7086316347122192
+        },
+        {
+          "gold": "VE2C 0.469 * VE2A Two-dose vaccine effectiveness in children under 5, scaled as 46.9% of adult protection",
+          "extracted": "Children under 5 vaccine effectiveness multiplier 46.9% Children younger than 5 years were assumed to have 46.9% of adult vaccine effectiveness.",
+          "score": 0.7230263352394104
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "paper_name": "Hiv2",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 9,
+      "parameters": 11,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Early Infection",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic Infection",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pre-AIDS Infection",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "AIDS",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "On Antiretroviral Therapy",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dropped Out of Treatment",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Early Infection",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Early Infection",
+        "target": "Asymptomatic Infection",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infection",
+        "target": "Pre-AIDS Infection",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pre-AIDS Infection",
+        "target": "AIDS",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic Infection",
+        "target": "On Antiretroviral Therapy",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pre-AIDS Infection",
+        "target": "On Antiretroviral Therapy",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "AIDS",
+        "target": "On Antiretroviral Therapy",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "On Antiretroviral Therapy",
+        "target": "Dropped Out of Treatment",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Dropped Out of Treatment",
+        "target": "On Antiretroviral Therapy",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "CD4 treatment eligibility threshold",
+        "value": "200 cells/ml; 350 cells/ml; all HIV-infected individuals",
+        "unit": "cells/ml or categorical",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Average time from eligibility to treatment initiation",
+        "value": "1",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treatment access",
+        "value": "50%, 60%, 70%, 80%, 90%, 95%, 100%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Retention on treatment after 3 years",
+        "value": "75%, 85%, 95%, 100%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ART introduction time",
+        "value": "2012",
+        "unit": "year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Baseline future scale-up ART starts",
+        "value": "400,000 per year",
+        "unit": "adults/year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Low future scale-up ART starts",
+        "value": "1,200,000 total over 2012-2016",
+        "unit": "adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Medium future scale-up ART starts",
+        "value": "3,000,000 total over 2012-2016",
+        "unit": "adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "High future scale-up ART starts",
+        "value": "3,900,000 total over 2012-2016",
+        "unit": "adults",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ART transmission reduction",
+        "value": "greater than 90%",
+        "unit": "proportion reduction",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Early infection transmissibility increase",
+        "value": "10-fold or 26-fold relative to asymptomatic infection",
+        "unit": "relative risk",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 9,
+    "parameters": 11,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 32,
+    "items_with_evidence": 32,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 32,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 32,
+      "items_with_evidence": 32,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 32,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 6,
+        "fn": 5,
+        "precision": 0.1429,
+        "recall": 0.1667,
+        "f1": 0.1538
+      },
+      "flows": {
+        "tp": 1,
+        "fp": 8,
+        "fn": 9,
+        "precision": 0.1111,
+        "recall": 0.1,
+        "f1": 0.1053
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 11,
+        "fn": 10,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.1101,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->EarlyInfection",
+          "extracted": "Susceptible->Early Infection",
+          "score": 0.8901575803756714
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

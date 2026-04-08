@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="r" expression="Inverse of the average infectious period" type="CONSTANT" description="Average rate of recovery or removal. Proxied by the median of time lags from illness onset to reported case." unit="1/day"/>
+  <parameters name="ε" expression="1 / 5.2" type="CONSTANT" description="Rate of progression from exposed to infectious, equal to the inverse of the average time spent exposed (incubation period)." unit="1/day"/>
+  <parameters name="c" expression="R0 / 5.8" type="CONSTANT" description="Daily contact rate, calculated as the basic reproduction rate (R0) divided by the average days from onset to first medical visit and isolation." unit="1/day"/>
+  <parameters name="R0" expression="2.2 (95% CI 1.4 - 3.9)" type="CONSTANT" description="Basic reproduction number." unit="dimensionless"/>
+  <parameters name="Incubation Period" expression="5.2 (95% CI 4.1 - 7.0)" type="CONSTANT" description="The average time spent exposed but not infectious (1/ε)." unit="days"/>
+  <parameters name="Infectious Period" expression="5.8 (95% CI 4.3 - 7.5)" type="CONSTANT" description="Average days from onset to first medical visit and isolation, used to calculate the contact rate c." unit="days"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Transmission of the virus from infectious to susceptible individuals, dependent on the daily contact rate c."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Progression from the exposed to the infectious state at a rate ε."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Recovery or removal of infectious individuals from the population at a rate r."/>
+  </compartments>
+  <compartments PrimaryName="Recovered/Removed" population="0"/>
+</compartmental:CompartmentalModel>

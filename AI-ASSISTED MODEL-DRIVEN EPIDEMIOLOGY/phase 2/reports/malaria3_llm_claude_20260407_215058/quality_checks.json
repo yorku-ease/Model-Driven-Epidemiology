@@ -1,0 +1,859 @@
+{
+  "model_analysis": {
+    "modelName": "Malaria3",
+    "summary": {
+      "modelName": "Malaria3",
+      "totalPopulation": null,
+      "numCompartments": 9,
+      "numParameters": 16,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Symptomatic Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Treatment of symptomatic cases with antimalarials",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Asymptomatic Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Subpatent Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from subpatent infection to susceptible state",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Treated Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful parasite clearance followed by prophylactic protection dependent on drug half-life",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Treatment failure, entering asymptomatic infection state",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Prophylactically Protected Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Loss of prophylactic drug protection, return to susceptible state",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.7",
+              "description": "Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Completion of extrinsic incubation period in mosquito, becoming infectious",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Drug efficacy (ACT)",
+          "type": "CONSTANT",
+          "expression": "95",
+          "description": "Percentage of treated individuals with no parasitological treatment failure for ACT",
+          "unit": "%"
+        },
+        {
+          "index": 1,
+          "name": "Duration of gametocytaemia after non-artemisinin treatment",
+          "type": "CONSTANT",
+          "expression": "55.6",
+          "description": "Duration of gametocytaemia in treated infection for non-artemisinins",
+          "unit": "days"
+        },
+        {
+          "index": 2,
+          "name": "Duration of gametocytaemia after ACT treatment",
+          "type": "CONSTANT",
+          "expression": "13.4",
+          "description": "Duration of gametocytaemia in treated infection for ACT",
+          "unit": "days"
+        },
+        {
+          "index": 3,
+          "name": "Duration of gametocytaemia after ACT-PQ treatment",
+          "type": "CONSTANT",
+          "expression": "3.0",
+          "description": "Duration of gametocytaemia in treated infection for ACT with primaquine",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "Duration of prophylaxis (short-acting drug)",
+          "type": "CONSTANT",
+          "expression": "10",
+          "description": "Duration of inhibitory antimalarial blood concentration for short-acting drug",
+          "unit": "days"
+        },
+        {
+          "index": 5,
+          "name": "Duration of prophylaxis (long-acting drug)",
+          "type": "CONSTANT",
+          "expression": "30",
+          "description": "Duration of inhibitory antimalarial blood concentration for long-acting drug",
+          "unit": "days"
+        },
+        {
+          "index": 6,
+          "name": "Reduction in infectiousness after non-artemisinin treatment",
+          "type": "CONSTANT",
+          "expression": "70",
+          "description": "Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment",
+          "unit": "%"
+        },
+        {
+          "index": 7,
+          "name": "Reduction in infectiousness after ACT/ACT-PQ treatment",
+          "type": "CONSTANT",
+          "expression": "80.6",
+          "description": "Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment",
+          "unit": "%"
+        },
+        {
+          "index": 8,
+          "name": "Pregnancy prevalence in population aged 15-45",
+          "type": "CONSTANT",
+          "expression": "7.1",
+          "description": "Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA",
+          "unit": "%"
+        },
+        {
+          "index": 9,
+          "name": "Correlation in participation between MDA rounds",
+          "type": "CONSTANT",
+          "expression": "0.5",
+          "description": "Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 10,
+          "name": "MDA coverage",
+          "type": "CONSTANT",
+          "expression": "80",
+          "description": "Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)",
+          "unit": "%"
+        },
+        {
+          "index": 11,
+          "name": "ACT coverage for symptomatic treatment",
+          "type": "CONSTANT",
+          "expression": "20",
+          "description": "Percentage of symptomatic cases receiving ACTs at baseline",
+          "unit": "%"
+        },
+        {
+          "index": 12,
+          "name": "Non-ACT treatment efficacy",
+          "type": "CONSTANT",
+          "expression": "60",
+          "description": "Efficacy of non-ACT treatments at clearing parasites due to resistance",
+          "unit": "%"
+        },
+        {
+          "index": 13,
+          "name": "ACT treatment efficacy",
+          "type": "CONSTANT",
+          "expression": "95",
+          "description": "Efficacy of ACTs at clearing parasites",
+          "unit": "%"
+        },
+        {
+          "index": 14,
+          "name": "Relative infectivity of asymptomatic vs symptomatic",
+          "type": "CONSTANT",
+          "expression": "0.33",
+          "description": "Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 15,
+          "name": "Relative infectivity of subpatent vs symptomatic",
+          "type": "CONSTANT",
+          "expression": "0.06",
+          "description": "Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)",
+          "unit": "dimensionless"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Malaria3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 16,
+    "parametersWithUncertainty": 16,
+    "parameters": [
+      {
+        "parameter": "Drug efficacy (ACT)",
+        "yourValue": "95",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Percentage of treated individuals with no parasitological treatment failure for ACT",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Duration of gametocytaemia after non-artemisinin treatment",
+        "yourValue": "55.6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "days",
+        "description": "Duration of gametocytaemia in treated infection for non-artemisinins",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Duration of gametocytaemia after ACT treatment",
+        "yourValue": "13.4",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "days",
+        "description": "Duration of gametocytaemia in treated infection for ACT",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Duration of gametocytaemia after ACT-PQ treatment",
+        "yourValue": "3.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "days",
+        "description": "Duration of gametocytaemia in treated infection for ACT with primaquine",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Duration of prophylaxis (short-acting drug)",
+        "yourValue": "10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "days",
+        "description": "Duration of inhibitory antimalarial blood concentration for short-acting drug",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Duration of prophylaxis (long-acting drug)",
+        "yourValue": "30",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "days",
+        "description": "Duration of inhibitory antimalarial blood concentration for long-acting drug",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Reduction in infectiousness after non-artemisinin treatment",
+        "yourValue": "70",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Reduction in infectiousness after ACT/ACT-PQ treatment",
+        "yourValue": "80.6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Pregnancy prevalence in population aged 15-45",
+        "yourValue": "7.1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Correlation in participation between MDA rounds",
+        "yourValue": "0.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "dimensionless",
+        "description": "Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "MDA coverage",
+        "yourValue": "80",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "ACT coverage for symptomatic treatment",
+        "yourValue": "20",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Percentage of symptomatic cases receiving ACTs at baseline",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Non-ACT treatment efficacy",
+        "yourValue": "60",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Efficacy of non-ACT treatments at clearing parasites due to resistance",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "ACT treatment efficacy",
+        "yourValue": "95",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "%",
+        "description": "Efficacy of ACTs at clearing parasites",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative infectivity of asymptomatic vs symptomatic",
+        "yourValue": "0.33",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "dimensionless",
+        "description": "Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative infectivity of subpatent vs symptomatic",
+        "yourValue": "0.06",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria3",
+        "unit": "dimensionless",
+        "description": "Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 16
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Malaria3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Drug efficacy (ACT)",
+        "type": "other",
+        "currentValue": 95.0,
+        "description": "Percentage of treated individuals with no parasitological treatment failure for ACT",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Duration of gametocytaemia after non-artemisinin treatment",
+        "type": "other",
+        "currentValue": 55.6,
+        "description": "Duration of gametocytaemia in treated infection for non-artemisinins",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Duration of gametocytaemia after ACT treatment",
+        "type": "other",
+        "currentValue": 13.4,
+        "description": "Duration of gametocytaemia in treated infection for ACT",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Duration of gametocytaemia after ACT-PQ treatment",
+        "type": "other",
+        "currentValue": 3.0,
+        "description": "Duration of gametocytaemia in treated infection for ACT with primaquine",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Duration of prophylaxis (short-acting drug)",
+        "type": "other",
+        "currentValue": 10.0,
+        "description": "Duration of inhibitory antimalarial blood concentration for short-acting drug",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Duration of prophylaxis (long-acting drug)",
+        "type": "other",
+        "currentValue": 30.0,
+        "description": "Duration of inhibitory antimalarial blood concentration for long-acting drug",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Reduction in infectiousness after non-artemisinin treatment",
+        "type": "other",
+        "currentValue": 70.0,
+        "description": "Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Reduction in infectiousness after ACT/ACT-PQ treatment",
+        "type": "other",
+        "currentValue": 80.6,
+        "description": "Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Pregnancy prevalence in population aged 15-45",
+        "type": "other",
+        "currentValue": 7.1,
+        "description": "Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Correlation in participation between MDA rounds",
+        "type": "other",
+        "currentValue": 0.5,
+        "description": "Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "MDA coverage",
+        "type": "other",
+        "currentValue": 80.0,
+        "description": "Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "ACT coverage for symptomatic treatment",
+        "type": "other",
+        "currentValue": 20.0,
+        "description": "Percentage of symptomatic cases receiving ACTs at baseline",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Non-ACT treatment efficacy",
+        "type": "other",
+        "currentValue": 60.0,
+        "description": "Efficacy of non-ACT treatments at clearing parasites due to resistance",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "ACT treatment efficacy",
+        "type": "other",
+        "currentValue": 95.0,
+        "description": "Efficacy of ACTs at clearing parasites",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Relative infectivity of asymptomatic vs symptomatic",
+        "type": "other",
+        "currentValue": 0.33,
+        "description": "Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Relative infectivity of subpatent vs symptomatic",
+        "type": "other",
+        "currentValue": 0.06,
+        "description": "Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Drug efficacy (ACT)",
+      "Duration of gametocytaemia after non-artemisinin treatment",
+      "Duration of gametocytaemia after ACT treatment",
+      "Duration of gametocytaemia after ACT-PQ treatment",
+      "Duration of prophylaxis (short-acting drug)"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Drug efficacy (ACT)",
+        "Duration of gametocytaemia after non-artemisinin treatment",
+        "Duration of gametocytaemia after ACT treatment",
+        "Duration of gametocytaemia after ACT-PQ treatment",
+        "Duration of prophylaxis (short-acting drug)"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Drug efficacy (ACT)": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Duration of gametocytaemia after non-artemisinin treatment": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Duration of gametocytaemia after ACT treatment": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Duration of gametocytaemia after ACT-PQ treatment": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Duration of prophylaxis (short-acting drug)": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

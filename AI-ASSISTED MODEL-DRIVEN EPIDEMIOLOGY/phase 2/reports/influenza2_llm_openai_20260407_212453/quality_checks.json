@@ -1,0 +1,320 @@
+{
+  "model_analysis": {
+    "modelName": "Influenza2",
+    "summary": {
+      "modelName": "Influenza2",
+      "totalPopulation": null,
+      "numCompartments": 3,
+      "numParameters": 7,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.3",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection/transmission from susceptible to infectious individuals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.3",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery/removal from the infectious state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "R0",
+          "type": "CONSTANT",
+          "expression": "1.4 to 2.0",
+          "description": "Basic reproduction number explored for pandemic influenza; moderate scenario 1.7 and high scenario 2.0.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 1,
+          "name": "Generation time",
+          "type": "CONSTANT",
+          "expression": "2.6",
+          "description": "Assumed generation time for the pandemic influenza simulations.",
+          "unit": "days"
+        },
+        {
+          "index": 2,
+          "name": "Clinical fraction",
+          "type": "CONSTANT",
+          "expression": "50%",
+          "description": "Assumed proportion of infected individuals ill enough to be classified as clinical cases.",
+          "unit": "proportion"
+        },
+        {
+          "index": 3,
+          "name": "Household transmission proportion",
+          "type": "CONSTANT",
+          "expression": "30%",
+          "description": "Estimated proportion of transmission occurring within households in the United States model.",
+          "unit": "proportion"
+        },
+        {
+          "index": 4,
+          "name": "Non-household transmission proportion",
+          "type": "CONSTANT",
+          "expression": "70%",
+          "description": "Estimated proportion of transmission occurring outside the household in the United States model.",
+          "unit": "proportion"
+        },
+        {
+          "index": 5,
+          "name": "Community transmission proportion",
+          "type": "CONSTANT",
+          "expression": "33% of non-household transmission",
+          "description": "Assumed share of non-household transmission occurring in the general community.",
+          "unit": "proportion"
+        },
+        {
+          "index": 6,
+          "name": "School/workplace transmission proportion",
+          "type": "CONSTANT",
+          "expression": "37% of non-household transmission",
+          "description": "Assumed share of non-household transmission occurring in schools and workplaces.",
+          "unit": "proportion"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Influenza2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 7,
+    "parametersWithUncertainty": 7,
+    "parameters": [
+      {
+        "parameter": "R0",
+        "yourValue": "1.4 to 2.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "dimensionless",
+        "description": "Basic reproduction number explored for pandemic influenza; moderate scenario 1.7 and high scenario 2.0.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Generation time",
+        "yourValue": "2.6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "days",
+        "description": "Assumed generation time for the pandemic influenza simulations.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Clinical fraction",
+        "yourValue": "50%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion",
+        "description": "Assumed proportion of infected individuals ill enough to be classified as clinical cases.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Household transmission proportion",
+        "yourValue": "30%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion",
+        "description": "Estimated proportion of transmission occurring within households in the United States model.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Non-household transmission proportion",
+        "yourValue": "70%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion",
+        "description": "Estimated proportion of transmission occurring outside the household in the United States model.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Community transmission proportion",
+        "yourValue": "33% of non-household transmission",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion",
+        "description": "Assumed share of non-household transmission occurring in the general community.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "School/workplace transmission proportion",
+        "yourValue": "37% of non-household transmission",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Influenza2",
+        "unit": "proportion",
+        "description": "Assumed share of non-household transmission occurring in schools and workplaces.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 7
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Influenza2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Generation time",
+        "type": "other",
+        "currentValue": 2.6,
+        "description": "Assumed generation time for the pandemic influenza simulations.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Generation time"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Generation time"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Generation time": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

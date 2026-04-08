@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Vaccination coverage" expression="80%" type="CONSTANT" description="Default routine vaccination coverage for 9-year-old children." unit="proportion"/>
+  <parameters name="Vaccination schedule" expression="3 doses, 6 months apart" type="CONSTANT" description="Default Dengvaxia routine vaccination schedule." unit="schedule"/>
+  <parameters name="Catch-up campaign coverage" expression="80%" type="CONSTANT" description="Coverage used for the optional one-off catch-up campaign in 10- to 17-year-olds." unit="proportion"/>
+  <parameters name="Age at routine vaccination" expression="9 years" type="CONSTANT" description="Default age for routine vaccination." unit="years"/>
+  <parameters name="Alternative vaccination ages" expression="10 to 18 years" type="CONSTANT" description="Age range explored in sensitivity analyses." unit="years"/>
+  <parameters name="Transmission intensity (SP9)" expression="10%, 30%, 50%, 70%, 90%" type="CONSTANT" description="Average proportion of 9-year-olds seropositive prior to vaccine introduction, used to characterize endemicity." unit="proportion seropositive by age 9"/>
+  <parameters name="Time horizon after vaccination" expression="30 years" type="CONSTANT" description="Primary post-vaccination evaluation horizon for population impact and cost-effectiveness." unit="years"/>
+  <parameters name="Trial simulation horizon" expression="3 years" type="CONSTANT" description="Simulation horizon for the Phase III trial comparison, including active and first year of passive follow-up." unit="years"/>
+  <parameters name="Dose interval" expression="6 months" type="CONSTANT" description="Interval between vaccine doses in the three-dose schedule." unit="months"/>
+  <parameters name="Discount rate" expression="3%" type="CONSTANT" description="Discount rate applied to costs and health effects in the base-case economic analysis." unit="per year"/>
+  <parameters name="DALY cost threshold" expression="US$2,000" type="CONSTANT" description="Base-case threshold used to assess cost-effectiveness." unit="USD per DALY averted"/>
+  <parameters name="Symptomatic dengue DALY burden" expression="0.006" type="CONSTANT" description="DALYs incurred per symptomatic dengue case in the middle-income Latin American-like setting." unit="DALYs per case"/>
+  <parameters name="Severe dengue DALY burden" expression="0.02" type="CONSTANT" description="DALYs incurred per severe dengue case." unit="DALYs per case"/>
+  <parameters name="Public payer cost, symptomatic case" expression="60" type="CONSTANT" description="Treatment cost per symptomatic dengue case in the middle-income Latin American-like setting." unit="USD"/>
+  <parameters name="Public payer cost, hospitalised case" expression="200" type="CONSTANT" description="Treatment cost per hospitalised dengue case in the middle-income Latin American-like setting." unit="USD"/>
+  <parameters name="Societal cost, symptomatic case" expression="200" type="CONSTANT" description="Societal cost per symptomatic dengue case in the middle-income Latin American-like setting." unit="USD"/>
+  <parameters name="Societal cost, hospitalised case" expression="500" type="CONSTANT" description="Societal cost per hospitalised dengue case in the middle-income Latin American-like setting." unit="USD"/>
+  <parameters name="Societal cost, fatal case" expression="11,000" type="CONSTANT" description="Societal cost per fatal dengue case in the middle-income Latin American-like setting." unit="USD"/>
+  <parameters name="Probability of death among symptomatic dengue cases" expression="0.03% to 0.09%" type="CONSTANT" description="Assumed probability of death for symptomatic dengue cases." unit="proportion"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Dengue infection of humans via infectious mosquito bites."/>
+  </compartments>
+  <compartments PrimaryName="Infected Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Recovery from dengue infection and acquisition of post-infection immunity/protection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRate="0.0" target="//@compartments.4" description="Mosquito infection after biting infectious humans."/>
+  </compartments>
+  <compartments PrimaryName="Infected Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Mosquito death and replacement through vector turnover, returning the vector population to susceptibility in the aggregate model structure."/>
+  </compartments>
+</compartmental:CompartmentalModel>

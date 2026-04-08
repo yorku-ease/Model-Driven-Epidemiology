@@ -1,0 +1,228 @@
+{
+  "modelName": "Dengue2",
+  "summary": {
+    "modelName": "Dengue2",
+    "totalPopulation": null,
+    "numCompartments": 5,
+    "numParameters": 15,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Dengue transmission from an infected mosquito to a susceptible human during blood-feeding.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infected Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from dengue infection with acquisition of lifelong immunity to the infecting serotype.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Recovered Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 3,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.4",
+            "description": "Dengue transmission from an infected human to a susceptible mosquito during blood-feeding.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infected Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Per-exposure protection from vaccination for seronegative vaccinees",
+        "type": "CONSTANT",
+        "expression": "0.321",
+        "description": "Estimated vaccine protection per exposure among seronegative vaccinees.",
+        "unit": "probability"
+      },
+      {
+        "index": 1,
+        "name": "Per-exposure protection from vaccination for seropositive vaccinees",
+        "type": "CONSTANT",
+        "expression": "0.516",
+        "description": "Estimated vaccine protection per exposure among seropositive vaccinees.",
+        "unit": "probability"
+      },
+      {
+        "index": 2,
+        "name": "Average duration of protection for seronegative vaccinees",
+        "type": "CONSTANT",
+        "expression": "426",
+        "description": "Average duration of vaccine-induced protection among seronegative vaccinees.",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "Average duration of protection for seropositive vaccinees",
+        "type": "CONSTANT",
+        "expression": "258",
+        "description": "Average duration of vaccine-induced protection among seropositive vaccinees.",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "Probability of symptoms conditional on infection (primary)",
+        "type": "CONSTANT",
+        "expression": "0.405",
+        "description": "Probability that a primary dengue infection becomes symptomatic.",
+        "unit": "probability"
+      },
+      {
+        "index": 5,
+        "name": "Probability of symptoms conditional on infection (secondary)",
+        "type": "CONSTANT",
+        "expression": "0.339",
+        "description": "Probability that a secondary dengue infection becomes symptomatic.",
+        "unit": "probability"
+      },
+      {
+        "index": 6,
+        "name": "Probability of symptoms conditional on infection (post-secondary)",
+        "type": "CONSTANT",
+        "expression": "0.09",
+        "description": "Probability that a post-secondary dengue infection becomes symptomatic.",
+        "unit": "probability"
+      },
+      {
+        "index": 7,
+        "name": "Probability of hospitalization conditional on symptoms (primary)",
+        "type": "CONSTANT",
+        "expression": "0.074",
+        "description": "Probability of hospitalization given symptomatic primary infection.",
+        "unit": "probability"
+      },
+      {
+        "index": 8,
+        "name": "Probability of hospitalization conditional on symptoms (secondary)",
+        "type": "CONSTANT",
+        "expression": "0.376",
+        "description": "Probability of hospitalization given symptomatic secondary infection.",
+        "unit": "probability"
+      },
+      {
+        "index": 9,
+        "name": "Probability of hospitalization conditional on symptoms (post-secondary)",
+        "type": "CONSTANT",
+        "expression": "0.101",
+        "description": "Probability of hospitalization given symptomatic post-secondary infection.",
+        "unit": "probability"
+      },
+      {
+        "index": 10,
+        "name": "Seropositivity among nine-year-olds",
+        "type": "CONSTANT",
+        "expression": "PE9",
+        "description": "Proportion of nine-year-olds with previous DENV exposure.",
+        "unit": "probability"
+      },
+      {
+        "index": 11,
+        "name": "Sensitivity",
+        "type": "CONSTANT",
+        "expression": "sensitivity",
+        "description": "Probability that a person with prior DENV exposure tests seropositive.",
+        "unit": "probability"
+      },
+      {
+        "index": 12,
+        "name": "Specificity",
+        "type": "CONSTANT",
+        "expression": "specificity",
+        "description": "Probability that a DENV-naïve person tests seronegative.",
+        "unit": "probability"
+      },
+      {
+        "index": 13,
+        "name": "Vaccination coverage",
+        "type": "CONSTANT",
+        "expression": "coveragevaccination = coverageintervention × SP",
+        "description": "Coverage among nine-year-olds who screen positive and receive vaccination.",
+        "unit": "probability"
+      },
+      {
+        "index": 14,
+        "name": "Serological screening positivity",
+        "type": "CONSTANT",
+        "expression": "SP = PE9 × sensitivity + (1 - PE9) × (1 - specificity)",
+        "description": "Probability that screening returns a positive result among nine-year-olds.",
+        "unit": "probability"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

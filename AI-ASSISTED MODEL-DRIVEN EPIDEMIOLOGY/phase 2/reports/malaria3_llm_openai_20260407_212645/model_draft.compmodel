@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Drug efficacy" expression="95-98% for antimalarials used in mass treatment; model often assumes 95%" type="CONSTANT" description="Probability of full parasite clearance among treated individuals." unit="%"/>
+  <parameters name="Coverage of mass drug administration" expression="80% in main simulations" type="CONSTANT" description="Proportion of the population treated during MDA before exclusion of pregnant women." unit="%"/>
+  <parameters name="Coverage of artemisinin-combination therapies among symptomatic treated cases" expression="20%" type="CONSTANT" description="Fraction of symptomatic treated cases receiving ACTs." unit="%"/>
+  <parameters name="Coverage of non-ACT treatments among symptomatic treated cases" expression="80%" type="CONSTANT" description="Fraction of symptomatic treated cases receiving non-ACT treatments." unit="%"/>
+  <parameters name="Efficacy of non-gametocytocidal treatments" expression="60%" type="CONSTANT" description="Parasite clearance efficacy assumed for non-ACT treatments due to resistance." unit="%"/>
+  <parameters name="Efficacy of ACTs" expression="95%" type="CONSTANT" description="Parasite clearance efficacy assumed for ACTs." unit="%"/>
+  <parameters name="Duration of gametocytaemia in treated infection, non-artemisinins" expression="55.6" type="CONSTANT" description="Duration of infectiousness after non-artemisinins." unit="days"/>
+  <parameters name="Duration of gametocytaemia in treated infection, ACT" expression="13.4" type="CONSTANT" description="Duration of infectiousness after ACT treatment." unit="days"/>
+  <parameters name="Duration of gametocytaemia in treated infection, ACT-PQ" expression="3.0" type="CONSTANT" description="Duration of infectiousness after ACT plus primaquine." unit="days"/>
+  <parameters name="Duration of inhibitory antimalarial blood concentration, short-acting drug" expression="10" type="CONSTANT" description="Duration of prophylactic blood concentration for short-acting drugs." unit="days"/>
+  <parameters name="Duration of inhibitory antimalarial blood concentration, long-acting drug" expression="30" type="CONSTANT" description="Duration of prophylactic blood concentration for long-acting drugs." unit="days"/>
+  <parameters name="Reduction in average infectiousness following treatment, non-artemisinins" expression="70" type="CONSTANT" description="Reduction in infectiousness to mosquitoes compared with the pre-treatment state." unit="%"/>
+  <parameters name="Reduction in average infectiousness following treatment, ACT or ACT-PQ" expression="80.6" type="CONSTANT" description="Reduction in infectiousness to mosquitoes compared with the pre-treatment state." unit="%"/>
+  <parameters name="Pregnancy prevalence among women aged 15-45" expression="7.1" type="CONSTANT" description="Proportion of women of child-bearing age assumed pregnant and excluded from treatment." unit="%"/>
+  <parameters name="Pregnancy prevalence among population aged 15-45" expression="0.5" type="CONSTANT" description="Population-level pregnancy prevalence used in the model." unit="%"/>
+  <parameters name="Correlation in individual participation between repeated rounds of MDA" expression="0 to 1" type="CONSTANT" description="Degree to which the same individuals repeatedly participate or do not participate in successive MDA rounds." unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible and Uninfected Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="New human infections following bites from infectious mosquitoes; newly infected humans develop patent parasitaemia after a liver-stage delay, with a proportion developing symptoms."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Mass treatment of uninfected individuals moves them into temporary prophylactic protection."/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic and Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Symptomatic infections progress to asymptomatic infection in the absence of treatment or after treatment failure."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Successful treatment of symptomatic infections moves individuals into the treated infectious state."/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic and Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Asymptomatic patent infections progress to the subpatent state."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Mass treatment or screening-based treatment of asymptomatic infections moves individuals into the treated infectious state."/>
+  </compartments>
+  <compartments PrimaryName="Infectious and Undetectable by Standard Microscopy Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Screening-based treatment can target subpatent infections when PCR is used."/>
+  </compartments>
+  <compartments PrimaryName="Treated and Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Treatment failures enter the asymptomatic infectious state."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="After parasite clearance, treated individuals may enter a protected prophylactic state depending on drug half-life."/>
+  </compartments>
+  <compartments PrimaryName="Uninfected and Protected by Antimalarial Prophylaxis Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Loss of prophylactic protection returns individuals to the susceptible uninfected state."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRate="0.0" target="//@compartments.7" description="Mosquitoes become infected after biting infectious humans."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.8" description="Extrinsic incubation progression from exposed to infectious mosquitoes."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

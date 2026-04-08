@@ -1,0 +1,635 @@
+{
+  "model_analysis": {
+    "modelName": "Tuberculosis2",
+    "summary": {
+      "modelName": "Tuberculosis2",
+      "totalPopulation": null,
+      "numCompartments": 7,
+      "numParameters": 16,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.14",
+              "contactCompartment": "//@compartments.1",
+              "description": "New infection with Mycobacterium tuberculosis.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Latent Infection",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Endogenous reactivation or progression to active disease.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious Tuberculosis",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Patients diagnosed and treated who do not complete treatment (fail, default, or transfer out).",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful completion of short-course chemotherapy with cure of active disease but persistence of infection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Non-infectious Tuberculosis",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Non-infectious cases enrolled in treatment who do not complete treatment.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful completion of short-course chemotherapy for non-infectious tuberculosis.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Treatment Failure",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "A proportion of treatment failures remain infectious and may progress back to full tuberculosis.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Treatment failures that are not infectious may remain infected and later relapse/reactivate.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Cured but Latently Infected",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 6,
+          "primaryName": "Self-cured",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Self-cured individuals return to the latent class while remaining infected.",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Case detection rate",
+          "type": "CONSTANT",
+          "expression": "70% (WHO target for new programme)",
+          "description": "Target proportion of infectious cases diagnosed and treated per year.",
+          "unit": "%"
+        },
+        {
+          "index": 1,
+          "name": "Cure rate",
+          "type": "CONSTANT",
+          "expression": "85% (WHO target for new programme)",
+          "description": "Fraction of treated cases cured under the new DOTS programme.",
+          "unit": "%"
+        },
+        {
+          "index": 2,
+          "name": "Case detection rate, old programme",
+          "type": "CONSTANT",
+          "expression": "50% to 80% depending on region",
+          "description": "Baseline case detection rate under the pre-DOTS programme.",
+          "unit": "%"
+        },
+        {
+          "index": 3,
+          "name": "Fraction cured, old programme",
+          "type": "CONSTANT",
+          "expression": "40% to 75% depending on region",
+          "description": "Baseline cure fraction under the pre-DOTS programme.",
+          "unit": "%"
+        },
+        {
+          "index": 4,
+          "name": "Relative case detection rate of non-infectious cases",
+          "type": "CONSTANT",
+          "expression": "0.5 to 0.8 depending on region",
+          "description": "Detection rate for non-infectious cases relative to infectious cases.",
+          "unit": "ratio"
+        },
+        {
+          "index": 5,
+          "name": "Annual risk of infection",
+          "type": "CONSTANT",
+          "expression": "2.6, 0.6, 1.0, 0.1, 0.5, 2.0, 0.9",
+          "description": "Regional annual risk of tuberculosis infection for the WHO regions listed in the table.",
+          "unit": "%"
+        },
+        {
+          "index": 6,
+          "name": "Incidence rate, all forms",
+          "type": "CONSTANT",
+          "expression": "215, 62, 102, 13, 61, 188, 94",
+          "description": "Regional incidence of all forms of tuberculosis.",
+          "unit": "per 100000 per year"
+        },
+        {
+          "index": 7,
+          "name": "Incidence rate, infectious cases",
+          "type": "CONSTANT",
+          "expression": "106, 34, 55, 7, 34, 102, 52",
+          "description": "Regional incidence of infectious tuberculosis cases.",
+          "unit": "per 100000 per year"
+        },
+        {
+          "index": 8,
+          "name": "Prevalence rate, infectious cases",
+          "type": "CONSTANT",
+          "expression": "201, 55, 101, 8, 55, 184, 83",
+          "description": "Regional prevalence of infectious tuberculosis cases.",
+          "unit": "per 100000 people"
+        },
+        {
+          "index": 9,
+          "name": "Death rate, all forms",
+          "type": "CONSTANT",
+          "expression": "92, 21, 40, 3, 21, 73, 33",
+          "description": "Regional tuberculosis death rate.",
+          "unit": "per 100000 people per year"
+        },
+        {
+          "index": 10,
+          "name": "Population growth",
+          "type": "CONSTANT",
+          "expression": "2.8, 1.4, 2.7, 0.4, 0.4, 1.7, 1.1",
+          "description": "Regional population growth rates.",
+          "unit": "% per year"
+        },
+        {
+          "index": 11,
+          "name": "Change in annual risk of infection",
+          "type": "CONSTANT",
+          "expression": "-0.3, -2.2, -2.9, -5.6, -1.3, -0.9, -1.8",
+          "description": "Regional annual change in annual risk of infection.",
+          "unit": "% per year"
+        },
+        {
+          "index": 12,
+          "name": "Change in incidence rate",
+          "type": "CONSTANT",
+          "expression": "2.7, -2.5, -2.1, -5.0, -1.1, -0.3, -1.2",
+          "description": "Regional annual change in incidence rate.",
+          "unit": "% per year"
+        },
+        {
+          "index": 13,
+          "name": "Change in death rate",
+          "type": "CONSTANT",
+          "expression": "2.9, -2.7, -2.2, -4.6, -0.7, -0.7, -1.6",
+          "description": "Regional annual change in death rate.",
+          "unit": "% per year"
+        },
+        {
+          "index": 14,
+          "name": "Change in contact rate",
+          "type": "CONSTANT",
+          "expression": "-0.7, -0.8, -1.0, -0.5, -0.9, -0.5, -0.6",
+          "description": "Regional annual change in contact rate used to represent declining transmission.",
+          "unit": "% per year"
+        },
+        {
+          "index": 15,
+          "name": "HIV-1 infection in tuberculosis cases, 2020",
+          "type": "CONSTANT",
+          "expression": "21, 2.5, 0.2, 0.5, 0.5, 4.0, 1.4",
+          "description": "Projected proportion of tuberculosis cases that are HIV-1 positive in 2020 by region.",
+          "unit": "%"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Tuberculosis2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 16,
+    "parametersWithUncertainty": 16,
+    "parameters": [
+      {
+        "parameter": "Case detection rate",
+        "yourValue": "70% (WHO target for new programme)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "%",
+        "description": "Target proportion of infectious cases diagnosed and treated per year.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Cure rate",
+        "yourValue": "85% (WHO target for new programme)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "%",
+        "description": "Fraction of treated cases cured under the new DOTS programme.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Case detection rate, old programme",
+        "yourValue": "50% to 80% depending on region",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "%",
+        "description": "Baseline case detection rate under the pre-DOTS programme.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Fraction cured, old programme",
+        "yourValue": "40% to 75% depending on region",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "%",
+        "description": "Baseline cure fraction under the pre-DOTS programme.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative case detection rate of non-infectious cases",
+        "yourValue": "0.5 to 0.8 depending on region",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "ratio",
+        "description": "Detection rate for non-infectious cases relative to infectious cases.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Annual risk of infection",
+        "yourValue": "2.6, 0.6, 1.0, 0.1, 0.5, 2.0, 0.9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "%",
+        "description": "Regional annual risk of tuberculosis infection for the WHO regions listed in the table.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Incidence rate, all forms",
+        "yourValue": "215, 62, 102, 13, 61, 188, 94",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "per 100000 per year",
+        "description": "Regional incidence of all forms of tuberculosis.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Incidence rate, infectious cases",
+        "yourValue": "106, 34, 55, 7, 34, 102, 52",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "per 100000 per year",
+        "description": "Regional incidence of infectious tuberculosis cases.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Prevalence rate, infectious cases",
+        "yourValue": "201, 55, 101, 8, 55, 184, 83",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "per 100000 people",
+        "description": "Regional prevalence of infectious tuberculosis cases.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Death rate, all forms",
+        "yourValue": "92, 21, 40, 3, 21, 73, 33",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "per 100000 people per year",
+        "description": "Regional tuberculosis death rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Population growth",
+        "yourValue": "2.8, 1.4, 2.7, 0.4, 0.4, 1.7, 1.1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "% per year",
+        "description": "Regional population growth rates.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Change in annual risk of infection",
+        "yourValue": "-0.3, -2.2, -2.9, -5.6, -1.3, -0.9, -1.8",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "% per year",
+        "description": "Regional annual change in annual risk of infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Change in incidence rate",
+        "yourValue": "2.7, -2.5, -2.1, -5.0, -1.1, -0.3, -1.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "% per year",
+        "description": "Regional annual change in incidence rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Change in death rate",
+        "yourValue": "2.9, -2.7, -2.2, -4.6, -0.7, -0.7, -1.6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "% per year",
+        "description": "Regional annual change in death rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Change in contact rate",
+        "yourValue": "-0.7, -0.8, -1.0, -0.5, -0.9, -0.5, -0.6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "% per year",
+        "description": "Regional annual change in contact rate used to represent declining transmission.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "HIV-1 infection in tuberculosis cases, 2020",
+        "yourValue": "21, 2.5, 0.2, 0.5, 0.5, 4.0, 1.4",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Tuberculosis2",
+        "unit": "%",
+        "description": "Projected proportion of tuberculosis cases that are HIV-1 positive in 2020 by region.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 16
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Tuberculosis2",
+    "message": "No key parameters identified for sensitivity analysis",
+    "note": "This model may have rates embedded in flows rather than explicit parameters"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

@@ -1,0 +1,29 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Dengue3,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infected Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Compartment,Infected Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infected Humans,RateFlow,0.0,False,Dengue infection of humans via infectious mosquito bites.,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,0.0,False,Recovery from dengue infection and acquisition of post-infection immunity/protection.,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Infected Mosquitoes,RateFlow,0.0,False,Mosquito infection after biting infectious humans.,,,
+Dengue3,Flow,,,,,,,Model file,Certain,,Susceptible Mosquitoes,RateFlow,0.0,False,"Mosquito death and replacement through vector turnover, returning the vector population to susceptibility in the aggregate model structure.",,,
+Dengue3,Parameter,Vaccination coverage,,,,,,Model file,Certain,,,,,,Default routine vaccination coverage for 9-year-old children.,CONSTANT,80%,proportion
+Dengue3,Parameter,Vaccination schedule,,,,,,Model file,Certain,,,,,,Default Dengvaxia routine vaccination schedule.,CONSTANT,"3 doses, 6 months apart",schedule
+Dengue3,Parameter,Catch-up campaign coverage,,,,,,Model file,Certain,,,,,,Coverage used for the optional one-off catch-up campaign in 10- to 17-year-olds.,CONSTANT,80%,proportion
+Dengue3,Parameter,Age at routine vaccination,,,,,,Model file,Certain,,,,,,Default age for routine vaccination.,CONSTANT,9 years,years
+Dengue3,Parameter,Alternative vaccination ages,,,,,,Model file,Certain,,,,,,Age range explored in sensitivity analyses.,CONSTANT,10 to 18 years,years
+Dengue3,Parameter,Transmission intensity (SP9),,,,,,Model file,Certain,,,,,,"Average proportion of 9-year-olds seropositive prior to vaccine introduction, used to characterize endemicity.",CONSTANT,"10%, 30%, 50%, 70%, 90%",proportion seropositive by age 9
+Dengue3,Parameter,Time horizon after vaccination,,,,,,Model file,Certain,,,,,,Primary post-vaccination evaluation horizon for population impact and cost-effectiveness.,CONSTANT,30 years,years
+Dengue3,Parameter,Trial simulation horizon,,,,,,Model file,Certain,,,,,,"Simulation horizon for the Phase III trial comparison, including active and first year of passive follow-up.",CONSTANT,3 years,years
+Dengue3,Parameter,Dose interval,,,,,,Model file,Certain,,,,,,Interval between vaccine doses in the three-dose schedule.,CONSTANT,6 months,months
+Dengue3,Parameter,Discount rate,,,,,,Model file,Certain,,,,,,Discount rate applied to costs and health effects in the base-case economic analysis.,CONSTANT,3%,per year
+Dengue3,Parameter,DALY cost threshold,,,,,,Model file,Certain,,,,,,Base-case threshold used to assess cost-effectiveness.,CONSTANT,"US$2,000",USD per DALY averted
+Dengue3,Parameter,Symptomatic dengue DALY burden,,,,,,Model file,Certain,,,,,,DALYs incurred per symptomatic dengue case in the middle-income Latin American-like setting.,CONSTANT,0.006,DALYs per case
+Dengue3,Parameter,Severe dengue DALY burden,,,,,,Model file,Certain,,,,,,DALYs incurred per severe dengue case.,CONSTANT,0.02,DALYs per case
+Dengue3,Parameter,"Public payer cost, symptomatic case",,,,,,Model file,Certain,,,,,,Treatment cost per symptomatic dengue case in the middle-income Latin American-like setting.,CONSTANT,60,USD
+Dengue3,Parameter,"Public payer cost, hospitalised case",,,,,,Model file,Certain,,,,,,Treatment cost per hospitalised dengue case in the middle-income Latin American-like setting.,CONSTANT,200,USD
+Dengue3,Parameter,"Societal cost, symptomatic case",,,,,,Model file,Certain,,,,,,Societal cost per symptomatic dengue case in the middle-income Latin American-like setting.,CONSTANT,200,USD
+Dengue3,Parameter,"Societal cost, hospitalised case",,,,,,Model file,Certain,,,,,,Societal cost per hospitalised dengue case in the middle-income Latin American-like setting.,CONSTANT,500,USD
+Dengue3,Parameter,"Societal cost, fatal case",,,,,,Model file,Certain,,,,,,Societal cost per fatal dengue case in the middle-income Latin American-like setting.,CONSTANT,"11,000",USD
+Dengue3,Parameter,Probability of death among symptomatic dengue cases,,,,,,Model file,Certain,,,,,,Assumed probability of death for symptomatic dengue cases.,CONSTANT,0.03% to 0.09%,proportion

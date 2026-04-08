@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="VE_adult_two_dose" expression="76" type="CONSTANT" description="Initial vaccine efficacy (protection) for two-dose OCV in adults, estimated from case-control study in Haiti" unit="%"/>
+  <parameters name="VE_child_multiplier" expression="46.9" type="CONSTANT" description="Relative effectiveness of OCV in children aged less than 5 years compared to adults" unit="%"/>
+  <parameters name="VE_child_two_dose" expression="30" type="CONSTANT" description="Vaccine efficacy in children younger than 5 years" unit="%"/>
+  <parameters name="vaccine_protection_duration" expression="5" type="CONSTANT" description="Maximum duration of vaccine-induced protection; no protection assumed after 5 years" unit="years"/>
+  <parameters name="baseline_two_dose_coverage" expression="70" type="CONSTANT" description="Baseline vaccination coverage with two-dose OCV regimen" unit="%"/>
+  <parameters name="baseline_one_dose_coverage" expression="10" type="CONSTANT" description="Baseline vaccination coverage with single-dose OCV regimen" unit="%"/>
+  <parameters name="baseline_no_vaccine" expression="20" type="CONSTANT" description="Proportion of population receiving no vaccine under baseline scenario" unit="%"/>
+  <parameters name="high_two_dose_coverage" expression="95" type="CONSTANT" description="High vaccination coverage with two-dose OCV regimen" unit="%"/>
+  <parameters name="high_one_dose_coverage" expression="1.67" type="CONSTANT" description="One-dose coverage under high-coverage campaign scenario" unit="%"/>
+  <parameters name="high_no_vaccine" expression="3.33" type="CONSTANT" description="Proportion receiving no vaccine under high-coverage campaign scenario" unit="%"/>
+  <parameters name="two_dept_doses" expression="3.7" type="CONSTANT" description="Total OCV doses for two-department campaign (Centre and Artibonite)" unit="million doses"/>
+  <parameters name="three_dept_doses" expression="9.8" type="CONSTANT" description="Total OCV doses for three-department campaign" unit="million doses"/>
+  <parameters name="national_doses" expression="16.4" type="CONSTANT" description="Total OCV doses for national campaign (baseline coverage)" unit="million doses"/>
+  <parameters name="high_coverage_national_doses" expression="20.9" type="CONSTANT" description="Total OCV doses for high-coverage national campaign" unit="million doses"/>
+  <parameters name="elimination_threshold" expression="&lt;1" type="CONSTANT" description="Elimination defined as less than one V. cholerae infection over at least 52 consecutive weeks" unit="infections per 52 consecutive weeks"/>
+  <parameters name="projection_period" expression="10" type="CONSTANT" description="Duration of model projection period from January 19, 2019 to January 13, 2029" unit="years"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Transmission of Vibrio cholerae through contact, modulated by seasonally varying transmission parameter and potentially environmental reservoir"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Vaccination with oral cholera vaccine (OCV), providing protection against infection or clinical disease"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Recovery from cholera infection, conferring temporary natural immunity"/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.0" description="Loss of natural immunity after infection, returning to susceptible state"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Waning of vaccine-induced protection over time, with no protection assumed after 5 years"/>
+  </compartments>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,356 @@
+{
+  "model_analysis": {
+    "modelName": "Zika3",
+    "summary": {
+      "modelName": "Zika3",
+      "totalPopulation": null,
+      "numCompartments": 7,
+      "numParameters": 7,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible humans by infectious mosquitoes.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.6",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression of humans from latent to infectious state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.6",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.5",
+              "description": "Infection of susceptible mosquitoes by infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.6",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression of mosquitoes from latent to infectious state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "1/\u03b1V",
+          "type": "CONSTANT",
+          "expression": "Gamma(\u03bc = 10.5, \u03c3 = 0.5)",
+          "description": "Extrinsic incubation period in mosquitoes.",
+          "unit": "days"
+        },
+        {
+          "index": 1,
+          "name": "1/\u03b1H",
+          "type": "CONSTANT",
+          "expression": "Gamma(\u03bc = 5.9, \u03c3 = 0.5)",
+          "description": "Intrinsic incubation period in humans.",
+          "unit": "days"
+        },
+        {
+          "index": 2,
+          "name": "1/\u03b3",
+          "type": "CONSTANT",
+          "expression": "Gamma(\u03bc = 5, \u03c3 = 0.5)",
+          "description": "Human infectious period.",
+          "unit": "days"
+        },
+        {
+          "index": 3,
+          "name": "1/\u03b4",
+          "type": "CONSTANT",
+          "expression": "Gamma(\u03bc = 7.8, \u03c3 = 0.5)",
+          "description": "Mosquito lifespan. The rate \u03b4 is also the mosquito birth rate.",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "\u03b2H",
+          "type": "CONSTANT",
+          "expression": "U(0, 1)",
+          "description": "Vector-to-human transmission rate.",
+          "unit": "days^-1"
+        },
+        {
+          "index": 5,
+          "name": "\u03b2V",
+          "type": "CONSTANT",
+          "expression": "U(0, 1)",
+          "description": "Human-to-vector transmission rate.",
+          "unit": "days^-1"
+        },
+        {
+          "index": 6,
+          "name": "N",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Human population size.",
+          "unit": "individuals"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Zika3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 7,
+    "parametersWithUncertainty": 7,
+    "parameters": [
+      {
+        "parameter": "1/\u03b1V",
+        "yourValue": "Gamma(\u03bc = 10.5, \u03c3 = 0.5)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "days",
+        "description": "Extrinsic incubation period in mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "1/\u03b1H",
+        "yourValue": "Gamma(\u03bc = 5.9, \u03c3 = 0.5)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "days",
+        "description": "Intrinsic incubation period in humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "1/\u03b3",
+        "yourValue": "Gamma(\u03bc = 5, \u03c3 = 0.5)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "days",
+        "description": "Human infectious period.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "1/\u03b4",
+        "yourValue": "Gamma(\u03bc = 7.8, \u03c3 = 0.5)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "days",
+        "description": "Mosquito lifespan. The rate \u03b4 is also the mosquito birth rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2H",
+        "yourValue": "U(0, 1)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "days^-1",
+        "description": "Vector-to-human transmission rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b2V",
+        "yourValue": "U(0, 1)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "days^-1",
+        "description": "Human-to-vector transmission rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "N",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika3",
+        "unit": "individuals",
+        "description": "Human population size.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 7
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Zika3",
+    "message": "No key parameters identified for sensitivity analysis",
+    "note": "This model may have rates embedded in flows rather than explicit parameters"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

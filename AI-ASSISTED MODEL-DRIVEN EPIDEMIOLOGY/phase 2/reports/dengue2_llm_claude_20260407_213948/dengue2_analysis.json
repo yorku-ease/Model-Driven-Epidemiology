@@ -1,0 +1,264 @@
+{
+  "modelName": "Dengue2",
+  "summary": {
+    "modelName": "Dengue2",
+    "totalPopulation": null,
+    "numCompartments": 5,
+    "numParameters": 18,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Transmission from infectious mosquito to susceptible human during blood-feeding",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infection with life-long immunity to infecting serotype and temporary cross-immunity to other serotypes",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Recovered Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of temporary cross-immunity, becoming susceptible to other DENV serotypes",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.4",
+            "description": "Transmission from infectious human to susceptible mosquito during blood-feeding",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Per-exposure protection from vaccination for seronegative vaccinees",
+        "type": "CONSTANT",
+        "expression": "0.321",
+        "description": "Probability of protection per exposure for vaccinees without prior DENV exposure",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "Per-exposure protection from vaccination for seropositive vaccinees",
+        "type": "CONSTANT",
+        "expression": "0.516",
+        "description": "Probability of protection per exposure for vaccinees with prior DENV exposure",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "Average duration of protection for seronegative vaccinees",
+        "type": "CONSTANT",
+        "expression": "426",
+        "description": "Average duration of vaccine-induced protection for seronegative vaccinees",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "Average duration of protection for seropositive vaccinees",
+        "type": "CONSTANT",
+        "expression": "258",
+        "description": "Average duration of vaccine-induced protection for seropositive vaccinees",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "Probability of symptoms conditional on infection (primary)",
+        "type": "CONSTANT",
+        "expression": "0.405",
+        "description": "Probability of symptomatic disease given a primary DENV infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "Probability of symptoms conditional on infection (secondary)",
+        "type": "CONSTANT",
+        "expression": "0.339",
+        "description": "Probability of symptomatic disease given a secondary DENV infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "Probability of symptoms conditional on infection (post-secondary)",
+        "type": "CONSTANT",
+        "expression": "0.09",
+        "description": "Probability of symptomatic disease given a post-secondary DENV infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "Probability of hospitalization conditional on symptoms (primary)",
+        "type": "CONSTANT",
+        "expression": "0.074",
+        "description": "Probability of hospitalization given symptomatic primary infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 8,
+        "name": "Probability of hospitalization conditional on symptoms (secondary)",
+        "type": "CONSTANT",
+        "expression": "0.376",
+        "description": "Probability of hospitalization given symptomatic secondary infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "Probability of hospitalization conditional on symptoms (post-secondary)",
+        "type": "CONSTANT",
+        "expression": "0.101",
+        "description": "Probability of hospitalization given symptomatic post-secondary infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "Probability of death conditional on symptomatic disease",
+        "type": "CONSTANT",
+        "expression": "0.0078",
+        "description": "Proportion of symptomatic dengue cases that result in death",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "PE9",
+        "type": "CONSTANT",
+        "expression": "0.1-0.9",
+        "description": "Proportion of nine-year-olds with prior DENV exposure",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "Sensitivity of serological screening",
+        "type": "CONSTANT",
+        "expression": "0-1",
+        "description": "Probability that an individual with prior DENV exposure tests seropositive",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 13,
+        "name": "Specificity of serological screening",
+        "type": "CONSTANT",
+        "expression": "0-1",
+        "description": "Probability that a DENV-naive individual tests seronegative",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 14,
+        "name": "Intervention coverage",
+        "type": "CONSTANT",
+        "expression": "10-80",
+        "description": "Proportion of children undergoing serological screening",
+        "unit": "percent"
+      },
+      {
+        "index": 15,
+        "name": "Discount rate",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "Annual discount rate applied to costs and DALYs",
+        "unit": "percent per year"
+      },
+      {
+        "index": 16,
+        "name": "Cost of vaccination (three doses)",
+        "type": "CONSTANT",
+        "expression": "69",
+        "description": "Cost of fully vaccinating a single person with three doses of CYD-TDV",
+        "unit": "USD"
+      },
+      {
+        "index": 17,
+        "name": "Cost of serological screening",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Estimated unit cost of serological screening per person",
+        "unit": "USD"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

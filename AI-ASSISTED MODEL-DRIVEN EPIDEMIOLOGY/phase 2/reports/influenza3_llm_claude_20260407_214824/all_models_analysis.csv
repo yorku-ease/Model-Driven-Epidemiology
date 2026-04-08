@@ -1,0 +1,34 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza3,Compartment,Susceptible,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Effectively Vaccinated,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Ineffectively Vaccinated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Protected,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Latent,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Hospitalized,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza3,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Effectively Vaccinated,RateFlow,//@parameters.8,False,Successful vaccination of susceptible individuals at rate e_i * nu(t),,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Ineffectively Vaccinated,RateFlow,//@parameters.8,False,Ineffective vaccination of susceptible individuals at rate (1 - e_i) * nu(t),,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,//@parameters.5,False,Infection of susceptible individuals at the age-dependent force of infection lambda_i,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Protected,RateFlow,//@parameters.9,False,Development of vaccine-induced protection at rate gamma,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,//@parameters.5,False,Infection of vaccinated but not yet protected individuals at force of infection lambda_i,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,//@parameters.5,False,Infection of ineffectively vaccinated individuals at force of infection lambda_i,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,Progression from latent to infectious state at rate kappa,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Hospitalized,RateFlow,//@parameters.3,False,Hospitalization of infectious individuals at age-specific rate alpha_i,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Recovery of infectious individuals at rate gamma_1,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.2,False,Recovery of hospitalized individuals at rate gamma_2,,,
+Influenza3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.4,False,Death of hospitalized individuals at age-specific mortality rate delta_i,,,
+Influenza3,Parameter,kappa,,,,,,Model file,Certain,,,,,,Rate of progression from latent to infectious state (1/kappa is the mean latent period),CONSTANT,1/1.9,1/day
+Influenza3,Parameter,gamma_1,,,,,,Model file,Certain,,,,,,Recovery rate for infectious class (range 1/4 to 1),CONSTANT,1/1.5,1/day
+Influenza3,Parameter,gamma_2,,,,,,Model file,Certain,,,,,,Recovery rate for hospitalized class (range 1/4 to 1),CONSTANT,1/1.5,1/day
+Influenza3,Parameter,alpha_i,,,,,,Model file,Certain,,,,,,Age-specific hospitalization rate derived from probability of hospitalization given clinical illness,CONSTANT,(p_Hi / (1 - p_Hi)) * gamma_1,1/day
+Influenza3,Parameter,delta_i,,,,,,Model file,Certain,,,,,,Age-specific influenza mortality rate for hospitalized individuals derived from case fatality proportion,CONSTANT,(CFP_i / (1 - CFP_i)) * gamma_2,1/day
+Influenza3,Parameter,q,,,,,,Model file,Certain,,,,,,"Transmission probability per contact, constant across age groups",CONSTANT,calibrated to R0,dimensionless
+Influenza3,Parameter,beta_ij,,,,,,Model file,Certain,,,,,,"Transmission rate between age groups i and j, product of transmission probability and age-specific contact rate",CONSTANT,q * c_ij,1/day
+Influenza3,Parameter,R0,,,,,,Model file,Certain,,,,,,Basic reproduction number for the 2009 H1N1 pandemic in Mexico,CONSTANT,1.4-1.8,dimensionless
+Influenza3,Parameter,e_i,,,,,,Model file,Certain,,,,,,"Age-specific vaccine efficacy (77.5% for <65y, 35% for >=65y)",CONSTANT,"0.775 (<65y), 0.35 (>=65y)",dimensionless
+Influenza3,Parameter,gamma,,,,,,Model file,Certain,,,,,,Rate at which successfully vaccinated individuals develop protection (mean 10 days),CONSTANT,1/10,1/day
+Influenza3,Parameter,nu(t),,,,,,Model file,Certain,,,,,,"Vaccination rate, applied t* days after epidemic onset",CONSTANT,exponential with mean 5 days,1/day
+Influenza3,Parameter,vaccination_coverage,,,,,,Model file,Certain,,,,,,Vaccination coverage with full course of 1-2 doses,CONSTANT,5-20,%
+Influenza3,Parameter,t*,,,,,,Model file,Certain,,,,,,Time after epidemic onset when vaccination is initiated,CONSTANT,25 or 37,days

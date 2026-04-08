@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Number of secondary infections per smear-positive person-year" expression="16.1" type="CONSTANT" description="Transmission parameter, fit to incidence in Pakistan." unit="infections per person-year"/>
+  <parameters name="Relative infectiousness of smear-negative cases" expression="0.22" type="CONSTANT" description="Infectiousness of smear-negative cases relative to smear-positive cases." unit="dimensionless"/>
+  <parameters name="Relative rate of progression to high-risk (early) infection, latent TB" expression="0.50" type="CONSTANT" description="Parameter related to progression from latent TB." unit="dimensionless"/>
+  <parameters name="Rate of rapid progression during first two years after infection" expression="0.07" type="CONSTANT" description="Rate of progression from recent latent infection to active TB." unit="per year"/>
+  <parameters name="Rate of slow progression of remote TB infection" expression="0.0005" type="CONSTANT" description="Rate of reactivation from remote latent infection to active TB." unit="per year"/>
+  <parameters name="Proportion of incident TB that is extrapulmonary" expression="0.24" type="CONSTANT" description="Fraction of new active TB cases that are extrapulmonary." unit="dimensionless"/>
+  <parameters name="Proportion of incident pulmonary TB that is smear-positive" expression="0.65" type="CONSTANT" description="Fraction of new pulmonary TB cases that are smear-positive." unit="dimensionless"/>
+  <parameters name="Mortality rate, smear-positive TB" expression="0.23" type="CONSTANT" description="TB-specific death rate for untreated smear-positive cases." unit="per year"/>
+  <parameters name="Mortality rate, smear-negative and extrapulmonary TB" expression="0.07" type="CONSTANT" description="TB-specific death rate for untreated smear-negative and extrapulmonary cases." unit="per year"/>
+  <parameters name="Natural cure rate, smear-positive TB" expression="0.10" type="CONSTANT" description="Rate of spontaneous recovery for untreated smear-positive cases." unit="per year"/>
+  <parameters name="Natural cure rate, smear-negative and extrapulmonary TB" expression="0.27" type="CONSTANT" description="Rate of spontaneous recovery for untreated smear-negative and extrapulmonary cases." unit="per year"/>
+  <parameters name="Size of informal sector that does not notify TB, relative to notifications" expression="0.455" type="CONSTANT" description="Proportion of TB cases treated in the informal sector relative to notified cases." unit="dimensionless"/>
+  <parameters name="Treatment success proportion in 2008, notified cases" expression="0.75" type="CONSTANT" description="Proportion of notified cases that are successfully treated." unit="dimensionless"/>
+  <parameters name="Treatment success proportion, informal sector" expression="0.5" type="CONSTANT" description="Proportion of cases in the informal sector that are successfully treated." unit="dimensionless"/>
+  <parameters name="Relapse rate" expression="0.024" type="CONSTANT" description="Rate at which treated/recovered individuals relapse to active TB." unit="per year"/>
+  <parameters name="Population growth" expression="0.03" type="CONSTANT" description="Annual population growth rate." unit="per year"/>
+  <parameters name="Diagnostic rate" expression="Fitted" type="CONSTANT" description="A fitted parameter representing the rate of case detection, which varies by TB type and time period. Defined as (1/mean duration of infectiousness before diagnosis)." unit="per year"/>
+  <compartments PrimaryName="No TB Infection" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection with TB due to contact with infectious individuals (smear-positive and smear-negative)."/>
+  </compartments>
+  <compartments PrimaryName="Latent TB (Recent)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Waning from recent to remote latent infection after two years."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.3" description="Rapid progression to smear-positive active TB."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.4" description="Rapid progression to smear-negative active TB."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.5" description="Rapid progression to extrapulmonary active TB."/>
+  </compartments>
+  <compartments PrimaryName="Latent TB (Remote)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.3" description="Reactivation (slow progression) to smear-positive active TB."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.4" description="Reactivation (slow progression) to smear-negative active TB."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.5" description="Reactivation (slow progression) to extrapulmonary active TB."/>
+  </compartments>
+  <compartments PrimaryName="Active TB (Smear-Positive)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.6" description="Diagnosis and successful treatment."/>
+  </compartments>
+  <compartments PrimaryName="Active TB (Smear-Negative)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.6" description="Diagnosis and successful treatment."/>
+  </compartments>
+  <compartments PrimaryName="Active TB (Extrapulmonary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.6" description="Diagnosis and successful treatment."/>
+  </compartments>
+  <compartments PrimaryName="Treated/Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Relapse to smear-positive active TB."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Relapse to smear-negative active TB."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Relapse to extrapulmonary active TB."/>
+  </compartments>
+</compartmental:CompartmentalModel>

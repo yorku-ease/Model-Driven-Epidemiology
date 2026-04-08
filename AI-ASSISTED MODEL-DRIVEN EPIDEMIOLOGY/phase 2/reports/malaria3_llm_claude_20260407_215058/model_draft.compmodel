@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Drug efficacy (ACT)" expression="95" type="CONSTANT" description="Percentage of treated individuals with no parasitological treatment failure for ACT" unit="%"/>
+  <parameters name="Duration of gametocytaemia after non-artemisinin treatment" expression="55.6" type="CONSTANT" description="Duration of gametocytaemia in treated infection for non-artemisinins" unit="days"/>
+  <parameters name="Duration of gametocytaemia after ACT treatment" expression="13.4" type="CONSTANT" description="Duration of gametocytaemia in treated infection for ACT" unit="days"/>
+  <parameters name="Duration of gametocytaemia after ACT-PQ treatment" expression="3.0" type="CONSTANT" description="Duration of gametocytaemia in treated infection for ACT with primaquine" unit="days"/>
+  <parameters name="Duration of prophylaxis (short-acting drug)" expression="10" type="CONSTANT" description="Duration of inhibitory antimalarial blood concentration for short-acting drug" unit="days"/>
+  <parameters name="Duration of prophylaxis (long-acting drug)" expression="30" type="CONSTANT" description="Duration of inhibitory antimalarial blood concentration for long-acting drug" unit="days"/>
+  <parameters name="Reduction in infectiousness after non-artemisinin treatment" expression="70" type="CONSTANT" description="Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment" unit="%"/>
+  <parameters name="Reduction in infectiousness after ACT/ACT-PQ treatment" expression="80.6" type="CONSTANT" description="Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment" unit="%"/>
+  <parameters name="Pregnancy prevalence in population aged 15-45" expression="7.1" type="CONSTANT" description="Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA" unit="%"/>
+  <parameters name="Correlation in participation between MDA rounds" expression="0.5" type="CONSTANT" description="Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)" unit="dimensionless"/>
+  <parameters name="MDA coverage" expression="80" type="CONSTANT" description="Percentage of individuals in the population treated during MDA (before exclusion of pregnant women)" unit="%"/>
+  <parameters name="ACT coverage for symptomatic treatment" expression="20" type="CONSTANT" description="Percentage of symptomatic cases receiving ACTs at baseline" unit="%"/>
+  <parameters name="Non-ACT treatment efficacy" expression="60" type="CONSTANT" description="Efficacy of non-ACT treatments at clearing parasites due to resistance" unit="%"/>
+  <parameters name="ACT treatment efficacy" expression="95" type="CONSTANT" description="Efficacy of ACTs at clearing parasites" unit="%"/>
+  <parameters name="Relative infectivity of asymptomatic vs symptomatic" expression="0.33" type="CONSTANT" description="Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)" unit="dimensionless"/>
+  <parameters name="Relative infectivity of subpatent vs symptomatic" expression="0.06" type="CONSTANT" description="Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)" unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)"/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Treatment of symptomatic cases with antimalarials"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure"/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity"/>
+  </compartments>
+  <compartments PrimaryName="Subpatent Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Recovery from subpatent infection to susceptible state"/>
+  </compartments>
+  <compartments PrimaryName="Treated Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Successful parasite clearance followed by prophylactic protection dependent on drug half-life"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Treatment failure, entering asymptomatic infection state"/>
+  </compartments>
+  <compartments PrimaryName="Prophylactically Protected Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Loss of prophylactic drug protection, return to susceptible state"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRate="0.0" target="//@compartments.7" description="Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)"/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.8" description="Completion of extrinsic incubation period in mosquito, becoming infectious"/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

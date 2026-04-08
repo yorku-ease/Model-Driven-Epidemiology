@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="ART eligibility CD4 threshold" expression="200, 350, or all HIV+" type="CONSTANT" description="CD4 count threshold below which individuals become eligible for ART" unit="cells/ml"/>
+  <parameters name="ART access" expression="50-100" type="CONSTANT" description="Proportion of eligible individuals who eventually initiate treatment" unit="%"/>
+  <parameters name="Time from eligibility to ART initiation" expression="1" type="CONSTANT" description="Average time from reaching eligibility to starting ART" unit="year"/>
+  <parameters name="3-year retention on ART" expression="75-100" type="CONSTANT" description="Percentage of individuals remaining on treatment after 3 years, excluding deaths" unit="%"/>
+  <parameters name="ART transmission reduction" expression="90-99" type="CONSTANT" description="Reduction in HIV transmissibility for individuals on ART" unit="%"/>
+  <parameters name="Early infection relative transmissibility (Boily estimate)" expression="10" type="CONSTANT" description="Relative increase in transmission during early infection compared to asymptomatic, based on Boily et al. meta-analysis" unit="fold increase"/>
+  <parameters name="Early infection relative transmissibility (Hollingsworth estimate)" expression="26" type="CONSTANT" description="Relative increase in transmission during early infection compared to asymptomatic, based on Hollingsworth et al. reanalysis" unit="fold increase"/>
+  <parameters name="Late-stage relative transmissibility" expression="1.4-4" type="CONSTANT" description="Relative increase in transmissibility during late-stage/AIDS compared to asymptomatic infection, varies by model" unit="fold increase"/>
+  <parameters name="ART introduction year" expression="2012" type="CONSTANT" description="Year in which ART is introduced into the population in standardised scenarios" unit="year"/>
+  <parameters name="Male HIV prevalence 2012 (no ART)" expression="10-16" type="CONSTANT" description="Range of estimated adult male HIV prevalence in 2012 across models under no-ART counterfactual" unit="%"/>
+  <parameters name="Female HIV prevalence 2012 (no ART)" expression="17-23" type="CONSTANT" description="Range of estimated adult female HIV prevalence in 2012 across models under no-ART counterfactual" unit="%"/>
+  <parameters name="Male HIV incidence 2012 (no ART)" expression="1.1-2.0" type="CONSTANT" description="Range of male HIV incidence rate in 2012 across models" unit="per 100 person-years"/>
+  <parameters name="Female HIV incidence 2012 (no ART)" expression="1.7-2.6" type="CONSTANT" description="Range of female HIV incidence rate in 2012 across models" unit="per 100 person-years"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.4" target="//@compartments.1" description="HIV transmission through sexual contact with infectious individuals"/>
+  </compartments>
+  <compartments PrimaryName="Early Infection" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.2" description="Progression from acute/early infection to asymptomatic chronic infection"/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic CD4 &gt;350" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="CD4 decline from above 350 to 200-350 cells/ml"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="ART initiation for individuals with CD4 &gt;350 (under immediate/all HIV+ eligibility scenario)"/>
+  </compartments>
+  <compartments PrimaryName="Asymptomatic CD4 200-350" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="CD4 decline from 200-350 to below 200 cells/ml, progression to late-stage disease"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="ART initiation for individuals with CD4 200-350 (under CD4 ≤350 or all HIV+ eligibility)"/>
+  </compartments>
+  <compartments PrimaryName="Symptomatic CD4 ≤200" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="ART initiation for individuals with CD4 ≤200 (under all eligibility scenarios)"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Death due to AIDS in untreated late-stage individuals"/>
+  </compartments>
+  <compartments PrimaryName="On ART" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Dropout from ART programme at a constant rate"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Death while on ART (reduced mortality rate compared to untreated)"/>
+  </compartments>
+  <compartments PrimaryName="Dropped Out" population="0"/>
+</compartmental:CompartmentalModel>

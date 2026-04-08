@@ -1,0 +1,251 @@
+{
+  "modelName": "Cholera2",
+  "summary": {
+    "modelName": "Cholera2",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 16,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Transmission of Vibrio cholerae through contact, modulated by seasonally varying transmission parameter and potentially environmental reservoir",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination with oral cholera vaccine (OCV), providing protection against infection or clinical disease",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from cholera infection, conferring temporary natural immunity",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of natural immunity after infection, returning to susceptible state",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Vaccinated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of vaccine-induced protection over time, with no protection assumed after 5 years",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "VE_adult_two_dose",
+        "type": "CONSTANT",
+        "expression": "76",
+        "description": "Initial vaccine efficacy (protection) for two-dose OCV in adults, estimated from case-control study in Haiti",
+        "unit": "%"
+      },
+      {
+        "index": 1,
+        "name": "VE_child_multiplier",
+        "type": "CONSTANT",
+        "expression": "46.9",
+        "description": "Relative effectiveness of OCV in children aged less than 5 years compared to adults",
+        "unit": "%"
+      },
+      {
+        "index": 2,
+        "name": "VE_child_two_dose",
+        "type": "CONSTANT",
+        "expression": "30",
+        "description": "Vaccine efficacy in children younger than 5 years",
+        "unit": "%"
+      },
+      {
+        "index": 3,
+        "name": "vaccine_protection_duration",
+        "type": "CONSTANT",
+        "expression": "5",
+        "description": "Maximum duration of vaccine-induced protection; no protection assumed after 5 years",
+        "unit": "years"
+      },
+      {
+        "index": 4,
+        "name": "baseline_two_dose_coverage",
+        "type": "CONSTANT",
+        "expression": "70",
+        "description": "Baseline vaccination coverage with two-dose OCV regimen",
+        "unit": "%"
+      },
+      {
+        "index": 5,
+        "name": "baseline_one_dose_coverage",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Baseline vaccination coverage with single-dose OCV regimen",
+        "unit": "%"
+      },
+      {
+        "index": 6,
+        "name": "baseline_no_vaccine",
+        "type": "CONSTANT",
+        "expression": "20",
+        "description": "Proportion of population receiving no vaccine under baseline scenario",
+        "unit": "%"
+      },
+      {
+        "index": 7,
+        "name": "high_two_dose_coverage",
+        "type": "CONSTANT",
+        "expression": "95",
+        "description": "High vaccination coverage with two-dose OCV regimen",
+        "unit": "%"
+      },
+      {
+        "index": 8,
+        "name": "high_one_dose_coverage",
+        "type": "CONSTANT",
+        "expression": "1.67",
+        "description": "One-dose coverage under high-coverage campaign scenario",
+        "unit": "%"
+      },
+      {
+        "index": 9,
+        "name": "high_no_vaccine",
+        "type": "CONSTANT",
+        "expression": "3.33",
+        "description": "Proportion receiving no vaccine under high-coverage campaign scenario",
+        "unit": "%"
+      },
+      {
+        "index": 10,
+        "name": "two_dept_doses",
+        "type": "CONSTANT",
+        "expression": "3.7",
+        "description": "Total OCV doses for two-department campaign (Centre and Artibonite)",
+        "unit": "million doses"
+      },
+      {
+        "index": 11,
+        "name": "three_dept_doses",
+        "type": "CONSTANT",
+        "expression": "9.8",
+        "description": "Total OCV doses for three-department campaign",
+        "unit": "million doses"
+      },
+      {
+        "index": 12,
+        "name": "national_doses",
+        "type": "CONSTANT",
+        "expression": "16.4",
+        "description": "Total OCV doses for national campaign (baseline coverage)",
+        "unit": "million doses"
+      },
+      {
+        "index": 13,
+        "name": "high_coverage_national_doses",
+        "type": "CONSTANT",
+        "expression": "20.9",
+        "description": "Total OCV doses for high-coverage national campaign",
+        "unit": "million doses"
+      },
+      {
+        "index": 14,
+        "name": "elimination_threshold",
+        "type": "CONSTANT",
+        "expression": "<1",
+        "description": "Elimination defined as less than one V. cholerae infection over at least 52 consecutive weeks",
+        "unit": "infections per 52 consecutive weeks"
+      },
+      {
+        "index": 15,
+        "name": "projection_period",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Duration of model projection period from January 19, 2019 to January 13, 2029",
+        "unit": "years"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

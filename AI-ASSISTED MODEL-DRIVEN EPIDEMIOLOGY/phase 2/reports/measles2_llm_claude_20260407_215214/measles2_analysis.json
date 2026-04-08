@@ -1,0 +1,210 @@
+{
+  "modelName": "Measles2",
+  "summary": {
+    "modelName": "Measles2",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 9,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Transmission of measles from infectious individuals to susceptible individuals",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination with first dose of MMR (MMR1)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Vaccinated Single Dose",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination with second dose of MMR (MMR2)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of single-dose vaccinated individuals due to primary vaccine failure",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Vaccinated Double Dose",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of double-dose vaccinated individuals due to primary vaccine failure",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Primary vaccine failure rate (no waning)",
+        "type": "CONSTANT",
+        "expression": "5.2%",
+        "description": "Risk of primary vaccine failure estimated from model fitting without waning (95% CI: 4.9%–5.5%)",
+        "unit": "proportion"
+      },
+      {
+        "index": 1,
+        "name": "Primary vaccine failure rate (with waning)",
+        "type": "CONSTANT",
+        "expression": "2.5%",
+        "description": "Risk of primary vaccine failure estimated from model fitting with waning (95% CI: 2.2%–2.9%)",
+        "unit": "proportion"
+      },
+      {
+        "index": 2,
+        "name": "MMR1 vaccine effectiveness",
+        "type": "CONSTANT",
+        "expression": ">=95%",
+        "description": "Effectiveness of a single dose of measles-containing vaccine in preventing clinical measles in preschool children",
+        "unit": "proportion"
+      },
+      {
+        "index": 3,
+        "name": "Waning start age",
+        "type": "CONSTANT",
+        "expression": "5",
+        "description": "Age at which waning of vaccine-induced immunity begins in the sensitivity analysis",
+        "unit": "years"
+      },
+      {
+        "index": 4,
+        "name": "Waning start age (early MMR2 sensitivity)",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "Age at which waning begins in the sensitivity analysis for early MMR2 scenario",
+        "unit": "years"
+      },
+      {
+        "index": 5,
+        "name": "Number of age groups",
+        "type": "CONSTANT",
+        "expression": "12",
+        "description": "Age stratification: <1, 1–2, 2–3, 3–4, 4–5, 5–6, 6–10, 10–15, 15–20, 20–30, 30–40, 40+",
+        "unit": "groups"
+      },
+      {
+        "index": 6,
+        "name": "Number of regions",
+        "type": "CONSTANT",
+        "expression": "9",
+        "description": "Spatial stratification by regions of England",
+        "unit": "regions"
+      },
+      {
+        "index": 7,
+        "name": "Number of simulations",
+        "type": "CONSTANT",
+        "expression": "2500",
+        "description": "Total stochastic simulations per vaccination strategy (100 parameter sets × 25 simulations each)",
+        "unit": "simulations"
+      },
+      {
+        "index": 8,
+        "name": "Simulation period",
+        "type": "CONSTANT",
+        "expression": "2010–2019",
+        "description": "Time period over which measles outbreaks were simulated",
+        "unit": "years"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

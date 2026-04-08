@@ -1,0 +1,109 @@
+{
+  "modelName": "Covid3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "R0",
+      "type": "other",
+      "currentValue": 3.8,
+      "description": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4–5.6)",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "Rt",
+      "type": "other",
+      "currentValue": 0.66,
+      "description": "Average time-varying reproduction number across 11 countries after interventions",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "infection_to_onset",
+      "type": "other",
+      "currentValue": 5.1,
+      "description": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "onset_to_death",
+      "type": "mortality",
+      "currentValue": 17.8,
+      "description": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "generation_interval",
+      "type": "other",
+      "currentValue": 6.5,
+      "description": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "lockdown_effect",
+      "type": "other",
+      "currentValue": 81.0,
+      "description": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "R0",
+    "Rt",
+    "infection_to_onset",
+    "onset_to_death",
+    "generation_interval"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "R0",
+      "Rt",
+      "infection_to_onset",
+      "onset_to_death",
+      "generation_interval"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "R0": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "Rt": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "infection_to_onset": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "onset_to_death": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "generation_interval": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

@@ -1,0 +1,158 @@
+{
+  "modelName": "Covid2",
+  "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings — assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+  "totalParameters": 8,
+  "parametersWithUncertainty": 8,
+  "parameters": [
+    {
+      "parameter": "R0",
+      "yourValue": "2.2",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "dimensionless",
+      "description": "Basic reproduction number (95% CI 1.4–3.9)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "incubation_period",
+      "yourValue": "5.2",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "days",
+      "description": "Average incubation period, time spent exposed but not yet infectious (95% CI 4.1–7.0 days); epsilon = 1/5.2",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "onset_to_first_medical_visit",
+      "yourValue": "5.8",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "days",
+      "description": "Average days from symptom onset to first medical visit and isolation (95% CI 4.3–7.5 days); used to derive daily contact rate c = R0 / 5.8",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "r",
+      "yourValue": "varies over time",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "1/days",
+      "description": "Removal/recovery rate, equal to inverse of average infectious period proxied by median time from illness onset to reported case; decreased from 12 days early in outbreak to 3 days in early February due to improved case identification",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "epsilon",
+      "yourValue": "0.192",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "1/days",
+      "description": "Rate of progression from exposed to infectious (1/5.2 days)",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "c",
+      "yourValue": "derived from R0",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "contacts/day",
+      "description": "Daily contact rate calculated as R0 divided by average days from onset to first medical visit (5.8 days), weighted by relative level of daily contact from Baidu movement data",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "initial_infected",
+      "yourValue": "5",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "persons",
+      "description": "Number of initially infected people seeded in Wuhan on December 1, 2019",
+      "type": "CONSTANT"
+    },
+    {
+      "parameter": "simulation_runs",
+      "yourValue": "1000",
+      "source": "Model file",
+      "rangeInLiterature": {
+        "min": null,
+        "max": null,
+        "mean": null,
+        "std": null
+      },
+      "papers": [],
+      "confidence": "Unknown",
+      "notes": "Literature search needed for this parameter",
+      "model": "Covid2",
+      "unit": "runs",
+      "description": "Number of stochastic simulation runs performed",
+      "type": "CONSTANT"
+    }
+  ],
+  "summary": {
+    "highConfidence": 0,
+    "mediumConfidence": 0,
+    "lowConfidence": 0,
+    "unknownConfidence": 8
+  }
+}

@@ -1,0 +1,38 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria3,Compartment,Susceptible and Uninfected Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Symptomatic and Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Asymptomatic and Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Infectious and Undetectable by Standard Microscopy Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Treated and Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Uninfected and Protected by Antimalarial Prophylaxis Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Symptomatic and Infectious Humans,RateFlow,0.0,False,"New human infections following bites from infectious mosquitoes; newly infected humans develop patent parasitaemia after a liver-stage delay, with a proportion developing symptoms.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Uninfected and Protected by Antimalarial Prophylaxis Humans,RateFlow,0.0,False,Mass treatment of uninfected individuals moves them into temporary prophylactic protection.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic and Infectious Humans,RateFlow,0.0,False,Symptomatic infections progress to asymptomatic infection in the absence of treatment or after treatment failure.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated and Infectious Humans,RateFlow,0.0,False,Successful treatment of symptomatic infections moves individuals into the treated infectious state.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Infectious and Undetectable by Standard Microscopy Humans,RateFlow,0.0,False,Asymptomatic patent infections progress to the subpatent state.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated and Infectious Humans,RateFlow,0.0,False,Mass treatment or screening-based treatment of asymptomatic infections moves individuals into the treated infectious state.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated and Infectious Humans,RateFlow,0.0,False,Screening-based treatment can target subpatent infections when PCR is used.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic and Infectious Humans,RateFlow,0.0,False,Treatment failures enter the asymptomatic infectious state.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Uninfected and Protected by Antimalarial Prophylaxis Humans,RateFlow,0.0,False,"After parasite clearance, treated individuals may enter a protected prophylactic state depending on drug half-life.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Susceptible and Uninfected Humans,RateFlow,0.0,False,Loss of prophylactic protection returns individuals to the susceptible uninfected state.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,0.0,False,Mosquitoes become infected after biting infectious humans.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,0.0,False,Extrinsic incubation progression from exposed to infectious mosquitoes.,,,
+Malaria3,Parameter,Drug efficacy,,,,,,Model file,Certain,,,,,,Probability of full parasite clearance among treated individuals.,CONSTANT,95-98% for antimalarials used in mass treatment; model often assumes 95%,%
+Malaria3,Parameter,Coverage of mass drug administration,,,,,,Model file,Certain,,,,,,Proportion of the population treated during MDA before exclusion of pregnant women.,CONSTANT,80% in main simulations,%
+Malaria3,Parameter,Coverage of artemisinin-combination therapies among symptomatic treated cases,,,,,,Model file,Certain,,,,,,Fraction of symptomatic treated cases receiving ACTs.,CONSTANT,20%,%
+Malaria3,Parameter,Coverage of non-ACT treatments among symptomatic treated cases,,,,,,Model file,Certain,,,,,,Fraction of symptomatic treated cases receiving non-ACT treatments.,CONSTANT,80%,%
+Malaria3,Parameter,Efficacy of non-gametocytocidal treatments,,,,,,Model file,Certain,,,,,,Parasite clearance efficacy assumed for non-ACT treatments due to resistance.,CONSTANT,60%,%
+Malaria3,Parameter,Efficacy of ACTs,,,,,,Model file,Certain,,,,,,Parasite clearance efficacy assumed for ACTs.,CONSTANT,95%,%
+Malaria3,Parameter,"Duration of gametocytaemia in treated infection, non-artemisinins",,,,,,Model file,Certain,,,,,,Duration of infectiousness after non-artemisinins.,CONSTANT,55.6,days
+Malaria3,Parameter,"Duration of gametocytaemia in treated infection, ACT",,,,,,Model file,Certain,,,,,,Duration of infectiousness after ACT treatment.,CONSTANT,13.4,days
+Malaria3,Parameter,"Duration of gametocytaemia in treated infection, ACT-PQ",,,,,,Model file,Certain,,,,,,Duration of infectiousness after ACT plus primaquine.,CONSTANT,3.0,days
+Malaria3,Parameter,"Duration of inhibitory antimalarial blood concentration, short-acting drug",,,,,,Model file,Certain,,,,,,Duration of prophylactic blood concentration for short-acting drugs.,CONSTANT,10,days
+Malaria3,Parameter,"Duration of inhibitory antimalarial blood concentration, long-acting drug",,,,,,Model file,Certain,,,,,,Duration of prophylactic blood concentration for long-acting drugs.,CONSTANT,30,days
+Malaria3,Parameter,"Reduction in average infectiousness following treatment, non-artemisinins",,,,,,Model file,Certain,,,,,,Reduction in infectiousness to mosquitoes compared with the pre-treatment state.,CONSTANT,70,%
+Malaria3,Parameter,"Reduction in average infectiousness following treatment, ACT or ACT-PQ",,,,,,Model file,Certain,,,,,,Reduction in infectiousness to mosquitoes compared with the pre-treatment state.,CONSTANT,80.6,%
+Malaria3,Parameter,Pregnancy prevalence among women aged 15-45,,,,,,Model file,Certain,,,,,,Proportion of women of child-bearing age assumed pregnant and excluded from treatment.,CONSTANT,7.1,%
+Malaria3,Parameter,Pregnancy prevalence among population aged 15-45,,,,,,Model file,Certain,,,,,,Population-level pregnancy prevalence used in the model.,CONSTANT,0.5,%
+Malaria3,Parameter,Correlation in individual participation between repeated rounds of MDA,,,,,,Model file,Certain,,,,,,Degree to which the same individuals repeatedly participate or do not participate in successive MDA rounds.,CONSTANT,0 to 1,dimensionless

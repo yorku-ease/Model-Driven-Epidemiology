@@ -1,0 +1,359 @@
+{
+  "modelName": "Influenza3",
+  "summary": {
+    "modelName": "Influenza3",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 16,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": true
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination of susceptible individuals at rate e_i n(t).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination failure among susceptible individuals at rate (1-e_i) n(t).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.4",
+            "description": "Infection of susceptible individuals by the age-specific force of infection lambda_i.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Effectively Vaccinated but Not Yet Protected",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Development of vaccine-induced protection at rate g_i.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.4",
+            "description": "Breakthrough infection of vaccinated but not yet protected individuals by lambda_i.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Ineffectively Vaccinated",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.4",
+            "description": "Infection of ineffectively vaccinated individuals by lambda_i.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Protected by Vaccination",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Latent",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from latent to infectious at rate k.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Symptomatic and Infectious in the Community",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospitalization at age-specific rate a_i.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infectious state at rate c_1.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Hospitalized",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from hospitalization at rate c_2.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Influenza mortality among hospitalized individuals at age-specific rate d_i.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 8,
+        "primaryName": "Dead",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "k",
+        "type": "CONSTANT",
+        "expression": "1/1.9",
+        "description": "Rate of progression from latent to infectious state; mean latent period 1.9 days.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 1,
+        "name": "a_i",
+        "type": "CONSTANT",
+        "expression": "a_i=(p_Hi/(1-p_Hi))c_1",
+        "description": "Age-specific hospitalization rate for age group i.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 2,
+        "name": "p_Hi",
+        "type": "CONSTANT",
+        "expression": "Figure 2, Figure S2",
+        "description": "Fraction of clinical cases hospitalized for age group i.",
+        "unit": "probability"
+      },
+      {
+        "index": 3,
+        "name": "c_1",
+        "type": "CONSTANT",
+        "expression": "1/1.5",
+        "description": "Recovery rate for infectious class; mean infectious period 1.5 days.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 4,
+        "name": "c_2",
+        "type": "CONSTANT",
+        "expression": "1/1.5",
+        "description": "Recovery rate for hospitalized class; mean hospitalized period 1.5 days.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 5,
+        "name": "d_i",
+        "type": "CONSTANT",
+        "expression": "d_i=(CFP_i/(1-CFP_i))c_2",
+        "description": "Influenza mortality rate for age group i.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 6,
+        "name": "CFP_i",
+        "type": "CONSTANT",
+        "expression": "Figure 2, Figure S3",
+        "description": "Case fatality proportion for age group i.",
+        "unit": "probability"
+      },
+      {
+        "index": 7,
+        "name": "lambda_i",
+        "type": "CONSTANT",
+        "expression": "lambda_i=\\sum_j b_ij I_j/N(t) + H_j/N(t)",
+        "description": "Age-specific force of infection acting on age group i.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 8,
+        "name": "b_ij",
+        "type": "CONSTANT",
+        "expression": "q c_ij",
+        "description": "Transmission rate between age groups i and j.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 9,
+        "name": "q",
+        "type": "CONSTANT",
+        "expression": "calibrated to R_0",
+        "description": "Transmission probability per contact.",
+        "unit": "probability per contact"
+      },
+      {
+        "index": 10,
+        "name": "c_ij",
+        "type": "CONSTANT",
+        "expression": "Table S1",
+        "description": "Age-specific contact rates between age groups i and j.",
+        "unit": "contacts per week"
+      },
+      {
+        "index": 11,
+        "name": "n(t)",
+        "type": "CONSTANT",
+        "expression": "0 for t<t*",
+        "description": "Vaccination rate; vaccination begins t* days after epidemic onset.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 12,
+        "name": "t*",
+        "type": "CONSTANT",
+        "expression": "25 or 37",
+        "description": "Vaccination start time in the adaptive strategy scenarios.",
+        "unit": "day"
+      },
+      {
+        "index": 13,
+        "name": "e_i",
+        "type": "CONSTANT",
+        "expression": "77.5% for individuals <65 y; 35% for seniors >65 y",
+        "description": "Age-specific vaccine efficacy.",
+        "unit": "probability"
+      },
+      {
+        "index": 14,
+        "name": "g_i",
+        "type": "CONSTANT",
+        "expression": "1/10",
+        "description": "Rate at which effectively vaccinated individuals become protected; mean 10 days.",
+        "unit": "day^-1"
+      },
+      {
+        "index": 15,
+        "name": "R_0",
+        "type": "CONSTANT",
+        "expression": "1.4-1.8 (Mexico 2009 scenario); 1.8 (historical scenarios)",
+        "description": "Basic reproduction number used in scenario analyses.",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

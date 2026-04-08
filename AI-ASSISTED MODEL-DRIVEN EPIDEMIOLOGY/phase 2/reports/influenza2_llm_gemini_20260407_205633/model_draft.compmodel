@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R0" expression="1.4-2.0" type="CONSTANT" description="Basic reproduction number. The paper focuses on a 'moderate' scenario of 1.7 and a 'high' scenario of 2.0." unit="dimensionless"/>
+  <parameters name="Generation time" expression="2.6" type="CONSTANT" description="The assumed generation time of the influenza virus." unit="days"/>
+  <parameters name="Proportion of clinical cases" expression="0.5" type="CONSTANT" description="The proportion of infected individuals who become ill enough to be classified as clinical cases." unit="proportion"/>
+  <parameters name="Household transmission proportion" expression="0.3" type="CONSTANT" description="The proportion of total transmission estimated to occur within households for the United States." unit="proportion"/>
+  <parameters name="Community transmission proportion" expression="0.231" type="CONSTANT" description="The proportion of total transmission estimated to occur in the general community (33% of the 70% of transmission outside the household)." unit="proportion"/>
+  <parameters name="School and workplace transmission proportion" expression="0.259" type="CONSTANT" description="The proportion of total transmission estimated to occur in schools and workplaces (37% of the 70% of transmission outside the household)." unit="proportion"/>
+  <parameters name="Matched vaccine efficacy (susceptibility reduction)" expression="0.7" type="CONSTANT" description="Reduction in susceptibility to infection for individuals who receive a matched pandemic vaccine." unit="proportion"/>
+  <parameters name="Matched vaccine efficacy (infectiousness reduction)" expression="0.3" type="CONSTANT" description="Reduction in infectiousness for vaccinated individuals who still become infected." unit="proportion"/>
+  <parameters name="Matched vaccine efficacy (clinical case reduction)" expression="0.5" type="CONSTANT" description="Reduction in the probability of becoming a clinical case for vaccinated individuals who still become infected." unit="proportion"/>
+  <parameters name="Pre-pandemic vaccine efficacy (susceptibility reduction)" expression="0.3" type="CONSTANT" description="Reduction in susceptibility conferred by a pre-prepared vaccine against the source avian virus." unit="proportion"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.3" target="//@compartments.1" description="Transmission of the influenza virus from infectious to susceptible individuals through contact."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.2" description="Progression of individuals from the latent (Exposed) state to the infectious state."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.3" description="Recovery of individuals from the infectious state, after which they are no longer infectious and are immune."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Per-exposure protection from vaccination for seronegative vaccinees" expression="0.321" type="CONSTANT" description="Estimated vaccine protection per exposure among seronegative vaccinees." unit="probability"/>
+  <parameters name="Per-exposure protection from vaccination for seropositive vaccinees" expression="0.516" type="CONSTANT" description="Estimated vaccine protection per exposure among seropositive vaccinees." unit="probability"/>
+  <parameters name="Average duration of protection for seronegative vaccinees" expression="426" type="CONSTANT" description="Average duration of vaccine-induced protection among seronegative vaccinees." unit="days"/>
+  <parameters name="Average duration of protection for seropositive vaccinees" expression="258" type="CONSTANT" description="Average duration of vaccine-induced protection among seropositive vaccinees." unit="days"/>
+  <parameters name="Probability of symptoms conditional on infection (primary)" expression="0.405" type="CONSTANT" description="Probability that a primary dengue infection becomes symptomatic." unit="probability"/>
+  <parameters name="Probability of symptoms conditional on infection (secondary)" expression="0.339" type="CONSTANT" description="Probability that a secondary dengue infection becomes symptomatic." unit="probability"/>
+  <parameters name="Probability of symptoms conditional on infection (post-secondary)" expression="0.09" type="CONSTANT" description="Probability that a post-secondary dengue infection becomes symptomatic." unit="probability"/>
+  <parameters name="Probability of hospitalization conditional on symptoms (primary)" expression="0.074" type="CONSTANT" description="Probability of hospitalization given symptomatic primary infection." unit="probability"/>
+  <parameters name="Probability of hospitalization conditional on symptoms (secondary)" expression="0.376" type="CONSTANT" description="Probability of hospitalization given symptomatic secondary infection." unit="probability"/>
+  <parameters name="Probability of hospitalization conditional on symptoms (post-secondary)" expression="0.101" type="CONSTANT" description="Probability of hospitalization given symptomatic post-secondary infection." unit="probability"/>
+  <parameters name="Seropositivity among nine-year-olds" expression="PE9" type="CONSTANT" description="Proportion of nine-year-olds with previous DENV exposure." unit="probability"/>
+  <parameters name="Sensitivity" expression="sensitivity" type="CONSTANT" description="Probability that a person with prior DENV exposure tests seropositive." unit="probability"/>
+  <parameters name="Specificity" expression="specificity" type="CONSTANT" description="Probability that a DENV-naïve person tests seronegative." unit="probability"/>
+  <parameters name="Vaccination coverage" expression="coveragevaccination = coverageintervention × SP" type="CONSTANT" description="Coverage among nine-year-olds who screen positive and receive vaccination." unit="probability"/>
+  <parameters name="Serological screening positivity" expression="SP = PE9 × sensitivity + (1 - PE9) × (1 - specificity)" type="CONSTANT" description="Probability that screening returns a positive result among nine-year-olds." unit="probability"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Dengue transmission from an infected mosquito to a susceptible human during blood-feeding."/>
+  </compartments>
+  <compartments PrimaryName="Infected Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Recovery from dengue infection with acquisition of lifelong immunity to the infecting serotype."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRate="0.0" target="//@compartments.4" description="Dengue transmission from an infected human to a susceptible mosquito during blood-feeding."/>
+  </compartments>
+  <compartments PrimaryName="Infected Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

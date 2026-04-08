@@ -1,0 +1,298 @@
+{
+  "modelName": "Measles3",
+  "summary": {
+    "modelName": "Measles3",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 17,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Maternally Protected",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of passive maternal antibody protection over the first year of life",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.2",
+            "description": "Infection of susceptibles through contact with infectious individuals, at age-specific force of infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful vaccination of susceptibles (proportion p) leading to lasting immunity",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination of susceptibles who fail to gain effective protection (proportion 1-p)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Latent",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from latent to infectious period",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infection establishing lasting immunity",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Immune",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Vaccine Failure",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.2",
+            "description": "Infection of vaccine failures through contact with infectious individuals, following the same course as susceptibles",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Force of infection (age 0-1)",
+        "type": "CONSTANT",
+        "expression": "0.0690",
+        "description": "Age-specific force of infection for age group 0-1 years, estimated from pre-vaccination notification data",
+        "unit": "per person per year"
+      },
+      {
+        "index": 1,
+        "name": "Force of infection (age 1-2)",
+        "type": "CONSTANT",
+        "expression": "0.1075",
+        "description": "Age-specific force of infection for age group 1-2 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 2,
+        "name": "Force of infection (age 2-3)",
+        "type": "CONSTANT",
+        "expression": "0.1572",
+        "description": "Age-specific force of infection for age group 2-3 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 3,
+        "name": "Force of infection (age 3-4)",
+        "type": "CONSTANT",
+        "expression": "0.2005",
+        "description": "Age-specific force of infection for age group 3-4 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 4,
+        "name": "Force of infection (age 4-5)",
+        "type": "CONSTANT",
+        "expression": "0.2582",
+        "description": "Age-specific force of infection for age group 4-5 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 5,
+        "name": "Force of infection (age 5-10)",
+        "type": "CONSTANT",
+        "expression": "0.5167",
+        "description": "Age-specific force of infection for age group 5-10 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 6,
+        "name": "Force of infection (age 10-15)",
+        "type": "CONSTANT",
+        "expression": "0.2549",
+        "description": "Age-specific force of infection for age group 10-15 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 7,
+        "name": "Force of infection (age 15-75)",
+        "type": "CONSTANT",
+        "expression": "0.0989",
+        "description": "Age-specific force of infection for age group 15-75 years",
+        "unit": "per person per year"
+      },
+      {
+        "index": 8,
+        "name": "Rate of progression from latency",
+        "type": "CONSTANT",
+        "expression": "52.14",
+        "description": "Rate of progression from latent to infectious class; average latent period of 7 days",
+        "unit": "per person per year"
+      },
+      {
+        "index": 9,
+        "name": "Rate of recovery from infection",
+        "type": "CONSTANT",
+        "expression": "52.14",
+        "description": "Rate of recovery from infectious class; average infectious period of 7 days",
+        "unit": "per person per year"
+      },
+      {
+        "index": 10,
+        "name": "Rate of loss of passive immunity",
+        "type": "CONSTANT",
+        "expression": "4.0",
+        "description": "Rate of loss of maternal antibody protection; average duration of maternal protection is 3 months",
+        "unit": "per person per year"
+      },
+      {
+        "index": 11,
+        "name": "Vaccine efficacy (p)",
+        "type": "CONSTANT",
+        "expression": "0.90",
+        "description": "Proportion of vaccinated susceptibles who gain lasting immunity and are no longer able to transmit infection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "Birth rate",
+        "type": "CONSTANT",
+        "expression": "666666",
+        "description": "Fixed annual birth cohort size approximating births in England and Wales over the study period",
+        "unit": "per year"
+      },
+      {
+        "index": 13,
+        "name": "Background death rate (adults)",
+        "type": "CONSTANT",
+        "expression": "0.0167",
+        "description": "Background death rate for the residual adult age group (1/60 per person per year)",
+        "unit": "per person per year"
+      },
+      {
+        "index": 14,
+        "name": "Average duration of latent period",
+        "type": "CONSTANT",
+        "expression": "7",
+        "description": "Average duration of the latent (pre-patent) period",
+        "unit": "days"
+      },
+      {
+        "index": 15,
+        "name": "Average duration of infectious period",
+        "type": "CONSTANT",
+        "expression": "7",
+        "description": "Average duration of the infectious period",
+        "unit": "days"
+      },
+      {
+        "index": 16,
+        "name": "Average duration of maternal protection",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "Average duration of passive maternal antibody protection",
+        "unit": "months"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

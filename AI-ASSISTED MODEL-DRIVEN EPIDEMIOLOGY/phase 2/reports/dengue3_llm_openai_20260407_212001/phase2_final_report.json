@@ -1,0 +1,342 @@
+{
+  "paper_name": "Dengue3",
+  "summary": {
+    "extraction": {
+      "compartments": 5,
+      "flows": 4,
+      "parameters": 19,
+      "stratifications": 2,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "S"
+    ],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Infected Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Infected Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Mosquitoes",
+        "target": "Susceptible Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Vaccination coverage",
+        "value": "80%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccination schedule",
+        "value": "3 doses, 6 months apart",
+        "unit": "schedule",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Catch-up campaign coverage",
+        "value": "80%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Age at routine vaccination",
+        "value": "9 years",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Alternative vaccination ages",
+        "value": "10 to 18 years",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Transmission intensity (SP9)",
+        "value": "10%, 30%, 50%, 70%, 90%",
+        "unit": "proportion seropositive by age 9",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Time horizon after vaccination",
+        "value": "30 years",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Trial simulation horizon",
+        "value": "3 years",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dose interval",
+        "value": "6 months",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Discount rate",
+        "value": "3%",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "DALY cost threshold",
+        "value": "US$2,000",
+        "unit": "USD per DALY averted",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic dengue DALY burden",
+        "value": "0.006",
+        "unit": "DALYs per case",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Severe dengue DALY burden",
+        "value": "0.02",
+        "unit": "DALYs per case",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Public payer cost, symptomatic case",
+        "value": "60",
+        "unit": "USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Public payer cost, hospitalised case",
+        "value": "200",
+        "unit": "USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Societal cost, symptomatic case",
+        "value": "200",
+        "unit": "USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Societal cost, hospitalised case",
+        "value": "500",
+        "unit": "USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Societal cost, fatal case",
+        "value": "11,000",
+        "unit": "USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Probability of death among symptomatic dengue cases",
+        "value": "0.03% to 0.09%",
+        "unit": "proportion",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 5,
+    "flows": 4,
+    "parameters": 19,
+    "stratifications": 2,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 32,
+    "items_with_evidence": 32,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 32,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 32,
+      "items_with_evidence": 32,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 32,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 0,
+        "fp": 5,
+        "fn": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "flows": {
+        "tp": 0,
+        "fp": 4,
+        "fn": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 18,
+        "fn": 7,
+        "precision": 0.0526,
+        "recall": 0.125,
+        "f1": 0.0741
+      },
+      "composite_score": 0.0111,
+      "compartment_matches": [],
+      "flow_matches": [],
+      "parameter_matches": [
+        {
+          "gold": "RoutineVaccinationRate 0.05 Routine vaccination of 9-year-olds",
+          "extracted": "Vaccination coverage 80% Default routine vaccination coverage for 9-year-old children.",
+          "score": 0.7974532842636108
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

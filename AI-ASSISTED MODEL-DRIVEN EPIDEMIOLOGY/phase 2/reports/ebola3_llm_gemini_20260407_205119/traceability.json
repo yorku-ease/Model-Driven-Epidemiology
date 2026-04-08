@@ -1,0 +1,394 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Susceptible individuals who can be infected by Ebola virus.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been infected by Ebola virus but are not yet infectious or symptomatic.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious in community": {
+      "evidence": [
+        {
+          "text_span": "Symptomatic and infectious individuals in the community.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized": {
+      "evidence": [
+        {
+          "text_span": "Hospitalized Ebola cases who are infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dead": {
+      "evidence": [
+        {
+          "text_span": "Dead Ebola cases who may transmit the disease during funerals, but are not yet buried.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals removed from the chain of transmission (cured or dead and buried).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "Infection of susceptible individuals through contact with infectious individuals in the community (I), hospitalized cases (H), or during funerals (F). Rate: (b_I*S*I + b_H*S*H + b_F*S*F)/N.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious in community": {
+      "evidence": [
+        {
+          "text_span": "Progression of exposed individuals to become infectious. Rate: a*E.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious in community -> Hospitalized": {
+      "evidence": [
+        {
+          "text_span": "Hospitalization of infectious individuals. Rate: c_h*h_1*I.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious in community -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Death of infectious individuals in the community. Rate: d_1*(1-h_1)*c_d*I.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Death of hospitalized individuals. Rate: c_dh*d_2*H.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "N": {
+      "evidence": [
+        {
+          "text_span": "Size of the population.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "200000 (DRC 1995); 470000 (Uganda 2000)",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "b_I": {
+      "evidence": [
+        {
+          "text_span": "Transmission coefficient in the community.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.588 (DRC 1995); 3.532 (Uganda 2000)",
+          "unit": "week^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "b_H": {
+      "evidence": [
+        {
+          "text_span": "Transmission coefficient at the hospital.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.794 (DRC 1995); 0.012 (Uganda 2000)",
+          "unit": "week^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "b_F": {
+      "evidence": [
+        {
+          "text_span": "Transmission coefficient during funerals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "7.653 (DRC 1995); 0.462 (Uganda 2000)",
+          "unit": "week^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/a": {
+      "evidence": [
+        {
+          "text_span": "Mean duration of the incubation period.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "7 (DRC 1995); 12 (Uganda 2000)",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/c_h": {
+      "evidence": [
+        {
+          "text_span": "Mean duration from symptom onset to hospitalization.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5 (DRC 1995); 4.2 (Uganda 2000)",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/c_d": {
+      "evidence": [
+        {
+          "text_span": "Mean duration from onset to death for patients who die.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "9.6 (DRC 1995); 8 (Uganda 2000)",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/c_i": {
+      "evidence": [
+        {
+          "text_span": "Mean duration from onset to end of infectiousness for survivors.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/c_f": {
+      "evidence": [
+        {
+          "text_span": "Mean duration from death to traditional burial.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "h": {
+      "evidence": [
+        {
+          "text_span": "Proportion of cases hospitalized.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "80",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "d": {
+      "evidence": [
+        {
+          "text_span": "Overall case-fatality ratio.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "81 (DRC 1995); 53 (Uganda 2000)",
+          "unit": "%"
+        }
+      ],
+      "paper_backed": true
+    },
+    "h_1": {
+      "evidence": [
+        {
+          "text_span": "Proportion of infectious cases that are hospitalized, computed to match the overall hospitalization proportion h.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "d_1": {
+      "evidence": [
+        {
+          "text_span": "Proportion of non-hospitalized cases that die, computed to match the overall case-fatality ratio d.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "d_2": {
+      "evidence": [
+        {
+          "text_span": "Proportion of hospitalized cases that die, computed to match the overall case-fatality ratio d.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/c_dh": {
+      "evidence": [
+        {
+          "text_span": "Mean duration from hospitalization to death.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/c_ih": {
+      "evidence": [
+        {
+          "text_span": "Mean duration from hospitalization to end of infectiousness for survivors.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "z": {
+      "evidence": [
+        {
+          "text_span": "Efficacy of interventions in the community, where the transmission coefficient is decreased by a factor (1-z).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.12 (DRC 1995); 0.88 (Uganda 2000)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 12,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 31,
+    "items_with_evidence": 31,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 31,
+    "faithfulness_percentage": 100.0
+  }
+}

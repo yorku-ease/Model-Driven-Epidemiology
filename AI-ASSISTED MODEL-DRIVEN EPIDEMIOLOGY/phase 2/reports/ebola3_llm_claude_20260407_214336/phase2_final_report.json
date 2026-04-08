@@ -1,0 +1,399 @@
+{
+  "paper_name": "Ebola3",
+  "summary": {
+    "extraction": {
+      "compartments": 6,
+      "flows": 5,
+      "parameters": 19,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Hospitalized",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Dead but not yet buried",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Hospitalized",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Hospitalized",
+        "target": "Dead but not yet buried",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Dead but not yet buried",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "beta_I",
+        "value": "0.588 (DRC 1995); 3.532 (Uganda 2000)",
+        "unit": "week^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "beta_H",
+        "value": "0.794 (DRC 1995); 0.012 (Uganda 2000)",
+        "unit": "week^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "beta_F",
+        "value": "7.653 (DRC 1995); 0.462 (Uganda 2000)",
+        "unit": "week^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "alpha",
+        "value": "1/7 (DRC 1995); 1/12 (Uganda 2000)",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/c_h",
+        "value": "5 (DRC 1995); 4.2 (Uganda 2000)",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/c_d",
+        "value": "9.6 (DRC 1995); 8 (Uganda 2000)",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/c_i",
+        "value": "10",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1/c_f",
+        "value": "2",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "h",
+        "value": "80",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d",
+        "value": "81 (DRC 1995); 53 (Uganda 2000)",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "h_1",
+        "value": "0.67 (DRC 1995); 0.65 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d_1",
+        "value": "0.80 (DRC 1995); 0.47 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d_2",
+        "value": "0.80 (DRC 1995); 0.42 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "N",
+        "value": "200000 (DRC 1995); 470000 (Uganda 2000)",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R_0",
+        "value": "2.7 (DRC 1995, 95% CI 1.9-2.8); 2.7 (Uganda 2000, 95% CI 2.5-4.1)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R_0I",
+        "value": "0.5 (DRC 1995); 2.6 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R_0H",
+        "value": "0.4 (DRC 1995); 0.01 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "R_0F",
+        "value": "1.8 (DRC 1995); 0.1 (Uganda 2000)",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "1-z",
+        "value": "12 (DRC 1995); 88 (Uganda 2000)",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 6,
+    "flows": 5,
+    "parameters": 19,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 33,
+    "items_with_evidence": 33,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 33,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 33,
+      "items_with_evidence": 33,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 33,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 4,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.6667,
+        "recall": 0.6667,
+        "f1": 0.6667
+      },
+      "flows": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 5,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6667
+      },
+      "parameters": {
+        "tp": 2,
+        "fp": 17,
+        "fn": 8,
+        "precision": 0.1053,
+        "recall": 0.2,
+        "f1": 0.1379
+      },
+      "composite_score": 0.5874,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed",
+          "score": 0.9999998807907104
+        },
+        {
+          "gold": "InfectiousCommunity",
+          "extracted": "Infectious",
+          "score": 0.8125842213630676
+        },
+        {
+          "gold": "Hospitalized",
+          "extracted": "Hospitalized",
+          "score": 1.000000238418579
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed",
+          "score": 0.9999997615814209
+        },
+        {
+          "gold": "Exposed->InfectiousCommunity",
+          "extracted": "Exposed->Infectious",
+          "score": 0.9035357236862183
+        },
+        {
+          "gold": "InfectiousCommunity->Hospitalized",
+          "extracted": "Infectious->Hospitalized",
+          "score": 0.9200104475021362
+        },
+        {
+          "gold": "InfectiousCommunity->FuneralInfectious",
+          "extracted": "Infectious->Dead but not yet buried",
+          "score": 0.7407131195068359
+        },
+        {
+          "gold": "Hospitalized->FuneralInfectious",
+          "extracted": "Hospitalized->Dead but not yet buried",
+          "score": 0.7562525272369385
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "BetaCommunity 0.588 Transmission coefficient in the community, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+          "extracted": "beta_I 0.588 (DRC 1995); 3.532 (Uganda 2000) Transmission coefficient in the community",
+          "score": 0.7480744123458862
+        },
+        {
+          "gold": "BetaHospital 0.794 Transmission coefficient at hospital, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+          "extracted": "beta_H 0.794 (DRC 1995); 0.012 (Uganda 2000) Transmission coefficient at the hospital",
+          "score": 0.7758556604385376
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

@@ -1,0 +1,31 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebola3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Hospitalized,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Dead but not yet buried,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola3,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.0,False,"Infection through contact with infectious individuals in community, hospital, or during funerals; rate = (beta_I * S * I + beta_H * S * H + beta_F * S * F) / N",,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.3,False,"End of incubation period, becoming symptomatic and infectious; rate = alpha * E",,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Hospitalized,RateFlow,//@parameters.8,False,Hospitalization of infectious cases; rate = c_h * h_1 * I,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Dead but not yet buried,RateFlow,//@parameters.8,False,Death of non-hospitalized cases in the community; rate = c_d * (1 - h_1) * d_1 * I,,,
+Ebola3,Flow,,,,,,,Model file,Certain,,Dead but not yet buried,RateFlow,//@parameters.8,False,Death of hospitalized cases; rate = c_dh * d_2 * H,,,
+Ebola3,Parameter,beta_I,,,,,,Model file,Certain,,,,,,Transmission coefficient in the community,CONSTANT,0.588 (DRC 1995); 3.532 (Uganda 2000),week^-1
+Ebola3,Parameter,beta_H,,,,,,Model file,Certain,,,,,,Transmission coefficient at the hospital,CONSTANT,0.794 (DRC 1995); 0.012 (Uganda 2000),week^-1
+Ebola3,Parameter,beta_F,,,,,,Model file,Certain,,,,,,Transmission coefficient during funerals,CONSTANT,7.653 (DRC 1995); 0.462 (Uganda 2000),week^-1
+Ebola3,Parameter,alpha,,,,,,Model file,Certain,,,,,,Inverse of the mean duration of the incubation period,CONSTANT,1/7 (DRC 1995); 1/12 (Uganda 2000),day^-1
+Ebola3,Parameter,1/c_h,,,,,,Model file,Certain,,,,,,Mean duration from symptom onset to hospitalization,CONSTANT,5 (DRC 1995); 4.2 (Uganda 2000),days
+Ebola3,Parameter,1/c_d,,,,,,Model file,Certain,,,,,,Mean duration from symptom onset to death,CONSTANT,9.6 (DRC 1995); 8 (Uganda 2000),days
+Ebola3,Parameter,1/c_i,,,,,,Model file,Certain,,,,,,Mean duration of the infectious period for survivors (onset to end of infectiousness),CONSTANT,10,days
+Ebola3,Parameter,1/c_f,,,,,,Model file,Certain,,,,,,Mean duration from death to traditional burial,CONSTANT,2,days
+Ebola3,Parameter,h,,,,,,Model file,Certain,,,,,,Proportion of cases hospitalized,CONSTANT,80,%
+Ebola3,Parameter,d,,,,,,Model file,Certain,,,,,,Case-fatality ratio,CONSTANT,81 (DRC 1995); 53 (Uganda 2000),%
+Ebola3,Parameter,h_1,,,,,,Model file,Certain,,,,,,Computed parameter so that h% of infectious cases are hospitalized,CONSTANT,0.67 (DRC 1995); 0.65 (Uganda 2000),dimensionless
+Ebola3,Parameter,d_1,,,,,,Model file,Certain,,,,,,Computed death probability for non-hospitalized infectious cases to achieve overall CFR d,CONSTANT,0.80 (DRC 1995); 0.47 (Uganda 2000),dimensionless
+Ebola3,Parameter,d_2,,,,,,Model file,Certain,,,,,,Computed death probability for hospitalized cases to achieve overall CFR d,CONSTANT,0.80 (DRC 1995); 0.42 (Uganda 2000),dimensionless
+Ebola3,Parameter,N,,,,,,Model file,Certain,,,,,,Size of the population,CONSTANT,200000 (DRC 1995); 470000 (Uganda 2000),individuals
+Ebola3,Parameter,R_0,,,,,,Model file,Certain,,,,,,Basic reproduction number,CONSTANT,"2.7 (DRC 1995, 95% CI 1.9-2.8); 2.7 (Uganda 2000, 95% CI 2.5-4.1)",dimensionless
+Ebola3,Parameter,R_0I,,,,,,Model file,Certain,,,,,,Community component of R_0,CONSTANT,0.5 (DRC 1995); 2.6 (Uganda 2000),dimensionless
+Ebola3,Parameter,R_0H,,,,,,Model file,Certain,,,,,,Hospitalization component of R_0,CONSTANT,0.4 (DRC 1995); 0.01 (Uganda 2000),dimensionless
+Ebola3,Parameter,R_0F,,,,,,Model file,Certain,,,,,,Traditional burial component of R_0,CONSTANT,1.8 (DRC 1995); 0.1 (Uganda 2000),dimensionless
+Ebola3,Parameter,1-z,,,,,,Model file,Certain,,,,,,Decrease in community transmission after interventions,CONSTANT,12 (DRC 1995); 88 (Uganda 2000),%

@@ -1,0 +1,263 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the population who have not yet been infected with SARS-CoV-2",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have been infected with SARS-CoV-2, modelled via a discrete renewal process",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Symptomatic": {
+      "evidence": [
+        {
+          "text_span": "Infected individuals who develop symptoms (implicit stage in the infection-to-death pathway)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dead": {
+      "evidence": [
+        {
+          "text_span": "Individuals who have died from COVID-19",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Symptomatic -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "R0": {
+      "evidence": [
+        {
+          "text_span": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "3.8",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Rt": {
+      "evidence": [
+        {
+          "text_span": "Average time-varying reproduction number across 11 countries after interventions",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.66",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ifr": {
+      "evidence": [
+        {
+          "text_span": "Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "country-specific",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "infection_to_onset": {
+      "evidence": [
+        {
+          "text_span": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.1",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "onset_to_death": {
+      "evidence": [
+        {
+          "text_span": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "17.8",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "generation_interval": {
+      "evidence": [
+        {
+          "text_span": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "6.5",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "lockdown_effect": {
+      "evidence": [
+        {
+          "text_span": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75\u201387%)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "81",
+          "unit": "percent reduction in Rt"
+        }
+      ],
+      "paper_backed": true
+    },
+    "alpha_lockdown": {
+      "evidence": [
+        {
+          "text_span": "Country-specific effect of lockdown via partial pooling",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "country-specific",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "alpha_school_closure": {
+      "evidence": [
+        {
+          "text_span": "Shared effect size parameter for school closure intervention across countries",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "shared",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "alpha_public_events": {
+      "evidence": [
+        {
+          "text_span": "Shared effect size parameter for banning public events across countries",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "shared",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "alpha_self_isolation": {
+      "evidence": [
+        {
+          "text_span": "Shared effect size parameter for case-based self-isolation measures across countries",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "shared",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "alpha_social_distancing": {
+      "evidence": [
+        {
+          "text_span": "Shared effect size parameter for social distancing encouraged across countries",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "shared",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 5,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 20,
+    "items_with_evidence": 20,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 20,
+    "faithfulness_percentage": 100.0
+  }
+}

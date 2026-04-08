@@ -1,0 +1,18 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Covid3,Compartment,Susceptible,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid3,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid3,Compartment,Symptomatic,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Covid3,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Covid3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.2,False,"Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio",,,
+Covid3,Parameter,R0,,,,,,Model file,Certain,,,,,,"Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4–5.6)",CONSTANT,3.8,dimensionless
+Covid3,Parameter,Rt,,,,,,Model file,Certain,,,,,,Average time-varying reproduction number across 11 countries after interventions,CONSTANT,0.66,dimensionless
+Covid3,Parameter,ifr,,,,,,Model file,Certain,,,,,,"Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country",CONSTANT,country-specific,dimensionless
+Covid3,Parameter,infection_to_onset,,,,,,Model file,Certain,,,,,,"Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",CONSTANT,5.1,days
+Covid3,Parameter,onset_to_death,,,,,,Model file,Certain,,,,,,"Mean time from onset of symptoms to death, used in the infection-to-death distribution",CONSTANT,17.8,days
+Covid3,Parameter,generation_interval,,,,,,Model file,Certain,,,,,,"Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",CONSTANT,6.5,days
+Covid3,Parameter,lockdown_effect,,,,,,Model file,Certain,,,,,,Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%),CONSTANT,81,percent reduction in Rt
+Covid3,Parameter,alpha_lockdown,,,,,,Model file,Certain,,,,,,Country-specific effect of lockdown via partial pooling,CONSTANT,country-specific,dimensionless
+Covid3,Parameter,alpha_school_closure,,,,,,Model file,Certain,,,,,,Shared effect size parameter for school closure intervention across countries,CONSTANT,shared,dimensionless
+Covid3,Parameter,alpha_public_events,,,,,,Model file,Certain,,,,,,Shared effect size parameter for banning public events across countries,CONSTANT,shared,dimensionless
+Covid3,Parameter,alpha_self_isolation,,,,,,Model file,Certain,,,,,,Shared effect size parameter for case-based self-isolation measures across countries,CONSTANT,shared,dimensionless
+Covid3,Parameter,alpha_social_distancing,,,,,,Model file,Certain,,,,,,Shared effect size parameter for social distancing encouraged across countries,CONSTANT,shared,dimensionless

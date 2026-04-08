@@ -1,0 +1,26 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Zika3,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Susceptible Mosquitoes,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Exposed Mosquitoes,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Infectious Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.0,False,Infection of susceptible humans by infectious mosquitoes at rate β_H * S^H * I^V,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.6,False,Progression from latent to infectious period in humans at rate α_H * E^H,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.6,False,Recovery of infectious humans at rate γ * I^H,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.1,False,Infection of susceptible mosquitoes by infectious humans at rate β_V * S^V * I^H / N,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Susceptible Mosquitoes,RateFlow,//@parameters.6,False,"Death of susceptible mosquitoes at rate δ * S^V, balanced by constant birth rate δ",,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.6,False,Progression from extrinsic incubation to infectious in mosquitoes at rate α_V * E^V,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.6,False,Death of exposed mosquitoes at rate δ * E^V (included in the outflow),,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.6,False,Death of infectious mosquitoes at rate δ * I^V,,,
+Zika3,Parameter,β_H,,,,,,Model file,Certain,,,,,,Vector-to-human transmission rate,CONSTANT,"U(0,1)",days^-1
+Zika3,Parameter,β_V,,,,,,Model file,Certain,,,,,,Human-to-vector transmission rate,CONSTANT,"U(0,1)",days^-1
+Zika3,Parameter,1/α_H,,,,,,Model file,Certain,,,,,,"Intrinsic (human) incubation/latent period, prior Gamma(μ=5.9, σ=0.5)",CONSTANT,5.9,days
+Zika3,Parameter,1/α_V,,,,,,Model file,Certain,,,,,,"Extrinsic (vector) incubation period, prior Gamma(μ=10.5, σ=0.5)",CONSTANT,10.5,days
+Zika3,Parameter,1/γ,,,,,,Model file,Certain,,,,,,"Human infectious period, prior Gamma(μ=5, σ=0.5)",CONSTANT,5,days
+Zika3,Parameter,1/δ,,,,,,Model file,Certain,,,,,,"Mosquito lifespan, prior Gamma(μ=7.8, σ=0.5)",CONSTANT,7.8,days
+Zika3,Parameter,r,,,,,,Model file,Certain,,,,,,Proportion of cases reported (both symptomatic and asymptomatic that seek treatment),CONSTANT,"U(0,1)",dimensionless
+Zika3,Parameter,ϕ,,,,,,Model file,Certain,,,,,,Reporting dispersion parameter for negative binomial distribution,CONSTANT,"U(0,1)",dimensionless
+Zika3,Parameter,N,,,,,,Model file,Certain,,,,,,Human population size,CONSTANT,varies by region,persons
+Zika3,Parameter,R_0,,,,,,Model file,Certain,,,,,,"Basic reproduction number, R_0 = (β_V * α_V * β_H) / (γ * (δ + α_V) * δ)",CONSTANT,2.6–4.8,dimensionless

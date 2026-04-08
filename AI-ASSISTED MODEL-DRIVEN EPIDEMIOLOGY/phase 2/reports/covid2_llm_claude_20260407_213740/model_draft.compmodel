@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="R0" expression="2.2" type="CONSTANT" description="Basic reproduction number (95% CI 1.4–3.9)" unit="dimensionless"/>
+  <parameters name="incubation_period" expression="5.2" type="CONSTANT" description="Average incubation period, time spent exposed but not yet infectious (95% CI 4.1–7.0 days); epsilon = 1/5.2" unit="days"/>
+  <parameters name="onset_to_first_medical_visit" expression="5.8" type="CONSTANT" description="Average days from symptom onset to first medical visit and isolation (95% CI 4.3–7.5 days); used to derive daily contact rate c = R0 / 5.8" unit="days"/>
+  <parameters name="r" expression="varies over time" type="CONSTANT" description="Removal/recovery rate, equal to inverse of average infectious period proxied by median time from illness onset to reported case; decreased from 12 days early in outbreak to 3 days in early February due to improved case identification" unit="1/days"/>
+  <parameters name="epsilon" expression="0.192" type="CONSTANT" description="Rate of progression from exposed to infectious (1/5.2 days)" unit="1/days"/>
+  <parameters name="c" expression="derived from R0" type="CONSTANT" description="Daily contact rate calculated as R0 divided by average days from onset to first medical visit (5.8 days), weighted by relative level of daily contact from Baidu movement data" unit="contacts/day"/>
+  <parameters name="initial_infected" expression="5" type="CONSTANT" description="Number of initially infected people seeded in Wuhan on December 1, 2019" unit="persons"/>
+  <parameters name="simulation_runs" expression="1000" type="CONSTANT" description="Number of stochastic simulation runs performed" unit="runs"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.3" target="//@compartments.1" description="New exposures based on contact between susceptible and infectious individuals; rate is c*S*I/N where c is the daily contact rate"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.2" description="Progression from exposed to infectious at rate epsilon (inverse of incubation period)"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.3" description="Recovery or removal (isolation) of infectious individuals at rate r (inverse of average infectious period, proxied by time from onset to case report)"/>
+  </compartments>
+  <compartments PrimaryName="Recovered/Removed" population="0"/>
+</compartmental:CompartmentalModel>

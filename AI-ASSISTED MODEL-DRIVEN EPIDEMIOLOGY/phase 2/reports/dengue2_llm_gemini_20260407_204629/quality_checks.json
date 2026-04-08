@@ -1,0 +1,616 @@
+{
+  "model_analysis": {
+    "modelName": "Dengue2",
+    "summary": {
+      "modelName": "Dengue2",
+      "totalPopulation": null,
+      "numCompartments": 5,
+      "numParameters": 13,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.1",
+              "description": "Transmission of dengue virus from an infectious mosquito to a susceptible human during a blood-feed.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection, leading to lifelong immunity to the infecting serotype.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Recovered Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 3,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.4",
+              "description": "Transmission of dengue virus from an infectious human to a susceptible mosquito during a blood-feed.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Per-exposure protection from vaccination for seronegative vaccinees",
+          "type": "CONSTANT",
+          "expression": "0.321",
+          "description": "Per-exposure protection from vaccination for seronegative vaccinees.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 1,
+          "name": "Per-exposure protection from vaccination for seropositive vaccinees",
+          "type": "CONSTANT",
+          "expression": "0.516",
+          "description": "Per-exposure protection from vaccination for seropositive vaccinees.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 2,
+          "name": "Average duration of protection for seronegative vaccinees",
+          "type": "CONSTANT",
+          "expression": "426",
+          "description": "Average duration of temporary cross-immunity after vaccination for seronegative vaccinees.",
+          "unit": "days"
+        },
+        {
+          "index": 3,
+          "name": "Average duration of protection for seropositive vaccinees",
+          "type": "CONSTANT",
+          "expression": "258",
+          "description": "Average duration of temporary cross-immunity after vaccination for seropositive vaccinees.",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "Probability of symptoms conditional on infection (primary)",
+          "type": "CONSTANT",
+          "expression": "0.405",
+          "description": "Probability that a primary DENV infection results in symptoms.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 5,
+          "name": "Probability of symptoms conditional on infection (secondary)",
+          "type": "CONSTANT",
+          "expression": "0.339",
+          "description": "Probability that a secondary DENV infection results in symptoms.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 6,
+          "name": "Probability of symptoms conditional on infection (post-secondary)",
+          "type": "CONSTANT",
+          "expression": "0.09",
+          "description": "Probability that a post-secondary DENV infection results in symptoms.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 7,
+          "name": "Probability of hospitalization conditional on symptoms (primary)",
+          "type": "CONSTANT",
+          "expression": "0.074",
+          "description": "Probability of hospitalization for a symptomatic primary DENV infection.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 8,
+          "name": "Probability of hospitalization conditional on symptoms (secondary)",
+          "type": "CONSTANT",
+          "expression": "0.376",
+          "description": "Probability of hospitalization for a symptomatic secondary DENV infection.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 9,
+          "name": "Probability of hospitalization conditional on symptoms (post-secondary)",
+          "type": "CONSTANT",
+          "expression": "0.101",
+          "description": "Probability of hospitalization for a symptomatic post-secondary DENV infection.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 10,
+          "name": "Probability of death conditional on symptomatic disease",
+          "type": "CONSTANT",
+          "expression": "0.0078",
+          "description": "Proportion of symptomatic cases that result in death.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 11,
+          "name": "Probability of mosquito to human transmission",
+          "type": "CONSTANT",
+          "expression": "N/A",
+          "description": "The probability of an infectious mosquito infecting a susceptible human during blood-feeding. Value was calibrated to achieve a target seroprevalence.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 12,
+          "name": "Mosquito emergence rate",
+          "type": "CONSTANT",
+          "expression": "N/A",
+          "description": "The emergence rate of adult female mosquitoes. Value was calibrated to achieve a target seroprevalence.",
+          "unit": "mosquitoes per day"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Dengue2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 13,
+    "parametersWithUncertainty": 13,
+    "parameters": [
+      {
+        "parameter": "Per-exposure protection from vaccination for seronegative vaccinees",
+        "yourValue": "0.321",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Per-exposure protection from vaccination for seronegative vaccinees.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Per-exposure protection from vaccination for seropositive vaccinees",
+        "yourValue": "0.516",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Per-exposure protection from vaccination for seropositive vaccinees.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Average duration of protection for seronegative vaccinees",
+        "yourValue": "426",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "days",
+        "description": "Average duration of temporary cross-immunity after vaccination for seronegative vaccinees.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Average duration of protection for seropositive vaccinees",
+        "yourValue": "258",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "days",
+        "description": "Average duration of temporary cross-immunity after vaccination for seropositive vaccinees.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of symptoms conditional on infection (primary)",
+        "yourValue": "0.405",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Probability that a primary DENV infection results in symptoms.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of symptoms conditional on infection (secondary)",
+        "yourValue": "0.339",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Probability that a secondary DENV infection results in symptoms.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of symptoms conditional on infection (post-secondary)",
+        "yourValue": "0.09",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Probability that a post-secondary DENV infection results in symptoms.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of hospitalization conditional on symptoms (primary)",
+        "yourValue": "0.074",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Probability of hospitalization for a symptomatic primary DENV infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of hospitalization conditional on symptoms (secondary)",
+        "yourValue": "0.376",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Probability of hospitalization for a symptomatic secondary DENV infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of hospitalization conditional on symptoms (post-secondary)",
+        "yourValue": "0.101",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Probability of hospitalization for a symptomatic post-secondary DENV infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of death conditional on symptomatic disease",
+        "yourValue": "0.0078",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "Proportion of symptomatic cases that result in death.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Probability of mosquito to human transmission",
+        "yourValue": "N/A",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "dimensionless",
+        "description": "The probability of an infectious mosquito infecting a susceptible human during blood-feeding. Value was calibrated to achieve a target seroprevalence.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Mosquito emergence rate",
+        "yourValue": "N/A",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Dengue2",
+        "unit": "mosquitoes per day",
+        "description": "The emergence rate of adult female mosquitoes. Value was calibrated to achieve a target seroprevalence.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 13
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Dengue2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Per-exposure protection from vaccination for seronegative vaccinees",
+        "type": "other",
+        "currentValue": 0.321,
+        "description": "Per-exposure protection from vaccination for seronegative vaccinees.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Per-exposure protection from vaccination for seropositive vaccinees",
+        "type": "other",
+        "currentValue": 0.516,
+        "description": "Per-exposure protection from vaccination for seropositive vaccinees.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Average duration of protection for seronegative vaccinees",
+        "type": "other",
+        "currentValue": 426.0,
+        "description": "Average duration of temporary cross-immunity after vaccination for seronegative vaccinees.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Average duration of protection for seropositive vaccinees",
+        "type": "other",
+        "currentValue": 258.0,
+        "description": "Average duration of temporary cross-immunity after vaccination for seropositive vaccinees.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of symptoms conditional on infection (primary)",
+        "type": "other",
+        "currentValue": 0.405,
+        "description": "Probability that a primary DENV infection results in symptoms.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of symptoms conditional on infection (secondary)",
+        "type": "other",
+        "currentValue": 0.339,
+        "description": "Probability that a secondary DENV infection results in symptoms.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of symptoms conditional on infection (post-secondary)",
+        "type": "other",
+        "currentValue": 0.09,
+        "description": "Probability that a post-secondary DENV infection results in symptoms.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of hospitalization conditional on symptoms (primary)",
+        "type": "other",
+        "currentValue": 0.074,
+        "description": "Probability of hospitalization for a symptomatic primary DENV infection.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of hospitalization conditional on symptoms (secondary)",
+        "type": "other",
+        "currentValue": 0.376,
+        "description": "Probability of hospitalization for a symptomatic secondary DENV infection.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of hospitalization conditional on symptoms (post-secondary)",
+        "type": "other",
+        "currentValue": 0.101,
+        "description": "Probability of hospitalization for a symptomatic post-secondary DENV infection.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Probability of death conditional on symptomatic disease",
+        "type": "mortality",
+        "currentValue": 0.0078,
+        "description": "Proportion of symptomatic cases that result in death.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Per-exposure protection from vaccination for seronegative vaccinees",
+      "Per-exposure protection from vaccination for seropositive vaccinees",
+      "Average duration of protection for seronegative vaccinees",
+      "Average duration of protection for seropositive vaccinees",
+      "Probability of symptoms conditional on infection (primary)"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Per-exposure protection from vaccination for seronegative vaccinees",
+        "Per-exposure protection from vaccination for seropositive vaccinees",
+        "Average duration of protection for seronegative vaccinees",
+        "Average duration of protection for seropositive vaccinees",
+        "Probability of symptoms conditional on infection (primary)"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Per-exposure protection from vaccination for seronegative vaccinees": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Per-exposure protection from vaccination for seropositive vaccinees": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Average duration of protection for seronegative vaccinees": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Average duration of protection for seropositive vaccinees": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Probability of symptoms conditional on infection (primary)": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

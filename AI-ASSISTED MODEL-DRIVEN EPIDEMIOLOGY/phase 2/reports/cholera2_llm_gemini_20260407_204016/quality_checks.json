@@ -1,0 +1,424 @@
+{
+  "model_analysis": {
+    "modelName": "Cholera2",
+    "summary": {
+      "modelName": "Cholera2",
+      "totalPopulation": null,
+      "numCompartments": 5,
+      "numParameters": 8,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "0.0",
+              "contactRateParameter": "",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible individuals through exposure to the environmental reservoir of V. cholerae.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination of susceptible individuals with oral cholera vaccine (OCV).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection, leading to temporary natural immunity.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Shedding of V. cholerae into the environment by infectious individuals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Waning of natural immunity, returning individuals to the susceptible state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Vaccinated",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Waning of vaccine-induced protection over time.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Environmental Bacteria",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Initial vaccine protection (two-dose, adults)",
+          "type": "CONSTANT",
+          "expression": "76%",
+          "description": "Initial vaccine protection against clinical disease for adults receiving a two-dose regimen.",
+          "unit": ""
+        },
+        {
+          "index": 1,
+          "name": "Vaccine protection duration (two-dose)",
+          "type": "CONSTANT",
+          "expression": "5",
+          "description": "Duration of protection from a two-dose vaccine regimen, after which protection is assumed to be zero.",
+          "unit": "years"
+        },
+        {
+          "index": 2,
+          "name": "Vaccine protection duration (single-dose)",
+          "type": "CONSTANT",
+          "expression": "1",
+          "description": "Duration of protection from a single vaccine dose, after which protection is assumed to drop to zero.",
+          "unit": "year"
+        },
+        {
+          "index": 3,
+          "name": "Relative vaccine effectiveness in children < 5 years",
+          "type": "CONSTANT",
+          "expression": "46.9%",
+          "description": "Multiplier for adult vaccine protection to calculate protection for children younger than 5 years.",
+          "unit": ""
+        },
+        {
+          "index": 4,
+          "name": "Baseline two-dose vaccine coverage",
+          "type": "CONSTANT",
+          "expression": "70%",
+          "description": "Assumed two-dose coverage in baseline vaccination campaign scenarios.",
+          "unit": ""
+        },
+        {
+          "index": 5,
+          "name": "Baseline one-dose vaccine coverage",
+          "type": "CONSTANT",
+          "expression": "10%",
+          "description": "Assumed one-dose coverage in baseline vaccination campaign scenarios.",
+          "unit": ""
+        },
+        {
+          "index": 6,
+          "name": "High two-dose vaccine coverage",
+          "type": "CONSTANT",
+          "expression": "95%",
+          "description": "Assumed two-dose coverage in the high-coverage national campaign scenario.",
+          "unit": ""
+        },
+        {
+          "index": 7,
+          "name": "High one-dose vaccine coverage",
+          "type": "CONSTANT",
+          "expression": "1.67%",
+          "description": "Assumed one-dose coverage in the high-coverage national campaign scenario.",
+          "unit": ""
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Cholera2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 8,
+    "parametersWithUncertainty": 8,
+    "parameters": [
+      {
+        "parameter": "Initial vaccine protection (two-dose, adults)",
+        "yourValue": "76%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "",
+        "description": "Initial vaccine protection against clinical disease for adults receiving a two-dose regimen.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine protection duration (two-dose)",
+        "yourValue": "5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "years",
+        "description": "Duration of protection from a two-dose vaccine regimen, after which protection is assumed to be zero.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine protection duration (single-dose)",
+        "yourValue": "1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "year",
+        "description": "Duration of protection from a single vaccine dose, after which protection is assumed to drop to zero.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative vaccine effectiveness in children < 5 years",
+        "yourValue": "46.9%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "",
+        "description": "Multiplier for adult vaccine protection to calculate protection for children younger than 5 years.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Baseline two-dose vaccine coverage",
+        "yourValue": "70%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "",
+        "description": "Assumed two-dose coverage in baseline vaccination campaign scenarios.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Baseline one-dose vaccine coverage",
+        "yourValue": "10%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "",
+        "description": "Assumed one-dose coverage in baseline vaccination campaign scenarios.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "High two-dose vaccine coverage",
+        "yourValue": "95%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "",
+        "description": "Assumed two-dose coverage in the high-coverage national campaign scenario.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "High one-dose vaccine coverage",
+        "yourValue": "1.67%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Cholera2",
+        "unit": "",
+        "description": "Assumed one-dose coverage in the high-coverage national campaign scenario.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 8
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Cholera2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Vaccine protection duration (two-dose)",
+        "type": "other",
+        "currentValue": 5.0,
+        "description": "Duration of protection from a two-dose vaccine regimen, after which protection is assumed to be zero.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccine protection duration (single-dose)",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Duration of protection from a single vaccine dose, after which protection is assumed to drop to zero.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Vaccine protection duration (two-dose)",
+      "Vaccine protection duration (single-dose)"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Vaccine protection duration (two-dose)",
+        "Vaccine protection duration (single-dose)"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Vaccine protection duration (two-dose)": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Vaccine protection duration (single-dose)": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

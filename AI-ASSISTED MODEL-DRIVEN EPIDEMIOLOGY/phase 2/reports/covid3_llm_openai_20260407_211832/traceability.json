@@ -1,0 +1,164 @@
+{
+  "compartments": {
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Latent infection process representing the number of people infected over time; used as the modelled infections in the renewal equation and as the source of deaths through the infection-to-death distribution.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Deaths": {
+      "evidence": [
+        {
+          "text_span": "Observed and modelled COVID-19-related deaths used to fit the model.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {},
+  "parameters": {
+    "R_t": {
+      "evidence": [
+        {
+          "text_span": "Effective reproduction number; modeled as a function of the initial reproduction number and intervention effects.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "time-varying; piecewise constant with changes at interventions",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R_0": {
+      "evidence": [
+        {
+          "text_span": "Initial reproduction number before interventions took effect.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "country-specific initial value before interventions",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "infection fatality ratio": {
+      "evidence": [
+        {
+          "text_span": "Fraction of infections resulting in death.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "population-averaged; adjusted for age structure and contact patterns",
+          "unit": "probability"
+        }
+      ],
+      "paper_backed": true
+    },
+    "infection-to-death distribution": {
+      "evidence": [
+        {
+          "text_span": "Delay distribution linking infections to observed deaths.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "derived from onset-to-symptoms and symptoms-to-death distributions",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "generation time distribution": {
+      "evidence": [
+        {
+          "text_span": "Distribution weighting the discrete convolution of previous infections in the renewal equation.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "approximated using the serial interval distribution",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "serial interval distribution": {
+      "evidence": [
+        {
+          "text_span": "Distribution of time between symptom onset in a primary case and a secondary case.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "used as approximation to generation time distribution",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "intervention effects": {
+      "evidence": [
+        {
+          "text_span": "Covariate effects of governmental interventions on transmission, including lockdown, public events banned, school closure, self isolation, and social distancing encouraged.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "country-shared with partial pooling for the last intervention",
+          "unit": "relative reduction in R_t"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 5,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 12,
+    "items_with_evidence": 12,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 12,
+    "faithfulness_percentage": 100.0
+  }
+}

@@ -1,0 +1,16 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Compartment,Aquatic Reservoir of Vibrio cholerae,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.0,False,"Infection from ingestion of contaminated water at rate a·λ(B), where λ(B) depends on bacterial concentration in water.",,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,"Recovery from cholera at rate r, returning individuals to the susceptible class because immunity is not lifelong.",,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Aquatic Reservoir of Vibrio cholerae,RateFlow,//@parameters.0,False,Contribution of infected people to the aquatic bacterial population through excretion at rate e.,,,
+Cholera3,Flow,,,,,,,Model file,Certain,,Aquatic Reservoir of Vibrio cholerae,RateFlow,//@parameters.0,False,Local bacterial growth in the aquatic environment at rate nb.,,,
+Cholera3,Parameter,H,,,,,,Model file,Certain,,,,,,Total human population size; assumed constant.,CONSTANT,total human population,persons
+Cholera3,Parameter,n,,,,,,Model file,Certain,,,,,,"Renewal rate of susceptibles through birth, immigration, and/or loss of acquired immunity.",CONSTANT,human birth and death rates,day^-1
+Cholera3,Parameter,a,,,,,,Model file,Certain,,,,,,Contact rate with untreated water.,CONSTANT,rate of exposure to contaminated water,day^-1
+Cholera3,Parameter,K,,,,,,Model file,Certain,,,,,,Dose-response midpoint for infection probability.,CONSTANT,concentration of Vibrio cholerae in water that yields 50% chance of catching cholera,cells/ml
+Cholera3,Parameter,r,,,,,,Model file,Certain,,,,,,Recovery rate from infection.,CONSTANT,rate at which people recover from cholera,day^-1
+Cholera3,Parameter,nb,,,,,,Model file,Certain,,,,,,Environmental bacterial growth rate.,CONSTANT,growth rate of Vibrio cholerae in the aquatic environment,day^-1
+Cholera3,Parameter,mb,,,,,,Model file,Certain,,,,,,Environmental bacterial loss/extinction rate.,CONSTANT,loss rate of Vibrio cholerae in the aquatic environment,day^-1
+Cholera3,Parameter,e,,,,,,Model file,Certain,,,,,,Average per-capita bacterial input from infected individuals.,CONSTANT,contribution of each infected person to the population of Vibrio cholerae in the aquatic environment,cells/ml/day/person

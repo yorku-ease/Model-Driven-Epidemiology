@@ -1,0 +1,109 @@
+{
+  "modelName": "Covid2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "R0",
+      "type": "other",
+      "currentValue": 2.2,
+      "description": "Basic reproduction number (95% CI 1.4–3.9)",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "incubation_period",
+      "type": "progression",
+      "currentValue": 5.2,
+      "description": "Average incubation period, time spent exposed but not yet infectious (95% CI 4.1–7.0 days); epsilon = 1/5.2",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "onset_to_first_medical_visit",
+      "type": "other",
+      "currentValue": 5.8,
+      "description": "Average days from symptom onset to first medical visit and isolation (95% CI 4.3–7.5 days); used to derive daily contact rate c = R0 / 5.8",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "epsilon",
+      "type": "other",
+      "currentValue": 0.192,
+      "description": "Rate of progression from exposed to infectious (1/5.2 days)",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "initial_infected",
+      "type": "other",
+      "currentValue": 5.0,
+      "description": "Number of initially infected people seeded in Wuhan on December 1, 2019",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "simulation_runs",
+      "type": "mortality",
+      "currentValue": 1000.0,
+      "description": "Number of stochastic simulation runs performed",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "R0",
+    "incubation_period",
+    "onset_to_first_medical_visit",
+    "epsilon",
+    "initial_infected"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "R0",
+      "incubation_period",
+      "onset_to_first_medical_visit",
+      "epsilon",
+      "initial_infected"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "R0": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "incubation_period": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "onset_to_first_medical_visit": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "epsilon": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "initial_infected": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

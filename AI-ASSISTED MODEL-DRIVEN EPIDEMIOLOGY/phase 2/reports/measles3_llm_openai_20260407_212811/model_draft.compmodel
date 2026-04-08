@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="p" expression="0.90" type="CONSTANT" description="Vaccine efficacy; proportion of vaccinated susceptibles who become immune." unit="proportion"/>
+  <parameters name="Rate of progression from latency" expression="52.14" type="CONSTANT" description="Average latent period of 7 days." unit="per person per year"/>
+  <parameters name="Rate of recovery from infection" expression="52.14" type="CONSTANT" description="Average infectious period of 7 days." unit="per person per year"/>
+  <parameters name="Rate of loss of passive immunity" expression="40" type="CONSTANT" description="Average duration of maternal protection of 3 months." unit="per person per year"/>
+  <parameters name="Force of infection, age 1" expression="0.0690" type="CONSTANT" description="Age-specific force of infection for upper age 1 year." unit="per person per year"/>
+  <parameters name="Force of infection, age 2" expression="0.41075" type="CONSTANT" description="Age-specific force of infection for upper age 2 years." unit="per person per year"/>
+  <parameters name="Force of infection, age 3" expression="0.1572" type="CONSTANT" description="Age-specific force of infection for upper age 3 years." unit="per person per year"/>
+  <parameters name="Force of infection, age 4" expression="0.2005" type="CONSTANT" description="Age-specific force of infection for upper age 4 years." unit="per person per year"/>
+  <parameters name="Force of infection, age 5" expression="0.2582" type="CONSTANT" description="Age-specific force of infection for upper age 5 years." unit="per person per year"/>
+  <parameters name="Force of infection, age 10" expression="0.5167" type="CONSTANT" description="Age-specific force of infection for upper age 10 years." unit="per person per year"/>
+  <parameters name="Force of infection, age 15" expression="0.2549" type="CONSTANT" description="Age-specific force of infection for upper age 15 years." unit="per person per year"/>
+  <parameters name="Force of infection, age 75" expression="0.0989" type="CONSTANT" description="Age-specific force of infection for upper age 75 years." unit="per person per year"/>
+  <compartments PrimaryName="Maternal Antibody Protected" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.1" description="Loss of passive maternal immunity."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection following contact with infectious individuals."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Successful vaccination leading to long-lasting immunity."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Vaccination without seroconversion; vaccine efficacy is less than 100%."/>
+  </compartments>
+  <compartments PrimaryName="Latent" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Progression from latent/pre-patent infection to infectiousness."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Recovery from infection with acquisition of lasting immunity."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Immune" population="0"/>
+  <compartments PrimaryName="Vaccine Failure" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection of vaccine failures following contact with infectious individuals."/>
+  </compartments>
+</compartmental:CompartmentalModel>

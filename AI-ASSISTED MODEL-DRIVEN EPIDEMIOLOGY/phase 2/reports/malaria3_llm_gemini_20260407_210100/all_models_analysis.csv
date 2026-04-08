@@ -1,0 +1,36 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria3,Compartment,Susceptible Humans,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Symptomatic and Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Asymptomatic and Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Infectious and Undetectable by Microscopy Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Treated and Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Protected Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Symptomatic and Infectious Humans,RateFlow,0.0,False,"Infection of susceptible humans by an infectious mosquito, leading to symptomatic disease.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic and Infectious Humans,RateFlow,0.0,False,"Infection of susceptible humans by an infectious mosquito, leading to asymptomatic disease.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Protected Humans,RateFlow,0.0,False,Prophylaxis given to uninfected individuals during mass drug administration (MDA).,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic and Infectious Humans,RateFlow,0.0,False,"Progression from symptomatic to asymptomatic infection, either naturally or due to treatment failure.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated and Infectious Humans,RateFlow,0.0,False,Successful treatment of symptomatic individuals.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Infectious and Undetectable by Microscopy Humans,RateFlow,0.0,False,Progression from asymptomatic patent infection to sub-patent infection.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated and Infectious Humans,RateFlow,0.0,False,Successful treatment of asymptomatic individuals during mass drug administration (MDA) or mass screen and treat (MSAT).,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,0.0,False,Natural recovery from sub-patent infection back to a susceptible state.,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated and Infectious Humans,RateFlow,0.0,False,Successful treatment of sub-patent individuals during mass drug administration (MDA) or mass screen and treat (MSAT).,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Protected Humans,RateFlow,0.0,False,"Recovery from infection following treatment, leading to a period of prophylactic protection.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,0.0,False,"Waning of prophylactic protection, returning individuals to a susceptible state.",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,0.0,False,"Infection of susceptible mosquitoes from biting an infectious human (D, A, U, or T).",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,0.0,False,"Development of parasites within the mosquito, after which the mosquito becomes infectious.",,,
+Malaria3,Parameter,ACT efficacy,,,,,,Model file,Certain,,,,,,Efficacy of Artemisinin-combination therapies (ACTs) at clearing parasites.,CONSTANT,95,%
+Malaria3,Parameter,Non-ACT efficacy,,,,,,Model file,Certain,,,,,,"Efficacy of non-ACT treatments at clearing parasites, assuming resistance.",CONSTANT,60,%
+Malaria3,Parameter,Duration of gametocytaemia (non-artemisinins),,,,,,Model file,Certain,,,,,,Duration of infectiousness to mosquitoes after treatment with non-artemisinins.,CONSTANT,55.6,days
+Malaria3,Parameter,Duration of gametocytaemia (ACT),,,,,,Model file,Certain,,,,,,Duration of infectiousness to mosquitoes after treatment with ACT.,CONSTANT,13.4,days
+Malaria3,Parameter,Duration of gametocytaemia (ACT-PQ),,,,,,Model file,Certain,,,,,,Duration of infectiousness to mosquitoes after treatment with ACT plus primaquine.,CONSTANT,3.0,days
+Malaria3,Parameter,Prophylaxis duration (short-acting),,,,,,Model file,Certain,,,,,,Duration of inhibitory antimalarial blood concentration for a short-acting drug.,CONSTANT,10,days
+Malaria3,Parameter,Prophylaxis duration (long-acting),,,,,,Model file,Certain,,,,,,Duration of inhibitory antimalarial blood concentration for a long-acting drug.,CONSTANT,30,days
+Malaria3,Parameter,Infectiousness reduction (non-artemisinins),,,,,,Model file,Certain,,,,,,Reduction in average infectiousness to mosquitoes following treatment with non-artemisinins.,CONSTANT,70,%
+Malaria3,Parameter,"Infectiousness reduction (ACT, ACT-PQ)",,,,,,Model file,Certain,,,,,,Reduction in average infectiousness to mosquitoes following treatment with ACT or ACT-PQ.,CONSTANT,80.6,%
+Malaria3,Parameter,Correlation in MDA participation,,,,,,Model file,Certain,,,,,,Correlation in an individual's probability of participating in successive rounds of MDA.,CONSTANT,0.5,none
+Malaria3,Parameter,Relative infectivity of Asymptomatic Humans,,,,,,Model file,Certain,,,,,,Infectivity of asymptomatic cases (A) relative to symptomatic cases (D).,CONSTANT,1/3,none
+Malaria3,Parameter,Relative infectivity of Subpatent Humans,,,,,,Model file,Certain,,,,,,Infectivity of subpatent cases (U) relative to symptomatic cases (D).,CONSTANT,1/17,none
+Malaria3,Parameter,MDA coverage,,,,,,Model file,Certain,,,,,,Assumed coverage for mass drug administration simulations.,CONSTANT,80,%

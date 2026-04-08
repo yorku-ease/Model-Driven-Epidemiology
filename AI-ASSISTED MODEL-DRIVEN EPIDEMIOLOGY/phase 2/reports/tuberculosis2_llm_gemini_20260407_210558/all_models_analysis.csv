@@ -1,0 +1,26 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Tuberculosis2,Compartment,Susceptible,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis2,Compartment,Latent,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis2,Compartment,Infectious,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis2,Compartment,Non-infectious,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis2,Compartment,Treatment Failure,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis2,Compartment,Self-Cured,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.3,False,Development of progressive primary infectious disease upon new infection.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Non-infectious,RateFlow,//@parameters.3,False,Development of progressive primary non-infectious disease upon new infection.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,0.0,False,New infection leading to a latent state without immediate active disease.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,0.0,False,Endogenous reactivation of latent infection to infectious tuberculosis.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Non-infectious,RateFlow,0.0,False,Endogenous reactivation of latent infection to non-infectious tuberculosis.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,0.0,False,"Successful cure through chemotherapy, returning the individual to the latent class.",,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Treatment Failure,RateFlow,0.0,False,"Failure to complete treatment (fail, default, or transfer out).",,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Self-Cured,RateFlow,0.0,False,Resolution of tuberculosis without treatment.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,0.0,False,"Successful cure through chemotherapy, returning the individual to the latent class.",,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Treatment Failure,RateFlow,0.0,False,"Failure to complete treatment (fail, default, or transfer out).",,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Self-Cured,RateFlow,0.0,False,Resolution of tuberculosis without treatment.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,0.0,False,Relapse to infectious tuberculosis after treatment failure.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Non-infectious,RateFlow,0.0,False,Relapse to non-infectious tuberculosis after treatment failure.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,0.0,False,Relapse to infectious tuberculosis after self-cure.,,,
+Tuberculosis2,Flow,,,,,,,Model file,Certain,,Non-infectious,RateFlow,0.0,False,Relapse to non-infectious tuberculosis after self-cure.,,,
+Tuberculosis2,Parameter,Target case detection rate,,,,,,Model file,Certain,,,,,,WHO target for the proportion of incident infectious cases detected and treated per year.,CONSTANT,70,%
+Tuberculosis2,Parameter,Target cure rate,,,,,,Model file,Certain,,,,,,WHO target for the proportion of treated cases that are cured under a new DOTS programme.,CONSTANT,85,%
+Tuberculosis2,Parameter,Proportion of treatment failures remaining infectious,,,,,,Model file,Certain,,,,,,"The proportion of patients who fail treatment that remain infectious, used in sensitivity analysis.",CONSTANT,25-100,%
+Tuberculosis2,Parameter,Relative case detection rate of non-infectious cases,,,,,,Model file,Certain,,,,,,"The case detection rate for non-infectious cases as a fraction of the rate for infectious cases, varies by region.",CONSTANT,0.5-0.8,ratio

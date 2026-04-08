@@ -1,0 +1,449 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals who can be infected with Ebola virus",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Individuals infected with Ebola virus but not yet infectious or symptomatic (latent phase)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Infective Ebola patients in the community",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized": {
+      "evidence": [
+        {
+          "text_span": "Hospitalized Ebola patients who can still transmit the virus",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dead": {
+      "evidence": [
+        {
+          "text_span": "Patients who died of the disease and are not yet buried, still carrying the virus",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Hosts who recovered from the infection and are removed from the chain of transmission",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Buried": {
+      "evidence": [
+        {
+          "text_span": "Cumulative number of buried dead patients",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "Infection due to contact with infective patients in the community (rate \u03b2), hospitalized patients (rate \u03b8), or dead patients at funerals (rate \u03c6)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Progression from latent phase to infectious state after incubation period (rate \u03b1)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Hospitalized": {
+      "evidence": [
+        {
+          "text_span": "Hospitalization of infectious individuals (rate \u03b7)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of infectious individuals in the community (rate (1-\u03b4)\u03b3)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Death of infectious individuals in the community (rate \u03b4\u03b3)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized -> Recovered": {
+      "evidence": [
+        {
+          "text_span": "Recovery of hospitalized patients (rate (1-\u03b4H)\u03b3H)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized -> Dead": {
+      "evidence": [
+        {
+          "text_span": "Death of hospitalized patients (rate \u03b4H\u00b7\u03b3H)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Hospitalized -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Patients abandoning healthcare facilities and returning to community (rate \u03ba)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Dead -> Buried": {
+      "evidence": [
+        {
+          "text_span": "Burial of dead patients (rate b)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate in the community before intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.532",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b8": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate in hospitals before intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.328",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c6": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate at funerals before intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.104",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b7": {
+      "evidence": [
+        {
+          "text_span": "Mean time from symptoms onset to hospitalization",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "4.8",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/b": {
+      "evidence": [
+        {
+          "text_span": "Mean time from death to burial",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.4",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Mean duration of the infection",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10.4",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b1": {
+      "evidence": [
+        {
+          "text_span": "Mean duration of the incubation period",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "10",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b3H": {
+      "evidence": [
+        {
+          "text_span": "Average permanence in the hospital",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "4.6",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b4": {
+      "evidence": [
+        {
+          "text_span": "Case fatality ratio in the community",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.73",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b4H": {
+      "evidence": [
+        {
+          "text_span": "Case fatality ratio in hospitals",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.61",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03ba": {
+      "evidence": [
+        {
+          "text_span": "Hospital leaving rate",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.0025",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b2\u0303": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate in the community after intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.505",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b8\u0303": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate in hospitals after intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.095",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c6\u0303": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate at funerals after intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1.115",
+          "unit": "per week"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/\u03b7\u0303": {
+      "evidence": [
+        {
+          "text_span": "Mean time from symptoms onset to hospitalization after intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "4.1",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "1/b\u0303": {
+      "evidence": [
+        {
+          "text_span": "Mean time from death to burial after intervention",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "4.9",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "R0": {
+      "evidence": [
+        {
+          "text_span": "Basic reproduction number",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1.44",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 11,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 4,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 36,
+    "items_with_evidence": 36,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 36,
+    "faithfulness_percentage": 100.0
+  }
+}

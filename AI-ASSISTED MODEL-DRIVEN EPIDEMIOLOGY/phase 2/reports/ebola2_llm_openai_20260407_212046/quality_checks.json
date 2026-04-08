@@ -1,0 +1,604 @@
+{
+  "model_analysis": {
+    "modelName": "Ebola2",
+    "summary": {
+      "modelName": "Ebola2",
+      "totalPopulation": null,
+      "numCompartments": 8,
+      "numParameters": 11,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.4",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent infection to symptomatic infectious stage after the incubation period.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious in the Community",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospitalization of infectious community cases.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.5",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection in the community.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death from Ebola in the community, remaining infectious until burial.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Hospitalized Patients",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Hospitalized patients abandoning healthcare facilities and returning to the community.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.5",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection while hospitalized.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Death from Ebola while hospitalized, remaining infectious until burial.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Dead Patients Not Yet Buried",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Burial of deceased patients, removing them from the chain of transmission.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Recovered",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.5",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "No outgoing transition shown; recovered individuals are removed from transmission.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Cumulative Cases",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 7,
+          "primaryName": "Burials",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03b2",
+          "type": "CONSTANT",
+          "expression": "0.532",
+          "description": "Transmission rate in the community before intervention.",
+          "unit": "per week"
+        },
+        {
+          "index": 1,
+          "name": "\u03b8",
+          "type": "CONSTANT",
+          "expression": "0.328",
+          "description": "Transmission rate in hospitals before intervention.",
+          "unit": "per week"
+        },
+        {
+          "index": 2,
+          "name": "\u03c6",
+          "type": "CONSTANT",
+          "expression": "2.104",
+          "description": "Transmission rate at funerals before intervention.",
+          "unit": "per week"
+        },
+        {
+          "index": 3,
+          "name": "\u03b7",
+          "type": "CONSTANT",
+          "expression": "4.8 days",
+          "description": "Mean time from symptoms onset to hospitalization (table reports 1/\u03b7).",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "b",
+          "type": "CONSTANT",
+          "expression": "5.4 days",
+          "description": "Mean time from death to burial (table reports 1/b).",
+          "unit": "days"
+        },
+        {
+          "index": 5,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "10.4 days",
+          "description": "Mean duration of the infection (table reports 1/\u03b3).",
+          "unit": "days"
+        },
+        {
+          "index": 6,
+          "name": "\u03b1",
+          "type": "CONSTANT",
+          "expression": "10 days",
+          "description": "Mean duration of the incubation period (table reports 1/\u03b1).",
+          "unit": "days"
+        },
+        {
+          "index": 7,
+          "name": "\u03b3H",
+          "type": "CONSTANT",
+          "expression": "4.6 days",
+          "description": "Average permanence in the hospital (table reports 1/\u03b3H).",
+          "unit": "days"
+        },
+        {
+          "index": 8,
+          "name": "\u03b4",
+          "type": "CONSTANT",
+          "expression": "73%",
+          "description": "Case fatality ratio in the community.",
+          "unit": "proportion"
+        },
+        {
+          "index": 9,
+          "name": "\u03b4H",
+          "type": "CONSTANT",
+          "expression": "61%",
+          "description": "Case fatality ratio in hospitals.",
+          "unit": "proportion"
+        },
+        {
+          "index": 10,
+          "name": "\u03ba",
+          "type": "CONSTANT",
+          "expression": "0.0025",
+          "description": "Hospital leaving rate.",
+          "unit": "per week"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Ebola2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 11,
+    "parametersWithUncertainty": 11,
+    "parameters": [
+      {
+        "parameter": "\u03b2",
+        "yourValue": "0.532",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "per week",
+        "description": "Transmission rate in the community before intervention.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b8",
+        "yourValue": "0.328",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "per week",
+        "description": "Transmission rate in hospitals before intervention.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c6",
+        "yourValue": "2.104",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "per week",
+        "description": "Transmission rate at funerals before intervention.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b7",
+        "yourValue": "4.8 days",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "days",
+        "description": "Mean time from symptoms onset to hospitalization (table reports 1/\u03b7).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "b",
+        "yourValue": "5.4 days",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "days",
+        "description": "Mean time from death to burial (table reports 1/b).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "10.4 days",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "days",
+        "description": "Mean duration of the infection (table reports 1/\u03b3).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b1",
+        "yourValue": "10 days",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "days",
+        "description": "Mean duration of the incubation period (table reports 1/\u03b1).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3H",
+        "yourValue": "4.6 days",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "days",
+        "description": "Average permanence in the hospital (table reports 1/\u03b3H).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b4",
+        "yourValue": "73%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "proportion",
+        "description": "Case fatality ratio in the community.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b4H",
+        "yourValue": "61%",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "proportion",
+        "description": "Case fatality ratio in hospitals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03ba",
+        "yourValue": "0.0025",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Ebola2",
+        "unit": "per week",
+        "description": "Hospital leaving rate.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 11
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Ebola2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\u03b2",
+        "type": "other",
+        "currentValue": 0.532,
+        "description": "Transmission rate in the community before intervention.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b8",
+        "type": "other",
+        "currentValue": 0.328,
+        "description": "Transmission rate in hospitals before intervention.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c6",
+        "type": "other",
+        "currentValue": 2.104,
+        "description": "Transmission rate at funerals before intervention.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03ba",
+        "type": "other",
+        "currentValue": 0.0025,
+        "description": "Hospital leaving rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\u03b2",
+      "\u03b8",
+      "\u03c6",
+      "\u03ba"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\u03b2",
+        "\u03b8",
+        "\u03c6",
+        "\u03ba"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\u03b2": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03b8": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c6": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03ba": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

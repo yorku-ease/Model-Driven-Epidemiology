@@ -1,0 +1,403 @@
+{
+  "paper_name": "Malaria3",
+  "summary": {
+    "extraction": {
+      "compartments": 9,
+      "flows": 12,
+      "parameters": 16,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "Infectious",
+      "D",
+      "Susceptible",
+      "S"
+    ],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible and Uninfected Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic and Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Asymptomatic and Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious and Undetectable by Standard Microscopy Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated and Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Uninfected and Protected by Antimalarial Prophylaxis Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible and Uninfected Humans",
+        "target": "Symptomatic and Infectious Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible and Uninfected Humans",
+        "target": "Uninfected and Protected by Antimalarial Prophylaxis Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic and Infectious Humans",
+        "target": "Asymptomatic and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Symptomatic and Infectious Humans",
+        "target": "Treated and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic and Infectious Humans",
+        "target": "Infectious and Undetectable by Standard Microscopy Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Asymptomatic and Infectious Humans",
+        "target": "Treated and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious and Undetectable by Standard Microscopy Humans",
+        "target": "Treated and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated and Infectious Humans",
+        "target": "Asymptomatic and Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated and Infectious Humans",
+        "target": "Uninfected and Protected by Antimalarial Prophylaxis Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Uninfected and Protected by Antimalarial Prophylaxis Humans",
+        "target": "Susceptible and Uninfected Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Drug efficacy",
+        "value": "95-98% for antimalarials used in mass treatment; model often assumes 95%",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Coverage of mass drug administration",
+        "value": "80% in main simulations",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Coverage of artemisinin-combination therapies among symptomatic treated cases",
+        "value": "20%",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Coverage of non-ACT treatments among symptomatic treated cases",
+        "value": "80%",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Efficacy of non-gametocytocidal treatments",
+        "value": "60%",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Efficacy of ACTs",
+        "value": "95%",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia in treated infection, non-artemisinins",
+        "value": "55.6",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia in treated infection, ACT",
+        "value": "13.4",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of gametocytaemia in treated infection, ACT-PQ",
+        "value": "3.0",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of inhibitory antimalarial blood concentration, short-acting drug",
+        "value": "10",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Duration of inhibitory antimalarial blood concentration, long-acting drug",
+        "value": "30",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Reduction in average infectiousness following treatment, non-artemisinins",
+        "value": "70",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Reduction in average infectiousness following treatment, ACT or ACT-PQ",
+        "value": "80.6",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pregnancy prevalence among women aged 15-45",
+        "value": "7.1",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pregnancy prevalence among population aged 15-45",
+        "value": "0.5",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Correlation in individual participation between repeated rounds of MDA",
+        "value": "0 to 1",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 9,
+    "flows": 12,
+    "parameters": 16,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 40,
+    "items_with_evidence": 40,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 40,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 40,
+      "items_with_evidence": 40,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 40,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 1,
+        "fp": 8,
+        "fn": 8,
+        "precision": 0.1111,
+        "recall": 0.1111,
+        "f1": 0.1111
+      },
+      "flows": {
+        "tp": 1,
+        "fp": 11,
+        "fn": 19,
+        "precision": 0.0833,
+        "recall": 0.05,
+        "f1": 0.0625
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 16,
+        "fn": 16,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.0738,
+      "compartment_matches": [
+        {
+          "gold": "SymptomaticInfectious",
+          "extracted": "Symptomatic and Infectious Humans",
+          "score": 0.7102208137512207
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->SymptomaticInfectious",
+          "extracted": "Susceptible and Uninfected Humans->Symptomatic and Infectious Humans",
+          "score": 0.767155110836029
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

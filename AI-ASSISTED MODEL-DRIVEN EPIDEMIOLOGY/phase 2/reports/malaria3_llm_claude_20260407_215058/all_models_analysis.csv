@@ -1,0 +1,37 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria3,Compartment,Susceptible Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Symptomatic Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Asymptomatic Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Subpatent Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Treated Infectious Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Prophylactically Protected Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria3,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Humans,RateFlow,0.0,False,"Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Humans,RateFlow,0.0,False,Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms),,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Treated Infectious Humans,RateFlow,0.0,False,Treatment of symptomatic cases with antimalarials,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Humans,RateFlow,0.0,False,Progression from symptomatic to asymptomatic infection in absence of treatment or after treatment failure,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Subpatent Infectious Humans,RateFlow,0.0,False,"Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,0.0,False,Recovery from subpatent infection to susceptible state,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Prophylactically Protected Humans,RateFlow,0.0,False,Successful parasite clearance followed by prophylactic protection dependent on drug half-life,,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Humans,RateFlow,0.0,False,"Treatment failure, entering asymptomatic infection state",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,0.0,False,"Loss of prophylactic drug protection, return to susceptible state",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,0.0,False,"Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)",,,
+Malaria3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,0.0,False,"Completion of extrinsic incubation period in mosquito, becoming infectious",,,
+Malaria3,Parameter,Drug efficacy (ACT),,,,,,Model file,Certain,,,,,,Percentage of treated individuals with no parasitological treatment failure for ACT,CONSTANT,95,%
+Malaria3,Parameter,Duration of gametocytaemia after non-artemisinin treatment,,,,,,Model file,Certain,,,,,,Duration of gametocytaemia in treated infection for non-artemisinins,CONSTANT,55.6,days
+Malaria3,Parameter,Duration of gametocytaemia after ACT treatment,,,,,,Model file,Certain,,,,,,Duration of gametocytaemia in treated infection for ACT,CONSTANT,13.4,days
+Malaria3,Parameter,Duration of gametocytaemia after ACT-PQ treatment,,,,,,Model file,Certain,,,,,,Duration of gametocytaemia in treated infection for ACT with primaquine,CONSTANT,3.0,days
+Malaria3,Parameter,Duration of prophylaxis (short-acting drug),,,,,,Model file,Certain,,,,,,Duration of inhibitory antimalarial blood concentration for short-acting drug,CONSTANT,10,days
+Malaria3,Parameter,Duration of prophylaxis (long-acting drug),,,,,,Model file,Certain,,,,,,Duration of inhibitory antimalarial blood concentration for long-acting drug,CONSTANT,30,days
+Malaria3,Parameter,Reduction in infectiousness after non-artemisinin treatment,,,,,,Model file,Certain,,,,,,Percentage reduction in average infectiousness following non-artemisinin treatment compared to state occupied prior to treatment,CONSTANT,70,%
+Malaria3,Parameter,Reduction in infectiousness after ACT/ACT-PQ treatment,,,,,,Model file,Certain,,,,,,Percentage reduction in average infectiousness following ACT or ACT-PQ treatment compared to state occupied prior to treatment,CONSTANT,80.6,%
+Malaria3,Parameter,Pregnancy prevalence in population aged 15-45,,,,,,Model file,Certain,,,,,,"Estimated prevalence of pregnancy among the population aged 15-45, used for exclusion from MDA",CONSTANT,7.1,%
+Malaria3,Parameter,Correlation in participation between MDA rounds,,,,,,Model file,Certain,,,,,,"Correlation in individual participation between repeated rounds of MDA (0=random, 1=same individuals always participate or not)",CONSTANT,0.5,dimensionless
+Malaria3,Parameter,MDA coverage,,,,,,Model file,Certain,,,,,,Percentage of individuals in the population treated during MDA (before exclusion of pregnant women),CONSTANT,80,%
+Malaria3,Parameter,ACT coverage for symptomatic treatment,,,,,,Model file,Certain,,,,,,Percentage of symptomatic cases receiving ACTs at baseline,CONSTANT,20,%
+Malaria3,Parameter,Non-ACT treatment efficacy,,,,,,Model file,Certain,,,,,,Efficacy of non-ACT treatments at clearing parasites due to resistance,CONSTANT,60,%
+Malaria3,Parameter,ACT treatment efficacy,,,,,,Model file,Certain,,,,,,Efficacy of ACTs at clearing parasites,CONSTANT,95,%
+Malaria3,Parameter,Relative infectivity of asymptomatic vs symptomatic,,,,,,Model file,Certain,,,,,,Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D),CONSTANT,0.33,dimensionless
+Malaria3,Parameter,Relative infectivity of subpatent vs symptomatic,,,,,,Model file,Certain,,,,,,Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D),CONSTANT,0.06,dimensionless

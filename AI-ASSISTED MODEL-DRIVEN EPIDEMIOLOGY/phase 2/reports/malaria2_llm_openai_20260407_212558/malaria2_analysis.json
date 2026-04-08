@@ -1,0 +1,351 @@
+{
+  "modelName": "Malaria2",
+  "summary": {
+    "modelName": "Malaria2",
+    "totalPopulation": null,
+    "numCompartments": 10,
+    "numParameters": 15,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.9",
+            "contactCompartment": "//@compartments.1",
+            "description": "Humans become infected at the force of infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Pre-patent Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "A fraction of infected humans develop clinical disease and are successfully treated.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "A fraction of infected humans develop patent asymptomatic infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Treated Clinical Disease Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successfully treated individuals clear infection and enter prophylactic protection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Untreated Clinical Disease Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Individuals who fail treatment eventually clear disease and become patent asymptomatic.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Patent Asymptomatic Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Patent asymptomatic infection progresses to sub-patent infection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Sub-patent Asymptomatic Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Sub-patent infection is eventually cleared and individuals return to full susceptibility.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Prophylaxis Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Individuals return to susceptibility after prophylaxis wanes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.8",
+            "description": "Mosquitoes become infected when taking an infectious bite from humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Latent Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Latent mosquitoes become infectious to humans after the extrinsic incubation period.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "L",
+        "type": "CONSTANT",
+        "expression": "force of infection",
+        "description": "Population force of infection determining human infection risk.",
+        "unit": "per time"
+      },
+      {
+        "index": 1,
+        "name": "w",
+        "type": "CONSTANT",
+        "expression": "probability of developing clinical disease",
+        "description": "Determined by current level of anti-disease immunity.",
+        "unit": "probability"
+      },
+      {
+        "index": 2,
+        "name": "f_T",
+        "type": "CONSTANT",
+        "expression": "probability of being treated successfully",
+        "description": "Fixed probability that individuals with clinical disease receive effective treatment.",
+        "unit": "probability"
+      },
+      {
+        "index": 3,
+        "name": "r_T",
+        "type": "CONSTANT",
+        "expression": "rate of entering prophylactic protection after treatment",
+        "description": "Rate at which successfully treated individuals enter prophylaxis.",
+        "unit": "per time"
+      },
+      {
+        "index": 4,
+        "name": "r_P",
+        "type": "CONSTANT",
+        "expression": "rate of leaving prophylactic protection",
+        "description": "Rate at which prophylaxis wanes and individuals return to susceptibility.",
+        "unit": "per time"
+      },
+      {
+        "index": 5,
+        "name": "r_D",
+        "type": "CONSTANT",
+        "expression": "rate of clearing untreated clinical disease",
+        "description": "Rate at which untreated clinical disease resolves into patent asymptomatic infection.",
+        "unit": "per time"
+      },
+      {
+        "index": 6,
+        "name": "r_A",
+        "type": "CONSTANT",
+        "expression": "rate of progression from patent asymptomatic infection to sub-patent infection",
+        "description": "Depends on anti-parasite immunity.",
+        "unit": "per time"
+      },
+      {
+        "index": 7,
+        "name": "r_U",
+        "type": "CONSTANT",
+        "expression": "rate of clearing sub-patent infection",
+        "description": "Rate at which sub-patent infection is cleared and susceptibility is restored.",
+        "unit": "per time"
+      },
+      {
+        "index": 8,
+        "name": "HBI",
+        "type": "CONSTANT",
+        "expression": "human blood index",
+        "description": "Determines mosquito infectivity to humans together with biting rate.",
+        "unit": "proportion"
+      },
+      {
+        "index": 9,
+        "name": "EIR",
+        "type": "CONSTANT",
+        "expression": "entomological inoculation rate",
+        "description": "Used to characterize transmission intensity and fit the model.",
+        "unit": "infectious bites per person per year"
+      },
+      {
+        "index": 10,
+        "name": "SP",
+        "type": "CONSTANT",
+        "expression": "sulphadoxine-pyrimethamine",
+        "description": "Assumed first-line therapy before ACT introduction; drug half-life determines prophylaxis duration.",
+        "unit": "drug"
+      },
+      {
+        "index": 11,
+        "name": "ACT",
+        "type": "CONSTANT",
+        "expression": "artemisinin-combination therapy",
+        "description": "First-line treatment after introduction; also used in MSAT.",
+        "unit": "drug"
+      },
+      {
+        "index": 12,
+        "name": "DDT",
+        "type": "CONSTANT",
+        "expression": "dichlorodiphenyltrichloroethane",
+        "description": "Used in IRS; assumed half-life of 6 months.",
+        "unit": "insecticide"
+      },
+      {
+        "index": 13,
+        "name": "LLIN",
+        "type": "CONSTANT",
+        "expression": "long-lasting insecticide-treated net",
+        "description": "Vector control intervention with protective efficacy that decays over time.",
+        "unit": "intervention"
+      },
+      {
+        "index": 14,
+        "name": "RTS,S/AS01",
+        "type": "CONSTANT",
+        "expression": "pre-erythrocytic vaccine",
+        "description": "Assumed to reduce transmission from mosquitoes to people; efficacy half-life of 3 years.",
+        "unit": "vaccine"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,423 @@
+{
+  "paper_name": "Measles3",
+  "summary": {
+    "extraction": {
+      "compartments": 6,
+      "flows": 7,
+      "parameters": 17,
+      "stratifications": 1,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Maternally Protected",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Latent",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Immune",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccine Failure",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Maternally Protected",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Latent",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Latent",
+        "target": "Infectious",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Immune",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Immune",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Vaccine Failure",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccine Failure",
+        "target": "Latent",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Force of infection (age 0-1)",
+        "value": "0.0690",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 1-2)",
+        "value": "0.1075",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 2-3)",
+        "value": "0.1572",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 3-4)",
+        "value": "0.2005",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 4-5)",
+        "value": "0.2582",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 5-10)",
+        "value": "0.5167",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 10-15)",
+        "value": "0.2549",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Force of infection (age 15-75)",
+        "value": "0.0989",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of progression from latency",
+        "value": "52.14",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of recovery from infection",
+        "value": "52.14",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rate of loss of passive immunity",
+        "value": "4.0",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccine efficacy (p)",
+        "value": "0.90",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Birth rate",
+        "value": "666666",
+        "unit": "per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Background death rate (adults)",
+        "value": "0.0167",
+        "unit": "per person per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Average duration of latent period",
+        "value": "7",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Average duration of infectious period",
+        "value": "7",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Average duration of maternal protection",
+        "value": "3",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 6,
+    "flows": 7,
+    "parameters": 17,
+    "stratifications": 1,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 32,
+    "items_with_evidence": 32,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 32,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 32,
+      "items_with_evidence": 32,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 32,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 5,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.8333,
+        "recall": 0.8333,
+        "f1": 0.8333
+      },
+      "flows": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "parameters": {
+        "tp": 3,
+        "fp": 14,
+        "fn": 4,
+        "precision": 0.1765,
+        "recall": 0.4286,
+        "f1": 0.25
+      },
+      "composite_score": 0.8167,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "VaccineFailure",
+          "extracted": "Vaccine Failure",
+          "score": 0.7611494064331055
+        },
+        {
+          "gold": "Latent",
+          "extracted": "Latent",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious",
+          "score": 1.0
+        },
+        {
+          "gold": "Immune",
+          "extracted": "Immune",
+          "score": 1.000000238418579
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "MaternalImmunity->Susceptible",
+          "extracted": "Maternally Protected->Susceptible",
+          "score": 0.7048182487487793
+        },
+        {
+          "gold": "Susceptible->Latent",
+          "extracted": "Susceptible->Latent",
+          "score": 0.9999998807907104
+        },
+        {
+          "gold": "Susceptible->Immune",
+          "extracted": "Susceptible->Immune",
+          "score": 1.0
+        },
+        {
+          "gold": "Susceptible->VaccineFailure",
+          "extracted": "Susceptible->Vaccine Failure",
+          "score": 0.8727185130119324
+        },
+        {
+          "gold": "VaccineFailure->Latent",
+          "extracted": "Vaccine Failure->Latent",
+          "score": 0.9194023609161377
+        },
+        {
+          "gold": "Latent->Infectious",
+          "extracted": "Latent->Infectious",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious->Immune",
+          "extracted": "Infectious->Immune",
+          "score": 1.0
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "MaternalImmunityLossRate 4.0 Rate of loss of passive immunity; Table 1 gives mean maternal protection of about 3 months, corresponding to rate 4.0 per year",
+          "extracted": "Rate of loss of passive immunity 4.0 Rate of loss of maternal antibody protection; average duration of maternal protection is 3 months",
+          "score": 0.8563434481620789
+        },
+        {
+          "gold": "LatentProgressionRate 52.14 Rate of progression from latent to infectious; Table 1 gives average latent period of 7 days, corresponding to 52.14 per year",
+          "extracted": "Rate of progression from latency 52.14 Rate of progression from latent to infectious class; average latent period of 7 days",
+          "score": 0.8792270421981812
+        },
+        {
+          "gold": "RecoveryRate 52.14 Rate of recovery from infectious measles; Table 1 gives average infectious period of 7 days, corresponding to 52.14 per year",
+          "extracted": "Rate of recovery from infection 52.14 Rate of recovery from infectious class; average infectious period of 7 days",
+          "score": 0.7089442014694214
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

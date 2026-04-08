@@ -1,0 +1,21 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Zika3,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika3,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.4,False,Human infection from infectious mosquitoes at rate βH S_H I_V.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.6,False,Progression from intrinsic incubation to infectiousness at rate αH E_H.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.6,False,Recovery/removal from infectiousness at rate γ I_H.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.5,False,Mosquito infection from infectious humans at rate βV S_V I_H / N.,,,
+Zika3,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.6,False,Progression from extrinsic incubation to infectiousness at rate αV E_V.,,,
+Zika3,Parameter,1/αV,,,,,,Model file,Certain,,,,,,Mean extrinsic incubation period.,CONSTANT,10.5,days
+Zika3,Parameter,1/αH,,,,,,Model file,Certain,,,,,,Mean intrinsic incubation period.,CONSTANT,5.9,days
+Zika3,Parameter,1/γ,,,,,,Model file,Certain,,,,,,Mean human infectious period.,CONSTANT,5,days
+Zika3,Parameter,1/δ,,,,,,Model file,Certain,,,,,,Mean mosquito lifespan.,CONSTANT,7.8,days
+Zika3,Parameter,βH,,,,,,Model file,Certain,,,,,,Vector-to-human transmission rate.,CONSTANT,"U(0,1)",days^-1
+Zika3,Parameter,βV,,,,,,Model file,Certain,,,,,,Human-to-vector transmission rate.,CONSTANT,"U(0,1)",days^-1
+Zika3,Parameter,r,,,,,,Model file,Certain,,,,,,Proportion of cases reported.,CONSTANT,"U(0,1)",dimensionless
+Zika3,Parameter,ϕ,,,,,,Model file,Certain,,,,,,Reporting dispersion.,CONSTANT,"U(0,1)",dimensionless

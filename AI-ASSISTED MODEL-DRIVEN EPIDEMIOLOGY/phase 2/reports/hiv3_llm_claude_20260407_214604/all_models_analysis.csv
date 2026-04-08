@@ -1,0 +1,39 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Hiv3,Compartment,Susceptible,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Infected Untreated,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Infected on ART,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Dead,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infected Untreated,RateFlow,//@parameters.0,False,"New HIV infection through sexual contact with infected individuals; transmission probability varies by phase (acute, chronic, final)",,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,Birth/recruitment into susceptible population at birth rate,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.5,False,Background mortality of susceptible individuals,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infected on ART,RateFlow,0.0,False,Testing and initiation of antiretroviral therapy after screening,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.5,False,Death from HIV disease progression (Weibull survival) and background mortality,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infected Untreated,RateFlow,0.0,False,Drop-out from ART or treatment failure,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Dead,RateFlow,//@parameters.5,False,Death from disease progression on treatment and background mortality,,,
+Hiv3,Parameter,β,,,,,,Model file,Certain,,,,,,Initial transmission parameter,CONSTANT,0.767,/yr
+Hiv3,Parameter,λ (location),,,,,,Model file,Certain,,,,,,Transmission parameter location (shape of transmission curve),CONSTANT,0.055,dimensionless
+Hiv3,Parameter,n (shape),,,,,,Model file,Certain,,,,,,Transmission parameter shape,CONSTANT,0.996,dimensionless
+Hiv3,Parameter,ε (relative transmission on ART),,,,,,Model file,Certain,,,,,,Relative transmissibility of individuals on ART compared to untreated,CONSTANT,0.01,dimensionless
+Hiv3,Parameter,Birth rate μ,,,,,,Model file,Certain,,,,,,Birth/recruitment rate into the population,CONSTANT,0.029,/yr
+Hiv3,Parameter,Background mortality rate δ,,,,,,Model file,Certain,,,,,,Background (non-HIV) mortality rate,CONSTANT,0.018,/yr
+Hiv3,Parameter,Progression rate untreated φ,,,,,,Model file,Certain,,,,,,Disease progression rate for untreated individuals,CONSTANT,0.303,/yr
+Hiv3,Parameter,Progression rate treated γ,,,,,,Model file,Certain,,,,,,Disease progression rate for individuals on ART,CONSTANT,0.165,/yr
+Hiv3,Parameter,Intervention timing t,,,,,,Model file,Certain,,,,,,Year when intervention (universal testing and ART) begins,CONSTANT,2011,yr
+Hiv3,Parameter,Intervention rate r,,,,,,Model file,Certain,,,,,,Rate of roll-out of the intervention,CONSTANT,1.00,/yr
+Hiv3,Parameter,Intervention maximum m,,,,,,Model file,Certain,,,,,,Maximum coverage of the intervention,CONSTANT,0.90,dimensionless
+Hiv3,Parameter,Testing rate σ,,,,,,Model file,Certain,,,,,,Rate of HIV testing,CONSTANT,1.00,/yr
+Hiv3,Parameter,Testing refusal θ,,,,,,Model file,Certain,,,,,,Proportion refusing HIV testing,CONSTANT,0.08,dimensionless
+Hiv3,Parameter,Drop-out rate ω,,,,,,Model file,Certain,,,,,,Rate of dropping out of ART,CONSTANT,0.015,/yr
+Hiv3,Parameter,Treatment failure rate κ,,,,,,Model file,Certain,,,,,,Rate of virological treatment failure on ART,CONSTANT,0.10,/yr
+Hiv3,Parameter,Other interventions reduction ψ,,,,,,Model file,Certain,,,,,,"Reduction in transmission from other interventions (e.g. condoms, circumcision)",CONSTANT,0.40,dimensionless
+Hiv3,Parameter,Survival median,,,,,,Model file,Certain,,,,,,Median survival time without treatment (Weibull distribution),CONSTANT,10.0,years
+Hiv3,Parameter,Survival shape,,,,,,Model file,Certain,,,,,,Shape parameter of Weibull survival distribution,CONSTANT,2.25,dimensionless
+Hiv3,Parameter,Acute phase duration,,,,,,Model file,Certain,,,,,,Duration of the acute phase of HIV infection,CONSTANT,2,months
+Hiv3,Parameter,Acute phase infectivity,,,,,,Model file,Certain,,,,,,Infectivity during the acute phase,CONSTANT,4.50,number/year
+Hiv3,Parameter,Chronic phase infectivity,,,,,,Model file,Certain,,,,,,Infectivity during the chronic phase,CONSTANT,0.45,number/year
+Hiv3,Parameter,Final phase infectivity,,,,,,Model file,Certain,,,,,,Infectivity during the final phase,CONSTANT,2.25,number/year
+Hiv3,Parameter,Final phase duration,,,,,,Model file,Certain,,,,,,Duration of the final phase as a proportion of expected survival,CONSTANT,0.15,proportion of expected life
+Hiv3,Parameter,Concurrency number,,,,,,Model file,Certain,,,,,,Number of concurrent sexual partners,CONSTANT,4,number
+Hiv3,Parameter,Partnership duration,,,,,,Model file,Certain,,,,,,Mean duration of a sexual partnership,CONSTANT,6,months
+Hiv3,Parameter,Initial CD4 mu,,,,,,Model file,Certain,,,,,,Location parameter for initial CD4 count distribution,CONSTANT,6.98,log-normal location parameter
+Hiv3,Parameter,Initial CD4 sigma,,,,,,Model file,Certain,,,,,,Shape parameter for initial CD4 count distribution,CONSTANT,0.34,log-normal shape parameter

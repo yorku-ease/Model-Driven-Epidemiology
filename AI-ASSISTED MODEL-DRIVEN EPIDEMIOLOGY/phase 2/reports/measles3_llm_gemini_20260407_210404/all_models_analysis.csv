@@ -1,0 +1,22 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Measles3,Compartment,Maternally Immune,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles3,Compartment,Susceptible,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles3,Compartment,Latent,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles3,Compartment,Infectious,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles3,Compartment,Immune,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles3,Compartment,Vaccine Failure,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,0.0,False,Waning of passive maternal immunity.,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,//@parameters.7,False,Infection of susceptible individuals through contact with infectious individuals.,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Immune,RateFlow,0.0,False,Successful vaccination leading to immunity.,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Vaccine Failure,RateFlow,0.0,False,Vaccination that fails to confer protection.,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.1,False,Progression from latent to infectious state.,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Immune,RateFlow,//@parameters.2,False,Recovery from infection leading to immunity.,,,
+Measles3,Flow,,,,,,,Model file,Certain,,Latent,RateFlow,//@parameters.7,False,Infection of individuals with vaccine failure through contact with infectious individuals.,,,
+Measles3,Parameter,Force of infection,,,,,,Model file,Certain,,,,,,Age-specific per capita rate at which susceptible individuals (X and Xv) acquire infection. Values range from 0.0690 to 0.5167.,CONSTANT,"Age-specific, see Table 1",/person/year
+Measles3,Parameter,Rate of progression from latency,,,,,,Model file,Certain,,,,,,"Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days.",CONSTANT,52.14,/person/year
+Measles3,Parameter,Rate of recovery from infection,,,,,,Model file,Certain,,,,,,"Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days.",CONSTANT,52.14,/person/year
+Measles3,Parameter,Rate of loss of passive immunity,,,,,,Model file,Certain,,,,,,"Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year).",CONSTANT,40,/person/year
+Measles3,Parameter,Vaccine efficacy,,,,,,Model file,Certain,,,,,,The proportion (p) of vaccinated individuals who become immune.,CONSTANT,0.9,proportion
+Measles3,Parameter,Birth rate,,,,,,Model file,Certain,,,,,,Annual birth cohort in England and Wales.,CONSTANT,666666,persons/year
+Measles3,Parameter,Background death rate,,,,,,Model file,Certain,,,,,,Background death rate assumed for the residual age group (15-75 years).,CONSTANT,1/60,/person/year
+Measles3,Parameter,Contact rates,,,,,,Model file,Certain,,,,,,Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children.,CONSTANT,Defined by WAIFW matrices,N/A

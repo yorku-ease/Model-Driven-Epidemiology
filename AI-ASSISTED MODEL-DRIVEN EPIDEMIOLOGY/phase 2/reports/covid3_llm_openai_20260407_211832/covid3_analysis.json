@@ -1,0 +1,104 @@
+{
+  "modelName": "Covid3",
+  "summary": {
+    "modelName": "Covid3",
+    "totalPopulation": null,
+    "numCompartments": 2,
+    "numParameters": 7,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 1,
+        "primaryName": "Deaths",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "R_t",
+        "type": "CONSTANT",
+        "expression": "time-varying; piecewise constant with changes at interventions",
+        "description": "Effective reproduction number; modeled as a function of the initial reproduction number and intervention effects.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "R_0",
+        "type": "CONSTANT",
+        "expression": "country-specific initial value before interventions",
+        "description": "Initial reproduction number before interventions took effect.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "infection fatality ratio",
+        "type": "CONSTANT",
+        "expression": "population-averaged; adjusted for age structure and contact patterns",
+        "description": "Fraction of infections resulting in death.",
+        "unit": "probability"
+      },
+      {
+        "index": 3,
+        "name": "infection-to-death distribution",
+        "type": "CONSTANT",
+        "expression": "derived from onset-to-symptoms and symptoms-to-death distributions",
+        "description": "Delay distribution linking infections to observed deaths.",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "generation time distribution",
+        "type": "CONSTANT",
+        "expression": "approximated using the serial interval distribution",
+        "description": "Distribution weighting the discrete convolution of previous infections in the renewal equation.",
+        "unit": "days"
+      },
+      {
+        "index": 5,
+        "name": "serial interval distribution",
+        "type": "CONSTANT",
+        "expression": "used as approximation to generation time distribution",
+        "description": "Distribution of time between symptom onset in a primary case and a secondary case.",
+        "unit": "days"
+      },
+      {
+        "index": 6,
+        "name": "intervention effects",
+        "type": "CONSTANT",
+        "expression": "country-shared with partial pooling for the last intervention",
+        "description": "Covariate effects of governmental interventions on transmission, including lockdown, public events banned, school closure, self isolation, and social distancing encouraged.",
+        "unit": "relative reduction in R_t"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

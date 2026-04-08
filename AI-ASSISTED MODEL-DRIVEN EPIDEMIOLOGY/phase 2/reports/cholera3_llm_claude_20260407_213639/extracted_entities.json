@@ -1,0 +1,235 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Number of susceptible individuals in the human population (S)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of susceptible individuals in the human population (S)"
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Number of infected individuals in the human population, including symptomatic, asymptomatic, and mild infections (I)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Number of infected individuals in the human population, including symptomatic, asymptomatic, and mild infections (I)"
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Recovered individuals; not explicitly tracked but estimated as H-I-S since total population is constant",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovered individuals; not explicitly tracked but estimated as H-I-S since total population is constant"
+    },
+    {
+      "normalized_name": "Bacteria in Aquatic Reservoir",
+      "raw_text": "Bacteria in Aquatic Reservoir",
+      "page_number": 0,
+      "text_span": "Concentration of toxigenic V. cholerae in the aquatic environment (B), measured in cells/ml",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of toxigenic V. cholerae in the aquatic environment (B), measured in cells/ml"
+    }
+  ],
+  "flows": [
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Renewal of susceptibles through birth, immigration, and/or loss of acquired immunity at rate n*H (total inflow to susceptible compartment)",
+      "page_number": 0,
+      "text_span": "Renewal of susceptibles through birth, immigration, and/or loss of acquired immunity at rate n*H (total inflow to susceptible compartment)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Renewal of susceptibles through birth, immigration, and/or loss of acquired immunity at rate n*H (total inflow to susceptible compartment)"
+    },
+    {
+      "source": "Susceptible",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Natural death of susceptibles at rate n (removed from susceptible pool)",
+      "page_number": 0,
+      "text_span": "Natural death of susceptibles at rate n (removed from susceptible pool)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural death of susceptibles at rate n (removed from susceptible pool)"
+    },
+    {
+      "source": "Bacteria in Aquatic Reservoir",
+      "target": "Bacteria in Aquatic Reservoir",
+      "flow_type": "RateFlow",
+      "raw_text": "Net growth/loss of V. cholerae in the aquatic environment at rate (nb - mb), where nb is the growth rate and mb is the loss rate",
+      "page_number": 0,
+      "text_span": "Net growth/loss of V. cholerae in the aquatic environment at rate (nb - mb), where nb is the growth rate and mb is the loss rate",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Net growth/loss of V. cholerae in the aquatic environment at rate (nb - mb), where nb is the growth rate and mb is the loss rate"
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "H",
+      "raw_text": "H",
+      "value": "10000",
+      "unit": "persons",
+      "page_number": 0,
+      "text_span": "Total human population size (constant)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total human population size (constant)"
+    },
+    {
+      "normalized_name": "n",
+      "raw_text": "n",
+      "value": "0.0001-0.001",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Human birth and death rate (susceptible renewal rate)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human birth and death rate (susceptible renewal rate)"
+    },
+    {
+      "normalized_name": "a",
+      "raw_text": "a",
+      "value": "0.5-1",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Rate of exposure to contaminated water (contact rate)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of exposure to contaminated water (contact rate)"
+    },
+    {
+      "normalized_name": "K",
+      "raw_text": "K",
+      "value": "1000000",
+      "unit": "cells/ml",
+      "page_number": 0,
+      "text_span": "Concentration of V. cholerae in water that yields 50% chance of catching cholera (half-saturation constant)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Concentration of V. cholerae in water that yields 50% chance of catching cholera (half-saturation constant)"
+    },
+    {
+      "normalized_name": "r",
+      "raw_text": "r",
+      "value": "0.2",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Rate at which people recover from cholera",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate at which people recover from cholera"
+    },
+    {
+      "normalized_name": "nb",
+      "raw_text": "nb",
+      "value": null,
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Growth rate of V. cholerae in the aquatic environment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Growth rate of V. cholerae in the aquatic environment"
+    },
+    {
+      "normalized_name": "mb",
+      "raw_text": "mb",
+      "value": null,
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Loss rate of V. cholerae in the aquatic environment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss rate of V. cholerae in the aquatic environment"
+    },
+    {
+      "normalized_name": "nb-mb",
+      "raw_text": "nb-mb",
+      "value": "-0.33",
+      "unit": "day^-1",
+      "page_number": 0,
+      "text_span": "Net growth rate of V. cholerae in the aquatic environment (negative indicates net loss)",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Net growth rate of V. cholerae in the aquatic environment (negative indicates net loss)"
+    },
+    {
+      "normalized_name": "e",
+      "raw_text": "e",
+      "value": "10",
+      "unit": "cells/ml day^-1 person^-1",
+      "page_number": 0,
+      "text_span": "Contribution of each infected person to the population of V. cholerae in the aquatic environment",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Contribution of each infected person to the population of V. cholerae in the aquatic environment"
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 14,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "vaccination",
+      "page_number": 14,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 14,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 9,
+    "num_stratifications": 1,
+    "num_interventions": 3
+  }
+}

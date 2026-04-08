@@ -1,0 +1,307 @@
+{
+  "paper_name": "Cholera3",
+  "summary": {
+    "extraction": {
+      "compartments": 3,
+      "flows": 4,
+      "parameters": 8,
+      "stratifications": 1,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Aquatic Reservoir of Vibrio cholerae",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Aquatic Reservoir of Vibrio cholerae",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Aquatic Reservoir of Vibrio cholerae",
+        "target": "Aquatic Reservoir of Vibrio cholerae",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "H",
+        "value": "total human population",
+        "unit": "persons",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "n",
+        "value": "human birth and death rates",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "a",
+        "value": "rate of exposure to contaminated water",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "K",
+        "value": "concentration of Vibrio cholerae in water that yields 50% chance of catching cholera",
+        "unit": "cells/ml",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "r",
+        "value": "rate at which people recover from cholera",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "nb",
+        "value": "growth rate of Vibrio cholerae in the aquatic environment",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "mb",
+        "value": "loss rate of Vibrio cholerae in the aquatic environment",
+        "unit": "day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "e",
+        "value": "contribution of each infected person to the population of Vibrio cholerae in the aquatic environment",
+        "unit": "cells/ml/day/person",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 3,
+    "flows": 4,
+    "parameters": 8,
+    "stratifications": 1,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 19,
+    "items_with_evidence": 19,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 19,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 19,
+      "items_with_evidence": 19,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 19,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "flows": {
+        "tp": 2,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667
+      },
+      "parameters": {
+        "tp": 7,
+        "fp": 1,
+        "fn": 3,
+        "precision": 0.875,
+        "recall": 0.7,
+        "f1": 0.7778
+      },
+      "composite_score": 0.825,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Infected",
+          "extracted": "Infectious",
+          "score": 0.8296631574630737
+        },
+        {
+          "gold": "Aquatic toxigenic Vibrio cholerae",
+          "extracted": "Aquatic Reservoir of Vibrio cholerae",
+          "score": 0.83537757396698
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Infected",
+          "extracted": "Susceptible->Infectious",
+          "score": 0.9430538415908813
+        },
+        {
+          "gold": "Infected->Aquatic toxigenic Vibrio cholerae",
+          "extracted": "Infectious->Aquatic Reservoir of Vibrio cholerae",
+          "score": 0.886772871017456
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "a 1 Rate of exposure to contaminated water (used in dose-dependent infection term a * B / (K + B))",
+          "extracted": "a rate of exposure to contaminated water Contact rate with untreated water.",
+          "score": 0.7006731629371643
+        },
+        {
+          "gold": "K 1e6 Concentration of V. cholerae in water giving 50% chance of infection",
+          "extracted": "K concentration of Vibrio cholerae in water that yields 50% chance of catching cholera Dose-response midpoint for infection probability.",
+          "score": 0.8396973609924316
+        },
+        {
+          "gold": "r 0.2 Recovery rate from cholera",
+          "extracted": "r rate at which people recover from cholera Recovery rate from infection.",
+          "score": 0.9089757204055786
+        },
+        {
+          "gold": "nb 0 Growth rate of V. cholerae in the aquatic environment",
+          "extracted": "nb growth rate of Vibrio cholerae in the aquatic environment Environmental bacterial growth rate.",
+          "score": 0.8559905290603638
+        },
+        {
+          "gold": "mb 0.33 Loss rate of V. cholerae in the aquatic environment",
+          "extracted": "mb loss rate of Vibrio cholerae in the aquatic environment Environmental bacterial loss/extinction rate.",
+          "score": 0.873465895652771
+        },
+        {
+          "gold": "e 10 Contribution of each infected person to aquatic V. cholerae concentration",
+          "extracted": "e contribution of each infected person to the population of Vibrio cholerae in the aquatic environment Average per-capita bacterial input from infected individuals.",
+          "score": 0.8074594736099243
+        },
+        {
+          "gold": "H 10000 Total human population",
+          "extracted": "H total human population Total human population size; assumed constant.",
+          "score": 0.7280791401863098
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

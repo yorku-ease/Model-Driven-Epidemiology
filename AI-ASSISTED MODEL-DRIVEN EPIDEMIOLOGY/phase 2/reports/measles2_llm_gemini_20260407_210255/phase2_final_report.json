@@ -1,0 +1,315 @@
+{
+  "paper_name": "Measles2",
+  "summary": {
+    "extraction": {
+      "compartments": 7,
+      "flows": 4,
+      "parameters": 9,
+      "stratifications": 2,
+      "interventions": 1
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [
+      "vaccination"
+    ],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Maternally Immune",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated (1 dose)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated (2 doses)",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Maternally Immune",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Exposed",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible",
+        "target": "Vaccinated (1 dose)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated (1 dose)",
+        "target": "Vaccinated (2 doses)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "primary vaccine failure",
+        "value": "5.2",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "infection rate",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "duration of maternal immunity",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "parameters for seasonality of transmission",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "importation",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "report rate of imported cases",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "vaccine effectiveness",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "existing immunity in older generations",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "parameters of spatial spread",
+        "value": "Not specified",
+        "unit": "Not specified",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 7,
+    "flows": 4,
+    "parameters": 9,
+    "stratifications": 2,
+    "interventions": 1
+  },
+  "traceability": {
+    "total_items": 23,
+    "items_with_evidence": 23,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 23,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 23,
+      "items_with_evidence": 23,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 23,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 5,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.7143,
+        "recall": 0.7143,
+        "f1": 0.7143
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 6,
+        "precision": 0.75,
+        "recall": 0.3333,
+        "f1": 0.4615
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 9,
+        "fn": 9,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.4997,
+      "compartment_matches": [
+        {
+          "gold": "MaternalProtected",
+          "extracted": "Maternally Immune",
+          "score": 0.7484333515167236
+        },
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed",
+          "extracted": "Exposed",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious",
+          "score": 1.0
+        },
+        {
+          "gold": "Recovered",
+          "extracted": "Recovered",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "MaternalProtected->Susceptible",
+          "extracted": "Maternally Immune->Susceptible",
+          "score": 0.8424338102340698
+        },
+        {
+          "gold": "Susceptible->VaccinatedOneDose",
+          "extracted": "Susceptible->Vaccinated (1 dose)",
+          "score": 0.7557013034820557
+        },
+        {
+          "gold": "Susceptible->Exposed",
+          "extracted": "Susceptible->Exposed",
+          "score": 0.9999997615814209
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

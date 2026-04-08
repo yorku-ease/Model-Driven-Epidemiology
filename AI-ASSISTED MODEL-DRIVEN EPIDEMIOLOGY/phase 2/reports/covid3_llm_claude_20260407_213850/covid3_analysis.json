@@ -1,0 +1,172 @@
+{
+  "modelName": "Covid3",
+  "summary": {
+    "modelName": "Covid3",
+    "totalPopulation": null,
+    "numCompartments": 4,
+    "numParameters": 12,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 1,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 2,
+        "primaryName": "Symptomatic",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from symptom onset to death, governed by the onset-to-death distribution, scaled by the infection fatality ratio",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Dead",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "R0",
+        "type": "CONSTANT",
+        "expression": "3.8",
+        "description": "Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4–5.6)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 1,
+        "name": "Rt",
+        "type": "CONSTANT",
+        "expression": "0.66",
+        "description": "Average time-varying reproduction number across 11 countries after interventions",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "ifr",
+        "type": "CONSTANT",
+        "expression": "country-specific",
+        "description": "Population-averaged infection fatality ratio, adjusted for age structure and contact patterns of each country",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 3,
+        "name": "infection_to_onset",
+        "type": "CONSTANT",
+        "expression": "5.1",
+        "description": "Mean time from infection to onset of symptoms (incubation period), used in the infection-to-death distribution",
+        "unit": "days"
+      },
+      {
+        "index": 4,
+        "name": "onset_to_death",
+        "type": "CONSTANT",
+        "expression": "17.8",
+        "description": "Mean time from onset of symptoms to death, used in the infection-to-death distribution",
+        "unit": "days"
+      },
+      {
+        "index": 5,
+        "name": "generation_interval",
+        "type": "CONSTANT",
+        "expression": "6.5",
+        "description": "Mean generation time (serial interval distribution used as approximation), representing average time from infection of one person to infection of another",
+        "unit": "days"
+      },
+      {
+        "index": 6,
+        "name": "lockdown_effect",
+        "type": "CONSTANT",
+        "expression": "81",
+        "description": "Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)",
+        "unit": "percent reduction in Rt"
+      },
+      {
+        "index": 7,
+        "name": "alpha_lockdown",
+        "type": "CONSTANT",
+        "expression": "country-specific",
+        "description": "Country-specific effect of lockdown via partial pooling",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 8,
+        "name": "alpha_school_closure",
+        "type": "CONSTANT",
+        "expression": "shared",
+        "description": "Shared effect size parameter for school closure intervention across countries",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "alpha_public_events",
+        "type": "CONSTANT",
+        "expression": "shared",
+        "description": "Shared effect size parameter for banning public events across countries",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "alpha_self_isolation",
+        "type": "CONSTANT",
+        "expression": "shared",
+        "description": "Shared effect size parameter for case-based self-isolation measures across countries",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "alpha_social_distancing",
+        "type": "CONSTANT",
+        "expression": "shared",
+        "description": "Shared effect size parameter for social distancing encouraged across countries",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

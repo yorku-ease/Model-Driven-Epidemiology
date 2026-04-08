@@ -1,0 +1,24 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Dengue2,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue2,Compartment,Infected Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue2,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue2,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Dengue2,Compartment,Infected Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Dengue2,Flow,,,,,,,Model file,Certain,,Infected Humans,RateFlow,0.0,False,Dengue transmission from an infected mosquito to a susceptible human during blood-feeding.,,,
+Dengue2,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,0.0,False,Recovery from dengue infection with acquisition of lifelong immunity to the infecting serotype.,,,
+Dengue2,Flow,,,,,,,Model file,Certain,,Infected Mosquitoes,RateFlow,0.0,False,Dengue transmission from an infected human to a susceptible mosquito during blood-feeding.,,,
+Dengue2,Parameter,Per-exposure protection from vaccination for seronegative vaccinees,,,,,,Model file,Certain,,,,,,Estimated vaccine protection per exposure among seronegative vaccinees.,CONSTANT,0.321,probability
+Dengue2,Parameter,Per-exposure protection from vaccination for seropositive vaccinees,,,,,,Model file,Certain,,,,,,Estimated vaccine protection per exposure among seropositive vaccinees.,CONSTANT,0.516,probability
+Dengue2,Parameter,Average duration of protection for seronegative vaccinees,,,,,,Model file,Certain,,,,,,Average duration of vaccine-induced protection among seronegative vaccinees.,CONSTANT,426,days
+Dengue2,Parameter,Average duration of protection for seropositive vaccinees,,,,,,Model file,Certain,,,,,,Average duration of vaccine-induced protection among seropositive vaccinees.,CONSTANT,258,days
+Dengue2,Parameter,Probability of symptoms conditional on infection (primary),,,,,,Model file,Certain,,,,,,Probability that a primary dengue infection becomes symptomatic.,CONSTANT,0.405,probability
+Dengue2,Parameter,Probability of symptoms conditional on infection (secondary),,,,,,Model file,Certain,,,,,,Probability that a secondary dengue infection becomes symptomatic.,CONSTANT,0.339,probability
+Dengue2,Parameter,Probability of symptoms conditional on infection (post-secondary),,,,,,Model file,Certain,,,,,,Probability that a post-secondary dengue infection becomes symptomatic.,CONSTANT,0.09,probability
+Dengue2,Parameter,Probability of hospitalization conditional on symptoms (primary),,,,,,Model file,Certain,,,,,,Probability of hospitalization given symptomatic primary infection.,CONSTANT,0.074,probability
+Dengue2,Parameter,Probability of hospitalization conditional on symptoms (secondary),,,,,,Model file,Certain,,,,,,Probability of hospitalization given symptomatic secondary infection.,CONSTANT,0.376,probability
+Dengue2,Parameter,Probability of hospitalization conditional on symptoms (post-secondary),,,,,,Model file,Certain,,,,,,Probability of hospitalization given symptomatic post-secondary infection.,CONSTANT,0.101,probability
+Dengue2,Parameter,Seropositivity among nine-year-olds,,,,,,Model file,Certain,,,,,,Proportion of nine-year-olds with previous DENV exposure.,CONSTANT,PE9,probability
+Dengue2,Parameter,Sensitivity,,,,,,Model file,Certain,,,,,,Probability that a person with prior DENV exposure tests seropositive.,CONSTANT,sensitivity,probability
+Dengue2,Parameter,Specificity,,,,,,Model file,Certain,,,,,,Probability that a DENV-naïve person tests seronegative.,CONSTANT,specificity,probability
+Dengue2,Parameter,Vaccination coverage,,,,,,Model file,Certain,,,,,,Coverage among nine-year-olds who screen positive and receive vaccination.,CONSTANT,coveragevaccination = coverageintervention × SP,probability
+Dengue2,Parameter,Serological screening positivity,,,,,,Model file,Certain,,,,,,Probability that screening returns a positive result among nine-year-olds.,CONSTANT,SP = PE9 × sensitivity + (1 - PE9) × (1 - specificity),probability

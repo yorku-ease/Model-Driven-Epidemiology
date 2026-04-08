@@ -1,0 +1,576 @@
+{
+  "compartments": {
+    "Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "Individuals susceptible to infection, denoted S in the model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Individuals with clinical disease who are successfully treated, denoted T in the model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Untreated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Individuals with clinical disease who are not treated or fail treatment, denoted D in the model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Prophylaxis": {
+      "evidence": [
+        {
+          "text_span": "Individuals in a period of prophylactic protection following successful treatment, denoted P in the model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Patent Infection": {
+      "evidence": [
+        {
+          "text_span": "Individuals with patent (detectable by microscopy) asymptomatic infection, denoted A in the model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Sub-patent Infection": {
+      "evidence": [
+        {
+          "text_span": "Individuals with sub-patent (not detectable by microscopy) infection, denoted U in the model",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Mosquitoes susceptible to infection, modelled for three Anopheles species (An. gambiae s.s., An. funestus, An. arabiensis)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Latent Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Mosquitoes that have taken an infectious blood meal and are in the latent (incubation) period",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Mosquitoes that are infectious to humans, assumed never to recover before death",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible Humans -> Treated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Infection from infectious mosquito bite leading to clinical disease with probability \u03c6, followed by successful treatment with probability fT",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Humans -> Untreated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Infection from infectious mosquito bite leading to clinical disease with probability \u03c6, treatment failure with probability (1-fT)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Humans -> Asymptomatic Patent Infection": {
+      "evidence": [
+        {
+          "text_span": "Infection from infectious mosquito bite leading to asymptomatic patent infection with probability (1-\u03c6)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Treated Clinical Disease -> Prophylaxis": {
+      "evidence": [
+        {
+          "text_span": "Recovery from treated clinical disease to prophylactic protection at rate rT",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Prophylaxis -> Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "End of prophylactic protection, return to susceptible at rate rP",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Untreated Clinical Disease -> Asymptomatic Patent Infection": {
+      "evidence": [
+        {
+          "text_span": "Clearance of clinical disease to patent asymptomatic infection at rate rD",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Patent Infection -> Asymptomatic Sub-patent Infection": {
+      "evidence": [
+        {
+          "text_span": "Transition from patent to sub-patent infection at rate rA, dependent on anti-parasite immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Sub-patent Infection -> Susceptible Humans": {
+      "evidence": [
+        {
+          "text_span": "Clearance of sub-patent infection, return to susceptible at rate rU",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Untreated Clinical Disease -> Treated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Superinfection: new infection in presence of existing untreated clinical disease leading to treated clinical disease",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Patent Infection -> Treated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Superinfection: new infection leading to clinical disease from patent asymptomatic state",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Sub-patent Infection -> Treated Clinical Disease": {
+      "evidence": [
+        {
+          "text_span": "Superinfection: new infection leading to clinical disease from sub-patent state",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Asymptomatic Sub-patent Infection -> Asymptomatic Patent Infection": {
+      "evidence": [
+        {
+          "text_span": "Superinfection: new infection leading to asymptomatic patent infection from sub-patent state",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Susceptible Mosquitoes -> Latent Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Mosquito takes an infectious blood meal from an infectious human (T, D, A, or U states)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Latent Mosquitoes -> Infectious Mosquitoes": {
+      "evidence": [
+        {
+          "text_span": "Completion of extrinsic incubation period, mosquito becomes infectious",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03c6": {
+      "evidence": [
+        {
+          "text_span": "Probability of developing clinical disease on infection, determined by level of anti-disease immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "fT": {
+      "evidence": [
+        {
+          "text_span": "Fixed probability of being successfully treated given clinical disease",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "rT": {
+      "evidence": [
+        {
+          "text_span": "Rate of transition from treated clinical disease to prophylactic protection",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "rP": {
+      "evidence": [
+        {
+          "text_span": "Rate of return from prophylactic protection to susceptible",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "rD": {
+      "evidence": [
+        {
+          "text_span": "Rate of clearance of untreated clinical disease to patent asymptomatic infection",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "rA": {
+      "evidence": [
+        {
+          "text_span": "Rate of transition from patent asymptomatic to sub-patent infection, depends on anti-parasite immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "rU": {
+      "evidence": [
+        {
+          "text_span": "Rate of clearance of sub-patent infection to susceptible",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u039b": {
+      "evidence": [
+        {
+          "text_span": "Force of infection on humans, determined by vector-to-human ratio, biting rate, proportion of infectious mosquitoes, and anti-infection immunity",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "EIR": {
+      "evidence": [
+        {
+          "text_span": "Entomological inoculation rate, varies by setting",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "3-675",
+          "unit": "infectious bites per person per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "HBI": {
+      "evidence": [
+        {
+          "text_span": "Human blood index of mosquito species, determines infectivity to humans",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": null,
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "LLIN_half_life": {
+      "evidence": [
+        {
+          "text_span": "Half-life of LLIN protective efficacy due to decaying insecticide and wear-and-tear",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "2.64",
+          "unit": "years"
+        }
+      ],
+      "paper_backed": true
+    },
+    "LLIN_adherence_decay": {
+      "evidence": [
+        {
+          "text_span": "Exponential decay rate of LLIN usage/adherence over time",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.2",
+          "unit": "per year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "DDT_half_life": {
+      "evidence": [
+        {
+          "text_span": "Half-life of DDT insecticidal effect for IRS",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "6",
+          "unit": "months"
+        }
+      ],
+      "paper_backed": true
+    },
+    "ACT_prophylaxis_duration": {
+      "evidence": [
+        {
+          "text_span": "Duration of prophylactic protection provided by ACT in MSAT",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "25",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccine_efficacy": {
+      "evidence": [
+        {
+          "text_span": "Initial efficacy of RTS,S/AS01 pre-erythrocytic vaccine",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.50",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccine_half_life": {
+      "evidence": [
+        {
+          "text_span": "Half-life of exponential decay of vaccine efficacy",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "3",
+          "unit": "years"
+        }
+      ],
+      "paper_backed": true
+    },
+    "LLIN_coverage": {
+      "evidence": [
+        {
+          "text_span": "Target coverage level for LLIN distribution",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.80",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "IRS_coverage": {
+      "evidence": [
+        {
+          "text_span": "Coverage level for IRS",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.80",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "MSAT_coverage": {
+      "evidence": [
+        {
+          "text_span": "Coverage level for MSAT (proportion screened)",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.80",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "vaccine_coverage": {
+      "evidence": [
+        {
+          "text_span": "Coverage level for vaccine based on EPI distribution",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.90",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 6,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 47,
+    "items_with_evidence": 47,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 47,
+    "faithfulness_percentage": 100.0
+  }
+}

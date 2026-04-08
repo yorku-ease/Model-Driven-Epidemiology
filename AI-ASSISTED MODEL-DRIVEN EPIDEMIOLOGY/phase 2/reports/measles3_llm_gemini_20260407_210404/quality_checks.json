@@ -1,0 +1,492 @@
+{
+  "model_analysis": {
+    "modelName": "Measles3",
+    "summary": {
+      "modelName": "Measles3",
+      "totalPopulation": null,
+      "numCompartments": 6,
+      "numParameters": 8,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": true
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Maternally Immune",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Waning of passive maternal immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of susceptible individuals through contact with infectious individuals.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful vaccination leading to immunity.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Vaccination that fails to confer protection.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Latent",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from latent to infectious state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection leading to immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Immune",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 5,
+          "primaryName": "Vaccine Failure",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.7",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of individuals with vaccine failure through contact with infectious individuals.",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Force of infection",
+          "type": "CONSTANT",
+          "expression": "Age-specific, see Table 1",
+          "description": "Age-specific per capita rate at which susceptible individuals (X and Xv) acquire infection. Values range from 0.0690 to 0.5167.",
+          "unit": "/person/year"
+        },
+        {
+          "index": 1,
+          "name": "Rate of progression from latency",
+          "type": "CONSTANT",
+          "expression": "52.14",
+          "description": "Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days.",
+          "unit": "/person/year"
+        },
+        {
+          "index": 2,
+          "name": "Rate of recovery from infection",
+          "type": "CONSTANT",
+          "expression": "52.14",
+          "description": "Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days.",
+          "unit": "/person/year"
+        },
+        {
+          "index": 3,
+          "name": "Rate of loss of passive immunity",
+          "type": "CONSTANT",
+          "expression": "40",
+          "description": "Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year).",
+          "unit": "/person/year"
+        },
+        {
+          "index": 4,
+          "name": "Vaccine efficacy",
+          "type": "CONSTANT",
+          "expression": "0.9",
+          "description": "The proportion (p) of vaccinated individuals who become immune.",
+          "unit": "proportion"
+        },
+        {
+          "index": 5,
+          "name": "Birth rate",
+          "type": "CONSTANT",
+          "expression": "666666",
+          "description": "Annual birth cohort in England and Wales.",
+          "unit": "persons/year"
+        },
+        {
+          "index": 6,
+          "name": "Background death rate",
+          "type": "CONSTANT",
+          "expression": "1/60",
+          "description": "Background death rate assumed for the residual age group (15-75 years).",
+          "unit": "/person/year"
+        },
+        {
+          "index": 7,
+          "name": "Contact rates",
+          "type": "CONSTANT",
+          "expression": "Defined by WAIFW matrices",
+          "description": "Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children.",
+          "unit": "N/A"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Measles3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 8,
+    "parametersWithUncertainty": 8,
+    "parameters": [
+      {
+        "parameter": "Force of infection",
+        "yourValue": "Age-specific, see Table 1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "/person/year",
+        "description": "Age-specific per capita rate at which susceptible individuals (X and Xv) acquire infection. Values range from 0.0690 to 0.5167.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rate of progression from latency",
+        "yourValue": "52.14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "/person/year",
+        "description": "Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rate of recovery from infection",
+        "yourValue": "52.14",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "/person/year",
+        "description": "Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Rate of loss of passive immunity",
+        "yourValue": "40",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "/person/year",
+        "description": "Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vaccine efficacy",
+        "yourValue": "0.9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "proportion",
+        "description": "The proportion (p) of vaccinated individuals who become immune.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Birth rate",
+        "yourValue": "666666",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "persons/year",
+        "description": "Annual birth cohort in England and Wales.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Background death rate",
+        "yourValue": "1/60",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "/person/year",
+        "description": "Background death rate assumed for the residual age group (15-75 years).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Contact rates",
+        "yourValue": "Defined by WAIFW matrices",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Measles3",
+        "unit": "N/A",
+        "description": "Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 8
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Measles3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Rate of progression from latency",
+        "type": "progression",
+        "currentValue": 52.14,
+        "description": "Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Rate of recovery from infection",
+        "type": "recovery",
+        "currentValue": 52.14,
+        "description": "Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days.",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Rate of loss of passive immunity",
+        "type": "mortality",
+        "currentValue": 40.0,
+        "description": "Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year).",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Vaccine efficacy",
+        "type": "other",
+        "currentValue": 0.9,
+        "description": "The proportion (p) of vaccinated individuals who become immune.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Birth rate",
+        "type": "other",
+        "currentValue": 666666.0,
+        "description": "Annual birth cohort in England and Wales.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Rate of progression from latency",
+      "Rate of recovery from infection",
+      "Rate of loss of passive immunity",
+      "Vaccine efficacy",
+      "Birth rate"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Rate of progression from latency",
+        "Rate of recovery from infection",
+        "Rate of loss of passive immunity",
+        "Vaccine efficacy",
+        "Birth rate"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Rate of progression from latency": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Rate of recovery from infection": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Rate of loss of passive immunity": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Vaccine efficacy": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Birth rate": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

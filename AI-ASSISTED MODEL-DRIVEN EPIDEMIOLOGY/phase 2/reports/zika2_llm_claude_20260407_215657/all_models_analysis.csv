@@ -1,0 +1,49 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Zika2,Compartment,Susceptible Women,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Exposed Women,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Symptomatic Infectious Women,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Asymptomatic Infectious Women,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Infectious Women Genital Only,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Recovered Women,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Susceptible Men,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Exposed Men,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Symptomatic Infectious Men,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Asymptomatic Infectious Men,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Infectious Men Genital Only,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Recovered Men,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Susceptible Mosquitoes,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Exposed Mosquitoes,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Compartment,Infectious Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika2,Flow,,,,,,,Model file,Certain,,Exposed Women,RateFlow,//@parameters.0,False,"Women infected by bite of infectious mosquitoes, rate β_vh * S_w * I_v",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Women,RateFlow,//@parameters.4,False,"Progression from exposed to symptomatic infectious, rate ϕ * λ_h * E_w",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Women,RateFlow,//@parameters.4,False,"Progression from exposed to asymptomatic infectious, rate (1-ϕ) * λ_h * E_w",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Infectious Women Genital Only,RateFlow,//@parameters.12,False,"Viral clearance from blood, rate γ_1 * I_ws",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Infectious Women Genital Only,RateFlow,//@parameters.12,False,"Viral clearance from blood, rate γ_1 * I_wa",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Recovered Women,RateFlow,//@parameters.12,False,"Viral clearance from vaginal fluids, rate γ_3 * I_w",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Exposed Men,RateFlow,//@parameters.0,False,"Men infected by bite of infectious mosquitoes, rate β_vh * S_m * I_v",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Symptomatic Infectious Men,RateFlow,//@parameters.4,False,"Progression from exposed to symptomatic infectious, rate ϕ * λ_h * E_m",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Asymptomatic Infectious Men,RateFlow,//@parameters.4,False,"Progression from exposed to asymptomatic infectious, rate (1-ϕ) * λ_h * E_m",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Infectious Men Genital Only,RateFlow,//@parameters.12,False,"Viral clearance from blood, rate γ_1 * I_ms",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Infectious Men Genital Only,RateFlow,//@parameters.12,False,"Viral clearance from blood, rate γ_1 * I_ma",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Recovered Men,RateFlow,//@parameters.12,False,"Viral clearance from semen, rate γ_2 * I_m",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.1,False,"Mosquitoes infected by biting infectious humans with viral load in blood (I_ms, I_ma, I_ws, I_wa), rate β_hv * S_v * (I_ms + I_ma + I_ws + I_wa)",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Susceptible Mosquitoes,RateFlow,//@parameters.12,False,"Birth of new susceptible mosquitoes, rate ν * N_v",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.12,False,"Progression from exposed to infectious mosquito, rate λ_v * E_v",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.12,False,"Natural death of exposed mosquitoes, rate ν * E_v",,,
+Zika2,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.12,False,"Natural death of infectious mosquitoes, rate ν * I_v",,,
+Zika2,Parameter,β_vh,,,,,,Model file,Certain,,,,,,Mosquito to human transmission rate,CONSTANT,0.01–0.4,per day
+Zika2,Parameter,β_hv,,,,,,Model file,Certain,,,,,,Human to mosquito transmission rate,CONSTANT,0.09–0.5,per day
+Zika2,Parameter,β_wm,,,,,,Model file,Certain,,,,,,Women to men sexual transmission rate,CONSTANT,0.001–0.1,per day
+Zika2,Parameter,β_mw,,,,,,Model file,Certain,,,,,,Men to women sexual transmission rate,CONSTANT,0.01–0.1,per day
+Zika2,Parameter,ϕ,,,,,,Model file,Certain,,,,,,Proportion of symptomatic infections,CONSTANT,0.10–0.27,dimensionless
+Zika2,Parameter,1/λ_h,,,,,,Model file,Certain,,,,,,"Intrinsic latent period (human), assumed constant at 6.8 days",CONSTANT,6.8,days
+Zika2,Parameter,1/λ_v,,,,,,Model file,Certain,,,,,,"Extrinsic latent period (mosquito), assumed constant at 10 days",CONSTANT,10,days
+Zika2,Parameter,1/γ_1,,,,,,Model file,Certain,,,,,,Mean time to viral clearance from blood,CONSTANT,10–20,days
+Zika2,Parameter,1/γ_2,,,,,,Model file,Certain,,,,,,Mean time to viral clearance from semen (after clearance from blood),CONSTANT,10–30,days
+Zika2,Parameter,1/γ_3,,,,,,Model file,Certain,,,,,,Mean time to viral clearance from vaginal fluids (after clearance from blood),CONSTANT,1–20,days
+Zika2,Parameter,1/ν,,,,,,Model file,Certain,,,,,,"Mosquito life span, assumed constant at 14 days",CONSTANT,14,days
+Zika2,Parameter,ρ,,,,,,Model file,Certain,,,,,,Proportion of risky sexual interactions in the population (varies by municipality),CONSTANT,~7%,dimensionless
+Zika2,Parameter,a,,,,,,Model file,Certain,,,,,,Blood feeding rate of mosquitoes,CONSTANT,0.0,per day
+Zika2,Parameter,b,,,,,,Model file,Certain,,,,,,Virus transmissibility from mosquito to human,CONSTANT,0.0,dimensionless
+Zika2,Parameter,c,,,,,,Model file,Certain,,,,,,Virus transmissibility from human to mosquito,CONSTANT,0.0,dimensionless
+Zika2,Parameter,m,,,,,,Model file,Certain,,,,,,Ratio of female mosquitoes to humans,CONSTANT,0.0,dimensionless

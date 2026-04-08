@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="H" expression="10000" type="CONSTANT" description="Total human population size (constant)" unit="persons"/>
+  <parameters name="n" expression="0.0001-0.001" type="CONSTANT" description="Human birth and death rate (susceptible renewal rate)" unit="day^-1"/>
+  <parameters name="a" expression="0.5-1" type="CONSTANT" description="Rate of exposure to contaminated water (contact rate)" unit="day^-1"/>
+  <parameters name="K" expression="1000000" type="CONSTANT" description="Concentration of V. cholerae in water that yields 50% chance of catching cholera (half-saturation constant)" unit="cells/ml"/>
+  <parameters name="r" expression="0.2" type="CONSTANT" description="Rate at which people recover from cholera" unit="day^-1"/>
+  <parameters name="nb" expression="0.0" type="CONSTANT" description="Growth rate of V. cholerae in the aquatic environment" unit="day^-1"/>
+  <parameters name="mb" expression="0.0" type="CONSTANT" description="Loss rate of V. cholerae in the aquatic environment" unit="day^-1"/>
+  <parameters name="nb-mb" expression="-0.33" type="CONSTANT" description="Net growth rate of V. cholerae in the aquatic environment (negative indicates net loss)" unit="day^-1"/>
+  <parameters name="e" expression="10" type="CONSTANT" description="Contribution of each infected person to the population of V. cholerae in the aquatic environment" unit="cells/ml day^-1 person^-1"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Natural death of susceptibles at rate n (removed from susceptible pool)"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Renewal of susceptibles through birth, immigration, and/or loss of acquired immunity at rate n*H (total inflow to susceptible compartment)"/>
+  </compartments>
+  <compartments PrimaryName="Bacteria in Aquatic Reservoir" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Net growth/loss of V. cholerae in the aquatic environment at rate (nb - mb), where nb is the growth rate and mb is the loss rate"/>
+  </compartments>
+</compartmental:CompartmentalModel>

@@ -1,0 +1,351 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Individuals with no TB infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with no TB infection."
+    },
+    {
+      "normalized_name": "Latent Tuberculosis Infection",
+      "raw_text": "Latent Tuberculosis Infection",
+      "page_number": 0,
+      "text_span": "Individuals with latent TB infection, including recently infected and remotely infected states.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with latent TB infection, including recently infected and remotely infected states."
+    },
+    {
+      "normalized_name": "Active Tuberculosis Disease",
+      "raw_text": "Active Tuberculosis Disease",
+      "page_number": 0,
+      "text_span": "Individuals with active TB disease, including smear-positive pulmonary, smear-negative pulmonary, and extrapulmonary disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with active TB disease, including smear-positive pulmonary, smear-negative pulmonary, and extrapulmonary disease."
+    },
+    {
+      "normalized_name": "Recently Treated/Recovered Tuberculosis Disease",
+      "raw_text": "Recently Treated/Recovered Tuberculosis Disease",
+      "page_number": 0,
+      "text_span": "Individuals who have recently completed treatment or recovered, with elevated risk of relapse for at least two years.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals who have recently completed treatment or recovered, with elevated risk of relapse for at least two years."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Latent Tuberculosis Infection",
+      "flow_type": "ContactFlow",
+      "raw_text": "TB infection through transmission from infectious active TB cases.",
+      "page_number": 0,
+      "text_span": "TB infection through transmission from infectious active TB cases.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "TB infection through transmission from infectious active TB cases."
+    },
+    {
+      "source": "Latent Tuberculosis Infection",
+      "target": "Active Tuberculosis Disease",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from latent infection to active TB disease, including rapid progression in the first two years after infection and slow progression/reactivation from remote infection.",
+      "page_number": 0,
+      "text_span": "Progression from latent infection to active TB disease, including rapid progression in the first two years after infection and slow progression/reactivation from remote infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from latent infection to active TB disease, including rapid progression in the first two years after infection and slow progression/reactivation from remote infection."
+    },
+    {
+      "source": "Active Tuberculosis Disease",
+      "target": "Recently Treated/Recovered Tuberculosis Disease",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful treatment of active TB disease.",
+      "page_number": 0,
+      "text_span": "Successful treatment of active TB disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful treatment of active TB disease."
+    },
+    {
+      "source": "Active Tuberculosis Disease",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Natural cure/self-cure from untreated active TB disease.",
+      "page_number": 0,
+      "text_span": "Natural cure/self-cure from untreated active TB disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural cure/self-cure from untreated active TB disease."
+    },
+    {
+      "source": "Recently Treated/Recovered Tuberculosis Disease",
+      "target": "Active Tuberculosis Disease",
+      "flow_type": "RateFlow",
+      "raw_text": "Relapse from recently treated/recovered TB disease back to active TB disease.",
+      "page_number": 0,
+      "text_span": "Relapse from recently treated/recovered TB disease back to active TB disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relapse from recently treated/recovered TB disease back to active TB disease."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "Number of secondary infections per smear-positive person-year",
+      "raw_text": "Number of secondary infections per smear-positive person-year",
+      "value": "16.1",
+      "unit": "infections/person-year",
+      "page_number": 0,
+      "text_span": "Transmission intensity used to fit incidence in the primary analysis.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Transmission intensity used to fit incidence in the primary analysis."
+    },
+    {
+      "normalized_name": "Relative infectiousness of smear-negative cases",
+      "raw_text": "Relative infectiousness of smear-negative cases",
+      "value": "0.22",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Smear-negative pulmonary TB infectiousness relative to smear-positive TB.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Smear-negative pulmonary TB infectiousness relative to smear-positive TB."
+    },
+    {
+      "normalized_name": "Relative rate of progression to high-risk (early) infection, latent TB",
+      "raw_text": "Relative rate of progression to high-risk (early) infection, latent TB",
+      "value": "0.50",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Relative progression rate to early latent infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative progression rate to early latent infection."
+    },
+    {
+      "normalized_name": "Rate of rapid progression during first two years after infection",
+      "raw_text": "Rate of rapid progression during first two years after infection",
+      "value": "0.07",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Progression rate from recent infection to active TB.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression rate from recent infection to active TB."
+    },
+    {
+      "normalized_name": "Rate of slow progression of remote TB infection",
+      "raw_text": "Rate of slow progression of remote TB infection",
+      "value": "0.0005",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Reactivation rate from remote latent infection to active TB.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Reactivation rate from remote latent infection to active TB."
+    },
+    {
+      "normalized_name": "Proportion of incident TB that is extrapulmonary",
+      "raw_text": "Proportion of incident TB that is extrapulmonary",
+      "value": "0.24",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Fraction of incident TB that is extrapulmonary.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fraction of incident TB that is extrapulmonary."
+    },
+    {
+      "normalized_name": "Proportion of incident pulmonary TB that is smear-positive",
+      "raw_text": "Proportion of incident pulmonary TB that is smear-positive",
+      "value": "0.65",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Fraction of pulmonary TB that is smear-positive.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fraction of pulmonary TB that is smear-positive."
+    },
+    {
+      "normalized_name": "Mortality rate per year, smear-positive TB",
+      "raw_text": "Mortality rate per year, smear-positive TB",
+      "value": "0.23",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "TB-specific mortality rate for smear-positive disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "TB-specific mortality rate for smear-positive disease."
+    },
+    {
+      "normalized_name": "Mortality rate per year, smear-negative and extrapulmonary TB",
+      "raw_text": "Mortality rate per year, smear-negative and extrapulmonary TB",
+      "value": "0.07",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "TB-specific mortality rate for smear-negative pulmonary and extrapulmonary disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "TB-specific mortality rate for smear-negative pulmonary and extrapulmonary disease."
+    },
+    {
+      "normalized_name": "Natural cure rate per year, smear-positive TB",
+      "raw_text": "Natural cure rate per year, smear-positive TB",
+      "value": "0.10",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Self-cure rate for smear-positive TB.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Self-cure rate for smear-positive TB."
+    },
+    {
+      "normalized_name": "Natural cure rate per year, smear-negative and extrapulmonary TB",
+      "raw_text": "Natural cure rate per year, smear-negative and extrapulmonary TB",
+      "value": "0.27",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Self-cure rate for smear-negative pulmonary and extrapulmonary TB.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Self-cure rate for smear-negative pulmonary and extrapulmonary TB."
+    },
+    {
+      "normalized_name": "Size of informal sector that does not notify TB, relative to notifications",
+      "raw_text": "Size of informal sector that does not notify TB, relative to notifications",
+      "value": "0.455",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Relative size of the informal TB treatment sector.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Relative size of the informal TB treatment sector."
+    },
+    {
+      "normalized_name": "Treatment success proportion in 2008, notified cases",
+      "raw_text": "Treatment success proportion in 2008, notified cases",
+      "value": "0.75",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Treatment success among notified cases in 2008.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment success among notified cases in 2008."
+    },
+    {
+      "normalized_name": "Treatment success proportion, informal sector",
+      "raw_text": "Treatment success proportion, informal sector",
+      "value": "0.5",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Treatment success proportion in the informal sector.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Treatment success proportion in the informal sector."
+    },
+    {
+      "normalized_name": "Relapse rate",
+      "raw_text": "Relapse rate",
+      "value": "0.024",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Rate of relapse from recently treated/recovered TB disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of relapse from recently treated/recovered TB disease."
+    },
+    {
+      "normalized_name": "Underlying TB incidence in primary analysis",
+      "raw_text": "Underlying TB incidence in primary analysis",
+      "value": "231",
+      "unit": "per 100,000 per year",
+      "page_number": 0,
+      "text_span": "Baseline incidence used for the primary scenario fit.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline incidence used for the primary scenario fit."
+    },
+    {
+      "normalized_name": "Underlying TB incidence in high-incidence scenario",
+      "raw_text": "Underlying TB incidence in high-incidence scenario",
+      "value": "350",
+      "unit": "per 100,000 per year",
+      "page_number": 0,
+      "text_span": "Baseline incidence used for the high-incidence scenario fit.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Baseline incidence used for the high-incidence scenario fit."
+    },
+    {
+      "normalized_name": "Population growth",
+      "raw_text": "Population growth",
+      "value": "3%",
+      "unit": "per year",
+      "page_number": 0,
+      "text_span": "Annual population growth assumed in the model.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Annual population growth assumed in the model."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "treatment",
+      "page_number": 2,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 5,
+    "num_parameters": 18,
+    "num_stratifications": 1,
+    "num_interventions": 1
+  }
+}

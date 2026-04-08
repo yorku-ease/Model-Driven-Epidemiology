@@ -1,0 +1,372 @@
+{
+  "modelName": "Malaria3",
+  "summary": {
+    "modelName": "Malaria3",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 16,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible and Uninfected Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.1",
+            "description": "New human infections following bites from infectious mosquitoes; newly infected humans develop patent parasitaemia after a liver-stage delay, with a proportion developing symptoms.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Mass treatment of uninfected individuals moves them into temporary prophylactic protection.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Symptomatic and Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Symptomatic infections progress to asymptomatic infection in the absence of treatment or after treatment failure.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment of symptomatic infections moves individuals into the treated infectious state.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic and Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Asymptomatic patent infections progress to the subpatent state.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Mass treatment or screening-based treatment of asymptomatic infections moves individuals into the treated infectious state.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Infectious and Undetectable by Standard Microscopy Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Screening-based treatment can target subpatent infections when PCR is used.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Treated and Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Treatment failures enter the asymptomatic infectious state.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "After parasite clearance, treated individuals may enter a protected prophylactic state depending on drug half-life.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Uninfected and Protected by Antimalarial Prophylaxis Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of prophylactic protection returns individuals to the susceptible uninfected state.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "",
+            "contactCompartment": "//@compartments.7",
+            "description": "Mosquitoes become infected after biting infectious humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Exposed Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "0.0",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Extrinsic incubation progression from exposed to infectious mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Drug efficacy",
+        "type": "CONSTANT",
+        "expression": "95-98% for antimalarials used in mass treatment; model often assumes 95%",
+        "description": "Probability of full parasite clearance among treated individuals.",
+        "unit": "%"
+      },
+      {
+        "index": 1,
+        "name": "Coverage of mass drug administration",
+        "type": "CONSTANT",
+        "expression": "80% in main simulations",
+        "description": "Proportion of the population treated during MDA before exclusion of pregnant women.",
+        "unit": "%"
+      },
+      {
+        "index": 2,
+        "name": "Coverage of artemisinin-combination therapies among symptomatic treated cases",
+        "type": "CONSTANT",
+        "expression": "20%",
+        "description": "Fraction of symptomatic treated cases receiving ACTs.",
+        "unit": "%"
+      },
+      {
+        "index": 3,
+        "name": "Coverage of non-ACT treatments among symptomatic treated cases",
+        "type": "CONSTANT",
+        "expression": "80%",
+        "description": "Fraction of symptomatic treated cases receiving non-ACT treatments.",
+        "unit": "%"
+      },
+      {
+        "index": 4,
+        "name": "Efficacy of non-gametocytocidal treatments",
+        "type": "CONSTANT",
+        "expression": "60%",
+        "description": "Parasite clearance efficacy assumed for non-ACT treatments due to resistance.",
+        "unit": "%"
+      },
+      {
+        "index": 5,
+        "name": "Efficacy of ACTs",
+        "type": "CONSTANT",
+        "expression": "95%",
+        "description": "Parasite clearance efficacy assumed for ACTs.",
+        "unit": "%"
+      },
+      {
+        "index": 6,
+        "name": "Duration of gametocytaemia in treated infection, non-artemisinins",
+        "type": "CONSTANT",
+        "expression": "55.6",
+        "description": "Duration of infectiousness after non-artemisinins.",
+        "unit": "days"
+      },
+      {
+        "index": 7,
+        "name": "Duration of gametocytaemia in treated infection, ACT",
+        "type": "CONSTANT",
+        "expression": "13.4",
+        "description": "Duration of infectiousness after ACT treatment.",
+        "unit": "days"
+      },
+      {
+        "index": 8,
+        "name": "Duration of gametocytaemia in treated infection, ACT-PQ",
+        "type": "CONSTANT",
+        "expression": "3.0",
+        "description": "Duration of infectiousness after ACT plus primaquine.",
+        "unit": "days"
+      },
+      {
+        "index": 9,
+        "name": "Duration of inhibitory antimalarial blood concentration, short-acting drug",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Duration of prophylactic blood concentration for short-acting drugs.",
+        "unit": "days"
+      },
+      {
+        "index": 10,
+        "name": "Duration of inhibitory antimalarial blood concentration, long-acting drug",
+        "type": "CONSTANT",
+        "expression": "30",
+        "description": "Duration of prophylactic blood concentration for long-acting drugs.",
+        "unit": "days"
+      },
+      {
+        "index": 11,
+        "name": "Reduction in average infectiousness following treatment, non-artemisinins",
+        "type": "CONSTANT",
+        "expression": "70",
+        "description": "Reduction in infectiousness to mosquitoes compared with the pre-treatment state.",
+        "unit": "%"
+      },
+      {
+        "index": 12,
+        "name": "Reduction in average infectiousness following treatment, ACT or ACT-PQ",
+        "type": "CONSTANT",
+        "expression": "80.6",
+        "description": "Reduction in infectiousness to mosquitoes compared with the pre-treatment state.",
+        "unit": "%"
+      },
+      {
+        "index": 13,
+        "name": "Pregnancy prevalence among women aged 15-45",
+        "type": "CONSTANT",
+        "expression": "7.1",
+        "description": "Proportion of women of child-bearing age assumed pregnant and excluded from treatment.",
+        "unit": "%"
+      },
+      {
+        "index": 14,
+        "name": "Pregnancy prevalence among population aged 15-45",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Population-level pregnancy prevalence used in the model.",
+        "unit": "%"
+      },
+      {
+        "index": 15,
+        "name": "Correlation in individual participation between repeated rounds of MDA",
+        "type": "CONSTANT",
+        "expression": "0 to 1",
+        "description": "Degree to which the same individuals repeatedly participate or do not participate in successive MDA rounds.",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}
