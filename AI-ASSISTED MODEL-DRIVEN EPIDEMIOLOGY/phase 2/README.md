@@ -2,6 +2,10 @@
 
 Phase 2 turns a scientific **PDF** into a structured compartmental **`.compmodel`** (XML), plus traceability, gap analysis, optional gap-fill suggestions, and evaluation against **baseline** models when `data/baseline_models/` contains a matching gold standard.
 
+**Corpus mode:** If papers are registered in Phase 1 (`phase 1/data/papers/collection_index.json`), run with  
+`python run_phase2.py --paper-id <id> ...`  
+so PDF and gold paths resolve via `src/utils/phase2_paths.py` (see **`data/README.md`**). You still author gold **`.compmodel`** files by hand; the pipeline does not generate them from the PDF.
+
 ## Principles
 
 - **Faithfulness:** Extract only what the paper explicitly describes or clearly promises.

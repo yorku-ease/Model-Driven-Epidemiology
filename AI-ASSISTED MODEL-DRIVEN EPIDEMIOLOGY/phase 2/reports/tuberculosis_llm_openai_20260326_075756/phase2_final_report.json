@@ -1,0 +1,335 @@
+{
+  "paper_name": "Tuberculosis",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 3,
+      "parameters": 15,
+      "stratifications": 2,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Vaccinated",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered",
+        "target": "Susceptible",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "A",
+        "value": "constant",
+        "unit": "human/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "beta",
+        "value": "constant",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "epsilon",
+        "value": "0 to 1",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "u",
+        "value": "constant",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "theta",
+        "value": "constant",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "gamma",
+        "value": "constant",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "delta",
+        "value": "constant",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "mu",
+        "value": "constant",
+        "unit": "1/time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "N",
+        "value": "S + V + I + R",
+        "unit": "human",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Rc",
+        "value": "b(d+m)/((d+m+u)(1+m))",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "b",
+        "value": "beta N / gamma",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "c",
+        "value": "delta / gamma",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "d",
+        "value": "theta / gamma",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "m",
+        "value": "mu / gamma",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "e",
+        "value": "epsilon",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 3,
+    "parameters": 15,
+    "stratifications": 2,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 27,
+    "items_with_evidence": 27,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 27,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 27,
+      "items_with_evidence": 27,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 27,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "flows": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 3,
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6667
+      },
+      "parameters": {
+        "tp": 1,
+        "fp": 14,
+        "fn": 8,
+        "precision": 0.0667,
+        "recall": 0.1111,
+        "f1": 0.0833
+      },
+      "composite_score": 0.7208,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Vaccinated",
+          "extracted": "Vaccinated",
+          "score": 1.0
+        },
+        {
+          "gold": "Infected",
+          "extracted": "Infectious",
+          "score": 0.8296633362770081
+        },
+        {
+          "gold": "Recovered",
+          "extracted": "Recovered",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Vaccinated",
+          "extracted": "Susceptible->Vaccinated",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Vaccinated->Susceptible",
+          "extracted": "Vaccinated->Susceptible",
+          "score": 1.0
+        },
+        {
+          "gold": "Recovered->Susceptible",
+          "extracted": "Recovered->Susceptible",
+          "score": 1.0000001192092896
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03c0 0.0059 Infection rate/probability of successful infection (S\u2192I term)",
+          "extracted": "beta constant Probability/rate of successful primary infection from susceptible to infected through contact with infected individuals.",
+          "score": 0.7054775357246399
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

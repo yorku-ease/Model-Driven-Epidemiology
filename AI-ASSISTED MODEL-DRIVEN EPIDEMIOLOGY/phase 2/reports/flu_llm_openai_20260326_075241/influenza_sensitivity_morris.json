@@ -1,0 +1,85 @@
+{
+  "modelName": "Influenza",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "σ",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Rate of becoming infectious; corresponds to an average incubation period of 1/σ = 1 day as stated in the paper.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "γ",
+      "type": "other",
+      "currentValue": 0.5797,
+      "description": "Rate of recovery; corresponds to an average infectious period of 1/γ ≈ 21 days as stated in the paper.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "µICU_E",
+      "type": "other",
+      "currentValue": 5.708,
+      "description": "Mean time from infection to ICU admission.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "σ2ICU_E",
+      "type": "other",
+      "currentValue": 18.24,
+      "description": "Variance of time from infection to ICU admission.",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "σ",
+    "γ",
+    "µICU_E",
+    "σ2ICU_E"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "σ",
+      "γ",
+      "µICU_E",
+      "σ2ICU_E"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "σ": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "γ": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "µICU_E": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "σ2ICU_E": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

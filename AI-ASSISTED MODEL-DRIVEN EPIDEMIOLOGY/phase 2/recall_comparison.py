@@ -331,7 +331,17 @@ def find_report_folders(reports_dir: Path) -> List[Dict[str, str]]:
 
 
 def find_baseline_model(baseline_dir: Path, disease: str) -> Optional[str]:
-    """Find baseline model matching disease name."""
+    """Find baseline: ``data/<disease>/<stem>.compmodel`` first, then flat ``baseline_dir``."""
+    import sys
+
+    phase2 = Path(__file__).resolve().parent
+    sys.path.insert(0, str(phase2 / "src"))
+    from utils.phase2_paths import find_gold_compmodel_for_run_stem  # noqa: E402
+
+    g = find_gold_compmodel_for_run_stem(disease)
+    if g:
+        return str(g)
+
     baseline_path = Path(baseline_dir)
     if not baseline_path.exists():
         return None

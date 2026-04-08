@@ -1,0 +1,346 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Human individuals susceptible to tuberculosis infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Human individuals vaccinated against tuberculosis with temporary immunity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Human individuals infected with tuberculosis and capable of transmitting infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Human individuals recovered from infection, with possible reinfection and waning immunity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Vaccinated": {
+      "evidence": [
+        {
+          "text_span": "Vaccination of susceptible humans at rate u.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Vaccinated -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Waning vaccine protection causing vaccinated humans to return to susceptibility at rate theta.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered -> Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Loss of natural immunity (waning immunity) returning recovered humans to susceptibility at rate delta.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "A": {
+      "evidence": [
+        {
+          "text_span": "Recruitment rate of humans (newborns entering the susceptible class).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "human/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "beta": {
+      "evidence": [
+        {
+          "text_span": "Probability/rate of successful primary infection from susceptible to infected through contact with infected individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "epsilon": {
+      "evidence": [
+        {
+          "text_span": "Correction parameter for reinfection; reinfection probability is smaller than primary infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0 to 1",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "u": {
+      "evidence": [
+        {
+          "text_span": "Rate of vaccination of susceptible individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "theta": {
+      "evidence": [
+        {
+          "text_span": "Rate of vaccine waning from vaccinated back to susceptible.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gamma": {
+      "evidence": [
+        {
+          "text_span": "Recovery rate from infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "delta": {
+      "evidence": [
+        {
+          "text_span": "Dropout rate due to waning immunity from recovered back to susceptible.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "mu": {
+      "evidence": [
+        {
+          "text_span": "Natural death rate affecting all compartments.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "constant",
+          "unit": "1/time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N": {
+      "evidence": [
+        {
+          "text_span": "Total human population size.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "S + V + I + R",
+          "unit": "human"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Rc": {
+      "evidence": [
+        {
+          "text_span": "Control reproduction number of the dimensionless system.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "b(d+m)/((d+m+u)(1+m))",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "b": {
+      "evidence": [
+        {
+          "text_span": "Dimensionless transmission parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "beta N / gamma",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "c": {
+      "evidence": [
+        {
+          "text_span": "Dimensionless waning-immunity parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "delta / gamma",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "d": {
+      "evidence": [
+        {
+          "text_span": "Dimensionless vaccine-waning parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "theta / gamma",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "m": {
+      "evidence": [
+        {
+          "text_span": "Dimensionless natural death parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "mu / gamma",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "e": {
+      "evidence": [
+        {
+          "text_span": "Dimensionless reinfection correction parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "epsilon",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 4,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 1,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 11,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 27,
+    "items_with_evidence": 27,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 27,
+    "faithfulness_percentage": 100.0
+  }
+}

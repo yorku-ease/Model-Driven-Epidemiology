@@ -21,13 +21,24 @@ Usage:
 """
 
 import argparse
+import importlib.util
 import json
 import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
 
 PHASE3_DIR = Path(__file__).resolve().parent
+PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
 sys.path.insert(0, str(PHASE3_DIR))
+
+_p2_paths_spec = importlib.util.spec_from_file_location(
+    "phase2_paths",
+    PHASE2_DIR / "src" / "utils" / "phase2_paths.py",
+)
+assert _p2_paths_spec and _p2_paths_spec.loader
+_phase2_paths_mod = importlib.util.module_from_spec(_p2_paths_spec)
+_p2_paths_spec.loader.exec_module(_phase2_paths_mod)
+find_gold_compmodel_for_run_stem = _phase2_paths_mod.find_gold_compmodel_for_run_stem
 
 from src.gap_analysis.gap_detector import (
     detect_gaps,
@@ -47,7 +58,6 @@ from src.reporting.gap_report import generate_gap_report
 
 DB_PATH = PHASE3_DIR / "data" / "paper_database"
 PHASE1_DIR = PHASE3_DIR.parent / "phase 1"
-PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
 BASELINES_DIR = PHASE2_DIR / "data" / "baseline_models"
 
 
@@ -122,15 +132,18 @@ def _load_gold_with_values(compmodel_path: Path) -> Dict[str, Any]:
 
 
 def _find_gold_standard(disease: str) -> Optional[Path]:
-    """Auto-discover gold-standard .compmodel for a disease from baselines or Phase 1."""
+    """Auto-discover gold-standard .compmodel for a run id (e.g. covid2) or disease name."""
+    d = disease.lower()
+    g = find_gold_compmodel_for_run_stem(d)
+    if g:
+        return g
     if BASELINES_DIR.is_dir():
         for cm in BASELINES_DIR.glob("*.compmodel"):
-            if disease in cm.stem.lower():
+            if d in cm.stem.lower():
                 return cm
-    # Phase 1 compmodels
     if PHASE1_DIR.is_dir():
         for cm in PHASE1_DIR.glob("papers/**/*.compmodel"):
-            if disease in cm.stem.lower():
+            if d in cm.stem.lower():
                 return cm
     return None
 

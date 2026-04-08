@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Latent period" expression="2.5" type="CONSTANT" description="Time from exposure to onset of infectiousness." unit="days"/>
+  <parameters name="Presymptomatic infectious period" expression="1" type="CONSTANT" description="Duration of infectiousness before symptom onset." unit="days"/>
+  <parameters name="Infectious period (mild to moderate)" expression="6" type="CONSTANT" description="Symptomatic infectious period for mild-to-moderate cases in absence of isolation." unit="days"/>
+  <parameters name="Infectious period (severe)" expression="6" type="CONSTANT" description="Symptomatic infectious period for severe cases; assumed equal to time to hospital admission." unit="days"/>
+  <parameters name="Basic reproduction number" expression="2.3" type="CONSTANT" description="Average number of secondary infections derived from a primary infection in a susceptible population." unit="dimensionless"/>
+  <parameters name="Time in quarantine" expression="14" type="CONSTANT" description="Duration of quarantine for exposed cases." unit="days"/>
+  <parameters name="Relative risk of transmission for cases in isolation" expression="0.1" type="CONSTANT" description="Isolated cases are assumed to have reduced transmission relative to unrecognized cases." unit="dimensionless"/>
+  <parameters name="Average length of stay in hospital for cases not requiring ICU care" expression="10" type="CONSTANT" description="Hospital stay duration for non-ICU cases." unit="days"/>
+  <parameters name="Average length of stay in hospital before ICU admission" expression="3" type="CONSTANT" description="Hospital stay duration before ICU admission." unit="days"/>
+  <parameters name="Average length of stay in ICU" expression="21" type="CONSTANT" description="Duration of ICU stay." unit="days"/>
+  <parameters name="Average length of stay in hospital after ICU" expression="21" type="CONSTANT" description="Duration of hospital stay after ICU." unit="days"/>
+  <parameters name="Probability of severe infection (&lt;15, no comorbidities)" expression="0.01" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (15–49, no comorbidities)" expression="0.03" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (50–69, no comorbidities)" expression="0.12" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (≥70, no comorbidities)" expression="0.35" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (&lt;15, comorbidities)" expression="0.02" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (15–49, comorbidities)" expression="0.06" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (50–69, comorbidities)" expression="0.25" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability of severe infection (≥70, comorbidities)" expression="0.76" type="CONSTANT" description="Age- and comorbidity-specific probability of severe infection." unit="probability"/>
+  <parameters name="Probability severe case requires admission to ICU" expression="0.26" type="CONSTANT" description="Proportion of severe infections requiring ICU admission." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (&lt;15, no comorbidities)" expression="0" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (15–49, no comorbidities)" expression="0.2" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (50–69, no comorbidities)" expression="0.36" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (≥70, no comorbidities)" expression="0.58" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (&lt;15, comorbidities)" expression="0" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (15–49, comorbidities)" expression="0.53" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (50–69, comorbidities)" expression="0.9" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Probability of death in cases admitted to ICU (≥70, comorbidities)" expression="1" type="CONSTANT" description="Age- and comorbidity-specific ICU mortality." unit="probability"/>
+  <parameters name="Threshold for turning intervention on" expression="200" type="CONSTANT" description="Dynamic intervention trigger based on projected ICU occupancy across Ontario." unit="ICU cases"/>
+  <parameters name="Initial prevalent cases" expression="750" type="CONSTANT" description="Model initialization with prevalent cases distributed across infectious compartments." unit="cases"/>
+  <parameters name="Nonquarantined cases tested and isolated (&lt;15)" expression="10" type="CONSTANT" description="Base-case scenario parameter for testing and isolation." unit="percent"/>
+  <parameters name="Nonquarantined cases tested and isolated (15–49)" expression="40" type="CONSTANT" description="Base-case scenario parameter for testing and isolation." unit="percent"/>
+  <parameters name="Nonquarantined cases tested and isolated (≥50)" expression="70" type="CONSTANT" description="Base-case scenario parameter for testing and isolation." unit="percent"/>
+  <parameters name="Exposed cases in quarantine before infectious" expression="10" type="CONSTANT" description="Base-case scenario parameter for quarantine of exposed cases." unit="percent"/>
+  <parameters name="Reduction in contacts with physical distancing" expression="0" type="CONSTANT" description="Base-case scenario parameter for physical distancing." unit="percent"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.6" target="//@compartments.1" description="Infection via contact with infectious individuals."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.6" description="Quarantine of exposed cases before they become infectious."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.2" description="Progression from latent infection to presymptomatic infectiousness."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (presymptomatic)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.3" description="Progression to symptomatic mild-to-moderate infectious disease."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (mild to moderate)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.5" description="Testing and isolation of nonsevere symptomatic cases."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.13" description="Recovery from mild-to-moderate infection without isolation."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (severe)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.10" description="Hospital admission for severe cases."/>
+  </compartments>
+  <compartments PrimaryName="Isolated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.13" description="Recovery from isolated cases."/>
+  </compartments>
+  <compartments PrimaryName="Exposed (quarantined)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.7" description="Progression from quarantined exposed state to presymptomatic infectiousness while isolated."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (presymptomatic, isolated)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.8" description="Progression to symptomatic mild-to-moderate infectious disease while isolated."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (mild to moderate, isolated)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.13" description="Recovery from isolated mild-to-moderate infection."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (severe, isolated)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.10" description="Hospital admission for severe isolated cases."/>
+  </compartments>
+  <compartments PrimaryName="Admitted to hospital (pre-ICU)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.12" description="Progression from hospital to ICU for severe cases requiring intensive care."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.13" description="Recovery for hospitalized cases not requiring ICU care."/>
+  </compartments>
+  <compartments PrimaryName="Admitted to hospital (post-ICU)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.13" description="Recovery after ICU and post-ICU hospitalization."/>
+  </compartments>
+  <compartments PrimaryName="ICU" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.11" description="Transfer from ICU to post-ICU hospital care for survivors."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.14" description="Death among ICU cases."/>
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0"/>
+  <compartments PrimaryName="Dead" population="0"/>
+</compartmental:CompartmentalModel>

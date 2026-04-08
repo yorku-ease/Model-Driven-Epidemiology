@@ -1,0 +1,46 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Measles,Compartment,Susceptible Children,,0,False,4.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Un-monitored Vaccinated Children,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Monitored Vaccinated Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Exposed Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Infectious Children,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Immune Children,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles,Compartment,Susceptible Adults,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Un-monitored Vaccinated Adults,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Vaccinated Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Exposed Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Infectious Adults,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Measles,Compartment,Immune Adults,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Measles,Flow,,,,,,,Model file,Certain,,Un-monitored Vaccinated Children,RateFlow,//@parameters.0,False,Un-monitored vaccination of children at rate xU.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Monitored Vaccinated Children,RateFlow,//@parameters.0,False,Monitored vaccination of children at rate xM.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Children,RateFlow,//@parameters.0,False,Infection of susceptible children by infectious children and infectious adults at rate bC.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Susceptible Adults,RateFlow,//@parameters.0,False,Maturation of susceptible children into adults at rate j.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Children,RateFlow,//@parameters.0,False,Breakthrough infection of un-monitored vaccinated children at reduced rate e bC.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Un-monitored Vaccinated Adults,RateFlow,//@parameters.0,False,Maturation of un-monitored vaccinated children into adults at rate j.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Acquisition of immunity in un-monitored vaccinated children at rate hU.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Acquisition of immunity in monitored vaccinated children at rate hM.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Children,RateFlow,//@parameters.0,False,Progression from exposed to infectious children at rate d.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Children,RateFlow,//@parameters.0,False,Recovery of infectious children to immunity at rate g.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Infection of susceptible adults by infectious children and infectious adults at rate bA.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Un-monitored Vaccinated Adults,RateFlow,//@parameters.0,False,Un-monitored vaccination of adults at rate xA.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Exposed Adults,RateFlow,//@parameters.0,False,Breakthrough infection of un-monitored vaccinated adults at reduced rate e bA.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Acquisition of immunity in un-monitored vaccinated adults at rate hA.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Vaccinated adults become immune at rate hA.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Infectious Adults,RateFlow,//@parameters.0,False,Progression from exposed to infectious adults at rate d.,,,
+Measles,Flow,,,,,,,Model file,Certain,,Immune Adults,RateFlow,//@parameters.0,False,Recovery of infectious adults to immunity at rate g.,,,
+Measles,Parameter,L,,,,,,Model file,Certain,,,,,,Recruitment rate into the susceptible children class.,CONSTANT,Recruitment rate to children group,per time
+Measles,Parameter,xU,,,,,,Model file,Certain,,,,,,Un-monitored children vaccination rate.,CONSTANT,0.087,per week
+Measles,Parameter,xM,,,,,,Model file,Certain,,,,,,Monitored children vaccination rate.,CONSTANT,4.77 × 10^-5,per week
+Measles,Parameter,xA,,,,,,Model file,Certain,,,,,,Adult vaccination rate.,CONSTANT,0,per week
+Measles,Parameter,bC,,,,,,Model file,Certain,,,,,,Transmission rate for children.,CONSTANT,0.00188,per week
+Measles,Parameter,bA,,,,,,Model file,Certain,,,,,,Transmission rate for adults.,CONSTANT,1.00 × 10^-5,per week
+Measles,Parameter,m,,,,,,Model file,Certain,,,,,,Natural death rate.,CONSTANT,1/(72 × 52),per week
+Measles,Parameter,g,,,,,,Model file,Certain,,,,,,Rate of becoming immune after recovery from infection.,CONSTANT,1/2,per week
+Measles,Parameter,j,,,,,,Model file,Certain,,,,,,Maturation rate from child to adult.,CONSTANT,1/(15 × 52),per week
+Measles,Parameter,e,,,,,,Model file,Certain,,,,,,Vaccine effectiveness factor; breakthrough infection occurs at rate e times the transmission rate.,CONSTANT,0.2,dimensionless
+Measles,Parameter,hA,,,,,,Model file,Certain,,,,,,Rate of becoming immune of un-monitored vaccinated adults.,CONSTANT,0,per week
+Measles,Parameter,hU,,,,,,Model file,Certain,,,,,,Rate of becoming immune of un-monitored vaccinated children.,CONSTANT,3 × 10^-6,per week
+Measles,Parameter,hM,,,,,,Model file,Certain,,,,,,Rate of becoming immune of monitored vaccinated children.,CONSTANT,0.167,per week
+Measles,Parameter,d,,,,,,Model file,Certain,,,,,,Incubation period parameter (progression rate from exposed to infectious).,CONSTANT,0.7,per week
+Measles,Parameter,q,,,,,,Model file,Certain,,,,,,Proportion of infection recorded in the data fitting.,CONSTANT,0.15,dimensionless
+Measles,Parameter,a,,,,,,Model file,Certain,,,,,,Proportion of the total population included in the measles transmission contact network.,CONSTANT,0.01253,dimensionless

@@ -29,7 +29,7 @@ def epimde_models_dir() -> Path:
 
 
 def phase2_baseline_models_dir() -> Path:
-    """Phase 2 evaluation baselines (aligned with paper PDFs in ``phase 2/data/papers``)."""
+    """Phase 2 legacy flat baselines dir; paired gold lives under ``phase 2/data/<disease>/``."""
     return project_root() / "phase 2" / "data" / "baseline_models"
 
 

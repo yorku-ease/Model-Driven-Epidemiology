@@ -1,0 +1,20 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Influenza,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Exposed,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Exposed,RateFlow,//@parameters.0,False,New influenza infections occurring at force of infection λ(t) = β I(t) / N.,,,
+Influenza,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.1,False,Progression from exposed to infectious at rate σ.,,,
+Influenza,Parameter,β,,,,,,Model file,Certain,,,,,,Transmission rate.,CONSTANT,not explicitly estimated in the paper's primary parameter table; implied through λ(t) = β I(t) / N,per time
+Influenza,Parameter,σ,,,,,,Model file,Certain,,,,,,Rate of becoming infectious; corresponds to an average incubation period of 1/σ = 1 day as stated in the paper.,CONSTANT,1,day^-1
+Influenza,Parameter,γ,,,,,,Model file,Certain,,,,,,Rate of recovery; corresponds to an average infectious period of 1/γ ≈ 21 days as stated in the paper.,CONSTANT,0.5797,day^-1
+Influenza,Parameter,N2012/13,,,,,,Model file,Certain,,,,,,Population size used for the 2012/13 season.,CONSTANT,"53,679,750",persons
+Influenza,Parameter,N2013/14,,,,,,Model file,Certain,,,,,,Population size used for the 2013/14 season.,CONSTANT,"54,091,200",persons
+Influenza,Parameter,N2014/15,,,,,,Model file,Certain,,,,,,Population size used for the 2014/15 season.,CONSTANT,"54,551,450",persons
+Influenza,Parameter,π,,,,,,Model file,Certain,,,,,,Initial susceptibility proportion.,CONSTANT,"Uniform(0, 1)",probability
+Influenza,Parameter,λ0,,,,,,Model file,Certain,,,,,,Initial infection rate.,CONSTANT,"Uniform(0, 0.000241)",per day
+Influenza,Parameter,ψ,,,,,,Model file,Certain,,,,,,Exponential growth rate.,CONSTANT,"Uniform(0, 0.39)",per day
+Influenza,Parameter,η,,,,,,Model file,Certain,,,,,,Over-dispersion parameter for the Negative Binomial observational model.,CONSTANT,"Uniform(1, 100)",dimensionless
+Influenza,Parameter,pICU,,,,,,Model file,Certain,,,,,,Probability of ICU admission given infection.,CONSTANT,"Uniform(0, 1)",probability
+Influenza,Parameter,µICU_E,,,,,,Model file,Certain,,,,,,Mean time from infection to ICU admission.,CONSTANT,5.708,days
+Influenza,Parameter,σ2ICU_E,,,,,,Model file,Certain,,,,,,Variance of time from infection to ICU admission.,CONSTANT,18.24,days^2

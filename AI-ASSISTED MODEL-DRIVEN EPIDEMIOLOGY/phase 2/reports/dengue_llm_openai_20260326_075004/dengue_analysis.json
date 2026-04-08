@@ -1,0 +1,340 @@
+{
+  "modelName": "Dengue",
+  "summary": {
+    "modelName": "Dengue",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of susceptible humans by infectious mosquitoes via biting, at age-dependent force of infection.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to symptomatic infectious humans at rate ρk(a).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to asymptomatic infectious humans at rate (1−ρ)k(a).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Symptomatic Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery of symptomatic infectious humans at rate γ1(a).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Asymptomatic Infectious Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.2",
+            "description": "Reinfection of asymptomatic infectious humans by infectious mosquitoes, leading to symptomatic infection, at intensity σβh(a).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery of asymptomatic infectious humans at rate γ2(a).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of humans.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Recovered Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of humans.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Constant influx of new human hosts into the susceptible class at birth/recruitment.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.6",
+            "description": "Mosquito infection through biting infectious humans, including symptomatic and asymptomatic infectious humans.",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Natural mortality of mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "B",
+        "type": "CONSTANT",
+        "expression": "constant influx rate",
+        "description": "The constant influx rate of the human hosts.",
+        "unit": "per time"
+      },
+      {
+        "index": 1,
+        "name": "k(a)",
+        "type": "CONSTANT",
+        "expression": "age-specific latent progression rate",
+        "description": "Inverse of the age-specific latent period of the human hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 2,
+        "name": "μh",
+        "type": "CONSTANT",
+        "expression": "natural death rate of humans",
+        "description": "Natural death rate of the human hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 3,
+        "name": "μv",
+        "type": "CONSTANT",
+        "expression": "natural death rate of mosquitoes",
+        "description": "Natural death rate of the mosquitoes.",
+        "unit": "1/time"
+      },
+      {
+        "index": 4,
+        "name": "γ1(a)",
+        "type": "CONSTANT",
+        "expression": "age-specific recovery rate",
+        "description": "Recovery rate of symptomatic infectious hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 5,
+        "name": "γ2(a)",
+        "type": "CONSTANT",
+        "expression": "age-specific recovery rate",
+        "description": "Recovery rate of asymptomatic infectious hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 6,
+        "name": "βv(a)",
+        "type": "CONSTANT",
+        "expression": "age-specific transmission rate from infectious hosts to susceptible mosquitoes",
+        "description": "Transmission rate governing mosquito infection from infectious human hosts.",
+        "unit": "1/time"
+      },
+      {
+        "index": 7,
+        "name": "βh(a)",
+        "type": "CONSTANT",
+        "expression": "age-specific transmission rate from infected mosquitoes to susceptible hosts",
+        "description": "Transmission rate governing human infection from infectious mosquitoes.",
+        "unit": "1/time"
+      },
+      {
+        "index": 8,
+        "name": "ρ",
+        "type": "CONSTANT",
+        "expression": "probability",
+        "description": "Probability that exposed hosts transfer to symptomatic infectious hosts.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "reinfection intensity factor",
+        "description": "Factor characterizing the intensity of reinfection of asymptomatic infectious hosts.",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

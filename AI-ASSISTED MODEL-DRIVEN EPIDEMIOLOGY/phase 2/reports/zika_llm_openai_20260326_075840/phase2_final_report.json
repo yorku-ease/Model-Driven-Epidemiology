@@ -1,0 +1,530 @@
+{
+  "paper_name": "Zika",
+  "summary": {
+    "extraction": {
+      "compartments": 10,
+      "flows": 8,
+      "parameters": 20,
+      "stratifications": 0,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Eggs",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larvae",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pupae",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Adult Female Vectors",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Adult Female Vectors",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Adult Female Vectors",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Eggs",
+        "target": "Larvae",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Larvae",
+        "target": "Pupae",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Pupae",
+        "target": "Susceptible Adult Female Vectors",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Adult Female Vectors",
+        "target": "Exposed Adult Female Vectors",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Adult Female Vectors",
+        "target": "Infectious Adult Female Vectors",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Average biting rate per female mosquito",
+        "value": "b",
+        "unit": "bites per mosquito per unit time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Fraction of bites on humans",
+        "value": "q",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Number of infectious bites delivered per vector per day",
+        "value": "\u03b2_b",
+        "unit": "infectious bites per vector per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Human incubation time",
+        "value": "1/\u03b1_H",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vector incubation time",
+        "value": "1/\u03b1_V",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovery time",
+        "value": "1/\u03b3",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Number of eggs laid per female mosquito per unit time",
+        "value": "e",
+        "unit": "eggs per female mosquito per unit time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Egg development time",
+        "value": "1/\u03c4_1",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Egg mortality",
+        "value": "\u03bc_1",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larval development time",
+        "value": "1/\u03c4_2",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larval mortality",
+        "value": "\u03bc_2",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pupal development time",
+        "value": "1/\u03c4_3",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Pupal mortality",
+        "value": "\u03bc_3",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Adult mortality",
+        "value": "\u03bc_V",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Female adult percentage",
+        "value": "q",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Human population growth rate",
+        "value": "\u03bb_H",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Human carrying capacity",
+        "value": "K_H",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larval carrying capacity",
+        "value": "K_V",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Larvae mortality rate due to limited carrying capacity",
+        "value": "\u03ba",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Alternative hosts",
+        "value": "M",
+        "unit": "individuals",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 10,
+    "flows": 8,
+    "parameters": 20,
+    "stratifications": 0,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 41,
+    "items_with_evidence": 41,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 41,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 41,
+      "items_with_evidence": 41,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 41,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 6,
+        "fp": 4,
+        "fn": 4,
+        "precision": 0.6,
+        "recall": 0.6,
+        "f1": 0.6
+      },
+      "flows": {
+        "tp": 7,
+        "fp": 1,
+        "fn": 1,
+        "precision": 0.875,
+        "recall": 0.875,
+        "f1": 0.875
+      },
+      "parameters": {
+        "tp": 14,
+        "fp": 6,
+        "fn": 5,
+        "precision": 0.7,
+        "recall": 0.7368,
+        "f1": 0.7179
+      },
+      "composite_score": 0.7346,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible humans",
+          "extracted": "Susceptible Humans",
+          "score": 1.0000004768371582
+        },
+        {
+          "gold": "Exposed humans",
+          "extracted": "Exposed Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious humans",
+          "extracted": "Infectious Humans",
+          "score": 1.000000238418579
+        },
+        {
+          "gold": "Recovered humans",
+          "extracted": "Recovered Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Larvae (non-infectious, logistic)",
+          "extracted": "Larvae",
+          "score": 0.8122103810310364
+        },
+        {
+          "gold": "Infectious female adults",
+          "extracted": "Infectious Adult Female Vectors",
+          "score": 0.7488820552825928
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible humans->Exposed humans",
+          "extracted": "Susceptible Humans->Exposed Humans",
+          "score": 1.0
+        },
+        {
+          "gold": "Exposed humans->Infectious humans",
+          "extracted": "Exposed Humans->Infectious Humans",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Infectious humans->Recovered humans",
+          "extracted": "Infectious Humans->Recovered Humans",
+          "score": 1.0000001192092896
+        },
+        {
+          "gold": "Eggs (non-infectious)->Larvae (non-infectious, logistic)",
+          "extracted": "Eggs->Larvae",
+          "score": 0.7925602793693542
+        },
+        {
+          "gold": "Larvae (non-infectious, logistic)->Pupae (non-infectious)",
+          "extracted": "Larvae->Pupae",
+          "score": 0.8087824583053589
+        },
+        {
+          "gold": "Pupae (non-infectious)->Susceptible female adults",
+          "extracted": "Pupae->Susceptible Adult Female Vectors",
+          "score": 0.757871687412262
+        },
+        {
+          "gold": "Exposed female adults->Infectious female adults",
+          "extracted": "Exposed Adult Female Vectors->Infectious Adult Female Vectors",
+          "score": 0.7246406078338623
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "b 0.071 Average biting rate / infectious bites delivered per vector per day (human exposure term)",
+          "extracted": "Average biting rate per female mosquito b Average number of bites delivered by a female mosquito per unit time.",
+          "score": 0.7146782279014587
+        },
+        {
+          "gold": "1/\u03c4_h 0.5 Inverse incubation time in humans",
+          "extracted": "Human incubation time 1/\u03b1_H Average incubation period in humans.",
+          "score": 0.7912148237228394
+        },
+        {
+          "gold": "1/\u03c41_v 0.3 Egg development rate",
+          "extracted": "Egg development time 1/\u03c4_1 Reciprocal of egg development rate.",
+          "score": 0.886126697063446
+        },
+        {
+          "gold": "1/\u03c42_v 0.1 Larval development rate",
+          "extracted": "Larval development time 1/\u03c4_2 Reciprocal of larval development rate.",
+          "score": 0.8807373046875
+        },
+        {
+          "gold": "1/\u03c43_v 0.3 Pupal development rate",
+          "extracted": "Pupal development time 1/\u03c4_3 Reciprocal of pupal development rate.",
+          "score": 0.8796922564506531
+        },
+        {
+          "gold": "b_v 0.001 Biting/exposure term for vectors becoming infected from infectious humans",
+          "extracted": "Number of infectious bites delivered per vector per day \u03b2_b Transmission-related biting parameter used in the model equations and tables.",
+          "score": 0.7036161422729492
+        },
+        {
+          "gold": "1/\u03c4_v 0.125 Inverse incubation time in vectors",
+          "extracted": "Vector incubation time 1/\u03b1_V Average incubation period in vectors.",
+          "score": 0.749329686164856
+        },
+        {
+          "gold": "r_h 0.00005 Human population growth rate (logistic)",
+          "extracted": "Human population growth rate \u03bb_H Logistic growth rate of the human population.",
+          "score": 0.8178656101226807
+        },
+        {
+          "gold": "f 80 Eggs laid per female mosquito per unit time",
+          "extracted": "Number of eggs laid per female mosquito per unit time e Egg production rate of adult female mosquitoes.",
+          "score": 0.8561077117919922
+        },
+        {
+          "gold": "\u03bc1_v 0.05 Egg mortality rate",
+          "extracted": "Egg mortality \u03bc_1 Mortality rate of eggs.",
+          "score": 0.9149336814880371
+        },
+        {
+          "gold": "\u03bc2_v 0.025 Larval base mortality rate",
+          "extracted": "Larval mortality \u03bc_2 Mortality rate of larvae.",
+          "score": 0.8964442610740662
+        },
+        {
+          "gold": "\u03bc3_v 0.0025 Pupal mortality rate",
+          "extracted": "Pupal mortality \u03bc_3 Mortality rate of pupae.",
+          "score": 0.8884565830230713
+        },
+        {
+          "gold": "\u03bc_a_v 0.05 Adult female mortality rate",
+          "extracted": "Adult mortality \u03bc_V Mortality rate of adult female vectors.",
+          "score": 0.7558149695396423
+        },
+        {
+          "gold": "\u03c6 0.68 Female fraction among adult vectors",
+          "extracted": "Female adult percentage q Fraction of adult vectors that are female.",
+          "score": 0.7829539775848389
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

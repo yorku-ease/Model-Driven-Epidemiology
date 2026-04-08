@@ -1,0 +1,315 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible",
+      "raw_text": "Susceptible",
+      "page_number": 0,
+      "text_span": "Human individuals susceptible to tuberculosis infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human individuals susceptible to tuberculosis infection."
+    },
+    {
+      "normalized_name": "Vaccinated",
+      "raw_text": "Vaccinated",
+      "page_number": 0,
+      "text_span": "Human individuals vaccinated against tuberculosis with temporary immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human individuals vaccinated against tuberculosis with temporary immunity."
+    },
+    {
+      "normalized_name": "Infectious",
+      "raw_text": "Infected",
+      "page_number": 0,
+      "text_span": "Human individuals infected with tuberculosis and capable of transmitting infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human individuals infected with tuberculosis and capable of transmitting infection."
+    },
+    {
+      "normalized_name": "Recovered",
+      "raw_text": "Recovered",
+      "page_number": 0,
+      "text_span": "Human individuals recovered from infection, with possible reinfection and waning immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Human individuals recovered from infection, with possible reinfection and waning immunity."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible",
+      "target": "Vaccinated",
+      "flow_type": "RateFlow",
+      "raw_text": "Vaccination of susceptible humans at rate u.",
+      "page_number": 0,
+      "text_span": "Vaccination of susceptible humans at rate u.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Vaccination of susceptible humans at rate u."
+    },
+    {
+      "source": "Vaccinated",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Waning vaccine protection causing vaccinated humans to return to susceptibility at rate theta.",
+      "page_number": 0,
+      "text_span": "Waning vaccine protection causing vaccinated humans to return to susceptibility at rate theta.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Waning vaccine protection causing vaccinated humans to return to susceptibility at rate theta."
+    },
+    {
+      "source": "Recovered",
+      "target": "Susceptible",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of natural immunity (waning immunity) returning recovered humans to susceptibility at rate delta.",
+      "page_number": 0,
+      "text_span": "Loss of natural immunity (waning immunity) returning recovered humans to susceptibility at rate delta.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of natural immunity (waning immunity) returning recovered humans to susceptibility at rate delta."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "A",
+      "raw_text": "A",
+      "value": "constant",
+      "unit": "human/time",
+      "page_number": 0,
+      "text_span": "Recruitment rate of humans (newborns entering the susceptible class).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recruitment rate of humans (newborns entering the susceptible class)."
+    },
+    {
+      "normalized_name": "beta",
+      "raw_text": "beta",
+      "value": "constant",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "Probability/rate of successful primary infection from susceptible to infected through contact with infected individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability/rate of successful primary infection from susceptible to infected through contact with infected individuals."
+    },
+    {
+      "normalized_name": "epsilon",
+      "raw_text": "epsilon",
+      "value": "0 to 1",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Correction parameter for reinfection; reinfection probability is smaller than primary infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Correction parameter for reinfection; reinfection probability is smaller than primary infection."
+    },
+    {
+      "normalized_name": "u",
+      "raw_text": "u",
+      "value": "constant",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "Rate of vaccination of susceptible individuals.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccination of susceptible individuals."
+    },
+    {
+      "normalized_name": "theta",
+      "raw_text": "theta",
+      "value": "constant",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "Rate of vaccine waning from vaccinated back to susceptible.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of vaccine waning from vaccinated back to susceptible."
+    },
+    {
+      "normalized_name": "gamma",
+      "raw_text": "gamma",
+      "value": "constant",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "Recovery rate from infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Recovery rate from infection."
+    },
+    {
+      "normalized_name": "delta",
+      "raw_text": "delta",
+      "value": "constant",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "Dropout rate due to waning immunity from recovered back to susceptible.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dropout rate due to waning immunity from recovered back to susceptible."
+    },
+    {
+      "normalized_name": "mu",
+      "raw_text": "mu",
+      "value": "constant",
+      "unit": "1/time",
+      "page_number": 0,
+      "text_span": "Natural death rate affecting all compartments.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Natural death rate affecting all compartments."
+    },
+    {
+      "normalized_name": "N",
+      "raw_text": "N",
+      "value": "S + V + I + R",
+      "unit": "human",
+      "page_number": 0,
+      "text_span": "Total human population size.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Total human population size."
+    },
+    {
+      "normalized_name": "Rc",
+      "raw_text": "Rc",
+      "value": "b(d+m)/((d+m+u)(1+m))",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Control reproduction number of the dimensionless system.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Control reproduction number of the dimensionless system."
+    },
+    {
+      "normalized_name": "b",
+      "raw_text": "b",
+      "value": "beta N / gamma",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Dimensionless transmission parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dimensionless transmission parameter."
+    },
+    {
+      "normalized_name": "c",
+      "raw_text": "c",
+      "value": "delta / gamma",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Dimensionless waning-immunity parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dimensionless waning-immunity parameter."
+    },
+    {
+      "normalized_name": "d",
+      "raw_text": "d",
+      "value": "theta / gamma",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Dimensionless vaccine-waning parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dimensionless vaccine-waning parameter."
+    },
+    {
+      "normalized_name": "m",
+      "raw_text": "m",
+      "value": "mu / gamma",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Dimensionless natural death parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dimensionless natural death parameter."
+    },
+    {
+      "normalized_name": "e",
+      "raw_text": "e",
+      "value": "epsilon",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Dimensionless reinfection correction parameter.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Dimensionless reinfection correction parameter."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 4,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "quarantine",
+      "page_number": 11,
+      "text_span": "quarantine mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 4,
+    "num_flows": 3,
+    "num_parameters": 15,
+    "num_stratifications": 2,
+    "num_interventions": 3
+  }
+}

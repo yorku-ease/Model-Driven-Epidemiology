@@ -130,7 +130,8 @@ def main():
         metavar="FILENAME",
         help=(
             f"Evaluation JSON filename inside each report folder (default: {DEFAULT_EVAL_JSON}). "
-            "Use evaluation_report_rerun.json after rerun_evaluation_only.py."
+            "Use evaluation_report_rerun.json after rerun_evaluation_semantic.py, "
+            "or evaluation_report_fuzzy_temp.json after rerun_evaluation_fuzzy.py."
         ),
     )
     args = parser.parse_args()

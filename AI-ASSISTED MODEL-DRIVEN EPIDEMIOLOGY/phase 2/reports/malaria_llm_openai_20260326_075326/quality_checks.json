@@ -1,0 +1,1016 @@
+{
+  "model_analysis": {
+    "modelName": "Malaria",
+    "summary": {
+      "modelName": "Malaria",
+      "totalPopulation": null,
+      "numCompartments": 10,
+      "numParameters": 23,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.2",
+              "description": "Infection of susceptible humans through contact with infectious mosquitoes.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.3",
+              "description": "Infection of susceptible humans through non-vector transmission from infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Vaccinated Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.1",
+              "contactCompartment": "//@compartments.2",
+              "description": "Breakthrough infection of vaccinated humans through contact with infectious mosquitoes, reduced by vaccine efficacy.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.1",
+              "contactCompartment": "//@compartments.3",
+              "description": "Breakthrough infection of vaccinated humans through non-vector transmission from infectious humans.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Loss of vaccine-induced immunity.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Vector-Exposed Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from vector-exposed to infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Non-Vector-Exposed Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from non-vector-exposed to infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.6",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Treatment of infectious humans.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.15",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from infection after treatment/clinical course.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Treated Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.15",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery from treated state.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Recovered Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "",
+              "rateParameter": "//@parameters.1",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Loss of natural immunity / relapse back to susceptibility.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.6",
+              "contactCompartment": "//@compartments.8",
+              "description": "Mosquito infection after feeding on infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.9",
+              "rate": "",
+              "rateParameter": "//@parameters.14",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from exposed to infectious mosquitoes.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "\u03c0",
+          "type": "CONSTANT",
+          "expression": "0.012",
+          "description": "Human population birth rate.",
+          "unit": "per day"
+        },
+        {
+          "index": 1,
+          "name": "k",
+          "type": "CONSTANT",
+          "expression": "0.60\u20130.90",
+          "description": "Vaccination rate / fraction vaccinated at birth.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 2,
+          "name": "\u00b51",
+          "type": "CONSTANT",
+          "expression": "0.0002",
+          "description": "Human natural death rate.",
+          "unit": "per day"
+        },
+        {
+          "index": 3,
+          "name": "\u00b52",
+          "type": "CONSTANT",
+          "expression": "0.1",
+          "description": "Mosquito natural death rate.",
+          "unit": "per day"
+        },
+        {
+          "index": 4,
+          "name": "\u03b8",
+          "type": "CONSTANT",
+          "expression": "0.1\u20130.2",
+          "description": "Rate of vaccine immunity loss due to vaccine failure.",
+          "unit": "per day"
+        },
+        {
+          "index": 5,
+          "name": "\u03b5",
+          "type": "CONSTANT",
+          "expression": "0.3\u20130.5",
+          "description": "Vaccine efficacy.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 6,
+          "name": "\u03b7V",
+          "type": "CONSTANT",
+          "expression": "0.001\u20130.005",
+          "description": "Effective contact rate of vaccinated humans with infected mosquitoes through blood meals.",
+          "unit": "per day"
+        },
+        {
+          "index": 7,
+          "name": "\u03b7S",
+          "type": "CONSTANT",
+          "expression": "0.005\u20130.02",
+          "description": "Effective contact rate of susceptible humans with infected mosquitoes through blood meals.",
+          "unit": "per day"
+        },
+        {
+          "index": 8,
+          "name": "\u03beV",
+          "type": "CONSTANT",
+          "expression": "0.0005\u20130.002",
+          "description": "Effective contact rate of vaccinated humans with infected humans through non-mosquito pathways.",
+          "unit": "per day"
+        },
+        {
+          "index": 9,
+          "name": "\u03beS",
+          "type": "CONSTANT",
+          "expression": "0.001\u20130.003",
+          "description": "Effective contact rate of susceptible humans with infected humans through non-mosquito pathways.",
+          "unit": "per day"
+        },
+        {
+          "index": 10,
+          "name": "\u03c41",
+          "type": "CONSTANT",
+          "expression": "0.05",
+          "description": "Progression rate from vector-exposed humans to infectious humans.",
+          "unit": "per day"
+        },
+        {
+          "index": 11,
+          "name": "\u03c42",
+          "type": "CONSTANT",
+          "expression": "0.05",
+          "description": "Progression rate from non-vector-exposed humans to infectious humans.",
+          "unit": "per day"
+        },
+        {
+          "index": 12,
+          "name": "\u03b41",
+          "type": "CONSTANT",
+          "expression": "0.002",
+          "description": "Human malaria disease death rate.",
+          "unit": "per day"
+        },
+        {
+          "index": 13,
+          "name": "\u03c3",
+          "type": "CONSTANT",
+          "expression": "0.10",
+          "description": "Progression rate from infectious humans to treated humans.",
+          "unit": "per day"
+        },
+        {
+          "index": 14,
+          "name": "\u03c9",
+          "type": "CONSTANT",
+          "expression": "0.05",
+          "description": "Progression rate from treated humans to recovered humans.",
+          "unit": "per day"
+        },
+        {
+          "index": 15,
+          "name": "\u03b3",
+          "type": "CONSTANT",
+          "expression": "0.01",
+          "description": "Recovered human immunity loss rate.",
+          "unit": "per day"
+        },
+        {
+          "index": 16,
+          "name": "\u03c1",
+          "type": "CONSTANT",
+          "expression": "0.01\u20130.05",
+          "description": "Effective contact rate of susceptible mosquitoes with infected humans through blood meals.",
+          "unit": "per mosquito"
+        },
+        {
+          "index": 17,
+          "name": "\u03c6",
+          "type": "CONSTANT",
+          "expression": "not explicitly listed in table",
+          "description": "Progression rate from exposed mosquitoes to infectious mosquitoes.",
+          "unit": "per day"
+        },
+        {
+          "index": 18,
+          "name": "\u03b21",
+          "type": "CONSTANT",
+          "expression": "\u03b7V I M",
+          "description": "Force of infection term for vaccinated humans from infected mosquitoes.",
+          "unit": "not specified"
+        },
+        {
+          "index": 19,
+          "name": "\u03b22",
+          "type": "CONSTANT",
+          "expression": "\u03b7S I M",
+          "description": "Force of infection term for susceptible humans from infected mosquitoes.",
+          "unit": "not specified"
+        },
+        {
+          "index": 20,
+          "name": "\u03b11",
+          "type": "CONSTANT",
+          "expression": "\u03beV I H",
+          "description": "Force of infection term for vaccinated humans from infected humans via non-vector pathways.",
+          "unit": "not specified"
+        },
+        {
+          "index": 21,
+          "name": "\u03b12",
+          "type": "CONSTANT",
+          "expression": "\u03beS I H",
+          "description": "Force of infection term for susceptible humans from infected humans via non-vector pathways.",
+          "unit": "not specified"
+        },
+        {
+          "index": 22,
+          "name": "\u03b23",
+          "type": "CONSTANT",
+          "expression": "\u03c1 I H",
+          "description": "Force of infection term for susceptible mosquitoes from infected humans.",
+          "unit": "not specified"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Malaria",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 23,
+    "parametersWithUncertainty": 23,
+    "parameters": [
+      {
+        "parameter": "\u03c0",
+        "yourValue": "0.012",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Human population birth rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "k",
+        "yourValue": "0.60\u20130.90",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "dimensionless",
+        "description": "Vaccination rate / fraction vaccinated at birth.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u00b51",
+        "yourValue": "0.0002",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Human natural death rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u00b52",
+        "yourValue": "0.1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Mosquito natural death rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b8",
+        "yourValue": "0.1\u20130.2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Rate of vaccine immunity loss due to vaccine failure.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b5",
+        "yourValue": "0.3\u20130.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "dimensionless",
+        "description": "Vaccine efficacy.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b7V",
+        "yourValue": "0.001\u20130.005",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Effective contact rate of vaccinated humans with infected mosquitoes through blood meals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b7S",
+        "yourValue": "0.005\u20130.02",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Effective contact rate of susceptible humans with infected mosquitoes through blood meals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03beV",
+        "yourValue": "0.0005\u20130.002",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Effective contact rate of vaccinated humans with infected humans through non-mosquito pathways.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03beS",
+        "yourValue": "0.001\u20130.003",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Effective contact rate of susceptible humans with infected humans through non-mosquito pathways.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c41",
+        "yourValue": "0.05",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Progression rate from vector-exposed humans to infectious humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c42",
+        "yourValue": "0.05",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Progression rate from non-vector-exposed humans to infectious humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b41",
+        "yourValue": "0.002",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Human malaria disease death rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c3",
+        "yourValue": "0.10",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Progression rate from infectious humans to treated humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c9",
+        "yourValue": "0.05",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Progression rate from treated humans to recovered humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b3",
+        "yourValue": "0.01",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Recovered human immunity loss rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c1",
+        "yourValue": "0.01\u20130.05",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per mosquito",
+        "description": "Effective contact rate of susceptible mosquitoes with infected humans through blood meals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03c6",
+        "yourValue": "not explicitly listed in table",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "per day",
+        "description": "Progression rate from exposed mosquitoes to infectious mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b21",
+        "yourValue": "\u03b7V I M",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "not specified",
+        "description": "Force of infection term for vaccinated humans from infected mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b22",
+        "yourValue": "\u03b7S I M",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "not specified",
+        "description": "Force of infection term for susceptible humans from infected mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b11",
+        "yourValue": "\u03beV I H",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "not specified",
+        "description": "Force of infection term for vaccinated humans from infected humans via non-vector pathways.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b12",
+        "yourValue": "\u03beS I H",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "not specified",
+        "description": "Force of infection term for susceptible humans from infected humans via non-vector pathways.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "\u03b23",
+        "yourValue": "\u03c1 I H",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria",
+        "unit": "not specified",
+        "description": "Force of infection term for susceptible mosquitoes from infected humans.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 23
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Malaria",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "\u03c0",
+        "type": "other",
+        "currentValue": 0.012,
+        "description": "Human population birth rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u00b51",
+        "type": "other",
+        "currentValue": 0.0002,
+        "description": "Human natural death rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u00b52",
+        "type": "other",
+        "currentValue": 0.1,
+        "description": "Mosquito natural death rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c41",
+        "type": "other",
+        "currentValue": 0.05,
+        "description": "Progression rate from vector-exposed humans to infectious humans.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c42",
+        "type": "other",
+        "currentValue": 0.05,
+        "description": "Progression rate from non-vector-exposed humans to infectious humans.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b41",
+        "type": "other",
+        "currentValue": 0.002,
+        "description": "Human malaria disease death rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c3",
+        "type": "other",
+        "currentValue": 0.1,
+        "description": "Progression rate from infectious humans to treated humans.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03c9",
+        "type": "other",
+        "currentValue": 0.05,
+        "description": "Progression rate from treated humans to recovered humans.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "\u03b3",
+        "type": "other",
+        "currentValue": 0.01,
+        "description": "Recovered human immunity loss rate.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "\u03c0",
+      "\u00b51",
+      "\u00b52",
+      "\u03c41",
+      "\u03c42"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "\u03c0",
+        "\u00b51",
+        "\u00b52",
+        "\u03c41",
+        "\u03c42"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "\u03c0": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u00b51": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u00b52": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c41": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "\u03c42": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

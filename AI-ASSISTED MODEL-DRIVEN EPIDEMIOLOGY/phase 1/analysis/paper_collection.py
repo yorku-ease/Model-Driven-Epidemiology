@@ -70,11 +70,17 @@ class PaperCollection:
             json.dump(paper_data, f, indent=2, ensure_ascii=False)
         
         # Copy PDF if provided
+        phase1_root = self.collection_path.parent.parent
         if pdf_path and Path(pdf_path).exists():
             import shutil
             pdf_dest = paper_dir / f"{paper_id}.pdf"
             shutil.copy(pdf_path, pdf_dest)
-            paper_data['pdfPath'] = str(pdf_dest)
+            try:
+                paper_data["pdfPath"] = str(
+                    pdf_dest.relative_to(phase1_root)
+                ).replace("\\", "/")
+            except ValueError:
+                paper_data["pdfPath"] = str(pdf_dest)
         
         self.papers_db.append(paper_data)
         self.save_collection_index()

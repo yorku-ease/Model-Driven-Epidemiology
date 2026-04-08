@@ -1,0 +1,251 @@
+{
+  "paper_name": "Cholera",
+  "summary": {
+    "extraction": {
+      "compartments": 4,
+      "flows": 4,
+      "parameters": 5,
+      "stratifications": 1,
+      "interventions": 3
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Bacteria in Water Reservoir",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible",
+        "target": "Infectious",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Recovered",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious",
+        "target": "Bacteria in Water Reservoir",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Bacteria in Water Reservoir",
+        "target": "Bacteria in Water Reservoir",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "beta",
+        "value": "10^-5 to 1",
+        "unit": "days^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "gamma",
+        "value": "1/2.9 to 1/14",
+        "unit": "days^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "delta",
+        "value": "1/3 to 1/41",
+        "unit": "days^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "xi",
+        "value": "0.01 to 10",
+        "unit": "cells mL^-1 person^-1 day^-1",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "kappa",
+        "value": "10^5 to 10^6",
+        "unit": "cells/mL",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 4,
+    "flows": 4,
+    "parameters": 5,
+    "stratifications": 1,
+    "interventions": 3
+  },
+  "traceability": {
+    "total_items": 17,
+    "items_with_evidence": 17,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 17,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 17,
+      "items_with_evidence": 17,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 17,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 2,
+        "fp": 2,
+        "fn": 2,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "flows": {
+        "tp": 2,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.5,
+        "recall": 0.6667,
+        "f1": 0.5714
+      },
+      "parameters": {
+        "tp": 0,
+        "fp": 5,
+        "fn": 6,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "composite_score": 0.4554,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible",
+          "extracted": "Susceptible",
+          "score": 0.9999999403953552
+        },
+        {
+          "gold": "Infectious",
+          "extracted": "Infectious",
+          "score": 1.0
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible->Infectious",
+          "extracted": "Susceptible->Infectious",
+          "score": 1.0
+        },
+        {
+          "gold": "Infectious->Recovered humans",
+          "extracted": "Infectious->Recovered",
+          "score": 0.840985894203186
+        }
+      ],
+      "parameter_matches": [],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

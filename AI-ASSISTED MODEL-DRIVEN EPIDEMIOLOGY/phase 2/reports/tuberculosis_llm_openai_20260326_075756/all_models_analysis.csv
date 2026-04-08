@@ -1,0 +1,23 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Tuberculosis,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Vaccinated,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Infectious,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Tuberculosis,Compartment,Recovered,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Vaccinated,RateFlow,//@parameters.0,False,Vaccination of susceptible humans at rate u.,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,Waning vaccine protection causing vaccinated humans to return to susceptibility at rate theta.,,,
+Tuberculosis,Flow,,,,,,,Model file,Certain,,Susceptible,RateFlow,//@parameters.0,False,Loss of natural immunity (waning immunity) returning recovered humans to susceptibility at rate delta.,,,
+Tuberculosis,Parameter,A,,,,,,Model file,Certain,,,,,,Recruitment rate of humans (newborns entering the susceptible class).,CONSTANT,constant,human/time
+Tuberculosis,Parameter,beta,,,,,,Model file,Certain,,,,,,Probability/rate of successful primary infection from susceptible to infected through contact with infected individuals.,CONSTANT,constant,1/time
+Tuberculosis,Parameter,epsilon,,,,,,Model file,Certain,,,,,,Correction parameter for reinfection; reinfection probability is smaller than primary infection.,CONSTANT,0 to 1,dimensionless
+Tuberculosis,Parameter,u,,,,,,Model file,Certain,,,,,,Rate of vaccination of susceptible individuals.,CONSTANT,constant,1/time
+Tuberculosis,Parameter,theta,,,,,,Model file,Certain,,,,,,Rate of vaccine waning from vaccinated back to susceptible.,CONSTANT,constant,1/time
+Tuberculosis,Parameter,gamma,,,,,,Model file,Certain,,,,,,Recovery rate from infection.,CONSTANT,constant,1/time
+Tuberculosis,Parameter,delta,,,,,,Model file,Certain,,,,,,Dropout rate due to waning immunity from recovered back to susceptible.,CONSTANT,constant,1/time
+Tuberculosis,Parameter,mu,,,,,,Model file,Certain,,,,,,Natural death rate affecting all compartments.,CONSTANT,constant,1/time
+Tuberculosis,Parameter,N,,,,,,Model file,Certain,,,,,,Total human population size.,CONSTANT,S + V + I + R,human
+Tuberculosis,Parameter,Rc,,,,,,Model file,Certain,,,,,,Control reproduction number of the dimensionless system.,CONSTANT,b(d+m)/((d+m+u)(1+m)),dimensionless
+Tuberculosis,Parameter,b,,,,,,Model file,Certain,,,,,,Dimensionless transmission parameter.,CONSTANT,beta N / gamma,dimensionless
+Tuberculosis,Parameter,c,,,,,,Model file,Certain,,,,,,Dimensionless waning-immunity parameter.,CONSTANT,delta / gamma,dimensionless
+Tuberculosis,Parameter,d,,,,,,Model file,Certain,,,,,,Dimensionless vaccine-waning parameter.,CONSTANT,theta / gamma,dimensionless
+Tuberculosis,Parameter,m,,,,,,Model file,Certain,,,,,,Dimensionless natural death parameter.,CONSTANT,mu / gamma,dimensionless
+Tuberculosis,Parameter,e,,,,,,Model file,Certain,,,,,,Dimensionless reinfection correction parameter.,CONSTANT,epsilon,dimensionless

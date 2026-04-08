@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="A" expression="constant" type="CONSTANT" description="Recruitment rate of humans (newborns entering the susceptible class)." unit="human/time"/>
+  <parameters name="beta" expression="constant" type="CONSTANT" description="Probability/rate of successful primary infection from susceptible to infected through contact with infected individuals." unit="1/time"/>
+  <parameters name="epsilon" expression="0 to 1" type="CONSTANT" description="Correction parameter for reinfection; reinfection probability is smaller than primary infection." unit="dimensionless"/>
+  <parameters name="u" expression="constant" type="CONSTANT" description="Rate of vaccination of susceptible individuals." unit="1/time"/>
+  <parameters name="theta" expression="constant" type="CONSTANT" description="Rate of vaccine waning from vaccinated back to susceptible." unit="1/time"/>
+  <parameters name="gamma" expression="constant" type="CONSTANT" description="Recovery rate from infection." unit="1/time"/>
+  <parameters name="delta" expression="constant" type="CONSTANT" description="Dropout rate due to waning immunity from recovered back to susceptible." unit="1/time"/>
+  <parameters name="mu" expression="constant" type="CONSTANT" description="Natural death rate affecting all compartments." unit="1/time"/>
+  <parameters name="N" expression="S + V + I + R" type="CONSTANT" description="Total human population size." unit="human"/>
+  <parameters name="Rc" expression="b(d+m)/((d+m+u)(1+m))" type="CONSTANT" description="Control reproduction number of the dimensionless system." unit="dimensionless"/>
+  <parameters name="b" expression="beta N / gamma" type="CONSTANT" description="Dimensionless transmission parameter." unit="dimensionless"/>
+  <parameters name="c" expression="delta / gamma" type="CONSTANT" description="Dimensionless waning-immunity parameter." unit="dimensionless"/>
+  <parameters name="d" expression="theta / gamma" type="CONSTANT" description="Dimensionless vaccine-waning parameter." unit="dimensionless"/>
+  <parameters name="m" expression="mu / gamma" type="CONSTANT" description="Dimensionless natural death parameter." unit="dimensionless"/>
+  <parameters name="e" expression="epsilon" type="CONSTANT" description="Dimensionless reinfection correction parameter." unit="dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.1" description="Vaccination of susceptible humans at rate u."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Waning vaccine protection causing vaccinated humans to return to susceptibility at rate theta."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Loss of natural immunity (waning immunity) returning recovered humans to susceptibility at rate delta."/>
+  </compartments>
+</compartmental:CompartmentalModel>

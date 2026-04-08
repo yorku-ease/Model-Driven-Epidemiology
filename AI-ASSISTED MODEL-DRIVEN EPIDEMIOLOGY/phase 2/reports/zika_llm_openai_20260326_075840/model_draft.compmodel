@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Average biting rate per female mosquito" expression="b" type="CONSTANT" description="Average number of bites delivered by a female mosquito per unit time." unit="bites per mosquito per unit time"/>
+  <parameters name="Fraction of bites on humans" expression="q" type="CONSTANT" description="Percentage of bites that are on humans rather than alternative hosts." unit="dimensionless"/>
+  <parameters name="Number of infectious bites delivered per vector per day" expression="β_b" type="CONSTANT" description="Transmission-related biting parameter used in the model equations and tables." unit="infectious bites per vector per day"/>
+  <parameters name="Human incubation time" expression="1/α_H" type="CONSTANT" description="Average incubation period in humans." unit="days"/>
+  <parameters name="Vector incubation time" expression="1/α_V" type="CONSTANT" description="Average incubation period in vectors." unit="days"/>
+  <parameters name="Recovery time" expression="1/γ" type="CONSTANT" description="Average infectious period reciprocal / recovery time for humans." unit="days"/>
+  <parameters name="Number of eggs laid per female mosquito per unit time" expression="e" type="CONSTANT" description="Egg production rate of adult female mosquitoes." unit="eggs per female mosquito per unit time"/>
+  <parameters name="Egg development time" expression="1/τ_1" type="CONSTANT" description="Reciprocal of egg development rate." unit="days"/>
+  <parameters name="Egg mortality" expression="μ_1" type="CONSTANT" description="Mortality rate of eggs." unit="per day"/>
+  <parameters name="Larval development time" expression="1/τ_2" type="CONSTANT" description="Reciprocal of larval development rate." unit="days"/>
+  <parameters name="Larval mortality" expression="μ_2" type="CONSTANT" description="Mortality rate of larvae." unit="per day"/>
+  <parameters name="Pupal development time" expression="1/τ_3" type="CONSTANT" description="Reciprocal of pupal development rate." unit="days"/>
+  <parameters name="Pupal mortality" expression="μ_3" type="CONSTANT" description="Mortality rate of pupae." unit="per day"/>
+  <parameters name="Adult mortality" expression="μ_V" type="CONSTANT" description="Mortality rate of adult female vectors." unit="per day"/>
+  <parameters name="Female adult percentage" expression="q" type="CONSTANT" description="Fraction of adult vectors that are female." unit="dimensionless"/>
+  <parameters name="Human population growth rate" expression="λ_H" type="CONSTANT" description="Logistic growth rate of the human population." unit="per day"/>
+  <parameters name="Human carrying capacity" expression="K_H" type="CONSTANT" description="Carrying capacity for the human population." unit="individuals"/>
+  <parameters name="Larval carrying capacity" expression="K_V" type="CONSTANT" description="Carrying capacity for larvae." unit="individuals"/>
+  <parameters name="Larvae mortality rate due to limited carrying capacity" expression="κ" type="CONSTANT" description="Density-dependent mortality term for larvae." unit="per day"/>
+  <parameters name="Alternative hosts" expression="M" type="CONSTANT" description="Number of non-human alternative hosts in the environment." unit="individuals"/>
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.2" target="//@compartments.1" description="Human infection from bites of infectious adult female vectors."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.2" description="Progression from exposed to infectious after the human incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.3" description="Recovery of infectious humans."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans" population="0"/>
+  <compartments PrimaryName="Eggs" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Egg development into larvae."/>
+  </compartments>
+  <compartments PrimaryName="Larvae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Larval development into pupae."/>
+  </compartments>
+  <compartments PrimaryName="Pupae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.7" description="Pupal development into adult female vectors."/>
+  </compartments>
+  <compartments PrimaryName="Susceptible Adult Female Vectors" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.2" target="//@compartments.8" description="Vector infection from biting infectious humans."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Adult Female Vectors" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.9" description="Progression from exposed to infectious after the vector incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Adult Female Vectors" population="0"/>
+</compartmental:CompartmentalModel>

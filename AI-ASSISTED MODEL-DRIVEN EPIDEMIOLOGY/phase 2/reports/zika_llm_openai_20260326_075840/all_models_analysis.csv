@@ -1,0 +1,39 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Zika,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Exposed Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Infectious Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Recovered Humans,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika,Compartment,Eggs,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Larvae,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Pupae,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Susceptible Adult Female Vectors,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Exposed Adult Female Vectors,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Zika,Compartment,Infectious Adult Female Vectors,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Zika,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.2,False,Human infection from bites of infectious adult female vectors.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Infectious Humans,RateFlow,//@parameters.2,False,Progression from exposed to infectious after the human incubation period.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Recovered Humans,RateFlow,//@parameters.5,False,Recovery of infectious humans.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Larvae,RateFlow,0.0,False,Egg development into larvae.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Pupae,RateFlow,0.0,False,Larval development into pupae.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Susceptible Adult Female Vectors,RateFlow,0.0,False,Pupal development into adult female vectors.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Exposed Adult Female Vectors,RateFlow,//@parameters.2,False,Vector infection from biting infectious humans.,,,
+Zika,Flow,,,,,,,Model file,Certain,,Infectious Adult Female Vectors,RateFlow,//@parameters.2,False,Progression from exposed to infectious after the vector incubation period.,,,
+Zika,Parameter,Average biting rate per female mosquito,,,,,,Model file,Certain,,,,,,Average number of bites delivered by a female mosquito per unit time.,CONSTANT,b,bites per mosquito per unit time
+Zika,Parameter,Fraction of bites on humans,,,,,,Model file,Certain,,,,,,Percentage of bites that are on humans rather than alternative hosts.,CONSTANT,q,dimensionless
+Zika,Parameter,Number of infectious bites delivered per vector per day,,,,,,Model file,Certain,,,,,,Transmission-related biting parameter used in the model equations and tables.,CONSTANT,β_b,infectious bites per vector per day
+Zika,Parameter,Human incubation time,,,,,,Model file,Certain,,,,,,Average incubation period in humans.,CONSTANT,1/α_H,days
+Zika,Parameter,Vector incubation time,,,,,,Model file,Certain,,,,,,Average incubation period in vectors.,CONSTANT,1/α_V,days
+Zika,Parameter,Recovery time,,,,,,Model file,Certain,,,,,,Average infectious period reciprocal / recovery time for humans.,CONSTANT,1/γ,days
+Zika,Parameter,Number of eggs laid per female mosquito per unit time,,,,,,Model file,Certain,,,,,,Egg production rate of adult female mosquitoes.,CONSTANT,e,eggs per female mosquito per unit time
+Zika,Parameter,Egg development time,,,,,,Model file,Certain,,,,,,Reciprocal of egg development rate.,CONSTANT,1/τ_1,days
+Zika,Parameter,Egg mortality,,,,,,Model file,Certain,,,,,,Mortality rate of eggs.,CONSTANT,μ_1,per day
+Zika,Parameter,Larval development time,,,,,,Model file,Certain,,,,,,Reciprocal of larval development rate.,CONSTANT,1/τ_2,days
+Zika,Parameter,Larval mortality,,,,,,Model file,Certain,,,,,,Mortality rate of larvae.,CONSTANT,μ_2,per day
+Zika,Parameter,Pupal development time,,,,,,Model file,Certain,,,,,,Reciprocal of pupal development rate.,CONSTANT,1/τ_3,days
+Zika,Parameter,Pupal mortality,,,,,,Model file,Certain,,,,,,Mortality rate of pupae.,CONSTANT,μ_3,per day
+Zika,Parameter,Adult mortality,,,,,,Model file,Certain,,,,,,Mortality rate of adult female vectors.,CONSTANT,μ_V,per day
+Zika,Parameter,Female adult percentage,,,,,,Model file,Certain,,,,,,Fraction of adult vectors that are female.,CONSTANT,q,dimensionless
+Zika,Parameter,Human population growth rate,,,,,,Model file,Certain,,,,,,Logistic growth rate of the human population.,CONSTANT,λ_H,per day
+Zika,Parameter,Human carrying capacity,,,,,,Model file,Certain,,,,,,Carrying capacity for the human population.,CONSTANT,K_H,individuals
+Zika,Parameter,Larval carrying capacity,,,,,,Model file,Certain,,,,,,Carrying capacity for larvae.,CONSTANT,K_V,individuals
+Zika,Parameter,Larvae mortality rate due to limited carrying capacity,,,,,,Model file,Certain,,,,,,Density-dependent mortality term for larvae.,CONSTANT,κ,per day
+Zika,Parameter,Alternative hosts,,,,,,Model file,Certain,,,,,,Number of non-human alternative hosts in the environment.,CONSTANT,M,individuals

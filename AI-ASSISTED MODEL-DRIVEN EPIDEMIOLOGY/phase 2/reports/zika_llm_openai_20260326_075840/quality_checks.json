@@ -1,0 +1,754 @@
+{
+  "model_analysis": {
+    "modelName": "Zika",
+    "summary": {
+      "modelName": "Zika",
+      "totalPopulation": null,
+      "numCompartments": 10,
+      "numParameters": 20,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.2",
+              "contactCompartment": "//@compartments.1",
+              "description": "Human infection from bites of infectious adult female vectors.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from exposed to infectious after the human incubation period.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.5",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Recovery of infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Recovered Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        },
+        {
+          "index": 4,
+          "primaryName": "Eggs",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Egg development into larvae.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Larvae",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Larval development into pupae.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Pupae",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.7",
+              "rate": "0.0",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Pupal development into adult female vectors.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Susceptible Adult Female Vectors",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.2",
+              "contactCompartment": "//@compartments.8",
+              "description": "Vector infection from biting infectious humans.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "primaryName": "Exposed Adult Female Vectors",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.9",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from exposed to infectious after the vector incubation period.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "primaryName": "Infectious Adult Female Vectors",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Average biting rate per female mosquito",
+          "type": "CONSTANT",
+          "expression": "b",
+          "description": "Average number of bites delivered by a female mosquito per unit time.",
+          "unit": "bites per mosquito per unit time"
+        },
+        {
+          "index": 1,
+          "name": "Fraction of bites on humans",
+          "type": "CONSTANT",
+          "expression": "q",
+          "description": "Percentage of bites that are on humans rather than alternative hosts.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 2,
+          "name": "Number of infectious bites delivered per vector per day",
+          "type": "CONSTANT",
+          "expression": "\u03b2_b",
+          "description": "Transmission-related biting parameter used in the model equations and tables.",
+          "unit": "infectious bites per vector per day"
+        },
+        {
+          "index": 3,
+          "name": "Human incubation time",
+          "type": "CONSTANT",
+          "expression": "1/\u03b1_H",
+          "description": "Average incubation period in humans.",
+          "unit": "days"
+        },
+        {
+          "index": 4,
+          "name": "Vector incubation time",
+          "type": "CONSTANT",
+          "expression": "1/\u03b1_V",
+          "description": "Average incubation period in vectors.",
+          "unit": "days"
+        },
+        {
+          "index": 5,
+          "name": "Recovery time",
+          "type": "CONSTANT",
+          "expression": "1/\u03b3",
+          "description": "Average infectious period reciprocal / recovery time for humans.",
+          "unit": "days"
+        },
+        {
+          "index": 6,
+          "name": "Number of eggs laid per female mosquito per unit time",
+          "type": "CONSTANT",
+          "expression": "e",
+          "description": "Egg production rate of adult female mosquitoes.",
+          "unit": "eggs per female mosquito per unit time"
+        },
+        {
+          "index": 7,
+          "name": "Egg development time",
+          "type": "CONSTANT",
+          "expression": "1/\u03c4_1",
+          "description": "Reciprocal of egg development rate.",
+          "unit": "days"
+        },
+        {
+          "index": 8,
+          "name": "Egg mortality",
+          "type": "CONSTANT",
+          "expression": "\u03bc_1",
+          "description": "Mortality rate of eggs.",
+          "unit": "per day"
+        },
+        {
+          "index": 9,
+          "name": "Larval development time",
+          "type": "CONSTANT",
+          "expression": "1/\u03c4_2",
+          "description": "Reciprocal of larval development rate.",
+          "unit": "days"
+        },
+        {
+          "index": 10,
+          "name": "Larval mortality",
+          "type": "CONSTANT",
+          "expression": "\u03bc_2",
+          "description": "Mortality rate of larvae.",
+          "unit": "per day"
+        },
+        {
+          "index": 11,
+          "name": "Pupal development time",
+          "type": "CONSTANT",
+          "expression": "1/\u03c4_3",
+          "description": "Reciprocal of pupal development rate.",
+          "unit": "days"
+        },
+        {
+          "index": 12,
+          "name": "Pupal mortality",
+          "type": "CONSTANT",
+          "expression": "\u03bc_3",
+          "description": "Mortality rate of pupae.",
+          "unit": "per day"
+        },
+        {
+          "index": 13,
+          "name": "Adult mortality",
+          "type": "CONSTANT",
+          "expression": "\u03bc_V",
+          "description": "Mortality rate of adult female vectors.",
+          "unit": "per day"
+        },
+        {
+          "index": 14,
+          "name": "Female adult percentage",
+          "type": "CONSTANT",
+          "expression": "q",
+          "description": "Fraction of adult vectors that are female.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 15,
+          "name": "Human population growth rate",
+          "type": "CONSTANT",
+          "expression": "\u03bb_H",
+          "description": "Logistic growth rate of the human population.",
+          "unit": "per day"
+        },
+        {
+          "index": 16,
+          "name": "Human carrying capacity",
+          "type": "CONSTANT",
+          "expression": "K_H",
+          "description": "Carrying capacity for the human population.",
+          "unit": "individuals"
+        },
+        {
+          "index": 17,
+          "name": "Larval carrying capacity",
+          "type": "CONSTANT",
+          "expression": "K_V",
+          "description": "Carrying capacity for larvae.",
+          "unit": "individuals"
+        },
+        {
+          "index": 18,
+          "name": "Larvae mortality rate due to limited carrying capacity",
+          "type": "CONSTANT",
+          "expression": "\u03ba",
+          "description": "Density-dependent mortality term for larvae.",
+          "unit": "per day"
+        },
+        {
+          "index": 19,
+          "name": "Alternative hosts",
+          "type": "CONSTANT",
+          "expression": "M",
+          "description": "Number of non-human alternative hosts in the environment.",
+          "unit": "individuals"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Zika",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 20,
+    "parametersWithUncertainty": 20,
+    "parameters": [
+      {
+        "parameter": "Average biting rate per female mosquito",
+        "yourValue": "b",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "bites per mosquito per unit time",
+        "description": "Average number of bites delivered by a female mosquito per unit time.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Fraction of bites on humans",
+        "yourValue": "q",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "dimensionless",
+        "description": "Percentage of bites that are on humans rather than alternative hosts.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Number of infectious bites delivered per vector per day",
+        "yourValue": "\u03b2_b",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "infectious bites per vector per day",
+        "description": "Transmission-related biting parameter used in the model equations and tables.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Human incubation time",
+        "yourValue": "1/\u03b1_H",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Average incubation period in humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Vector incubation time",
+        "yourValue": "1/\u03b1_V",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Average incubation period in vectors.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Recovery time",
+        "yourValue": "1/\u03b3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Average infectious period reciprocal / recovery time for humans.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Number of eggs laid per female mosquito per unit time",
+        "yourValue": "e",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "eggs per female mosquito per unit time",
+        "description": "Egg production rate of adult female mosquitoes.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Egg development time",
+        "yourValue": "1/\u03c4_1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Reciprocal of egg development rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Egg mortality",
+        "yourValue": "\u03bc_1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Mortality rate of eggs.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Larval development time",
+        "yourValue": "1/\u03c4_2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Reciprocal of larval development rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Larval mortality",
+        "yourValue": "\u03bc_2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Mortality rate of larvae.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Pupal development time",
+        "yourValue": "1/\u03c4_3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "days",
+        "description": "Reciprocal of pupal development rate.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Pupal mortality",
+        "yourValue": "\u03bc_3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Mortality rate of pupae.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Adult mortality",
+        "yourValue": "\u03bc_V",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Mortality rate of adult female vectors.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Female adult percentage",
+        "yourValue": "q",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "dimensionless",
+        "description": "Fraction of adult vectors that are female.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Human population growth rate",
+        "yourValue": "\u03bb_H",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Logistic growth rate of the human population.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Human carrying capacity",
+        "yourValue": "K_H",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "individuals",
+        "description": "Carrying capacity for the human population.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Larval carrying capacity",
+        "yourValue": "K_V",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "individuals",
+        "description": "Carrying capacity for larvae.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Larvae mortality rate due to limited carrying capacity",
+        "yourValue": "\u03ba",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "per day",
+        "description": "Density-dependent mortality term for larvae.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Alternative hosts",
+        "yourValue": "M",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Zika",
+        "unit": "individuals",
+        "description": "Number of non-human alternative hosts in the environment.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 20
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Zika",
+    "message": "No key parameters identified for sensitivity analysis",
+    "note": "This model may have rates embedded in flows rather than explicit parameters"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

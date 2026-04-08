@@ -208,8 +208,8 @@ class LLMClient:
         # Set default model if not provided; allow environment variable overrides
         if model is None:
             if self.provider == "openai":
-                # Use gpt-4o for quality comparable to Gemini Pro; set OPENAI_MODEL=gpt-4o-mini for faster/cheaper
-                model = os.getenv("OPENAI_MODEL", "gpt-4o")
+                # Default to gpt-5.4-mini; override with OPENAI_MODEL env var if needed
+                model = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
             elif self.provider == "gemini":
                 # e.g. export GEMINI_MODEL=gemini-2.5-flash or gemini-2.5-pro
                 model = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")

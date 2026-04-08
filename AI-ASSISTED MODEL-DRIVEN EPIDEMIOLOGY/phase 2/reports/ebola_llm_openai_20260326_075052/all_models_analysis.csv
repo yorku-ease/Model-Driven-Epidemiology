@@ -1,0 +1,31 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Ebola,Compartment,Susceptible People,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Infectious People,,0,False,3.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Quarantine People,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Recovered Disease,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Ebola Virus Pathogens in the Environment,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Compartment,Deceased People,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Infectious People,RateFlow,//@parameters.11,False,"Infection of susceptible people through contact with infectious people, environmental pathogens, or deceased people.",,,
+Ebola,Flow,,,,,,,Model file,Certain,,Quarantine People,RateFlow,//@parameters.12,False,Infectious people are quarantined.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Deceased People,RateFlow,//@parameters.11,False,Death of infectious people due to infection.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Ebola Virus Pathogens in the Environment,RateFlow,//@parameters.11,False,Shedding of Ebola virus pathogens into the environment by infectious people.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Recovered Disease,RateFlow,//@parameters.12,False,Recovery of quarantined people.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Deceased People,RateFlow,//@parameters.11,False,Death of quarantined people.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Ebola Virus Pathogens in the Environment,RateFlow,//@parameters.11,False,Environmental pathogen decay/removal.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Ebola Virus Pathogens in the Environment,RateFlow,//@parameters.12,False,Contribution of deceased people to environmental contamination.,,,
+Ebola,Flow,,,,,,,Model file,Certain,,Deceased People,RateFlow,//@parameters.11,False,Burial/removal of deceased people from the deceased class.,,,
+Ebola,Parameter,alpha_1,,,,,,Model file,Certain,,,,,,Recruitment rate of susceptible people.,CONSTANT,10,people/time
+Ebola,Parameter,alpha_2,,,,,,Model file,Certain,,,,,,Recruitment rate of infected people.,CONSTANT,3,people/time
+Ebola,Parameter,psi_1,,,,,,Model file,Certain,,,,,,Effective contact rate with infectious people.,CONSTANT,0.006,1/(person·time)
+Ebola,Parameter,psi_2,,,,,,Model file,Certain,,,,,,Effective contact rate with Ebola virus pathogens in the environment.,CONSTANT,0.0012,1/(person·time)
+Ebola,Parameter,psi_3,,,,,,Model file,Certain,,,,,,Effective contact rate with deceased people.,CONSTANT,0.006,1/(person·time)
+Ebola,Parameter,epsilon,,,,,,Model file,Certain,,,,,,Natural death rate of humans.,CONSTANT,0.5,1/time
+Ebola,Parameter,rho_1,,,,,,Model file,Certain,,,,,,Death rate of human individuals due to infection.,CONSTANT,0.123,1/time
+Ebola,Parameter,rho_2,,,,,,Model file,Certain,,,,,,Shedding rate of infected humans.,CONSTANT,0.04,1/time
+Ebola,Parameter,rho_3,,,,,,Model file,Certain,,,,,,Rate at which infected people are quarantined.,CONSTANT,0.12,1/time
+Ebola,Parameter,w_1,,,,,,Model file,Certain,,,,,,Recovery rate of quarantined people.,CONSTANT,0.04,1/time
+Ebola,Parameter,w_2,,,,,,Model file,Certain,,,,,,Death rate of quarantined people.,CONSTANT,0.22,1/time
+Ebola,Parameter,h,,,,,,Model file,Certain,,,,,,Proportion/rate of shedding from deceased people into the environment.,CONSTANT,0.04,1/time
+Ebola,Parameter,c,,,,,,Model file,Certain,,,,,,Burial/removal rate of deceased people.,CONSTANT,0.8,1/time
+Ebola,Parameter,b,,,,,,Model file,Certain,,,,,,Decay/removal rate of Ebola virus pathogens in the environment.,CONSTANT,0,1/time
+Ebola,Parameter,d,,,,,,Model file,Certain,,,,,,Environmental contribution term used in the pathogen equation as presented in the paper.,CONSTANT,0.0015,1/time

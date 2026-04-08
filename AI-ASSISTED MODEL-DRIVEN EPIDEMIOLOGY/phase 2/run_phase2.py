@@ -30,6 +30,10 @@ Examples:
   # Process paper with auto-generated folder name (recommended)
   python run_phase2.py --paper EbolaSensitivity.pdf
   # Creates: reports/ebola_llm_openai_20240123_143022/
+
+  # Use Phase 1 corpus id (PDF + gold resolved from data/papers/collection_index.json)
+  python run_phase2.py --paper-id ebola_2026_5 --llm-provider openai
+  # Creates: reports/ebola_2026_5_llm_openai_...
   
   # Process with Gemini instead of OpenAI
   python run_phase2.py --paper EbolaSensitivity.pdf --llm-provider gemini
@@ -51,7 +55,20 @@ Examples:
     )
 
     parser.add_argument(
-        "--paper", type=str, required=True, help="Path to PDF paper file"
+        "--paper",
+        type=str,
+        default=None,
+        help="Path to PDF paper file (use this or --paper-id, not both)",
+    )
+    parser.add_argument(
+        "--paper-id",
+        type=str,
+        default=None,
+        metavar="ID",
+        help=(
+            "Phase 1 corpus paper id (see phase 1/data/papers/collection_index.json). "
+            "Resolves PDF and optional gold .compmodel; report folder is {id}_llm_{provider}_..."
+        ),
     )
     parser.add_argument(
         "--output",
@@ -161,6 +178,40 @@ Examples:
 
     args = parser.parse_args()
 
+    if bool(args.paper) == bool(args.paper_id):
+        print("Error: specify exactly one of --paper PATH or --paper-id ID")
+        return 1
+
+    from src.utils.phase2_paths import is_paired_case_pdf
+
+    corpus_folder_stem: Optional[str] = None
+    if args.paper_id:
+        from src.utils.phase2_paths import (
+            resolve_gold_compmodel_path,
+            resolve_pdf_path_for_paper_id,
+        )
+
+        try:
+            paper_path = resolve_pdf_path_for_paper_id(args.paper_id)
+        except FileNotFoundError as e:
+            print(f"Error: {e}")
+            return 1
+        args.paper = str(paper_path)
+        # Report folder name: use PDF stem when using data/<disease>/<stem>.pdf layout
+        corpus_folder_stem = (
+            paper_path.stem.lower()
+            if is_paired_case_pdf(paper_path)
+            else args.paper_id
+        )
+        if not args.gold_standard:
+            gold = resolve_gold_compmodel_path(
+                args.paper_id,
+                baseline_dir=Path(args.baseline_models_dir),
+            )
+            if gold:
+                args.gold_standard = str(gold)
+                print(f"Using gold standard from corpus layout: {gold.name}")
+
     # Validate inputs
     paper_path = Path(args.paper)
     if not paper_path.exists():
@@ -168,7 +219,7 @@ Examples:
         return 1
 
     # Always generate folder name in format: {disease}_{method}_{timestamp}
-    # Extract disease name from paper filename
+    # Extract disease name from paper filename (or corpus id for --paper-id)
     paper_stem = paper_path.stem.lower()
 
     # Common disease names to look for
@@ -194,12 +245,17 @@ Examples:
         "yellowfever": "yellowfever",
     }
 
-    # Try to find disease name in paper filename
+    # Run folder prefix: paired layout data/<disease>/covid2.pdf -> covid2_llm_...
     disease_name = "unknown"
-    for keyword, disease in disease_keywords.items():
-        if keyword in paper_stem:
-            disease_name = disease
-            break
+    if corpus_folder_stem:
+        disease_name = corpus_folder_stem
+    elif is_paired_case_pdf(paper_path):
+        disease_name = paper_path.stem.lower()
+    else:
+        for keyword, disease in disease_keywords.items():
+            if keyword in paper_stem:
+                disease_name = disease
+                break
 
     # If not found, try to extract from paper stem (take first meaningful word)
     if disease_name == "unknown":
@@ -469,7 +525,24 @@ Examples:
     # Auto-detect baseline model if not explicitly provided
     gold_standard_path = args.gold_standard
     if not gold_standard_path:
-        # Try to find baseline model matching paper name
+        from src.utils.phase2_paths import (
+            find_gold_compmodel_for_run_stem,
+            paired_gold_for_pdf,
+        )
+
+        pp = Path(args.paper)
+        paired = paired_gold_for_pdf(pp)
+        if paired:
+            gold_standard_path = str(paired)
+            print(f"  Auto-detected paired gold (same stem as PDF): {paired.name}")
+        else:
+            by_stem = find_gold_compmodel_for_run_stem(pp.stem.lower())
+            if by_stem:
+                gold_standard_path = str(by_stem)
+                print(f"  Auto-detected gold under data/<disease>/: {by_stem}")
+
+    if not gold_standard_path:
+        # Try to find baseline model matching paper name (legacy flat dir)
         baseline_dir = Path(args.baseline_models_dir)
         if baseline_dir.exists():
             paper_stem = Path(args.paper).stem.lower()

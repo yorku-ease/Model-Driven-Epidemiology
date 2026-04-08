@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="alpha_1" expression="10" type="CONSTANT" description="Recruitment rate of susceptible people." unit="people/time"/>
+  <parameters name="alpha_2" expression="3" type="CONSTANT" description="Recruitment rate of infected people." unit="people/time"/>
+  <parameters name="psi_1" expression="0.006" type="CONSTANT" description="Effective contact rate with infectious people." unit="1/(person·time)"/>
+  <parameters name="psi_2" expression="0.0012" type="CONSTANT" description="Effective contact rate with Ebola virus pathogens in the environment." unit="1/(person·time)"/>
+  <parameters name="psi_3" expression="0.006" type="CONSTANT" description="Effective contact rate with deceased people." unit="1/(person·time)"/>
+  <parameters name="epsilon" expression="0.5" type="CONSTANT" description="Natural death rate of humans." unit="1/time"/>
+  <parameters name="rho_1" expression="0.123" type="CONSTANT" description="Death rate of human individuals due to infection." unit="1/time"/>
+  <parameters name="rho_2" expression="0.04" type="CONSTANT" description="Shedding rate of infected humans." unit="1/time"/>
+  <parameters name="rho_3" expression="0.12" type="CONSTANT" description="Rate at which infected people are quarantined." unit="1/time"/>
+  <parameters name="w_1" expression="0.04" type="CONSTANT" description="Recovery rate of quarantined people." unit="1/time"/>
+  <parameters name="w_2" expression="0.22" type="CONSTANT" description="Death rate of quarantined people." unit="1/time"/>
+  <parameters name="h" expression="0.04" type="CONSTANT" description="Proportion/rate of shedding from deceased people into the environment." unit="1/time"/>
+  <parameters name="c" expression="0.8" type="CONSTANT" description="Burial/removal rate of deceased people." unit="1/time"/>
+  <parameters name="b" expression="0" type="CONSTANT" description="Decay/removal rate of Ebola virus pathogens in the environment." unit="1/time"/>
+  <parameters name="d" expression="0.0015" type="CONSTANT" description="Environmental contribution term used in the pathogen equation as presented in the paper." unit="1/time"/>
+  <compartments PrimaryName="Susceptible People" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.11" target="//@compartments.1" description="Infection of susceptible people through contact with infectious people, environmental pathogens, or deceased people."/>
+  </compartments>
+  <compartments PrimaryName="Infectious People" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.2" description="Infectious people are quarantined."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.5" description="Death of infectious people due to infection."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4" description="Shedding of Ebola virus pathogens into the environment by infectious people."/>
+  </compartments>
+  <compartments PrimaryName="Quarantine People" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.3" description="Recovery of quarantined people."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.5" description="Death of quarantined people."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Disease" population="0"/>
+  <compartments PrimaryName="Ebola Virus Pathogens in the Environment" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.4" description="Environmental pathogen decay/removal."/>
+  </compartments>
+  <compartments PrimaryName="Deceased People" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.4" description="Contribution of deceased people to environmental contamination."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.11" target="//@compartments.5" description="Burial/removal of deceased people from the deceased class."/>
+  </compartments>
+</compartmental:CompartmentalModel>

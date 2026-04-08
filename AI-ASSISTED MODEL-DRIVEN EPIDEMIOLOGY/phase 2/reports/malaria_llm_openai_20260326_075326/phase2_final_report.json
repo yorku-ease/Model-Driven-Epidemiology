@@ -1,0 +1,586 @@
+{
+  "paper_name": "Malaria",
+  "summary": {
+    "extraction": {
+      "compartments": 10,
+      "flows": 13,
+      "parameters": 23,
+      "stratifications": 1,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0,
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "model_type": "SEIR"
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination"
+    ],
+    "model_type": "SEIR",
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vector-Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Non-Vector-Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Vector-Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Humans",
+        "target": "Vector-Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Humans",
+        "target": "Non-Vector-Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Humans",
+        "target": "Non-Vector-Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vector-Exposed Humans",
+        "target": "Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Non-Vector-Exposed Humans",
+        "target": "Infectious Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Humans",
+        "target": "Treated Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infectious Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated Humans",
+        "target": "Recovered Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "\u03c0",
+        "value": "0.012",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "k",
+        "value": "0.60\u20130.90",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u00b51",
+        "value": "0.0002",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u00b52",
+        "value": "0.1",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b8",
+        "value": "0.1\u20130.2",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b5",
+        "value": "0.3\u20130.5",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b7V",
+        "value": "0.001\u20130.005",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b7S",
+        "value": "0.005\u20130.02",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03beV",
+        "value": "0.0005\u20130.002",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03beS",
+        "value": "0.001\u20130.003",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c41",
+        "value": "0.05",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c42",
+        "value": "0.05",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b41",
+        "value": "0.002",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c3",
+        "value": "0.10",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c9",
+        "value": "0.05",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b3",
+        "value": "0.01",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c1",
+        "value": "0.01\u20130.05",
+        "unit": "per mosquito",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03c6",
+        "value": "not explicitly listed in table",
+        "unit": "per day",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b21",
+        "value": "\u03b7V I M",
+        "unit": "not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b22",
+        "value": "\u03b7S I M",
+        "unit": "not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b11",
+        "value": "\u03beV I H",
+        "unit": "not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b12",
+        "value": "\u03beS I H",
+        "unit": "not specified",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "\u03b23",
+        "value": "\u03c1 I H",
+        "unit": "not specified",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 10,
+    "flows": 13,
+    "parameters": 23,
+    "stratifications": 1,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 49,
+    "items_with_evidence": 49,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 49,
+    "faithfulness_percentage": 100.0
+  },
+  "gap_analysis": {
+    "summary": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0
+    },
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_stratifications": [],
+    "missing_interventions": []
+  },
+  "gap_suggestions": {
+    "total_gaps": 0,
+    "total_suggestions": 0,
+    "suggestions_by_source": {}
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 49,
+      "items_with_evidence": 49,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 49,
+      "faithfulness_percentage": 100.0
+    },
+    "gap_analysis": {
+      "total_gaps": 0,
+      "critical_gaps": 0,
+      "high_gaps": 0,
+      "medium_gaps": 0,
+      "gap_breakdown": {
+        "missing_compartments": 0,
+        "missing_parameters": 0,
+        "missing_stratifications": 0,
+        "missing_interventions": 0
+      }
+    },
+    "gold_standard_comparison": {
+      "threshold": 0.7,
+      "compartments": {
+        "tp": 10,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "flows": {
+        "tp": 11,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.8462,
+        "recall": 1.0,
+        "f1": 0.9167
+      },
+      "parameters": {
+        "tp": 6,
+        "fp": 17,
+        "fn": 13,
+        "precision": 0.2609,
+        "recall": 0.3158,
+        "f1": 0.2857
+      },
+      "composite_score": 0.8574,
+      "compartment_matches": [
+        {
+          "gold": "Susceptible humans (SH)",
+          "extracted": "Susceptible Humans",
+          "score": 0.8517898321151733
+        },
+        {
+          "gold": "Vaccinated humans (VH)",
+          "extracted": "Vaccinated Humans",
+          "score": 0.858896017074585
+        },
+        {
+          "gold": "Vector-exposed humans (EH1)",
+          "extracted": "Vector-Exposed Humans",
+          "score": 0.8871655464172363
+        },
+        {
+          "gold": "Non-vector-exposed humans (EH2)",
+          "extracted": "Non-Vector-Exposed Humans",
+          "score": 0.8881028890609741
+        },
+        {
+          "gold": "Infectious humans (IH)",
+          "extracted": "Infectious Humans",
+          "score": 0.8877191543579102
+        },
+        {
+          "gold": "Treated humans (TH)",
+          "extracted": "Treated Humans",
+          "score": 0.8914076089859009
+        },
+        {
+          "gold": "Recovered humans (RH)",
+          "extracted": "Recovered Humans",
+          "score": 0.8318571448326111
+        },
+        {
+          "gold": "Susceptible mosquitoes (SM)",
+          "extracted": "Susceptible Mosquitoes",
+          "score": 0.8770095705986023
+        },
+        {
+          "gold": "Exposed mosquitoes (EM)",
+          "extracted": "Exposed Mosquitoes",
+          "score": 0.9147013425827026
+        },
+        {
+          "gold": "Infectious mosquitoes (IM)",
+          "extracted": "Infectious Mosquitoes",
+          "score": 0.9286189675331116
+        }
+      ],
+      "flow_matches": [
+        {
+          "gold": "Susceptible humans (SH)->Vector-exposed humans (EH1)",
+          "extracted": "Susceptible Humans->Vector-Exposed Humans",
+          "score": 0.8760374784469604
+        },
+        {
+          "gold": "Susceptible humans (SH)->Non-vector-exposed humans (EH2)",
+          "extracted": "Susceptible Humans->Non-Vector-Exposed Humans",
+          "score": 0.8629715442657471
+        },
+        {
+          "gold": "Vaccinated humans (VH)->Vector-exposed humans (EH1)",
+          "extracted": "Vaccinated Humans->Vector-Exposed Humans",
+          "score": 0.8635416626930237
+        },
+        {
+          "gold": "Vaccinated humans (VH)->Non-vector-exposed humans (EH2)",
+          "extracted": "Vaccinated Humans->Non-Vector-Exposed Humans",
+          "score": 0.8708416223526001
+        },
+        {
+          "gold": "Vector-exposed humans (EH1)->Infectious humans (IH)",
+          "extracted": "Vector-Exposed Humans->Infectious Humans",
+          "score": 0.8801096677780151
+        },
+        {
+          "gold": "Non-vector-exposed humans (EH2)->Infectious humans (IH)",
+          "extracted": "Non-Vector-Exposed Humans->Infectious Humans",
+          "score": 0.8681133389472961
+        },
+        {
+          "gold": "Infectious humans (IH)->Treated humans (TH)",
+          "extracted": "Infectious Humans->Treated Humans",
+          "score": 0.8983449935913086
+        },
+        {
+          "gold": "Treated humans (TH)->Recovered humans (RH)",
+          "extracted": "Treated Humans->Recovered Humans",
+          "score": 0.8870832920074463
+        },
+        {
+          "gold": "Recovered humans (RH)->Susceptible humans (SH)",
+          "extracted": "Recovered Humans->Susceptible Humans",
+          "score": 0.8533327579498291
+        },
+        {
+          "gold": "Susceptible mosquitoes (SM)->Exposed mosquitoes (EM)",
+          "extracted": "Susceptible Mosquitoes->Exposed Mosquitoes",
+          "score": 0.8947110176086426
+        },
+        {
+          "gold": "Exposed mosquitoes (EM)->Infectious mosquitoes (IM)",
+          "extracted": "Exposed Mosquitoes->Infectious Mosquitoes",
+          "score": 0.8913360238075256
+        }
+      ],
+      "parameter_matches": [
+        {
+          "gold": "\u03bc1 0.001384 Natural death rate of humans (\u03bc1)",
+          "extracted": "\u00b51 0.0002 Human natural death rate.",
+          "score": 0.9297387599945068
+        },
+        {
+          "gold": "\u03bbV^V 0.0 Effective contact rate of vaccinated humans with IM (vector route) (V1 in paper)",
+          "extracted": "\u03beV 0.0005\u20130.002 Effective contact rate of vaccinated humans with infected humans through non-mosquito pathways.",
+          "score": 0.7463408708572388
+        },
+        {
+          "gold": "\u03b41 0.017325 Disease-induced death rate in humans (\u03b41 in paper)",
+          "extracted": "\u03b41 0.002 Human malaria disease death rate.",
+          "score": 0.749717116355896
+        },
+        {
+          "gold": "\u03bbM 0.0 Effective contact rate of susceptible mosquitoes with IH (M in paper)",
+          "extracted": "\u03c1 0.01\u20130.05 Effective contact rate of susceptible mosquitoes with infected humans through blood meals.",
+          "score": 0.7124868035316467
+        },
+        {
+          "gold": "\u03bc2 0.1 Natural death rate of mosquitoes (\u03bc2)",
+          "extracted": "\u00b52 0.1 Mosquito natural death rate.",
+          "score": 0.9432191252708435
+        },
+        {
+          "gold": "k 0.6 Fraction of newborns vaccinated (k)",
+          "extracted": "k 0.60\u20130.90 Vaccination rate / fraction vaccinated at birth.",
+          "score": 0.8777225017547607
+        }
+      ],
+      "direction_errors": [],
+      "value_errors": [],
+      "matching_method": "cosine_similarity"
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "phase2_gap_report.json",
+    "gap_fill_suggestions.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

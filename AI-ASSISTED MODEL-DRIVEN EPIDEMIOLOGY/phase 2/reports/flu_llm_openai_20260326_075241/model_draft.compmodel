@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="not explicitly estimated in the paper's primary parameter table; implied through λ(t) = β I(t) / N" type="CONSTANT" description="Transmission rate." unit="per time"/>
+  <parameters name="σ" expression="1" type="CONSTANT" description="Rate of becoming infectious; corresponds to an average incubation period of 1/σ = 1 day as stated in the paper." unit="day^-1"/>
+  <parameters name="γ" expression="0.5797" type="CONSTANT" description="Rate of recovery; corresponds to an average infectious period of 1/γ ≈ 21 days as stated in the paper." unit="day^-1"/>
+  <parameters name="N2012/13" expression="53,679,750" type="CONSTANT" description="Population size used for the 2012/13 season." unit="persons"/>
+  <parameters name="N2013/14" expression="54,091,200" type="CONSTANT" description="Population size used for the 2013/14 season." unit="persons"/>
+  <parameters name="N2014/15" expression="54,551,450" type="CONSTANT" description="Population size used for the 2014/15 season." unit="persons"/>
+  <parameters name="π" expression="Uniform(0, 1)" type="CONSTANT" description="Initial susceptibility proportion." unit="probability"/>
+  <parameters name="λ0" expression="Uniform(0, 0.000241)" type="CONSTANT" description="Initial infection rate." unit="per day"/>
+  <parameters name="ψ" expression="Uniform(0, 0.39)" type="CONSTANT" description="Exponential growth rate." unit="per day"/>
+  <parameters name="η" expression="Uniform(1, 100)" type="CONSTANT" description="Over-dispersion parameter for the Negative Binomial observational model." unit="dimensionless"/>
+  <parameters name="pICU" expression="Uniform(0, 1)" type="CONSTANT" description="Probability of ICU admission given infection." unit="probability"/>
+  <parameters name="µICU_E" expression="5.708" type="CONSTANT" description="Mean time from infection to ICU admission." unit="days"/>
+  <parameters name="σ2ICU_E" expression="18.24" type="CONSTANT" description="Variance of time from infection to ICU admission." unit="days^2"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="New influenza infections occurring at force of infection λ(t) = β I(t) / N."/>
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Progression from exposed to infectious at rate σ."/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0"/>
+  <compartments PrimaryName="Recovered" population="0"/>
+</compartmental:CompartmentalModel>

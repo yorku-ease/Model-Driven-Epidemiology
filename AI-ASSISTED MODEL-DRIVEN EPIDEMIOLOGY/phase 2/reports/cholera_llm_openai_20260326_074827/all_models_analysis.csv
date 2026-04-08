@@ -1,0 +1,14 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Cholera,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Infectious,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Recovered,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Cholera,Compartment,Bacteria in Water Reservoir,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Infectious,RateFlow,//@parameters.3,False,Susceptible people become infected through exposure to contaminated water.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Recovered,RateFlow,//@parameters.1,False,Infectious people recover and become immune.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Bacteria in Water Reservoir,RateFlow,//@parameters.0,False,Infectious people contaminate the water supply by shedding bacteria.,,,
+Cholera,Flow,,,,,,,Model file,Certain,,Bacteria in Water Reservoir,RateFlow,0.0,False,Bacteria decay/removal in the water reservoir.,,,
+Cholera,Parameter,beta,,,,,,Model file,Certain,,,,,,Rate of contact with reservoir water.,CONSTANT,10^-5 to 1,days^-1
+Cholera,Parameter,gamma,,,,,,Model file,Certain,,,,,,Per capita recovery rate; reciprocal of duration of cholera infection.,CONSTANT,1/2.9 to 1/14,days^-1
+Cholera,Parameter,delta,,,,,,Model file,Certain,,,,,,Cholera life span in the water reservoir; bacterial removal/decay rate.,CONSTANT,1/3 to 1/41,days^-1
+Cholera,Parameter,xi,,,,,,Model file,Certain,,,,,,Rate of water contamination by infectious people shedding Vibrio cholerae into the water reservoir.,CONSTANT,0.01 to 10,cells mL^-1 person^-1 day^-1
+Cholera,Parameter,kappa,,,,,,Model file,Certain,,,,,,Concentration of Vibrio cholerae that yields 50% chance of infection.,CONSTANT,10^5 to 10^6,cells/mL

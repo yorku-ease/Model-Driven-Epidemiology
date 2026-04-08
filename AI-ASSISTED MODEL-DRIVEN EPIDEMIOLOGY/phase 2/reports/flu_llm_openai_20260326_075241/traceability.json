@@ -1,0 +1,287 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the human population who are susceptible to influenza infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the human population who have been infected but are not yet infectious; the paper splits this into two sub-compartments for incubation timing flexibility, but the primary model diagram aggregates them as Exposed.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the human population who are infectious with influenza; the paper splits this into two sub-compartments for infectious-period flexibility, but the primary model diagram aggregates them as Infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Recovered": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the human population who have recovered and are no longer infectious.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Exposed": {
+      "evidence": [
+        {
+          "text_span": "New influenza infections occurring at force of infection \u03bb(t) = \u03b2 I(t) / N.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Exposed -> Infectious": {
+      "evidence": [
+        {
+          "text_span": "Progression from exposed to infectious at rate \u03c3.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "\u03b2": {
+      "evidence": [
+        {
+          "text_span": "Transmission rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "not explicitly estimated in the paper's primary parameter table; implied through \u03bb(t) = \u03b2 I(t) / N",
+          "unit": "per time"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c3": {
+      "evidence": [
+        {
+          "text_span": "Rate of becoming infectious; corresponds to an average incubation period of 1/\u03c3 = 1 day as stated in the paper.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "1",
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b3": {
+      "evidence": [
+        {
+          "text_span": "Rate of recovery; corresponds to an average infectious period of 1/\u03b3 \u2248 21 days as stated in the paper.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "0.5797",
+          "unit": "day^-1"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N2012/13": {
+      "evidence": [
+        {
+          "text_span": "Population size used for the 2012/13 season.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "53,679,750",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N2013/14": {
+      "evidence": [
+        {
+          "text_span": "Population size used for the 2013/14 season.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "54,091,200",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "N2014/15": {
+      "evidence": [
+        {
+          "text_span": "Population size used for the 2014/15 season.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "54,551,450",
+          "unit": "persons"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c0": {
+      "evidence": [
+        {
+          "text_span": "Initial susceptibility proportion.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Uniform(0, 1)",
+          "unit": "probability"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03bb0": {
+      "evidence": [
+        {
+          "text_span": "Initial infection rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Uniform(0, 0.000241)",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c8": {
+      "evidence": [
+        {
+          "text_span": "Exponential growth rate.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Uniform(0, 0.39)",
+          "unit": "per day"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03b7": {
+      "evidence": [
+        {
+          "text_span": "Over-dispersion parameter for the Negative Binomial observational model.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Uniform(1, 100)",
+          "unit": "dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "pICU": {
+      "evidence": [
+        {
+          "text_span": "Probability of ICU admission given infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "Uniform(0, 1)",
+          "unit": "probability"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u00b5ICU_E": {
+      "evidence": [
+        {
+          "text_span": "Mean time from infection to ICU admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "5.708",
+          "unit": "days"
+        }
+      ],
+      "paper_backed": true
+    },
+    "\u03c32ICU_E": {
+      "evidence": [
+        {
+          "text_span": "Variance of time from infection to ICU admission.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": "18.24",
+          "unit": "days^2"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "age": {
+      "evidence": [
+        {
+          "text_span": "age stratification mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "vaccination": {
+      "evidence": [
+        {
+          "text_span": "vaccination mentioned",
+          "page_number": 2,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    },
+    "quarantine": {
+      "evidence": [
+        {
+          "text_span": "quarantine mentioned",
+          "page_number": 13,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 22,
+    "items_with_evidence": 22,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 22,
+    "faithfulness_percentage": 100.0
+  }
+}
