@@ -2,9 +2,13 @@
 
 Phase 2 turns a scientific **PDF** into a structured compartmental **`.compmodel`** (XML), plus traceability, gap analysis, optional gap-fill suggestions, and evaluation against **baseline** models when `data/baseline_models/` contains a matching gold standard.
 
+**Benchmark layout:** Papers live under `data/diseases/<disease>/<stem>.pdf` (e.g. `covid2.pdf`) paired with a hand-authored gold `<stem>.compmodel`. The report folder prefix equals the PDF stem (`covid2_llm_openai_<timestamp>/`). Gold is resolved automatically.
+
 **Corpus mode:** If papers are registered in Phase 1 (`phase 1/data/papers/collection_index.json`), run with  
 `python run_phase2.py --paper-id <id> ...`  
-so PDF and gold paths resolve via `src/utils/phase2_paths.py` (see **`data/README.md`**). You still author gold **`.compmodel`** files by hand; the pipeline does not generate them from the PDF.
+so PDF and gold paths resolve via `src/utils/phase2_paths.py` (see **`data/README.md`**).
+
+**Existing reports (paper 1 of each disease):** Reports for the first paper of each disease are already in `reports/` with a `1` suffix (e.g. `covid1_llm_openai_<timestamp>/`). To process papers 2 and 3, see **Running Phase 2** below.
 
 ## Principles
 
@@ -24,6 +28,43 @@ For each run, outputs go under `reports/{disease}_llm_{provider}_{timestamp}/`. 
 | `extracted_entities.json`, `traceability.json`, `paper_sections.json` | Evidence and intermediate structure |
 
 Aggregated metrics: `python3 build_results_md.py` → Markdown summary from the chosen evaluation JSON in each latest run under `reports/`. The report is **recall-first**.
+
+## Running Phase 2 on papers 2 and 3
+
+Paper 1 of each disease has already been processed (reports named `<disease>1_llm_<provider>_<timestamp>/`). To run papers 2 and 3:
+
+```bash
+cd "phase 2"
+# Activate venv if used: source "../venv/bin/activate"
+
+# Single paper
+python3 run_phase2.py \
+    --paper data/diseases/covid/covid2.pdf \
+    --llm-provider openai \
+    --phase1-dir "../phase 1" \
+    --prior-models-dir "../phase 1/reports/model_analysis"
+# Creates: reports/covid2_llm_openai_<timestamp>/   gold auto-resolved from data/diseases/covid/covid2.compmodel
+
+# All papers ending in 2 or 3 (bash glob covers all disease folders)
+for pdf in data/diseases/*/*[23].pdf; do
+  python3 run_phase2.py \
+      --paper "$pdf" \
+      --llm-provider openai \
+      --phase1-dir "../phase 1" \
+      --prior-models-dir "../phase 1/reports/model_analysis"
+done
+
+# With Gemini
+for pdf in data/diseases/*/*[23].pdf; do
+  python3 run_phase2.py \
+      --paper "$pdf" \
+      --llm-provider gemini \
+      --phase1-dir "../phase 1" \
+      --prior-models-dir "../phase 1/reports/model_analysis"
+done
+```
+
+**Note:** The Cholera folder on disk has an extra leading space (` cholera/`). The glob `data/diseases/*/*[23].pdf` still matches it correctly via shell expansion.
 
 - **Recommended for paper numbers (fuzzy):** `-e evaluation_report_fuzzy_temp.json`.
 - **Canonical report naming in this project:**  

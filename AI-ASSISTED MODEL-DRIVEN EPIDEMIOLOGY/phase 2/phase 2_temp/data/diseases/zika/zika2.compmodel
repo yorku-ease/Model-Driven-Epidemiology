@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Agudelo and Ventresca (2022)
+    Modeling the spread of the Zika virus by sexual and mosquito transmission
+
+    This .compmodel is built directly from the paper's Fig. 1 and Equations (1)-(16).
+    The paper proposes an SEIR-style Zika model with:
+      - separate male and female human populations
+      - symptomatic and asymptomatic infectious classes
+      - additional post-blood-clearance genital-fluid infectious classes
+      - mosquito susceptible/exposed/infectious classes
+      - sexual transmission between men and women
+      - mosquito-borne transmission in both directions
+
+    Compartments encoded exactly from the paper:
+      Sw  = susceptible women
+      Ew  = exposed women
+      Iws = symptomatic infectious women with virus in blood
+      Iwa = asymptomatic infectious women with virus in blood
+      Iw  = women infectious only through genital fluids after blood clearance
+      Rw  = recovered women
+
+      Sm  = susceptible men
+      Em  = exposed men
+      Ims = symptomatic infectious men with virus in blood
+      Ima = asymptomatic infectious men with virus in blood
+      Im  = men infectious only through semen after blood clearance
+      Rm  = recovered men
+
+      Sv  = susceptible mosquitoes
+      Ev  = exposed mosquitoes
+      Iv  = infectious mosquitoes
+
+    Important note:
+      The paper also tracks cumulative symptomatic infections C for fitting incidence data.
+      Because C is an observation accumulator rather than a disease state, it is not represented
+      here as a compartment.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="SusceptibleWomen" population="5000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.14"
+      contactRateParameter="//@parameters.0"
+      description="Women exposed through bites from infectious mosquitoes; corresponds to beta_vh * Sw * Iv"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.10"
+      contactRateParameter="//@parameters.1"
+      description="Women exposed by sexual contact with asymptomatic infectious men; corresponds to beta_mw * rho * Sw * Ima"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.9"
+      contactRateParameter="//@parameters.1"
+      description="Women exposed by sexual contact with symptomatic infectious men; corresponds to beta_mw * rho * Sw * Ims"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.11"
+      contactRateParameter="//@parameters.1"
+      description="Women exposed by sexual contact with men infectious through semen persistence; corresponds to beta_mw * rho * Sw * Im"/>
+  </compartments>
+
+  <!-- 1 -->
+  <compartments PrimaryName="ExposedWomen" population="5">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.2"
+      description="Progression of exposed women to symptomatic infectious women; corresponds to phi * lambda_h * Ew"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.3"
+      description="Progression of exposed women to asymptomatic infectious women; corresponds to (1-phi) * lambda_h * Ew"/>
+  </compartments>
+
+  <!-- 2 -->
+  <compartments PrimaryName="InfectiousWomenSymptomaticBlood" population="2">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.4"
+      description="Clearance of virus from blood in symptomatic women into genital-fluid persistence class; corresponds to gamma_1 * Iws"/>
+  </compartments>
+
+  <!-- 3 -->
+  <compartments PrimaryName="InfectiousWomenAsymptomaticBlood" population="2">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.4"
+      description="Clearance of virus from blood in asymptomatic women into genital-fluid persistence class; corresponds to gamma_1 * Iwa"/>
+  </compartments>
+
+  <!-- 4 -->
+  <compartments PrimaryName="InfectiousWomenGenitalPersistence" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.5"
+      description="Clearance of virus from vaginal fluids and recovery of women; corresponds to gamma_3 * Iw"/>
+  </compartments>
+
+  <!-- 5 -->
+  <compartments PrimaryName="RecoveredWomen" population="0"/>
+
+  <!-- 6 -->
+  <compartments PrimaryName="SusceptibleMen" population="5000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.14"
+      contactRateParameter="//@parameters.0"
+      description="Men exposed through bites from infectious mosquitoes; corresponds to beta_vh * Sm * Iv"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.3"
+      contactRateParameter="//@parameters.6"
+      description="Men exposed by sexual contact with asymptomatic infectious women; corresponds to beta_wm * rho * Sm * Iwa"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.6"
+      description="Men exposed by sexual contact with symptomatic infectious women; corresponds to beta_wm * rho * Sm * Iws"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.6"
+      description="Men exposed by sexual contact with women infectious through vaginal-fluid persistence; corresponds to beta_wm * rho * Sm * Iw"/>
+  </compartments>
+
+  <!-- 7 -->
+  <compartments PrimaryName="ExposedMen" population="5">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.8"
+      rateParameter="//@parameters.2"
+      description="Progression of exposed men to symptomatic infectious men; corresponds to phi * lambda_h * Em"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.9"
+      rateParameter="//@parameters.3"
+      description="Progression of exposed men to asymptomatic infectious men; corresponds to (1-phi) * lambda_h * Em"/>
+  </compartments>
+
+  <!-- 8 -->
+  <compartments PrimaryName="InfectiousMenSymptomaticBlood" population="2">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.10"
+      rateParameter="//@parameters.4"
+      description="Clearance of virus from blood in symptomatic men into semen-persistence class; corresponds to gamma_1 * Ims"/>
+  </compartments>
+
+  <!-- 9 -->
+  <compartments PrimaryName="InfectiousMenAsymptomaticBlood" population="2">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.10"
+      rateParameter="//@parameters.4"
+      description="Clearance of virus from blood in asymptomatic men into semen-persistence class; corresponds to gamma_1 * Ima"/>
+  </compartments>
+
+  <!-- 10 -->
+  <compartments PrimaryName="InfectiousMenSemenPersistence" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.11"
+      rateParameter="//@parameters.7"
+      description="Clearance of virus from semen and recovery of men; corresponds to gamma_2 * Im"/>
+  </compartments>
+
+  <!-- 11 -->
+  <compartments PrimaryName="RecoveredMen" population="0"/>
+
+  <!-- 12 -->
+  <compartments PrimaryName="SusceptibleMosquitoes" population="15000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.13"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.8"
+      description="Mosquito infection from symptomatic infectious men with virus in blood; part of beta_hv * Sv * (Ims + Ima + Iws + Iwa)"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.13"
+      contactCompartment="//@compartments.9"
+      contactRateParameter="//@parameters.8"
+      description="Mosquito infection from asymptomatic infectious men with virus in blood"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.13"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.8"
+      description="Mosquito infection from symptomatic infectious women with virus in blood"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.13"
+      contactCompartment="//@compartments.3"
+      contactRateParameter="//@parameters.8"
+      description="Mosquito infection from asymptomatic infectious women with virus in blood"/>
+  </compartments>
+
+  <!-- 13 -->
+  <compartments PrimaryName="ExposedMosquitoes" population="10">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.14"
+      rateParameter="//@parameters.9"
+      description="Progression of exposed mosquitoes to infectious mosquitoes; corresponds to lambda_v * Ev"/>
+  </compartments>
+
+  <!-- 14 -->
+  <compartments PrimaryName="InfectiousMosquitoes" population="5"/>
+
+  <!-- Parameters -->
+  <parameters name="MosquitoToHumanTransmissionRate" expression="0.18"
+    description="beta_vh, transmission rate from infectious mosquitoes to humans"/>
+  <parameters name="MenToWomenSexualTransmissionRate" expression="0.04"
+    description="beta_mw times risky-contact factor rho, transmission rate from infectious men to susceptible women through sexual contact"/>
+  <parameters name="SymptomaticHumanProgressionRate" expression="0.0235"
+    description="phi * lambda_h, progression from exposed humans to symptomatic infectious humans"/>
+  <parameters name="AsymptomaticHumanProgressionRate" expression="0.1235"
+    description="(1-phi) * lambda_h, progression from exposed humans to asymptomatic infectious humans"/>
+  <parameters name="BloodClearanceRate" expression="0.0667"
+    description="gamma_1, clearance rate of virus from blood in infectious humans"/>
+  <parameters name="WomenGenitalClearanceRate" expression="0.10"
+    description="gamma_3, clearance rate of virus from vaginal secretions"/>
+  <parameters name="WomenToMenSexualTransmissionRate" expression="0.02"
+    description="beta_wm times risky-contact factor rho, transmission rate from infectious women to susceptible men through sexual contact"/>
+  <parameters name="MenGenitalClearanceRate" expression="0.05"
+    description="gamma_2, clearance rate of virus from semen"/>
+  <parameters name="HumanToMosquitoTransmissionRate" expression="0.22"
+    description="beta_hv, transmission rate from infectious humans with virus in blood to susceptible mosquitoes"/>
+  <parameters name="MosquitoLatentProgressionRate" expression="0.10"
+    description="lambda_v, progression rate from exposed mosquitoes to infectious mosquitoes"/>
+
+</compartmental:CompartmentalModel>

@@ -95,54 +95,44 @@ Examples:
     args = parser.parse_args()
     
     # Validate inputs
-    paper_path = Path(args.paper)
+    paper_path = Path(args.paper).resolve()
     if not paper_path.exists():
         print(f"Error: Paper file not found: {paper_path}")
         return 1
-    
-    # Always generate folder name in format: {disease}_{method}_{timestamp}
-    # Extract disease name from paper filename
-    paper_stem = paper_path.stem.lower()
-    
-    # Common disease names to look for
-    disease_keywords = {
-        'ebola': 'ebola',
-        'covid': 'covid',
-        'sars-cov': 'covid',
-        'coronavirus': 'covid',
-        'malaria': 'malaria',
-        'hiv': 'hiv',
-        'aids': 'hiv',
-        'tuberculosis': 'tuberculosis',
-        'tb': 'tuberculosis',
-        'flu': 'flu',
-        'influenza': 'flu',
-        'dengue': 'dengue',
-        'cholera': 'cholera',
-        'measles': 'measles',
-        'mumps': 'mumps',
-        'rubella': 'rubella',
-        'zika': 'zika',
-        'yellow fever': 'yellowfever',
-        'yellowfever': 'yellowfever'
-    }
-    
-    # Try to find disease name in paper filename
-    disease_name = 'unknown'
-    for keyword, disease in disease_keywords.items():
-        if keyword in paper_stem:
-            disease_name = disease
-            break
-    
-    # If not found, try to extract from paper stem (take first meaningful word)
-    if disease_name == 'unknown':
-        # Remove common prefixes/suffixes
-        cleaned = re.sub(r'^(paper|model|analysis|study|thesis|dissertation|report|document)[_\-\s]*', '', paper_stem)
-        cleaned = re.sub(r'[_\-\s]+(paper|model|analysis|study|thesis|dissertation|report|document)$', '', cleaned)
-        # Take first word or first 10 chars
-        first_word = cleaned.split()[0] if cleaned.split() else paper_stem[:10]
-        disease_name = re.sub(r'[^a-z0-9]', '', first_word.lower())[:15]  # Limit length
-    
+
+    # If paper is inside data/diseases/<disease>/<stem>.pdf, use the stem directly
+    # so report names align with benchmark pairs (e.g. covid2_llm_openai_...)
+    _data_diseases = (Path(__file__).resolve().parent / "data" / "diseases").resolve()
+    try:
+        _rel = paper_path.relative_to(_data_diseases)
+        _is_benchmark = len(_rel.parts) >= 2  # <disease>/<stem>.pdf
+    except ValueError:
+        _is_benchmark = False
+
+    if _is_benchmark:
+        disease_name = paper_path.stem.lower()
+    else:
+        # Fallback: infer from filename keywords
+        paper_stem = paper_path.stem.lower()
+        disease_keywords = {
+            'ebola': 'ebola', 'covid': 'covid', 'sars-cov': 'covid',
+            'coronavirus': 'covid', 'malaria': 'malaria', 'hiv': 'hiv',
+            'aids': 'hiv', 'tuberculosis': 'tuberculosis', 'tb': 'tuberculosis',
+            'influenza': 'influenza', 'flu': 'influenza',
+            'dengue': 'dengue', 'cholera': 'cholera', 'measles': 'measles',
+            'zika': 'zika', 'yellowfever': 'yellowfever',
+        }
+        disease_name = 'unknown'
+        for keyword, disease in disease_keywords.items():
+            if keyword in paper_stem:
+                disease_name = disease
+                break
+        if disease_name == 'unknown':
+            cleaned = re.sub(r'^(paper|model|analysis|study|thesis|dissertation|report|document)[_\-\s]*', '', paper_stem)
+            cleaned = re.sub(r'[_\-\s]+(paper|model|analysis|study|thesis|dissertation|report|document)$', '', cleaned)
+            first_word = cleaned.split()[0] if cleaned.split() else paper_stem[:10]
+            disease_name = re.sub(r'[^a-z0-9]', '', first_word.lower())[:15]
+
     # Determine method
     method = 'llm' if args.use_llm else 'pattern'
     if args.use_llm:
@@ -359,33 +349,38 @@ Examples:
     # Auto-detect baseline model if not explicitly provided
     gold_standard_path = args.gold_standard
     if not gold_standard_path:
-        # Try to find baseline model matching paper name
-        baseline_dir = Path(args.baseline_models_dir)
-        if baseline_dir.exists():
-            paper_stem = Path(args.paper).stem.lower()
-            # Extract keywords from paper name (split by common separators and camelCase)
-            paper_normalized = re.sub(r'[_\-\s]+', ' ', paper_stem)
-            # Split on camelCase boundaries (lowercase followed by uppercase) and numbers
-            paper_keywords = set(re.split(r'[_\-\s]+|(?<=[a-z])(?=[A-Z0-9])|(?<=[0-9])(?=[A-Za-z])', paper_normalized))
-            paper_keywords = {k.lower() for k in paper_keywords if k.strip()}
-            
-            # Look for matching baseline model
-            for baseline_file in baseline_dir.glob("*.compmodel"):
-                baseline_stem = baseline_file.stem.lower()
-                baseline_normalized = re.sub(r'[_\-\s]+', ' ', baseline_stem)
-                baseline_keywords = set(re.split(r'[_\-\s]+|(?<=[a-z])(?=[A-Z0-9])|(?<=[0-9])(?=[A-Za-z])', baseline_normalized))
-                baseline_keywords = {k.lower() for k in baseline_keywords if k.strip()}
-                
-                # Check if paper name matches baseline name (fuzzy match)
-                # Match if: (1) one contains the other, (2) they share common keywords, or (3) common disease names match
-                common_diseases = ['ebola', 'covid', 'malaria', 'hiv', 'flu', 'tuberculosis', 'tb']
-                has_common_disease = any(disease in paper_stem and disease in baseline_stem for disease in common_diseases)
-                
-                if (paper_stem in baseline_stem or baseline_stem in paper_stem or 
-                    len(paper_keywords & baseline_keywords) > 0 or has_common_disease):
-                    gold_standard_path = str(baseline_file)
-                    print(f"  Auto-detected baseline model: {baseline_file.name}")
+        _paper_stem = paper_path.stem.lower()
+        _data_root = Path(__file__).resolve().parent / "data"
+
+        # 1) Paired benchmark: data/diseases/<disease>/<stem>.compmodel (same stem as PDF)
+        _diseases_root = _data_root / "diseases"
+        if _diseases_root.is_dir():
+            for _ddir in sorted(_diseases_root.iterdir()):
+                if not _ddir.is_dir():
+                    continue
+                _cand = _ddir / f"{_paper_stem}.compmodel"
+                if not _cand.is_file():
+                    # case-insensitive fallback
+                    for _cm in _ddir.glob("*.compmodel"):
+                        if _cm.stem.lower() == _paper_stem:
+                            _cand = _cm
+                            break
+                    else:
+                        _cand = None
+                if _cand and _cand.is_file():
+                    gold_standard_path = str(_cand)
+                    print(f"  Auto-detected gold model: {_cand.name}")
                     break
+
+        # 2) Legacy flat baseline_models/ (fuzzy)
+        if not gold_standard_path:
+            baseline_dir = Path(args.baseline_models_dir)
+            if baseline_dir.is_dir():
+                for baseline_file in baseline_dir.glob("*.compmodel"):
+                    if baseline_file.stem.lower() in _paper_stem or _paper_stem in baseline_file.stem.lower():
+                        gold_standard_path = str(baseline_file)
+                        print(f"  Auto-detected baseline model: {baseline_file.name}")
+                        break
     
     evaluator = Evaluator(gold_standard_path=gold_standard_path)
     

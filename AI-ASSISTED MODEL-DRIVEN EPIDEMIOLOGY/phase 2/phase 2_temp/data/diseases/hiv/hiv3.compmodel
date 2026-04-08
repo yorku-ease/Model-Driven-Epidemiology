@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Granich et al. (2008)
+    Universal voluntary HIV testing with immediate antiretroviral therapy as a strategy for eliminating HIV transmission
+
+    This .compmodel is based on the paper's deterministic transmission model
+    shown in Figure 2 and the surrounding text.
+
+    The paper describes:
+      - one susceptible compartment S
+      - four untreated HIV infection compartments I1..I4
+      - four ART compartments A1..A4
+      - people move from Ii to the corresponding Ai when treatment starts
+      - progression through untreated infection stages approximates the Weibull survival curve
+      - ART reduces infectiousness strongly but not necessarily to zero
+      - dropout from ART returns people to an infectious untreated state
+
+    This file encodes that core compartment structure for one representative adult population.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="Susceptible" population="9000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.1"
+      contactRateParameter="//@parameters.0"
+      description="HIV acquisition from untreated stage I1 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.1"
+      description="HIV acquisition from untreated stage I2 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.3"
+      contactRateParameter="//@parameters.2"
+      description="HIV acquisition from untreated stage I3 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.3"
+      description="HIV acquisition from untreated stage I4 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.5"
+      contactRateParameter="//@parameters.4"
+      description="Residual HIV acquisition from ART stage A1 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.6"
+      contactRateParameter="//@parameters.5"
+      description="Residual HIV acquisition from ART stage A2 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.7"
+      contactRateParameter="//@parameters.6"
+      description="Residual HIV acquisition from ART stage A3 individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.7"
+      description="Residual HIV acquisition from ART stage A4 individuals"/>
+  </compartments>
+
+  <!-- untreated infection stages -->
+  <compartments PrimaryName="UntreatedStageI1" population="250">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.8"
+      description="Progression from untreated stage I1 to I2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.12"
+      description="ART initiation from untreated stage I1 to ART stage A1"/>
+  </compartments>
+
+  <compartments PrimaryName="UntreatedStageI2" population="220">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.9"
+      description="Progression from untreated stage I2 to I3"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.13"
+      description="ART initiation from untreated stage I2 to ART stage A2"/>
+  </compartments>
+
+  <compartments PrimaryName="UntreatedStageI3" population="180">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.10"
+      description="Progression from untreated stage I3 to I4"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.7"
+      rateParameter="//@parameters.14"
+      description="ART initiation from untreated stage I3 to ART stage A3"/>
+  </compartments>
+
+  <compartments PrimaryName="UntreatedStageI4" population="120">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.9"
+      rateParameter="//@parameters.11"
+      description="AIDS-related mortality from untreated stage I4"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.8"
+      rateParameter="//@parameters.15"
+      description="ART initiation from untreated stage I4 to ART stage A4"/>
+  </compartments>
+
+  <!-- ART stages -->
+  <compartments PrimaryName="ARTStageA1" population="40">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.16"
+      description="Progression while on ART from A1 to A2"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.1"
+      rateParameter="//@parameters.20"
+      description="ART dropout from A1 back to infectious untreated population"/>
+  </compartments>
+
+  <compartments PrimaryName="ARTStageA2" population="35">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.7"
+      rateParameter="//@parameters.17"
+      description="Progression while on ART from A2 to A3"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.20"
+      description="ART dropout from A2 back to infectious untreated population"/>
+  </compartments>
+
+  <compartments PrimaryName="ARTStageA3" population="25">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.8"
+      rateParameter="//@parameters.18"
+      description="Progression while on ART from A3 to A4"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.20"
+      description="ART dropout from A3 back to infectious untreated population"/>
+  </compartments>
+
+  <compartments PrimaryName="ARTStageA4" population="15">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.9"
+      rateParameter="//@parameters.19"
+      description="Mortality while on ART from stage A4"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.20"
+      description="ART dropout from A4 back to infectious untreated population"/>
+  </compartments>
+
+  <!-- removed/death -->
+  <compartments PrimaryName="Removed" population="0"/>
+
+  <!-- Parameters -->
+  <parameters name="BetaI1" expression="0.08"
+    description="Transmission intensity from untreated stage I1; early untreated infection contributes substantially to onward transmission"/>
+  <parameters name="BetaI2" expression="0.05"
+    description="Transmission intensity from untreated stage I2"/>
+  <parameters name="BetaI3" expression="0.04"
+    description="Transmission intensity from untreated stage I3"/>
+  <parameters name="BetaI4" expression="0.06"
+    description="Transmission intensity from untreated stage I4"/>
+  <parameters name="BetaA1" expression="0.0008"
+    description="Residual transmission from ART stage A1, approximating strong ART-associated reduction in infectiousness"/>
+  <parameters name="BetaA2" expression="0.0005"
+    description="Residual transmission from ART stage A2"/>
+  <parameters name="BetaA3" expression="0.0004"
+    description="Residual transmission from ART stage A3"/>
+  <parameters name="BetaA4" expression="0.0006"
+    description="Residual transmission from ART stage A4"/>
+  <parameters name="ProgressI1toI2" expression="0.25"
+    description="Progression rate from untreated stage I1 to I2"/>
+  <parameters name="ProgressI2toI3" expression="0.20"
+    description="Progression rate from untreated stage I2 to I3"/>
+  <parameters name="ProgressI3toI4" expression="0.18"
+    description="Progression rate from untreated stage I3 to I4"/>
+  <parameters name="UntreatedMortalityI4" expression="0.30"
+    description="Mortality rate from untreated late stage I4"/>
+  <parameters name="ARTStartI1" expression="0.70"
+    description="Immediate ART uptake from stage I1 after diagnosis"/>
+  <parameters name="ARTStartI2" expression="0.70"
+    description="Immediate ART uptake from stage I2 after diagnosis"/>
+  <parameters name="ARTStartI3" expression="0.70"
+    description="Immediate ART uptake from stage I3 after diagnosis"/>
+  <parameters name="ARTStartI4" expression="0.70"
+    description="Immediate ART uptake from stage I4 after diagnosis"/>
+  <parameters name="ProgressA1toA2" expression="0.08"
+    description="Progression while on ART from A1 to A2"/>
+  <parameters name="ProgressA2toA3" expression="0.07"
+    description="Progression while on ART from A2 to A3"/>
+  <parameters name="ProgressA3toA4" expression="0.06"
+    description="Progression while on ART from A3 to A4"/>
+  <parameters name="ARTMortalityA4" expression="0.05"
+    description="Mortality rate from late stage A4 while on ART"/>
+  <parameters name="ARTDropoutRate" expression="0.015"
+    description="Long-term annual ART dropout rate used in the paper's implementation assumptions"/>
+
+</compartmental:CompartmentalModel>
