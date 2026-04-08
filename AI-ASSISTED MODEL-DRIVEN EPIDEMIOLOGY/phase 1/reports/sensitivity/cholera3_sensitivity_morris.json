@@ -1,0 +1,117 @@
+{
+  "modelName": "Cholera3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "n",
+      "type": "other",
+      "currentValue": 0.0001,
+      "description": "Human birth and death rate",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "a",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Rate of exposure to contaminated water (used in dose-dependent infection term a * B / (K + B))",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "K",
+      "type": "other",
+      "currentValue": 1000000.0,
+      "description": "Concentration of V. cholerae in water giving 50% chance of infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "r",
+      "type": "other",
+      "currentValue": 0.2,
+      "description": "Recovery rate from cholera",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "mb",
+      "type": "other",
+      "currentValue": 0.33,
+      "description": "Loss rate of V. cholerae in the aquatic environment",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "e",
+      "type": "other",
+      "currentValue": 10.0,
+      "description": "Contribution of each infected person to aquatic V. cholerae concentration",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "H",
+      "type": "other",
+      "currentValue": 10000.0,
+      "description": "Total human population",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "n",
+    "a",
+    "K",
+    "r",
+    "mb"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "n",
+      "a",
+      "K",
+      "r",
+      "mb"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "n": {
+        "mu": -11715.931263526476,
+        "mu_star": 11715.931263526476,
+        "sigma": 5129.3608710677045,
+        "n_samples": 20
+      },
+      "a": {
+        "mu": 0.9771522706247199,
+        "mu_star": 0.9771522706247199,
+        "sigma": 0.9344264468282134,
+        "n_samples": 20
+      },
+      "K": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "r": {
+        "mu": -1.7056849628716005e-05,
+        "mu_star": 1.7056849628716005e-05,
+        "sigma": 2.450262403494382e-05,
+        "n_samples": 20
+      },
+      "mb": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

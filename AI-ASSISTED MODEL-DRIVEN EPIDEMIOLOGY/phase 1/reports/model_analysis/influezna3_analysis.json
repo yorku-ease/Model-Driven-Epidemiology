@@ -1,0 +1,344 @@
+{
+  "modelName": "Influezna3",
+  "summary": {
+    "modelName": "Influezna3",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9800",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.5",
+            "description": "Influenza infection of susceptible individuals through contact with infectious community cases and hospitalized cases, corresponding to the force of infection lambda_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.6",
+            "description": "Influenza infection of susceptible individuals through contact with hospitalized infectious individuals, included in lambda_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Effective vaccination of susceptible individuals; corresponds to e_i * nu(t) * S_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Ineffective vaccination of susceptible individuals; corresponds to (1-e_i) * nu(t) * S_i in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "VaccinatedEffectiveNotYetProtected",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.5",
+            "description": "Breakthrough infection before vaccine-derived protection is established; corresponds to lambda_i * V_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.6",
+            "description": "Breakthrough infection from hospitalized infectious individuals before protection is established",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Development of vaccine-derived protection after delay; corresponds to gamma * V_i in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "VaccinatedIneffective",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.5",
+            "description": "Infection of ineffectively vaccinated individuals; corresponds to lambda_i * U_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.6",
+            "description": "Infection of ineffectively vaccinated individuals from hospitalized infectious individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "ProtectedByVaccination",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Latent",
+        "secondaryName": "",
+        "population": "20",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from latent infection to symptomatic infectiousness; corresponds to kappa * E_i in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "InfectiousCommunity",
+        "secondaryName": "",
+        "population": "20",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospitalization of infectious cases; corresponds to a_i * I_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery of non-hospitalized infectious cases; corresponds to c_1 * I_i in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Hospitalized",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from hospitalization; corresponds to c_2 * H_i in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Influenza mortality among hospitalized cases; corresponds to d_i * H_i in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 8,
+        "primaryName": "Dead",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "CommunityTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.45",
+        "description": "Representative age-specific transmission term from infectious community cases; in the paper lambda_i depends on the age-structured contact matrix and transmission probability q",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "HospitalTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.20",
+        "description": "Representative contribution of hospitalized infectious individuals to the force of infection; the paper includes I_j + H_j in the force of infection",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "EffectiveVaccinationRate",
+        "type": "CONSTANT",
+        "expression": "0.03",
+        "description": "e_i * nu(t), effective vaccination rate for this representative age group",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "IneffectiveVaccinationRate",
+        "type": "CONSTANT",
+        "expression": "0.01",
+        "description": "(1-e_i) * nu(t), ineffective vaccination rate for this representative age group",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "ProtectionDelayRate",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "gamma, rate of becoming protected after vaccination; mean 10 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "LatentProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.526",
+        "description": "kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "HospitalizationRate",
+        "type": "CONSTANT",
+        "expression": "0.08",
+        "description": "a_i, age-specific hospitalization rate among infectious individuals",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "CommunityRecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.667",
+        "description": "c_1, recovery rate for infectious individuals in the community; based on mean 1.5 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "HospitalRecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.667",
+        "description": "c_2, recovery rate for hospitalized individuals; based on mean 1.5 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "HospitalMortalityRate",
+        "type": "CONSTANT",
+        "expression": "0.015",
+        "description": "d_i, age-specific mortality rate among hospitalized individuals",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "modelName": "Measles2",
+  "summary": {
+    "modelName": "Measles2",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 9,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "MaternalProtected",
+        "secondaryName": "",
+        "population": "50",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of maternal immunity; the paper fitted the duration of maternal immunity in the transmission model",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Receipt of first MMR dose; represents movement into single-dose vaccinated status",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.5",
+            "description": "Primary measles infection in unvaccinated susceptibles",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "VaccinatedOneDose",
+        "secondaryName": "",
+        "population": "700",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Receipt of second MMR dose; timing of this transition is the main policy lever studied in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.5",
+            "description": "Breakthrough infection after one vaccine dose; reduced relative to fully susceptible individuals",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "VaccinatedTwoDose",
+        "secondaryName": "",
+        "population": "220",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.5",
+            "description": "Breakthrough infection after two vaccine doses; much lower than after one dose",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of vaccine-induced immunity; included because waning was examined in sensitivity analyses in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious measles",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infectious measles into post-infection immune class",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Recovered",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "MaternalImmunityLossRate",
+        "type": "CONSTANT",
+        "expression": "0.167",
+        "description": "Representative loss rate of maternal protection; paper fitted duration of maternal immunity in the measles model",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "MMR1VaccinationRate",
+        "type": "CONSTANT",
+        "expression": "0.25",
+        "description": "Transition into one-dose vaccinated status; coverage varies by age, region, and scenario in the paper",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "SusceptibleInfectionRate",
+        "type": "CONSTANT",
+        "expression": "0.80",
+        "description": "Baseline infection rate for susceptible individuals within one representative age-region stratum",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "MMR2VaccinationRate",
+        "type": "CONSTANT",
+        "expression": "0.18",
+        "description": "Transition into two-dose vaccinated status; changing its timing is central to the paper's scenarios",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "OneDoseBreakthroughRate",
+        "type": "CONSTANT",
+        "expression": "0.08",
+        "description": "Reduced infection rate after one vaccine dose, representing imperfect protection and primary vaccine failure",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "TwoDoseBreakthroughRate",
+        "type": "CONSTANT",
+        "expression": "0.01",
+        "description": "Reduced infection rate after two vaccine doses",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "VaccineWaningRate",
+        "type": "CONSTANT",
+        "expression": "0.002",
+        "description": "Slow waning of vaccine-induced immunity, included because the paper evaluates waning sensitivity scenarios",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "IncubationProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.125",
+        "description": "Progression from exposed to infectious measles",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "RecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.143",
+        "description": "Recovery from infectious measles",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

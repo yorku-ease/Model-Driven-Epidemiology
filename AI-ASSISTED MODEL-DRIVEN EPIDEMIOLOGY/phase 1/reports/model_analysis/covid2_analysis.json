@@ -1,0 +1,204 @@
+{
+  "modelName": "Covid2",
+  "summary": {
+    "modelName": "Covid2",
+    "totalPopulation": "1400050000",
+    "numCompartments": 4,
+    "numParameters": 13,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "1400050000",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "1400049995",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.8",
+            "contactCompartment": "//@compartments.2",
+            "description": "S to E infection flow driven by infectious individuals; corresponds to c * S * I / N, with contact rate modified by NPIs",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from exposed to infectious at rate epsilon = 1 / incubation period",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Removal from transmission at rate r; in the paper Removed includes recovery and effective isolation/detection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Removed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "N",
+        "type": "CONSTANT",
+        "expression": "1400050000",
+        "description": "Approximate total mainland China population represented in the aggregated SEIR abstraction",
+        "unit": "persons"
+      },
+      {
+        "index": 1,
+        "name": "R0",
+        "type": "CONSTANT",
+        "expression": "2.2",
+        "description": "Baseline reproduction number used by the paper for the early Wuhan outbreak",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "incubationPeriod",
+        "type": "CONSTANT",
+        "expression": "5.2",
+        "description": "Average incubation period from the paper",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "epsilon",
+        "type": "EXPRESSION",
+        "expression": "1 / incubationPeriod",
+        "description": "Rate of progression from exposed to infectious",
+        "unit": "1/day"
+      },
+      {
+        "index": 4,
+        "name": "infectiousPeriod",
+        "type": "CONSTANT",
+        "expression": "5.8",
+        "description": "Average infectious period proxy based on onset-to-isolation timing used before strong interventions",
+        "unit": "days"
+      },
+      {
+        "index": 5,
+        "name": "baseRemovalRate",
+        "type": "EXPRESSION",
+        "expression": "1 / infectiousPeriod",
+        "description": "Baseline removal/isolation rate before time-varying improvements",
+        "unit": "1/day"
+      },
+      {
+        "index": 6,
+        "name": "r",
+        "type": "EXPRESSION",
+        "expression": "baseRemovalRate * detectionIsolationMultiplier",
+        "description": "Effective removal rate under NPIs; higher values represent earlier detection and isolation",
+        "unit": "1/day"
+      },
+      {
+        "index": 7,
+        "name": "baseContactRate",
+        "type": "EXPRESSION",
+        "expression": "R0 / infectiousPeriod",
+        "description": "Baseline daily contact-transmission rate c derived from R0 divided by infectious period, following the paper",
+        "unit": "1/day"
+      },
+      {
+        "index": 8,
+        "name": "c",
+        "type": "EXPRESSION",
+        "expression": "baseContactRate * contactReductionMultiplier",
+        "description": "Effective contact rate under NPIs and social distancing",
+        "unit": "1/day"
+      },
+      {
+        "index": 9,
+        "name": "mobilityRestrictionMultiplier",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Inter-city mobility scaling factor retained for semantic fidelity to the paper's travel network layer; 1 means no extra scaling in this single-population abstraction",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "contactReductionMultiplier",
+        "type": "CONSTANT",
+        "expression": "0.4",
+        "description": "Scales transmission-relevant contacts under social distancing; values below 1 represent contact reduction",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 11,
+        "name": "detectionIsolationMultiplier",
+        "type": "CONSTANT",
+        "expression": "1.9",
+        "description": "Scales removal rate under improved case detection and isolation; values above 1 represent faster removal from transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 12,
+        "name": "initialSeed",
+        "type": "CONSTANT",
+        "expression": "5",
+        "description": "Initial infected individuals in Wuhan used by the paper on December 1, 2019",
+        "unit": "persons"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

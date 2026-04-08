@@ -1,0 +1,275 @@
+{
+  "modelName": "Hiv2",
+  "summary": {
+    "modelName": "Hiv2",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9900",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.2",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.3",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.4",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "EarlyInfection",
+        "secondaryName": "",
+        "population": "50",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "ChronicInfection",
+        "secondaryName": "",
+        "population": "30",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "LateInfection",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "OnART",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Removed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "BetaEarly",
+        "type": "CONSTANT",
+        "expression": "0.8",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "BetaChronic",
+        "type": "CONSTANT",
+        "expression": "0.3",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "BetaLate",
+        "type": "CONSTANT",
+        "expression": "0.6",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "BetaART",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "Progression1",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "Progression2",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "ARTStart1",
+        "type": "CONSTANT",
+        "expression": "0.3",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "ARTStart2",
+        "type": "CONSTANT",
+        "expression": "0.4",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "DeathLate",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "DeathART",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

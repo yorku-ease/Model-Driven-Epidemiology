@@ -1,0 +1,189 @@
+{
+  "modelName": "Malaria3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "SusceptibleToSymptomaticInfectionRate",
+      "type": "other",
+      "currentValue": 0.04,
+      "description": "Representative force-of-infection term from infectious mosquito bites leading to symptomatic infection after the liver-stage delay",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SusceptibleToAsymptomaticInfectionRate",
+      "type": "other",
+      "currentValue": 0.03,
+      "description": "Representative force-of-infection term from infectious mosquito bites leading to asymptomatic patent infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TreatmentRate",
+      "type": "other",
+      "currentValue": 0.35,
+      "description": "Rate at which symptomatic infections receive treatment and move into the treated infectious state T",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SymptomaticToAsymptomaticRate",
+      "type": "other",
+      "currentValue": 0.2,
+      "description": "Progression of untreated symptomatic infections into asymptomatic patent infection A",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SuperinfectionToSymptomaticRate",
+      "type": "other",
+      "currentValue": 0.025,
+      "description": "Superinfection rate for already-infected humans resulting in symptomatic infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SuperinfectionToAsymptomaticRate",
+      "type": "other",
+      "currentValue": 0.02,
+      "description": "Superinfection rate for already-infected humans resulting in asymptomatic patent infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "PatentToSubpatentRate",
+      "type": "other",
+      "currentValue": 0.1,
+      "description": "Progression rate from asymptomatic patent infection A to subpatent infectious state U",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SubpatentClearanceRate",
+      "type": "other",
+      "currentValue": 0.05,
+      "description": "Clearance rate from subpatent infectious state U back to susceptible state S",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TreatmentRecoveryToProtectionRate",
+      "type": "recovery",
+      "currentValue": 0.25,
+      "description": "Rate of parasite clearance after treatment and movement into prophylactic protection P",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TreatmentFailureRate",
+      "type": "other",
+      "currentValue": 0.05,
+      "description": "Treatment failure rate from T to A; treatment failures enter the asymptomatic state in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ProtectionLossRate",
+      "type": "other",
+      "currentValue": 0.08,
+      "description": "Loss of post-treatment prophylactic protection and return to susceptible state",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanToMosquitoTransmissionRate_D",
+      "type": "transmission",
+      "currentValue": 0.2,
+      "description": "Mosquito infection rate from symptomatic infectious humans D; highest human-to-mosquito infectivity class",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanToMosquitoTransmissionRate_A",
+      "type": "transmission",
+      "currentValue": 0.067,
+      "description": "Mosquito infection rate from asymptomatic patent infectious humans A; approximately three-fold lower than D",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanToMosquitoTransmissionRate_U",
+      "type": "transmission",
+      "currentValue": 0.012,
+      "description": "Mosquito infection rate from subpatent infectious humans U; approximately seventeen-fold lower than D",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanToMosquitoTransmissionRate_T",
+      "type": "transmission",
+      "currentValue": 0.04,
+      "description": "Mosquito infection rate from treated infectious humans T before parasite clearance, reduced by treatment",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MosquitoLatentProgressionRate",
+      "type": "progression",
+      "currentValue": 0.1,
+      "description": "Progression rate from exposed mosquitoes to infectious mosquitoes in the SEI vector model",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "SusceptibleToSymptomaticInfectionRate",
+    "SusceptibleToAsymptomaticInfectionRate",
+    "TreatmentRate",
+    "SymptomaticToAsymptomaticRate",
+    "SuperinfectionToSymptomaticRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "SusceptibleToSymptomaticInfectionRate",
+      "SusceptibleToAsymptomaticInfectionRate",
+      "TreatmentRate",
+      "SymptomaticToAsymptomaticRate",
+      "SuperinfectionToSymptomaticRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "SusceptibleToSymptomaticInfectionRate": {
+        "mu": 18509.72155323561,
+        "mu_star": 18509.72155323561,
+        "sigma": 4301.586454289217,
+        "n_samples": 20
+      },
+      "SusceptibleToAsymptomaticInfectionRate": {
+        "mu": 19867.504578411532,
+        "mu_star": 19867.504578411532,
+        "sigma": 3548.8757420056763,
+        "n_samples": 20
+      },
+      "TreatmentRate": {
+        "mu": -665.67393460387,
+        "mu_star": 665.67393460387,
+        "sigma": 316.8360598118209,
+        "n_samples": 20
+      },
+      "SymptomaticToAsymptomaticRate": {
+        "mu": 106.10334159331612,
+        "mu_star": 138.04660260527086,
+        "sigma": 122.59587336623193,
+        "n_samples": 20
+      },
+      "SuperinfectionToSymptomaticRate": {
+        "mu": 141.20923384041814,
+        "mu_star": 141.20923384041814,
+        "sigma": 87.20561615938311,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

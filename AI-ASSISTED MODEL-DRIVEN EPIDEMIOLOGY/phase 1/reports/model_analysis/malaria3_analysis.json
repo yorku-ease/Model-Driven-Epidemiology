@@ -1,0 +1,460 @@
+{
+  "modelName": "Malaria3",
+  "summary": {
+    "modelName": "Malaria3",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 16,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9300",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.8",
+            "description": "New infection of uninfected susceptible humans from infectious mosquito bites; represents force of infection followed by liver-stage progression into symptomatic infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.8",
+            "description": "New infection of uninfected susceptible humans from infectious mosquito bites leading into asymptomatic patent infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "SymptomaticInfectious",
+        "secondaryName": "",
+        "population": "120",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful or attempted treatment of symptomatic cases moving into treated infectious state T",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Untreated symptomatic infections progress to asymptomatic patent infection A",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.8",
+            "description": "Superinfection of symptomatic infectious humans from infectious mosquito bites; the paper allows superinfection in infected individuals",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.8",
+            "description": "Superinfection of symptomatic infectious humans leading to asymptomatic patent infection under the simplified compmodel abstraction",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "AsymptomaticPatentInfectious",
+        "secondaryName": "",
+        "population": "250",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Asymptomatic patent infections progress to subpatent infectious state U",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.8",
+            "description": "Superinfection of asymptomatic patent infectious humans from infectious mosquito bites leading to symptomatic infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.8",
+            "description": "Superinfection of asymptomatic patent infectious humans from infectious mosquito bites maintaining patent infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "SubpatentInfectious",
+        "secondaryName": "",
+        "population": "180",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of subpatent infection back to uninfected susceptible state",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.8",
+            "description": "Superinfection of subpatent infectious humans leading to symptomatic infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.8",
+            "description": "Superinfection of subpatent infectious humans leading to asymptomatic patent infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "TreatedInfectious",
+        "secondaryName": "",
+        "population": "40",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery after successful treatment into temporary prophylactic protection P",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Treatment failure leading to asymptomatic patent infection A, as described in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "ProtectedByProphylaxis",
+        "secondaryName": "",
+        "population": "60",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.10",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of prophylactic protection and return to susceptible uninfected state",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "SusceptibleMosquitoes",
+        "secondaryName": "",
+        "population": "30000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.11",
+            "contactCompartment": "//@compartments.1",
+            "description": "Mosquito infection from symptomatic infectious humans D, who have the highest human-to-mosquito transmission probability in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.12",
+            "contactCompartment": "//@compartments.2",
+            "description": "Mosquito infection from asymptomatic patent infectious humans A, approximately three-fold less infectious than D in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.13",
+            "contactCompartment": "//@compartments.3",
+            "description": "Mosquito infection from subpatent infectious humans U, approximately seventeen-fold less infectious than D in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.14",
+            "contactCompartment": "//@compartments.4",
+            "description": "Mosquito infection from treated infectious humans T before parasite clearance; infectivity depends on drug properties and is reduced relative to pre-treatment state",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "ExposedMosquitoes",
+        "secondaryName": "",
+        "population": "80",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.15",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression of infected mosquitoes through the extrinsic incubation period into infectious mosquitoes",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "InfectiousMosquitoes",
+        "secondaryName": "",
+        "population": "50",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "SusceptibleToSymptomaticInfectionRate",
+        "type": "CONSTANT",
+        "expression": "0.040",
+        "description": "Representative force-of-infection term from infectious mosquito bites leading to symptomatic infection after the liver-stage delay",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "SusceptibleToAsymptomaticInfectionRate",
+        "type": "CONSTANT",
+        "expression": "0.030",
+        "description": "Representative force-of-infection term from infectious mosquito bites leading to asymptomatic patent infection",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "TreatmentRate",
+        "type": "CONSTANT",
+        "expression": "0.35",
+        "description": "Rate at which symptomatic infections receive treatment and move into the treated infectious state T",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "SymptomaticToAsymptomaticRate",
+        "type": "CONSTANT",
+        "expression": "0.20",
+        "description": "Progression of untreated symptomatic infections into asymptomatic patent infection A",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "SuperinfectionToSymptomaticRate",
+        "type": "CONSTANT",
+        "expression": "0.025",
+        "description": "Superinfection rate for already-infected humans resulting in symptomatic infection",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "SuperinfectionToAsymptomaticRate",
+        "type": "CONSTANT",
+        "expression": "0.020",
+        "description": "Superinfection rate for already-infected humans resulting in asymptomatic patent infection",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "PatentToSubpatentRate",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Progression rate from asymptomatic patent infection A to subpatent infectious state U",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "SubpatentClearanceRate",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Clearance rate from subpatent infectious state U back to susceptible state S",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "TreatmentRecoveryToProtectionRate",
+        "type": "CONSTANT",
+        "expression": "0.25",
+        "description": "Rate of parasite clearance after treatment and movement into prophylactic protection P",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "TreatmentFailureRate",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Treatment failure rate from T to A; treatment failures enter the asymptomatic state in the paper",
+        "unit": ""
+      },
+      {
+        "index": 10,
+        "name": "ProtectionLossRate",
+        "type": "CONSTANT",
+        "expression": "0.08",
+        "description": "Loss of post-treatment prophylactic protection and return to susceptible state",
+        "unit": ""
+      },
+      {
+        "index": 11,
+        "name": "HumanToMosquitoTransmissionRate_D",
+        "type": "CONSTANT",
+        "expression": "0.20",
+        "description": "Mosquito infection rate from symptomatic infectious humans D; highest human-to-mosquito infectivity class",
+        "unit": ""
+      },
+      {
+        "index": 12,
+        "name": "HumanToMosquitoTransmissionRate_A",
+        "type": "CONSTANT",
+        "expression": "0.067",
+        "description": "Mosquito infection rate from asymptomatic patent infectious humans A; approximately three-fold lower than D",
+        "unit": ""
+      },
+      {
+        "index": 13,
+        "name": "HumanToMosquitoTransmissionRate_U",
+        "type": "CONSTANT",
+        "expression": "0.012",
+        "description": "Mosquito infection rate from subpatent infectious humans U; approximately seventeen-fold lower than D",
+        "unit": ""
+      },
+      {
+        "index": 14,
+        "name": "HumanToMosquitoTransmissionRate_T",
+        "type": "CONSTANT",
+        "expression": "0.04",
+        "description": "Mosquito infection rate from treated infectious humans T before parasite clearance, reduced by treatment",
+        "unit": ""
+      },
+      {
+        "index": 15,
+        "name": "MosquitoLatentProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "Progression rate from exposed mosquitoes to infectious mosquitoes in the SEI vector model",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

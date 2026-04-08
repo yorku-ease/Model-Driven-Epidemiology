@@ -1,0 +1,343 @@
+{
+  "modelName": "Dengue1",
+  "summary": {
+    "modelName": "Dengue1",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 13,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 1,
+    "numExternalSinks": 7,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "parameters.3",
+            "contactCompartment": "compartments.5",
+            "description": "S_h → E_h via bites from infectious mosquitoes (standard incidence ~ h_a * Iv * S_h / N_h in paper)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.2",
+            "rate": "",
+            "rateParameter": "parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "E_h → A_h at rate (1-σ) * k (fraction entering asymptomatic)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "compartments.3",
+            "rate": "",
+            "rateParameter": "parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "E_h → I_h at rate σ * k (fraction entering symptomatic)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Asymptomatic infectious humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "parameters.7",
+            "contactCompartment": "compartments.5",
+            "description": "A_h → I_h via reinfection by infectious mosquitoes (paper uses ρ factor on mosquito-to-human contact for secondary infection)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "compartments.4",
+            "rate": "",
+            "rateParameter": "parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "A_h → R_h recovery at rate γ2a (here: γ2)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Symptomatic infectious humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.4",
+            "rate": "",
+            "rateParameter": "parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "I_h → R_h recovery at rate γ1a (here: γ1)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Recovered humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 5,
+        "primaryName": "Infectious mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 6,
+        "primaryName": "Susceptible mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "parameters.10",
+            "contactCompartment": "compartments.2",
+            "description": "S_v → I_v via biting asymptomatic infectious humans (paper force: (1-Iv)*(1/Nh)∫ v_a (I_h + A_h) da)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "parameters.10",
+            "contactCompartment": "compartments.3",
+            "description": "S_v → I_v via biting symptomatic infectious humans",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "B",
+        "type": "CONSTANT",
+        "expression": "250",
+        "description": "Constant influx of human hosts (boundary Sh(0,t)=B)",
+        "unit": "1/time"
+      },
+      {
+        "index": 1,
+        "name": "μ_h",
+        "type": "CONSTANT",
+        "expression": "0.005",
+        "description": "Natural death rate of human hosts",
+        "unit": "1/time"
+      },
+      {
+        "index": 2,
+        "name": "μ_v",
+        "type": "CONSTANT",
+        "expression": "0.65",
+        "description": "Natural death rate of mosquitoes",
+        "unit": "1/time"
+      },
+      {
+        "index": 3,
+        "name": "h",
+        "type": "CONSTANT",
+        "expression": "18",
+        "description": "Mosquito-to-human transmission/contact rate (age-averaged h_a)",
+        "unit": "1/time"
+      },
+      {
+        "index": 4,
+        "name": "σ",
+        "type": "CONSTANT",
+        "expression": "0.007",
+        "description": "Probability an exposed host becomes symptomatic (paper: fraction to I_h)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "k",
+        "type": "CONSTANT",
+        "expression": "0.6",
+        "description": "Latent progression rate (paper: k_a; here constant)",
+        "unit": "1/time"
+      },
+      {
+        "index": 6,
+        "name": "(1-σ)*k",
+        "type": "EXPRESSION",
+        "expression": "(1-σ) * k",
+        "description": "E_h → A_h rate",
+        "unit": "1/time"
+      },
+      {
+        "index": 7,
+        "name": "σ*k",
+        "type": "EXPRESSION",
+        "expression": "σ * k",
+        "description": "E_h → I_h rate",
+        "unit": "1/time"
+      },
+      {
+        "index": 8,
+        "name": "ρ",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Reinfection intensity factor for asymptomatic hosts (secondary infection)",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "ρ*h",
+        "type": "EXPRESSION",
+        "expression": "ρ * h",
+        "description": "A_h → I_h reinfection contact term (scaled mosquito-to-human contact)",
+        "unit": "1/time"
+      },
+      {
+        "index": 10,
+        "name": "γ1",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Recovery rate of symptomatic infectious hosts (paper: γ1a)",
+        "unit": "1/time"
+      },
+      {
+        "index": 11,
+        "name": "γ2",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Recovery rate of asymptomatic infectious hosts (paper: γ2a)",
+        "unit": "1/time"
+      },
+      {
+        "index": 12,
+        "name": "v",
+        "type": "CONSTANT",
+        "expression": "8",
+        "description": "Human-to-mosquito transmission rate (age-averaged v_a)",
+        "unit": "1/time"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Human influx",
+        "rate": "",
+        "rateParameter": "parameters.0",
+        "targetCompartment": "compartments.0",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": [
+      {
+        "name": "Natural death Sh",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.0",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Eh",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Ah",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.2",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Ih",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.3",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Rh",
+        "rate": "",
+        "rateParameter": "parameters.1",
+        "sourceCompartment": "compartments.4",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Iv",
+        "rate": "",
+        "rateParameter": "parameters.2",
+        "sourceCompartment": "compartments.5",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Sv",
+        "rate": "",
+        "rateParameter": "parameters.2",
+        "sourceCompartment": "compartments.6",
+        "sourceStratum": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "modelName": "Measles3",
+  "summary": {
+    "modelName": "Measles3",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 7,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "MaternalImmunity",
+        "secondaryName": "",
+        "population": "80",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of passive maternal antibody protection; corresponds to M -> X in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9200",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.4",
+            "description": "Measles infection of susceptible individuals; corresponds to X -> H in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Effective vaccination of susceptible individuals with long-lasting protection; corresponds to p*vaccination into Z in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccine failure among vaccinated susceptibles; corresponds to (1-p)*vaccination into Xv in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "VaccineFailure",
+        "secondaryName": "",
+        "population": "200",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.4",
+            "description": "Infection of vaccine-failure individuals who remain unprotected against wild virus; corresponds to Xv -> H in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Latent",
+        "secondaryName": "",
+        "population": "15",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from latent/pre-patent infection to infectious measles; corresponds to H -> Y in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Infectious",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from infectious measles and acquisition of lasting immunity; corresponds to Y -> Z in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Immune",
+        "secondaryName": "",
+        "population": "495",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "MaternalImmunityLossRate",
+        "type": "CONSTANT",
+        "expression": "4.0",
+        "description": "Rate of loss of passive immunity; Table 1 gives mean maternal protection of about 3 months, corresponding to rate 4.0 per year",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "SusceptibleInfectionRate",
+        "type": "CONSTANT",
+        "expression": "0.52",
+        "description": "Representative force of infection for one age stratum in the realistic age-structured measles model; the paper uses age-specific forces of infection and WAIFW mixing",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "EffectiveVaccinationRate",
+        "type": "CONSTANT",
+        "expression": "0.18",
+        "description": "Effective vaccination flow from susceptible to immune, reflecting baseline high coverage and vaccine efficacy in the paper",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "VaccineFailureRate",
+        "type": "CONSTANT",
+        "expression": "0.02",
+        "description": "Vaccination flow from susceptible to vaccine-failure class, reflecting imperfect vaccine efficacy in the paper",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "VaccineFailureInfectionRate",
+        "type": "CONSTANT",
+        "expression": "0.40",
+        "description": "Force of infection for vaccine-failure individuals exposed to wild virus; these individuals follow the same infection course as susceptibles once infected",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "LatentProgressionRate",
+        "type": "CONSTANT",
+        "expression": "52.14",
+        "description": "Rate of progression from latent to infectious; Table 1 gives average latent period of 7 days, corresponding to 52.14 per year",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "RecoveryRate",
+        "type": "CONSTANT",
+        "expression": "52.14",
+        "description": "Rate of recovery from infectious measles; Table 1 gives average infectious period of 7 days, corresponding to 52.14 per year",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

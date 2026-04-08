@@ -1,0 +1,275 @@
+{
+  "modelName": "Ebola3",
+  "summary": {
+    "modelName": "Ebola3",
+    "totalPopulation": null,
+    "numCompartments": 6,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9990",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.2",
+            "description": "Transmission in the community by infectious cases I; corresponds to beta_I S I / N in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.3",
+            "description": "Transmission at hospital by hospitalized infectious cases H; corresponds to beta_H S H / N in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.4",
+            "description": "Transmission during traditional burial by funeral-stage infectious cases F; corresponds to beta_F S F / N in the paper",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "End of incubation: exposed individuals become infectious in the community",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "InfectiousCommunity",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Hospitalization of infectious community cases; paper transition I -> H",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery/removal of non-hospitalized infectious survivors; paper transition I -> R",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death of infectious community cases before hospitalization; paper transition I -> F",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Hospitalized",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Death of hospitalized cases; paper transition H -> F",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery/removal of hospitalized survivors; paper transition H -> R",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "FuneralInfectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Burial/removal after funeral-stage infectious period; paper transition F -> R",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Removed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "BetaCommunity",
+        "type": "CONSTANT",
+        "expression": "0.588",
+        "description": "Transmission coefficient in the community, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+        "unit": "week^-1"
+      },
+      {
+        "index": 1,
+        "name": "BetaHospital",
+        "type": "CONSTANT",
+        "expression": "0.794",
+        "description": "Transmission coefficient at hospital, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+        "unit": "week^-1"
+      },
+      {
+        "index": 2,
+        "name": "BetaFuneral",
+        "type": "CONSTANT",
+        "expression": "7.653",
+        "description": "Transmission coefficient during traditional burial, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+        "unit": "week^-1"
+      },
+      {
+        "index": 3,
+        "name": "IncubationRate",
+        "type": "CONSTANT",
+        "expression": "1/1.0",
+        "description": "Approximate exposed-to-infectious progression in weekly time units; corresponds to alpha in the paper after unit conversion",
+        "unit": "week^-1"
+      },
+      {
+        "index": 4,
+        "name": "HospitalizationRate",
+        "type": "CONSTANT",
+        "expression": "0.95",
+        "description": "Aggregate I to H transition approximation from c_h * h_1 in weekly units",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "CommunityRecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.20",
+        "description": "Aggregate recovery/removal rate for non-hospitalized infectious survivors in weekly units",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "CommunityDeathRate",
+        "type": "CONSTANT",
+        "expression": "0.60",
+        "description": "Aggregate death-to-funeral transition rate for community infectious cases in weekly units",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "HospitalDeathRate",
+        "type": "CONSTANT",
+        "expression": "1.20",
+        "description": "Aggregate death transition rate from H to F in weekly units",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "HospitalRecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.25",
+        "description": "Aggregate recovery/removal rate from H to R in weekly units",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "BurialRate",
+        "type": "CONSTANT",
+        "expression": "3.5",
+        "description": "Funeral-to-removal transition rate in weekly units, corresponding to about 2 days from death to burial",
+        "unit": "week^-1"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

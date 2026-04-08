@@ -1,0 +1,275 @@
+{
+  "modelName": "Dengue3",
+  "summary": {
+    "modelName": "Dengue3",
+    "totalPopulation": null,
+    "numCompartments": 9,
+    "numParameters": 8,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "PrimarySusceptible",
+        "secondaryName": "",
+        "population": "9500",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.2",
+            "description": "Primary natural dengue infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Routine vaccination at age 9",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "PrimaryExposed",
+        "secondaryName": "",
+        "population": "80",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Primary incubation progression",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "PrimaryInfectious",
+        "secondaryName": "",
+        "population": "40",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Primary infection resolution into post-primary immune state",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "PostPrimaryImmune",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of temporary heterologous protection after natural primary infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "VaccinatedSilentInfection",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of temporary heterologous protection after vaccine-like silent infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "SecondarySusceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.6",
+            "contactCompartment": "//@compartments.2",
+            "description": "Secondary-like infection risk after loss of cross-protection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "PostVaccinationSusceptible",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.7",
+            "contactCompartment": "//@compartments.2",
+            "description": "In vaccinated hosts, subsequent infection behaves like later infection after silent infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "SecondaryInfectious",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Resolution of secondary-like infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "PostSecondaryImmune",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "PrimaryTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.26",
+        "description": "Transmission parameter for primary infection",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "IncubationRate",
+        "type": "CONSTANT",
+        "expression": "0.18",
+        "description": "Progression from exposed to infectious",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "RecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.12",
+        "description": "Recovery rate from infectious states",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "RoutineVaccinationRate",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Routine vaccination of 9-year-olds",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "NaturalCrossProtectionWaningRate",
+        "type": "CONSTANT",
+        "expression": "0.02",
+        "description": "Waning of temporary heterologous protection after natural infection",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "VaccineCrossProtectionWaningRate",
+        "type": "CONSTANT",
+        "expression": "0.03",
+        "description": "Waning of temporary heterologous protection after vaccination",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "SecondaryTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.30",
+        "description": "Transmission parameter for secondary-like infection after natural primary infection",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "PostVaccinationTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.24",
+        "description": "Transmission parameter after vaccine-induced silent infection",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

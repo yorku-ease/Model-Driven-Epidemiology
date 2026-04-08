@@ -1,0 +1,661 @@
+{
+  "modelName": "Cholera2",
+  "summary": {
+    "modelName": "Cholera2",
+    "totalPopulation": "11000000",
+    "numCompartments": 11,
+    "numParameters": 25,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 2,
+    "numExternalSinks": 12,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "11000000",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible adults",
+        "secondaryName": "",
+        "population": "8800000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.9",
+            "description": "Adult infection through environmental exposure to Vibrio cholerae reservoir",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination campaign: adults receiving two OCV doses",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.10",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination campaign: adults receiving one OCV dose",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Susceptible children under 5",
+        "secondaryName": "",
+        "population": "1200000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.9",
+            "description": "Child infection through environmental exposure; vaccine efficacy is lower for children under 5",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination campaign: children receiving two OCV doses",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.10",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vaccination campaign: children receiving one OCV dose",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Vaccinated adults (two doses)",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.9",
+            "description": "Breakthrough infection in adults after two-dose vaccination",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of two-dose adult vaccine protection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Vaccinated children under 5 (two doses)",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.9",
+            "description": "Breakthrough infection in children after two-dose vaccination; reduced protection relative to adults",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of two-dose child vaccine protection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Vaccinated adults (one dose)",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.4",
+            "contactCompartment": "//@compartments.9",
+            "description": "Breakthrough infection in adults after one-dose vaccination",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.12",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of one-dose protection after the first year",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Vaccinated children under 5 (one dose)",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.5",
+            "contactCompartment": "//@compartments.9",
+            "description": "Breakthrough infection in children after one-dose vaccination",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "//@parameters.12",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of one-dose protection after the first year",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Exposed / recently infected",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Fraction progressing to symptomatic infectious cholera",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Fraction progressing to asymptomatic infectious cholera",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Symptomatic infectious",
+        "secondaryName": "",
+        "population": "3",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from symptomatic infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Shedding of Vibrio cholerae into environmental reservoir from symptomatic cases",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Asymptomatic infectious",
+        "secondaryName": "",
+        "population": "7",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery from asymptomatic infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.15",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Environmental shedding from asymptomatic infections (lower than symptomatic)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Environmental Vibrio cholerae reservoir",
+        "secondaryName": "",
+        "population": "1",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 10,
+        "primaryName": "Recovered / naturally immune",
+        "secondaryName": "",
+        "population": "1000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.13",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Waning of natural immunity in adults/mixed national population",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "βA",
+        "type": "CONSTANT",
+        "expression": "0.35",
+        "description": "Adult environmental transmission/contact rate",
+        "unit": "1/week"
+      },
+      {
+        "index": 1,
+        "name": "βC",
+        "type": "CONSTANT",
+        "expression": "0.35",
+        "description": "Child environmental transmission/contact rate",
+        "unit": "1/week"
+      },
+      {
+        "index": 2,
+        "name": "βA_2dose",
+        "type": "EXPRESSION",
+        "expression": "βA * (1 - VE2A)",
+        "description": "Breakthrough transmission rate for adults after two doses",
+        "unit": "1/week"
+      },
+      {
+        "index": 3,
+        "name": "βC_2dose",
+        "type": "EXPRESSION",
+        "expression": "βC * (1 - VE2C)",
+        "description": "Breakthrough transmission rate for children under 5 after two doses",
+        "unit": "1/week"
+      },
+      {
+        "index": 4,
+        "name": "βA_1dose",
+        "type": "EXPRESSION",
+        "expression": "βA * (1 - VE1A)",
+        "description": "Breakthrough transmission rate for adults after one dose",
+        "unit": "1/week"
+      },
+      {
+        "index": 5,
+        "name": "βC_1dose",
+        "type": "EXPRESSION",
+        "expression": "βC * (1 - VE1C)",
+        "description": "Breakthrough transmission rate for children under 5 after one dose",
+        "unit": "1/week"
+      },
+      {
+        "index": 6,
+        "name": "σ*k",
+        "type": "CONSTANT",
+        "expression": "0.14",
+        "description": "Progression from exposure to symptomatic infection",
+        "unit": "1/week"
+      },
+      {
+        "index": 7,
+        "name": "(1-σ)*k",
+        "type": "CONSTANT",
+        "expression": "0.21",
+        "description": "Progression from exposure to asymptomatic infection",
+        "unit": "1/week"
+      },
+      {
+        "index": 8,
+        "name": "γ",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Recovery rate from infectious cholera",
+        "unit": "1/week"
+      },
+      {
+        "index": 9,
+        "name": "ν2",
+        "type": "CONSTANT",
+        "expression": "0.015",
+        "description": "Campaign vaccination rate into two-dose classes; scenario-dependent rollout parameter",
+        "unit": "1/week"
+      },
+      {
+        "index": 10,
+        "name": "ν1",
+        "type": "CONSTANT",
+        "expression": "0.002",
+        "description": "Campaign vaccination rate into one-dose classes; scenario-dependent rollout parameter",
+        "unit": "1/week"
+      },
+      {
+        "index": 11,
+        "name": "ω2",
+        "type": "CONSTANT",
+        "expression": "0.00385",
+        "description": "Waning rate of two-dose protection; approximately 5-year horizon",
+        "unit": "1/week"
+      },
+      {
+        "index": 12,
+        "name": "ω1",
+        "type": "CONSTANT",
+        "expression": "0.01923",
+        "description": "Waning rate of one-dose protection; protection assumed lost after about 1 year",
+        "unit": "1/week"
+      },
+      {
+        "index": 13,
+        "name": "ωR",
+        "type": "CONSTANT",
+        "expression": "0.01",
+        "description": "Waning rate of natural immunity",
+        "unit": "1/week"
+      },
+      {
+        "index": 14,
+        "name": "ξS",
+        "type": "CONSTANT",
+        "expression": "0.8",
+        "description": "Shedding rate from symptomatic infectious individuals into environmental reservoir",
+        "unit": "1/week"
+      },
+      {
+        "index": 15,
+        "name": "ξA",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "Shedding rate from asymptomatic infectious individuals into environmental reservoir",
+        "unit": "1/week"
+      },
+      {
+        "index": 16,
+        "name": "ΛA",
+        "type": "CONSTANT",
+        "expression": "2500",
+        "description": "Recruitment rate into adult susceptible class",
+        "unit": "persons/week"
+      },
+      {
+        "index": 17,
+        "name": "ΛC",
+        "type": "CONSTANT",
+        "expression": "800",
+        "description": "Recruitment rate into child susceptible class",
+        "unit": "persons/week"
+      },
+      {
+        "index": 18,
+        "name": "μ",
+        "type": "CONSTANT",
+        "expression": "0.00023",
+        "description": "Natural mortality rate",
+        "unit": "1/week"
+      },
+      {
+        "index": 19,
+        "name": "δ",
+        "type": "CONSTANT",
+        "expression": "0.002",
+        "description": "Disease-induced death rate for symptomatic cholera",
+        "unit": "1/week"
+      },
+      {
+        "index": 20,
+        "name": "μB",
+        "type": "CONSTANT",
+        "expression": "0.6",
+        "description": "Environmental bacterial decay rate",
+        "unit": "1/week"
+      },
+      {
+        "index": 21,
+        "name": "VE2A",
+        "type": "CONSTANT",
+        "expression": "0.76",
+        "description": "Initial effectiveness of two-dose OCV in adults",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 22,
+        "name": "VE2C",
+        "type": "EXPRESSION",
+        "expression": "0.469 * VE2A",
+        "description": "Two-dose vaccine effectiveness in children under 5, scaled as 46.9% of adult protection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 23,
+        "name": "VE1A",
+        "type": "CONSTANT",
+        "expression": "0.76",
+        "description": "One-dose adult protection during the first year, assumed equal initially to two-dose protection",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 24,
+        "name": "VE1C",
+        "type": "EXPRESSION",
+        "expression": "0.469 * VE1A",
+        "description": "One-dose protection in children under 5 during the first year",
+        "unit": "dimensionless"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Adult recruitment",
+        "rate": "",
+        "rateParameter": "//@parameters.16",
+        "targetCompartment": "//@compartments.0",
+        "targetStratum": ""
+      },
+      {
+        "name": "Child recruitment",
+        "rate": "",
+        "rateParameter": "//@parameters.17",
+        "targetCompartment": "//@compartments.1",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": [
+      {
+        "name": "Natural death susceptible adults",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.0",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death susceptible children",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death vaccinated adults two-dose",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.2",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death vaccinated children two-dose",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.3",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death vaccinated adults one-dose",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.4",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death vaccinated children one-dose",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.5",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death exposed",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.6",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death symptomatic",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.7",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death asymptomatic",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.8",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death recovered",
+        "rate": "",
+        "rateParameter": "//@parameters.18",
+        "sourceCompartment": "//@compartments.10",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Disease-induced death from symptomatic cholera",
+        "rate": "",
+        "rateParameter": "//@parameters.19",
+        "sourceCompartment": "//@compartments.7",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Bacterial decay",
+        "rate": "",
+        "rateParameter": "//@parameters.20",
+        "sourceCompartment": "//@compartments.9",
+        "sourceStratum": ""
+      }
+    ]
+  }
+}

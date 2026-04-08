@@ -1,0 +1,212 @@
+{
+  "modelName": "Zika3",
+  "summary": {
+    "modelName": "Zika3",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 8,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "SusceptibleHumans",
+        "secondaryName": "",
+        "population": "9900",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.6",
+            "description": "Vector-to-human transmission; corresponds to beta_H * S_H * I_V in Equation (1)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "ExposedHumans",
+        "secondaryName": "",
+        "population": "50",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression through intrinsic incubation period; corresponds to alpha_H * E_H in Equations (2) and (3)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "InfectiousHumans",
+        "secondaryName": "",
+        "population": "50",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Recovery of infectious humans; corresponds to gamma * I_H in Equations (3) and (4)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "RecoveredHumans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "SusceptibleMosquitoes",
+        "secondaryName": "",
+        "population": "20000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.3",
+            "contactCompartment": "//@compartments.2",
+            "description": "Human-to-vector transmission; corresponds to beta_V * S_V * I_H / N in Equation (6)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "ExposedMosquitoes",
+        "secondaryName": "",
+        "population": "100",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression through extrinsic incubation period; corresponds to alpha_V * E_V in Equations (7) and (8)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "InfectiousMosquitoes",
+        "secondaryName": "",
+        "population": "20",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "VectorToHumanTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.45",
+        "description": "beta_H, transmission rate from infectious mosquitoes to susceptible humans, as defined in the paper",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "HumanLatentProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.169",
+        "description": "alpha_H, progression rate from exposed to infectious in humans; mean latent period about 5.9 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "HumanRecoveryRate",
+        "type": "CONSTANT",
+        "expression": "0.20",
+        "description": "gamma, recovery rate of infectious humans; mean infectious period about 5 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "HumanToVectorTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.40",
+        "description": "beta_V, transmission rate from infectious humans to susceptible mosquitoes, as defined in the paper",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "MosquitoLatentProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.095",
+        "description": "alpha_V, progression rate from exposed to infectious in mosquitoes; mean extrinsic incubation period about 10.5 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "MosquitoDeathRate",
+        "type": "CONSTANT",
+        "expression": "0.128",
+        "description": "delta, mosquito death rate; mean mosquito lifespan about 7.8 days in the paper",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "ReportingProportion",
+        "type": "CONSTANT",
+        "expression": "0.115",
+        "description": "r, representative proportion of total infections reported as suspected cases across regions, included for semantic fidelity to the inference model",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "ReportingDispersion",
+        "type": "CONSTANT",
+        "expression": "0.30",
+        "description": "phi, reporting dispersion parameter used in the negative-binomial observation model",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "modelName": "Measles2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "MaternalImmunityLossRate",
+      "type": "mortality",
+      "currentValue": 0.167,
+      "description": "Representative loss rate of maternal protection; paper fitted duration of maternal immunity in the measles model",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MMR1VaccinationRate",
+      "type": "other",
+      "currentValue": 0.25,
+      "description": "Transition into one-dose vaccinated status; coverage varies by age, region, and scenario in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SusceptibleInfectionRate",
+      "type": "other",
+      "currentValue": 0.8,
+      "description": "Baseline infection rate for susceptible individuals within one representative age-region stratum",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MMR2VaccinationRate",
+      "type": "other",
+      "currentValue": 0.18,
+      "description": "Transition into two-dose vaccinated status; changing its timing is central to the paper's scenarios",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "OneDoseBreakthroughRate",
+      "type": "other",
+      "currentValue": 0.08,
+      "description": "Reduced infection rate after one vaccine dose, representing imperfect protection and primary vaccine failure",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TwoDoseBreakthroughRate",
+      "type": "other",
+      "currentValue": 0.01,
+      "description": "Reduced infection rate after two vaccine doses",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "VaccineWaningRate",
+      "type": "other",
+      "currentValue": 0.002,
+      "description": "Slow waning of vaccine-induced immunity, included because the paper evaluates waning sensitivity scenarios",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "IncubationProgressionRate",
+      "type": "progression",
+      "currentValue": 0.125,
+      "description": "Progression from exposed to infectious measles",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "RecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.143,
+      "description": "Recovery from infectious measles",
+      "importance": "high",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "MaternalImmunityLossRate",
+    "MMR1VaccinationRate",
+    "SusceptibleInfectionRate",
+    "MMR2VaccinationRate",
+    "OneDoseBreakthroughRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "MaternalImmunityLossRate",
+      "MMR1VaccinationRate",
+      "SusceptibleInfectionRate",
+      "MMR2VaccinationRate",
+      "OneDoseBreakthroughRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "MaternalImmunityLossRate": {
+        "mu": 3.1565636555694916e-06,
+        "mu_star": 3.1565636555694916e-06,
+        "sigma": 8.122906556568839e-06,
+        "n_samples": 20
+      },
+      "MMR1VaccinationRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "SusceptibleInfectionRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "MMR2VaccinationRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "OneDoseBreakthroughRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

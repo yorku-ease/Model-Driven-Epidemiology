@@ -1,0 +1,474 @@
+{
+  "modelName": "Zika1",
+  "summary": {
+    "modelName": "Zika1",
+    "totalPopulation": "16331365",
+    "numCompartments": 10,
+    "numParameters": 19,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 5,
+    "numExternalSinks": 11,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "16331365",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible humans",
+        "secondaryName": "",
+        "population": "16231364",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "parameters.0",
+            "contactCompartment": "compartments.9",
+            "description": "Human infection via bites from infectious female adult vectors",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.2",
+            "rate": "0.0",
+            "rateParameter": "parameters.1",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Human incubation: Eh→Ih at rate 1/τ_h",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Infectious humans",
+        "secondaryName": "",
+        "population": "1",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.3",
+            "rate": "0.0",
+            "rateParameter": "parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Human recovery: Ih→Rh at rate γ_h",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Recovered humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 4,
+        "primaryName": "Eggs (non-infectious)",
+        "secondaryName": "",
+        "population": "180000000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.5",
+            "rate": "0.0",
+            "rateParameter": "parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Egg development: E→L at rate 1/τ1_v",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Larvae (non-infectious, logistic)",
+        "secondaryName": "",
+        "population": "90000000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.6",
+            "rate": "0.0",
+            "rateParameter": "parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Larval development: L→P at rate 1/τ2_v",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Pupae (non-infectious)",
+        "secondaryName": "",
+        "population": "70000000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.7",
+            "rate": "0.0",
+            "rateParameter": "parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Pupal development: P→Sv at rate φ*(1/τ3_v) (female fraction applied)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Susceptible female adults",
+        "secondaryName": "",
+        "population": "69999990",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.8",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "0.0",
+            "contactRateParameter": "parameters.6",
+            "contactCompartment": "compartments.2",
+            "description": "Vector infection via biting infectious humans: Sv→Ev",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Exposed female adults",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "compartments.9",
+            "rate": "0.0",
+            "rateParameter": "parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Vector incubation: Ev→Iv at rate 1/τ_v",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Infectious female adults",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "b",
+        "type": "CONSTANT",
+        "expression": "0.071",
+        "description": "Average biting rate / infectious bites delivered per vector per day (human exposure term)",
+        "unit": "1/day"
+      },
+      {
+        "index": 1,
+        "name": "1/τ_h",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Inverse incubation time in humans",
+        "unit": "1/day"
+      },
+      {
+        "index": 2,
+        "name": "γ_h",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "Human recovery rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 3,
+        "name": "1/τ1_v",
+        "type": "CONSTANT",
+        "expression": "0.3",
+        "description": "Egg development rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 4,
+        "name": "1/τ2_v",
+        "type": "CONSTANT",
+        "expression": "0.1",
+        "description": "Larval development rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 5,
+        "name": "1/τ3_v",
+        "type": "CONSTANT",
+        "expression": "0.3",
+        "description": "Pupal development rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 6,
+        "name": "b_v",
+        "type": "CONSTANT",
+        "expression": "0.001",
+        "description": "Biting/exposure term for vectors becoming infected from infectious humans",
+        "unit": "1/day"
+      },
+      {
+        "index": 7,
+        "name": "1/τ_v",
+        "type": "CONSTANT",
+        "expression": "0.125",
+        "description": "Inverse incubation time in vectors",
+        "unit": "1/day"
+      },
+      {
+        "index": 8,
+        "name": "r_h",
+        "type": "CONSTANT",
+        "expression": "0.00005",
+        "description": "Human population growth rate (logistic)",
+        "unit": "1/day"
+      },
+      {
+        "index": 9,
+        "name": "μ_h",
+        "type": "CONSTANT",
+        "expression": "1.94e-5",
+        "description": "Natural human mortality rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 10,
+        "name": "f",
+        "type": "CONSTANT",
+        "expression": "80",
+        "description": "Eggs laid per female mosquito per unit time",
+        "unit": "1/day"
+      },
+      {
+        "index": 11,
+        "name": "μ1_v",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Egg mortality rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 12,
+        "name": "μ2_v",
+        "type": "CONSTANT",
+        "expression": "0.025",
+        "description": "Larval base mortality rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 13,
+        "name": "δ_l",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Larval density-dependent mortality coefficient (logistic term)",
+        "unit": "1/day"
+      },
+      {
+        "index": 14,
+        "name": "μ3_v",
+        "type": "CONSTANT",
+        "expression": "0.0025",
+        "description": "Pupal mortality rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 15,
+        "name": "μ_a_v",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "Adult female mortality rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 16,
+        "name": "φ",
+        "type": "CONSTANT",
+        "expression": "0.68",
+        "description": "Female fraction among adult vectors",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 17,
+        "name": "φ*(1/τ3_v)",
+        "type": "EXPRESSION",
+        "expression": "φ * (1/τ3_v)",
+        "description": "Female pupae-to-adult development flow multiplier",
+        "unit": "1/day"
+      },
+      {
+        "index": 18,
+        "name": "HumanLogisticTerm",
+        "type": "EXPRESSION",
+        "expression": "r_h * N_h * (1 - N_h / K_h)",
+        "description": "Logistic human population growth term (distributed across Sh,Eh,Ih,Rh proportionally)",
+        "unit": "1/day"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Human logistic growth into Sh",
+        "rate": "",
+        "rateParameter": "parameters.8",
+        "targetCompartment": "compartments.0",
+        "targetStratum": ""
+      },
+      {
+        "name": "Human logistic growth into Eh",
+        "rate": "",
+        "rateParameter": "parameters.8",
+        "targetCompartment": "compartments.1",
+        "targetStratum": ""
+      },
+      {
+        "name": "Human logistic growth into Ih",
+        "rate": "",
+        "rateParameter": "parameters.8",
+        "targetCompartment": "compartments.2",
+        "targetStratum": ""
+      },
+      {
+        "name": "Human logistic growth into Rh",
+        "rate": "",
+        "rateParameter": "parameters.8",
+        "targetCompartment": "compartments.3",
+        "targetStratum": ""
+      },
+      {
+        "name": "Egg laying from female adult vectors",
+        "rate": "",
+        "rateParameter": "parameters.10",
+        "targetCompartment": "compartments.4",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": [
+      {
+        "name": "Natural death Sh",
+        "rate": "",
+        "rateParameter": "parameters.9",
+        "sourceCompartment": "compartments.0",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Eh",
+        "rate": "",
+        "rateParameter": "parameters.9",
+        "sourceCompartment": "compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Ih",
+        "rate": "",
+        "rateParameter": "parameters.9",
+        "sourceCompartment": "compartments.2",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death Rh",
+        "rate": "",
+        "rateParameter": "parameters.9",
+        "sourceCompartment": "compartments.3",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Egg mortality",
+        "rate": "",
+        "rateParameter": "parameters.11",
+        "sourceCompartment": "compartments.4",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Larval base mortality",
+        "rate": "",
+        "rateParameter": "parameters.12",
+        "sourceCompartment": "compartments.5",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Larval density-dependent mortality",
+        "rate": "",
+        "rateParameter": "parameters.13",
+        "sourceCompartment": "compartments.5",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Pupal mortality",
+        "rate": "",
+        "rateParameter": "parameters.14",
+        "sourceCompartment": "compartments.6",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Adult female mortality Sv",
+        "rate": "",
+        "rateParameter": "parameters.15",
+        "sourceCompartment": "compartments.7",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Adult female mortality Ev",
+        "rate": "",
+        "rateParameter": "parameters.15",
+        "sourceCompartment": "compartments.8",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Adult female mortality Iv",
+        "rate": "",
+        "rateParameter": "parameters.15",
+        "sourceCompartment": "compartments.9",
+        "sourceStratum": ""
+      }
+    ]
+  }
+}

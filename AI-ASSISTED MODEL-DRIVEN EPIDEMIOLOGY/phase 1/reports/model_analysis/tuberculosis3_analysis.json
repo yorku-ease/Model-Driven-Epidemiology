@@ -1,0 +1,437 @@
+{
+  "modelName": "Tuberculosis3",
+  "summary": {
+    "modelName": "Tuberculosis3",
+    "totalPopulation": null,
+    "numCompartments": 7,
+    "numParameters": 18,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Uninfected",
+        "secondaryName": "",
+        "population": "9000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.3",
+            "description": "Infection of uninfected individuals from smear-positive pulmonary TB, the most infectious compartment in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.4",
+            "description": "Infection of uninfected individuals from smear-negative pulmonary TB at reduced infectiousness",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "RecentTBInfection",
+        "secondaryName": "",
+        "population": "500",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Stabilization of recent infection into remote latent infection after about 2 years, as described in the paper",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rapid progression from recent infection to active smear-positive TB",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rapid progression from recent infection to active smear-negative TB",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Rapid progression from recent infection to active extrapulmonary TB",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "RemoteTBInfection",
+        "secondaryName": "",
+        "population": "1200",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.6",
+            "contactCompartment": "//@compartments.3",
+            "description": "Re-infection of remote latent TB by infectious smear-positive disease, returning to recent infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.7",
+            "contactCompartment": "//@compartments.4",
+            "description": "Re-infection of remote latent TB by smear-negative pulmonary disease, returning to recent infection",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.8",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Reactivation from remote TB infection to active smear-positive TB",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Reactivation from remote TB infection to active smear-negative TB",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.10",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Reactivation from remote TB infection to active extrapulmonary TB",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "ActiveTBSmearPositive",
+        "secondaryName": "",
+        "population": "120",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.11",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Diagnosis and treatment or self-cure of smear-positive TB into recently treated/recovered compartment",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "ActiveTBSmearNegative",
+        "secondaryName": "",
+        "population": "80",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.12",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Diagnosis and treatment or self-cure of smear-negative TB into recently treated/recovered compartment",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "ActiveTBExtrapulmonary",
+        "secondaryName": "",
+        "population": "40",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.13",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Diagnosis and treatment of extrapulmonary TB into recently treated/recovered compartment",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "RecentlyTreatedRecovered",
+        "secondaryName": "",
+        "population": "60",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.14",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Stabilization after recent treatment/recovery into remote TB infection after about 5 years",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.15",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from recently treated/recovered into active smear-positive TB",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.16",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from recently treated/recovered into active smear-negative TB",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.17",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Relapse from recently treated/recovered into active extrapulmonary TB",
+            "stratumSpecificRates": []
+          }
+        ]
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "InfectionRateFromSmearPositive",
+        "type": "CONSTANT",
+        "expression": "0.30",
+        "description": "Representative transmission intensity from smear-positive pulmonary TB; the paper fits transmission to incidence and assumes smear-positive disease is the main infectious class",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "InfectionRateFromSmearNegative",
+        "type": "CONSTANT",
+        "expression": "0.066",
+        "description": "Transmission intensity from smear-negative pulmonary TB, reflecting relative infectiousness of 0.22 compared with smear-positive cases in the paper",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "RecentToRemoteStabilizationRate",
+        "type": "CONSTANT",
+        "expression": "0.5",
+        "description": "Rate of stabilization from recent TB infection to remote TB infection, corresponding to about 2 years",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "RapidProgressionToSmearPositiveRate",
+        "type": "CONSTANT",
+        "expression": "0.0455",
+        "description": "Rapid progression from recent infection to active smear-positive TB",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "RapidProgressionToSmearNegativeRate",
+        "type": "CONSTANT",
+        "expression": "0.0245",
+        "description": "Rapid progression from recent infection to active smear-negative TB",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "RapidProgressionToExtrapulmonaryRate",
+        "type": "CONSTANT",
+        "expression": "0.0105",
+        "description": "Rapid progression from recent infection to active extrapulmonary TB",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "ReinfectionRateFromSmearPositive",
+        "type": "CONSTANT",
+        "expression": "0.18",
+        "description": "Re-infection of remote latent TB by smear-positive pulmonary disease, returning to recent infection",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "ReinfectionRateFromSmearNegative",
+        "type": "CONSTANT",
+        "expression": "0.04",
+        "description": "Re-infection of remote latent TB by smear-negative pulmonary disease, returning to recent infection",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "RemoteReactivationToSmearPositiveRate",
+        "type": "CONSTANT",
+        "expression": "0.000325",
+        "description": "Slow progression / reactivation from remote TB infection to smear-positive disease",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "RemoteReactivationToSmearNegativeRate",
+        "type": "CONSTANT",
+        "expression": "0.000175",
+        "description": "Slow progression / reactivation from remote TB infection to smear-negative disease",
+        "unit": ""
+      },
+      {
+        "index": 10,
+        "name": "RemoteReactivationToExtrapulmonaryRate",
+        "type": "CONSTANT",
+        "expression": "0.000100",
+        "description": "Slow progression / reactivation from remote TB infection to extrapulmonary disease",
+        "unit": ""
+      },
+      {
+        "index": 11,
+        "name": "TreatmentOrSelfCureRateSmearPositive",
+        "type": "CONSTANT",
+        "expression": "0.95",
+        "description": "Net rate of leaving active smear-positive TB through diagnosis and treatment or self-cure in the paper's compartmental abstraction",
+        "unit": ""
+      },
+      {
+        "index": 12,
+        "name": "TreatmentOrSelfCureRateSmearNegative",
+        "type": "CONSTANT",
+        "expression": "0.43",
+        "description": "Net rate of leaving active smear-negative TB through diagnosis and treatment or self-cure",
+        "unit": ""
+      },
+      {
+        "index": 13,
+        "name": "TreatmentOrSelfCureRateExtrapulmonary",
+        "type": "CONSTANT",
+        "expression": "0.77",
+        "description": "Net rate of leaving active extrapulmonary TB through diagnosis and treatment",
+        "unit": ""
+      },
+      {
+        "index": 14,
+        "name": "RecoveredToRemoteStabilizationRate",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "Stabilization of recently treated/recovered individuals into remote TB infection after about 5 years",
+        "unit": ""
+      },
+      {
+        "index": 15,
+        "name": "RelapseToSmearPositiveRate",
+        "type": "CONSTANT",
+        "expression": "0.012",
+        "description": "Relapse from recently treated/recovered into active smear-positive TB",
+        "unit": ""
+      },
+      {
+        "index": 16,
+        "name": "RelapseToSmearNegativeRate",
+        "type": "CONSTANT",
+        "expression": "0.008",
+        "description": "Relapse from recently treated/recovered into active smear-negative TB",
+        "unit": ""
+      },
+      {
+        "index": 17,
+        "name": "RelapseToExtrapulmonaryRate",
+        "type": "CONSTANT",
+        "expression": "0.004",
+        "description": "Relapse from recently treated/recovered into active extrapulmonary TB",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

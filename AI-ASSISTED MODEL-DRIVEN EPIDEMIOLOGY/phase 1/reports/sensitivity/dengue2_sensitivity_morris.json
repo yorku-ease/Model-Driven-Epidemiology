@@ -1,0 +1,101 @@
+{
+  "modelName": "Dengue2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "TransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.28,
+      "description": "Approximate transmission parameter for simplified human-side dengue model",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "IncubationRate",
+      "type": "progression",
+      "currentValue": 0.2,
+      "description": "Progression from exposed to infectious",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "RecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.14,
+      "description": "Recovery from infectious state",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ScreeningAndVaccinationRate",
+      "type": "other",
+      "currentValue": 0.04,
+      "description": "Routine screening at age 9 followed by vaccination if seropositive",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "VaccineBreakthroughRate",
+      "type": "other",
+      "currentValue": 0.05,
+      "description": "Residual post-vaccination infection risk representing imperfect protection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "TransmissionRate",
+    "IncubationRate",
+    "RecoveryRate",
+    "ScreeningAndVaccinationRate",
+    "VaccineBreakthroughRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "TransmissionRate",
+      "IncubationRate",
+      "RecoveryRate",
+      "ScreeningAndVaccinationRate",
+      "VaccineBreakthroughRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "TransmissionRate": {
+        "mu": 55.54466158814779,
+        "mu_star": 55.54466158814779,
+        "sigma": 89.84875947416248,
+        "n_samples": 20
+      },
+      "IncubationRate": {
+        "mu": 8.207403044303188,
+        "mu_star": 8.207403044303188,
+        "sigma": 14.88025662246927,
+        "n_samples": 20
+      },
+      "RecoveryRate": {
+        "mu": -69.03184351310952,
+        "mu_star": 69.03184351310952,
+        "sigma": 120.94908837279134,
+        "n_samples": 20
+      },
+      "ScreeningAndVaccinationRate": {
+        "mu": 1075.3288001877745,
+        "mu_star": 1075.3288001877745,
+        "sigma": 1337.9688614559218,
+        "n_samples": 20
+      },
+      "VaccineBreakthroughRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

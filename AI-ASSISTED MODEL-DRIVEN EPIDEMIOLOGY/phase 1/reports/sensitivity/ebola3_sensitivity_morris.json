@@ -1,0 +1,133 @@
+{
+  "modelName": "Ebola3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "BetaCommunity",
+      "type": "transmission",
+      "currentValue": 0.588,
+      "description": "Transmission coefficient in the community, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "BetaHospital",
+      "type": "transmission",
+      "currentValue": 0.794,
+      "description": "Transmission coefficient at hospital, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "BetaFuneral",
+      "type": "transmission",
+      "currentValue": 7.653,
+      "description": "Transmission coefficient during traditional burial, based on fitted DRC 1995 estimate reported in Table 4 of the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalizationRate",
+      "type": "other",
+      "currentValue": 0.95,
+      "description": "Aggregate I to H transition approximation from c_h * h_1 in weekly units",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "CommunityRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.2,
+      "description": "Aggregate recovery/removal rate for non-hospitalized infectious survivors in weekly units",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "CommunityDeathRate",
+      "type": "mortality",
+      "currentValue": 0.6,
+      "description": "Aggregate death-to-funeral transition rate for community infectious cases in weekly units",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalDeathRate",
+      "type": "mortality",
+      "currentValue": 1.2,
+      "description": "Aggregate death transition rate from H to F in weekly units",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.25,
+      "description": "Aggregate recovery/removal rate from H to R in weekly units",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "BurialRate",
+      "type": "other",
+      "currentValue": 3.5,
+      "description": "Funeral-to-removal transition rate in weekly units, corresponding to about 2 days from death to burial",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "BetaCommunity",
+    "BetaHospital",
+    "BetaFuneral",
+    "HospitalizationRate",
+    "CommunityRecoveryRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "BetaCommunity",
+      "BetaHospital",
+      "BetaFuneral",
+      "HospitalizationRate",
+      "CommunityRecoveryRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "BetaCommunity": {
+        "mu": 1389.6234080209983,
+        "mu_star": 1389.6234080209983,
+        "sigma": 938.1533553640268,
+        "n_samples": 20
+      },
+      "BetaHospital": {
+        "mu": 981.1339289048996,
+        "mu_star": 981.1339289048996,
+        "sigma": 831.7678464281172,
+        "n_samples": 20
+      },
+      "BetaFuneral": {
+        "mu": 430.70931127355095,
+        "mu_star": 430.70931127355095,
+        "sigma": 208.6081476468541,
+        "n_samples": 20
+      },
+      "HospitalizationRate": {
+        "mu": -11.619564579142168,
+        "mu_star": 208.7218232231641,
+        "sigma": 328.06290219582735,
+        "n_samples": 20
+      },
+      "CommunityRecoveryRate": {
+        "mu": -2785.349101163285,
+        "mu_star": 2785.349101163285,
+        "sigma": 1358.4464136066279,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

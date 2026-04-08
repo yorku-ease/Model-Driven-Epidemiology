@@ -1,0 +1,125 @@
+{
+  "modelName": "Dengue3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "PrimaryTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.26,
+      "description": "Transmission parameter for primary infection",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "IncubationRate",
+      "type": "progression",
+      "currentValue": 0.18,
+      "description": "Progression from exposed to infectious",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "RecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.12,
+      "description": "Recovery rate from infectious states",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "RoutineVaccinationRate",
+      "type": "other",
+      "currentValue": 0.05,
+      "description": "Routine vaccination of 9-year-olds",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "NaturalCrossProtectionWaningRate",
+      "type": "other",
+      "currentValue": 0.02,
+      "description": "Waning of temporary heterologous protection after natural infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "VaccineCrossProtectionWaningRate",
+      "type": "other",
+      "currentValue": 0.03,
+      "description": "Waning of temporary heterologous protection after vaccination",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SecondaryTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.3,
+      "description": "Transmission parameter for secondary-like infection after natural primary infection",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "PostVaccinationTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.24,
+      "description": "Transmission parameter after vaccine-induced silent infection",
+      "importance": "high",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "PrimaryTransmissionRate",
+    "IncubationRate",
+    "RecoveryRate",
+    "RoutineVaccinationRate",
+    "NaturalCrossProtectionWaningRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "PrimaryTransmissionRate",
+      "IncubationRate",
+      "RecoveryRate",
+      "RoutineVaccinationRate",
+      "NaturalCrossProtectionWaningRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "PrimaryTransmissionRate": {
+        "mu": 10.851776260182863,
+        "mu_star": 10.851776260182863,
+        "sigma": 18.237134111356667,
+        "n_samples": 20
+      },
+      "IncubationRate": {
+        "mu": 3.2544493737244324,
+        "mu_star": 3.2544493737244324,
+        "sigma": 6.207712484101086,
+        "n_samples": 20
+      },
+      "RecoveryRate": {
+        "mu": -18.903715285471204,
+        "mu_star": 18.903715285471204,
+        "sigma": 35.12355118585139,
+        "n_samples": 20
+      },
+      "RoutineVaccinationRate": {
+        "mu": 217.50794156302064,
+        "mu_star": 217.50794156302064,
+        "sigma": 306.800472432698,
+        "n_samples": 20
+      },
+      "NaturalCrossProtectionWaningRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

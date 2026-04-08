@@ -12,7 +12,7 @@ class CompModelParser:
     def __init__(self, xml_file: str):
         """Initialize parser with XML file path"""
         self.xml_file = Path(xml_file)
-        self.tree = ET.parse(xml_file)
+        self.tree = self._parse_with_namespace_repair(self.xml_file)
         self.root = self.tree.getroot()
         
         # Extract namespace
@@ -25,6 +25,37 @@ class CompModelParser:
         # Default namespace (most common)
         if 'compartmental' in self.ns:
             self.ns['default'] = self.ns['compartmental']
+
+    @staticmethod
+    def _parse_with_namespace_repair(xml_path: Path) -> ET.ElementTree:
+        """
+        Parse XML and auto-repair a common malformed-prefix issue:
+        files using ``xsi:`` attributes without declaring ``xmlns:xsi``.
+        """
+        try:
+            return ET.parse(str(xml_path))
+        except ET.ParseError as e:
+            raw = xml_path.read_text(encoding="utf-8", errors="replace")
+            if "unbound prefix" not in str(e):
+                raise
+            if "xsi:" not in raw or "xmlns:xsi" in raw:
+                raise
+
+            fixed = raw
+            if "xmlns:xmi=" in fixed:
+                fixed = fixed.replace(
+                    "xmlns:xmi=",
+                    'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xmi=',
+                    1,
+                )
+            else:
+                fixed = fixed.replace(
+                    "<metamodel:CompartmentalModel",
+                    '<metamodel:CompartmentalModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+                    1,
+                )
+            root = ET.fromstring(fixed)
+            return ET.ElementTree(root)
     
     def _find_all(self, tag: str) -> List[ET.Element]:
         """Find all elements with tag, handling namespaces"""

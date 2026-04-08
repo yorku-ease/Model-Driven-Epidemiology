@@ -1,0 +1,125 @@
+{
+  "modelName": "Covid2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "N",
+      "type": "other",
+      "currentValue": 1400050000.0,
+      "description": "Approximate total mainland China population represented in the aggregated SEIR abstraction",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "R0",
+      "type": "other",
+      "currentValue": 2.2,
+      "description": "Baseline reproduction number used by the paper for the early Wuhan outbreak",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "incubationPeriod",
+      "type": "progression",
+      "currentValue": 5.2,
+      "description": "Average incubation period from the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "infectiousPeriod",
+      "type": "other",
+      "currentValue": 5.8,
+      "description": "Average infectious period proxy based on onset-to-isolation timing used before strong interventions",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "mobilityRestrictionMultiplier",
+      "type": "mortality",
+      "currentValue": 1.0,
+      "description": "Inter-city mobility scaling factor retained for semantic fidelity to the paper's travel network layer; 1 means no extra scaling in this single-population abstraction",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "contactReductionMultiplier",
+      "type": "transmission",
+      "currentValue": 0.4,
+      "description": "Scales transmission-relevant contacts under social distancing; values below 1 represent contact reduction",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "detectionIsolationMultiplier",
+      "type": "mortality",
+      "currentValue": 1.9,
+      "description": "Scales removal rate under improved case detection and isolation; values above 1 represent faster removal from transmission",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "initialSeed",
+      "type": "other",
+      "currentValue": 5.0,
+      "description": "Initial infected individuals in Wuhan used by the paper on December 1, 2019",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "N",
+    "R0",
+    "incubationPeriod",
+    "infectiousPeriod",
+    "mobilityRestrictionMultiplier"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "N",
+      "R0",
+      "incubationPeriod",
+      "infectiousPeriod",
+      "mobilityRestrictionMultiplier"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "N": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "R0": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "incubationPeriod": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "infectiousPeriod": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "mobilityRestrictionMultiplier": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

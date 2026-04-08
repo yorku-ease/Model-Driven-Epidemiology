@@ -1,0 +1,125 @@
+{
+  "modelName": "Zika3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "VectorToHumanTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.45,
+      "description": "beta_H, transmission rate from infectious mosquitoes to susceptible humans, as defined in the paper",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanLatentProgressionRate",
+      "type": "progression",
+      "currentValue": 0.169,
+      "description": "alpha_H, progression rate from exposed to infectious in humans; mean latent period about 5.9 days in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.2,
+      "description": "gamma, recovery rate of infectious humans; mean infectious period about 5 days in the paper",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanToVectorTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.4,
+      "description": "beta_V, transmission rate from infectious humans to susceptible mosquitoes, as defined in the paper",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MosquitoLatentProgressionRate",
+      "type": "progression",
+      "currentValue": 0.095,
+      "description": "alpha_V, progression rate from exposed to infectious in mosquitoes; mean extrinsic incubation period about 10.5 days in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MosquitoDeathRate",
+      "type": "mortality",
+      "currentValue": 0.128,
+      "description": "delta, mosquito death rate; mean mosquito lifespan about 7.8 days in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ReportingProportion",
+      "type": "other",
+      "currentValue": 0.115,
+      "description": "r, representative proportion of total infections reported as suspected cases across regions, included for semantic fidelity to the inference model",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ReportingDispersion",
+      "type": "other",
+      "currentValue": 0.3,
+      "description": "phi, reporting dispersion parameter used in the negative-binomial observation model",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "VectorToHumanTransmissionRate",
+    "HumanLatentProgressionRate",
+    "HumanRecoveryRate",
+    "HumanToVectorTransmissionRate",
+    "MosquitoLatentProgressionRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "VectorToHumanTransmissionRate",
+      "HumanLatentProgressionRate",
+      "HumanRecoveryRate",
+      "HumanToVectorTransmissionRate",
+      "MosquitoLatentProgressionRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "VectorToHumanTransmissionRate": {
+        "mu": 0.9025865748020196,
+        "mu_star": 0.9025865748020196,
+        "sigma": 1.7270791886318955,
+        "n_samples": 20
+      },
+      "HumanLatentProgressionRate": {
+        "mu": 0.6204152071420824,
+        "mu_star": 0.6204152071420824,
+        "sigma": 1.5779754885634767,
+        "n_samples": 20
+      },
+      "HumanRecoveryRate": {
+        "mu": -14.228060218179962,
+        "mu_star": 14.228060218179962,
+        "sigma": 30.802013312920216,
+        "n_samples": 20
+      },
+      "HumanToVectorTransmissionRate": {
+        "mu": 0.8758182412057064,
+        "mu_star": 0.8758182412057064,
+        "sigma": 1.8648219098936956,
+        "n_samples": 20
+      },
+      "MosquitoLatentProgressionRate": {
+        "mu": 1.5531914455622373,
+        "mu_star": 1.5531914455622373,
+        "sigma": 3.439328257813541,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

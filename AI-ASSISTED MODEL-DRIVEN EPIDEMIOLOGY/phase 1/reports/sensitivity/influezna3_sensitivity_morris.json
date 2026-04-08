@@ -1,0 +1,141 @@
+{
+  "modelName": "Influezna3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "CommunityTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.45,
+      "description": "Representative age-specific transmission term from infectious community cases; in the paper lambda_i depends on the age-structured contact matrix and transmission probability q",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.2,
+      "description": "Representative contribution of hospitalized infectious individuals to the force of infection; the paper includes I_j + H_j in the force of infection",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "EffectiveVaccinationRate",
+      "type": "other",
+      "currentValue": 0.03,
+      "description": "e_i * nu(t), effective vaccination rate for this representative age group",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "IneffectiveVaccinationRate",
+      "type": "other",
+      "currentValue": 0.01,
+      "description": "(1-e_i) * nu(t), ineffective vaccination rate for this representative age group",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ProtectionDelayRate",
+      "type": "other",
+      "currentValue": 0.1,
+      "description": "gamma, rate of becoming protected after vaccination; mean 10 days in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "LatentProgressionRate",
+      "type": "progression",
+      "currentValue": 0.526,
+      "description": "kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalizationRate",
+      "type": "other",
+      "currentValue": 0.08,
+      "description": "a_i, age-specific hospitalization rate among infectious individuals",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "CommunityRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.667,
+      "description": "c_1, recovery rate for infectious individuals in the community; based on mean 1.5 days in the paper",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.667,
+      "description": "c_2, recovery rate for hospitalized individuals; based on mean 1.5 days in the paper",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HospitalMortalityRate",
+      "type": "mortality",
+      "currentValue": 0.015,
+      "description": "d_i, age-specific mortality rate among hospitalized individuals",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "CommunityTransmissionRate",
+    "HospitalTransmissionRate",
+    "EffectiveVaccinationRate",
+    "IneffectiveVaccinationRate",
+    "ProtectionDelayRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "CommunityTransmissionRate",
+      "HospitalTransmissionRate",
+      "EffectiveVaccinationRate",
+      "IneffectiveVaccinationRate",
+      "ProtectionDelayRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "CommunityTransmissionRate": {
+        "mu": 0.5317569050578943,
+        "mu_star": 0.5317569050578943,
+        "sigma": 0.7539323096232876,
+        "n_samples": 20
+      },
+      "HospitalTransmissionRate": {
+        "mu": 0.07665139231494321,
+        "mu_star": 0.07665139231494321,
+        "sigma": 0.1184778988261674,
+        "n_samples": 20
+      },
+      "EffectiveVaccinationRate": {
+        "mu": 1165.518611296111,
+        "mu_star": 1165.518611296111,
+        "sigma": 1156.2404124863701,
+        "n_samples": 20
+      },
+      "IneffectiveVaccinationRate": {
+        "mu": 2498.763760210669,
+        "mu_star": 2498.763760210669,
+        "sigma": 2709.927145721782,
+        "n_samples": 20
+      },
+      "ProtectionDelayRate": {
+        "mu": -0.047360354959891986,
+        "mu_star": 0.047360354959891986,
+        "sigma": 0.1179193403064307,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

@@ -1,0 +1,211 @@
+{
+  "modelName": "Covid3",
+  "summary": {
+    "modelName": "Covid3",
+    "totalPopulation": "741000000",
+    "numCompartments": 4,
+    "numParameters": 14,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": true
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "741000000",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "740999999",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.10",
+            "contactCompartment": "//@compartments.1",
+            "description": "Approximate infection process driven by effective reproduction under interventions; paper models infections through Rt and generation-time renewal rather than explicit compartmental force of infection",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infected",
+        "secondaryName": "",
+        "population": "1",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.12",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Resolution / removal from infectiousness; included as a compartmental approximation because the paper models infections implicitly rather than with explicit recovery transitions",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.13",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Fatal progression from latent infections to observed deaths; approximates the paper's infection-to-death linkage",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Removed",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 3,
+        "primaryName": "Dead",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "Population11Countries",
+        "type": "CONSTANT",
+        "expression": "741000000",
+        "description": "Approximate combined population of the 11 European countries analysed in the paper",
+        "unit": "persons"
+      },
+      {
+        "index": 1,
+        "name": "InitialRt",
+        "type": "CONSTANT",
+        "expression": "3.8",
+        "description": "Average initial reproduction number estimated across the 11 countries before interventions",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "GenerationIntervalDays",
+        "type": "CONSTANT",
+        "expression": "6.5",
+        "description": "Representative generation interval placeholder retained for semantic fidelity to the renewal-process model",
+        "unit": "days"
+      },
+      {
+        "index": 3,
+        "name": "BaseTransmissionRate",
+        "type": "EXPRESSION",
+        "expression": "InitialRt / GenerationIntervalDays",
+        "description": "Compartmental approximation of transmission intensity derived from initial Rt",
+        "unit": "1/day"
+      },
+      {
+        "index": 4,
+        "name": "PublicEventsBanEffect",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Relative multiplier for public-events-ban effect on transmission; paper found non-lockdown intervention effects hard to identify separately",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 5,
+        "name": "SchoolClosureEffect",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Relative multiplier for school-closure effect on transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 6,
+        "name": "SelfIsolationEffect",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Relative multiplier for case-based self-isolation effect on transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 7,
+        "name": "SocialDistancingEffect",
+        "type": "CONSTANT",
+        "expression": "1.0",
+        "description": "Relative multiplier for encouraged social distancing effect on transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 8,
+        "name": "LockdownEffect",
+        "type": "CONSTANT",
+        "expression": "0.19",
+        "description": "Approximate remaining transmission multiplier under lockdown, corresponding to about 81 percent reduction in Rt reported in the paper",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 9,
+        "name": "CombinedInterventionMultiplier",
+        "type": "EXPRESSION",
+        "expression": "PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect",
+        "description": "Combined multiplicative effect of interventions on transmission",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 10,
+        "name": "EffectiveTransmissionRate",
+        "type": "EXPRESSION",
+        "expression": "BaseTransmissionRate * CombinedInterventionMultiplier",
+        "description": "Effective transmission rate after interventions in the compartmental approximation",
+        "unit": "1/day"
+      },
+      {
+        "index": 11,
+        "name": "MeanOutcomeDelayDays",
+        "type": "CONSTANT",
+        "expression": "18",
+        "description": "Representative delay scale retained to approximate progression from infection to outcome in a simple compartmental form",
+        "unit": "days"
+      },
+      {
+        "index": 12,
+        "name": "RemovalRate",
+        "type": "EXPRESSION",
+        "expression": "1 / MeanOutcomeDelayDays",
+        "description": "Approximate non-fatal resolution rate from infected to removed",
+        "unit": "1/day"
+      },
+      {
+        "index": 13,
+        "name": "DeathRate",
+        "type": "CONSTANT",
+        "expression": "0.005",
+        "description": "Small fatal transition rate used only to preserve explicit death outcome structure in this approximation; the paper infers deaths from convolution with infection-to-death distribution rather than direct compartmental death flow",
+        "unit": "1/day"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

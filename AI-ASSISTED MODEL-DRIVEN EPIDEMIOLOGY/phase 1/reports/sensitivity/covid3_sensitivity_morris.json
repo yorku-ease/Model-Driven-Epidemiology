@@ -1,0 +1,141 @@
+{
+  "modelName": "Covid3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "Population11Countries",
+      "type": "other",
+      "currentValue": 741000000.0,
+      "description": "Approximate combined population of the 11 European countries analysed in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "InitialRt",
+      "type": "other",
+      "currentValue": 3.8,
+      "description": "Average initial reproduction number estimated across the 11 countries before interventions",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "GenerationIntervalDays",
+      "type": "other",
+      "currentValue": 6.5,
+      "description": "Representative generation interval placeholder retained for semantic fidelity to the renewal-process model",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "PublicEventsBanEffect",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Relative multiplier for public-events-ban effect on transmission; paper found non-lockdown intervention effects hard to identify separately",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SchoolClosureEffect",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Relative multiplier for school-closure effect on transmission",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SelfIsolationEffect",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Relative multiplier for case-based self-isolation effect on transmission",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SocialDistancingEffect",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Relative multiplier for encouraged social distancing effect on transmission",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "LockdownEffect",
+      "type": "other",
+      "currentValue": 0.19,
+      "description": "Approximate remaining transmission multiplier under lockdown, corresponding to about 81 percent reduction in Rt reported in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MeanOutcomeDelayDays",
+      "type": "other",
+      "currentValue": 18.0,
+      "description": "Representative delay scale retained to approximate progression from infection to outcome in a simple compartmental form",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "DeathRate",
+      "type": "mortality",
+      "currentValue": 0.005,
+      "description": "Small fatal transition rate used only to preserve explicit death outcome structure in this approximation; the paper infers deaths from convolution with infection-to-death distribution rather than direct compartmental death flow",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "Population11Countries",
+    "InitialRt",
+    "GenerationIntervalDays",
+    "PublicEventsBanEffect",
+    "SchoolClosureEffect"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "Population11Countries",
+      "InitialRt",
+      "GenerationIntervalDays",
+      "PublicEventsBanEffect",
+      "SchoolClosureEffect"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "Population11Countries": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "InitialRt": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "GenerationIntervalDays": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "PublicEventsBanEffect": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "SchoolClosureEffect": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

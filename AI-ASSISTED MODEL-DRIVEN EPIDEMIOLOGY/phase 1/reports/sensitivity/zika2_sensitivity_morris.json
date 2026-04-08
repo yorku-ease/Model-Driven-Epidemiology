@@ -1,0 +1,141 @@
+{
+  "modelName": "Zika2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "MosquitoToHumanTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.18,
+      "description": "beta_vh, transmission rate from infectious mosquitoes to humans",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MenToWomenSexualTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.04,
+      "description": "beta_mw times risky-contact factor rho, transmission rate from infectious men to susceptible women through sexual contact",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SymptomaticHumanProgressionRate",
+      "type": "progression",
+      "currentValue": 0.0235,
+      "description": "phi * lambda_h, progression from exposed humans to symptomatic infectious humans",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "AsymptomaticHumanProgressionRate",
+      "type": "progression",
+      "currentValue": 0.1235,
+      "description": "(1-phi) * lambda_h, progression from exposed humans to asymptomatic infectious humans",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "BloodClearanceRate",
+      "type": "other",
+      "currentValue": 0.0667,
+      "description": "gamma_1, clearance rate of virus from blood in infectious humans",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "WomenGenitalClearanceRate",
+      "type": "other",
+      "currentValue": 0.1,
+      "description": "gamma_3, clearance rate of virus from vaginal secretions",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "WomenToMenSexualTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.02,
+      "description": "beta_wm times risky-contact factor rho, transmission rate from infectious women to susceptible men through sexual contact",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MenGenitalClearanceRate",
+      "type": "other",
+      "currentValue": 0.05,
+      "description": "gamma_2, clearance rate of virus from semen",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "HumanToMosquitoTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.22,
+      "description": "beta_hv, transmission rate from infectious humans with virus in blood to susceptible mosquitoes",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "MosquitoLatentProgressionRate",
+      "type": "progression",
+      "currentValue": 0.1,
+      "description": "lambda_v, progression rate from exposed mosquitoes to infectious mosquitoes",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "MosquitoToHumanTransmissionRate",
+    "MenToWomenSexualTransmissionRate",
+    "SymptomaticHumanProgressionRate",
+    "AsymptomaticHumanProgressionRate",
+    "BloodClearanceRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "MosquitoToHumanTransmissionRate",
+      "MenToWomenSexualTransmissionRate",
+      "SymptomaticHumanProgressionRate",
+      "AsymptomaticHumanProgressionRate",
+      "BloodClearanceRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "MosquitoToHumanTransmissionRate": {
+        "mu": 6771.95306764089,
+        "mu_star": 6771.95306764089,
+        "sigma": 8408.695176210262,
+        "n_samples": 20
+      },
+      "MenToWomenSexualTransmissionRate": {
+        "mu": 4060.83381531673,
+        "mu_star": 4060.83381531673,
+        "sigma": 4827.209594195865,
+        "n_samples": 20
+      },
+      "SymptomaticHumanProgressionRate": {
+        "mu": 1867.9764120369687,
+        "mu_star": 1867.9764120369687,
+        "sigma": 2495.5538239847283,
+        "n_samples": 20
+      },
+      "AsymptomaticHumanProgressionRate": {
+        "mu": 1921.7706041843207,
+        "mu_star": 1921.7706041843207,
+        "sigma": 2496.755365437348,
+        "n_samples": 20
+      },
+      "BloodClearanceRate": {
+        "mu": -10983.025428484936,
+        "mu_star": 10983.025428484936,
+        "sigma": 11374.135520356193,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

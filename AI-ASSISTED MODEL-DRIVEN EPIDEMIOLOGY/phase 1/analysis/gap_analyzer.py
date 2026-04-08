@@ -556,7 +556,7 @@ Examples:
         
         return
     
-    # Analyze all models: epimde first, then Phase 2 baselines, then legacy Compartmental (if present)
+    # Analyze all models: epimde first, then Phase 2 per-paper diseases, then Phase 2 baselines
     papers_base_dir = Path(__file__).parent.parent / 'papers'
     fallback_model_dirs = [d for d in default_model_search_dirs() if d.is_dir()]
     output_dir = Path(__file__).parent.parent / 'reports' / 'gap_reports'
@@ -565,7 +565,7 @@ Examples:
     def find_model_and_paper(model_name: str) -> Tuple[Optional[Path], Optional[Path]]:
         """
         Find both .compmodel file and paper PDF for a model.
-        Prioritizes ``papers/epimde``, then Phase 2 ``baseline_models``, then legacy Compartmental.
+        Prioritizes ``papers/epimde``, then Phase 2 benchmark dirs, then ``baseline_models``.
         """
         # Normalize model name for searching
         model_lower = model_name.lower().replace('-', '_').replace(' ', '_')

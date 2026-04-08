@@ -1,0 +1,117 @@
+{
+  "modelName": "Measles3",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "MaternalImmunityLossRate",
+      "type": "mortality",
+      "currentValue": 4.0,
+      "description": "Rate of loss of passive immunity; Table 1 gives mean maternal protection of about 3 months, corresponding to rate 4.0 per year",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SusceptibleInfectionRate",
+      "type": "other",
+      "currentValue": 0.52,
+      "description": "Representative force of infection for one age stratum in the realistic age-structured measles model; the paper uses age-specific forces of infection and WAIFW mixing",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "EffectiveVaccinationRate",
+      "type": "other",
+      "currentValue": 0.18,
+      "description": "Effective vaccination flow from susceptible to immune, reflecting baseline high coverage and vaccine efficacy in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "VaccineFailureRate",
+      "type": "other",
+      "currentValue": 0.02,
+      "description": "Vaccination flow from susceptible to vaccine-failure class, reflecting imperfect vaccine efficacy in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "VaccineFailureInfectionRate",
+      "type": "other",
+      "currentValue": 0.4,
+      "description": "Force of infection for vaccine-failure individuals exposed to wild virus; these individuals follow the same infection course as susceptibles once infected",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "LatentProgressionRate",
+      "type": "progression",
+      "currentValue": 52.14,
+      "description": "Rate of progression from latent to infectious; Table 1 gives average latent period of 7 days, corresponding to 52.14 per year",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "RecoveryRate",
+      "type": "recovery",
+      "currentValue": 52.14,
+      "description": "Rate of recovery from infectious measles; Table 1 gives average infectious period of 7 days, corresponding to 52.14 per year",
+      "importance": "high",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "MaternalImmunityLossRate",
+    "SusceptibleInfectionRate",
+    "EffectiveVaccinationRate",
+    "VaccineFailureRate",
+    "VaccineFailureInfectionRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "MaternalImmunityLossRate",
+      "SusceptibleInfectionRate",
+      "EffectiveVaccinationRate",
+      "VaccineFailureRate",
+      "VaccineFailureInfectionRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "MaternalImmunityLossRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "SusceptibleInfectionRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "EffectiveVaccinationRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "VaccineFailureRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      },
+      "VaccineFailureInfectionRate": {
+        "mu": 0.0,
+        "mu_star": 0.0,
+        "sigma": 0.0,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

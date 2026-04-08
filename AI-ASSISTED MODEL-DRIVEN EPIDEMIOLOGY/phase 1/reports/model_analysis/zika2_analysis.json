@@ -1,0 +1,497 @@
+{
+  "modelName": "Zika2",
+  "summary": {
+    "modelName": "Zika2",
+    "totalPopulation": null,
+    "numCompartments": 15,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "SusceptibleWomen",
+        "secondaryName": "",
+        "population": "5000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.14",
+            "description": "Women exposed through bites from infectious mosquitoes; corresponds to beta_vh * Sw * Iv",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.10",
+            "description": "Women exposed by sexual contact with asymptomatic infectious men; corresponds to beta_mw * rho * Sw * Ima",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.9",
+            "description": "Women exposed by sexual contact with symptomatic infectious men; corresponds to beta_mw * rho * Sw * Ims",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.1",
+            "contactCompartment": "//@compartments.11",
+            "description": "Women exposed by sexual contact with men infectious through semen persistence; corresponds to beta_mw * rho * Sw * Im",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "ExposedWomen",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression of exposed women to symptomatic infectious women; corresponds to phi * lambda_h * Ew",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression of exposed women to asymptomatic infectious women; corresponds to (1-phi) * lambda_h * Ew",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "InfectiousWomenSymptomaticBlood",
+        "secondaryName": "",
+        "population": "2",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of virus from blood in symptomatic women into genital-fluid persistence class; corresponds to gamma_1 * Iws",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "InfectiousWomenAsymptomaticBlood",
+        "secondaryName": "",
+        "population": "2",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of virus from blood in asymptomatic women into genital-fluid persistence class; corresponds to gamma_1 * Iwa",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "InfectiousWomenGenitalPersistence",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.5",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of virus from vaginal fluids and recovery of women; corresponds to gamma_3 * Iw",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "RecoveredWomen",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 6,
+        "primaryName": "SusceptibleMen",
+        "secondaryName": "",
+        "population": "5000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.14",
+            "description": "Men exposed through bites from infectious mosquitoes; corresponds to beta_vh * Sm * Iv",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.6",
+            "contactCompartment": "//@compartments.3",
+            "description": "Men exposed by sexual contact with asymptomatic infectious women; corresponds to beta_wm * rho * Sm * Iwa",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.6",
+            "contactCompartment": "//@compartments.2",
+            "description": "Men exposed by sexual contact with symptomatic infectious women; corresponds to beta_wm * rho * Sm * Iws",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.7",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.6",
+            "contactCompartment": "//@compartments.4",
+            "description": "Men exposed by sexual contact with women infectious through vaginal-fluid persistence; corresponds to beta_wm * rho * Sm * Iw",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "ExposedMen",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "//@parameters.2",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression of exposed men to symptomatic infectious men; corresponds to phi * lambda_h * Em",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.3",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression of exposed men to asymptomatic infectious men; corresponds to (1-phi) * lambda_h * Em",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "InfectiousMenSymptomaticBlood",
+        "secondaryName": "",
+        "population": "2",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of virus from blood in symptomatic men into semen-persistence class; corresponds to gamma_1 * Ims",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "InfectiousMenAsymptomaticBlood",
+        "secondaryName": "",
+        "population": "2",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.10",
+            "rate": "",
+            "rateParameter": "//@parameters.4",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of virus from blood in asymptomatic men into semen-persistence class; corresponds to gamma_1 * Ima",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "primaryName": "InfectiousMenSemenPersistence",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.11",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of virus from semen and recovery of men; corresponds to gamma_2 * Im",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "primaryName": "RecoveredMen",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      },
+      {
+        "index": 12,
+        "primaryName": "SusceptibleMosquitoes",
+        "secondaryName": "",
+        "population": "15000",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.13",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.8",
+            "contactCompartment": "//@compartments.8",
+            "description": "Mosquito infection from symptomatic infectious men with virus in blood; part of beta_hv * Sv * (Ims + Ima + Iws + Iwa)",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.13",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.8",
+            "contactCompartment": "//@compartments.9",
+            "description": "Mosquito infection from asymptomatic infectious men with virus in blood",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.13",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.8",
+            "contactCompartment": "//@compartments.2",
+            "description": "Mosquito infection from symptomatic infectious women with virus in blood",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.13",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.8",
+            "contactCompartment": "//@compartments.3",
+            "description": "Mosquito infection from asymptomatic infectious women with virus in blood",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 13,
+        "primaryName": "ExposedMosquitoes",
+        "secondaryName": "",
+        "population": "10",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.14",
+            "rate": "",
+            "rateParameter": "//@parameters.9",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression of exposed mosquitoes to infectious mosquitoes; corresponds to lambda_v * Ev",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 14,
+        "primaryName": "InfectiousMosquitoes",
+        "secondaryName": "",
+        "population": "5",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "MosquitoToHumanTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.18",
+        "description": "beta_vh, transmission rate from infectious mosquitoes to humans",
+        "unit": ""
+      },
+      {
+        "index": 1,
+        "name": "MenToWomenSexualTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.04",
+        "description": "beta_mw times risky-contact factor rho, transmission rate from infectious men to susceptible women through sexual contact",
+        "unit": ""
+      },
+      {
+        "index": 2,
+        "name": "SymptomaticHumanProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.0235",
+        "description": "phi * lambda_h, progression from exposed humans to symptomatic infectious humans",
+        "unit": ""
+      },
+      {
+        "index": 3,
+        "name": "AsymptomaticHumanProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.1235",
+        "description": "(1-phi) * lambda_h, progression from exposed humans to asymptomatic infectious humans",
+        "unit": ""
+      },
+      {
+        "index": 4,
+        "name": "BloodClearanceRate",
+        "type": "CONSTANT",
+        "expression": "0.0667",
+        "description": "gamma_1, clearance rate of virus from blood in infectious humans",
+        "unit": ""
+      },
+      {
+        "index": 5,
+        "name": "WomenGenitalClearanceRate",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "gamma_3, clearance rate of virus from vaginal secretions",
+        "unit": ""
+      },
+      {
+        "index": 6,
+        "name": "WomenToMenSexualTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.02",
+        "description": "beta_wm times risky-contact factor rho, transmission rate from infectious women to susceptible men through sexual contact",
+        "unit": ""
+      },
+      {
+        "index": 7,
+        "name": "MenGenitalClearanceRate",
+        "type": "CONSTANT",
+        "expression": "0.05",
+        "description": "gamma_2, clearance rate of virus from semen",
+        "unit": ""
+      },
+      {
+        "index": 8,
+        "name": "HumanToMosquitoTransmissionRate",
+        "type": "CONSTANT",
+        "expression": "0.22",
+        "description": "beta_hv, transmission rate from infectious humans with virus in blood to susceptible mosquitoes",
+        "unit": ""
+      },
+      {
+        "index": 9,
+        "name": "MosquitoLatentProgressionRate",
+        "type": "CONSTANT",
+        "expression": "0.10",
+        "description": "lambda_v, progression rate from exposed mosquitoes to infectious mosquitoes",
+        "unit": ""
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

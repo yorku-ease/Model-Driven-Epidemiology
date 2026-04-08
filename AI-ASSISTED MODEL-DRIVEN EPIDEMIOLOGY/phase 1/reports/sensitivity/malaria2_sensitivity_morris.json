@@ -1,0 +1,125 @@
+{
+  "modelName": "Malaria2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "ClinicalTreatedInfectionRate",
+      "type": "other",
+      "currentValue": 0.18,
+      "description": "Approximate infection-to-treated-clinical transition intensity representing phi * lambda * f_T in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ClinicalUntreatedInfectionRate",
+      "type": "other",
+      "currentValue": 0.08,
+      "description": "Approximate infection-to-untreated-clinical transition intensity representing phi * lambda * (1-f_T) in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "AsymptomaticInfectionRate",
+      "type": "other",
+      "currentValue": 0.22,
+      "description": "Approximate infection-to-asymptomatic transition intensity representing lambda * (1-phi) in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TreatmentToProphylaxisRate",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Rate r_T from treated clinical disease to prophylaxis",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "UntreatedDiseaseResolutionRate",
+      "type": "other",
+      "currentValue": 0.35,
+      "description": "Rate r_D from untreated clinical disease to patent asymptomatic infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ProphylaxisLossRate",
+      "type": "other",
+      "currentValue": 0.2,
+      "description": "Rate r_P for loss of prophylactic protection and return to susceptibility",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "PatentToSubPatentRate",
+      "type": "other",
+      "currentValue": 0.12,
+      "description": "Rate r_A from patent asymptomatic infection to sub-patent infection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SubPatentClearanceRate",
+      "type": "other",
+      "currentValue": 0.1,
+      "description": "Rate r_U from sub-patent infection to susceptible",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "ClinicalTreatedInfectionRate",
+    "ClinicalUntreatedInfectionRate",
+    "AsymptomaticInfectionRate",
+    "TreatmentToProphylaxisRate",
+    "UntreatedDiseaseResolutionRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "ClinicalTreatedInfectionRate",
+      "ClinicalUntreatedInfectionRate",
+      "AsymptomaticInfectionRate",
+      "TreatmentToProphylaxisRate",
+      "UntreatedDiseaseResolutionRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "ClinicalTreatedInfectionRate": {
+        "mu": -0.2053823032368503,
+        "mu_star": 0.20573209745331647,
+        "sigma": 0.534051174151697,
+        "n_samples": 20
+      },
+      "ClinicalUntreatedInfectionRate": {
+        "mu": 55.201088914934665,
+        "mu_star": 55.24884922020308,
+        "sigma": 148.51059545360027,
+        "n_samples": 20
+      },
+      "AsymptomaticInfectionRate": {
+        "mu": 22580.868443305175,
+        "mu_star": 22580.868443305175,
+        "sigma": 10311.158819858316,
+        "n_samples": 20
+      },
+      "TreatmentToProphylaxisRate": {
+        "mu": 0.01225274454618557,
+        "mu_star": 0.01227250192250722,
+        "sigma": 0.03153718040944892,
+        "n_samples": 20
+      },
+      "UntreatedDiseaseResolutionRate": {
+        "mu": -8.048919385665615,
+        "mu_star": 8.049941859286653,
+        "sigma": 20.449167856370703,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

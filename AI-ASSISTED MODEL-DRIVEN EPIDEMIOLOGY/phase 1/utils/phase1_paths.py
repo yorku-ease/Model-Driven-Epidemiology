@@ -3,8 +3,10 @@ Canonical paths for Phase 1 and alignment with Phase 2 gold-standard models.
 
 Prefer, in order:
   1. ``phase 1/papers/epimde/*.compmodel`` — reference models shipped with Phase 1
-  2. ``phase 2/data/baseline_models/*.compmodel`` — same benchmarks used by Phase 2 extraction
-  3. Legacy Eclipse workspace ``../../Compartmental/CompartmentalModel`` (optional checkout)
+  2. ``phase 2/data/diseases/<disease>/*.compmodel`` — per-paper benchmark gold models
+  3. ``phase 2/data/baseline_models/*.compmodel`` — legacy flat baselines
+Legacy Eclipse workspace ``../../Compartmental/CompartmentalModel`` is optional and
+no longer included in default batch discovery.
 """
 
 from __future__ import annotations
@@ -28,9 +30,19 @@ def epimde_models_dir() -> Path:
     return phase1_root() / "papers" / "epimde"
 
 
+def phase2_data_root() -> Path:
+    """Phase 2 data root."""
+    return project_root() / "phase 2" / "data"
+
+
+def phase2_diseases_models_dir() -> Path:
+    """Phase 2 benchmark folder with per-disease subfolders."""
+    return phase2_data_root() / "diseases"
+
+
 def phase2_baseline_models_dir() -> Path:
     """Phase 2 legacy flat baselines dir; paired gold lives under ``phase 2/data/<disease>/``."""
-    return project_root() / "phase 2" / "data" / "baseline_models"
+    return phase2_data_root() / "baseline_models"
 
 
 def legacy_compartmental_models_dir() -> Path:
@@ -45,8 +57,8 @@ def default_model_search_dirs() -> List[Path]:
     """
     return [
         epimde_models_dir(),
+        phase2_diseases_models_dir(),
         phase2_baseline_models_dir(),
-        legacy_compartmental_models_dir(),
     ]
 
 
@@ -57,7 +69,7 @@ def resolve_default_model_dir() -> Path:
     otherwise ``epimde_models_dir()`` (for a clear error message).
     """
     for d in default_model_search_dirs():
-        if d.is_dir() and any(d.glob("*.compmodel")):
+        if d.is_dir() and find_compmodel_files(d):
             return d
     return epimde_models_dir()
 
@@ -66,7 +78,7 @@ def resolve_fallback_compmodel_dir() -> Path:
     """
     Single directory used when code expects one legacy ``base_path``
     (e.g. uncertainty/sensitivity batch modes).
-    Preference: epimde, then Phase 2 baselines, then Compartmental.
+    Preference: epimde, then Phase 2 per-paper ``data/diseases``, then baselines.
     """
     return resolve_default_model_dir()
 
@@ -83,6 +95,25 @@ def _stem_to_display_name(stem: str) -> str:
     )
 
 
+def _find_phase2_benchmark_compmodels(directory: Path) -> List[Path]:
+    """
+    Find Phase 2 benchmark ``.compmodel`` files under:
+      - ``data/diseases/<disease>/*.compmodel``
+      - ``data/diseases/<disease>/cases/*.compmodel``
+    """
+    files: List[Path] = []
+    if not directory.is_dir():
+        return files
+    for disease_dir in sorted(directory.iterdir()):
+        if not disease_dir.is_dir():
+            continue
+        files.extend(sorted(disease_dir.glob("*.compmodel")))
+        case_dir = disease_dir / "cases"
+        if case_dir.is_dir():
+            files.extend(sorted(case_dir.glob("*.compmodel")))
+    return files
+
+
 def find_compmodel_files(directory: Path) -> List[Tuple[str, Path]]:
     """
     All ``*.compmodel`` files in ``directory`` (non-recursive).
@@ -93,7 +124,13 @@ def find_compmodel_files(directory: Path) -> List[Tuple[str, Path]]:
     models: List[Tuple[str, Path]] = []
     if not directory.is_dir():
         return models
-    for file_path in sorted(directory.glob("*.compmodel")):
+
+    if directory.resolve() == phase2_diseases_models_dir().resolve():
+        compmodel_files = _find_phase2_benchmark_compmodels(directory)
+    else:
+        compmodel_files = sorted(directory.glob("*.compmodel"))
+
+    for file_path in compmodel_files:
         display = _stem_to_display_name(file_path.stem)
         models.append((display, file_path))
     return models

@@ -1,0 +1,141 @@
+{
+  "modelName": "Influezna2",
+  "method": "morris",
+  "keyParameters": [
+    {
+      "parameter": "ClinicalTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.45,
+      "description": "Effective transmission rate from clinical infectious cases in the compartmental abstraction of the paper",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SubclinicalTransmissionRate",
+      "type": "transmission",
+      "currentValue": 0.22,
+      "description": "Effective transmission rate from subclinical infectious cases",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ClinicalProgressionRate",
+      "type": "progression",
+      "currentValue": 0.38,
+      "description": "Latent-to-clinical progression rate, reflecting that roughly 50 percent of infections become clinical cases in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SubclinicalProgressionRate",
+      "type": "progression",
+      "currentValue": 0.38,
+      "description": "Latent-to-subclinical progression rate",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TreatmentRate",
+      "type": "other",
+      "currentValue": 1.0,
+      "description": "Rapid treatment rate for clinical cases; chosen to reflect same-day to one-day treatment emphasis in the paper",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ClinicalRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.33,
+      "description": "Recovery rate from untreated clinical infectiousness",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "SubclinicalRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.33,
+      "description": "Recovery rate from subclinical infectiousness",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ProtectionAcquisitionRate",
+      "type": "other",
+      "currentValue": 0.02,
+      "description": "Population movement into temporary protection through prophylaxis or vaccination interventions",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "TreatedRecoveryRate",
+      "type": "recovery",
+      "currentValue": 0.5,
+      "description": "Recovery rate from treated clinical infection",
+      "importance": "high",
+      "source": "explicit_parameter"
+    },
+    {
+      "parameter": "ProtectionLossRate",
+      "type": "other",
+      "currentValue": 0.05,
+      "description": "Loss of prophylactic or vaccine-induced protection",
+      "importance": "medium",
+      "source": "explicit_parameter"
+    }
+  ],
+  "parametersAnalyzed": [
+    "ClinicalTransmissionRate",
+    "SubclinicalTransmissionRate",
+    "ClinicalProgressionRate",
+    "SubclinicalProgressionRate",
+    "TreatmentRate"
+  ],
+  "sensitivityAnalysis": {
+    "method": "Morris",
+    "parameters": [
+      "ClinicalTransmissionRate",
+      "SubclinicalTransmissionRate",
+      "ClinicalProgressionRate",
+      "SubclinicalProgressionRate",
+      "TreatmentRate"
+    ],
+    "n_trajectories": 20,
+    "sensitivity_indices": {
+      "ClinicalTransmissionRate": {
+        "mu": 1033.3204151423413,
+        "mu_star": 1033.3204151423413,
+        "sigma": 819.4642843723827,
+        "n_samples": 20
+      },
+      "SubclinicalTransmissionRate": {
+        "mu": 3193.3631633030536,
+        "mu_star": 3193.3631633030536,
+        "sigma": 841.2026893539963,
+        "n_samples": 20
+      },
+      "ClinicalProgressionRate": {
+        "mu": -251.47291404991648,
+        "mu_star": 276.67375803637117,
+        "sigma": 251.34157718000898,
+        "n_samples": 20
+      },
+      "SubclinicalProgressionRate": {
+        "mu": 404.75080990448504,
+        "mu_star": 414.3114189876972,
+        "sigma": 411.82829607068703,
+        "n_samples": 20
+      },
+      "TreatmentRate": {
+        "mu": -312.52455582506957,
+        "mu_star": 312.52455582506957,
+        "sigma": 234.29573889896457,
+        "n_samples": 20
+      }
+    },
+    "interpretation": {
+      "mu_star": "Mean absolute effect (higher = more important)",
+      "sigma": "Standard deviation (higher = more non-linear/interactions)"
+    }
+  },
+  "variationRange": "±50.0%"
+}

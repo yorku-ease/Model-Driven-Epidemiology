@@ -1,0 +1,197 @@
+{
+  "modelName": "Cholera3",
+  "summary": {
+    "modelName": "Cholera3",
+    "totalPopulation": "10000",
+    "numCompartments": 3,
+    "numParameters": 10,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 1,
+    "numExternalSinks": 4,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": false,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": "10000",
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible",
+        "secondaryName": "",
+        "population": "9999",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.2",
+            "contactCompartment": "//@compartments.2",
+            "description": "Environmental infection S→I through exposure to contaminated water; paper incidence uses a * B / (K + B)",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Infected",
+        "secondaryName": "",
+        "population": "1",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.7",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Human shedding into aquatic reservoir: I contributes e units of toxigenic V. cholerae to B",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Aquatic toxigenic Vibrio cholerae",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "nH",
+        "type": "EXPRESSION",
+        "expression": "n * H",
+        "description": "Renewal into susceptible population; with constant human population H, influx is nH",
+        "unit": "persons/day"
+      },
+      {
+        "index": 1,
+        "name": "n",
+        "type": "CONSTANT",
+        "expression": "0.0001",
+        "description": "Human birth and death rate",
+        "unit": "1/day"
+      },
+      {
+        "index": 2,
+        "name": "a",
+        "type": "CONSTANT",
+        "expression": "1",
+        "description": "Rate of exposure to contaminated water (used in dose-dependent infection term a * B / (K + B))",
+        "unit": "1/day"
+      },
+      {
+        "index": 3,
+        "name": "K",
+        "type": "CONSTANT",
+        "expression": "1e6",
+        "description": "Concentration of V. cholerae in water giving 50% chance of infection",
+        "unit": "cells/mL"
+      },
+      {
+        "index": 4,
+        "name": "r",
+        "type": "CONSTANT",
+        "expression": "0.2",
+        "description": "Recovery rate from cholera",
+        "unit": "1/day"
+      },
+      {
+        "index": 5,
+        "name": "nb",
+        "type": "CONSTANT",
+        "expression": "0",
+        "description": "Growth rate of V. cholerae in the aquatic environment",
+        "unit": "1/day"
+      },
+      {
+        "index": 6,
+        "name": "mb",
+        "type": "CONSTANT",
+        "expression": "0.33",
+        "description": "Loss rate of V. cholerae in the aquatic environment",
+        "unit": "1/day"
+      },
+      {
+        "index": 7,
+        "name": "e",
+        "type": "CONSTANT",
+        "expression": "10",
+        "description": "Contribution of each infected person to aquatic V. cholerae concentration",
+        "unit": "cells/mL/day/person"
+      },
+      {
+        "index": 8,
+        "name": "mb-nb",
+        "type": "EXPRESSION",
+        "expression": "mb - nb",
+        "description": "Net bacterial loss rate in water; exact B sink term when mb > nb",
+        "unit": "1/day"
+      },
+      {
+        "index": 9,
+        "name": "H",
+        "type": "CONSTANT",
+        "expression": "10000",
+        "description": "Total human population",
+        "unit": "persons"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [
+      {
+        "name": "Renewal into susceptible population",
+        "rate": "",
+        "rateParameter": "//@parameters.0",
+        "targetCompartment": "//@compartments.0",
+        "targetStratum": ""
+      }
+    ],
+    "externalSinks": [
+      {
+        "name": "Natural death / loss from susceptible",
+        "rate": "",
+        "rateParameter": "//@parameters.1",
+        "sourceCompartment": "//@compartments.0",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Natural death / loss from infected",
+        "rate": "",
+        "rateParameter": "//@parameters.1",
+        "sourceCompartment": "//@compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Recovery from infection (implicit recovered class)",
+        "rate": "",
+        "rateParameter": "//@parameters.4",
+        "sourceCompartment": "//@compartments.1",
+        "sourceStratum": ""
+      },
+      {
+        "name": "Net bacterial loss from aquatic reservoir",
+        "rate": "",
+        "rateParameter": "//@parameters.8",
+        "sourceCompartment": "//@compartments.2",
+        "sourceStratum": ""
+      }
+    ]
+  }
+}

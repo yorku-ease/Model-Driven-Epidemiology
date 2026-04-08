@@ -231,7 +231,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Analyze all models in default directory (phase 1/papers/epimde when present)
+  # Analyze all models in default directories (epimde + phase 2/data/diseases)
   python3 model_analyzer.py
 
   # Analyze models in specific directory
@@ -243,7 +243,7 @@ Examples:
     )
     
     parser.add_argument('--model-dir', 
-                       help='Directory containing .compmodel files (default: papers/epimde, else phase 2 baselines, else legacy Compartmental)')
+                       help='Directory containing .compmodel files (default: papers/epimde, else phase 2/data/diseases, else phase 2 baselines)')
     parser.add_argument('--model-file', 
                        help='Single model file to analyze (overrides --model-dir)')
     parser.add_argument('--model-name', 
