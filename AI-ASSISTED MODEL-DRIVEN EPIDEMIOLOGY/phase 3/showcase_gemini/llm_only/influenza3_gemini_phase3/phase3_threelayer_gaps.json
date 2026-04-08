@@ -1,0 +1,81 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "vaccinatedineffective"
+    ],
+    "missing_parameters": [
+      "communitytransmissionrate",
+      "hospitaltransmissionrate",
+      "effectivevaccinationrate",
+      "ineffectivevaccinationrate",
+      "protectiondelayrate",
+      "latentprogressionrate",
+      "hospitalizationrate",
+      "communityrecoveryrate",
+      "hospitalrecoveryrate",
+      "hospitalmortalityrate"
+    ],
+    "missing_flows": [
+      "Susceptible->VaccinatedEffectiveNotYetProtected",
+      "Susceptible->VaccinatedIneffective",
+      "VaccinatedEffectiveNotYetProtected->Latent",
+      "VaccinatedEffectiveNotYetProtected->ProtectedByVaccination",
+      "VaccinatedIneffective->Latent"
+    ],
+    "summary": {
+      "missing_compartments": 1,
+      "missing_parameters": 10,
+      "missing_flows": 5,
+      "total": 16
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "effectively vaccinated",
+      "ineffectively vaccinated"
+    ],
+    "extra_parameters": [
+      "kappa",
+      "gamma_1",
+      "gamma_2",
+      "alpha_i",
+      "delta_i",
+      "q",
+      "beta_ij",
+      "r0",
+      "e_i",
+      "gamma",
+      "nu(t)",
+      "vaccination_coverage",
+      "t*"
+    ],
+    "extra_flows": [
+      "Susceptible->Effectively Vaccinated",
+      "Susceptible->Ineffectively Vaccinated",
+      "Effectively Vaccinated->Protected",
+      "Effectively Vaccinated->Latent",
+      "Ineffectively Vaccinated->Latent"
+    ],
+    "summary": {
+      "extra_compartments": 2,
+      "extra_parameters": 13,
+      "extra_flows": 5,
+      "total": 20
+    }
+  },
+  "has_gold": true
+}

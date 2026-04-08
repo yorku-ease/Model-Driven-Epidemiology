@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="β" expression="0.532" type="CONSTANT" description="Transmission rate in the community before intervention." unit="per week" />
+  <parameters name="θ" expression="0.328" type="CONSTANT" description="Transmission rate in hospitals before intervention." unit="per week" />
+  <parameters name="φ" expression="2.104" type="CONSTANT" description="Transmission rate at funerals before intervention." unit="per week" />
+  <parameters name="η" expression="4.8 days" type="CONSTANT" description="Mean time from symptoms onset to hospitalization (table reports 1/η)." unit="days" />
+  <parameters name="b" expression="5.4 days" type="CONSTANT" description="Mean time from death to burial (table reports 1/b)." unit="days" />
+  <parameters name="γ" expression="10.4 days" type="CONSTANT" description="Mean duration of the infection (table reports 1/γ)." unit="days" />
+  <parameters name="α" expression="10 days" type="CONSTANT" description="Mean duration of the incubation period (table reports 1/α)." unit="days" />
+  <parameters name="γH" expression="4.6 days" type="CONSTANT" description="Average permanence in the hospital (table reports 1/γH)." unit="days" />
+  <parameters name="δ" expression="73%" type="CONSTANT" description="Case fatality ratio in the community." unit="proportion" />
+  <parameters name="δH" expression="61%" type="CONSTANT" description="Case fatality ratio in hospitals." unit="proportion" />
+  <parameters name="κ" expression="0.0025" type="CONSTANT" description="Hospital leaving rate." unit="per week" />
+  <parameters name="hospitalizationrate" expression="0.2" type="CONSTANT" />
+  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" description="Recovery from infectious state" />
+  <parameters name="deathratecommunity" expression="0.15" type="CONSTANT" />
+  <parameters name="recoveryratehospital" expression="0.1" type="CONSTANT" />
+  <parameters name="deathratehospital" expression="0.1" type="CONSTANT" />
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.4" target="//@compartments.1" description="Infection through contact with infectious individuals in the community, hospitalized patients, or dead patients not yet buried." />
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.2" description="Progression from latent infection to symptomatic infectious stage after the incubation period." />
+  </compartments>
+  <compartments PrimaryName="Infectious in the Community" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Hospitalization of infectious community cases." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.5" description="Recovery from infection in the community." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.4" description="Death from Ebola in the community, remaining infectious until burial." />
+  </compartments>
+  <compartments PrimaryName="Hospitalized Patients" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.2" description="Hospitalized patients abandoning healthcare facilities and returning to the community." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.5" description="Recovery from infection while hospitalized." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.4" description="Death from Ebola while hospitalized, remaining infectious until burial." />
+  </compartments>
+  <compartments PrimaryName="Dead Patients Not Yet Buried" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.7" description="Burial of deceased patients, removing them from the chain of transmission." />
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.5" target="//@compartments.5" description="No outgoing transition shown; recovered individuals are removed from transmission." />
+  </compartments>
+  <compartments PrimaryName="Cumulative Cases" population="0" />
+  <compartments PrimaryName="Burials" population="0" />
+</ns0:CompartmentalModel>

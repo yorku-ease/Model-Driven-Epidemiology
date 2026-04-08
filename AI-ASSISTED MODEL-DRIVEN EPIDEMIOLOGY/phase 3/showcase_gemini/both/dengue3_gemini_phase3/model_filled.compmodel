@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="β_hv" expression="0.0" type="CONSTANT" description="Transmission rate from infectious mosquitoes to humans, related to mosquito biting rate." />
+  <parameters name="β_vh" expression="0.0" type="CONSTANT" description="Transmission rate from infectious humans to susceptible mosquitoes." />
+  <parameters name="γ_h" expression="0.0" type="CONSTANT" description="Recovery rate for infectious humans (inverse of infectious period)." unit="1/day" />
+  <parameters name="σ_v" expression="0.0" type="CONSTANT" description="Rate of progression from exposed to infectious for mosquitoes (inverse of extrinsic incubation period)." unit="1/day" />
+  <parameters name="μ_h" expression="1/(67.5 * 365.25)" type="CONSTANT" description="Natural mortality rate for humans, based on a mean lifespan of 67.5 years." unit="1/day" />
+  <parameters name="μ_v" expression="0.0" type="CONSTANT" description="Natural mortality rate for mosquitoes." unit="1/day" />
+  <parameters name="Case fatality rate" expression="0.0003 to 0.0009" type="CONSTANT" description="Assumed proportion of symptomatic dengue cases that result in death." unit="deaths per symptomatic case" />
+  <parameters name="Default vaccine coverage" expression="0.80" type="CONSTANT" description="Default coverage for routine vaccination of 9-year-olds." unit="proportion" />
+  <parameters name="Default vaccination age" expression="9" type="CONSTANT" description="Default age for routine vaccination." unit="years" />
+  <parameters name="Discount rate" expression="0.03" type="CONSTANT" description="Discount rate for costs and health effects in economic evaluation." unit="per year" />
+  <parameters name="DALYs per symptomatic dengue case" expression="0.006" type="CONSTANT" description="Disability-Adjusted Life Years incurred per symptomatic dengue case." unit="DALYs" />
+  <parameters name="DALYs per severe dengue case" expression="0.02" type="CONSTANT" description="Disability-Adjusted Life Years incurred per severe dengue case." unit="DALYs" />
+  <parameters name="Cost per hospitalised case (public payer, Latin America)" expression="200" type="CONSTANT" description="Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting." unit="USD (2014)" />
+  <parameters name="primarytransmissionrate" expression="0.26" type="CONSTANT" description="Transmission parameter for primary infection" />
+  <parameters name="incubationrate" expression="0.20" type="CONSTANT" description="Progression from exposed to infectious" />
+  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" description="Recovery from infectious state" />
+  <parameters name="routinevaccinationrate" expression="0.05" type="CONSTANT" description="Routine vaccination of 9-year-olds" />
+  <parameters name="naturalcrossprotectionwaningrate" expression="0.02" type="CONSTANT" description="Waning of temporary heterologous protection after natural infection" />
+  <parameters name="vaccinecrossprotectionwaningrate" expression="0.03" type="CONSTANT" description="Waning of temporary heterologous protection after vaccination" />
+  <parameters name="secondarytransmissionrate" expression="0.30" type="CONSTANT" description="Transmission parameter for secondary-like infection after natural primary infection" />
+  <parameters name="postvaccinationtransmissionrate" expression="0.24" type="CONSTANT" description="Transmission parameter after vaccine-induced silent infection" />
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection." />
+  </compartments>
+  <compartments PrimaryName="Infectious Humans (Primary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.2" description="Recovery from a primary dengue infection." />
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Primary)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.3" contactRateParameter="//@parameters.0" target="//@compartments.3" description="Transmission of dengue from an infectious mosquito to a human who has had one prior infection, resulting in a secondary infection." />
+  </compartments>
+  <compartments PrimaryName="Infectious Humans (Secondary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Recovery from a secondary dengue infection." />
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Post-Secondary)" population="0" />
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.0" target="//@compartments.6" description="Transmission of dengue from an infectious human (primary or secondary) to a susceptible mosquito." />
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Progression of infected mosquitoes to an infectious state after the extrinsic incubation period." />
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0" />
+  <compartments PrimaryName="primarysusceptible">
+    <outgoingFlows target="//@compartments.9" />
+    <outgoingFlows target="//@compartments.12" />
+  </compartments>
+  <compartments PrimaryName="primaryexposed">
+    <outgoingFlows target="//@compartments.10" />
+  </compartments>
+  <compartments PrimaryName="primaryinfectious">
+    <outgoingFlows target="//@compartments.11" />
+  </compartments>
+  <compartments PrimaryName="postprimaryimmune">
+    <outgoingFlows target="//@compartments.13" />
+  </compartments>
+  <compartments PrimaryName="vaccinatedsilentinfection">
+    <outgoingFlows target="//@compartments.14" />
+  </compartments>
+  <compartments PrimaryName="secondarysusceptible">
+    <outgoingFlows target="//@compartments.15" />
+  </compartments>
+  <compartments PrimaryName="postvaccinationsusceptible">
+    <outgoingFlows target="//@compartments.15" />
+  </compartments>
+  <compartments PrimaryName="secondaryinfectious">
+    <outgoingFlows target="//@compartments.16" />
+  </compartments>
+  <compartments PrimaryName="postsecondaryimmune" />
+</ns0:CompartmentalModel>

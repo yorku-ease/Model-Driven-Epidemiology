@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="Force of infection" expression="Age-specific, see Table 1" type="CONSTANT" description="Age-specific per capita rate at which susceptible individuals (X and Xv) acquire infection. Values range from 0.0690 to 0.5167." unit="/person/year" />
+  <parameters name="Rate of progression from latency" expression="52.14" type="CONSTANT" description="Rate of moving from the Latent (H) to Infectious (Y) compartment, corresponding to an average latent period of 7 days." unit="/person/year" />
+  <parameters name="Rate of recovery from infection" expression="52.14" type="CONSTANT" description="Rate of recovery from the Infectious (Y) compartment, corresponding to an average infectious period of 7 days." unit="/person/year" />
+  <parameters name="Rate of loss of passive immunity" expression="40" type="CONSTANT" description="Rate at which maternal immunity wanes. The table lists 40/year, while also noting an average duration of 3 months (which corresponds to a rate of 4/year)." unit="/person/year" />
+  <parameters name="Vaccine efficacy" expression="0.9" type="CONSTANT" description="The proportion (p) of vaccinated individuals who become immune." unit="proportion" />
+  <parameters name="Birth rate" expression="666666" type="CONSTANT" description="Annual birth cohort in England and Wales." unit="persons/year" />
+  <parameters name="Background death rate" expression="1/60" type="CONSTANT" description="Background death rate assumed for the residual age group (15-75 years)." unit="/person/year" />
+  <parameters name="Contact rates" expression="Defined by WAIFW matrices" type="CONSTANT" description="Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children." unit="N/A" />
+  <parameters name="maternalimmunitylossrate" expression="0.167" type="CONSTANT" description="Representative loss rate of maternal protection; paper fitted duration of maternal immunity in the measles model" />
+  <parameters name="susceptibleinfectionrate" expression="0.80" type="CONSTANT" description="Baseline infection rate for susceptible individuals within one representative age-region stratum" />
+  <parameters name="effectivevaccinationrate" expression="0.03" type="CONSTANT" description="e_i * nu(t), effective vaccination rate for this representative age group" />
+  <parameters name="vaccinefailurerate" expression="0.02" type="CONSTANT" description="Vaccination flow from susceptible to vaccine-failure class, reflecting imperfect vaccine efficacy in the paper" />
+  <parameters name="vaccinefailureinfectionrate" expression="0.40" type="CONSTANT" description="Force of infection for vaccine-failure individuals exposed to wild virus; these individuals follow the same infection course as susceptibles once infected" />
+  <parameters name="latentprogressionrate" expression="0.526" type="CONSTANT" description="kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper" />
+  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" description="Recovery from infectious state" />
+  <compartments PrimaryName="Maternally Immune" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Waning of passive maternal immunity." />
+  </compartments>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.7" target="//@compartments.2" description="Infection of susceptible individuals through contact with infectious individuals." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Successful vaccination leading to immunity." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Vaccination that fails to confer protection." />
+  </compartments>
+  <compartments PrimaryName="Latent" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.3" description="Progression from latent to infectious state." />
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.4" description="Recovery from infection leading to immunity." />
+  </compartments>
+  <compartments PrimaryName="Immune" population="0" />
+  <compartments PrimaryName="Vaccine Failure" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.7" target="//@compartments.2" description="Infection of individuals with vaccine failure through contact with infectious individuals." />
+  </compartments>
+  <compartments PrimaryName="maternalimmunity">
+    <outgoingFlows target="//@compartments.1" />
+  </compartments>
+</ns0:CompartmentalModel>

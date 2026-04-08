@@ -1,0 +1,93 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "treatedclinicaldisease",
+      "untreatedclinicaldisease",
+      "asymptomaticpatentinfection",
+      "asymptomaticsubpatentinfection"
+    ],
+    "missing_parameters": [],
+    "missing_flows": [
+      "Susceptible->TreatedClinicalDisease",
+      "Susceptible->UntreatedClinicalDisease",
+      "Susceptible->AsymptomaticPatentInfection",
+      "TreatedClinicalDisease->Prophylaxis",
+      "UntreatedClinicalDisease->AsymptomaticPatentInfection",
+      "AsymptomaticPatentInfection->AsymptomaticSubPatentInfection",
+      "AsymptomaticSubPatentInfection->Susceptible"
+    ],
+    "summary": {
+      "missing_compartments": 4,
+      "missing_parameters": 0,
+      "missing_flows": 7,
+      "total": 11
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "treated clinical disease",
+      "untreated clinical disease",
+      "asymptomatic patent infection",
+      "asymptomatic sub-patent infection",
+      "latent mosquitoes",
+      "infectious mosquitoes"
+    ],
+    "extra_parameters": [
+      "\u03c6",
+      "ft",
+      "rt",
+      "rp",
+      "rd",
+      "ru",
+      "\u03bb",
+      "eir",
+      "hbi",
+      "llin_half_life",
+      "llin_adherence_decay",
+      "ddt_half_life",
+      "act_prophylaxis_duration",
+      "vaccine_efficacy",
+      "vaccine_half_life",
+      "llin_coverage",
+      "irs_coverage",
+      "msat_coverage",
+      "vaccine_coverage"
+    ],
+    "extra_flows": [
+      "Susceptible Humans->Treated Clinical Disease",
+      "Susceptible Humans->Untreated Clinical Disease",
+      "Susceptible Humans->Asymptomatic Patent Infection",
+      "Treated Clinical Disease->Prophylaxis",
+      "Untreated Clinical Disease->Asymptomatic Patent Infection",
+      "Untreated Clinical Disease->Treated Clinical Disease",
+      "Asymptomatic Patent Infection->Asymptomatic Sub-patent Infection",
+      "Asymptomatic Patent Infection->Treated Clinical Disease",
+      "Asymptomatic Sub-patent Infection->Susceptible Humans",
+      "Asymptomatic Sub-patent Infection->Treated Clinical Disease",
+      "Asymptomatic Sub-patent Infection->Asymptomatic Patent Infection",
+      "Susceptible Mosquitoes->Latent Mosquitoes",
+      "Latent Mosquitoes->Infectious Mosquitoes"
+    ],
+    "summary": {
+      "extra_compartments": 6,
+      "extra_parameters": 19,
+      "extra_flows": 13,
+      "total": 38
+    }
+  },
+  "has_gold": true
+}

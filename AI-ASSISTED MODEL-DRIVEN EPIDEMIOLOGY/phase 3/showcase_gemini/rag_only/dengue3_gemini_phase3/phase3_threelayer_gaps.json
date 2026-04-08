@@ -1,0 +1,98 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "primarysusceptible",
+      "primaryexposed",
+      "primaryinfectious",
+      "postprimaryimmune",
+      "vaccinatedsilentinfection",
+      "secondarysusceptible",
+      "postvaccinationsusceptible",
+      "secondaryinfectious",
+      "postsecondaryimmune"
+    ],
+    "missing_parameters": [
+      "primarytransmissionrate",
+      "incubationrate",
+      "recoveryrate",
+      "routinevaccinationrate",
+      "naturalcrossprotectionwaningrate",
+      "vaccinecrossprotectionwaningrate",
+      "secondarytransmissionrate",
+      "postvaccinationtransmissionrate"
+    ],
+    "missing_flows": [
+      "PrimarySusceptible->PrimaryExposed",
+      "PrimarySusceptible->VaccinatedSilentInfection",
+      "PrimaryExposed->PrimaryInfectious",
+      "PrimaryInfectious->PostPrimaryImmune",
+      "PostPrimaryImmune->SecondarySusceptible",
+      "VaccinatedSilentInfection->PostVaccinationSusceptible",
+      "SecondarySusceptible->SecondaryInfectious",
+      "PostVaccinationSusceptible->SecondaryInfectious",
+      "SecondaryInfectious->PostSecondaryImmune"
+    ],
+    "summary": {
+      "missing_compartments": 9,
+      "missing_parameters": 8,
+      "missing_flows": 9,
+      "total": 26
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "susceptible humans",
+      "infectious humans (primary)",
+      "recovered humans (primary)",
+      "infectious humans (secondary)",
+      "recovered humans (post-secondary)",
+      "susceptible mosquitoes",
+      "exposed mosquitoes",
+      "infectious mosquitoes"
+    ],
+    "extra_parameters": [
+      "\u03b2_hv",
+      "\u03b2_vh",
+      "\u03b3_h",
+      "\u03c3_v",
+      "\u03bc_h",
+      "\u03bc_v",
+      "case fatality rate",
+      "default vaccine coverage",
+      "default vaccination age",
+      "discount rate",
+      "dalys per symptomatic dengue case",
+      "dalys per severe dengue case",
+      "cost per hospitalised case (public payer, latin america)"
+    ],
+    "extra_flows": [
+      "Susceptible Humans->Infectious Humans (Primary)",
+      "Infectious Humans (Primary)->Recovered Humans (Primary)",
+      "Recovered Humans (Primary)->Infectious Humans (Secondary)",
+      "Infectious Humans (Secondary)->Recovered Humans (Post-Secondary)",
+      "Susceptible Mosquitoes->Exposed Mosquitoes",
+      "Exposed Mosquitoes->Infectious Mosquitoes"
+    ],
+    "summary": {
+      "extra_compartments": 8,
+      "extra_parameters": 13,
+      "extra_flows": 6,
+      "total": 27
+    }
+  },
+  "has_gold": true
+}

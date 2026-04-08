@@ -1,0 +1,82 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "maternalprotected",
+      "vaccinatedonedose",
+      "vaccinatedtwodose"
+    ],
+    "missing_parameters": [
+      "maternalimmunitylossrate",
+      "mmr1vaccinationrate",
+      "susceptibleinfectionrate",
+      "mmr2vaccinationrate",
+      "onedosebreakthroughrate",
+      "twodosebreakthroughrate",
+      "vaccinewaningrate",
+      "incubationprogressionrate",
+      "recoveryrate"
+    ],
+    "missing_flows": [
+      "MaternalProtected->Susceptible",
+      "Susceptible->VaccinatedOneDose",
+      "VaccinatedOneDose->VaccinatedTwoDose",
+      "VaccinatedOneDose->Exposed",
+      "VaccinatedTwoDose->Exposed",
+      "VaccinatedTwoDose->Susceptible"
+    ],
+    "summary": {
+      "missing_compartments": 3,
+      "missing_parameters": 9,
+      "missing_flows": 6,
+      "total": 18
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "single vaccinated",
+      "double vaccinated"
+    ],
+    "extra_parameters": [
+      "infection rate",
+      "duration of maternal immunity",
+      "seasonality of transmission",
+      "importation parameters",
+      "report rate of imported cases",
+      "vaccine effectiveness",
+      "existing immunity in older generations",
+      "parameters of spatial spread",
+      "waning rate",
+      "mmr1 coverage increase",
+      "mmr2 coverage increase",
+      "mmr2 schedule age",
+      "mmr2 school-entry age",
+      "current mmr2 schedule age",
+      "mmr1 schedule age"
+    ],
+    "extra_flows": [
+      "Susceptible->Single Vaccinated",
+      "Single Vaccinated->Double Vaccinated"
+    ],
+    "summary": {
+      "extra_compartments": 2,
+      "extra_parameters": 15,
+      "extra_flows": 2,
+      "total": 19
+    }
+  },
+  "has_gold": true
+}

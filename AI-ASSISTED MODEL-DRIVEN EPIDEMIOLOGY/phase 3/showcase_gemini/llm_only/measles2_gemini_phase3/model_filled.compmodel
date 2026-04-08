@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="infection rate" expression="estimated from model fitting" type="CONSTANT" description="Transmission intensity parameter used in the fitted transmission model." unit="not stated" />
+  <parameters name="duration of maternal immunity" expression="estimated from model fitting" type="CONSTANT" description="Average duration of maternally derived protection before susceptibility." unit="not stated" />
+  <parameters name="seasonality of transmission" expression="estimated from model fitting" type="CONSTANT" description="Parameters governing seasonal variation in measles transmission." unit="not stated" />
+  <parameters name="importation parameters" expression="estimated from model fitting" type="CONSTANT" description="Parameters governing imported measles cases and their reporting." unit="not stated" />
+  <parameters name="report rate of imported cases" expression="estimated from model fitting" type="CONSTANT" description="Probability that imported cases are reported." unit="not stated" />
+  <parameters name="vaccine effectiveness" expression="estimated from model fitting" type="CONSTANT" description="Effectiveness of measles vaccination in preventing infection/clinical disease." unit="not stated" />
+  <parameters name="existing immunity in older generations" expression="estimated from model fitting" type="CONSTANT" description="Background immunity among older age groups." unit="not stated" />
+  <parameters name="parameters of spatial spread" expression="estimated from model fitting" type="CONSTANT" description="Parameters describing geographic spread between regions." unit="not stated" />
+  <parameters name="waning rate" expression="estimated from previous work" type="CONSTANT" description="Rate of waning of vaccine-induced immunity in the sensitivity analysis with waning." unit="not stated" />
+  <parameters name="MMR1 coverage increase" expression="0.25%, 0.5%, 1%" type="CONSTANT" description="Scenario changes in annual first-dose coverage." unit="absolute percentage points" />
+  <parameters name="MMR2 coverage increase" expression="up to 3%" type="CONSTANT" description="Scenario changes in annual second-dose coverage." unit="absolute percentage points" />
+  <parameters name="MMR2 schedule age" expression="2 years" type="CONSTANT" description="Alternative second-dose timing used in simulations instead of 3 years and 4 months." unit="years" />
+  <parameters name="MMR2 school-entry age" expression="5 years" type="CONSTANT" description="Alternative second-dose timing at school entry." unit="years" />
+  <parameters name="current MMR2 schedule age" expression="3 years and 4 months" type="CONSTANT" description="Reference second-dose timing in England." unit="years and months" />
+  <parameters name="MMR1 schedule age" expression="1 year" type="CONSTANT" description="Reference first-dose timing in England." unit="years" />
+  <parameters name="maternalimmunitylossrate" expression="0.0001" type="CONSTANT" unit="per day" />
+  <parameters name="incubationprogressionrate" expression="5.0" type="CONSTANT" unit="days" />
+  <parameters name="recoveryrate" expression="7.0" type="CONSTANT" unit="days" />
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Measles infection through transmission/contact." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Receipt of the first measles-containing vaccine dose." />
+    <outgoingFlows target="//@compartments.7" />
+  </compartments>
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Progression from latent infection to infectiousness." />
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Recovery from infection with acquisition of immunity." />
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0" />
+  <compartments PrimaryName="Single Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Receipt of the second measles-containing vaccine dose." />
+  </compartments>
+  <compartments PrimaryName="Double Vaccinated" population="0" />
+  <compartments PrimaryName="maternalprotected">
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="vaccinatedonedose">
+    <outgoingFlows target="//@compartments.8" />
+    <outgoingFlows target="//@compartments.1" />
+  </compartments>
+  <compartments PrimaryName="vaccinatedtwodose">
+    <outgoingFlows target="//@compartments.1" />
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+</ns0:CompartmentalModel>

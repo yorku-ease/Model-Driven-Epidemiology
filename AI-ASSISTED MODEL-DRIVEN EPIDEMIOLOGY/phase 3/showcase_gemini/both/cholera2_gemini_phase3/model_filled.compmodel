@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="Initial vaccine protection" expression="76%" type="CONSTANT" description="Assumed initial protection after vaccination, estimated from a recent case-control study in Haiti." unit="percent" />
+  <parameters name="Vaccine protection duration" expression="60" type="CONSTANT" description="Protection was modeled to wane over 60 months after vaccination." unit="months" />
+  <parameters name="Single-dose protection duration" expression="1" type="CONSTANT" description="Single-dose protection was assumed to be the same as two-dose protection for the first year after vaccination, then drop to zero." unit="year" />
+  <parameters name="Children under 5 vaccine effectiveness multiplier" expression="46.9%" type="CONSTANT" description="Children younger than 5 years were assumed to have 46.9% of adult vaccine effectiveness." unit="relative to adults" />
+  <parameters name="Baseline two-dose vaccine coverage" expression="70%" type="CONSTANT" description="Baseline campaign coverage assumption." unit="percent" />
+  <parameters name="Baseline one-dose vaccine coverage" expression="10%" type="CONSTANT" description="Baseline campaign coverage assumption." unit="percent" />
+  <parameters name="No vaccine coverage" expression="20%" type="CONSTANT" description="Baseline campaign coverage assumption." unit="percent" />
+  <parameters name="High-coverage two-dose vaccine coverage" expression="95%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent" />
+  <parameters name="High-coverage one-dose vaccine coverage" expression="1.67%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent" />
+  <parameters name="High-coverage no vaccine coverage" expression="3.33%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent" />
+  <parameters name="βa" expression="0.35" type="CONSTANT" unit="1/week" description="Adult environmental transmission/contact rate" />
+  <parameters name="βc" expression="0.35" type="CONSTANT" unit="1/week" description="Child environmental transmission/contact rate" />
+  <parameters name="βa_2dose" expression="1" type="CONSTANT" unit="1/week" description="Breakthrough transmission rate for adults after two doses" />
+  <parameters name="βc_2dose" expression="1" type="CONSTANT" unit="1/week" description="Breakthrough transmission rate for children under 5 after two doses" />
+  <parameters name="βa_1dose" expression="1" type="CONSTANT" unit="1/week" description="Breakthrough transmission rate for adults after one dose" />
+  <parameters name="βc_1dose" expression="1" type="CONSTANT" unit="1/week" description="Breakthrough transmission rate for children under 5 after one dose" />
+  <parameters name="σ*k" expression="0.14" type="CONSTANT" unit="1/week" description="Progression from exposure to symptomatic infection" />
+  <parameters name="(1-σ)*k" expression="0.21" type="CONSTANT" unit="1/week" description="Progression from exposure to asymptomatic infection" />
+  <parameters name="γ" expression="0.11834" type="CONSTANT" unit="days" description="Probability an exposed host becomes symptomatic" />
+  <parameters name="ν2" expression="0.015" type="CONSTANT" unit="1/week" description="Campaign vaccination rate into two-dose classes; scenario-dependent rollout parameter" />
+  <parameters name="ν1" expression="0.002" type="CONSTANT" unit="1/week" description="Campaign vaccination rate into one-dose classes; scenario-dependent rollout parameter" />
+  <parameters name="ω2" expression="0.00385" type="CONSTANT" unit="1/week" description="Waning rate of two-dose protection; approximately 5-year horizon" />
+  <parameters name="ω1" expression="0.01923" type="CONSTANT" unit="1/week" description="Waning rate of one-dose protection; protection assumed lost after about 1 year" />
+  <parameters name="ωr" expression="0.01" type="CONSTANT" unit="1/week" description="Waning rate of natural immunity" />
+  <parameters name="ξs" expression="0.8" type="CONSTANT" unit="1/week" description="Shedding rate from symptomatic infectious individuals into environmental reservoir" />
+  <parameters name="ξa" expression="0.2" type="CONSTANT" unit="1/week" description="Shedding rate from asymptomatic infectious individuals into environmental reservoir" />
+  <parameters name="λa" expression="2500" type="CONSTANT" unit="persons/week" description="Recruitment rate into adult susceptible class" />
+  <parameters name="λc" expression="2500" type="CONSTANT" unit="persons/week" description="Recruitment rate into adult susceptible class" />
+  <parameters name="δ" expression="0.04545" type="CONSTANT" unit="days" description="human infection rate" />
+  <parameters name="μb" expression="0.6" type="CONSTANT" unit="1/week" description="Environmental bacterial decay rate" />
+  <parameters name="ve2a" expression="0.76" type="CONSTANT" unit="dimensionless" description="Initial effectiveness of two-dose OCV in adults" />
+  <parameters name="ve2c" expression="0.469" type="CONSTANT" unit="dimensionless" description="Two-dose vaccine effectiveness in children under 5, scaled as 46.9% of adult protection" />
+  <parameters name="ve1a" expression="0.76" type="CONSTANT" unit="dimensionless" description="One-dose adult protection during the first year, assumed equal initially to two-dose protection" />
+  <parameters name="ve1c" expression="0.469" type="CONSTANT" unit="dimensionless" description="One-dose protection in children under 5 during the first year" />
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Cholera infection/transmission from exposure to Vibrio cholerae." />
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.3" />
+    <outgoingFlows target="//@compartments.5" />
+    <outgoingFlows target="//@compartments.4" />
+    <outgoingFlows target="//@compartments.6" />
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Recovery from cholera infection." />
+    <outgoingFlows target="//@compartments.8" />
+  </compartments>
+  <compartments PrimaryName="Recovered" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.0" description="Waning of natural immunity back to susceptibility." />
+  </compartments>
+  <compartments PrimaryName="vaccinated adults (two doses)">
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="vaccinated children under 5 (two doses)">
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="vaccinated adults (one dose)">
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="vaccinated children under 5 (one dose)">
+    <outgoingFlows target="//@compartments.7" />
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="exposed / recently infected">
+    <outgoingFlows target="//@compartments.1" />
+  </compartments>
+  <compartments PrimaryName="environmental vibrio cholerae reservoir" />
+</ns0:CompartmentalModel>

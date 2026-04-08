@@ -26,10 +26,11 @@ This section answers how Phase 3 is implemented end-to-end: what “gold” mean
 
 The **gold standard** for gap detection and for **validation** is **not** computed automatically from PDFs. It is a **reference compartmental model** in `.compmodel` (XML) form, treated as ground truth for **structure** (compartment, parameter, stratification **names**) and for **parameter expressions/values** when validating fills.
 
-**Discovery order** (`run_phase3.py` → `_find_gold_standard`):
+**Discovery order** (`run_phase3.py` → `_find_gold_standard` → `find_gold_compmodel_for_run_stem` in `phase 2/src/utils/phase2_paths.py`):
 
-1. **`phase 2/data/baseline_models/*.compmodel`** — First file whose stem matches the inferred **disease** name (substring match, case-insensitive).
-2. Else **`phase 1/papers/**/*.compmodel`** — Same substring match on the filename stem.
+1. **`phase 2/data/diseases/<disease>/<stem>.compmodel`** — Exact stem match (case-insensitive) under the diseases benchmark tree. The report folder prefix (everything before `_llm_`) is used as the stem, e.g. `covid1_llm_openai_...` → looks for `covid1.compmodel` in any `diseases/*/` folder.
+2. Else **`phase 2/data/<disease>/<stem>.compmodel`** — Legacy flat layout without the `diseases/` wrapper.
+3. Else **`phase 2/data/baseline_models/*.compmodel`** — Legacy flat baseline directory (fallback).
 
 **What is loaded:**
 
@@ -119,6 +120,63 @@ This is **lexical / regex RAG** in the current implementation.
 
 ---
 
+## Results (benchmark: 10 diseases × 3 papers, fuzzy matching)
+
+Evaluated across **30 benchmark papers** (10 diseases × 3 papers each) with hand-authored gold `.compmodel` files.  
+Phase 2 baseline = best recall across OpenAI / Gemini / Claude per paper.  
+Phase 3 = RAG + LLM fill (Gemini, `showcase_gemini/both/`), scored against the same gold standard.
+
+| Metric | Phase 2 (best provider) | Phase 3 (RAG + LLM) | Improvement |
+|--------|------------------------|---------------------|-------------|
+| **Compartment Recall** | 0.85 | **0.94** | **+0.09** |
+| **Flow Recall** | 0.66 | **0.85** | **+0.19** |
+
+### Per-paper breakdown (Compartment Recall / Flow Recall)
+
+| Disease | P2 Best | P2 Comp R | P3 Comp R | Δ Comp | P2 Flow R | P3 Flow R | Δ Flow |
+|---------|---------|-----------|-----------|--------|-----------|-----------|--------|
+| Cholera P1 | claude | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Cholera P2 | gemini | 0.45 | 1.00 | **+0.55** | 0.24 | 1.00 | **+0.76** |
+| Cholera P3 | claude | 1.00 | 0.67 | -0.33 | 1.00 | — | — |
+| COVID-19 P1 | claude | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| COVID-19 P2 | claude | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| COVID-19 P3 | claude | 0.75 | 0.75 | +0.00 | 0.33 | — | — |
+| Dengue P1 | gemini | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Dengue P2 | openai | 0.57 | 1.00 | **+0.43** | 0.17 | 1.00 | **+0.83** |
+| Dengue P3 | claude | 0.67 | 1.00 | **+0.33** | 0.33 | 1.00 | **+0.67** |
+| Ebola P1 | claude | 1.00 | 0.83 | -0.17 | 0.88 | 0.62 | -0.25 |
+| Ebola P2 | claude | 1.00 | 0.83 | -0.17 | 1.00 | 0.71 | -0.29 |
+| Ebola P3 | claude | 0.83 | 0.83 | +0.00 | 0.38 | 0.62 | +0.25 |
+| HIV P1 | gemini | 0.89 | 1.00 | +0.11 | 0.70 | 1.00 | +0.30 |
+| HIV P2 | claude | 0.50 | 1.00 | **+0.50** | 0.14 | 1.00 | **+0.86** |
+| HIV P3 | openai | 0.20 | 1.00 | **+0.80** | 0.00 | 1.00 | **+1.00** |
+| Influenza P1 | claude | 1.00 | 0.75 | -0.25 | 0.80 | 0.80 | +0.00 |
+| Influenza P2 | gemini | 0.57 | 0.71 | +0.14 | 0.33 | 0.33 | +0.00 |
+| Influenza P3 | claude | 0.89 | 1.00 | +0.11 | 0.82 | 1.00 | +0.18 |
+| Malaria P1 | claude | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Malaria P2 | claude | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Malaria P3 | gemini | 1.00 | 1.00 | +0.00 | 0.56 | 1.00 | **+0.44** |
+| Measles P1 | gemini | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Measles P2 | claude | 0.86 | 1.00 | +0.14 | 0.56 | 1.00 | **+0.44** |
+| Measles P3 | gemini | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Tuberculosis P1 | claude | 1.00 | 0.75 | -0.25 | 0.50 | 0.50 | +0.00 |
+| Tuberculosis P2 | claude | 0.86 | 1.00 | +0.14 | 0.73 | 1.00 | +0.27 |
+| Tuberculosis P3 | claude | 0.71 | 1.00 | **+0.29** | 0.38 | 1.00 | **+0.62** |
+| Zika P1 | claude | 1.00 | 1.00 | +0.00 | 1.00 | 1.00 | +0.00 |
+| Zika P2 | gemini | 0.73 | 1.00 | +0.27 | 0.57 | 1.00 | **+0.43** |
+| Zika P3 | claude | 1.00 | 1.00 | +0.00 | 0.40 | 1.00 | **+0.60** |
+| **Average** | | **0.85** | **0.94** | **+0.09** | **0.66** | **0.85** | **+0.19** |
+
+**Key observations:**
+- Flow recall improved the most (+0.19 avg) — flows are structurally the hardest elements to extract.
+- Papers 2 and 3 (harder, unseen variations) benefited most — e.g. HIV P3: +0.80 comp / +1.00 flow.
+- Minor regressions on some paper-1 diseases (Ebola, Influenza, Tuberculosis P1) that were already well-extracted; Phase 3 sometimes over-fills these.
+- RAG-only and RAG+LLM produce identical averages — LLM inference adds value on individual parameter fills but not aggregate structural recall.
+
+Regenerate: `python3 build_phase3_results_md.py --showcase showcase_gemini -o RESULTS_PHASE3_GEMINI.md`
+
+---
+
 ## Directory layout
 
 ```
@@ -149,7 +207,12 @@ After a showcase run, `SHOWCASE_REPORT.md` summarizes per-disease winners across
 
 ## Adding diseases
 
-Nothing is hardcoded: providers and diseases are inferred from directory names. New work: run Phase 2 → add or name a baseline in `phase 2/data/baseline_models/` so gold discovery succeeds → `build_database.py` → Phase 3.
+Nothing is hardcoded: providers and diseases are inferred from directory names. New work:
+
+1. Place PDF + gold model pair in `phase 2/data/diseases/<disease>/<stem>.pdf` + `<stem>.compmodel` (e.g. `diseases/covid/covid2.pdf` + `covid2.compmodel`).
+2. Run Phase 2: `python run_phase2.py --paper data/diseases/<disease>/<stem>.pdf --llm-provider openai` → creates `reports/<stem>_llm_openai_<timestamp>/`.
+3. Rebuild the database: `python build_database.py`.
+4. Run Phase 3: `python run_phase3.py --all --output reports`.
 
 ## Documentation
 

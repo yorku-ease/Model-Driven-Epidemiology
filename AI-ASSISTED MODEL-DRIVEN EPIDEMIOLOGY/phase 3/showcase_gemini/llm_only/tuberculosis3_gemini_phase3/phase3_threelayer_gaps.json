@@ -1,0 +1,126 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "recenttbinfection",
+      "remotetbinfection",
+      "activetbsmearpositive",
+      "activetbsmearnegative",
+      "activetbextrapulmonary",
+      "recentlytreatedrecovered"
+    ],
+    "missing_parameters": [
+      "infectionratefromsmearpositive",
+      "infectionratefromsmearnegative",
+      "recenttoremotestabilizationrate",
+      "rapidprogressiontosmearpositiverate",
+      "rapidprogressiontosmearnegativerate",
+      "rapidprogressiontoextrapulmonaryrate",
+      "reinfectionratefromsmearpositive",
+      "reinfectionratefromsmearnegative",
+      "remotereactivationtosmearpositiverate",
+      "remotereactivationtosmearnegativerate",
+      "remotereactivationtoextrapulmonaryrate",
+      "treatmentorselfcureratesmearpositive",
+      "treatmentorselfcureratesmearnegative",
+      "treatmentorselfcurerateextrapulmonary",
+      "recoveredtoremotestabilizationrate",
+      "relapsetosmearpositiverate",
+      "relapsetosmearnegativerate",
+      "relapsetoextrapulmonaryrate"
+    ],
+    "missing_flows": [
+      "Uninfected->RecentTBInfection",
+      "RecentTBInfection->RemoteTBInfection",
+      "RecentTBInfection->ActiveTBSmearPositive",
+      "RecentTBInfection->ActiveTBSmearNegative",
+      "RecentTBInfection->ActiveTBExtrapulmonary",
+      "RemoteTBInfection->RecentTBInfection",
+      "RemoteTBInfection->ActiveTBSmearPositive",
+      "RemoteTBInfection->ActiveTBSmearNegative",
+      "RemoteTBInfection->ActiveTBExtrapulmonary",
+      "ActiveTBSmearPositive->RecentlyTreatedRecovered",
+      "ActiveTBSmearNegative->RecentlyTreatedRecovered",
+      "ActiveTBExtrapulmonary->RecentlyTreatedRecovered",
+      "RecentlyTreatedRecovered->RemoteTBInfection",
+      "RecentlyTreatedRecovered->ActiveTBSmearPositive",
+      "RecentlyTreatedRecovered->ActiveTBSmearNegative",
+      "RecentlyTreatedRecovered->ActiveTBExtrapulmonary"
+    ],
+    "summary": {
+      "missing_compartments": 6,
+      "missing_parameters": 18,
+      "missing_flows": 16,
+      "total": 40
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "recently infected latent tb",
+      "remotely infected latent tb",
+      "active tb smear-positive pulmonary",
+      "active tb smear-negative pulmonary",
+      "active tb extrapulmonary",
+      "recently treated and recovered"
+    ],
+    "extra_parameters": [
+      "beta",
+      "relative_infectiousness_smear_negative",
+      "relative_rate_early_progression",
+      "rapid_progression_rate",
+      "slow_progression_rate",
+      "proportion_extrapulmonary",
+      "proportion_smear_positive",
+      "mortality_rate_smear_positive",
+      "mortality_rate_smear_negative_extrapulmonary",
+      "natural_cure_rate_smear_positive",
+      "natural_cure_rate_smear_negative_extrapulmonary",
+      "informal_sector_size",
+      "treatment_success_notified_2008",
+      "treatment_success_informal",
+      "relapse_rate",
+      "population_growth_rate",
+      "diagnostic_rate_smear_positive_2008",
+      "diagnostic_rate_smear_negative_2008",
+      "diagnostic_rate_extrapulmonary_2008"
+    ],
+    "extra_flows": [
+      "Uninfected->Recently Infected Latent TB",
+      "Recently Infected Latent TB->Remotely Infected Latent TB",
+      "Recently Infected Latent TB->Active TB Smear-Positive Pulmonary",
+      "Recently Infected Latent TB->Active TB Smear-Negative Pulmonary",
+      "Recently Infected Latent TB->Active TB Extrapulmonary",
+      "Remotely Infected Latent TB->Active TB Smear-Positive Pulmonary",
+      "Remotely Infected Latent TB->Active TB Smear-Negative Pulmonary",
+      "Remotely Infected Latent TB->Active TB Extrapulmonary",
+      "Remotely Infected Latent TB->Recently Infected Latent TB",
+      "Active TB Smear-Positive Pulmonary->Recently Treated and Recovered",
+      "Active TB Smear-Negative Pulmonary->Recently Treated and Recovered",
+      "Active TB Extrapulmonary->Recently Treated and Recovered",
+      "Recently Treated and Recovered->Active TB Smear-Positive Pulmonary",
+      "Recently Treated and Recovered->Active TB Smear-Negative Pulmonary",
+      "Recently Treated and Recovered->Active TB Extrapulmonary",
+      "Recently Treated and Recovered->Recently Infected Latent TB"
+    ],
+    "summary": {
+      "extra_compartments": 6,
+      "extra_parameters": 19,
+      "extra_flows": 16,
+      "total": 41
+    }
+  },
+  "has_gold": true
+}

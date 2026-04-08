@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="β_vh" expression="0.01–0.4" type="CONSTANT" description="Mosquito to human transmission rate" unit="per day" />
+  <parameters name="β_hv" expression="0.09–0.5" type="CONSTANT" description="Human to mosquito transmission rate" unit="per day" />
+  <parameters name="β_wm" expression="0.001–0.1" type="CONSTANT" description="Women to men sexual transmission rate" unit="per day" />
+  <parameters name="β_mw" expression="0.01–0.1" type="CONSTANT" description="Men to women sexual transmission rate" unit="per day" />
+  <parameters name="ϕ" expression="0.10–0.27" type="CONSTANT" description="Proportion of symptomatic infections" unit="dimensionless" />
+  <parameters name="1/λ_h" expression="6.8" type="CONSTANT" description="Intrinsic latent period (human), assumed constant at 6.8 days" unit="days" />
+  <parameters name="1/λ_v" expression="10" type="CONSTANT" description="Extrinsic latent period (mosquito), assumed constant at 10 days" unit="days" />
+  <parameters name="1/γ_1" expression="10–20" type="CONSTANT" description="Mean time to viral clearance from blood" unit="days" />
+  <parameters name="1/γ_2" expression="10–30" type="CONSTANT" description="Mean time to viral clearance from semen (after clearance from blood)" unit="days" />
+  <parameters name="1/γ_3" expression="1–20" type="CONSTANT" description="Mean time to viral clearance from vaginal fluids (after clearance from blood)" unit="days" />
+  <parameters name="1/ν" expression="14" type="CONSTANT" description="Mosquito life span, assumed constant at 14 days" unit="days" />
+  <parameters name="ρ" expression="~7%" type="CONSTANT" description="Proportion of risky sexual interactions in the population (varies by municipality)" unit="dimensionless" />
+  <parameters name="a" expression="0.0" type="CONSTANT" description="Blood feeding rate of mosquitoes" unit="per day" />
+  <parameters name="b" expression="0.0" type="CONSTANT" description="Virus transmissibility from mosquito to human" unit="dimensionless" />
+  <parameters name="c" expression="0.0" type="CONSTANT" description="Virus transmissibility from human to mosquito" unit="dimensionless" />
+  <parameters name="m" expression="0.0" type="CONSTANT" description="Ratio of female mosquitoes to humans" unit="dimensionless" />
+  <compartments PrimaryName="Susceptible Women" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Women infected by bite of infectious mosquitoes, rate β_vh * S_w * I_v" />
+  </compartments>
+  <compartments PrimaryName="Exposed Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.2" description="Progression from exposed to symptomatic infectious, rate ϕ * λ_h * E_w" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.3" description="Progression from exposed to asymptomatic infectious, rate (1-ϕ) * λ_h * E_w" />
+    <outgoingFlows target="//@compartments.15" />
+    <outgoingFlows target="//@compartments.16" />
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.4" description="Viral clearance from blood, rate γ_1 * I_ws" />
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious Women" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.4" description="Viral clearance from blood, rate γ_1 * I_wa" />
+  </compartments>
+  <compartments PrimaryName="Infectious Women Genital Only" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.5" description="Viral clearance from vaginal fluids, rate γ_3 * I_w" />
+  </compartments>
+  <compartments PrimaryName="Recovered Women" population="0" />
+  <compartments PrimaryName="Susceptible Men" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRateParameter="//@parameters.0" target="//@compartments.7" description="Men infected by bite of infectious mosquitoes, rate β_vh * S_m * I_v" />
+  </compartments>
+  <compartments PrimaryName="Exposed Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.8" description="Progression from exposed to symptomatic infectious, rate ϕ * λ_h * E_m" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.9" description="Progression from exposed to asymptomatic infectious, rate (1-ϕ) * λ_h * E_m" />
+    <outgoingFlows target="//@compartments.18" />
+    <outgoingFlows target="//@compartments.19" />
+  </compartments>
+  <compartments PrimaryName="Symptomatic Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.10" description="Viral clearance from blood, rate γ_1 * I_ms" />
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infectious Men" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.10" description="Viral clearance from blood, rate γ_1 * I_ma" />
+  </compartments>
+  <compartments PrimaryName="Infectious Men Genital Only" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.11" description="Viral clearance from semen, rate γ_2 * I_m" />
+  </compartments>
+  <compartments PrimaryName="Recovered Men" population="0" />
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.13" contactRateParameter="//@parameters.1" target="//@compartments.13" description="Mosquitoes infected by biting infectious humans with viral load in blood (I_ms, I_ma, I_ws, I_wa), rate β_hv * S_v * (I_ms + I_ma + I_ws + I_wa)" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.12" description="Birth of new susceptible mosquitoes, rate ν * N_v" />
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.14" description="Progression from exposed to infectious mosquito, rate λ_v * E_v" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.13" description="Natural death of exposed mosquitoes, rate ν * E_v" />
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.14" description="Natural death of infectious mosquitoes, rate ν * I_v" />
+  </compartments>
+  <compartments PrimaryName="infectiouswomensymptomaticblood">
+    <outgoingFlows target="//@compartments.17" />
+  </compartments>
+  <compartments PrimaryName="infectiouswomenasymptomaticblood">
+    <outgoingFlows target="//@compartments.17" />
+  </compartments>
+  <compartments PrimaryName="infectiouswomengenitalpersistence">
+    <outgoingFlows target="//@compartments.5" />
+  </compartments>
+  <compartments PrimaryName="infectiousmensymptomaticblood">
+    <outgoingFlows target="//@compartments.20" />
+  </compartments>
+  <compartments PrimaryName="infectiousmenasymptomaticblood">
+    <outgoingFlows target="//@compartments.20" />
+  </compartments>
+  <compartments PrimaryName="infectiousmensemenpersistence">
+    <outgoingFlows target="//@compartments.11" />
+  </compartments>
+</ns0:CompartmentalModel>

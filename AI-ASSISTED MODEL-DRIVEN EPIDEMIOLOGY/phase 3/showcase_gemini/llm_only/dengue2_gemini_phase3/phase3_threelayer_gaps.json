@@ -1,0 +1,73 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "exposed",
+      "vaccinated",
+      "vaccinatedinfected",
+      "vaccinatedrecovered"
+    ],
+    "missing_parameters": [
+      "transmissionrate",
+      "incubationrate",
+      "recoveryrate",
+      "screeningandvaccinationrate",
+      "vaccinebreakthroughrate"
+    ],
+    "missing_flows": [
+      "Susceptible->Exposed",
+      "Susceptible->Vaccinated",
+      "Exposed->Infectious",
+      "Vaccinated->VaccinatedInfected",
+      "VaccinatedInfected->VaccinatedRecovered"
+    ],
+    "summary": {
+      "missing_compartments": 4,
+      "missing_parameters": 5,
+      "missing_flows": 5,
+      "total": 14
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [],
+    "extra_parameters": [
+      "per-exposure protection from vaccination for seronegative vaccinees",
+      "per-exposure protection from vaccination for seropositive vaccinees",
+      "average duration of protection for seronegative vaccinees",
+      "average duration of protection for seropositive vaccinees",
+      "probability of symptoms conditional on infection (primary)",
+      "probability of symptoms conditional on infection (secondary)",
+      "probability of symptoms conditional on infection (post-secondary)",
+      "probability of hospitalization conditional on symptoms (primary)",
+      "probability of hospitalization conditional on symptoms (secondary)",
+      "probability of hospitalization conditional on symptoms (post-secondary)",
+      "probability of death conditional on symptomatic disease",
+      "probability of mosquito to human transmission",
+      "mosquito emergence rate"
+    ],
+    "extra_flows": [
+      "Susceptible Humans->Infectious Humans",
+      "Susceptible Mosquitoes->Infectious Mosquitoes"
+    ],
+    "summary": {
+      "extra_compartments": 0,
+      "extra_parameters": 13,
+      "extra_flows": 2,
+      "total": 15
+    }
+  },
+  "has_gold": true
+}

@@ -1,0 +1,114 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "latentinfection",
+      "infectioustuberculosis",
+      "noninfectioustuberculosis",
+      "ontreatment",
+      "treatmentfailurestate",
+      "selfcuredstate"
+    ],
+    "missing_parameters": [
+      "primaryinfectiontolatentrate",
+      "primaryinfectiontoinfectiousrate",
+      "primaryinfectiontononinfectiousrate",
+      "latentreactivationtoinfectiousrate",
+      "latentreactivationtononinfectiousrate",
+      "exogenousreinfectiontoinfectiousrate",
+      "exogenousreinfectiontononinfectiousrate",
+      "infectiouscasedetectionrate",
+      "infectiousselfcurerate",
+      "noninfectiouscasedetectionrate",
+      "noninfectiousselfcurerate",
+      "treatmentcurerate",
+      "treatmentfailurerate",
+      "failurerelapsetoinfectiousrate",
+      "failurerelapsetononinfectiousrate",
+      "selfcurerelapsetoinfectiousrate",
+      "selfcurerelapsetononinfectiousrate"
+    ],
+    "missing_flows": [
+      "Susceptible->LatentInfection",
+      "Susceptible->InfectiousTuberculosis",
+      "Susceptible->NonInfectiousTuberculosis",
+      "LatentInfection->InfectiousTuberculosis",
+      "LatentInfection->NonInfectiousTuberculosis",
+      "InfectiousTuberculosis->OnTreatment",
+      "InfectiousTuberculosis->SelfCuredState",
+      "NonInfectiousTuberculosis->OnTreatment",
+      "NonInfectiousTuberculosis->SelfCuredState",
+      "OnTreatment->LatentInfection",
+      "OnTreatment->TreatmentFailureState",
+      "TreatmentFailureState->InfectiousTuberculosis",
+      "TreatmentFailureState->NonInfectiousTuberculosis",
+      "SelfCuredState->InfectiousTuberculosis",
+      "SelfCuredState->NonInfectiousTuberculosis"
+    ],
+    "summary": {
+      "missing_compartments": 6,
+      "missing_parameters": 17,
+      "missing_flows": 15,
+      "total": 38
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "latent infection",
+      "infectious tuberculosis",
+      "non-infectious tuberculosis",
+      "treatment failure",
+      "cured but latently infected",
+      "self-cured"
+    ],
+    "extra_parameters": [
+      "case detection rate",
+      "cure rate",
+      "case detection rate, old programme",
+      "fraction cured, old programme",
+      "relative case detection rate of non-infectious cases",
+      "annual risk of infection",
+      "incidence rate, all forms",
+      "incidence rate, infectious cases",
+      "prevalence rate, infectious cases",
+      "death rate, all forms",
+      "population growth",
+      "change in annual risk of infection",
+      "change in incidence rate",
+      "change in death rate",
+      "change in contact rate",
+      "hiv-1 infection in tuberculosis cases, 2020"
+    ],
+    "extra_flows": [
+      "Susceptible->Latent Infection",
+      "Latent Infection->Infectious Tuberculosis",
+      "Infectious Tuberculosis->Treatment Failure",
+      "Infectious Tuberculosis->Cured but Latently Infected",
+      "Non-infectious Tuberculosis->Treatment Failure",
+      "Non-infectious Tuberculosis->Cured but Latently Infected",
+      "Treatment Failure->Infectious Tuberculosis",
+      "Treatment Failure->Latent Infection",
+      "Self-cured->Latent Infection"
+    ],
+    "summary": {
+      "extra_compartments": 6,
+      "extra_parameters": 16,
+      "extra_flows": 9,
+      "total": 31
+    }
+  },
+  "has_gold": true
+}

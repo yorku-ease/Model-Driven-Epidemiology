@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="H" expression="total human population" type="CONSTANT" description="Total human population size; assumed constant." unit="persons" />
+  <parameters name="n" expression="human birth and death rates" type="CONSTANT" description="Renewal rate of susceptibles through birth, immigration, and/or loss of acquired immunity." unit="day^-1" />
+  <parameters name="a" expression="rate of exposure to contaminated water" type="CONSTANT" description="Contact rate with untreated water." unit="day^-1" />
+  <parameters name="K" expression="concentration of Vibrio cholerae in water that yields 50% chance of catching cholera" type="CONSTANT" description="Dose-response midpoint for infection probability." unit="cells/ml" />
+  <parameters name="r" expression="rate at which people recover from cholera" type="CONSTANT" description="Recovery rate from infection." unit="day^-1" />
+  <parameters name="nb" expression="growth rate of Vibrio cholerae in the aquatic environment" type="CONSTANT" description="Environmental bacterial growth rate." unit="day^-1" />
+  <parameters name="mb" expression="loss rate of Vibrio cholerae in the aquatic environment" type="CONSTANT" description="Environmental bacterial loss/extinction rate." unit="day^-1" />
+  <parameters name="e" expression="contribution of each infected person to the population of Vibrio cholerae in the aquatic environment" type="CONSTANT" description="Average per-capita bacterial input from infected individuals." unit="cells/ml/day/person" />
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection from ingestion of contaminated water at rate a·λ(B), where λ(B) depends on bacterial concentration in water." />
+  </compartments>
+  <compartments PrimaryName="Infectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Recovery from cholera at rate r, returning individuals to the susceptible class because immunity is not lifelong." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Contribution of infected people to the aquatic bacterial population through excretion at rate e." />
+  </compartments>
+  <compartments PrimaryName="Aquatic Reservoir of Vibrio cholerae" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Local bacterial growth in the aquatic environment at rate nb." />
+  </compartments>
+  <compartments PrimaryName="aquatic toxigenic vibrio cholerae" />
+</ns0:CompartmentalModel>
