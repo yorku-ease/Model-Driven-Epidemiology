@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Kucharski et al. (2016)
+    Transmission Dynamics of Zika Virus in Island Populations:
+    A Modelling Analysis of the 2013–14 French Polynesia Outbreak
+
+    This .compmodel is based directly on Figure 1 and Equations (1)-(8).
+
+    The paper explicitly models:
+      Humans:
+        SH = susceptible humans
+        EH = exposed/incubating humans
+        IH = infectious humans
+        RH = recovered humans
+      Mosquitoes:
+        SV = susceptible mosquitoes
+        EV = exposed/incubating mosquitoes
+        IV = infectious mosquitoes
+
+    Core paper-aligned transitions preserved:
+      SH -> EH     infection of humans from infectious mosquitoes
+      EH -> IH     intrinsic incubation progression
+      IH -> RH     recovery of humans
+      SV -> EV     infection of mosquitoes from infectious humans
+      EV -> IV     extrinsic incubation progression
+
+    Important note:
+      The paper also tracks C, the cumulative number of infected humans, for fitting the
+      model to weekly case reports. Because C is an observation accumulator rather than a
+      disease state, it is not represented as a compartment here.
+      Human births and deaths are omitted in the paper's outbreak model because the outbreak
+      duration is short, while mosquito births and deaths are represented implicitly in the
+      vector equations and preserved here semantically through parameter names.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="SusceptibleHumans" population="9900">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.6"
+      contactRateParameter="//@parameters.0"
+      description="Vector-to-human transmission; corresponds to beta_H * S_H * I_V in Equation (1)"/>
+  </compartments>
+
+  <!-- 1 -->
+  <compartments PrimaryName="ExposedHumans" population="50">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.1"
+      description="Progression through intrinsic incubation period; corresponds to alpha_H * E_H in Equations (2) and (3)"/>
+  </compartments>
+
+  <!-- 2 -->
+  <compartments PrimaryName="InfectiousHumans" population="50">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.2"
+      description="Recovery of infectious humans; corresponds to gamma * I_H in Equations (3) and (4)"/>
+  </compartments>
+
+  <!-- 3 -->
+  <compartments PrimaryName="RecoveredHumans" population="0"/>
+
+  <!-- 4 -->
+  <compartments PrimaryName="SusceptibleMosquitoes" population="20000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.5"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.3"
+      description="Human-to-vector transmission; corresponds to beta_V * S_V * I_H / N in Equation (6)"/>
+  </compartments>
+
+  <!-- 5 -->
+  <compartments PrimaryName="ExposedMosquitoes" population="100">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.4"
+      description="Progression through extrinsic incubation period; corresponds to alpha_V * E_V in Equations (7) and (8)"/>
+  </compartments>
+
+  <!-- 6 -->
+  <compartments PrimaryName="InfectiousMosquitoes" population="20"/>
+
+  <!-- Parameters -->
+  <parameters name="VectorToHumanTransmissionRate" expression="0.45"
+    description="beta_H, transmission rate from infectious mosquitoes to susceptible humans, as defined in the paper"/>
+  <parameters name="HumanLatentProgressionRate" expression="0.169"
+    description="alpha_H, progression rate from exposed to infectious in humans; mean latent period about 5.9 days in the paper"/>
+  <parameters name="HumanRecoveryRate" expression="0.20"
+    description="gamma, recovery rate of infectious humans; mean infectious period about 5 days in the paper"/>
+  <parameters name="HumanToVectorTransmissionRate" expression="0.40"
+    description="beta_V, transmission rate from infectious humans to susceptible mosquitoes, as defined in the paper"/>
+  <parameters name="MosquitoLatentProgressionRate" expression="0.095"
+    description="alpha_V, progression rate from exposed to infectious in mosquitoes; mean extrinsic incubation period about 10.5 days in the paper"/>
+  <parameters name="MosquitoDeathRate" expression="0.128"
+    description="delta, mosquito death rate; mean mosquito lifespan about 7.8 days in the paper"/>
+  <parameters name="ReportingProportion" expression="0.115"
+    description="r, representative proportion of total infections reported as suspected cases across regions, included for semantic fidelity to the inference model"/>
+  <parameters name="ReportingDispersion" expression="0.30"
+    description="phi, reporting dispersion parameter used in the negative-binomial observation model"/>
+
+</compartmental:CompartmentalModel>

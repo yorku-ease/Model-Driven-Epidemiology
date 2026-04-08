@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Griffin et al. (2010)
+    Reducing Plasmodium falciparum Malaria Transmission in Africa:
+    A Model-Based Evaluation of Intervention Strategies
+
+    This .compmodel is based directly on the human flow diagram in Figure 1A
+    and the accompanying text.
+
+    Human compartments in the paper:
+      S = susceptible
+      T = treated clinical disease
+      D = untreated clinical disease
+      P = prophylaxis after treatment
+      A = asymptomatic patent infection
+      U = asymptomatic sub-patent infection
+
+    Key paper structure preserved:
+      - New infection from S can lead to clinical disease or asymptomatic infection
+      - Clinical disease may be treated (T) or untreated (D)
+      - Successful treatment leads to prophylaxis (P) then back to susceptible (S)
+      - Untreated disease resolves into asymptomatic patent infection (A)
+      - Patent asymptomatic infection progresses to sub-patent infection (U)
+      - Sub-patent infection clears back to susceptible (S)
+      - Reinfection / superinfection is possible from infected states in the paper,
+        but this .compmodel captures the core state structure and main progression graph.
+
+    Important note:
+      The paper is an individual-based human-vector model with dynamic immunity and
+      aggregated vectors stratified by species. The compmodel metamodel is best suited
+      to the human state-transition diagram, so this file faithfully encodes the human
+      compartment structure from Figure 1A and represents intervention-related states
+      through treatment and prophylaxis.
+  -->
+
+  <!-- 0: Susceptible -->
+  <compartments PrimaryName="Susceptible" population="9900">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.0"
+      description="Infection of susceptible individuals leading to clinical disease that is successfully treated; derived from phi * lambda and treatment probability f_T in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.1"
+      description="Infection of susceptible individuals leading to untreated clinical disease; derived from phi * lambda and treatment failure probability (1-f_T) in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.4"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.2"
+      description="Infection of susceptible individuals leading directly to asymptomatic patent infection; derived from lambda * (1-phi) in the paper"/>
+  </compartments>
+
+  <!-- 1: Treated clinical disease -->
+  <compartments PrimaryName="TreatedClinicalDisease" population="25">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.3"
+      description="Successful treatment clears infection and moves the individual into prophylactic protection; corresponds to T -> P with rate r_T in the paper"/>
+  </compartments>
+
+  <!-- 2: Untreated clinical disease -->
+  <compartments PrimaryName="UntreatedClinicalDisease" population="25">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.4"
+      description="Untreated clinical disease resolves into patent asymptomatic infection; corresponds to D -> A with rate r_D in the paper"/>
+  </compartments>
+
+  <!-- 3: Prophylaxis -->
+  <compartments PrimaryName="Prophylaxis" population="10">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.0"
+      rateParameter="//@parameters.5"
+      description="Loss of prophylactic protection and return to susceptibility; corresponds to P -> S with rate r_P in the paper"/>
+  </compartments>
+
+  <!-- 4: Asymptomatic patent infection -->
+  <compartments PrimaryName="AsymptomaticPatentInfection" population="30">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.6"
+      description="Patent asymptomatic infection becomes sub-patent; corresponds to A -> U with rate r_A in the paper"/>
+  </compartments>
+
+  <!-- 5: Asymptomatic subPatent infection -->
+  <compartments PrimaryName="AsymptomaticSubPatentInfection" population="10">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.0"
+      rateParameter="//@parameters.7"
+      description="Sub-patent infection clears and individual becomes susceptible again; corresponds to U -> S with rate r_U in the paper"/>
+  </compartments>
+
+  <!-- Parameters -->
+  <parameters name="ClinicalTreatedInfectionRate" expression="0.18"
+    description="Approximate infection-to-treated-clinical transition intensity representing phi * lambda * f_T in the paper"/>
+  <parameters name="ClinicalUntreatedInfectionRate" expression="0.08"
+    description="Approximate infection-to-untreated-clinical transition intensity representing phi * lambda * (1-f_T) in the paper"/>
+  <parameters name="AsymptomaticInfectionRate" expression="0.22"
+    description="Approximate infection-to-asymptomatic transition intensity representing lambda * (1-phi) in the paper"/>
+  <parameters name="TreatmentToProphylaxisRate" expression="1.0"
+    description="Rate r_T from treated clinical disease to prophylaxis"/>
+  <parameters name="UntreatedDiseaseResolutionRate" expression="0.35"
+    description="Rate r_D from untreated clinical disease to patent asymptomatic infection"/>
+  <parameters name="ProphylaxisLossRate" expression="0.20"
+    description="Rate r_P for loss of prophylactic protection and return to susceptibility"/>
+  <parameters name="PatentToSubPatentRate" expression="0.12"
+    description="Rate r_A from patent asymptomatic infection to sub-patent infection"/>
+  <parameters name="SubPatentClearanceRate" expression="0.10"
+    description="Rate r_U from sub-patent infection to susceptible"/>
+
+</compartmental:CompartmentalModel>

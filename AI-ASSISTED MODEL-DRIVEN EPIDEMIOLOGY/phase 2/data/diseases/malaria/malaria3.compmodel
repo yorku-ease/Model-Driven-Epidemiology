@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Okell et al. (2011)
+    The Potential Contribution of Mass Treatment to the Control of Plasmodium falciparum Malaria
+
+    This .compmodel is based directly on the paper's transmission model description.
+    The paper states that humans are categorized into 6 states:
+      S = susceptible and uninfected
+      D = symptomatic and infectious
+      A = asymptomatic and infectious
+      U = infectious and subpatent / undetectable by standard microscopy
+      T = treated and still infectious
+      P = uninfected and protected by antimalarial prophylaxis
+
+    The vector population is described with a seasonally forced SEI structure:
+      Sv = susceptible mosquitoes
+      Ev = exposed mosquitoes
+      Iv = infectious mosquitoes
+
+    Core paper-aligned mechanisms preserved:
+      - liver-stage delay from new infection into patent infection
+      - infected humans can become symptomatic (D) or asymptomatic (A)
+      - symptomatic cases may be treated and enter T
+      - treatment failures move to A
+      - untreated symptomatic infections progress to A
+      - asymptomatic patent infections progress to subpatent U
+      - prophylaxis state P protects against new infection temporarily
+      - superinfection is allowed from infected states
+      - vectors follow SEI dynamics and acquire infection from infectious humans
+
+    Important note:
+      the published model is an individual-based stochastic model with age structure,
+      heterogeneous biting, immunity, seasonal forcing, and intervention logic for MDA/MSAT.
+      This file encodes the core compartmental state structure described in the paper in the
+      same XML/XMI style as your other .compmodel files.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="Susceptible" population="9300">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.0"
+      description="New infection of uninfected susceptible humans from infectious mosquito bites; represents force of infection followed by liver-stage progression into symptomatic infection"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.1"
+      description="New infection of uninfected susceptible humans from infectious mosquito bites leading into asymptomatic patent infection"/>
+  </compartments>
+
+  <!-- 1 -->
+  <compartments PrimaryName="SymptomaticInfectious" population="120">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.2"
+      description="Successful or attempted treatment of symptomatic cases moving into treated infectious state T"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.3"
+      description="Untreated symptomatic infections progress to asymptomatic patent infection A"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.4"
+      description="Superinfection of symptomatic infectious humans from infectious mosquito bites; the paper allows superinfection in infected individuals"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.5"
+      description="Superinfection of symptomatic infectious humans leading to asymptomatic patent infection under the simplified compmodel abstraction"/>
+  </compartments>
+
+  <!-- 2 -->
+  <compartments PrimaryName="AsymptomaticPatentInfectious" population="250">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.6"
+      description="Asymptomatic patent infections progress to subpatent infectious state U"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.4"
+      description="Superinfection of asymptomatic patent infectious humans from infectious mosquito bites leading to symptomatic infection"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.5"
+      description="Superinfection of asymptomatic patent infectious humans from infectious mosquito bites maintaining patent infection"/>
+  </compartments>
+
+  <!-- 3 -->
+  <compartments PrimaryName="SubpatentInfectious" population="180">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.0"
+      rateParameter="//@parameters.7"
+      description="Clearance of subpatent infection back to uninfected susceptible state"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.4"
+      description="Superinfection of subpatent infectious humans leading to symptomatic infection"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.2"
+      contactCompartment="//@compartments.8"
+      contactRateParameter="//@parameters.5"
+      description="Superinfection of subpatent infectious humans leading to asymptomatic patent infection"/>
+  </compartments>
+
+  <!-- 4 -->
+  <compartments PrimaryName="TreatedInfectious" population="40">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.8"
+      description="Recovery after successful treatment into temporary prophylactic protection P"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.9"
+      description="Treatment failure leading to asymptomatic patent infection A, as described in the paper"/>
+  </compartments>
+
+  <!-- 5 -->
+  <compartments PrimaryName="ProtectedByProphylaxis" population="60">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.0"
+      rateParameter="//@parameters.10"
+      description="Loss of prophylactic protection and return to susceptible uninfected state"/>
+  </compartments>
+
+  <!-- 6 -->
+  <compartments PrimaryName="SusceptibleMosquitoes" population="30000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.1"
+      contactRateParameter="//@parameters.11"
+      description="Mosquito infection from symptomatic infectious humans D, who have the highest human-to-mosquito transmission probability in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.12"
+      description="Mosquito infection from asymptomatic patent infectious humans A, approximately three-fold less infectious than D in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.3"
+      contactRateParameter="//@parameters.13"
+      description="Mosquito infection from subpatent infectious humans U, approximately seventeen-fold less infectious than D in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.14"
+      description="Mosquito infection from treated infectious humans T before parasite clearance; infectivity depends on drug properties and is reduced relative to pre-treatment state"/>
+  </compartments>
+
+  <!-- 7 -->
+  <compartments PrimaryName="ExposedMosquitoes" population="80">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.8"
+      rateParameter="//@parameters.15"
+      description="Progression of infected mosquitoes through the extrinsic incubation period into infectious mosquitoes"/>
+  </compartments>
+
+  <!-- 8 -->
+  <compartments PrimaryName="InfectiousMosquitoes" population="50"/>
+
+  <!-- Parameters -->
+  <parameters name="SusceptibleToSymptomaticInfectionRate" expression="0.040"
+    description="Representative force-of-infection term from infectious mosquito bites leading to symptomatic infection after the liver-stage delay"/>
+  <parameters name="SusceptibleToAsymptomaticInfectionRate" expression="0.030"
+    description="Representative force-of-infection term from infectious mosquito bites leading to asymptomatic patent infection"/>
+  <parameters name="TreatmentRate" expression="0.35"
+    description="Rate at which symptomatic infections receive treatment and move into the treated infectious state T"/>
+  <parameters name="SymptomaticToAsymptomaticRate" expression="0.20"
+    description="Progression of untreated symptomatic infections into asymptomatic patent infection A"/>
+  <parameters name="SuperinfectionToSymptomaticRate" expression="0.025"
+    description="Superinfection rate for already-infected humans resulting in symptomatic infection"/>
+  <parameters name="SuperinfectionToAsymptomaticRate" expression="0.020"
+    description="Superinfection rate for already-infected humans resulting in asymptomatic patent infection"/>
+  <parameters name="PatentToSubpatentRate" expression="0.10"
+    description="Progression rate from asymptomatic patent infection A to subpatent infectious state U"/>
+  <parameters name="SubpatentClearanceRate" expression="0.05"
+    description="Clearance rate from subpatent infectious state U back to susceptible state S"/>
+  <parameters name="TreatmentRecoveryToProtectionRate" expression="0.25"
+    description="Rate of parasite clearance after treatment and movement into prophylactic protection P"/>
+  <parameters name="TreatmentFailureRate" expression="0.05"
+    description="Treatment failure rate from T to A; treatment failures enter the asymptomatic state in the paper"/>
+  <parameters name="ProtectionLossRate" expression="0.08"
+    description="Loss of post-treatment prophylactic protection and return to susceptible state"/>
+  <parameters name="HumanToMosquitoTransmissionRate_D" expression="0.20"
+    description="Mosquito infection rate from symptomatic infectious humans D; highest human-to-mosquito infectivity class"/>
+  <parameters name="HumanToMosquitoTransmissionRate_A" expression="0.067"
+    description="Mosquito infection rate from asymptomatic patent infectious humans A; approximately three-fold lower than D"/>
+  <parameters name="HumanToMosquitoTransmissionRate_U" expression="0.012"
+    description="Mosquito infection rate from subpatent infectious humans U; approximately seventeen-fold lower than D"/>
+  <parameters name="HumanToMosquitoTransmissionRate_T" expression="0.04"
+    description="Mosquito infection rate from treated infectious humans T before parasite clearance, reduced by treatment"/>
+  <parameters name="MosquitoLatentProgressionRate" expression="0.10"
+    description="Progression rate from exposed mosquitoes to infectious mosquitoes in the SEI vector model"/>
+
+</compartmental:CompartmentalModel>

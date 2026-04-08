@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: España et al. 2019
+    Model-based assessment of public health impact and cost-effectiveness of dengue vaccination following screening for prior exposure
+
+    This paper uses an agent-based dengue transmission model with intervention logic:
+      - serological screening at age 9
+      - vaccinate only if screen-positive
+      - vaccine acts like a silent infection
+      - elevated severe-risk concern in seronegatives
+    This .compmodel is an independent compartmental approximation for THIS paper only.
+  -->
+
+  <!-- Compartments -->
+  <compartments PrimaryName="Susceptible" population="9900">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.0"
+      description="Human infection from infectious humans in simplified approximation of DENV transmission"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.3"
+      description="Vaccination following positive serological screening"/>
+  </compartments>
+
+  <compartments PrimaryName="Exposed" population="50">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.1"
+      description="Incubation progression"/>
+  </compartments>
+
+  <compartments PrimaryName="Infectious" population="50">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.2"
+      description="Recovery after infection"/>
+  </compartments>
+
+  <compartments PrimaryName="Recovered" population="0"/>
+
+  <compartments PrimaryName="Vaccinated" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.4"
+      description="Breakthrough infection after vaccination in screened-positive vaccinees"/>
+  </compartments>
+
+  <compartments PrimaryName="VaccinatedInfected" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.2"
+      description="Resolution of infection in vaccinated hosts"/>
+  </compartments>
+
+  <compartments PrimaryName="VaccinatedRecovered" population="0"/>
+
+  <!-- Parameters -->
+  <parameters name="TransmissionRate" expression="0.28"
+    description="Approximate transmission parameter for simplified human-side dengue model"/>
+  <parameters name="IncubationRate" expression="0.20"
+    description="Progression from exposed to infectious"/>
+  <parameters name="RecoveryRate" expression="0.14"
+    description="Recovery from infectious state"/>
+  <parameters name="ScreeningAndVaccinationRate" expression="0.04"
+    description="Routine screening at age 9 followed by vaccination if seropositive"/>
+  <parameters name="VaccineBreakthroughRate" expression="0.05"
+    description="Residual post-vaccination infection risk representing imperfect protection"/>
+
+</compartmental:CompartmentalModel>

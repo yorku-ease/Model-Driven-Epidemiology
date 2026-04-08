@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Flasche et al. 2016
+    The Long-Term Safety, Public Health Impact, and Cost-Effectiveness of Routine Vaccination with a Recombinant, Live-Attenuated Dengue Vaccine (Dengvaxia): A Model Comparison Study
+
+    This paper is a multi-model comparison with a shared vaccine mode of action:
+      - vaccination mimics a silent natural infection
+      - short-lived heterologous protection
+      - subsequent infections behave immunologically like later infections
+      - routine vaccination of 9-year-olds, with optional catch-up campaigns
+    This .compmodel is an independent compartmental abstraction for THIS paper only.
+  -->
+
+  <!-- Compartments -->
+  <compartments PrimaryName="PrimarySusceptible" population="9500">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.0"
+      description="Primary natural dengue infection"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.3"
+      description="Routine vaccination at age 9"/>
+  </compartments>
+
+  <compartments PrimaryName="PrimaryExposed" population="80">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.1"
+      description="Primary incubation progression"/>
+  </compartments>
+
+  <compartments PrimaryName="PrimaryInfectious" population="40">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.2"
+      description="Primary infection resolution into post-primary immune state"/>
+  </compartments>
+
+  <compartments PrimaryName="PostPrimaryImmune" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.4"
+      description="Waning of temporary heterologous protection after natural primary infection"/>
+  </compartments>
+
+  <compartments PrimaryName="VaccinatedSilentInfection" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.5"
+      description="Waning of temporary heterologous protection after vaccine-like silent infection"/>
+  </compartments>
+
+  <compartments PrimaryName="SecondarySusceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.6"
+      description="Secondary-like infection risk after loss of cross-protection"/>
+  </compartments>
+
+  <compartments PrimaryName="PostVaccinationSusceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.7"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.7"
+      description="In vaccinated hosts, subsequent infection behaves like later infection after silent infection"/>
+  </compartments>
+
+  <compartments PrimaryName="SecondaryInfectious" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.8"
+      rateParameter="//@parameters.2"
+      description="Resolution of secondary-like infection"/>
+  </compartments>
+
+  <compartments PrimaryName="PostSecondaryImmune" population="0"/>
+
+  <!-- Parameters -->
+  <parameters name="PrimaryTransmissionRate" expression="0.26"
+    description="Transmission parameter for primary infection"/>
+  <parameters name="IncubationRate" expression="0.18"
+    description="Progression from exposed to infectious"/>
+  <parameters name="RecoveryRate" expression="0.12"
+    description="Recovery rate from infectious states"/>
+  <parameters name="RoutineVaccinationRate" expression="0.05"
+    description="Routine vaccination of 9-year-olds"/>
+  <parameters name="NaturalCrossProtectionWaningRate" expression="0.02"
+    description="Waning of temporary heterologous protection after natural infection"/>
+  <parameters name="VaccineCrossProtectionWaningRate" expression="0.03"
+    description="Waning of temporary heterologous protection after vaccination"/>
+  <parameters name="SecondaryTransmissionRate" expression="0.30"
+    description="Transmission parameter for secondary-like infection after natural primary infection"/>
+  <parameters name="PostVaccinationTransmissionRate" expression="0.24"
+    description="Transmission parameter after vaccine-induced silent infection"/>
+
+</compartmental:CompartmentalModel>

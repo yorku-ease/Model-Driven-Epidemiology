@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Dowdy et al. (2013)
+    Population-Level Impact of Active Tuberculosis Case Finding in an Asian Megacity
+
+    This .compmodel is based directly on Figure 1 and the Methods description.
+
+    The paper explicitly describes the following epidemiological states:
+      Uninfected
+      Recent TB Infection
+      Remote TB Infection
+      Active TB Disease (Smear-Positive)
+      Active TB Disease (Smear-Negative)
+      Active TB Disease (Extrapulmonary)
+      Recently Treated/Recovered
+
+    Core paper-aligned transitions preserved:
+      Uninfected -> Recent TB Infection                          infection
+      Recent TB Infection -> Remote TB Infection                 stabilization after 2 years
+      Recent TB Infection -> Active TB Disease                  rapid progression
+      Remote TB Infection -> Recent TB Infection                 re-infection
+      Remote TB Infection -> Active TB Disease                  reactivation / reinfection
+      Active TB Disease -> Recently Treated/Recovered           diagnosis & treatment / self-cure
+      Recently Treated/Recovered -> Active TB Disease          relapse
+      Recently Treated/Recovered -> Remote TB Infection        stabilization after 5 years
+
+    Not represented explicitly here:
+      - the full 9-age-class structure
+      - TB-specific mortality from each active TB compartment
+      - time-varying diagnostic rate intervention logic
+    These are preserved semantically through parameter names and comments.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="Uninfected" population="9000">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.3"
+      contactRateParameter="//@parameters.0"
+      description="Infection of uninfected individuals from smear-positive pulmonary TB, the most infectious compartment in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.1"
+      description="Infection of uninfected individuals from smear-negative pulmonary TB at reduced infectiousness"/>
+  </compartments>
+
+  <!-- 1 -->
+  <compartments PrimaryName="RecentTBInfection" population="500">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.2"
+      description="Stabilization of recent infection into remote latent infection after about 2 years, as described in the paper"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.3"
+      description="Rapid progression from recent infection to active smear-positive TB"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.4"
+      description="Rapid progression from recent infection to active smear-negative TB"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.5"
+      description="Rapid progression from recent infection to active extrapulmonary TB"/>
+  </compartments>
+
+  <!-- 2 -->
+  <compartments PrimaryName="RemoteTBInfection" population="1200">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.3"
+      contactRateParameter="//@parameters.6"
+      description="Re-infection of remote latent TB by infectious smear-positive disease, returning to recent infection"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.4"
+      contactRateParameter="//@parameters.7"
+      description="Re-infection of remote latent TB by smear-negative pulmonary disease, returning to recent infection"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.8"
+      description="Reactivation from remote TB infection to active smear-positive TB"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.9"
+      description="Reactivation from remote TB infection to active smear-negative TB"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.10"
+      description="Reactivation from remote TB infection to active extrapulmonary TB"/>
+  </compartments>
+
+  <!-- 3 -->
+  <compartments PrimaryName="ActiveTBSmearPositive" population="120">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.11"
+      description="Diagnosis and treatment or self-cure of smear-positive TB into recently treated/recovered compartment"/>
+  </compartments>
+
+  <!-- 4 -->
+  <compartments PrimaryName="ActiveTBSmearNegative" population="80">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.12"
+      description="Diagnosis and treatment or self-cure of smear-negative TB into recently treated/recovered compartment"/>
+  </compartments>
+
+  <!-- 5 -->
+  <compartments PrimaryName="ActiveTBExtrapulmonary" population="40">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.13"
+      description="Diagnosis and treatment of extrapulmonary TB into recently treated/recovered compartment"/>
+  </compartments>
+
+  <!-- 6 -->
+  <compartments PrimaryName="RecentlyTreatedRecovered" population="60">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.14"
+      description="Stabilization after recent treatment/recovery into remote TB infection after about 5 years"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.15"
+      description="Relapse from recently treated/recovered into active smear-positive TB"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.4"
+      rateParameter="//@parameters.16"
+      description="Relapse from recently treated/recovered into active smear-negative TB"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.17"
+      description="Relapse from recently treated/recovered into active extrapulmonary TB"/>
+  </compartments>
+
+  <!-- Parameters -->
+  <parameters name="InfectionRateFromSmearPositive" expression="0.30"
+    description="Representative transmission intensity from smear-positive pulmonary TB; the paper fits transmission to incidence and assumes smear-positive disease is the main infectious class"/>
+  <parameters name="InfectionRateFromSmearNegative" expression="0.066"
+    description="Transmission intensity from smear-negative pulmonary TB, reflecting relative infectiousness of 0.22 compared with smear-positive cases in the paper"/>
+  <parameters name="RecentToRemoteStabilizationRate" expression="0.5"
+    description="Rate of stabilization from recent TB infection to remote TB infection, corresponding to about 2 years"/>
+  <parameters name="RapidProgressionToSmearPositiveRate" expression="0.0455"
+    description="Rapid progression from recent infection to active smear-positive TB"/>
+  <parameters name="RapidProgressionToSmearNegativeRate" expression="0.0245"
+    description="Rapid progression from recent infection to active smear-negative TB"/>
+  <parameters name="RapidProgressionToExtrapulmonaryRate" expression="0.0105"
+    description="Rapid progression from recent infection to active extrapulmonary TB"/>
+  <parameters name="ReinfectionRateFromSmearPositive" expression="0.18"
+    description="Re-infection of remote latent TB by smear-positive pulmonary disease, returning to recent infection"/>
+  <parameters name="ReinfectionRateFromSmearNegative" expression="0.04"
+    description="Re-infection of remote latent TB by smear-negative pulmonary disease, returning to recent infection"/>
+  <parameters name="RemoteReactivationToSmearPositiveRate" expression="0.000325"
+    description="Slow progression / reactivation from remote TB infection to smear-positive disease"/>
+  <parameters name="RemoteReactivationToSmearNegativeRate" expression="0.000175"
+    description="Slow progression / reactivation from remote TB infection to smear-negative disease"/>
+  <parameters name="RemoteReactivationToExtrapulmonaryRate" expression="0.000100"
+    description="Slow progression / reactivation from remote TB infection to extrapulmonary disease"/>
+  <parameters name="TreatmentOrSelfCureRateSmearPositive" expression="0.95"
+    description="Net rate of leaving active smear-positive TB through diagnosis and treatment or self-cure in the paper's compartmental abstraction"/>
+  <parameters name="TreatmentOrSelfCureRateSmearNegative" expression="0.43"
+    description="Net rate of leaving active smear-negative TB through diagnosis and treatment or self-cure"/>
+  <parameters name="TreatmentOrSelfCureRateExtrapulmonary" expression="0.77"
+    description="Net rate of leaving active extrapulmonary TB through diagnosis and treatment"/>
+  <parameters name="RecoveredToRemoteStabilizationRate" expression="0.2"
+    description="Stabilization of recently treated/recovered individuals into remote TB infection after about 5 years"/>
+  <parameters name="RelapseToSmearPositiveRate" expression="0.012"
+    description="Relapse from recently treated/recovered into active smear-positive TB"/>
+  <parameters name="RelapseToSmearNegativeRate" expression="0.008"
+    description="Relapse from recently treated/recovered into active smear-negative TB"/>
+  <parameters name="RelapseToExtrapulmonaryRate" expression="0.004"
+    description="Relapse from recently treated/recovered into active extrapulmonary TB"/>
+
+</compartmental:CompartmentalModel>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel"
+  totalPopulation="1400050000">
+
+  <!--
+    Paper-based structural encoding of:
+    Lai et al. (2020), "Effect of non-pharmaceutical interventions to contain COVID-19 in China".
+
+    What the paper explicitly models:
+      - A travel-network-based stochastic SEIR model across 340 prefecture-level cities.
+      - Within each city, daily compartments S, E, I, R.
+      - Exposure depends on contact rate c, which is modified by NPIs.
+      - Exposed individuals become infectious at rate epsilon = 1/incubation period.
+      - Infectious individuals move to Removed at rate r = 1/infectious period, where removal
+        represents recovery OR effective isolation from transmission.
+      - Inter-city movement is handled through a travel network, not a simple compartment flow.
+
+    Compmodel approximation used here:
+      - Encodes the core within-city SEIR structure faithfully.
+      - Keeps NPI mechanisms as explicit parameters that scale contact and removal.
+      - Does NOT explicitly encode the 340-city stochastic travel network, because the current
+        compmodel metamodel is single-population/flow based rather than metapopulation-network based.
+      - Therefore this file is a faithful disease-mechanism abstraction of the paper, not a full
+        reproduction of the movement layer.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="Susceptible" population="1400049995">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.1"
+      contactCompartment="//@compartments.2"
+      contactRateParameter="//@parameters.8"
+      description="S to E infection flow driven by infectious individuals; corresponds to c * S * I / N, with contact rate modified by NPIs"/>
+  </compartments>
+
+  <!-- 1 -->
+  <compartments PrimaryName="Exposed" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.3"
+      description="Progression from exposed to infectious at rate epsilon = 1 / incubation period"/>
+  </compartments>
+
+  <!-- 2 -->
+  <compartments PrimaryName="Infectious" population="5">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.6"
+      description="Removal from transmission at rate r; in the paper Removed includes recovery and effective isolation/detection"/>
+  </compartments>
+
+  <!-- 3 -->
+  <compartments PrimaryName="Removed" population="0"/>
+
+  <!-- Parameters -->
+  <parameters name="N" expression="1400050000"
+    description="Approximate total mainland China population represented in the aggregated SEIR abstraction" unit="persons"/>
+  <parameters name="R0" expression="2.2"
+    description="Baseline reproduction number used by the paper for the early Wuhan outbreak" unit="dimensionless"/>
+  <parameters name="incubationPeriod" expression="5.2"
+    description="Average incubation period from the paper" unit="days"/>
+  <parameters name="epsilon" type="EXPRESSION" expression="1 / incubationPeriod"
+    description="Rate of progression from exposed to infectious" unit="1/day"/>
+  <parameters name="infectiousPeriod" expression="5.8"
+    description="Average infectious period proxy based on onset-to-isolation timing used before strong interventions" unit="days"/>
+  <parameters name="baseRemovalRate" type="EXPRESSION" expression="1 / infectiousPeriod"
+    description="Baseline removal/isolation rate before time-varying improvements" unit="1/day"/>
+  <parameters name="r" type="EXPRESSION" expression="baseRemovalRate * detectionIsolationMultiplier"
+    description="Effective removal rate under NPIs; higher values represent earlier detection and isolation" unit="1/day"/>
+  <parameters name="baseContactRate" type="EXPRESSION" expression="R0 / infectiousPeriod"
+    description="Baseline daily contact-transmission rate c derived from R0 divided by infectious period, following the paper" unit="1/day"/>
+  <parameters name="c" type="EXPRESSION" expression="baseContactRate * contactReductionMultiplier"
+    description="Effective contact rate under NPIs and social distancing" unit="1/day"/>
+  <parameters name="mobilityRestrictionMultiplier" expression="1"
+    description="Inter-city mobility scaling factor retained for semantic fidelity to the paper's travel network layer; 1 means no extra scaling in this single-population abstraction" unit="dimensionless"/>
+  <parameters name="contactReductionMultiplier" expression="0.4"
+    description="Scales transmission-relevant contacts under social distancing; values below 1 represent contact reduction" unit="dimensionless"/>
+  <parameters name="detectionIsolationMultiplier" expression="1.9"
+    description="Scales removal rate under improved case detection and isolation; values above 1 represent faster removal from transmission" unit="dimensionless"/>
+  <parameters name="initialSeed" expression="5"
+    description="Initial infected individuals in Wuhan used by the paper on December 1, 2019" unit="persons"/>
+
+</compartmental:CompartmentalModel>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+  xmlns:xmi="http://www.omg.org/XMI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:compartmental="http://example.com/compartmentalmodel">
+
+  <!--
+    Paper: Suffel et al. (2025)
+    Impact of vaccination timing and coverage on measles near elimination dynamics:
+    a mathematical modelling analysis
+
+    This .compmodel is based on the paper's described transmission structure:
+      - an age- and region-stratified mathematical model for measles in England
+      - a compartmental SEIR transmission model
+      - explicit single-dose and double-dose vaccination status
+      - stochastic outbreak simulations built from fitted deterministic model parameters
+
+    The paper states that the transmission model uses compartments for:
+      susceptible, exposed, infected, recovered individuals,
+      and single- and double-vaccinated individuals.
+    Because the uploaded article summarizes the stratification but does not publish the
+    full XML/XMI compartment schema, this file encodes the closest faithful compartmental
+    structure for one representative age-region stratum.
+
+    Compartments encoded here:
+      M  = maternally protected infants
+      S  = susceptible
+      V1 = one-dose vaccinated
+      V2 = two-dose vaccinated
+      E  = exposed
+      I  = infectious
+      R  = recovered / immune after infection
+
+    Key paper-aligned mechanisms preserved:
+      - loss of maternal protection
+      - first-dose and second-dose vaccination
+      - breakthrough infection after one or two doses with reduced rates
+      - exposed to infectious to recovered progression
+      - optional waning from V2 noted in the paper's sensitivity analyses is represented as a parameterized flow
+
+    Important note:
+      The full published model is stratified by 12 age groups and 9 regions and uses fitted
+      transmission, seasonality, importation, and spatial spread parameters. This .compmodel
+      captures the core within-stratum state structure faithfully, not the full England-wide tensor product of strata.
+  -->
+
+  <!-- 0 -->
+  <compartments PrimaryName="MaternalProtected" population="50">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.1"
+      rateParameter="//@parameters.0"
+      description="Loss of maternal immunity; the paper fitted the duration of maternal immunity in the transmission model"/>
+  </compartments>
+
+  <!-- 1 -->
+  <compartments PrimaryName="Susceptible" population="9000">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.2"
+      rateParameter="//@parameters.1"
+      description="Receipt of first MMR dose; represents movement into single-dose vaccinated status"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.4"
+      contactCompartment="//@compartments.5"
+      contactRateParameter="//@parameters.2"
+      description="Primary measles infection in unvaccinated susceptibles"/>
+  </compartments>
+
+  <!-- 2 -->
+  <compartments PrimaryName="VaccinatedOneDose" population="700">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.3"
+      rateParameter="//@parameters.3"
+      description="Receipt of second MMR dose; timing of this transition is the main policy lever studied in the paper"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.4"
+      contactCompartment="//@compartments.5"
+      contactRateParameter="//@parameters.4"
+      description="Breakthrough infection after one vaccine dose; reduced relative to fully susceptible individuals"/>
+  </compartments>
+
+  <!-- 3 -->
+  <compartments PrimaryName="VaccinatedTwoDose" population="220">
+    <outgoingFlows xsi:type="compartmental:ContactFlow"
+      target="//@compartments.4"
+      contactCompartment="//@compartments.5"
+      contactRateParameter="//@parameters.5"
+      description="Breakthrough infection after two vaccine doses; much lower than after one dose"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.1"
+      rateParameter="//@parameters.6"
+      description="Waning of vaccine-induced immunity; included because waning was examined in sensitivity analyses in the paper"/>
+  </compartments>
+
+  <!-- 4 -->
+  <compartments PrimaryName="Exposed" population="10">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.5"
+      rateParameter="//@parameters.7"
+      description="Progression from exposed to infectious measles"/>
+  </compartments>
+
+  <!-- 5 -->
+  <compartments PrimaryName="Infectious" population="10">
+    <outgoingFlows xsi:type="compartmental:RateFlow"
+      target="//@compartments.6"
+      rateParameter="//@parameters.8"
+      description="Recovery from infectious measles into post-infection immune class"/>
+  </compartments>
+
+  <!-- 6 -->
+  <compartments PrimaryName="Recovered" population="10"/>
+
+  <!-- Parameters -->
+  <parameters name="MaternalImmunityLossRate" expression="0.167"
+    description="Representative loss rate of maternal protection; paper fitted duration of maternal immunity in the measles model"/>
+  <parameters name="MMR1VaccinationRate" expression="0.25"
+    description="Transition into one-dose vaccinated status; coverage varies by age, region, and scenario in the paper"/>
+  <parameters name="SusceptibleInfectionRate" expression="0.80"
+    description="Baseline infection rate for susceptible individuals within one representative age-region stratum"/>
+  <parameters name="MMR2VaccinationRate" expression="0.18"
+    description="Transition into two-dose vaccinated status; changing its timing is central to the paper's scenarios"/>
+  <parameters name="OneDoseBreakthroughRate" expression="0.08"
+    description="Reduced infection rate after one vaccine dose, representing imperfect protection and primary vaccine failure"/>
+  <parameters name="TwoDoseBreakthroughRate" expression="0.01"
+    description="Reduced infection rate after two vaccine doses"/>
+  <parameters name="VaccineWaningRate" expression="0.002"
+    description="Slow waning of vaccine-induced immunity, included because the paper evaluates waning sensitivity scenarios"/>
+  <parameters name="IncubationProgressionRate" expression="0.125"
+    description="Progression from exposed to infectious measles"/>
+  <parameters name="RecoveryRate" expression="0.143"
+    description="Recovery from infectious measles"/>
+
+</compartmental:CompartmentalModel>

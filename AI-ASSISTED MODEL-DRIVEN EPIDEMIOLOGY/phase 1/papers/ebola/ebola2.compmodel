@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0"
+ xmlns:xmi="http://www.omg.org/XMI"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:compartmental="http://example.com/compartmentalmodel">
+
+ <!--
+  Paper: Barbarossa et al. 2015 (Ebola with interventions)
+  Compartments based on Fig.1: S, E, I, H, D, R
+ -->
+
+ <!-- Susceptible -->
+ <compartments PrimaryName="Susceptible" population="9990">
+   <outgoingFlows xsi:type="compartmental:ContactFlow"
+     target="//@compartments.1"
+     contactCompartment="//@compartments.2"
+     contactRateParameter="//@parameters.0"/>
+   <outgoingFlows xsi:type="compartmental:ContactFlow"
+     target="//@compartments.1"
+     contactCompartment="//@compartments.3"
+     contactRateParameter="//@parameters.1"/>
+   <outgoingFlows xsi:type="compartmental:ContactFlow"
+     target="//@compartments.1"
+     contactCompartment="//@compartments.4"
+     contactRateParameter="//@parameters.2"/>
+ </compartments>
+
+ <!-- Exposed -->
+ <compartments PrimaryName="Exposed" population="5">
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.2"
+     rateParameter="//@parameters.3"/>
+ </compartments>
+
+ <!-- Infectious -->
+ <compartments PrimaryName="Infectious" population="5">
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.3"
+     rateParameter="//@parameters.4"/>
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.5"
+     rateParameter="//@parameters.5"/>
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.4"
+     rateParameter="//@parameters.6"/>
+ </compartments>
+
+ <!-- Hospitalized -->
+ <compartments PrimaryName="Hospitalized" population="0">
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.5"
+     rateParameter="//@parameters.7"/>
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.4"
+     rateParameter="//@parameters.8"/>
+ </compartments>
+
+ <!-- Dead (not buried) -->
+ <compartments PrimaryName="Dead" population="0">
+   <outgoingFlows xsi:type="compartmental:RateFlow"
+     target="//@compartments.6"
+     rateParameter="//@parameters.9"/>
+ </compartments>
+
+ <!-- Removed -->
+ <compartments PrimaryName="Removed" population="0"/>
+
+ <!-- Parameters -->
+ <parameters name="BetaCommunity" expression="0.5"/>
+ <parameters name="BetaHospital" expression="0.3"/>
+ <parameters name="BetaFuneral" expression="2.0"/>
+ <parameters name="IncubationRate" expression="0.1"/>
+ <parameters name="HospitalizationRate" expression="0.2"/>
+ <parameters name="RecoveryRate" expression="0.1"/>
+ <parameters name="DeathRateCommunity" expression="0.15"/>
+ <parameters name="RecoveryRateHospital" expression="0.1"/>
+ <parameters name="DeathRateHospital" expression="0.1"/>
+ <parameters name="BurialRate" expression="0.2"/>
+
+</compartmental:CompartmentalModel>
