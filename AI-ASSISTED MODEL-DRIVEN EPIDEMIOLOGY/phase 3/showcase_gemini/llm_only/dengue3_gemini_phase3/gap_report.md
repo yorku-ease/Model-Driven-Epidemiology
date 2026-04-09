@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **26**
-- After fills gaps (re-detected): **3**
-- Delta (before - after): **23**
-- Delta missing parameters: **5**
-- Delta missing compartments: **9**
-- Delta missing flows: **9**
+- After fills gaps (re-detected): **17**
+- Delta (before - after): **9**
+- Delta missing parameters: **8**
+- Delta missing compartments: **1**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -65,11 +65,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 88.5% | 30% |
-| **Reference agreement** | 72.1% | 30% |
+| **Gap reduction** | 34.6% | 30% |
+| **Reference agreement** | 70.8% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **68.2/100** | — |
+| **→ Composite** | **51.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -84,44 +84,94 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 29
+- Filled via **inference**: 43
 - **Flagged** for manual review: 0
 
-### routinevaccinationrate (missing_parameters)
+### primarysusceptible (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Primary Susceptible
+- **Reasoning:** The excerpt discusses the impact of vaccination
 
-### naturalcrossprotectionwaningrate (missing_parameters)
+### primaryexposed (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Primary Exposed
+- **Reasoning:** The
 
-### vaccinecrossprotectionwaningrate (missing_parameters)
+### primaryinfectious (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Primary Infectious
 
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+### postprimaryimmune (missing_compartments)
+- **Source:** inference
+- **Primary name:** Postprimary Immune
 
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| routinevaccinationrate | None | 0.05 | — | no_fill |
-| naturalcrossprotectionwaningrate | None | 0.02 | — | no_fill |
-| vaccinecrossprotectionwaningrate | None | 0.03 | — | no_fill |
+### vaccinatedsilentinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Vaccinated Silent Infection
+
+### secondarysusceptible (missing_compartments)
+- **Source:** inference
+- **Primary name:** Secondary Susceptible
+- **Reasoning:** The text discusses 'subsequent infections' and 'heterologous protection' after natural infection or vaccination, which implies individuals can become susceptible again to different dengue serotypes.
+
+### postvaccinationsusceptible (missing_compartments)
+- **Source:** inference
+- **Primary name:** Vaccinated Susceptible
+
+### postsecondaryimmune (missing_compartments)
+- **Source:** inference
+- **Primary name:** PostSecondaryImmune
+
+### PrimarySusceptible->PrimaryExposed (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Primary susceptible individuals become exposed to the dengue virus for the first time, typically through contact with an infected mosquito.
+- **Reasoning:** The transition from susceptible to exposed in dengue is driven by contact with the pathogen via an infected vector, making it a contact-dependent process.
+
+### PrimarySusceptible->VaccinatedSilentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who are susceptible to
+
+### PrimaryExposed->PrimaryInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The progression of an
+
+### PrimaryInfectious->PostPrimaryImmune (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals recovering from a primary
+
+### PostPrimaryImmune->SecondarySusceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Waning of transient immunity
+
+### VaccinatedSilentInfection->PostVaccinationSusceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Waning of transient immunity
+
+### SecondarySusceptible->SecondaryInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Individuals who
+
+### PostVaccinationSusceptible->SecondaryInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Vaccinated individuals
+
+### SecondaryInfectious->PostSecondaryImmune (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals recovering from a secondary
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **17**
-- Precision **0.5294** | Recall **1.0** | F1 **0.6923**
+- Gold count: **9** | Candidate: **18**
+- Precision **0.5** | Recall **1.0** | F1 **0.6667**
 ### Flows
 - Gold count: **9** | Candidate: **15**
 - Precision **0.6** | Recall **1.0** | F1 **0.75**

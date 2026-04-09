@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **40**
-- After fills gaps (re-detected): **15**
-- Delta (before - after): **25**
+- After fills gaps (re-detected): **22**
+- Delta (before - after): **18**
 - Delta missing parameters: **18**
-- Delta missing compartments: **3**
-- Delta missing flows: **4**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -79,11 +79,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 62.5% | 30% |
-| **Reference agreement** | 74.5% | 30% |
-| **Fill traceability** | 80.0% | 20% |
+| **Gap reduction** | 45.0% | 30% |
+| **Reference agreement** | 55.4% | 30% |
+| **Fill traceability** | 72.7% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.1/100** | — |
+| **→ Composite** | **64.7/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -96,25 +96,44 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 6 | 19 | 16 | 41 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 46
+- Filled via **RAG**: 50
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 9
+- Filled via **inference**: 12
 - **Flagged** for manual review: 0
+
+### recenttbinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Recent Latent TB
+
+### remotetbinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Diagnosed Active TB
 
 ### activetbsmearpositive (missing_compartments)
 - **Source:** inference
-- **Primary name:** activetbsmearpositive
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Active TB Smear Positive
 
 ### activetbsmearnegative (missing_compartments)
 - **Source:** inference
-- **Primary name:** activetbsmearnegative
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Active TB Smear-Negative
 
 ### activetbextrapulmonary (missing_compartments)
 - **Source:** inference
-- **Primary name:** activetbextrapulmonary
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Active Extrapulmonary TB
+
+### recentlytreatedrecovered (missing_compartments)
+- **Source:** inference
+- **Primary name:** Recently Treated Recovered
+
+### Uninfected->RecentTBInfection (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### RecentTBInfection->RemoteTBInfection (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
 
 ### RecentTBInfection->ActiveTBSmearPositive (missing_flows)
 - **Source:** rag
@@ -127,6 +146,11 @@
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
 ### RecentTBInfection->ActiveTBExtrapulmonary (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### RemoteTBInfection->RecentTBInfection (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
@@ -161,6 +185,11 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
+### RecentlyTreatedRecovered->RemoteTBInfection (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
 ### RecentlyTreatedRecovered->ActiveTBSmearPositive (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
@@ -178,8 +207,8 @@
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **7** | Candidate: **10**
-- Precision **0.7** | Recall **1.0** | F1 **0.8235**
+- Gold count: **7** | Candidate: **12**
+- Precision **0.5** | Recall **0.8571** | F1 **0.6316**
 ### Flows
-- Gold count: **16** | Candidate: **32**
-- Precision **0.5** | Recall **1.0** | F1 **0.6667**
+- Gold count: **16** | Candidate: **26**
+- Precision **0.3846** | Recall **0.625** | F1 **0.4762**

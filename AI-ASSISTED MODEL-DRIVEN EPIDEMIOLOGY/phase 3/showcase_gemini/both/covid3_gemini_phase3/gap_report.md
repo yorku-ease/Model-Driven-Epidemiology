@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **19**
-- After fills gaps (re-detected): **8**
-- Delta (before - after): **11**
+- After fills gaps (re-detected): **9**
+- Delta (before - after): **10**
 - Delta missing parameters: **9**
-- Delta missing compartments: **2**
+- Delta missing compartments: **1**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -57,11 +57,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 57.9% | 30% |
-| **Reference agreement** | 37.5% | 30% |
-| **Fill traceability** | 100.0% | 20% |
+| **Gap reduction** | 52.6% | 30% |
+| **Reference agreement** | 22.2% | 30% |
+| **Fill traceability** | 88.9% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **68.6/100** | — |
+| **→ Composite** | **60.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -76,32 +76,37 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 26
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 1
+- Filled via **inference**: 2
 - **Flagged** for manual review: 0
+
+### removed (missing_compartments)
+- **Source:** inference
+- **Primary name:** Deaths
+- **Reasoning:** The model
 
 ### initialrt (missing_parameters)
 - **Source:** rag
 - **Value:** 3.8 dimensionless
 - **Description:** Average initial reproduction number estimated across the 11 countries before interventions
-- **From papers:** p1_model_covid, p1_model_cholera, p2_covid3_llm_gemini_20260407_204521
+- **From papers:** p2_covid3_llm_gemini_20260407_204521, p1_model_covid, p1_model_cholera
 
 ### basetransmissionrate (missing_parameters)
 - **Source:** rag
 - **Value:** InitialRt / GenerationIntervalDays 1/day
 - **Description:** Compartmental approximation of transmission intensity derived from initial Rt
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
+- **From papers:** p1_model_dengue, p1_model_covid, p1_model_cholera
 
 ### lockdowneffect (missing_parameters)
 - **Source:** rag
 - **Value:** 0.19 dimensionless
 - **Description:** Approximate remaining transmission multiplier under lockdown, corresponding to about 81 percent reduction in Rt reported in the paper
-- **From papers:** p1_model_covid, p1_model_cholera, p2_covid3_llm_claude_20260407_213850
+- **From papers:** p2_covid3_llm_gemini_20260407_204521, p1_model_covid, p2_covid3_llm_claude_20260407_213850
 
 ### combinedinterventionmultiplier (missing_parameters)
 - **Source:** rag
 - **Value:** PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect dimensionless
 - **Description:** Combined multiplicative effect of interventions on transmission
-- **From papers:** p1_model_covid, p2_zika3_llm_gemini_20260407_211201, p1_model_cholera
+- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201, p2_zika3_llm_claude_20260407_215851
 
 ### effectivetransmissionrate (missing_parameters)
 - **Source:** rag
@@ -143,8 +148,8 @@
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **4** | Candidate: **4**
-- Precision **0.75** | Recall **0.75** | F1 **0.75**
+- Gold count: **4** | Candidate: **5**
+- Precision **0.4** | Recall **0.5** | F1 **0.4444**
 ### Flows
 - Gold count: **3** | Candidate: **1**
 - Precision **0.0** | Recall **0.0** | F1 **0.0**

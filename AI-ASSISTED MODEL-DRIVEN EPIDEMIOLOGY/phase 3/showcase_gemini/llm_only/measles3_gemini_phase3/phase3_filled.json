@@ -2,6 +2,23 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "maternalimmunity",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Maternally Immune",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
         "expected": "vaccinefailure",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
@@ -9,96 +26,29 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "vaccinefailure",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Vaccine Failure",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "susceptibleinfectionrate",
+        "expected": "MaternalImmunity->Susceptible",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "RateFlow",
+        "description": "Infants born with passive",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "effectivevaccinationrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "vaccinefailurerate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "vaccinefailureinfectionrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "latentprogressionrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -111,11 +61,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for Susceptible->VaccineFailure",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Susceptible individuals receive a",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -127,18 +77,18 @@
       "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "flow_type": "RateFlow",
-        "description": "Suggested transition for VaccineFailure->Latent",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "flow_type": "ContactFlow",
+        "description": "Individuals whose vaccine immunity has",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 20,
+    "inference_count": 17,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

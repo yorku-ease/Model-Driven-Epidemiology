@@ -39,7 +39,6 @@
   <parameters name="relapsetoextrapulmonaryrate" expression="0.004" type="CONSTANT" description="Relapse from recently treated/recovered into active extrapulmonary TB" />
   <compartments PrimaryName="Uninfected" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="New TB infection through contact with infectious individuals (smear-positive and smear-negative pulmonary TB cases)" />
-    <outgoingFlows target="//@compartments.7" />
   </compartments>
   <compartments PrimaryName="Recently Infected Latent TB" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Transition from recent to remote latent infection after approximately two years" />
@@ -55,15 +54,15 @@
   </compartments>
   <compartments PrimaryName="Active TB Smear-Positive Pulmonary" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.6" description="Diagnosis and successful treatment of smear-positive pulmonary TB" />
-    <outgoingFlows target="//@compartments.9" />
+    <outgoingFlows target="//@compartments.10" />
   </compartments>
   <compartments PrimaryName="Active TB Smear-Negative Pulmonary" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.6" description="Diagnosis and successful treatment of smear-negative pulmonary TB" />
-    <outgoingFlows target="//@compartments.9" />
+    <outgoingFlows target="//@compartments.10" />
   </compartments>
   <compartments PrimaryName="Active TB Extrapulmonary" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.6" description="Diagnosis and successful treatment of extrapulmonary TB" />
-    <outgoingFlows target="//@compartments.9" />
+    <outgoingFlows target="//@compartments.10" />
   </compartments>
   <compartments PrimaryName="Recently Treated and Recovered" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.3" description="Relapse from recently treated/recovered state to smear-positive pulmonary TB" />
@@ -71,22 +70,18 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.5" description="Relapse from recently treated/recovered state to extrapulmonary TB" />
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.14" target="//@compartments.1" description="Reinfection of recovered individuals through contact with infectious cases" />
   </compartments>
-  <compartments PrimaryName="recenttbinfection">
+  <compartments PrimaryName="Recent Latent TB" />
+  <compartments PrimaryName="Remote TB Infection">
+    <outgoingFlows target="//@compartments.3" />
+    <outgoingFlows target="//@compartments.4" />
+    <outgoingFlows target="//@compartments.5" />
+  </compartments>
+  <compartments PrimaryName="Active Extrapulmonary TB" />
+  <compartments PrimaryName="Recently Treated Recovered">
     <outgoingFlows target="//@compartments.8" />
     <outgoingFlows target="//@compartments.3" />
     <outgoingFlows target="//@compartments.4" />
     <outgoingFlows target="//@compartments.5" />
   </compartments>
-  <compartments PrimaryName="remotetbinfection">
-    <outgoingFlows target="//@compartments.7" />
-    <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.4" />
-    <outgoingFlows target="//@compartments.5" />
-  </compartments>
-  <compartments PrimaryName="recentlytreatedrecovered">
-    <outgoingFlows target="//@compartments.8" />
-    <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.4" />
-    <outgoingFlows target="//@compartments.5" />
-  </compartments>
+  <compartments PrimaryName="Diagnosed Active TB" />
 </ns0:CompartmentalModel>

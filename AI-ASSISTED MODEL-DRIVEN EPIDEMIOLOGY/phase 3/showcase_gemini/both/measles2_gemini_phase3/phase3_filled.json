@@ -9,11 +9,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "maternalprotected",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Maternally Protected",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -25,221 +26,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "vaccinatedonedose",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "VaccinatedOneDose",
+        "description": "",
+        "reasoning": "The paper differentiates between 'first-dose coverage' and 'second MMR dose', indicating a need to model individuals who have received only one dose of the vaccine.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
-      }
-    },
-    {
-      "gap": {
-        "expected": "vaccinatedtwodose",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_compartments",
-      "source": "inference",
-      "suggestion": {
-        "primary_name": "vaccinatedtwodose",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
-        "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
-      }
-    },
-    {
-      "gap": {
-        "expected": "maternalimmunitylossrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.167",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Representative loss rate of maternal protection; paper fitted duration of maternal immunity in the measles model",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p2_zika3_llm_gemini_20260407_211201",
-          "p1_model_cholera",
-          "p2_zika3_llm_claude_20260407_215851",
-          "p2_zika3_llm_openai_20260407_213203"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "mmr1vaccinationrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.25",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Transition into one-dose vaccinated status; coverage varies by age, region, and scenario in the paper",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "susceptibleinfectionrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.80",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Baseline infection rate for susceptible individuals within one representative age-region stratum",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "mmr2vaccinationrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.18",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Transition into two-dose vaccinated status; changing its timing is central to the paper's scenarios",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "onedosebreakthroughrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.08",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Reduced infection rate after one vaccine dose, representing imperfect protection and primary vaccine failure",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "twodosebreakthroughrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.01",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Reduced infection rate after two vaccine doses",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera",
-          "p1_model_dengue"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "vaccinewaningrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.002",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Slow waning of vaccine-induced immunity, included because the paper evaluates waning sensitivity scenarios",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "incubationprogressionrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.125",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_measles",
-        "description": "Progression from exposed to infectious measles",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_covid",
-          "p1_model_cholera"
-        ]
-      }
-    },
-    {
-      "gap": {
-        "expected": "recoveryrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "rag",
-      "suggestion": {
-        "value": "0.14",
-        "unit": "",
-        "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Recovery from infectious state",
-        "sources": [
-          "p1_model_measles",
-          "p1_model_ebola",
-          "p1_model_cholera",
-          "p1_model_dengue"
-        ]
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -425,103 +217,11 @@
         "chunk_evidence": [],
         "note": "Analogous flows from indexed models / text; align with gold wiring."
       }
-    },
-    {
-      "gap": {
-        "expected": "VaccinatedTwoDose->Exposed",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model (or flows list)."
-      },
-      "gap_type": "missing_flows",
-      "source": "rag",
-      "suggestion": {
-        "signature": "VaccinatedTwoDose->Exposed",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "VaccinatedTwoDose->Exposed",
-            "disease": "measles",
-            "paper_id": "p1_model_measles",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible adults->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible children under 5->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated adults (two doses)->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated children under 5 (two doses)->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
-      }
-    },
-    {
-      "gap": {
-        "expected": "VaccinatedTwoDose->Susceptible",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model (or flows list)."
-      },
-      "gap_type": "missing_flows",
-      "source": "rag",
-      "suggestion": {
-        "signature": "VaccinatedTwoDose->Susceptible",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "VaccinatedTwoDose->Susceptible",
-            "disease": "measles",
-            "paper_id": "p1_model_measles",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated->Susceptible",
-            "disease": "tuberculosis",
-            "paper_id": "p1_model_tuberculosis",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated adults (two doses)->Susceptible adults",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated children under 5 (two doses)->Susceptible children under 5",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated adults (one dose)->Susceptible adults",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
-      }
     }
   ],
   "summary": {
-    "rag_count": 15,
-    "inference_count": 3,
+    "rag_count": 19,
+    "inference_count": 5,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

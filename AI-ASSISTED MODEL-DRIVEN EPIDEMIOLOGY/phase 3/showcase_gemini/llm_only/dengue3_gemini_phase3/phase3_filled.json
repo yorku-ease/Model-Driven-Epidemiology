@@ -2,59 +2,297 @@
   "filled_gaps": [
     {
       "gap": {
-        "expected": "routinevaccinationrate",
+        "expected": "primarysusceptible",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Primary Susceptible",
+        "description": "",
+        "reasoning": "The excerpt discusses the impact of vaccination",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "naturalcrossprotectionwaningrate",
+        "expected": "primaryexposed",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Primary Exposed",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "vaccinecrossprotectionwaningrate",
+        "expected": "primaryinfectious",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Primary Infectious",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "postprimaryimmune",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Postprimary Immune",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedsilentinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccinated Silent Infection",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "secondarysusceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Secondary Susceptible",
+        "description": "",
+        "reasoning": "The text discusses 'subsequent infections' and 'heterologous protection' after natural infection or vaccination, which implies individuals can become susceptible again to different dengue serotypes.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "postvaccinationsusceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccinated Susceptible",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "postsecondaryimmune",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "PostSecondaryImmune",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "PrimarySusceptible->PrimaryExposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Primary susceptible individuals become exposed to the dengue virus for the first time, typically through contact with an infected mosquito.",
+        "reasoning": "The transition from susceptible to exposed in dengue is driven by contact with the pathogen via an infected vector, making it a contact-dependent process.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "PrimarySusceptible->VaccinatedSilentInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who are susceptible to",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "PrimaryExposed->PrimaryInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The progression of an",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "PrimaryInfectious->PostPrimaryImmune",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals recovering from a primary",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "PostPrimaryImmune->SecondarySusceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning of transient immunity",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedSilentInfection->PostVaccinationSusceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning of transient immunity",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SecondarySusceptible->SecondaryInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Individuals who",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "PostVaccinationSusceptible->SecondaryInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Vaccinated individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SecondaryInfectious->PostSecondaryImmune",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals recovering from a secondary",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 29,
+    "inference_count": 43,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

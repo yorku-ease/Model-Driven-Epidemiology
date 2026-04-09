@@ -17,9 +17,9 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **7**
-- After fills gaps (re-detected): **5**
-- Delta (before - after): **2**
-- Delta missing parameters: **2**
+- After fills gaps (re-detected): **0**
+- Delta (before - after): **7**
+- Delta missing parameters: **7**
 - Delta missing compartments: **0**
 - Delta missing flows: **0**
 
@@ -47,11 +47,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 28.6% | 30% |
+| **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 95.8% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **57.3/100** | — |
+| **Fill traceability** | 28.6% | 20% |
+| **Parameter accuracy** | 28.6% | 20% |
+| **→ Composite** | **70.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -66,53 +66,64 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 2
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 10
+- Filled via **inference**: 5
 - **Flagged** for manual review: 0
+
+### μ1 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.001384 1/time
+- **Description:** Natural death rate of humans (μ1)
+- **From papers:** p1_model_zika, p1_model_malaria, p1_model_measles
 
 ### λv^v (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 1e-05 per day
 - **Confidence:** LOW
 
 ### λv^s (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.0001 per day
 - **Confidence:** LOW
 
 ### λh^v (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 1e-05 1/day
 - **Confidence:** LOW
 
 ### λh^s (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 1e-05 per day
 - **Confidence:** LOW
 
 ### λm (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.0005 per day
 - **Confidence:** LOW
 
+### μ2 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.1 1/time
+- **Description:** Natural death rate of mosquitoes (μ2)
+- **From papers:** p1_model_zika, p1_model_malaria, p1_model_measles
+
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
+- Parameters compared: **7**
+- Exact match (<1% error): **2**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+- Poor (>50% error): **5**
+- **Accuracy (exact+close)**: **28.6%**
+- Median relative error: **100.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| λv^v | None | 0.0 | — | no_fill |
-| λv^s | None | 0.0 | — | no_fill |
-| λh^v | None | 0.0 | — | no_fill |
-| λh^s | None | 0.0 | — | no_fill |
-| λm | None | 0.0 | — | no_fill |
+| μ1 | 0.001384 | 0.001384 | 0.0% | exact |
+| λv^v | 1e-05 | 0.0 | 100.0% | poor |
+| λv^s | 0.0001 | 0.0 | 100.0% | poor |
+| λh^v | 1e-05 | 0.0 | 100.0% | poor |
+| λh^s | 1e-05 | 0.0 | 100.0% | poor |
+| λm | 0.0005 | 0.0 | 100.0% | poor |
+| μ2 | 0.1 | 0.1 | 0.0% | exact |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

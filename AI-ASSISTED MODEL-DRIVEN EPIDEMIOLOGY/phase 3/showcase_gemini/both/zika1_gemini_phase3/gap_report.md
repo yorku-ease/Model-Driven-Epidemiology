@@ -53,10 +53,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 85.6% | 30% |
-| **Fill traceability** | 76.9% | 20% |
-| **Parameter accuracy** | 85.7% | 20% |
-| **→ Composite** | **88.2/100** | — |
+| **Reference agreement** | 83.8% | 30% |
+| **Fill traceability** | 66.7% | 20% |
+| **Parameter accuracy** | 100.0% | 20% |
+| **→ Composite** | **88.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -69,72 +69,14 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 3 | 10 | 3 | 16 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 10
+- Filled via **RAG**: 12
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 3
+- Filled via **inference**: 4
 - **Flagged** for manual review: 0
-
-### susceptible female adults (missing_compartments)
-- **Source:** inference
-- **Primary name:** susceptible female adults
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
 
 ### exposed female adults (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposed female adults
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### infectious female adults (missing_compartments)
-- **Source:** inference
-- **Primary name:** infectious female adults
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### 1/τ_h (missing_parameters)
-- **Source:** rag
-- **Value:** 0.5 1/day
-- **Description:** Inverse incubation time in humans
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_cholera3_llm_claude_20260407_213639, p1_model_dengue
-
-### b_v (missing_parameters)
-- **Source:** rag
-- **Value:** 0.001 1/day
-- **Description:** Biting/exposure term for vectors becoming infected from infectious humans
-- **From papers:** p2_cholera3_llm_claude_20260407_213639, p1_model_dengue, p2_cholera3_llm_gemini_20260407_204240
-
-### 1/τ_v (missing_parameters)
-- **Source:** rag
-- **Value:** 0.125 1/day
-- **Description:** Inverse incubation time in vectors
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_cholera3_llm_claude_20260407_213639, p1_model_dengue
-
-### r_h (missing_parameters)
-- **Source:** rag
-- **Value:** 0.00005 1/day
-- **Description:** Human population growth rate (logistic)
-- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p1_model_dengue
-
-### f (missing_parameters)
-- **Source:** rag
-- **Value:** 80 1/day
-- **Description:** Eggs laid per female mosquito per unit time
-- **From papers:** p1_model_covid, p2_cholera3_llm_claude_20260407_213639, p1_model_zika
-
-### δ_l (missing_parameters)
-- **Source:** rag
-- **Value:** 1 1/day
-- **Description:** Larval density-dependent mortality coefficient (logistic term)
-- **From papers:** p1_model_cholera, p1_model_hiv, p1_model_zika
-
-### φ (missing_parameters)
-- **Source:** rag
-- **Value:** 0.00128 1/week
-- **Description:** Maturation rate child→adult (j)
-- **From papers:** p1_model_measles, p2_cholera3_llm_claude_20260407_213639, p2_dengue3_llm_claude_20260407_214050
-
-### Pupae (non-infectious)->Susceptible female adults (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Primary name:** Exposed Female Adults
 
 ### Susceptible female adults->Exposed female adults (missing_flows)
 - **Source:** rag
@@ -146,29 +88,10 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **7**
-- Exact match (<1% error): **6**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **1**
-- **Accuracy (exact+close)**: **85.7%**
-- Median relative error: **0.0%**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| 1/τ_h | 0.5 | 0.5 | 0.0% | exact |
-| b_v | 0.001 | 0.001 | 0.0% | exact |
-| 1/τ_v | 0.125 | 0.125 | 0.0% | exact |
-| r_h | 5e-05 | 5e-05 | 0.0% | exact |
-| f | 80.0 | 80.0 | 0.0% | exact |
-| δ_l | 1.0 | 1.0 | 0.0% | exact |
-| φ | 0.00128 | 0.68 | 99.81% | poor |
-
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **10** | Candidate: **13**
-- Precision **0.7692** | Recall **1.0** | F1 **0.8696**
+- Gold count: **10** | Candidate: **14**
+- Precision **0.7143** | Recall **1.0** | F1 **0.8333**
 ### Flows
 - Gold count: **8** | Candidate: **11**
 - Precision **0.7273** | Recall **1.0** | F1 **0.8421**

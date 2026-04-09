@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **22**
-- After fills gaps (re-detected): **3**
-- Delta (before - after): **19**
+- After fills gaps (re-detected): **12**
+- Delta (before - after): **10**
 - Delta missing parameters: **10**
-- Delta missing compartments: **4**
-- Delta missing flows: **5**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -61,11 +61,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 86.4% | 30% |
-| **Reference agreement** | 67.1% | 30% |
-| **Fill traceability** | 66.7% | 20% |
+| **Gap reduction** | 45.5% | 30% |
+| **Reference agreement** | 51.3% | 30% |
+| **Fill traceability** | 58.3% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **79.4/100** | — |
+| **→ Composite** | **60.7/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -78,15 +78,32 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 6 | 11 | 9 | 26 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 19
+- Filled via **RAG**: 24
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 6
+- Filled via **inference**: 10
 - **Flagged** for manual review: 0
 
 ### earlyinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** earlyinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Acute Infection
+- **Reasoning:** The excerpt
+
+### chronicinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Chronic Infection
+- **Reasoning:** The excerpt
+
+### lateinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated Infected
+
+### onart (missing_compartments)
+- **Source:** inference
+- **Primary name:** On ART
+
+### removed (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated
 
 ### Susceptible->EarlyInfection (missing_flows)
 - **Source:** rag
@@ -98,10 +115,35 @@
 - **Similar flows in corpus:** 1 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
+### ChronicInfection->LateInfection (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 2 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### ChronicInfection->OnART (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 3 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### LateInfection->OnART (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 3 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### LateInfection->Removed (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### OnART->Removed (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **6** | Candidate: **11**
-- Precision **0.5455** | Recall **1.0** | F1 **0.7059**
+- Gold count: **6** | Candidate: **13**
+- Precision **0.3846** | Recall **0.8333** | F1 **0.5263**
 ### Flows
-- Gold count: **7** | Candidate: **15**
-- Precision **0.4667** | Recall **1.0** | F1 **0.6364**
+- Gold count: **7** | Candidate: **13**
+- Precision **0.3846** | Recall **0.7143** | F1 **0.5**

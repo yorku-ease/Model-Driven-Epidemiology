@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **29**
-- After fills gaps (re-detected): **19**
-- Delta (before - after): **10**
+- After fills gaps (re-detected): **27**
+- Delta (before - after): **2**
 - Delta missing parameters: **0**
-- Delta missing compartments: **6**
-- Delta missing flows: **4**
+- Delta missing compartments: **2**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -69,11 +69,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 34.5% | 30% |
-| **Reference agreement** | 75.8% | 30% |
-| **Fill traceability** | 52.6% | 20% |
+| **Gap reduction** | 6.9% | 30% |
+| **Reference agreement** | 72.6% | 30% |
+| **Fill traceability** | 51.9% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **63.6/100** | — |
+| **→ Composite** | **54.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -86,55 +86,67 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 15 | 12 | 17 | 44 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 24
+- Filled via **RAG**: 28
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 24
+- Filled via **inference**: 28
 - **Flagged** for manual review: 0
 
 ### susceptiblewomen (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblewomen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Women
 
 ### exposedwomen (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedwomen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Women
+
+### infectiouswomensymptomaticblood (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Women Symptomatic Blood
+
+### infectiouswomenasymptomaticblood (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Asymptomatic Women
+
+### infectiouswomengenitalpersistence (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Women Genital Persistence
 
 ### recoveredwomen (missing_compartments)
 - **Source:** inference
-- **Primary name:** recoveredwomen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Recovered
+- **Reasoning:** A compartmental
 
 ### susceptiblemen (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** SusceptibleMen
+- **Reasoning:** The model explicitly includes sexual contact as a main transmission pathway,
 
 ### exposedmen (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Men
+- **Reasoning:** The
+
+### infectiousmensemenpersistence (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Men Semen Persistence
+- **Reasoning:** The model explicitly includes sexual transmission of ZIKV, and the persistence
 
 ### recoveredmen (missing_compartments)
 - **Source:** inference
-- **Primary name:** recoveredmen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Recovered Men
+- **Reasoning:** The gold label explicitly indicates 'recoveredmen' as the missing compartment, suggesting the model differentiates by sex and includes a recovered state.
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
 
 ### exposedmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Mosquitoes
 
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectiousmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Mosquitoes
 
 ### SusceptibleWomen->ExposedWomen (missing_flows)
 - **Source:** rag
@@ -147,6 +159,16 @@
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
 ### ExposedWomen->InfectiousWomenAsymptomaticBlood (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
@@ -171,6 +193,16 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
+### InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
 ### InfectiousMenSemenPersistence->RecoveredMen (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
@@ -188,8 +220,8 @@
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **15** | Candidate: **21**
-- Precision **0.7143** | Recall **1.0** | F1 **0.8333**
+- Gold count: **15** | Candidate: **24**
+- Precision **0.625** | Recall **1.0** | F1 **0.7692**
 ### Flows
 - Gold count: **14** | Candidate: **27**
 - Precision **0.5185** | Recall **1.0** | F1 **0.6829**

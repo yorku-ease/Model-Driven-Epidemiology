@@ -2,23 +2,6 @@
   "filled_gaps": [
     {
       "gap": {
-        "expected": "\u03c0",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
         "expected": "Susceptible->Infected",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
@@ -26,12 +9,12 @@
       "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "flow_type": "RateFlow",
-        "description": "Suggested transition for Susceptible->Infected",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals become infected with Mycobacterium tuberculosis through contact with infectious individuals.",
+        "reasoning": "Tuberculosis is an infectious disease that spreads through person-to-person transmission, making the Susceptible to Infected transition a contact-dependent process.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -44,11 +27,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for Infected->Recovered",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "The rate at which infected individuals recover from tuberculosis, either naturally or through treatment, and are no longer infectious.",
+        "reasoning": "Tuberculosis is a treatable disease, and individuals can recover from infection, which is a fundamental process in disease dynamics models.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -60,18 +43,18 @@
       "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "flow_type": "RateFlow",
-        "description": "Suggested transition for Recovered->Infected",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "flow_type": "ContactFlow",
+        "description": "Recovered individuals can",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 8,
+    "inference_count": 7,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

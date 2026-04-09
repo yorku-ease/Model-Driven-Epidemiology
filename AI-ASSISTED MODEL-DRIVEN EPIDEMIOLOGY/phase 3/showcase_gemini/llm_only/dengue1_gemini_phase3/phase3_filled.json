@@ -2,6 +2,23 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "susceptible mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "Mosquitoes that are capable of being infected with the dengue virus but have not yet been exposed.",
+        "reasoning": "The excerpt clearly states dengue is a mosquito-borne disease, necessitating the inclusion of vector compartments in any comprehensive transmission model.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
         "expected": "\u03b31",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
@@ -9,12 +26,14 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "value": 0.2,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; verify from literature."
       }
     },
     {
@@ -26,18 +45,37 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "value": 0.14,
+        "unit": "1/day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible mosquitoes->Infectious mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Susceptible mosquitoes become infectious after acquiring the dengue virus from an infected human host and completing the extrinsic incubation period.",
+        "reasoning": "This flow represents the rate at which susceptible mosquitoes transition to an infectious state, enabling them to transmit the virus to humans.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 6,
+    "inference_count": 4,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

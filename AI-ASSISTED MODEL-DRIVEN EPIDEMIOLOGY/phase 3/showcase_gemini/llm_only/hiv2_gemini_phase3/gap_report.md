@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **22**
-- After fills gaps (re-detected): **9**
-- Delta (before - after): **13**
-- Delta missing parameters: **4**
-- Delta missing compartments: **4**
-- Delta missing flows: **5**
+- After fills gaps (re-detected): **12**
+- Delta (before - after): **10**
+- Delta missing parameters: **10**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -61,11 +61,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 59.1% | 30% |
-| **Reference agreement** | 67.1% | 30% |
+| **Gap reduction** | 45.5% | 30% |
+| **Reference agreement** | 54.4% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **57.9/100** | — |
+| **→ Composite** | **50.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -80,82 +80,78 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 31
+- Filled via **inference**: 34
 - **Flagged** for manual review: 0
 
 ### earlyinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** earlyinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Early Infection
+- **Reasoning:** The excerpt
 
-### progression1 (missing_parameters)
+### chronicinfection (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Chronically Infected
+- **Reasoning:** The
 
-### progression2 (missing_parameters)
+### lateinfection (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** On ART
+- **Reasoning:** The
 
-### artstart1 (missing_parameters)
+### onart (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** On ART
+- **Reasoning:** The
 
-### artstart2 (missing_parameters)
+### removed (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### deathlate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### deathart (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** On Antiretroviral Therapy
 
 ### Susceptible->EarlyInfection (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->EarlyInfection
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Transmission of HIV from an infectious individual to a susceptible individual, leading to early infection.
+- **Reasoning:** HIV is a sexually transmitted infection, and its spread is mediated by contact between susceptible and infectious individuals.
 
 ### EarlyInfection->ChronicInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for EarlyInfection->ChronicInfection
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of HIV infection from the acute seroconversion phase to the chronic, clinically latent stage.
+- **Reasoning:** This transition represents the natural history of HIV infection where individuals move from the initial acute phase to a prolonged chronic phase, a fundamental process in HIV epidemiology models.
 
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+### ChronicInfection->LateInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of HIV-infected individuals from the chronic asymptomatic stage to the late symptomatic (AIDS) stage due to immune system decline.
+- **Reasoning:** This transition represents the natural progression of HIV disease over time as the immune system deteriorates, leading to the late symptomatic stage (AIDS) if not treated.
 
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| progression1 | None | 0.5 | — | no_fill |
-| progression2 | None | 0.2 | — | no_fill |
-| artstart1 | None | 0.3 | — | no_fill |
-| artstart2 | None | 0.4 | — | no_fill |
-| deathlate | None | 0.2 | — | no_fill |
-| deathart | None | 0.05 | — | no_fill |
+### ChronicInfection->OnART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with chronic HIV infection initiating antiretroviral therapy (ART).
+- **Reasoning:** The excerpt discusses the expansion and provision of antiretroviral therapy (ART) to HIV-infected individuals, directly representing the transition from chronic infection to being on ART.
+
+### LateInfection->OnART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in the late stage of HIV infection initiate antiretroviral therapy (ART).
+- **Reasoning:** The excerpt discusses the provision and expansion of ART for HIV-infected individuals, indicating a transition from an infected state to a state of being on treatment.
+
+### LateInfection->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mortality due to AIDS-related complications in individuals with late-stage HIV infection.
+- **Reasoning:** The excerpt discusses the impact of antiretroviral therapy (ART) on reducing HIV spread and preventing progression, implying that without effective treatment, individuals in late infection stages would die and be removed from the population.
+
+### OnART->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mortality or loss
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **11**
-- Precision **0.5455** | Recall **1.0** | F1 **0.7059**
+- Precision **0.4545** | Recall **0.8333** | F1 **0.5882**
 ### Flows
-- Gold count: **7** | Candidate: **15**
-- Precision **0.4667** | Recall **1.0** | F1 **0.6364**
+- Gold count: **7** | Candidate: **13**
+- Precision **0.3846** | Recall **0.7143** | F1 **0.5**

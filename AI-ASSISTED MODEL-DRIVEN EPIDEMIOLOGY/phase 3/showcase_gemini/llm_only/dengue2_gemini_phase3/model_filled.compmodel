@@ -13,9 +13,11 @@
   <parameters name="Probability of death conditional on symptomatic disease" expression="0.0078" type="CONSTANT" description="Proportion of symptomatic cases that result in death." unit="dimensionless" />
   <parameters name="Probability of mosquito to human transmission" expression="N/A" type="CONSTANT" description="The probability of an infectious mosquito infecting a susceptible human during blood-feeding. Value was calibrated to achieve a target seroprevalence." unit="dimensionless" />
   <parameters name="Mosquito emergence rate" expression="N/A" type="CONSTANT" description="The emergence rate of adult female mosquitoes. Value was calibrated to achieve a target seroprevalence." unit="mosquitoes per day" />
-  <parameters name="transmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="incubationrate" expression="5.0" type="CONSTANT" unit="days" />
-  <parameters name="recoveryrate" expression="7.0" type="CONSTANT" unit="days" />
+  <parameters name="transmissionrate" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="incubationrate" expression="0.167" type="CONSTANT" unit="1/days" />
+  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" unit="per day" />
+  <parameters name="screeningandvaccinationrate" expression="0.1" type="CONSTANT" unit="per year" />
+  <parameters name="vaccinebreakthroughrate" expression="0.4" type="CONSTANT" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Transmission of dengue virus from an infectious mosquito to a susceptible human during a blood-feed." />
   </compartments>
@@ -29,10 +31,10 @@
     <outgoingFlows target="//@compartments.6" />
   </compartments>
   <compartments PrimaryName="Infectious Mosquitoes" population="0" />
-  <compartments PrimaryName="exposed">
+  <compartments PrimaryName="Exposed">
     <outgoingFlows target="//@compartments.4" />
   </compartments>
-  <compartments PrimaryName="vaccinated">
+  <compartments PrimaryName="Vaccinated">
     <outgoingFlows target="//@compartments.6" />
   </compartments>
 </ns0:CompartmentalModel>

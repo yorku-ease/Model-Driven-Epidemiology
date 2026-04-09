@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **38**
-- After fills gaps (re-detected): **20**
-- Delta (before - after): **18**
+- After fills gaps (re-detected): **21**
+- Delta (before - after): **17**
 - Delta missing parameters: **17**
-- Delta missing compartments: **1**
+- Delta missing compartments: **0**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -77,11 +77,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 47.4% | 30% |
+| **Gap reduction** | 44.7% | 30% |
 | **Reference agreement** | 85.9% | 30% |
-| **Fill traceability** | 75.0% | 20% |
+| **Fill traceability** | 71.4% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **75.0/100** | — |
+| **→ Composite** | **73.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -96,33 +96,34 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 47
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 11
+- Filled via **inference**: 12
 - **Flagged** for manual review: 0
 
 ### latentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** latentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Latent Infection
+- **Reasoning:** The
 
 ### infectioustuberculosis (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectioustuberculosis
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible
 
 ### noninfectioustuberculosis (missing_compartments)
 - **Source:** inference
-- **Primary name:** noninfectioustuberculosis
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Non-Infectious Tuberculosis
+- **Reasoning:** The text explicitly distinguishes between 'infectious' and 'non-infectious' cases of tuberculosis, indicating that non-infectious cases represent a distinct state that would likely be modeled as a separate compartment.
+
+### ontreatment (missing_compartments)
+- **Source:** inference
+- **Primary name:** On Treatment
 
 ### treatmentfailurestate (missing_compartments)
 - **Source:** inference
-- **Primary name:** treatmentfailurestate
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Treatment Failure State
 
 ### selfcuredstate (missing_compartments)
 - **Source:** inference
-- **Primary name:** selfcuredstate
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** SelfCuredState
 
 ### Susceptible->LatentInfection (missing_flows)
 - **Source:** rag

@@ -35,6 +35,7 @@ Sources collected:
 Output: data/paper_database/index.json
 """
 
+import argparse
 import json
 import re
 import sys
@@ -347,7 +348,7 @@ def _read_full_text(paper_text_path: Path) -> str:
         return ""
 
 
-def _collect_phase2_entries() -> List[Dict[str, Any]]:
+def _collect_phase2_entries(exclude_baselines: bool = False) -> List[Dict[str, Any]]:
     entries: List[Dict[str, Any]] = []
     reports_dir = PHASE2_DIR / "reports"
     latest = _latest_reports(reports_dir)
@@ -427,18 +428,22 @@ def _collect_phase2_entries() -> List[Dict[str, Any]]:
 
         entries.append(entry)
 
-    # Baseline .compmodel files
+    # Baseline .compmodel files (gold standards — exclude during benchmark eval to avoid data leakage)
     baselines = PHASE2_DIR / "data" / "baseline_models"
     if baselines.is_dir():
-        for cm in sorted(baselines.glob("*.compmodel")):
-            disease = _canonical(cm.stem)
-            entries.append({
-                "paper_id": f"p2_baseline_{disease}",
-                "source_phase": "phase2_baseline",
-                "disease": disease,
-                "compmodel_path": str(cm),
-                "model_structure": _parse_compmodel(cm),
-            })
+        if exclude_baselines:
+            print("  [INFO] --exclude-baselines: skipping gold-standard baseline_models/ "
+                  "(safe for benchmark evaluation runs)")
+        else:
+            for cm in sorted(baselines.glob("*.compmodel")):
+                disease = _canonical(cm.stem)
+                entries.append({
+                    "paper_id": f"p2_baseline_{disease}",
+                    "source_phase": "phase2_baseline",
+                    "disease": disease,
+                    "compmodel_path": str(cm),
+                    "model_structure": _parse_compmodel(cm),
+                })
 
     return entries
 
@@ -529,18 +534,37 @@ def _build_parameter_index(entries: List[Dict[str, Any]]) -> List[Dict[str, Any]
 # ─── Main ──────────────────────────────────────────────────────────────────
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Build the Phase 3 retrieval database from Phase 1 + Phase 2 outputs."
+    )
+    parser.add_argument(
+        "--exclude-baselines",
+        action="store_true",
+        default=False,
+        help=(
+            "Exclude gold-standard baseline_models/ from the retrieval index. "
+            "Use this flag for all benchmark / evaluation runs to prevent data leakage "
+            "where the retrieval index would otherwise contain the same models being evaluated."
+        ),
+    )
+    args = parser.parse_args()
+
     print("=" * 65)
     print("Building comprehensive paper database  (Phase 1 + Phase 2)")
     print("=" * 65)
     print(f"  Phase 1 : {PHASE1_DIR}")
     print(f"  Phase 2 : {PHASE2_DIR}")
-    print(f"  Output  : {DB_DIR}\n")
+    print(f"  Output  : {DB_DIR}")
+    if args.exclude_baselines:
+        print("  Mode    : BENCHMARK (gold-standard baselines excluded)\n")
+    else:
+        print("  Mode    : FULL (gold-standard baselines included — NOT for benchmarking)\n")
 
     # Collect entries
     p1_entries = _collect_phase1_entries()
     print(f"  Phase 1 entries : {len(p1_entries)}")
 
-    p2_entries = _collect_phase2_entries()
+    p2_entries = _collect_phase2_entries(exclude_baselines=args.exclude_baselines)
     print(f"  Phase 2 entries : {len(p2_entries)}")
 
     all_entries = p1_entries + p2_entries
@@ -564,6 +588,7 @@ def main():
 
     index = {
         "version": 3,
+        "baselines_excluded": args.exclude_baselines,
         "num_entries": len(all_entries),
         "num_parameters": len(param_index),
         "num_flow_signatures": len(flow_index),

@@ -2,93 +2,59 @@
   "filled_gaps": [
     {
       "gap": {
-        "expected": "effectivevaccinationrate",
+        "expected": "vaccinatedineffective",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Vaccinated Ineffective",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "ineffectivevaccinationrate",
+        "expected": "Susceptible->VaccinatedIneffective",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "RateFlow",
+        "description": "Susceptible individuals receive a",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
       "gap": {
-        "expected": "protectiondelayrate",
+        "expected": "VaccinatedIneffective->Latent",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "ContactFlow",
+        "description": "Individuals who received an ineffective",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "latentprogressionrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "hospitalizationrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 21,
+    "inference_count": 19,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

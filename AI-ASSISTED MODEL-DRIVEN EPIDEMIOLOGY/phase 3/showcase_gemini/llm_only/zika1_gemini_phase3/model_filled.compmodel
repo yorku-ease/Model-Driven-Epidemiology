@@ -19,6 +19,13 @@
   <parameters name="M" expression="100000" type="CONSTANT" description="Number of alternative hosts besides humans (Rio de Janeiro State)" unit="hosts" />
   <parameters name="λ" expression="0.00005" type="CONSTANT" description="Human population growth rate" unit="per day" />
   <parameters name="R0" expression="1.1139" type="CONSTANT" description="Basic reproduction number estimated from parameters (Rio de Janeiro State)" unit="dimensionless" />
+  <parameters name="1/τ_h" expression="0.1667" type="CONSTANT" unit="per day" />
+  <parameters name="b_v" expression="0.35" type="CONSTANT" />
+  <parameters name="1/τ_v" expression="0.07" type="CONSTANT" unit="per day" />
+  <parameters name="r_h" expression="0.01" type="CONSTANT" unit="per year" />
+  <parameters name="f" expression="5e-05" type="CONSTANT" unit="1/day" />
+  <parameters name="δ_l" expression="3.65e-05" type="CONSTANT" />
+  <parameters name="φ" expression="4.93e-05" type="CONSTANT" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Humans become exposed through bites from infectious vectors, rate βb·I_V·S_H/(N_H + M)" />
   </compartments>
@@ -46,11 +53,11 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.9" description="Exposed vectors become infectious after incubation period, rate α_V" />
   </compartments>
   <compartments PrimaryName="Infectious Vectors" population="0" />
-  <compartments PrimaryName="susceptible female adults">
+  <compartments PrimaryName="Susceptible Female Adults">
     <outgoingFlows target="//@compartments.11" />
   </compartments>
-  <compartments PrimaryName="exposed female adults">
+  <compartments PrimaryName="Exposed Female Adults">
     <outgoingFlows target="//@compartments.12" />
   </compartments>
-  <compartments PrimaryName="infectious female adults" />
+  <compartments PrimaryName="Infectious Female Adults" />
 </ns0:CompartmentalModel>

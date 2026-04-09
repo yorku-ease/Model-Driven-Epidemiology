@@ -17,9 +17,9 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **5**
-- After fills gaps (re-detected): **2**
-- Delta (before - after): **3**
-- Delta missing parameters: **3**
+- After fills gaps (re-detected): **0**
+- Delta (before - after): **5**
+- Delta missing parameters: **5**
 - Delta missing compartments: **0**
 - Delta missing flows: **0**
 
@@ -46,11 +46,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 60.0% | 30% |
+| **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 65.1% | 30% |
 | **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **57.5/100** | — |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **49.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -65,32 +65,52 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 7
+- Filled via **inference**: 5
 - **Flagged** for manual review: 0
 
 ### hospitalizationrate (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.7 
+- **Confidence:** LOW
+
+### recoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.035 1/day
+- **Confidence:** LOW
+
+### deathratecommunity (missing_parameters)
+- **Source:** inference
+- **Value:** 0.6 
+- **Reasoning:** The provided text states that Ebola Virus Disease has a case fatality rate around 50-70%. A value of 0.6 (60%) falls within this typical range.
+- **Confidence:** LOW
+
+### recoveryratehospital (missing_parameters)
+- **Source:** inference
+- **Value:** 0.0476 per day
 - **Confidence:** LOW
 
 ### deathratehospital (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.6 
+- **Reasoning:** Ebola
 - **Confidence:** LOW
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
+- Parameters compared: **5**
 - Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+- Poor (>50% error): **5**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **250.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| hospitalizationrate | None | 0.2 | — | no_fill |
-| deathratehospital | None | 0.1 | — | no_fill |
+| hospitalizationrate | 0.7 | 0.2 | 250.0% | poor |
+| recoveryrate | 0.035 | 0.1 | 65.0% | poor |
+| deathratecommunity | 0.6 | 0.15 | 300.0% | poor |
+| recoveryratehospital | 0.0476 | 0.1 | 52.4% | poor |
+| deathratehospital | 0.6 | 0.1 | 500.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

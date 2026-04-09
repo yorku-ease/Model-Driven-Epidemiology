@@ -9,11 +9,29 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "symptomaticinfectious",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Symptomatic Infectious",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "asymptomaticpatentinfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Asymptomatic Infectious",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -25,11 +43,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "subpatentinfectious",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Asymptomatic Infected",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -41,11 +60,29 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "treatedinfectious",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Treated Infectious",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "protectedbyprophylaxis",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Protected By Prophylaxis",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -57,11 +94,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "susceptiblemosquitoes",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -73,11 +111,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "exposedmosquitoes",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -89,11 +128,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "infectiousmosquitoes",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Infectious Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -115,6 +155,52 @@
           },
           {
             "signature": "Susceptible->SymptomaticInfectious",
+            "disease": "malaria",
+            "paper_id": "p1_model_malaria",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible adults->Exposed / recently infected",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible adults->Vaccinated adults (two doses)",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible adults->Vaccinated adults (one dose)",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->AsymptomaticPatentInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Susceptible->AsymptomaticPatentInfectious",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Susceptible->Infectious",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible->AsymptomaticPatentInfectious",
             "disease": "malaria",
             "paper_id": "p1_model_malaria",
             "source_phase": "phase1"
@@ -374,6 +460,52 @@
     },
     {
       "gap": {
+        "expected": "AsymptomaticPatentInfectious->AsymptomaticPatentInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "AsymptomaticPatentInfectious->AsymptomaticPatentInfectious",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Infectious->Infectious",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "AsymptomaticPatentInfectious->AsymptomaticPatentInfectious",
+            "disease": "malaria",
+            "paper_id": "p1_model_malaria",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Susceptible->Infectious",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Recovered humans",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Chollerae bacterial concentration",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
         "expected": "SubpatentInfectious->Susceptible",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
@@ -604,6 +736,52 @@
     },
     {
       "gap": {
+        "expected": "ProtectedByProphylaxis->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "ProtectedByProphylaxis->Susceptible",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Protected->Susceptible",
+            "disease": "influenza",
+            "paper_id": "p1_model_influenza",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Prophylaxis->Susceptible",
+            "disease": "malaria",
+            "paper_id": "p1_model_malaria",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "ProtectedByProphylaxis->Susceptible",
+            "disease": "malaria",
+            "paper_id": "p1_model_malaria",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Vaccinated adults (two doses)->Susceptible adults",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Vaccinated children under 5 (two doses)->Susceptible children under 5",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
         "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
@@ -696,8 +874,8 @@
     }
   ],
   "summary": {
-    "rag_count": 45,
-    "inference_count": 14,
+    "rag_count": 48,
+    "inference_count": 16,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

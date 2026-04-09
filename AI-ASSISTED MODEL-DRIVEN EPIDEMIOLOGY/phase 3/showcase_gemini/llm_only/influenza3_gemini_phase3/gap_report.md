@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **16**
-- After fills gaps (re-detected): **5**
-- Delta (before - after): **11**
-- Delta missing parameters: **5**
-- Delta missing compartments: **1**
-- Delta missing flows: **5**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **13**
+- Delta missing parameters: **10**
+- Delta missing compartments: **0**
+- Delta missing flows: **3**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -55,11 +55,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 68.8% | 30% |
+| **Gap reduction** | 81.2% | 30% |
 | **Reference agreement** | 85.2% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **66.2/100** | — |
+| **→ Composite** | **69.9/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -74,53 +74,22 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 21
+- Filled via **inference**: 19
 - **Flagged** for manual review: 0
 
-### effectivevaccinationrate (missing_parameters)
+### vaccinatedineffective (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Vaccinated Ineffective
 
-### ineffectivevaccinationrate (missing_parameters)
+### Susceptible->VaccinatedIneffective (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals receive a
 
-### protectiondelayrate (missing_parameters)
+### VaccinatedIneffective->Latent (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### latentprogressionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### hospitalizationrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| effectivevaccinationrate | None | 0.03 | — | no_fill |
-| ineffectivevaccinationrate | None | 0.01 | — | no_fill |
-| protectiondelayrate | None | 0.10 | — | no_fill |
-| latentprogressionrate | None | 0.526 | — | no_fill |
-| hospitalizationrate | None | 0.08 | — | no_fill |
+- **Flow type:** ContactFlow
+- **Description:** Individuals who received an ineffective
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

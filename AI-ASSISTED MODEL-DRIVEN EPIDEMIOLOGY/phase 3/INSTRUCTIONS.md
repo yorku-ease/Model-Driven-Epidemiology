@@ -29,10 +29,10 @@ python3 run_phase3.py --phase2-report "../phase 2/reports/cholera_llm_gemini_202
 ### Options
 
 ```bash
-# Skip RAG (LLM inference + flag only)
+# Skip Rule-Based Retrieval (LLM inference + flag only)
 python3 run_phase3.py --all --no-rag --output reports
 
-# Skip LLM inference (RAG + flag only)
+# Skip LLM inference (Rule-Based Retrieval + flag only)
 python3 run_phase3.py --all --no-inference --output reports
 
 # Skip both (detection and reporting only)
@@ -63,7 +63,7 @@ For a clean end-to-end run from scratch, use:
 2. `python3 run_phase3_showcase.py --llm-provider <gemini|openai|claude> --output <folder>`
 3. `python3 evaluate_showcase_fuzzy_vs_phase2.py --showcase-dir <folder>` (recall/F1 comparison vs Phase 2 fuzzy report)
 
-## Showcase: best Phase 2 (3 LLMs) × RAG / LLM / both
+## Showcase: best Phase 2 (3 LLMs) × Rule-Based Retrieval / LLM / both
 
 **Phase 2:** For each disease you have `disease_llm_gemini_*`, `disease_llm_openai_*`, `disease_llm_claude_*`. The script **compares all of them** and picks the **single best** Phase 2 report by composite evaluation score (traceability, faithfulness, gaps, gold F1).
 
@@ -71,9 +71,9 @@ For a clean end-to-end run from scratch, use:
 
 | Mode | Meaning |
 |------|--------|
-| `rag_only/` | RAG + flagged only (`--no-inference`) |
+| `retrieval_only/` | Rule-Based Retrieval + flagged only (`--no-inference`) |
 | `llm_only/` | LLM + flagged only (`--no-rag`) |
-| `both/` | RAG + LLM + flagged |
+| `both/` | Rule-Based Retrieval + LLM + flagged |
 
 Output folders: `<disease>_<phase3_llm>_phase3/`. Each contains **`phase3_showcase_source.json`** pointing at the **actual Phase 2 folder** used (so you know which extractor won).
 
@@ -87,7 +87,7 @@ python3 run_phase3_showcase.py --llm-provider claude --output showcase_claude
 
 - **`--llm-provider`**: Phase 3 inference API. If omitted, set **`PHASE3_LLM_PROVIDER`**.
 - For Gemini, default model is **Flash**: `--gemini-model gemini-2.5-flash` (default value).
-- **`--output`** (default `showcase_phase3`): base for `rag_only/`, `llm_only/`, `both/`, `SHOWCASE_REPORT.md`, `showcase_summary.json`.
+- **`--output`** (default `showcase_phase3`): base for `retrieval_only/`, `llm_only/`, `both/`, `SHOWCASE_REPORT.md`, `showcase_summary.json`.
 - **`--diseases cholera,dengue`**: limit to listed disease slugs.
 
 Use **`showcase_summary.json`** / **`phase3_showcase_source.json`** to see which Phase 2 report was used for each disease and which mode won.

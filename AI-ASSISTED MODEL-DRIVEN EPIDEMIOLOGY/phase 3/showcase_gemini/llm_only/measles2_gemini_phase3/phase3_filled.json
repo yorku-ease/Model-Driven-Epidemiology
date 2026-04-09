@@ -2,110 +2,161 @@
   "filled_gaps": [
     {
       "gap": {
-        "expected": "mmr1vaccinationrate",
+        "expected": "maternalprotected",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Maternal Protected",
+        "description": "",
+        "reasoning": "An age-stratified measles model, especially one evaluating vaccination impact, typically includes a compartment for infants protected by maternal antibodies,",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "susceptibleinfectionrate",
+        "expected": "vaccinatedonedose",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Vaccinated One Dose",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "mmr2vaccinationrate",
+        "expected": "vaccinatedtwodose",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "VaccinatedTwoDose",
+        "description": "Individuals who have received two doses",
+        "reasoning": "The paper explicitly models the impact of an earlier second MMR dose and different vaccination schedules, requiring a compartment to track individuals who have received two vaccine doses.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "onedosebreakthroughrate",
+        "expected": "MaternalProtected->Susceptible",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "RateFlow",
+        "description": "Waning of maternal antibodies, leading to loss of passive immunity and return to susceptibility.",
+        "reasoning": "Maternal antibodies provide temporary protection against measles to newborns, which naturally wanes over time, making them susceptible to infection.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
       "gap": {
-        "expected": "twodosebreakthroughrate",
+        "expected": "Susceptible->VaccinatedOneDose",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "RateFlow",
+        "description": "Individuals in the susceptible",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
       "gap": {
-        "expected": "vaccinewaningrate",
+        "expected": "VaccinatedOneDose->VaccinatedTwoDose",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "RateFlow",
+        "description": "Individuals who have received one dose of the MMR vaccine receive their second dose, transitioning to a two-dose vaccinated state.",
+        "reasoning": "The paper discusses the impact of an 'earlier second dose for the Measles-Mumps-Rubella (MMR) vaccine', directly implying a transition from one-dose to two-dose vaccination status, which is a rate-based process.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedOneDose->Exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Vaccinated individuals with",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedTwoDose->Exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedTwoDose->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning of vaccine-induced immunity, where individuals who received two doses of the MMR vaccine lose their protection over time and revert to a susceptible state.",
+        "reasoning": "The paper explicitly mentions 'waning of vaccine-induced immunity was included' in their model, indicating a transition from a vaccinated state back to susceptibility due to loss of protection over time.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 24,
+    "inference_count": 27,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

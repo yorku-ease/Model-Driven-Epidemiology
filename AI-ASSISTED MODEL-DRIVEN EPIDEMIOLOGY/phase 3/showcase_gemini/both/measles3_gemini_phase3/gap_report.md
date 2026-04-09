@@ -75,8 +75,7 @@
 
 ### vaccinefailure (missing_compartments)
 - **Source:** inference
-- **Primary name:** vaccinefailure
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Vaccine Failure
 
 ### Susceptible->VaccineFailure (missing_flows)
 - **Source:** rag

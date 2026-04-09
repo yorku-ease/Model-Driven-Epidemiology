@@ -23,7 +23,8 @@ from pathlib import Path
 
 PHASE3_DIR = Path(__file__).resolve().parent
 PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
-MODES = ["rag_only", "llm_only", "both"]
+MODES = ["retrieval_only", "llm_only", "both"]
+LEGACY_MODE_ALIASES = {"rag_only": "retrieval_only"}
 
 DISEASE_DISPLAY = {
     "cholera1": "Cholera (P1)", "cholera2": "Cholera (P2)", "cholera3": "Cholera (P3)",
@@ -139,7 +140,7 @@ def load_showcase(showcase_dir: Path) -> dict:
     p2_scores = {row["disease"]: row.get("phase2_score", None) for row in summary}
 
     data: dict = {}
-    for mode in MODES:
+    for mode in MODES + list(LEGACY_MODE_ALIASES.keys()):
         mode_dir = showcase_dir / mode
         if not mode_dir.is_dir():
             continue
@@ -152,9 +153,12 @@ def load_showcase(showcase_dir: Path) -> dict:
             metrics = load_run_metrics(run_dir)
             if metrics is None:
                 continue
+            canonical_mode = LEGACY_MODE_ALIASES.get(mode, mode)
             if disease not in data:
                 data[disease] = {"best_p2": best_p2.get(disease, "?"), "phase2_score": p2_scores.get(disease)}
-            data[disease][mode] = metrics
+            # Prefer canonical folder name if both exist
+            if canonical_mode not in data[disease]:
+                data[disease][canonical_mode] = metrics
 
     return data
 
@@ -219,9 +223,9 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
         if not any(mode in data[d] for d in data):
             continue
         mode_label = {
-            "rag_only": "RAG only (no LLM inference)",
-            "llm_only": "LLM only (no RAG)",
-            "both": "RAG + LLM (both)",
+            "retrieval_only": "Rule-Based Retrieval only (`retrieval_only`, no LLM inference)",
+            "llm_only": "LLM only (no Rule-Based Retrieval)",
+            "both": "Rule-Based Retrieval + LLM (`both`)",
         }.get(mode, mode)
 
         lines += _table_header(mode_label)
@@ -292,7 +296,11 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
             if m["filled"]["flows"]["recall"] is not None:
                 all_fr.append(m["filled"]["flows"]["recall"])
                 all_ff1.append(m["filled"]["flows"]["f1"])
-        label = {"rag_only": "RAG only", "llm_only": "LLM only", "both": "**Both (RAG+LLM)**"}.get(mode, mode)
+        label = {
+            "retrieval_only": "Rule-Based Retrieval only (`retrieval_only`)",
+            "llm_only": "LLM only",
+            "both": "**Both (Rule-Based Retrieval+LLM)**",
+        }.get(mode, mode)
         dcr = avg(all_cr) - p2ca if (avg(all_cr) and p2ca) else None
         dfr = avg(all_fr) - p2fa if (avg(all_fr) and p2fa) else None
         sgn = lambda v: (("+" if v >= 0 else "") + f"{v:.2f}") if v is not None else ""
@@ -309,7 +317,7 @@ def main():
     parser = argparse.ArgumentParser(description="Build Phase 3 recall summary markdown.")
     parser.add_argument("--showcase", type=str, default="showcase_gemini",
                         help="Showcase directory name (default: showcase_gemini)")
-    parser.add_argument("--mode", type=str, choices=MODES + ["all"], default="all",
+    parser.add_argument("--mode", type=str, choices=MODES + ["rag_only", "all"], default="all",
                         help="Which fill mode(s) to include (default: all)")
     parser.add_argument("-o", "--output", type=str, default=None,
                         help="Output .md filename (default: RESULTS_PHASE3_<showcase>.md)")
@@ -320,7 +328,10 @@ def main():
         print(f"Error: showcase directory not found: {showcase_dir}")
         return 1
 
-    modes = MODES if args.mode == "all" else [args.mode]
+    if args.mode == "all":
+        modes = MODES
+    else:
+        modes = [LEGACY_MODE_ALIASES.get(args.mode, args.mode)]
     out_path = PHASE3_DIR / (args.output or f"RESULTS_PHASE3_{args.showcase.upper()}.md")
 
     print(f"Reading from: {showcase_dir}")

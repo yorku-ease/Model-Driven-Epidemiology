@@ -76,68 +76,63 @@
 
 ### susceptiblehumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblehumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Humans
+- **Reasoning:** The
 
 ### exposedhumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedhumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Humans
+- **Reasoning:** Z
 
 ### infectioushumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectioushumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Humans
 
 ### recoveredhumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** recoveredhumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Recovered
+- **Reasoning:** The
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
 
 ### exposedmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Mosquitoes
 
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectiousmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Mosquitoes
+- **Reasoning:** The excerpt states ZIKV transmission is predominantly vector-borne, which necessitates a compartment for infectious vectors, specifically mosquitoes, to complete the transmission cycle.
 
 ### SusceptibleHumans->ExposedHumans (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for SusceptibleHumans->ExposedHumans
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible humans become exposed to ZIKV through contact with infected vectors or humans.
+- **Reasoning:** The paper states that ZIKV transmission is predominantly vector-borne and can also occur via sexual contact and blood transfusions, indicating contact-based transmission.
 
 ### ExposedHumans->InfectiousHumans (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedHumans->InfectiousHumans
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who have been infected
 
 ### InfectiousHumans->RecoveredHumans (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for InfectiousHumans->RecoveredHumans
-- **Reasoning:** LLM unavailable.
+- **Description:** Recovery of an infectious human individual from ZIKV infection, leading to immunity.
+- **Reasoning:** Recovery from ZIKV infection is an intrinsic process where an individual clears the virus and develops immunity, transitioning out of the
 
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for SusceptibleMosquitoes->ExposedMosquitoes
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible mosquitoes become exposed to the zika3 virus after biting an infectious host.
+- **Reasoning:** The paper states that ZIKV transmission is predominantly vector-borne, indicating that mosquitoes acquire the infection through contact with an infectious source.
 
 ### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedMosquitoes->InfectiousMosquitoes
-- **Reasoning:** LLM unavailable.
+- **Description:** The progression of mosquitoes from
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

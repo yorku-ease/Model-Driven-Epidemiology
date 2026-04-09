@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **40**
-- After fills gaps (re-detected): **30**
-- Delta (before - after): **10**
-- Delta missing parameters: **5**
-- Delta missing compartments: **2**
-- Delta missing flows: **3**
+- After fills gaps (re-detected): **24**
+- Delta (before - after): **16**
+- Delta missing parameters: **16**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -79,11 +79,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 25.0% | 30% |
-| **Reference agreement** | 93.3% | 30% |
+| **Gap reduction** | 40.0% | 30% |
+| **Reference agreement** | 91.1% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **55.5/100** | — |
+| **→ Composite** | **59.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -98,208 +98,131 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 70
+- Filled via **inference**: 64
 - **Flagged** for manual review: 0
 
 ### symptomaticinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** symptomaticinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Symptomatic Infectious
+
+### asymptomaticpatentinfectious (missing_compartments)
+- **Source:** inference
+- **Primary name:** Asymptomatic Infectious
 
 ### subpatentinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** subpatentinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Subpatent Infectious
+- **Reasoning:** The
 
 ### treatedinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** treatedinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Treated Infectious
+
+### protectedbyprophylaxis (missing_compartments)
+- **Source:** inference
+- **Primary name:** On Prophylaxis
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
 
 ### exposedmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Mosquitoes
 
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectiousmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### susceptibletosymptomaticinfectionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### susceptibletoasymptomaticinfectionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### symptomatictoasymptomaticrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### superinfectiontosymptomaticrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### superinfectiontoasymptomaticrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### patenttosubpatentrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### subpatentclearancerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentfailurerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### protectionlossrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### mosquitolatentprogressionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Infectious Mosquitoes
+- **Reasoning:** The text discusses preventing onward transmission to mosquitoes and the lifespan of malaria vectors, indicating that mosquitoes become infectious and are a critical part of the transmission cycle.
 
 ### Susceptible->SymptomaticInfectious (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->SymptomaticInfectious
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become symptom
+
+### Susceptible->AsymptomaticPatentInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected with malaria parasites and transition to an asymptomatic, patent infectious state, capable of transmitting the disease.
+- **Reasoning:** The excerpt explicitly mentions 'asymptomatic parasite carriers' and the 'infectious reservoir in humans,' indicating that susceptible individuals can become infected and carry the parasite without symptoms, thus contributing to transmission.
 
 ### SymptomaticInfectious->TreatedInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SymptomaticInfectious->TreatedInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Symptomatic infectious
 
 ### SymptomaticInfectious->AsymptomaticPatentInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SymptomaticInfectious->AsymptomaticPatentInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who were symptomatic
 
 ### SymptomaticInfectious->SymptomaticInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SymptomaticInfectious->SymptomaticInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals remain in the Sympt
 
 ### AsymptomaticPatentInfectious->SubpatentInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for AsymptomaticPatentInfectious->SubpatentInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with detectable, asymptomatic
 
 ### AsymptomaticPatentInfectious->SymptomaticInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for AsymptomaticPatentInfectious->SymptomaticInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression from asymptomatic to
+
+### AsymptomaticPatentInfectious->AsymptomaticPatentInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals remain in the
 
 ### SubpatentInfectious->Susceptible (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SubpatentInfectious->Susceptible
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with sub
 
 ### SubpatentInfectious->SymptomaticInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SubpatentInfectious->SymptomaticInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with subpatent malaria infections can progress to develop symptomatic malaria.
+- **Reasoning:** The progression from a subpatent to a symptomatic infection is an intrinsic biological process within an infected individual, driven by parasite multiplication, not by contact with other individuals.
 
 ### SubpatentInfectious->AsymptomaticPatentInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SubpatentInfectious->AsymptomaticPatentInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with a low, undetectable parasite load (subpatent) progress to having a detectable parasite load (patent) while remaining asymptomatic.
+- **Reasoning:** This transition represents the natural progression of a malaria infection where parasite density increases from subpatent to patent levels within an asymptomatic individual, independent of external contact.
 
 ### TreatedInfectious->ProtectedByProphylaxis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for TreatedInfectious->ProtectedByProphylaxis
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who have been treated
 
 ### TreatedInfectious->AsymptomaticPatentInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for TreatedInfectious->AsymptomaticPatentInfectious
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who have received ant
+
+### ProtectedByProphylaxis->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who
 
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for SusceptibleMosquitoes->ExposedMosquitoes
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible mosquitoes
 
 ### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedMosquitoes->InfectiousMosquitoes
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| susceptibletosymptomaticinfectionrate | None | 0.040 | — | no_fill |
-| susceptibletoasymptomaticinfectionrate | None | 0.030 | — | no_fill |
-| treatmentrate | None | 0.35 | — | no_fill |
-| symptomatictoasymptomaticrate | None | 0.20 | — | no_fill |
-| superinfectiontosymptomaticrate | None | 0.025 | — | no_fill |
-| superinfectiontoasymptomaticrate | None | 0.020 | — | no_fill |
-| patenttosubpatentrate | None | 0.10 | — | no_fill |
-| subpatentclearancerate | None | 0.05 | — | no_fill |
-| treatmentfailurerate | None | 0.05 | — | no_fill |
-| protectionlossrate | None | 0.08 | — | no_fill |
-| mosquitolatentprogressionrate | None | 0.10 | — | no_fill |
+- **Description:** Mosquitoes transition from being infected but not yet infectious to being capable of transmitting malaria after completing the extrinsic incubation period.
+- **Reasoning:** This flow represents the biological maturation of the parasite within the mosquito, a time-dependent process known as the extrinsic incubation period, making it a rate-driven transition.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **11**
-- Precision **0.9091** | Recall **1.0** | F1 **0.9524**
+- Gold count: **9** | Candidate: **12**
+- Precision **0.8333** | Recall **1.0** | F1 **0.9091**
 ### Flows
 - Gold count: **16** | Candidate: **25**
 - Precision **0.84** | Recall **1.0** | F1 **0.913**

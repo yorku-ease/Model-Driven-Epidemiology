@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **18**
-- After fills gaps (re-detected): **6**
-- Delta (before - after): **12**
-- Delta missing parameters: **3**
-- Delta missing compartments: **3**
-- Delta missing flows: **6**
+- After fills gaps (re-detected): **9**
+- Delta (before - after): **9**
+- Delta missing parameters: **9**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -57,11 +57,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 66.7% | 30% |
-| **Reference agreement** | 88.8% | 30% |
+| **Gap reduction** | 50.0% | 30% |
+| **Reference agreement** | 86.2% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **66.6/100** | — |
+| **→ Composite** | **60.9/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -76,65 +76,60 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 24
+- Filled via **inference**: 27
 - **Flagged** for manual review: 0
 
-### mmr1vaccinationrate (missing_parameters)
+### maternalprotected (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Maternal Protected
+- **Reasoning:** An age-stratified measles model, especially one evaluating vaccination impact, typically includes a compartment for infants protected by maternal antibodies,
 
-### susceptibleinfectionrate (missing_parameters)
+### vaccinatedonedose (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Vaccinated One Dose
 
-### mmr2vaccinationrate (missing_parameters)
+### vaccinatedtwodose (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** VaccinatedTwoDose
+- **Reasoning:** The paper explicitly models the impact of an earlier second MMR dose and different vaccination schedules, requiring a compartment to track individuals who have received two vaccine doses.
 
-### onedosebreakthroughrate (missing_parameters)
+### MaternalProtected->Susceptible (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Waning of maternal antibodies, leading to loss of passive immunity and return to susceptibility.
+- **Reasoning:** Maternal antibodies provide temporary protection against measles to newborns, which naturally wanes over time, making them susceptible to infection.
 
-### twodosebreakthroughrate (missing_parameters)
+### Susceptible->VaccinatedOneDose (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Individuals in the susceptible
 
-### vaccinewaningrate (missing_parameters)
+### VaccinatedOneDose->VaccinatedTwoDose (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Individuals who have received one dose of the MMR vaccine receive their second dose, transitioning to a two-dose vaccinated state.
+- **Reasoning:** The paper discusses the impact of an 'earlier second dose for the Measles-Mumps-Rubella (MMR) vaccine', directly implying a transition from one-dose to two-dose vaccination status, which is a rate-based process.
 
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+### VaccinatedOneDose->Exposed (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Vaccinated individuals with
 
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| mmr1vaccinationrate | None | 0.25 | — | no_fill |
-| susceptibleinfectionrate | None | 0.80 | — | no_fill |
-| mmr2vaccinationrate | None | 0.18 | — | no_fill |
-| onedosebreakthroughrate | None | 0.08 | — | no_fill |
-| twodosebreakthroughrate | None | 0.01 | — | no_fill |
-| vaccinewaningrate | None | 0.002 | — | no_fill |
+### VaccinatedTwoDose->Exposed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Waning
+
+### VaccinatedTwoDose->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Waning of vaccine-induced immunity, where individuals who received two doses of the MMR vaccine lose their protection over time and revert to a susceptible state.
+- **Reasoning:** The paper explicitly mentions 'waning of vaccine-induced immunity was included' in their model, indicating a transition from a vaccinated state back to susceptibility due to loss of protection over time.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **7** | Candidate: **9**
-- Precision **0.7778** | Recall **1.0** | F1 **0.875**
+- Gold count: **7** | Candidate: **10**
+- Precision **0.7** | Recall **1.0** | F1 **0.8235**
 ### Flows
 - Gold count: **9** | Candidate: **11**
 - Precision **0.8182** | Recall **1.0** | F1 **0.9**

@@ -2,6 +2,40 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "recenttbinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recent Latent TB",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "remotetbinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Diagnosed Active TB",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
         "expected": "activetbsmearpositive",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
@@ -9,11 +43,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "activetbsmearpositive",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Active TB Smear Positive",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -25,11 +60,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "activetbsmearnegative",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Active TB Smear-Negative",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -41,11 +77,121 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "activetbextrapulmonary",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Active Extrapulmonary TB",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recentlytreatedrecovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recently Treated Recovered",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Uninfected->RecentTBInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "Uninfected->RecentTBInfection",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "Uninfected->RecentTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infected->Aquatic toxigenic Vibrio cholerae",
+            "disease": "cholera",
+            "paper_id": "p1_model_cholera",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infected->Removed",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infected->Dead",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infected->Recovered",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "RecentTBInfection->RemoteTBInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "RecentTBInfection->RemoteTBInfection",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "RecentTBInfection->RemoteTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RecentTBInfection->ActiveTBSmearPositive",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RecentTBInfection->ActiveTBSmearNegative",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RecentTBInfection->ActiveTBExtrapulmonary",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RecentlyTreatedRecovered->RemoteTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
       }
     },
     {
@@ -171,6 +317,52 @@
           },
           {
             "signature": "RecentTBInfection->ActiveTBSmearNegative",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RemoteTBInfection->ActiveTBExtrapulmonary",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "RemoteTBInfection->RecentTBInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "RemoteTBInfection->RecentTBInfection",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "RemoteTBInfection->RecentTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Uninfected->RecentTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RemoteTBInfection->ActiveTBSmearPositive",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RemoteTBInfection->ActiveTBSmearNegative",
             "disease": "tuberculosis",
             "paper_id": "p1_model_tuberculosis",
             "source_phase": "phase1"
@@ -464,6 +656,52 @@
     },
     {
       "gap": {
+        "expected": "RecentlyTreatedRecovered->RemoteTBInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "RecentlyTreatedRecovered->RemoteTBInfection",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "RecentlyTreatedRecovered->RemoteTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Recovered->Infected",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Recovered->Susceptible",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RecentTBInfection->RemoteTBInfection",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "RecentlyTreatedRecovered->ActiveTBSmearPositive",
+            "disease": "tuberculosis",
+            "paper_id": "p1_model_tuberculosis",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
         "expected": "RecentlyTreatedRecovered->ActiveTBSmearPositive",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
@@ -602,8 +840,8 @@
     }
   ],
   "summary": {
-    "rag_count": 46,
-    "inference_count": 9,
+    "rag_count": 50,
+    "inference_count": 12,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

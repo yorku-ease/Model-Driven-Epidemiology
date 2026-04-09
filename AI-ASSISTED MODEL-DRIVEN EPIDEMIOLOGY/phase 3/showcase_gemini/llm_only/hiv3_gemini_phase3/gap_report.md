@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **26**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **26**
+- After fills gaps (re-detected): **26**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **9**
-- Delta missing flows: **17**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -66,11 +66,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 91.4% | 30% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 40.6% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.4/100** | — |
+| **→ Composite** | **32.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -85,160 +85,143 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 26
+- Filled via **inference**: 52
 - **Flagged** for manual review: 0
 
 ### untreatedstagei1 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei1
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I
 
 ### untreatedstagei2 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei2
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I HIV
 
 ### untreatedstagei3 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei3
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I HIV
 
 ### untreatedstagei4 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei4
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I
 
 ### artstagea1 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea1
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** AIDS Stage
 
 ### artstagea2 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea2
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Late Stage
+- **Reasoning:** The
 
 ### artstagea3 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea3
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Fie
 
 ### artstagea4 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea4
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Disease Stages
+- **Reasoning:** The model
 
 ### removed (missing_compartments)
 - **Source:** inference
-- **Primary name:** removed
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** AIDS Phase
+- **Reasoning:** The model
 
 ### Susceptible->UntreatedStageI1 (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->UntreatedStageI1
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected with HIV and transition to the Untreated Stage I1 through contact with infectious partners.
+- **Reasoning:** The excerpt describes 'probabilities, per unit time step, that the index case infects any one partner', which is characteristic of contact-based transmission leading to infection.
 
 ### UntreatedStageI1->UntreatedStageI2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI1->UntreatedStageI2
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of HIV infection
 
 ### UntreatedStageI1->ARTStageA1 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI1->ARTStageA1
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals in Untreated Stage I1 initiate Antiretroviral Therapy (ART) and transition to ART Stage A1.
+- **Reasoning:** The transition from an untreated disease stage to an ART-treated stage represents the initiation of medical intervention, which is typically modeled as a rate of treatment uptake within a population.
 
 ### UntreatedStageI2->UntreatedStageI3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI2->UntreatedStageI3
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of untreated HIV infection from stage I2 to stage I3.
+- **Reasoning:** Disease progression between defined stages in an untreated population is typically modeled as a rate, reflecting the natural course of the infection.
 
 ### UntreatedStageI2->ARTStageA2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI2->ARTStageA2
-- **Reasoning:** LLM unavailable.
+- **Description:** Initiation of antiretro
 
 ### UntreatedStageI3->UntreatedStageI4 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI3->UntreatedStageI4
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of HIV
 
 ### UntreatedStageI3->ARTStageA3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI3->ARTStageA3
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals in untreated
 
 ### UntreatedStageI4->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI4->Removed
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals in Unt
 
 ### UntreatedStageI4->ARTStageA4 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedStageI4->ARTStageA4
-- **Reasoning:** LLM unavailable.
+- **Description:** Untreated HIV-
 
 ### ARTStageA1->ARTStageA2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA1->ARTStageA2
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of an individual from an initial stage of antiretroviral therapy (ARTStageA1) to a subsequent stage (ARTStageA2), reflecting changes in treatment effectiveness or patient health status over time.
+- **Reasoning:** The transition between ART stages represents an internal
 
 ### ARTStageA1->UntreatedStageI1 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA1->UntreatedStageI1
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals on Antiretroviral Therapy (ART) in stage A1 discontinue treatment and revert to an untreated state in stage I1.
+- **Reasoning:** This transition represents treatment discontinuation, which is an internal progression or regression within an individual's treatment status, typically modeled as a rate.
 
 ### ARTStageA2->ARTStageA3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA2->ARTStageA3
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of individuals from
 
 ### ARTStageA2->UntreatedStageI2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA2->UntreatedStageI2
-- **Reasoning:** LLM unavailable.
+- **Description:** Cessation of
 
 ### ARTStageA3->ARTStageA4 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA3->ARTStageA4
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression from ART
 
 ### ARTStageA3->UntreatedStageI3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA3->UntreatedStageI3
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals discontinuing or failing antiretroviral therapy (ART) and reverting to an untreated state while maintaining their current CD4 stage.
+- **Reasoning:** This transition describes a change in treatment status (from ART to untreated) within the same disease progression stage, which is typically modeled as a rate rather than a contact-dependent event.
 
 ### ARTStageA4->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA4->Removed
-- **Reasoning:** LLM unavailable.
+- **Description:** Mortality
 
 ### ARTStageA4->UntreatedStageI4 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ARTStageA4->UntreatedStageI4
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals on antire
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **10** | Candidate: **12**
-- Precision **0.8333** | Recall **1.0** | F1 **0.9091**
+- Gold count: **10** | Candidate: **11**
+- Precision **0.2727** | Recall **0.6** | F1 **0.375**
 ### Flows
-- Gold count: **17** | Candidate: **20**
-- Precision **0.85** | Recall **1.0** | F1 **0.9189**
+- Gold count: **17** | Candidate: **7**
+- Precision **0.5714** | Recall **0.3529** | F1 **0.4364**

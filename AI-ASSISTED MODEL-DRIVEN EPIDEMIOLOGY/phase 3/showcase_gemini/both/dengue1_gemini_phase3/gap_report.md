@@ -66,20 +66,20 @@
 
 ### susceptible mosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptible mosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
+- **Reasoning:** The excerpt explicitly states dengue is a mosquito-borne viral disease, and while it discusses human hosts, a complete compartmental model for such a disease must include the vector population.
 
 ### γ1 (missing_parameters)
 - **Source:** rag
 - **Value:** 0.5 1/time
 - **Description:** Recovery rate of symptomatic infectious hosts (paper: γ1a)
-- **From papers:** p1_model_dengue, p1_model_influenza, p2_influenza3_llm_claude_20260407_214824
+- **From papers:** p1_model_malaria, p1_model_dengue, p2_influenza3_llm_claude_20260407_214824
 
 ### γ2 (missing_parameters)
 - **Source:** rag
 - **Value:** 0.5 1/time
 - **Description:** Recovery rate of asymptomatic infectious hosts (paper: γ2a)
-- **From papers:** p1_model_dengue, p1_model_influenza, p2_influenza3_llm_claude_20260407_214824
+- **From papers:** p1_model_malaria, p1_model_dengue, p2_influenza3_llm_claude_20260407_214824
 
 ### Susceptible mosquitoes->Infectious mosquitoes (missing_flows)
 - **Source:** rag

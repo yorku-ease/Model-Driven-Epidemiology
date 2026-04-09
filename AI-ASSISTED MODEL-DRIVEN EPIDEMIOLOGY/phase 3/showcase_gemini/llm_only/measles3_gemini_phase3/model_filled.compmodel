@@ -8,8 +8,13 @@
   <parameters name="Birth rate" expression="666666" type="CONSTANT" description="Annual birth cohort in England and Wales." unit="persons/year" />
   <parameters name="Background death rate" expression="1/60" type="CONSTANT" description="Background death rate assumed for the residual age group (15-75 years)." unit="/person/year" />
   <parameters name="Contact rates" expression="Defined by WAIFW matrices" type="CONSTANT" description="Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children." unit="N/A" />
-  <parameters name="maternalimmunitylossrate" expression="0.0001" type="CONSTANT" unit="per day" />
-  <parameters name="recoveryrate" expression="7.0" type="CONSTANT" unit="days" />
+  <parameters name="maternalimmunitylossrate" expression="1.5" type="CONSTANT" unit="per year" />
+  <parameters name="susceptibleinfectionrate" expression="0.5" type="CONSTANT" unit="per day" />
+  <parameters name="effectivevaccinationrate" expression="0.9" type="CONSTANT" />
+  <parameters name="vaccinefailurerate" expression="0.05" type="CONSTANT" />
+  <parameters name="vaccinefailureinfectionrate" expression="0.03" type="CONSTANT" />
+  <parameters name="latentprogressionrate" expression="0.125" type="CONSTANT" unit="per day" />
+  <parameters name="recoveryrate" expression="0.125" type="CONSTANT" unit="per day" />
   <compartments PrimaryName="Maternally Immune" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Waning of passive maternal immunity." />
   </compartments>
@@ -28,7 +33,8 @@
   <compartments PrimaryName="Vaccine Failure" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.7" target="//@compartments.2" description="Infection of individuals with vaccine failure through contact with infectious individuals." />
   </compartments>
-  <compartments PrimaryName="maternalimmunity">
+  <compartments PrimaryName="Maternal Immunity">
     <outgoingFlows target="//@compartments.1" />
   </compartments>
+  <compartments PrimaryName="Vaccine-Failed" />
 </ns0:CompartmentalModel>

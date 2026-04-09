@@ -17,7 +17,9 @@
   <parameters name="d" expression="0.0015" type="CONSTANT" description="Additional input of pathogens into the environment" unit="per unit time" />
   <parameters name="μ" expression="10.5" type="CONSTANT" />
   <parameters name="ω2" expression="0.00385" type="CONSTANT" unit="1/week" description="Waning rate of two-dose protection; approximately 5-year horizon" />
+  <parameters name="ω3" expression="0.0001" type="CONSTANT" unit="per day" />
   <parameters name="ω1" expression="0.01923" type="CONSTANT" unit="1/week" description="Waning rate of one-dose protection; protection assumed lost after about 1 year" />
+  <parameters name="ω1q" expression="0.5" type="CONSTANT" />
   <parameters name="η" expression="0.027" type="CONSTANT" unit="1/day" description="Immunity waning rate (R→S)" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.2" target="//@compartments.1" description="Infection of susceptible individuals through contact with infectious people, deceased people, and environmental pathogens at rates ψ1, ψ3, ψ2 respectively" />
@@ -26,7 +28,6 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.2" description="Infected people entering quarantine at rate ρ3" />
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.7" target="//@compartments.4" description="Shedding of pathogens by infected humans into the environment at rate ρ2" />
     <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.6" />
   </compartments>
   <compartments PrimaryName="Quarantine" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.3" description="Recovery of quarantined individuals at rate w1" />
@@ -34,5 +35,5 @@
   <compartments PrimaryName="Recovered" population="0" />
   <compartments PrimaryName="Ebola Virus Pathogens in Environment" population="0" />
   <compartments PrimaryName="Dead" population="0" />
-  <compartments PrimaryName="environment pathogens" />
+  <compartments PrimaryName="Environmental Pathogens" />
 </ns0:CompartmentalModel>

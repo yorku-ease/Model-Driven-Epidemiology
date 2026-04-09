@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **16**
-- After fills gaps (re-detected): **6**
-- Delta (before - after): **10**
-- Delta missing parameters: **5**
-- Delta missing compartments: **2**
-- Delta missing flows: **3**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **13**
+- Delta missing parameters: **10**
+- Delta missing compartments: **1**
+- Delta missing flows: **2**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -54,11 +54,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 62.5% | 30% |
+| **Gap reduction** | 81.2% | 30% |
 | **Reference agreement** | 54.5% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **55.1/100** | — |
+| **→ Composite** | **60.7/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -73,59 +73,23 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 22
+- Filled via **inference**: 19
 - **Flagged** for manual review: 0
 
-### clinicalprogressionrate (missing_parameters)
+### treatedclinical (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Treated Clinical
+- **Reasoning:** The
 
-### subclinicalprogressionrate (missing_parameters)
+### InfectiousClinical->TreatedClinical (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### protectionacquisitionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### protectionlossrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Individuals who are
 
 ### TreatedClinical->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for TreatedClinical->Removed
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| clinicalprogressionrate | None | 0.38 | — | no_fill |
-| subclinicalprogressionrate | None | 0.38 | — | no_fill |
-| treatmentrate | None | 1.0 | — | no_fill |
-| protectionacquisitionrate | None | 0.02 | — | no_fill |
-| protectionlossrate | None | 0.05 | — | no_fill |
+- **Description:** Individuals receiving treatment recover
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

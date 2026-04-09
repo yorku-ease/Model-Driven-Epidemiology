@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **40**
-- After fills gaps (re-detected): **19**
-- Delta (before - after): **21**
+- After fills gaps (re-detected): **24**
+- Delta (before - after): **16**
 - Delta missing parameters: **16**
-- Delta missing compartments: **2**
-- Delta missing flows: **3**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -79,11 +79,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 52.5% | 30% |
-| **Reference agreement** | 93.3% | 30% |
-| **Fill traceability** | 68.4% | 20% |
+| **Gap reduction** | 40.0% | 30% |
+| **Reference agreement** | 91.1% | 30% |
+| **Fill traceability** | 66.7% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.4/100** | — |
+| **→ Composite** | **72.7/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -96,42 +96,49 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 7 | 16 | 11 | 34 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 45
+- Filled via **RAG**: 48
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 14
+- Filled via **inference**: 16
 - **Flagged** for manual review: 0
 
 ### symptomaticinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** symptomaticinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Symptomatic Infectious
+
+### asymptomaticpatentinfectious (missing_compartments)
+- **Source:** inference
+- **Primary name:** Asymptomatic Infectious
 
 ### subpatentinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** subpatentinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Asymptomatic Infected
 
 ### treatedinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** treatedinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Treated Infectious
+
+### protectedbyprophylaxis (missing_compartments)
+- **Source:** inference
+- **Primary name:** Protected By Prophylaxis
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
 
 ### exposedmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Mosquitoes
 
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectiousmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Mosquitoes
 
 ### Susceptible->SymptomaticInfectious (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### Susceptible->AsymptomaticPatentInfectious (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
@@ -161,6 +168,11 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
+### AsymptomaticPatentInfectious->AsymptomaticPatentInfectious (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
 ### SubpatentInfectious->Susceptible (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
@@ -186,6 +198,11 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
+### ProtectedByProphylaxis->Susceptible (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
@@ -198,8 +215,8 @@
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **11**
-- Precision **0.9091** | Recall **1.0** | F1 **0.9524**
+- Gold count: **9** | Candidate: **12**
+- Precision **0.8333** | Recall **1.0** | F1 **0.9091**
 ### Flows
 - Gold count: **16** | Candidate: **25**
 - Precision **0.84** | Recall **1.0** | F1 **0.913**

@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **29**
-- After fills gaps (re-detected): **19**
-- Delta (before - after): **10**
+- After fills gaps (re-detected): **28**
+- Delta (before - after): **1**
 - Delta missing parameters: **0**
-- Delta missing compartments: **6**
-- Delta missing flows: **4**
+- Delta missing compartments: **1**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -69,11 +69,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 34.5% | 30% |
-| **Reference agreement** | 75.8% | 30% |
+| **Gap reduction** | 3.4% | 30% |
+| **Reference agreement** | 64.9% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **53.1/100** | — |
+| **→ Composite** | **40.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -88,118 +88,146 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 48
+- Filled via **inference**: 57
 - **Flagged** for manual review: 0
 
 ### susceptiblewomen (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblewomen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Women
 
 ### exposedwomen (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedwomen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Humans
+
+### infectiouswomensymptomaticblood (missing_compartments)
+- **Source:** inference
+- **Primary name:** InfectiousWomenSexuallyTransmissible
+
+### infectiouswomenasymptomaticblood (missing_compartments)
+- **Source:** inference
+- **Primary name:** InfectiousWomenAsymptomaticSexual
+
+### infectiouswomengenitalpersistence (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Women Genital Persistence
 
 ### recoveredwomen (missing_compartments)
 - **Source:** inference
-- **Primary name:** recoveredwomen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Recovered Women
 
 ### susceptiblemen (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Men
+- **Reasoning:** The
 
 ### exposedmen (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Men
+
+### infectiousmensymptomaticblood (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Men Symptomatic Blood
+
+### infectiousmensemenpersistence (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Men With Semen
 
 ### recoveredmen (missing_compartments)
 - **Source:** inference
-- **Primary name:** recoveredmen
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Recovered Men
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
+- **Reasoning:** The model explicitly includes mosquito bites as a main transmission pathway, requiring a compartment for mosquitoes that can become infected.
 
 ### exposedmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Mosquitoes
 
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectiousmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Mosquitoes
 
 ### SusceptibleWomen->ExposedWomen (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for SusceptibleWomen->ExposedWomen
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible women become exposed to ZIKV through contact with infected mosquitoes or infected sexual partners.
+- **Reasoning:** The paper explicitly states that ZIKV is transmitted by mosquito bites and sexual contact, which are both contact-dependent transmission routes leading to exposure.
 
 ### ExposedWomen->InfectiousWomenSymptomaticBlood (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedWomen->InfectiousWomenSymptomaticBlood
-- **Reasoning:** LLM unavailable.
+- **Description:** Exposed women
 
 ### ExposedWomen->InfectiousWomenAsymptomaticBlood (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedWomen->InfectiousWomenAsymptomaticBlood
-- **Reasoning:** LLM unavailable.
+- **Description:** Exposed women complete
+
+### InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The establishment and persistence of
+
+### InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Asymptomatic infectious women
 
 ### InfectiousWomenGenitalPersistence->RecoveredWomen (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for InfectiousWomenGenitalPersistence->RecoveredWomen
-- **Reasoning:** LLM unavailable.
+- **Description:** Women with persistent genital ZIKV infection clear the virus and recover, gaining immunity.
+- **Reasoning:** This transition represents
 
 ### SusceptibleMen->ExposedMen (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for SusceptibleMen->ExposedMen
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Transmission of the Zika virus from an infected mosquito to a susceptible man through a mosquito bite, leading to the man becoming exposed.
+- **Reasoning:** The paper states that Zika is primarily transmitted by Aedes mosquitoes and lists mosquito bites
 
 ### ExposedMen->InfectiousMenSymptomaticBlood (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedMen->InfectiousMenSymptomaticBlood
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of exposed men
 
 ### ExposedMen->InfectiousMenAsymptomaticBlood (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedMen->InfectiousMenAsymptomaticBlood
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of exposed
+
+### InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The rate at which
+
+### InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The rate
 
 ### InfectiousMenSemenPersistence->RecoveredMen (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for InfectiousMenSemenPersistence->RecoveredMen
-- **Reasoning:** LLM unavailable.
+- **Description:** Recovery of infectious men with
 
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for SusceptibleMosquitoes->ExposedMosquitoes
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible mosquitoes become exposed to the Zika virus after biting an infected human.
+- **Reasoning:** The paper states ZIKV is primarily transmitted by Aedes mosquitoes, indicating a contact-dependent transmission from infected humans to susceptible mosquitoes.
 
 ### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ExposedMosquitoes->InfectiousMosquitoes
-- **Reasoning:** LLM unavailable.
+- **Description:** Mosquitoes transition from being exposed to the virus to becoming infectious after the extrinsic incubation period.
+- **Reasoning:** After a mosquito acquires the virus, it undergoes an extrinsic incubation period before it can transmit the virus to a human, which is a time-dependent process represented by a rate.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **15** | Candidate: **21**
-- Precision **0.7143** | Recall **1.0** | F1 **0.8333**
+- Gold count: **15** | Candidate: **26**
+- Precision **0.5385** | Recall **0.9333** | F1 **0.6829**
 ### Flows
-- Gold count: **14** | Candidate: **27**
-- Precision **0.5185** | Recall **1.0** | F1 **0.6829**
+- Gold count: **14** | Candidate: **25**
+- Precision **0.48** | Recall **0.8571** | F1 **0.6154**

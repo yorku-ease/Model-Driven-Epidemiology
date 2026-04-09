@@ -19,11 +19,16 @@
   <parameters name="Household quarantine external contact reduction" expression="0.75" type="CONSTANT" description="Reduction in external contact rates for quarantined households" unit="dimensionless" />
   <parameters name="Household quarantine internal contact increase" expression="1.0" type="CONSTANT" description="Increase (100%) in within-household contact rates during quarantine" unit="dimensionless" />
   <parameters name="Quarantine duration" expression="14" type="CONSTANT" description="Duration of voluntary household quarantine" unit="days" />
-  <parameters name="clinicaltransmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="subclinicaltransmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="clinicalrecoveryrate" expression="7.0" type="CONSTANT" unit="days" />
-  <parameters name="subclinicalrecoveryrate" expression="7.0" type="CONSTANT" unit="days" />
-  <parameters name="treatedrecoveryrate" expression="7.0" type="CONSTANT" unit="days" />
+  <parameters name="clinicaltransmissionrate" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="subclinicaltransmissionrate" expression="0.7" type="CONSTANT" />
+  <parameters name="clinicalprogressionrate" expression="0.5" type="CONSTANT" unit="per day" />
+  <parameters name="subclinicalprogressionrate" expression="0.25" type="CONSTANT" unit="1/day" />
+  <parameters name="treatmentrate" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="clinicalrecoveryrate" expression="0.17" type="CONSTANT" unit="day^-1" />
+  <parameters name="subclinicalrecoveryrate" expression="0.167" type="CONSTANT" unit="per day" />
+  <parameters name="protectionacquisitionrate" expression="0.005" type="CONSTANT" unit="per day" />
+  <parameters name="treatedrecoveryrate" expression="0.28" type="CONSTANT" unit="per day" />
+  <parameters name="protectionlossrate" expression="0.0" type="CONSTANT" unit="per day" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.1" target="//@compartments.1" description="Infection through contact in households, schools, workplaces, and the general community" />
     <outgoingFlows target="//@compartments.5" />
@@ -36,8 +41,8 @@
     <outgoingFlows target="//@compartments.4" />
   </compartments>
   <compartments PrimaryName="Recovered" population="0" />
-  <compartments PrimaryName="treatedclinical" />
-  <compartments PrimaryName="protected">
+  <compartments PrimaryName="Treated Clinical" />
+  <compartments PrimaryName="Protected">
     <outgoingFlows target="//@compartments.0" />
   </compartments>
 </ns0:CompartmentalModel>

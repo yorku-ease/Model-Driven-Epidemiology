@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **2**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **2**
+- After fills gaps (re-detected): **2**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -41,11 +41,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 71.7% | 30% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 53.3% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **71.5/100** | — |
+| **→ Composite** | **36.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -60,24 +60,23 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 2
+- Filled via **inference**: 4
 - **Flagged** for manual review: 0
 
 ### chollerae bacterial concentration (missing_compartments)
 - **Source:** inference
-- **Primary name:** chollerae bacterial concentration
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Environmental Bacteria
+- **Reasoning:** Cholera
 
 ### Infectious->Chollerae bacterial concentration (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infectious->Chollerae bacterial concentration
-- **Reasoning:** LLM unavailable.
+- **Description:** Infectious individuals ex
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **4** | Candidate: **5**
-- Precision **0.8** | Recall **1.0** | F1 **0.8889**
+- Precision **0.6** | Recall **0.75** | F1 **0.6667**
 ### Flows
-- Gold count: **3** | Candidate: **8**
-- Precision **0.375** | Recall **1.0** | F1 **0.5455**
+- Gold count: **3** | Candidate: **7**
+- Precision **0.2857** | Recall **0.6667** | F1 **0.4**

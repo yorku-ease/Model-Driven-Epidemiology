@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **38**
-- After fills gaps (re-detected): **37**
-- Delta (before - after): **1**
-- Delta missing parameters: **0**
-- Delta missing compartments: **1**
+- After fills gaps (re-detected): **21**
+- Delta (before - after): **17**
+- Delta missing parameters: **17**
+- Delta missing compartments: **0**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -77,11 +77,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 2.6% | 30% |
+| **Gap reduction** | 44.7% | 30% |
 | **Reference agreement** | 85.9% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **46.6/100** | — |
+| **→ Composite** | **59.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -96,252 +96,112 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 75
+- Filled via **inference**: 59
 - **Flagged** for manual review: 0
 
 ### latentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** latentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Latent Infection
+- **Reasoning:** The text explicitly states that tuberculosis can arise from 'remote (latent) infections,' indicating a distinct compartment for individuals who are infected but not actively diseased.
 
 ### infectioustuberculosis (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectioustuberculosis
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Tuberculosis
 
 ### noninfectioustuberculosis (missing_compartments)
 - **Source:** inference
-- **Primary name:** noninfectioustuberculosis
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Non-Infectious Tuberculosis
+- **Reasoning:** The text explicitly distinguishes between infectious and non-infectious cases of tuberculosis, indicating that non-infectious cases represent a distinct epidemiological state that should be modeled.
+
+### ontreatment (missing_compartments)
+- **Source:** inference
+- **Primary name:** On Treatment
+- **Reasoning:** The text
 
 ### treatmentfailurestate (missing_compartments)
 - **Source:** inference
-- **Primary name:** treatmentfailurestate
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Treatment Failure
+- **Reasoning:** The
 
 ### selfcuredstate (missing_compartments)
 - **Source:** inference
-- **Primary name:** selfcuredstate
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### primaryinfectiontolatentrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### primaryinfectiontoinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### primaryinfectiontononinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### latentreactivationtoinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### latentreactivationtononinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### exogenousreinfectiontoinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### exogenousreinfectiontononinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### infectiouscasedetectionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### infectiousselfcurerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### noninfectiouscasedetectionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### noninfectiousselfcurerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentcurerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentfailurerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### failurerelapsetoinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### failurerelapsetononinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### selfcurerelapsetoinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### selfcurerelapsetononinfectiousrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Self-Cured State
 
 ### Susceptible->LatentInfection (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->LatentInfection
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Acquisition of new
 
 ### Susceptible->InfectiousTuberculosis (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->InfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Transmission of tuberculosis infection
 
 ### Susceptible->NonInfectiousTuberculosis (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->NonInfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible
 
 ### LatentInfection->InfectiousTuberculosis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for LatentInfection->InfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression
 
 ### LatentInfection->NonInfectiousTuberculosis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for LatentInfection->NonInfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Description:** Endogenous
 
 ### InfectiousTuberculosis->OnTreatment (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for InfectiousTuberculosis->OnTreatment
-- **Reasoning:** LLM unavailable.
+- **Description:** Infectious
 
 ### InfectiousTuberculosis->SelfCuredState (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for InfectiousTuberculosis->SelfCuredState
-- **Reasoning:** LLM unavailable.
+- **Description:** Spontaneous resolution of
 
 ### NonInfectiousTuberculosis->OnTreatment (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for NonInfectiousTuberculosis->OnTreatment
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with non-infect
 
 ### NonInfectiousTuberculosis->SelfCuredState (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for NonInfectiousTuberculosis->SelfCuredState
-- **Reasoning:** LLM unavailable.
+- **Description:** Spontaneous recovery from
 
 ### OnTreatment->LatentInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for OnTreatment->LatentInfection
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals successfully complete treatment for
 
 ### OnTreatment->TreatmentFailureState (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for OnTreatment->TreatmentFailureState
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals undergoing tuberculosis treatment may fail to be cured and transition to a state of treatment failure.
+- **Reasoning:** Even with high cure rates, a proportion of treated individuals will not be cured and will experience treatment failure, a common outcome in tuberculosis epidemiology.
 
 ### TreatmentFailureState->InfectiousTuberculosis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for TreatmentFailureState->InfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals whose tuberculosis treatment has
 
 ### TreatmentFailureState->NonInfectiousTuberculosis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for TreatmentFailureState->NonInfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals whose tuberculosis treatment has
 
 ### SelfCuredState->InfectiousTuberculosis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SelfCuredState->InfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
+- **Description:** Reactivation of latent
 
 ### SelfCuredState->NonInfectiousTuberculosis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for SelfCuredState->NonInfectiousTuberculosis
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| primaryinfectiontolatentrate | None | 0.18 | — | no_fill |
-| primaryinfectiontoinfectiousrate | None | 0.015 | — | no_fill |
-| primaryinfectiontononinfectiousrate | None | 0.010 | — | no_fill |
-| latentreactivationtoinfectiousrate | None | 0.0025 | — | no_fill |
-| latentreactivationtononinfectiousrate | None | 0.0015 | — | no_fill |
-| exogenousreinfectiontoinfectiousrate | None | 0.006 | — | no_fill |
-| exogenousreinfectiontononinfectiousrate | None | 0.004 | — | no_fill |
-| infectiouscasedetectionrate | None | 0.70 | — | no_fill |
-| infectiousselfcurerate | None | 0.03 | — | no_fill |
-| noninfectiouscasedetectionrate | None | 0.42 | — | no_fill |
-| noninfectiousselfcurerate | None | 0.04 | — | no_fill |
-| treatmentcurerate | None | 0.85 | — | no_fill |
-| treatmentfailurerate | None | 0.15 | — | no_fill |
-| failurerelapsetoinfectiousrate | None | 0.06 | — | no_fill |
-| failurerelapsetononinfectiousrate | None | 0.04 | — | no_fill |
-| selfcurerelapsetoinfectiousrate | None | 0.03 | — | no_fill |
-| selfcurerelapsetononinfectiousrate | None | 0.02 | — | no_fill |
+- **Description:** Reactivation of latent tuberculosis
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

@@ -2,6 +2,40 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "recenttbinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Latent TB",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "remotetbinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Remote TB Infection",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
         "expected": "activetbsmearpositive",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
@@ -9,11 +43,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "activetbsmearpositive",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Active TB Smear Positive",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -25,11 +60,12 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "activetbsmearnegative",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Active TB Smear-Negative",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -41,317 +77,63 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "activetbextrapulmonary",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Active Extrapulmonary TB",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "infectionratefromsmearpositive",
+        "expected": "recentlytreatedrecovered",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Recently Treated Recovered",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "infectionratefromsmearnegative",
+        "expected": "Uninfected->RecentTBInfection",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "ContactFlow",
+        "description": "Uninfected individuals acquire a recent Mycobacterium tuberculosis infection.",
+        "reasoning": "The model aims to project TB incidence and describes a 'TB epidemic', which necessitates a mechanism for uninfected individuals to become newly infected through contact with infectious individuals.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
       "gap": {
-        "expected": "recenttoremotestabilizationrate",
+        "expected": "RecentTBInfection->RemoteTBInfection",
         "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "flow_type": "RateFlow",
+        "description": "Individuals with recent tuberculosis infection transition to a state of remote (latent) tuberculosis infection over time.",
+        "reasoning": "This transition represents the natural progression of an individual's infection status from recent to remote",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "rapidprogressiontosmearpositiverate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "rapidprogressiontosmearnegativerate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "rapidprogressiontoextrapulmonaryrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "reinfectionratefromsmearpositive",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "reinfectionratefromsmearnegative",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "remotereactivationtosmearpositiverate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "remotereactivationtosmearnegativerate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "remotereactivationtoextrapulmonaryrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "treatmentorselfcureratesmearpositive",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "treatmentorselfcureratesmearnegative",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "treatmentorselfcurerateextrapulmonary",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "recoveredtoremotestabilizationrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "relapsetosmearpositiverate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "relapsetosmearnegativerate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "relapsetoextrapulmonaryrate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -364,11 +146,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RecentTBInfection->ActiveTBSmearPositive",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals with recent tuberculosis",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -381,11 +163,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RecentTBInfection->ActiveTBSmearNegative",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Progression of individuals",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -398,11 +180,28 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RecentTBInfection->ActiveTBExtrapulmonary",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals who have recently acquired",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "RemoteTBInfection->RecentTBInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -415,11 +214,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RemoteTBInfection->ActiveTBSmearPositive",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Reactivation of a remote or latent tuberculosis infection into active, smear-positive tuberculosis disease.",
+        "reasoning": "The",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -432,11 +231,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RemoteTBInfection->ActiveTBSmearNegative",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Progression from",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -449,11 +248,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RemoteTBInfection->ActiveTBExtrapulmonary",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Progression from",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -466,11 +265,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for ActiveTBSmearPositive->RecentlyTreatedRecovered",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals with active, smear-positive tuberculosis successfully complete treatment and recover, transitioning to a recently treated and recovered state.",
+        "reasoning": "This transition represents the outcome of successful treatment, which is a direct change in an individual's health status modeled as a rate, not dependent on contact with others.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -483,11 +282,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for ActiveTBSmearNegative->RecentlyTreatedRecovered",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals with active, smear-negative tuberculosis successfully complete treatment and recover.",
+        "reasoning": "The transition from an active disease state to a recovered state following treatment is a time-dependent process typically modeled as a rate of successful treatment completion.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -500,11 +299,28 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for ActiveTBExtrapulmonary->RecentlyTreatedRecovered",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals with active extrapulmonary tuberculosis successfully complete treatment and recover, transitioning to a recently treated and recovered state.",
+        "reasoning": "This flow represents the successful treatment and recovery of individuals with active extrapulmonary tuberculosis, moving them from an active disease state to a recently treated and recovered state, which is a direct change in health status not dependent on contact.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "RecentlyTreatedRecovered->RemoteTBInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who have recently",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -517,11 +333,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RecentlyTreatedRecovered->ActiveTBSmearPositive",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Relapse or recurrence of",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -534,11 +350,11 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RecentlyTreatedRecovered->ActiveTBSmearNegative",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals who have recently recovered from tuberculosis treatment can relapse and develop active smear-negative tuberculosis.",
+        "reasoning": "Relapse from a recently treated and recovered state to active disease is an endogenous process, best represented as a rate of disease recurrence.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -551,17 +367,17 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for RecentlyTreatedRecovered->ActiveTBExtrapulmonary",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Individuals who were recently",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 73,
+    "inference_count": 62,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

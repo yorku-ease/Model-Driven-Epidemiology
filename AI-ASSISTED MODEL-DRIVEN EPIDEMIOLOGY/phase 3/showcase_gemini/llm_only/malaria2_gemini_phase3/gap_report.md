@@ -75,65 +75,54 @@
 
 ### treatedclinicaldisease (missing_compartments)
 - **Source:** inference
-- **Primary name:** treatedclinicaldisease
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Treated Clinical Disease
 
 ### untreatedclinicaldisease (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedclinicaldisease
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Clinical Disease
 
 ### asymptomaticpatentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** asymptomaticpatentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Asymptomatic Patent Infection
 
 ### asymptomaticsubpatentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** asymptomaticsubpatentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Asymptomatic Subpatent Infection
 
 ### Susceptible->TreatedClinicalDisease (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->TreatedClinicalDisease
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals acquire
 
 ### Susceptible->UntreatedClinicalDisease (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->UntreatedClinicalDisease
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected
 
 ### Susceptible->AsymptomaticPatentInfection (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->AsymptomaticPatentInfection
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected
 
 ### TreatedClinicalDisease->Prophylaxis (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for TreatedClinicalDisease->Prophylaxis
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who have
 
 ### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for UntreatedClinicalDisease->AsymptomaticPatentInfection
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with untreated clinical malaria
 
 ### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for AsymptomaticPatentInfection->AsymptomaticSubPatentInfection
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with asymptomatic, patent
 
 ### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for AsymptomaticSubPatentInfection->Susceptible
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with asymptomatic
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

@@ -66,8 +66,8 @@
 ### Infectious->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infectious->Removed
-- **Reasoning:** LLM unavailable.
+- **Description:** Infectious individuals either recover from the disease, potentially gaining immunity, or die due to the disease, thus being removed from the pool of infectious individuals.
+- **Reasoning:** The transition from Infectious to Removed (recovery or death) is an intrinsic process for an infected individual, occurring at a specific rate per individual, independent of contact with others.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

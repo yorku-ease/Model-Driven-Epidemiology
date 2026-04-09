@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **12**
-- After fills gaps (re-detected): **8**
-- Delta (before - after): **4**
-- Delta missing parameters: **2**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **7**
+- Delta missing parameters: **7**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -51,11 +51,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 33.3% | 30% |
-| **Reference agreement** | 96.7% | 30% |
+| **Gap reduction** | 58.3% | 30% |
+| **Reference agreement** | 93.3% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **59.0/100** | — |
+| **→ Composite** | **65.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -70,75 +70,36 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 20
+- Filled via **inference**: 17
 - **Flagged** for manual review: 0
+
+### maternalimmunity (missing_compartments)
+- **Source:** inference
+- **Primary name:** Maternally Immune
 
 ### vaccinefailure (missing_compartments)
 - **Source:** inference
-- **Primary name:** vaccinefailure
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Vaccine Failure
 
-### susceptibleinfectionrate (missing_parameters)
+### MaternalImmunity->Susceptible (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### effectivevaccinationrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### vaccinefailurerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### vaccinefailureinfectionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### latentprogressionrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Infants born with passive
 
 ### Susceptible->VaccineFailure (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->VaccineFailure
-- **Reasoning:** LLM unavailable.
+- **Description:** Susceptible individuals receive a
 
 ### VaccineFailure->Latent (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for VaccineFailure->Latent
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| susceptibleinfectionrate | None | 0.52 | — | no_fill |
-| effectivevaccinationrate | None | 0.18 | — | no_fill |
-| vaccinefailurerate | None | 0.02 | — | no_fill |
-| vaccinefailureinfectionrate | None | 0.40 | — | no_fill |
-| latentprogressionrate | None | 52.14 | — | no_fill |
+- **Flow type:** ContactFlow
+- **Description:** Individuals whose vaccine immunity has
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **6** | Candidate: **7**
-- Precision **1.0** | Recall **1.0** | F1 **1.0**
+- Gold count: **6** | Candidate: **8**
+- Precision **0.875** | Recall **1.0** | F1 **0.9333**
 ### Flows
 - Gold count: **7** | Candidate: **8**
 - Precision **0.875** | Recall **1.0** | F1 **0.9333**

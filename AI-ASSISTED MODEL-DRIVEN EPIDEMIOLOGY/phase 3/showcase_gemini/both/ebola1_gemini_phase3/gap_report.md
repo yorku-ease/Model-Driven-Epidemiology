@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **12**
-- After fills gaps (re-detected): **4**
-- Delta (before - after): **8**
-- Delta missing parameters: **5**
-- Delta missing compartments: **1**
-- Delta missing flows: **2**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **7**
+- Delta missing parameters: **6**
+- Delta missing compartments: **0**
+- Delta missing flows: **1**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -51,11 +51,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 66.7% | 30% |
-| **Reference agreement** | 74.2% | 30% |
-| **Fill traceability** | 75.0% | 20% |
+| **Gap reduction** | 58.3% | 30% |
+| **Reference agreement** | 61.5% | 30% |
+| **Fill traceability** | 80.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.3/100** | — |
+| **→ Composite** | **72.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,18 +68,22 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 9 | 1 | 11 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 12
+- Filled via **RAG**: 13
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 4
 - **Flagged** for manual review: 0
 
-### ω3 (missing_parameters)
+### environment pathogens (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Environmental Pathogens
+- **Reasoning:** The
 
 ### Infectious->Deceased (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
+
+### Infectious->Environment pathogens (missing_flows)
 - **Source:** rag
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
@@ -94,21 +98,10 @@
 - **Similar flows in corpus:** 2 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| ω3 | None | 0.0 | — | no_fill |
-
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **7**
-- Precision **0.7143** | Recall **0.8333** | F1 **0.7692**
+- Precision **0.5714** | Recall **0.6667** | F1 **0.6154**
 ### Flows
-- Gold count: **8** | Candidate: **6**
-- Precision **0.8333** | Recall **0.625** | F1 **0.7143**
+- Gold count: **8** | Candidate: **5**
+- Precision **0.8** | Recall **0.5** | F1 **0.6154**

@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **40**
-- After fills gaps (re-detected): **33**
-- Delta (before - after): **7**
-- Delta missing parameters: **0**
-- Delta missing compartments: **3**
-- Delta missing flows: **4**
+- After fills gaps (re-detected): **22**
+- Delta (before - after): **18**
+- Delta missing parameters: **18**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -79,11 +79,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 17.5% | 30% |
-| **Reference agreement** | 74.5% | 30% |
+| **Gap reduction** | 45.0% | 30% |
+| **Reference agreement** | 57.1% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **47.6/100** | — |
+| **→ Composite** | **50.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -98,236 +98,124 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 73
+- Filled via **inference**: 62
 - **Flagged** for manual review: 0
+
+### recenttbinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Latent TB
+
+### remotetbinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Remote TB Infection
 
 ### activetbsmearpositive (missing_compartments)
 - **Source:** inference
-- **Primary name:** activetbsmearpositive
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Active TB Smear Positive
 
 ### activetbsmearnegative (missing_compartments)
 - **Source:** inference
-- **Primary name:** activetbsmearnegative
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Active TB Smear-Negative
 
 ### activetbextrapulmonary (missing_compartments)
 - **Source:** inference
-- **Primary name:** activetbextrapulmonary
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Active Extrapulmonary TB
 
-### infectionratefromsmearpositive (missing_parameters)
+### recentlytreatedrecovered (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Recently Treated Recovered
 
-### infectionratefromsmearnegative (missing_parameters)
+### Uninfected->RecentTBInfection (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** ContactFlow
+- **Description:** Uninfected individuals acquire a recent Mycobacterium tuberculosis infection.
+- **Reasoning:** The model aims to project TB incidence and describes a 'TB epidemic', which necessitates a mechanism for uninfected individuals to become newly infected through contact with infectious individuals.
 
-### recenttoremotestabilizationrate (missing_parameters)
+### RecentTBInfection->RemoteTBInfection (missing_flows)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### rapidprogressiontosmearpositiverate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### rapidprogressiontosmearnegativerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### rapidprogressiontoextrapulmonaryrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### reinfectionratefromsmearpositive (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### reinfectionratefromsmearnegative (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### remotereactivationtosmearpositiverate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### remotereactivationtosmearnegativerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### remotereactivationtoextrapulmonaryrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentorselfcureratesmearpositive (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentorselfcureratesmearnegative (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### treatmentorselfcurerateextrapulmonary (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### recoveredtoremotestabilizationrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### relapsetosmearpositiverate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### relapsetosmearnegativerate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### relapsetoextrapulmonaryrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Flow type:** RateFlow
+- **Description:** Individuals with recent tuberculosis infection transition to a state of remote (latent) tuberculosis infection over time.
+- **Reasoning:** This transition represents the natural progression of an individual's infection status from recent to remote
 
 ### RecentTBInfection->ActiveTBSmearPositive (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RecentTBInfection->ActiveTBSmearPositive
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with recent tuberculosis
 
 ### RecentTBInfection->ActiveTBSmearNegative (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RecentTBInfection->ActiveTBSmearNegative
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression of individuals
 
 ### RecentTBInfection->ActiveTBExtrapulmonary (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RecentTBInfection->ActiveTBExtrapulmonary
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who have recently acquired
+
+### RemoteTBInfection->RecentTBInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression
 
 ### RemoteTBInfection->ActiveTBSmearPositive (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RemoteTBInfection->ActiveTBSmearPositive
-- **Reasoning:** LLM unavailable.
+- **Description:** Reactivation of a remote or latent tuberculosis infection into active, smear-positive tuberculosis disease.
+- **Reasoning:** The
 
 ### RemoteTBInfection->ActiveTBSmearNegative (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RemoteTBInfection->ActiveTBSmearNegative
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression from
 
 ### RemoteTBInfection->ActiveTBExtrapulmonary (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RemoteTBInfection->ActiveTBExtrapulmonary
-- **Reasoning:** LLM unavailable.
+- **Description:** Progression from
 
 ### ActiveTBSmearPositive->RecentlyTreatedRecovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ActiveTBSmearPositive->RecentlyTreatedRecovered
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with active, smear-positive tuberculosis successfully complete treatment and recover, transitioning to a recently treated and recovered state.
+- **Reasoning:** This transition represents the outcome of successful treatment, which is a direct change in an individual's health status modeled as a rate, not dependent on contact with others.
 
 ### ActiveTBSmearNegative->RecentlyTreatedRecovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ActiveTBSmearNegative->RecentlyTreatedRecovered
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with active, smear-negative tuberculosis successfully complete treatment and recover.
+- **Reasoning:** The transition from an active disease state to a recovered state following treatment is a time-dependent process typically modeled as a rate of successful treatment completion.
 
 ### ActiveTBExtrapulmonary->RecentlyTreatedRecovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ActiveTBExtrapulmonary->RecentlyTreatedRecovered
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals with active extrapulmonary tuberculosis successfully complete treatment and recover, transitioning to a recently treated and recovered state.
+- **Reasoning:** This flow represents the successful treatment and recovery of individuals with active extrapulmonary tuberculosis, moving them from an active disease state to a recently treated and recovered state, which is a direct change in health status not dependent on contact.
+
+### RecentlyTreatedRecovered->RemoteTBInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have recently
 
 ### RecentlyTreatedRecovered->ActiveTBSmearPositive (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RecentlyTreatedRecovered->ActiveTBSmearPositive
-- **Reasoning:** LLM unavailable.
+- **Description:** Relapse or recurrence of
 
 ### RecentlyTreatedRecovered->ActiveTBSmearNegative (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RecentlyTreatedRecovered->ActiveTBSmearNegative
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals who have recently recovered from tuberculosis treatment can relapse and develop active smear-negative tuberculosis.
+- **Reasoning:** Relapse from a recently treated and recovered state to active disease is an endogenous process, best represented as a rate of disease recurrence.
 
 ### RecentlyTreatedRecovered->ActiveTBExtrapulmonary (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for RecentlyTreatedRecovered->ActiveTBExtrapulmonary
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| infectionratefromsmearpositive | None | 0.30 | — | no_fill |
-| infectionratefromsmearnegative | None | 0.066 | — | no_fill |
-| recenttoremotestabilizationrate | None | 0.5 | — | no_fill |
-| rapidprogressiontosmearpositiverate | None | 0.0455 | — | no_fill |
-| rapidprogressiontosmearnegativerate | None | 0.0245 | — | no_fill |
-| rapidprogressiontoextrapulmonaryrate | None | 0.0105 | — | no_fill |
-| reinfectionratefromsmearpositive | None | 0.18 | — | no_fill |
-| reinfectionratefromsmearnegative | None | 0.04 | — | no_fill |
-| remotereactivationtosmearpositiverate | None | 0.000325 | — | no_fill |
-| remotereactivationtosmearnegativerate | None | 0.000175 | — | no_fill |
-| remotereactivationtoextrapulmonaryrate | None | 0.000100 | — | no_fill |
-| treatmentorselfcureratesmearpositive | None | 0.95 | — | no_fill |
-| treatmentorselfcureratesmearnegative | None | 0.43 | — | no_fill |
-| treatmentorselfcurerateextrapulmonary | None | 0.77 | — | no_fill |
-| recoveredtoremotestabilizationrate | None | 0.2 | — | no_fill |
-| relapsetosmearpositiverate | None | 0.012 | — | no_fill |
-| relapsetosmearnegativerate | None | 0.008 | — | no_fill |
-| relapsetoextrapulmonaryrate | None | 0.004 | — | no_fill |
+- **Description:** Individuals who were recently
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **7** | Candidate: **10**
-- Precision **0.7** | Recall **1.0** | F1 **0.8235**
+- Gold count: **7** | Candidate: **11**
+- Precision **0.5455** | Recall **0.8571** | F1 **0.6667**
 ### Flows
-- Gold count: **16** | Candidate: **32**
-- Precision **0.5** | Recall **1.0** | F1 **0.6667**
+- Gold count: **16** | Candidate: **26**
+- Precision **0.3846** | Recall **0.625** | F1 **0.4762**

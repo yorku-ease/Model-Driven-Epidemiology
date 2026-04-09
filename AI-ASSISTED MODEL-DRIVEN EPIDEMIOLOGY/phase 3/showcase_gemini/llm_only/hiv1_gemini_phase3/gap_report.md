@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **9**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **9**
+- After fills gaps (re-detected): **1**
+- Delta (before - after): **8**
 - Delta missing parameters: **0**
-- Delta missing compartments: **2**
+- Delta missing compartments: **1**
 - Delta missing flows: **7**
 
 ## 2. Required vs optional
@@ -49,11 +49,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
+| **Gap reduction** | 88.9% | 30% |
 | **Reference agreement** | 89.0% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **76.7/100** | — |
+| **→ Composite** | **73.4/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,60 +68,13 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 9
+- Filled via **inference**: 10
 - **Flagged** for manual review: 0
-
-### treated with art (missing_compartments)
-- **Source:** inference
-- **Primary name:** treated with art
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
 
 ### recruitmentsource (missing_compartments)
 - **Source:** inference
-- **Primary name:** recruitmentsource
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### Untreated infected homosexual men->Treated with ART (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Untreated infected homosexual men->Treated with ART
-- **Reasoning:** LLM unavailable.
-
-### Untreated infected homosexual men->People living with AIDS (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Untreated infected homosexual men->People living with AIDS
-- **Reasoning:** LLM unavailable.
-
-### Untreated infected women->Treated with ART (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Untreated infected women->Treated with ART
-- **Reasoning:** LLM unavailable.
-
-### Untreated infected women->People living with AIDS (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Untreated infected women->People living with AIDS
-- **Reasoning:** LLM unavailable.
-
-### Untreated infected heterosexual men->Treated with ART (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Untreated infected heterosexual men->Treated with ART
-- **Reasoning:** LLM unavailable.
-
-### Untreated infected heterosexual men->People living with AIDS (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Untreated infected heterosexual men->People living with AIDS
-- **Reasoning:** LLM unavailable.
-
-### Treated with ART->People living with AIDS (missing_flows)
-- **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Treated with ART->People living with AIDS
-- **Reasoning:** LLM unavailable.
+- **Primary name:** RecruitmentSource
+- **Reasoning:** The
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

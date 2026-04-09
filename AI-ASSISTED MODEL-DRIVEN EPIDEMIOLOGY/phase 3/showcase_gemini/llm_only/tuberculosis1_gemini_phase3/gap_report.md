@@ -17,9 +17,9 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **4**
-- After fills gaps (re-detected): **4**
-- Delta (before - after): **0**
-- Delta missing parameters: **0**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **1**
+- Delta missing parameters: **1**
 - Delta missing compartments: **0**
 - Delta missing flows: **0**
 
@@ -43,11 +43,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 0.0% | 30% |
+| **Gap reduction** | 25.0% | 30% |
 | **Reference agreement** | 70.8% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **41.3/100** | — |
+| **→ Composite** | **48.8/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -62,43 +62,25 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 8
+- Filled via **inference**: 7
 - **Flagged** for manual review: 0
-
-### π (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
 
 ### Susceptible->Infected (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->Infected
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected with Mycobacterium tuberculosis through contact with infectious individuals.
+- **Reasoning:** Tuberculosis is an infectious disease that spreads through person-to-person transmission, making the Susceptible to Infected transition a contact-dependent process.
 
 ### Infected->Recovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infected->Recovered
-- **Reasoning:** LLM unavailable.
+- **Description:** The rate at which infected individuals recover from tuberculosis, either naturally or through treatment, and are no longer infectious.
+- **Reasoning:** Tuberculosis is a treatable disease, and individuals can recover from infection, which is a fundamental process in disease dynamics models.
 
 ### Recovered->Infected (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Recovered->Infected
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| π | None | 0.0059 | — | no_fill |
+- **Flow type:** ContactFlow
+- **Description:** Recovered individuals can
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

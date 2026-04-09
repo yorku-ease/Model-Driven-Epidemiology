@@ -66,14 +66,14 @@
 
 ### covid deaths (missing_compartments)
 - **Source:** inference
-- **Primary name:** covid deaths
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Deaths
+- **Reasoning:** The model projects infections, hospitalizations, and ICU cases, but does not explicitly mention a compartment for COVID-19 deaths, which is a critical epidemiological outcome often included.
 
 ### ICU->COVID Deaths (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for ICU->COVID Deaths
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals admitted to the Intensive Care Unit (ICU) who die due to COVID-19 complications.
+- **Reasoning:** This flow represents the mortality rate among critically ill patients in the ICU compartment, a crucial outcome not explicitly detailed in the provided excerpt but essential for a complete epidemiological model.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

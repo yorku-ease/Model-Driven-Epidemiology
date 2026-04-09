@@ -15,9 +15,15 @@
   <parameters name="MMR2 school-entry age" expression="5 years" type="CONSTANT" description="Alternative second-dose timing at school entry." unit="years" />
   <parameters name="current MMR2 schedule age" expression="3 years and 4 months" type="CONSTANT" description="Reference second-dose timing in England." unit="years and months" />
   <parameters name="MMR1 schedule age" expression="1 year" type="CONSTANT" description="Reference first-dose timing in England." unit="years" />
-  <parameters name="maternalimmunitylossrate" expression="0.0001" type="CONSTANT" unit="per day" />
-  <parameters name="incubationprogressionrate" expression="5.0" type="CONSTANT" unit="days" />
-  <parameters name="recoveryrate" expression="7.0" type="CONSTANT" unit="days" />
+  <parameters name="maternalimmunitylossrate" expression="1.6" type="CONSTANT" unit="1/year" />
+  <parameters name="mmr1vaccinationrate" expression="0.93" type="CONSTANT" />
+  <parameters name="susceptibleinfectionrate" expression="1.0" type="CONSTANT" unit="per day" />
+  <parameters name="mmr2vaccinationrate" expression="0.88" type="CONSTANT" />
+  <parameters name="onedosebreakthroughrate" expression="0.07" type="CONSTANT" />
+  <parameters name="twodosebreakthroughrate" expression="0.02" type="CONSTANT" />
+  <parameters name="vaccinewaningrate" expression="0.01" type="CONSTANT" unit="per year" />
+  <parameters name="incubationprogressionrate" expression="0.0833" type="CONSTANT" unit="days^-1" />
+  <parameters name="recoveryrate" expression="0.11" type="CONSTANT" unit="1/day" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Measles infection through transmission/contact." />
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Receipt of the first measles-containing vaccine dose." />
@@ -34,15 +40,16 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Receipt of the second measles-containing vaccine dose." />
   </compartments>
   <compartments PrimaryName="Double Vaccinated" population="0" />
-  <compartments PrimaryName="maternalprotected">
-    <outgoingFlows target="//@compartments.0" />
-  </compartments>
-  <compartments PrimaryName="vaccinatedonedose">
+  <compartments PrimaryName="Maternally Protected" />
+  <compartments PrimaryName="Vaccinated One Dose">
     <outgoingFlows target="//@compartments.8" />
     <outgoingFlows target="//@compartments.1" />
   </compartments>
-  <compartments PrimaryName="vaccinatedtwodose">
+  <compartments PrimaryName="Vaccinated Two Dose">
     <outgoingFlows target="//@compartments.1" />
+    <outgoingFlows target="//@compartments.0" />
+  </compartments>
+  <compartments PrimaryName="Maternal Protected">
     <outgoingFlows target="//@compartments.0" />
   </compartments>
 </ns0:CompartmentalModel>

@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **19**
-- After fills gaps (re-detected): **14**
-- Delta (before - after): **5**
-- Delta missing parameters: **3**
-- Delta missing compartments: **2**
+- After fills gaps (re-detected): **6**
+- Delta (before - after): **13**
+- Delta missing parameters: **12**
+- Delta missing compartments: **1**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -57,11 +57,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 26.3% | 30% |
-| **Reference agreement** | 37.5% | 30% |
+| **Gap reduction** | 68.4% | 30% |
+| **Reference agreement** | 25.0% | 30% |
 | **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **39.1/100** | — |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **28.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -76,118 +76,61 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 33
+- Filled via **inference**: 25
 - **Flagged** for manual review: 0
 
-### population11countries (missing_parameters)
+### removed (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Deceased
+- **Reasoning:** The model
 
 ### initialrt (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### generationintervaldays (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### publiceventsbaneffect (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### schoolclosureeffect (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### selfisolationeffect (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### socialdistancingeffect (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 3.0 
+- **Reasoning:** The text explicitly states that initial R_t for SARS-CoV-2 in uncontrolled epidemic settings in China was typically around 2-4.
 - **Confidence:** LOW
 
 ### lockdowneffect (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### meanoutcomedelaydays (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### removalrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### deathrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.25 
 - **Confidence:** LOW
 
 ### Susceptible->Infected (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Suggested transition for Susceptible->Infected
-- **Reasoning:** LLM unavailable.
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected after effective contact with infectious individuals.
+- **Reasoning:** The paper discusses the 'infection cycle' and 'R_t' (reproduction number), which are characteristic of contact-based transmission where the rate of new infections depends on interactions between susceptible and infected individuals.
 
 ### Infected->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infected->Removed
-- **Reasoning:** LLM unavailable.
+- **Description:** The rate at which infected individuals either recover from the disease or die due to the disease, thereby being removed from the infectious population.
+- **Reasoning:** The paper discusses linking the 'infection cycle to observed deaths' and 'estimating the deaths that would have occurred without interventions', which implies a transition out of the infected state into a removed state (including death).
 
 ### Infected->Dead (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infected->Dead
-- **Reasoning:** LLM unavailable.
+- **Description:** Mortality of infected individuals due to the disease.
+- **Reasoning:** The paper describes a mechanistic model linking the infection cycle to observed deaths, implying a direct transition from the infected state to death at a specific rate.
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
+- Parameters compared: **2**
 - Exact match (<1% error): **0**
 - Close (<10% error): **0**
-- Approximate (<50% error): **0**
+- Approximate (<50% error): **2**
 - Poor (>50% error): **0**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **31.58%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| population11countries | None | 741000000 | — | no_fill |
-| initialrt | None | 3.8 | — | no_fill |
-| generationintervaldays | None | 6.5 | — | no_fill |
-| publiceventsbaneffect | None | 1.0 | — | no_fill |
-| schoolclosureeffect | None | 1.0 | — | no_fill |
-| selfisolationeffect | None | 1.0 | — | no_fill |
-| socialdistancingeffect | None | 1.0 | — | no_fill |
-| lockdowneffect | None | 0.19 | — | no_fill |
-| meanoutcomedelaydays | None | 18 | — | no_fill |
-| removalrate | None | 1 / MeanOutcomeDelayDays | — | no_fill |
-| deathrate | None | 0.005 | — | no_fill |
+| initialrt | 3.0 | 3.8 | 21.05% | approximate |
+| lockdowneffect | 0.25 | 0.19 | 31.58% | approximate |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **4** | Candidate: **4**
-- Precision **0.75** | Recall **0.75** | F1 **0.75**
+- Precision **0.5** | Recall **0.5** | F1 **0.5**
 ### Flows
 - Gold count: **3** | Candidate: **1**
 - Precision **0.0** | Recall **0.0** | F1 **0.0**

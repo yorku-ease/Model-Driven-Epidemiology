@@ -1,6 +1,6 @@
 # AI-Assisted Model-Driven Epidemiology
 
-A comprehensive framework for analyzing, extracting, and validating compartmental epidemiological models from scientific papers using AI assistance. The framework progresses through three phases: structural analysis of reference models, automated LLM-driven extraction from papers, and RAG-based gap filling with gold-standard validation.
+A comprehensive framework for analyzing, extracting, and validating compartmental epidemiological models from scientific papers using AI assistance. The framework progresses through three phases: structural analysis of reference models, automated LLM-driven extraction from papers, and Rule-Based Retrieval gap filling with gold-standard validation.
 
 ## Project Overview
 
@@ -8,7 +8,7 @@ A comprehensive framework for analyzing, extracting, and validating compartmenta
 |-------|---------|---------------|
 | **Phase 1** | Analyze existing `.compmodel` files | Structural analysis, sensitivity analysis |
 | **Phase 2** | Extract models from PDF papers | LLM-driven entity extraction + synthesis |
-| **Phase 3** | Fill gaps and validate results | RAG lookup + LLM inference vs gold standard |
+| **Phase 3** | Fill gaps and validate results | Rule-Based Retrieval lookup + LLM inference vs gold standard |
 
 ## End-to-End Workflow
 
@@ -16,7 +16,7 @@ A comprehensive framework for analyzing, extracting, and validating compartmenta
  Phase 1                    Phase 2                     Phase 3 (+ selection)
 ┌──────────┐   examples   ┌──────────────┐   models   ┌──────────────────┐
 │ Baseline │ ──────────►  │ PDF → LLM →  │ ────────►  │ Gap Detection    │
-│ .compmodel│             │ .compmodel   │            │ RAG + LLM Fill   │
+│ .compmodel│             │ .compmodel   │            │ Retrieval + LLM Fill │
 │ analysis │              │ extraction   │            │ Gold-Std Validate│
 └──────────┘              └──────────────┘            └──────────────────┘
      │                          │                            │
@@ -57,7 +57,7 @@ AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
 │   │   └── baseline_models/      ← Gold-standard .compmodel for validation
 │   └── reports/                  ← One directory per disease/provider/timestamp
 │
-├── phase 3/                      ← RAG Gap Filling + Validation
+├── phase 3/                      ← Rule-Based Retrieval Gap Filling + Validation
 │   ├── README.md / INSTRUCTIONS.md
 │   ├── run_phase3.py             ← Main script
 │   ├── build_database.py         ← Build paper database from Phase 1 + 2
@@ -164,20 +164,20 @@ python run_phase2.py --paper data/papers/your_paper.pdf --output reports/your_pa
 
 ---
 
-## Phase 3: Gap Detection, RAG Filling, and Validation
+## Phase 3: Gap Detection, Rule-Based Retrieval Filling, and Validation
 
-Evaluates Phase 2's extracted models against gold-standard baselines, fills missing parameters using RAG and LLM inference, and measures accuracy.
+Evaluates Phase 2's extracted models against gold-standard baselines, fills missing parameters using Rule-Based Retrieval and LLM inference, and measures accuracy.
 
 ### Pipeline
 
 ```
 Phase 2 report  →  Gap Detection  →  Gap Filling  →  Validation  →  Reports
-(extracted model)  (vs gold std)    (RAG + LLM)    (vs gold std)   (per-disease + overall)
+(extracted model)  (vs gold std)    (Retrieval + LLM)    (vs gold std)   (per-disease + overall)
 ```
 
 ### Gap Filling: 3-tier approach
 
-1. **RAG** — searches indexed paper database (585+ parameters, 894+ text chunks) for matching values
+1. **Rule-Based Retrieval** — searches indexed paper database (585+ parameters, 894+ text chunks) for matching values
 2. **LLM Inference** — uses a selected Phase 3 provider (Gemini recommended from Phase 2 results) to suggest plausible values with reasoning
 3. **Flag** — marks for manual review when both tiers fail
 
@@ -211,7 +211,7 @@ python3 run_phase3.py --all --output reports
 
 ### Best model per disease (optional)
 
-Run Phase 3 in showcase mode to select the best Phase 2 input per disease from `phase 2/reports/`, then compare `rag_only`, `llm_only`, and `both`:
+Run Phase 3 in showcase mode to select the best Phase 2 input per disease from `phase 2/reports/`, then compare `retrieval_only` (Rule-Based Retrieval only), `llm_only`, and `both`:
 
 ```bash
 cd "phase 3"
@@ -256,11 +256,11 @@ This report includes:
 
 | Section | What it shows |
 |--------|----------------|
-| **Database** | Size of the RAG index (papers, parameters, chunks). |
-| **Summary** | Number of reports (diseases × providers), gap-free reports, total gaps, and how many gaps were filled by **RAG**, **LLM inference**, or **flagged**. |
-| **Gap counts by disease and provider** | For each (disease, provider), total gaps and fill breakdown (RAG vs flagged). |
+| **Database** | Size of the Rule-Based Retrieval index (papers, parameters, chunks). |
+| **Summary** | Number of reports (diseases × providers), gap-free reports, total gaps, and how many gaps were filled by **Rule-Based Retrieval**, **LLM inference**, or **flagged**. |
+| **Gap counts by disease and provider** | For each (disease, provider), total gaps and fill breakdown (Rule-Based Retrieval vs flagged). |
 | **Fill validation accuracy** | For each filled parameter, comparison to the gold-standard value: exact (&lt;1% error), close (&lt;10%), approximate (&lt;50%), poor (&gt;50%). Overall accuracy (exact+close) and a per-disease, per-provider table. |
-| **By provider** | Aggregated gaps, RAG/inference/flagged counts, and accuracy for Gemini, OpenAI, and Claude. |
+| **By provider** | Aggregated gaps, retrieval/inference/flagged counts, and accuracy for Gemini, OpenAI, and Claude. |
 | **Interpretation** | Short guide to reading the numbers and where to find per-disease details. |
 
 Per-disease reports (which parameters were filled, suggested values, validation table) are in:

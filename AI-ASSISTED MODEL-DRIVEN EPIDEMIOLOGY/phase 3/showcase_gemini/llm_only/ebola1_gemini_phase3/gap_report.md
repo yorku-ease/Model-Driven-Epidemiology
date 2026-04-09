@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **12**
-- After fills gaps (re-detected): **9**
-- Delta (before - after): **3**
-- Delta missing parameters: **0**
-- Delta missing compartments: **1**
-- Delta missing flows: **2**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **7**
+- Delta missing parameters: **6**
+- Delta missing compartments: **0**
+- Delta missing flows: **1**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -51,11 +51,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 25.0% | 30% |
-| **Reference agreement** | 74.2% | 30% |
+| **Gap reduction** | 58.3% | 30% |
+| **Reference agreement** | 61.5% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **49.8/100** | — |
+| **→ Composite** | **56.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -70,83 +70,38 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 21
+- Filled via **inference**: 17
 - **Flagged** for manual review: 0
 
-### μ (missing_parameters)
+### environment pathogens (missing_compartments)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### ω2 (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### ω3 (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### ω1 (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### ω1q (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
-
-### η (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
+- **Primary name:** Environmental Pathogens
 
 ### Infectious->Deceased (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infectious->Deceased
-- **Reasoning:** LLM unavailable.
+- **Description:** Rate of deaths of human individuals due
+
+### Infectious->Environment pathogens (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Shedding of Ebola virus pathogens from infected humans into the environment through urine and faeces.
+- **Reasoning:** The paper excerpt explicitly states that 'The disease can enter the environment through the urine and faeces of infected or deceased individuals', indicating a rate of pathogen shedding from infectious individuals to the environment.
 
 ### Quarantine->Deceased (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Quarantine->Deceased
-- **Reasoning:** LLM unavailable.
+- **Description:** The rate at which individuals
 
 ### Deceased->Environment pathogens (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Deceased->Environment pathogens
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| μ | None | 0.00038461 | — | no_fill |
-| ω2 | None | 0.0 | — | no_fill |
-| ω3 | None | 0.0 | — | no_fill |
-| ω1 | None | 0.0 | — | no_fill |
-| ω1q | None | 0.0 | — | no_fill |
-| η | None | 0.0 | — | no_fill |
+- **Description:** The rate
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **7**
-- Precision **0.7143** | Recall **0.8333** | F1 **0.7692**
+- Precision **0.5714** | Recall **0.6667** | F1 **0.6154**
 ### Flows
-- Gold count: **8** | Candidate: **6**
-- Precision **0.8333** | Recall **0.625** | F1 **0.7143**
+- Gold count: **8** | Candidate: **5**
+- Precision **0.8** | Recall **0.5** | F1 **0.6154**

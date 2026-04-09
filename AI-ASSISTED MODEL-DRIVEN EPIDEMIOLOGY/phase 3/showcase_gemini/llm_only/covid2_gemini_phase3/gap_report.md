@@ -14,9 +14,9 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **1**
-- After fills gaps (re-detected): **1**
-- Delta (before - after): **0**
-- Delta missing parameters: **0**
+- After fills gaps (re-detected): **0**
+- Delta (before - after): **1**
+- Delta missing parameters: **1**
 - Delta missing compartments: **0**
 - Delta missing flows: **0**
 
@@ -35,11 +35,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 0.0% | 30% |
+| **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 100.0% | 30% |
 | **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **50.0/100** | — |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **60.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -54,25 +54,27 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 2
+- Filled via **inference**: 1
 - **Flagged** for manual review: 0
 
 ### initialseed (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 1.0 individuals
+- **Reasoning:** For
 - **Confidence:** LOW
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
+- Parameters compared: **1**
 - Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+- Poor (>50% error): **1**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **80.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| initialseed | None | 5 | — | no_fill |
+| initialseed | 1.0 | 5.0 | 80.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

@@ -76,38 +76,34 @@
 
 ### susceptiblehumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblehumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Humans
 
 ### exposedhumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedhumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Humans
+- **Reasoning:** Z
 
 ### infectioushumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectioushumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Humans
 
 ### recoveredhumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** recoveredhumans
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Recovered
+- **Reasoning:** The excerpt
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** susceptiblemosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Susceptible Mosquitoes
 
 ### exposedmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** exposedmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Exposed Mosquitoes
 
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
-- **Primary name:** infectiousmosquitoes
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Infectious Mosquitoes
+- **Reasoning:** The excerpt explicitly states ZIKV transmission is predominantly vector-borne, necessitating a compartment for the infectious vector in a compartmental model.
 
 ### SusceptibleHumans->ExposedHumans (missing_flows)
 - **Source:** rag

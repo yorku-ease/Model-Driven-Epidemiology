@@ -11,14 +11,14 @@ For each disease:
   2. **Phase 3 — you choose the inference API:** run Phase 3 **three times** on that
      winning report using ``--llm-provider`` or ``PHASE3_LLM_PROVIDER`` (independent of
      which LLM won Phase 2):
-     - **rag_only** — RAG + flag (no LLM inference)
-     - **llm_only** — LLM + flag (no RAG)
-     - **both** — RAG + LLM + flag
+    - **retrieval_only** — Rule-Based Retrieval + flag (no LLM inference)
+    - **llm_only** — LLM + flag (no retrieval)
+    - **both** — Rule-Based Retrieval + LLM + flag
 
 Outputs under ``--output`` (default ``showcase_phase3``)::
 
   <output>/
-    rag_only/<disease>_<llm_provider>_phase3/
+    retrieval_only/<disease>_<llm_provider>_phase3/
     llm_only/<disease>_<llm_provider>_phase3/
     both/<disease>_<llm_provider>_phase3/
     SHOWCASE_REPORT.md
@@ -181,12 +181,12 @@ def write_showcase_report(
 ) -> None:
     prov = phase3_llm_provider
     lines = [
-        f"# Phase 3 — Showcase (best Phase 2 LLM × RAG / LLM / both, Phase 3 inference: **{prov}**)",
+        f"# Phase 3 — Showcase (best Phase 2 LLM × Retrieval / LLM / both, Phase 3 inference: **{prov}**)",
         "",
         "For each disease: **best Phase 2** run among **gemini / openai / claude** (by evaluation score), then Phase 3 with **your chosen** `--llm-provider` (**"
         f"{prov}** here) for inference in three modes.",
         "",
-        "| Disease | Winning Phase 2 LLM | Best Phase 2 report | Phase2 score | Winner | rag_only | llm_only | both |",
+        "| Disease | Winning Phase 2 LLM | Best Phase 2 report | Phase2 score | Winner | retrieval_only | llm_only | both |",
         "|---------|----------------------|---------------------|--------------|--------|----------|----------|------|",
     ]
     for r in rows:
@@ -197,14 +197,14 @@ def write_showcase_report(
         ex = r.get("best_phase2_extractor", "—")
         fmt = lambda mode: r["modes"][mode].get("summary_str", "—")
         lines.append(
-            f"| {d} | **{ex}** | `{br}` | {p2s:.1f} | **{w}** | {fmt('rag_only')} | {fmt('llm_only')} | {fmt('both')} |"
+            f"| {d} | **{ex}** | `{br}` | {p2s:.1f} | **{w}** | {fmt('retrieval_only')} | {fmt('llm_only')} | {fmt('both')} |"
         )
     lines.extend([
         "",
         "## How to read",
         "",
         "- **Winner** = lowest gap count, then highest parameter accuracy vs gold, then highest mean compartment/flow F1 (same ordering as `select_best_model.py`).",
-        f"- Subfolders: `rag_only/`, `llm_only/`, `both/` each contain `<disease>_{prov}_phase3/` with `phase3_gaps.json`, …, and `phase3_showcase_source.json` (which Phase 2 folder was used).",
+        f"- Subfolders: `retrieval_only/`, `llm_only/`, `both/` each contain `<disease>_{prov}_phase3/` with `phase3_gaps.json`, …, and `phase3_showcase_source.json` (which Phase 2 folder was used).",
         "",
     ])
     (base / "SHOWCASE_REPORT.md").write_text("\n".join(lines), encoding="utf-8")
@@ -216,7 +216,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(
         description=(
             "Phase 3: for each disease, pick best Phase 2 among gemini/openai/claude, "
-            "then run rag_only / llm_only / both (Phase 3 inference: --llm-provider)."
+            "then run retrieval_only / llm_only / both (Phase 3 inference: --llm-provider)."
         ),
     )
     ap.add_argument(
@@ -298,7 +298,7 @@ def main() -> None:
         print(f"Disease: {disease}  |  Best Phase 2: {report_dir.name}  (extractor: {p2_extractor}, score {p2_score:.2f})")
 
         modes = {
-            "rag_only": {"use_rag": True, "use_inference": False},
+            "retrieval_only": {"use_rag": True, "use_inference": False},
             "llm_only": {"use_rag": False, "use_inference": True},
             "both": {"use_rag": True, "use_inference": True},
         }
@@ -355,7 +355,7 @@ def main() -> None:
     print(f"  Report: {out_base / 'SHOWCASE_REPORT.md'}")
     print(f"  JSON:   {out_base / 'showcase_summary.json'}")
     print("\nOptional: compare three roots with select_best_model.py:")
-    roots = f"{out_base}/rag_only {out_base}/llm_only {out_base}/both"
+    roots = f"{out_base}/retrieval_only {out_base}/llm_only {out_base}/both"
     print(f"  python3 select_best_model.py --phase2-reports \"{phase2_reports}\" \\")
     print(f"      --phase3-roots {roots} \\")
     print("      --output selected_from_showcase")

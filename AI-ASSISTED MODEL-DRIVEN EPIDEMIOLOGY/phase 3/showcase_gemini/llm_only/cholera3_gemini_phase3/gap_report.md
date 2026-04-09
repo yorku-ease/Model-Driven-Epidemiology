@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **2**
-- After fills gaps (re-detected): **1**
-- Delta (before - after): **1**
+- After fills gaps (re-detected): **2**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **1**
+- Delta missing compartments: **0**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -41,11 +41,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 50.0% | 30% |
-| **Reference agreement** | 28.6% | 30% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 12.5% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **43.6/100** | — |
+| **→ Composite** | **23.8/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -60,19 +60,22 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 3
+- Filled via **inference**: 4
 - **Flagged** for manual review: 0
+
+### aquatic toxigenic vibrio cholerae (missing_compartments)
+- **Source:** inference
+- **Primary name:** Environmental Vibrio Cholerae
 
 ### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Infected->Aquatic toxigenic Vibrio cholerae
-- **Reasoning:** LLM unavailable.
+- **Description:** Shedding
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **3** | Candidate: **4**
-- Precision **0.5** | Recall **0.6667** | F1 **0.5714**
+- Gold count: **3** | Candidate: **5**
+- Precision **0.2** | Recall **0.3333** | F1 **0.25**
 ### Flows
 - Gold count: **2** | Candidate: **4**
 - Precision **0.0** | Recall **0.0** | F1 **0.0**

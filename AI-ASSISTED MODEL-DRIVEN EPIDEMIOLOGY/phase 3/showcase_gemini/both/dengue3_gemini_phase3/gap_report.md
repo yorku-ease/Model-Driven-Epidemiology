@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **26**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **26**
+- After fills gaps (re-detected): **18**
+- Delta (before - after): **8**
 - Delta missing parameters: **8**
-- Delta missing compartments: **9**
-- Delta missing flows: **9**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -65,11 +65,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 72.1% | 30% |
-| **Fill traceability** | 65.4% | 20% |
-| **Parameter accuracy** | 75.0% | 20% |
-| **→ Composite** | **79.7/100** | — |
+| **Gap reduction** | 30.8% | 30% |
+| **Reference agreement** | 70.8% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 100.0% | 20% |
+| **→ Composite** | **60.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -82,103 +82,48 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 8 | 13 | 6 | 27 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 17
+- Filled via **RAG**: 26
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 9
+- Filled via **inference**: 18
 - **Flagged** for manual review: 0
 
 ### primarysusceptible (missing_compartments)
 - **Source:** inference
-- **Primary name:** primarysusceptible
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Primary Susceptible
 
 ### primaryexposed (missing_compartments)
 - **Source:** inference
-- **Primary name:** primaryexposed
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Primary Exposed
+- **Reasoning:** The text
 
 ### primaryinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** primaryinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Primary Infectious
 
 ### postprimaryimmune (missing_compartments)
 - **Source:** inference
-- **Primary name:** postprimaryimmune
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Postprimary Immune
 
 ### vaccinatedsilentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** vaccinatedsilentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Vaccinated Asymptomatic Infected
 
 ### secondarysusceptible (missing_compartments)
 - **Source:** inference
-- **Primary name:** secondarysusceptible
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** SecondarySusceptible
 
 ### postvaccinationsusceptible (missing_compartments)
 - **Source:** inference
-- **Primary name:** postvaccinationsusceptible
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Postvaccination Susceptible
 
 ### secondaryinfectious (missing_compartments)
 - **Source:** inference
-- **Primary name:** secondaryinfectious
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** SecondaryInfectious
 
 ### postsecondaryimmune (missing_compartments)
 - **Source:** inference
-- **Primary name:** postsecondaryimmune
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### primarytransmissionrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.26 
-- **Description:** Transmission parameter for primary infection
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
-
-### incubationrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.20 
-- **Description:** Progression from exposed to infectious
-- **From papers:** p1_model_ebola, p1_model_cholera, p1_model_dengue
-
-### recoveryrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.14 
-- **Description:** Recovery from infectious state
-- **From papers:** p1_model_measles, p1_model_ebola, p1_model_cholera
-
-### routinevaccinationrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.05 
-- **Description:** Routine vaccination of 9-year-olds
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
-
-### naturalcrossprotectionwaningrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.02 
-- **Description:** Waning of temporary heterologous protection after natural infection
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
-
-### vaccinecrossprotectionwaningrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.03 
-- **Description:** Waning of temporary heterologous protection after vaccination
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
-
-### secondarytransmissionrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.30 
-- **Description:** Transmission parameter for secondary-like infection after natural primary infection
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
-
-### postvaccinationtransmissionrate (missing_parameters)
-- **Source:** rag
-- **Value:** 0.24 
-- **Description:** Transmission parameter after vaccine-induced silent infection
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
+- **Primary name:** Postsecondary Immune
+- **Reasoning:** The
 
 ### PrimarySusceptible->PrimaryExposed (missing_flows)
 - **Source:** rag
@@ -225,30 +170,10 @@
 - **Similar flows in corpus:** 5 match(es)
 - *Analogous flows from indexed models / text; align with gold wiring.*
 
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **8**
-- Exact match (<1% error): **6**
-- Close (<10% error): **0**
-- Approximate (<50% error): **2**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **75.0%**
-- Median relative error: **0.0%**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| primarytransmissionrate | 0.26 | 0.26 | 0.0% | exact |
-| incubationrate | 0.2 | 0.18 | 11.11% | approximate |
-| recoveryrate | 0.14 | 0.12 | 16.67% | approximate |
-| routinevaccinationrate | 0.05 | 0.05 | 0.0% | exact |
-| naturalcrossprotectionwaningrate | 0.02 | 0.02 | 0.0% | exact |
-| vaccinecrossprotectionwaningrate | 0.03 | 0.03 | 0.0% | exact |
-| secondarytransmissionrate | 0.3 | 0.3 | 0.0% | exact |
-| postvaccinationtransmissionrate | 0.24 | 0.24 | 0.0% | exact |
-
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **17**
-- Precision **0.5294** | Recall **1.0** | F1 **0.6923**
+- Gold count: **9** | Candidate: **18**
+- Precision **0.5** | Recall **1.0** | F1 **0.6667**
 ### Flows
 - Gold count: **9** | Candidate: **15**
 - Precision **0.6** | Recall **1.0** | F1 **0.75**

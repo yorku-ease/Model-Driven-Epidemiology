@@ -88,37 +88,36 @@
 
 ### vaccinatedinfected (missing_compartments)
 - **Source:** inference
-- **Primary name:** vaccinatedinfected
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** VaccinatedInfected
+- **Reasoning:** The text describes an elevated risk of
 
 ### vaccinatedrecovered (missing_compartments)
 - **Source:** inference
-- **Primary name:** vaccinatedrecovered
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** VaccinatedRecovered
 
 ### transmissionrate (missing_parameters)
 - **Source:** rag
 - **Value:** 0.28 
 - **Description:** Approximate transmission parameter for simplified human-side dengue model
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
+- **From papers:** p1_model_cholera, p1_model_covid, p1_model_dengue
 
 ### incubationrate (missing_parameters)
 - **Source:** rag
 - **Value:** 0.20 
 - **Description:** Progression from exposed to infectious
-- **From papers:** p1_model_ebola, p1_model_cholera, p1_model_dengue
+- **From papers:** p1_model_cholera, p1_model_dengue, p1_model_ebola
 
 ### recoveryrate (missing_parameters)
 - **Source:** rag
 - **Value:** 0.14 
 - **Description:** Recovery from infectious state
-- **From papers:** p1_model_measles, p1_model_ebola, p1_model_cholera
+- **From papers:** p1_model_measles, p1_model_cholera, p1_model_dengue
 
 ### screeningandvaccinationrate (missing_parameters)
 - **Source:** rag
 - **Value:** 0.04 
 - **Description:** Routine screening at age 9 followed by vaccination if seropositive
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_dengue
+- **From papers:** p1_model_cholera, p1_model_covid, p1_model_dengue
 
 ### vaccinebreakthroughrate (missing_parameters)
 - **Source:** rag

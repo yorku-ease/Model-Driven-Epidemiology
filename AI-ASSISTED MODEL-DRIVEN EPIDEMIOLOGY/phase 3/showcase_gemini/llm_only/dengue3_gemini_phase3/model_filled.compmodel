@@ -13,11 +13,14 @@
   <parameters name="DALYs per symptomatic dengue case" expression="0.006" type="CONSTANT" description="Disability-Adjusted Life Years incurred per symptomatic dengue case." unit="DALYs" />
   <parameters name="DALYs per severe dengue case" expression="0.02" type="CONSTANT" description="Disability-Adjusted Life Years incurred per severe dengue case." unit="DALYs" />
   <parameters name="Cost per hospitalised case (public payer, Latin America)" expression="200" type="CONSTANT" description="Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting." unit="USD (2014)" />
-  <parameters name="primarytransmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="incubationrate" expression="5.0" type="CONSTANT" unit="days" />
-  <parameters name="recoveryrate" expression="7.0" type="CONSTANT" unit="days" />
-  <parameters name="secondarytransmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="postvaccinationtransmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
+  <parameters name="primarytransmissionrate" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="incubationrate" expression="0.167" type="CONSTANT" unit="days^-1" />
+  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" unit="per day" />
+  <parameters name="routinevaccinationrate" expression="0.8" type="CONSTANT" />
+  <parameters name="naturalcrossprotectionwaningrate" expression="0.5" type="CONSTANT" unit="per year" />
+  <parameters name="vaccinecrossprotectionwaningrate" expression="1.0" type="CONSTANT" unit="per year" />
+  <parameters name="secondarytransmissionrate" expression="3.0" type="CONSTANT" />
+  <parameters name="postvaccinationtransmissionrate" expression="0.5" type="CONSTANT" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection." />
   </compartments>
@@ -38,30 +41,31 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Progression of infected mosquitoes to an infectious state after the extrinsic incubation period." />
   </compartments>
   <compartments PrimaryName="Infectious Mosquitoes" population="0" />
-  <compartments PrimaryName="primarysusceptible">
+  <compartments PrimaryName="Primary Susceptible">
     <outgoingFlows target="//@compartments.9" />
     <outgoingFlows target="//@compartments.12" />
   </compartments>
-  <compartments PrimaryName="primaryexposed">
+  <compartments PrimaryName="Primary Exposed">
     <outgoingFlows target="//@compartments.10" />
   </compartments>
-  <compartments PrimaryName="primaryinfectious">
+  <compartments PrimaryName="Primary Infectious">
     <outgoingFlows target="//@compartments.11" />
   </compartments>
-  <compartments PrimaryName="postprimaryimmune">
+  <compartments PrimaryName="Postprimary Immune">
     <outgoingFlows target="//@compartments.13" />
   </compartments>
-  <compartments PrimaryName="vaccinatedsilentinfection">
+  <compartments PrimaryName="Vaccinated Silent Infection">
     <outgoingFlows target="//@compartments.14" />
   </compartments>
-  <compartments PrimaryName="secondarysusceptible">
+  <compartments PrimaryName="Secondary Susceptible">
     <outgoingFlows target="//@compartments.15" />
   </compartments>
-  <compartments PrimaryName="postvaccinationsusceptible">
+  <compartments PrimaryName="Postvaccination Susceptible">
     <outgoingFlows target="//@compartments.15" />
   </compartments>
-  <compartments PrimaryName="secondaryinfectious">
+  <compartments PrimaryName="SecondaryInfectious">
     <outgoingFlows target="//@compartments.16" />
   </compartments>
-  <compartments PrimaryName="postsecondaryimmune" />
+  <compartments PrimaryName="Postsecondary Immune" />
+  <compartments PrimaryName="Vaccinated Susceptible" />
 </ns0:CompartmentalModel>

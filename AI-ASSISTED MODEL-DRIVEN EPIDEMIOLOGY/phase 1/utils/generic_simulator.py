@@ -387,38 +387,45 @@ class GenericModelSimulator:
                         mosquito_start_idx = idx
                         break
 
-                # Humans: 99k susceptible, 500 infected
+                # Humans: N-1 susceptible, 1 seed case to start the epidemic.
+                # Mosquitoes: all susceptible, 1 infected mosquito as vector seed.
+                N_human = 100000
+                N_mosq = 200000
                 if HAS_NUMPY:
-                    populations[0][0] = 99000
-                    if 2 < mosquito_start_idx:  # If there's an infected humans compartment before mosquitoes
-                        populations[0][2] = 500  # Infected humans to seed transmission
-                else:
-                    populations[0][0] = 99000
+                    populations[0][0] = N_human - 1
                     if 2 < mosquito_start_idx:
-                        populations[0][2] = 500
+                        populations[0][2] = 1   # One infected human seed
+                else:
+                    populations[0][0] = N_human - 1
+                    if 2 < mosquito_start_idx:
+                        populations[0][2] = 1
 
                 # Mosquitoes: start from identified index
                 if mosquito_start_idx >= 0:
                     if HAS_NUMPY:
-                        populations[0][mosquito_start_idx] = 75000  # Susceptible mosquitoes
+                        populations[0][mosquito_start_idx] = N_mosq - 1
                         if mosquito_start_idx + 2 < n_comps:
-                            populations[0][mosquito_start_idx + 2] = 2000  # Infected mosquitoes
+                            populations[0][mosquito_start_idx + 2] = 1  # One infected mosquito
                     else:
-                        populations[0][mosquito_start_idx] = 75000
+                        populations[0][mosquito_start_idx] = N_mosq - 1
                         if mosquito_start_idx + 2 < n_comps:
-                            populations[0][mosquito_start_idx + 2] = 2000
+                            populations[0][mosquito_start_idx + 2] = 1
             else:
-                # Standard SEIR-like model: 99% susceptible, 1% exposed/infected
+                # Standard SEIR-like model: one seed case, everyone else susceptible.
+                # Starting with a large I₀ (e.g. 1000) puts many models past their
+                # epidemic peak at t=0, producing flat trajectories. A single seed
+                # case (I₀=1) lets the ODE dynamics determine the peak organically.
+                N = 100000
                 if n_comps > 0:
                     if HAS_NUMPY:
-                        populations[0][0] = 99000
+                        populations[0][0] = N - 1
                     else:
-                        populations[0][0] = 99000
+                        populations[0][0] = N - 1
                 if n_comps > 1:
                     if HAS_NUMPY:
-                        populations[0][1] = 1000
+                        populations[0][1] = 1
                     else:
-                        populations[0][1] = 1000
+                        populations[0][1] = 1
 
         # Run simulation using Euler integration
         for t in range(1, n_steps):

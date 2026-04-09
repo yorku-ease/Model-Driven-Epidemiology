@@ -17,9 +17,9 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **4**
-- After fills gaps (re-detected): **2**
-- Delta (before - after): **2**
-- Delta missing parameters: **0**
+- After fills gaps (re-detected): **0**
+- Delta (before - after): **4**
+- Delta missing parameters: **2**
 - Delta missing compartments: **1**
 - Delta missing flows: **1**
 
@@ -42,11 +42,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 50.0% | 30% |
+| **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 90.9% | 30% |
 | **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **62.3/100** | — |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **57.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -61,32 +61,43 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 6
+- Filled via **inference**: 4
 - **Flagged** for manual review: 0
+
+### susceptible mosquitoes (missing_compartments)
+- **Source:** inference
+- **Primary name:** Susceptible Mosquitoes
+- **Reasoning:** The excerpt clearly states dengue is a mosquito-borne disease, necessitating the inclusion of vector compartments in any comprehensive transmission model.
 
 ### γ1 (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.2 per day
 - **Confidence:** LOW
 
 ### γ2 (missing_parameters)
 - **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
+- **Value:** 0.14 1/day
 - **Confidence:** LOW
 
+### Susceptible mosquitoes->Infectious mosquitoes (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible mosquitoes become infectious after acquiring the dengue virus from an infected human host and completing the extrinsic incubation period.
+- **Reasoning:** This flow represents the rate at which susceptible mosquitoes transition to an infectious state, enabling them to transmit the virus to humans.
+
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
+- Parameters compared: **2**
 - Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
+- Poor (>50% error): **2**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **72.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| γ1 | None | 0.5 | — | no_fill |
-| γ2 | None | 0.5 | — | no_fill |
+| γ1 | 0.2 | 0.5 | 60.0% | poor |
+| γ2 | 0.14 | 0.5 | 72.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

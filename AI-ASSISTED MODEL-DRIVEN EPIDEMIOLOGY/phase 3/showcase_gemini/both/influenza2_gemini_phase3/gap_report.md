@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **16**
-- After fills gaps (re-detected): **1**
-- Delta (before - after): **15**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **13**
 - Delta missing parameters: **10**
-- Delta missing compartments: **2**
-- Delta missing flows: **3**
+- Delta missing compartments: **1**
+- Delta missing flows: **2**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -54,11 +54,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 93.8% | 30% |
+| **Gap reduction** | 81.2% | 30% |
 | **Reference agreement** | 54.5% | 30% |
-| **Fill traceability** | 100.0% | 20% |
+| **Fill traceability** | 66.7% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **84.5/100** | — |
+| **→ Composite** | **74.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -71,10 +71,20 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 19 | 0 | 19 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 16
+- Filled via **RAG**: 17
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 1
+- Filled via **inference**: 2
 - **Flagged** for manual review: 0
+
+### treatedclinical (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated
+- **Reasoning:** The
+
+### InfectiousClinical->TreatedClinical (missing_flows)
+- **Source:** rag
+- **Similar flows in corpus:** 5 match(es)
+- *Analogous flows from indexed models / text; align with gold wiring.*
 
 ### TreatedClinical->Removed (missing_flows)
 - **Source:** rag

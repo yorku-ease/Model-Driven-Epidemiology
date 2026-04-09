@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **2**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **2**
+- After fills gaps (re-detected): **2**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -42,11 +42,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 97.2% | 30% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 90.3% | 30% |
 | **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **89.2/100** | — |
+| **→ Composite** | **57.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -59,15 +59,15 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 36 | 1 | 38 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 1
+- Filled via **RAG**: 2
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 1
+- Filled via **inference**: 2
 - **Flagged** for manual review: 0
 
 ### covid deaths (missing_compartments)
 - **Source:** inference
-- **Primary name:** covid deaths
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Deceased
+- **Reasoning:** The model tracks infections, hospitalizations, and ICU cases but does not explicitly mention a compartment for individuals who have died from COVID-19, which is a critical outcome.
 
 ### ICU->COVID Deaths (missing_flows)
 - **Source:** rag
@@ -77,7 +77,7 @@
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **8** | Candidate: **16**
-- Precision **0.9375** | Recall **1.0** | F1 **0.9677**
+- Precision **0.875** | Recall **0.875** | F1 **0.875**
 ### Flows
-- Gold count: **11** | Candidate: **22**
-- Precision **0.9545** | Recall **1.0** | F1 **0.9767**
+- Gold count: **11** | Candidate: **21**
+- Precision **0.9524** | Recall **0.9091** | F1 **0.9302**

@@ -9,11 +9,80 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "earlyinfection",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Acute Infection",
+        "description": "",
+        "reasoning": "The excerpt",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "chronicinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Chronic Infection",
+        "description": "",
+        "reasoning": "The excerpt",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "lateinfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Treated Infected",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "onart",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "On ART",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Treated",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -83,11 +152,199 @@
         "chunk_evidence": [],
         "note": "Analogous flows from indexed models / text; align with gold wiring."
       }
+    },
+    {
+      "gap": {
+        "expected": "ChronicInfection->LateInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "ChronicInfection->LateInfection",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "ChronicInfection->LateInfection",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "ChronicInfection->OnART",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ChronicInfection->OnART",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "ChronicInfection->OnART",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "ChronicInfection->OnART",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "ChronicInfection->LateInfection",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "LateInfection->OnART",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "LateInfection->OnART",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "LateInfection->OnART",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "LateInfection->OnART",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "ChronicInfection->OnART",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "LateInfection->Removed",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "LateInfection->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "LateInfection->Removed",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "LateInfection->Removed",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Removed",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infected->Removed",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Hospitalized->Removed",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "InfectiousCommunity->Removed",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
+    },
+    {
+      "gap": {
+        "expected": "OnART->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "rag",
+      "suggestion": {
+        "signature": "OnART->Removed",
+        "similar_flows_in_corpus": [
+          {
+            "signature": "OnART->Removed",
+            "disease": "hiv",
+            "paper_id": "p1_model_hiv",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infectious->Removed",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Infected->Removed",
+            "disease": "covid",
+            "paper_id": "p1_model_covid",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "Hospitalized->Removed",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          },
+          {
+            "signature": "InfectiousCommunity->Removed",
+            "disease": "ebola",
+            "paper_id": "p1_model_ebola",
+            "source_phase": "phase1"
+          }
+        ],
+        "chunk_evidence": [],
+        "note": "Analogous flows from indexed models / text; align with gold wiring."
+      }
     }
   ],
   "summary": {
-    "rag_count": 19,
-    "inference_count": 6,
+    "rag_count": 24,
+    "inference_count": 10,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

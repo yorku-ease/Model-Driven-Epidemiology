@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **26**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **26**
+- After fills gaps (re-detected): **25**
+- Delta (before - after): **1**
 - Delta missing parameters: **0**
-- Delta missing compartments: **9**
-- Delta missing flows: **17**
+- Delta missing compartments: **1**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -66,11 +66,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 91.4% | 30% |
-| **Fill traceability** | 65.4% | 20% |
+| **Gap reduction** | 3.8% | 30% |
+| **Reference agreement** | 69.7% | 30% |
+| **Fill traceability** | 68.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **90.5/100** | — |
+| **→ Composite** | **55.7/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -83,55 +83,44 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 2 | 13 | 3 | 18 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 17
+- Filled via **RAG**: 34
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 9
+- Filled via **inference**: 17
 - **Flagged** for manual review: 0
 
 ### untreatedstagei1 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei1
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I
 
 ### untreatedstagei2 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei2
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage II
 
 ### untreatedstagei3 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei3
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I
 
 ### untreatedstagei4 (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedstagei4
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Stage I
 
 ### artstagea1 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea1
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** On Antiretroviral Therapy
 
 ### artstagea2 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea2
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** ART Stage
+- **Reasoning:** The
 
 ### artstagea3 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea3
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** CD4 Stages
 
 ### artstagea4 (missing_compartments)
 - **Source:** inference
-- **Primary name:** artstagea4
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
-
-### removed (missing_compartments)
-- **Source:** inference
-- **Primary name:** removed
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Disease Stage
+- **Reasoning:** The excerpt
 
 ### Susceptible->UntreatedStageI1 (missing_flows)
 - **Source:** rag
@@ -220,8 +209,8 @@
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **10** | Candidate: **12**
-- Precision **0.8333** | Recall **1.0** | F1 **0.9091**
+- Gold count: **10** | Candidate: **10**
+- Precision **0.4** | Recall **1.0** | F1 **0.5714**
 ### Flows
-- Gold count: **17** | Candidate: **20**
-- Precision **0.85** | Recall **1.0** | F1 **0.9189**
+- Gold count: **17** | Candidate: **10**
+- Precision **0.7** | Recall **1.0** | F1 **0.8235**

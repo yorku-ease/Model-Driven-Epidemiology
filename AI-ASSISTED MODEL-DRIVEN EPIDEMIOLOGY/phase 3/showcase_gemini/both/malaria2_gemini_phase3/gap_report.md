@@ -75,23 +75,19 @@
 
 ### treatedclinicaldisease (missing_compartments)
 - **Source:** inference
-- **Primary name:** treatedclinicaldisease
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Treated Clinical Disease
 
 ### untreatedclinicaldisease (missing_compartments)
 - **Source:** inference
-- **Primary name:** untreatedclinicaldisease
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Untreated Clinical Disease
 
 ### asymptomaticpatentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** asymptomaticpatentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Asymptomatic Patent Infection
 
 ### asymptomaticsubpatentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** asymptomaticsubpatentinfection
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Asymptomatic Subpatent Infection
 
 ### Susceptible->TreatedClinicalDisease (missing_flows)
 - **Source:** rag

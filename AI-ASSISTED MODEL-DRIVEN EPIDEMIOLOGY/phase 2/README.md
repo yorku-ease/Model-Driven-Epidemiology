@@ -10,6 +10,23 @@ so PDF and gold paths resolve via `src/utils/phase2_paths.py` (see **`data/READM
 
 **Existing reports (paper 1 of each disease):** Reports for the first paper of each disease are already in `reports/` with a `1` suffix (e.g. `covid1_llm_openai_<timestamp>/`). To process papers 2 and 3, see **Running Phase 2** below.
 
+## Results summary (benchmark: 10 diseases × 3 papers, fuzzy matching)
+
+Evaluated across **30 benchmark papers** using fuzzy string matching (`evaluation_report_fuzzy_temp.json`).  
+Gold standard = hand-authored `.compmodel` files under `data/diseases/<disease>/`.
+
+| Provider | Avg Compartment Recall | Avg Flow Recall |
+|----------|----------------------|-----------------|
+| OpenAI (GPT-4o) | 0.75 | 0.52 |
+| Gemini (2.5 Pro) | 0.81 | 0.59 |
+| Claude (3.5 Sonnet) | 0.81 | 0.58 |
+| **Best per disease** | **0.84** | **0.66** |
+
+Full per-disease tables: see `RESULTS_FUZZY.md` (run `python3 build_results_md.py -e evaluation_report_fuzzy_temp.json -o RESULTS_FUZZY.md` to regenerate).  
+Phase 3 (Rule-Based Retrieval + gap filling) improves these to **0.89 compartment recall / 0.82 flow recall** — see `phase 3/README.md`.
+
+---
+
 ## Principles
 
 - **Faithfulness:** Extract only what the paper explicitly describes or clearly promises.
@@ -102,7 +119,7 @@ When paths exist, Phase 2 loads the epidemiology metamodel and example models fr
 ### 1. How were the **patterns** chosen?
 
 - **Paper promises (Step 2):** Hand-written **regex** lists in `src/extraction/paper_promise_extractor.py` (`extract_with_patterns`) — e.g. phrases like “compartments … include”, SEIR/SIR keywords, stratification and intervention keywords. There is **no** separate systematic literature review driving those regexes; they are **engineering heuristics** informed by common paper wording.
-- **Entity extraction:** Additional **pattern** passes and keyword lists live in `src/extraction/entity_extractor.py` (plus LLM prompts when `--use-llm`). Optional **Phase 1** assets such as `phase 1/reports/patterns/pattern_library.json` may be loaded elsewhere for documentation/RAG context, but the **default** extraction patterns are **not** auto-mined from a corpus — they are **manual / iterative** code.
+- **Entity extraction:** Additional **pattern** passes and keyword lists live in `src/extraction/entity_extractor.py` (plus LLM prompts when `--use-llm`). Optional **Phase 1** assets such as `phase 1/reports/patterns/pattern_library.json` may be loaded elsewhere for documentation/retrieval context, but the **default** extraction patterns are **not** auto-mined from a corpus — they are **manual / iterative** code.
 
 ### 2. **Step 7 (gap filler)** — examples, LLM behavior, ablations
 

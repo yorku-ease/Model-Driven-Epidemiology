@@ -9,113 +9,80 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "earlyinfection",
-        "reasoning": "LLM unavailable; using expected label as placeholder.",
-        "source": "fallback_label",
+        "primary_name": "Early Infection",
+        "description": "",
+        "reasoning": "The excerpt",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Verify compartment name against the paper."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "progression1",
+        "expected": "chronicinfection",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "Chronically Infected",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "progression2",
+        "expected": "lateinfection",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "On ART",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "artstart1",
+        "expected": "onart",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "On ART",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
       "gap": {
-        "expected": "artstart2",
+        "expected": "removed",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
       },
-      "gap_type": "missing_parameters",
+      "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
+        "primary_name": "On Antiretroviral Therapy",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "deathlate",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
-      }
-    },
-    {
-      "gap": {
-        "expected": "deathart",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_parameters",
-      "source": "inference",
-      "suggestion": {
-        "value": null,
-        "unit": null,
-        "reasoning": "No default in library; manual lookup required.",
-        "source": "flagged",
-        "confidence": "LOW",
-        "warning": "Could not infer; flag for manual review."
+        "warning": "AI-inferred label; verify against gold / paper."
       }
     },
     {
@@ -127,12 +94,12 @@
       "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
-        "flow_type": "RateFlow",
-        "description": "Suggested transition for Susceptible->EarlyInfection",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "flow_type": "ContactFlow",
+        "description": "Transmission of HIV from an infectious individual to a susceptible individual, leading to early infection.",
+        "reasoning": "HIV is a sexually transmitted infection, and its spread is mediated by contact between susceptible and infectious individuals.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -145,17 +112,102 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Suggested transition for EarlyInfection->ChronicInfection",
-        "reasoning": "LLM unavailable.",
-        "source": "fallback_label",
+        "description": "Progression of HIV infection from the acute seroconversion phase to the chronic, clinically latent stage.",
+        "reasoning": "This transition represents the natural history of HIV infection where individuals move from the initial acute phase to a prolonged chronic phase, a fundamental process in HIV epidemiology models.",
+        "source": "llm_inference",
         "confidence": "LOW",
-        "warning": "Manual .compmodel edit or Phase RLM recommended."
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ChronicInfection->LateInfection",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of HIV-infected individuals from the chronic asymptomatic stage to the late symptomatic (AIDS) stage due to immune system decline.",
+        "reasoning": "This transition represents the natural progression of HIV disease over time as the immune system deteriorates, leading to the late symptomatic stage (AIDS) if not treated.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ChronicInfection->OnART",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals with chronic HIV infection initiating antiretroviral therapy (ART).",
+        "reasoning": "The excerpt discusses the expansion and provision of antiretroviral therapy (ART) to HIV-infected individuals, directly representing the transition from chronic infection to being on ART.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "LateInfection->OnART",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals in the late stage of HIV infection initiate antiretroviral therapy (ART).",
+        "reasoning": "The excerpt discusses the provision and expansion of ART for HIV-infected individuals, indicating a transition from an infected state to a state of being on treatment.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "LateInfection->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Mortality due to AIDS-related complications in individuals with late-stage HIV infection.",
+        "reasoning": "The excerpt discusses the impact of antiretroviral therapy (ART) on reducing HIV spread and preventing progression, implying that without effective treatment, individuals in late infection stages would die and be removed from the population.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "OnART->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Mortality or loss",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 31,
+    "inference_count": 34,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,

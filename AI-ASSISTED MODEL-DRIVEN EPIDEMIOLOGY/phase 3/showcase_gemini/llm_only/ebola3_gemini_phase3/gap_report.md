@@ -17,9 +17,9 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **6**
-- After fills gaps (re-detected): **4**
-- Delta (before - after): **2**
-- Delta missing parameters: **0**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **3**
+- Delta missing parameters: **1**
 - Delta missing compartments: **0**
 - Delta missing flows: **2**
 
@@ -46,11 +46,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 33.3% | 30% |
+| **Gap reduction** | 50.0% | 30% |
 | **Reference agreement** | 70.4% | 30% |
 | **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **51.1/100** | — |
+| **→ Composite** | **56.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -65,43 +65,24 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 10
+- Filled via **inference**: 9
 - **Flagged** for manual review: 0
-
-### burialrate (missing_parameters)
-- **Source:** inference
-- **Value:** None 
-- **Reasoning:** No default in library; manual lookup required.
-- **Confidence:** LOW
 
 ### InfectiousCommunity->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for InfectiousCommunity->Removed
-- **Reasoning:** LLM unavailable.
+- **Description:** Individuals in the infectious
 
 ### Hospitalized->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for Hospitalized->Removed
-- **Reasoning:** LLM unavailable.
+- **Description:** Hospitalized individuals either recover from Ebola and gain immunity or die due to the infection, thus moving to the Removed compartment.
+- **Reasoning:** This transition represents the per-capita rate at which hospitalized patients either recover or succumb to the disease, removing them from the active infectious population.
 
 ### FuneralInfectious->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Suggested transition for FuneralInfectious->Removed
-- **Reasoning:** LLM unavailable.
-
-## 6. Fill validation (vs gold standard)
-- Parameters compared: **0**
-- Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-
-| Parameter | Filled | Gold | Error % | Quality |
-|-----------|--------|------|---------|---------|
-| burialrate | None | 3.5 | — | no_fill |
+- **Description:** Individuals who died from
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

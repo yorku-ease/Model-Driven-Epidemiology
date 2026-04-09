@@ -65,8 +65,7 @@
 
 ### chollerae bacterial concentration (missing_compartments)
 - **Source:** inference
-- **Primary name:** chollerae bacterial concentration
-- **Reasoning:** LLM unavailable; using expected label as placeholder.
+- **Primary name:** Bacterial Concentration
 
 ### Infectious->Chollerae bacterial concentration (missing_flows)
 - **Source:** rag
