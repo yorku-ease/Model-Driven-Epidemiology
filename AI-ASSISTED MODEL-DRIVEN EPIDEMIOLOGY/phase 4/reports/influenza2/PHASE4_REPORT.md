@@ -67,7 +67,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | Generation time | 0.0000 | 0.0000 | 0.0169 |
+| 1 | Generation time | 0.0000 | 0.0000 | 0.3984 |
 | 2 | R0 | 0.0000 | 0.0000 | 0.0000 |
 | 3 | Clinical fraction | 0.0000 | 0.0000 | 0.0000 |
 | 4 | Household transmission fraction | 0.0000 | 0.0000 | 0.0000 |

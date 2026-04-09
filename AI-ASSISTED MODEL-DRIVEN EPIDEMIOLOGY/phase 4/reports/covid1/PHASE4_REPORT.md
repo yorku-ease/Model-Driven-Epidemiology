@@ -71,8 +71,8 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | Latent period | 0.0000 | 0.0000 | 0.0996 |
-| 2 | Relative risk of transmission for isolated cases | 0.0000 | 0.0000 | 0.0539 |
+| 1 | Latent period | 0.0000 | 0.0000 | 0.1007 |
+| 2 | Relative risk of transmission for isolated cases | 0.0000 | 0.0000 | 0.0545 |
 | 3 | Infectious period mild to moderate | 0.0000 | 0.0000 | 0.0000 |
 | 4 | Presymptomatic infectious period | 0.0000 | 0.0000 | 0.0000 |
 | 5 | Infectious period severe | 0.0000 | 0.0000 | 0.0000 |

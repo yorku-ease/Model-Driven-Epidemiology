@@ -61,9 +61,9 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | alpha | 0.0000 | 0.0000 | 0.7419 |
-| 2 | beta_I | 0.0000 | 0.0000 | 0.4604 |
-| 3 | h | 0.0000 | 0.0000 | 0.2045 |
+| 1 | alpha | 0.0000 | 0.0000 | 15.2620 |
+| 2 | beta_I | 0.0000 | 0.0000 | 0.8317 |
+| 3 | h | 0.0000 | 0.0000 | 0.0007 |
 | 4 | beta_H | 0.0000 | 0.0000 | 0.0000 |
 | 5 | beta_F | 0.0000 | 0.0000 | 0.0000 |
 | 6 | 1/c_h | 0.0000 | 0.0000 | 0.0000 |

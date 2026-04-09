@@ -64,8 +64,8 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | φ | 0.0000 | 0.0000 | 1.2806 |
-| 2 | rD | 0.0000 | 0.0000 | 0.2500 |
+| 1 | rD | 0.0000 | 0.0000 | 1.0000 |
+| 2 | φ | 0.0000 | 0.0000 | 0.0038 |
 | 3 | fT | 0.0000 | 0.0000 | 0.0000 |
 | 4 | rT | 0.0000 | 0.0000 | 0.0000 |
 | 5 | rP | 0.0000 | 0.0000 | 0.0000 |

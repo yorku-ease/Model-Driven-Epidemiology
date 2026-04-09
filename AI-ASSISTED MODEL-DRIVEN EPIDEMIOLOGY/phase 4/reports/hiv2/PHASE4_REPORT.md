@@ -66,7 +66,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | ART transmission reduction | 0.0000 | 0.0000 | 1.0807 |
+| 1 | ART transmission reduction | 0.0000 | 0.0000 | 1.3786 |
 | 2 | CD4 treatment eligibility threshold | 0.0000 | 0.0000 | 0.0000 |
 | 3 | Average time from eligibility to treatment initiation | 0.0000 | 0.0000 | 0.0000 |
 | 4 | Treatment access | 0.0000 | 0.0000 | 0.0000 |

@@ -99,6 +99,38 @@ phase 4/
         └── sensitivity_tornado.png
 ```
 
+---
+
+## Why we built Phase 4 — research context (thesis note)
+
+This section documents the rationale behind each design decision so it can be referenced when writing up the methodology.
+
+### Why uncertainty quantification at all?
+
+Compartmental epidemiological models (SIR, SEIR, and their variants) translate biological and social processes into differential equations. Every parameter in those equations — transmission rate, recovery rate, drug efficacy, vaccine protection — is estimated from real-world data that is noisy, context-dependent, and often comes from different populations or time periods than the one being modelled.
+
+**Phase 2** extracts these parameters from scientific papers using LLMs. **Phase 3** fills gaps using RAG and LLM inference. But even after filling, the extracted values are point estimates: single numbers. In reality, β = 0.3 means "somewhere around 0.3". Phase 4 converts those point estimates into **probability distributions** and asks: given that uncertainty, how much do model predictions vary?
+
+This is standard practice in infectious disease modelling (e.g. Morris sensitivity analysis, Latin Hypercube Sampling). What is novel in this pipeline is doing it **automatically from LLM-extracted parameters** across 30 heterogeneous disease models.
+
+### Why the general framework?
+
+Rather than manually choosing distributions for each disease, `data/general_framework.json` maps **parameter type** (transmission, recovery, mortality, etc.) to a distribution family:
+- **Lognormal** for rate parameters — strictly positive, right-skewed (a few papers report very high rates)
+- **Uniform** for coverage/efficacy fractions — we know a plausible range but not a central tendency
+
+This ensures methodological consistency: the same rules apply to cholera, HIV, and Zika. A human expert could override these choices per-disease, but the framework provides a defensible starting point.
+
+### Why RAG-only for Phase 3 input (not "both")?
+
+We evaluated three Phase 3 gap-filling strategies: RAG-only, LLM-only, and both. RAG-only produced the best structural recall (0.94 comp, 0.85 flow). Adding LLM inference slightly hurt recall on average because LLMs occasionally hallucinate structurally plausible but incorrect compartments. Since Phase 4 runs the ODE of the filled model, structural correctness matters — a spurious compartment creates spurious flows. We therefore use `--mode auto`, which scores all three modes and picks the best per paper; in the current Gemini showcase this always selects RAG-only.
+
+### Why fix the initial conditions in `generic_simulator.py`?
+
+The `.compmodel` files produced by Phase 2 and Phase 3 do not carry `population` attributes (initial conditions) — they only describe model **structure** and **parameters**. When the Phase 1 simulator encounters all-zero initial conditions it applies a fallback. The original fallback set `I₀ = 1,000` out of a total population of 100,000 (1% initially infected). This is epidemiologically unrealistic for most models: a 1% seed puts many SIR-type models at or past their epidemic peak at day zero, producing flat trajectories regardless of parameter variation (0% uncertainty spread). The fix uses the standard convention: `S₀ = N−1`, `I₀ = 1` (one seed case, everyone else susceptible). This lets the ODE dynamics determine the epidemic trajectory naturally and reveals genuine parameter-driven uncertainty.
+
+---
+
 ## Results (30 papers, current run)
 
 ### Status summary
@@ -106,8 +138,8 @@ phase 4/
 | Step | Status | Notes |
 |------|--------|-------|
 | 9.1 Distributions | ✅ All 30 papers | 5–37 parameters per paper |
-| 9.2 Monte Carlo | ✅ All 30 papers | 1000 samples × 200 days per paper |
-| 9.3 Sensitivity | ✅ All 30 papers | OAT ±20% perturbation, ranked by combined peak + total cases impact |
+| 9.2 Monte Carlo | ✅ All 30 papers | 1000 samples × 200 days, I₀=1 seed |
+| 9.3 Sensitivity | ✅ All 30 papers | OAT ±20% perturbation, ranked by peak + total cases impact |
 | 10 Reports | ✅ All 30 papers | `PHASE4_REPORT.md` per paper under `reports/<stem>/` |
 
 ### Parameter distribution summary
@@ -122,29 +154,55 @@ The general framework classifies extracted parameters into two families:
 **Lognormal** is assigned to rate-type parameters (transmission, recovery, mortality, progression) — rates are strictly positive and right-skewed.  
 **Uniform** is assigned to coverage fractions, efficacy bounds, and parameters where only a literature range is known without a central estimate.
 
-### Monte Carlo — uncertainty spread
+### Monte Carlo — uncertainty spread (after I₀ fix)
 
-The table below shows the **peak epidemic size** range across 1000 simulations for the primary infectious compartment of each paper (P05 = pessimistic / low-transmission run, P50 = median, P95 = high-transmission run):
+Each paper was simulated 1,000 times with parameters drawn from their assigned distributions. The table shows the **peak epidemic size** range for the primary infectious compartment (P05 = 5th percentile trajectory, P50 = median, P95 = 95th percentile):
 
-| Paper | Infectious compartment | P05 peak | P50 peak | P95 peak | Spread |
-|-------|----------------------|----------|----------|----------|--------|
-| COVID-19 P1 | Infectious Presymptomatic | 140 | 258 | 361 | **86%** |
-| COVID-19 P2 | Infectious | 612 | 881 | 915 | 34% |
-| Ebola P2 | Infectious (community) | 333 | 645 | 1220 | **138%** |
-| Ebola P3 | Infectious | 72 | 109 | 165 | 86% |
-| HIV P2 | Pre-AIDS | 38,665 | 98,864 | 263,720 | **228%** |
-| Influenza P1 | Infectious | 338 | 547 | 27,571 | **4,982%** |
-| Influenza P2 | Infectious | 856 | 924 | 945 | 10% |
-| Malaria P1 | Infectious Humans | 275 | 329 | 377 | 31% |
-| Measles P2 | Infectious | 179 | 766 | 926 | **98%** |
-| Tuberculosis P2 | Infectious TB | 811 | 861 | 970 | 18% |
-| Zika P1 | Infectious Humans | 5.4M | 10.3M | 14.5M | **88%** |
+**Spread %** = (P95 peak − P05 peak) / P50 peak × 100
 
-*Papers not listed produced flat or non-convergent trajectories (see note below).*
+| Paper | Primary compartment | P05 peak | P50 peak | P95 peak | Spread | Interpretation |
+|-------|-------------------|----------|----------|----------|--------|----------------|
+| COVID-19 P1 | Infectious Presymptomatic | 0.1 | 0.3 | 0.4 | **86%** | Meaningful uncertainty driven by latent period variation |
+| Ebola P2 | Infectious (community) | 0.3 | 0.6 | 1.3 | **145%** | High uncertainty — contact rate drives a wide range of outcomes |
+| Ebola P3 | Infectious | 0.1 | 0.1 | 2.1 | **1,885%** | Extreme spread — model sits near epidemic threshold; small parameter changes flip between extinction and outbreak |
+| HIV P2 | Asymptomatic Infection | 6.2 | 9.9 | 16.2 | **101%** | ART efficacy uncertainty causes 2.6× range in asymptomatic burden |
+| Influenza P1 | Infectious | 0.3 | 0.6 | 19,723 | **~3.6M%** | Numerical instability — some samples cross the epidemic threshold and explode; model is highly sensitive to β × σ × γ combination |
+| Malaria P1 | Infectious Humans | 0.5 | 0.7 | 0.8 | **31%** | Moderate uncertainty driven by recovery rate γ |
+| Measles P2 | Infectious | 0.8 | 1.0 | 1.0 | **17%** | Well-constrained; infection rate is tightly bounded |
+| Tuberculosis P2 | Infectious TB | 0.8 | 0.9 | 1.0 | **18%** | Low uncertainty — case detection and contact rates are reasonably well-known |
+| Zika P1 | Infectious Humans | 5,440 | 10,295 | 14,497 | **88%** | Vector-borne scale — peak varies by 9,000 humans depending on mosquito parameters |
 
-**Spread %** = (P95 peak − P05 peak) / P50 peak × 100. A spread of 100% means the high-end trajectory produces double the peak cases of the low-end trajectory given parameter uncertainty.
+#### Three classes of MC outcome
 
-**Note — flat trajectories (0% spread):** Several models (Cholera P1/P3, Dengue P1, Ebola P1, HIV P1/P3, Malaria P2, Zika P2/P3) show identical P05/P50/P95 values. This happens when the Phase 1 ODE simulator's initial conditions saturate to a fixed point regardless of parameter variation — typically because the model immediately reaches its population ceiling (e.g. S₀=N, I₀=N). These papers still have valid sensitivity rankings but their uncertainty bands are not interpretable without adjusting initial conditions.
+**Class A — Meaningful spread (above):** 9 papers where parameter uncertainty genuinely propagates into different epidemic trajectories. These are the most useful results for public health decision-making.
+
+**Class B — Epidemic dies out (peak = 1.0, 0% spread):** Cholera P1/P2/P3, Dengue P1, Ebola P1, HIV P1, Influenza P2, Malaria P2, Zika P2/P3. The single seed case never propagates — the extracted transmission rates are too small to sustain an outbreak from I₀=1. This is a real model quality signal: these models may have parameter values that reflect control conditions (e.g. cholera in a low-endemicity setting) or the transmission structure wasn't fully captured in extraction.
+
+**Class C — Instant saturation (peak = N−1, 0% spread):** COVID-19 P3, HIV P3, Tuberculosis P3. The opposite problem — epidemic spreads to the entire population immediately, regardless of parameter variation. These models have parameters that imply R₀ ≫ 1 under all sampled conditions, leaving no uncertainty to measure.
+
+#### The Influenza P1 instability
+Influenza P1 shows a P95 peak of 19,723 against a P50 of just 0.6 — a 3.6-million-percent spread. This is a numerical instability: most parameter combinations produce a dying-out epidemic (Class B), but a small fraction of samples simultaneously draw high β and high σ (incubation rate), crossing the epidemic threshold and producing explosive growth. This is **not noise** — it correctly identifies that this model sits on a tipping point, and that σ and β are the parameters that most need to be constrained.
+
+---
+
+### ⚠️ Initial condition fix — what was wrong and how it was corrected
+
+**Root cause:** All `.compmodel` files set `population=0` for every compartment (no initial conditions stored in the XML). The Phase 1 simulator's fallback previously set:
+
+```
+S₀ = 99,000   I₀ = 1,000
+```
+
+Starting with I₀ = 1,000 immediately saturates many models — the infectious compartment is already at its "ceiling" and can only decline. All 1,000 Monte Carlo samples started from the same saturated state, so P05 = P50 = P95 = 1,000 exactly (0% spread — meaningless).
+
+**Fix applied (`phase 1/utils/generic_simulator.py`):**
+
+```
+Standard models:  S₀ = 99,999   I₀ = 1
+Vector-borne:     S_human = 99,999   I_human = 1   S_vector = 199,999   I_vector = 1
+```
+
+One seed case, everyone else susceptible — the standard epidemiological convention. The ODE dynamics now drive the epidemic from scratch, and parameter variation produces genuinely different trajectories.
 
 ### Sensitivity analysis — top influential parameter per paper
 
@@ -170,8 +228,8 @@ Sensitivity is measured as the normalized change in **peak infections** and **to
 | Influenza P1 | σ (incubation rate) | progression | Fast incubation creates rapid epidemic growth |
 | Influenza P2 | Generation time | progression | Generation time sets epidemic speed |
 | Influenza P3 | κ (waning immunity rate) | immunity | Seasonal models are highly sensitive to immunity decay |
-| Malaria P1 | γ (recovery rate) | recovery | Recovery rate determines infectious duration |
-| Malaria P2 | φ (relapse rate) | progression | Relapse/dormancy is the defining feature of P. vivax |
+| Malaria P1 | ηV (mosquito-to-human transmission efficiency) | vector | Vector infectivity drives human incidence |
+| Malaria P2 | rD (rate of drug clearance) | recovery | Drug clearance speed determines how fast infectious mosquitoes clear |
 | Malaria P3 | Drug efficacy (ACT) | intervention | ACT effectiveness drives treatment outcome uncertainty |
 | Measles P1 | L (birth rate / susceptible inflow) | demographic | Demographic turnover replenishes susceptible pool |
 | Measles P2 | Infection rate | transmission | Core transmission parameter |

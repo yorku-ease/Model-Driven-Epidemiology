@@ -47,7 +47,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | H | 0.0000 | 0.0000 | 0.0100 |
+| 1 | H | 0.0000 | 0.0000 | 0.0000 |
 | 2 | n | 0.0000 | 0.0000 | 0.0000 |
 | 3 | a | 0.0000 | 0.0000 | 0.0000 |
 | 4 | K | 0.0000 | 0.0000 | 0.0000 |

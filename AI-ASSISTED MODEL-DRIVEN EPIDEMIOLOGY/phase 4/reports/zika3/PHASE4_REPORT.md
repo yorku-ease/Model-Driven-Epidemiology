@@ -52,7 +52,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | r | 0.0000 | 0.0000 | 86987367.1367 |
+| 1 | r | 0.0000 | 0.0000 | 217468417.8416 |
 | 2 | β_H | 0.0000 | 0.0000 | 0.0000 |
 | 3 | β_V | 0.0000 | 0.0000 | 0.0000 |
 | 4 | 1/α_H | 0.0000 | 0.0000 | 0.0000 |

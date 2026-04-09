@@ -61,7 +61,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | a | 0.0000 | 0.0000 | 86987367.1367 |
+| 1 | a | 0.0000 | 0.0000 | 217468417.8416 |
 | 2 | β_vh | 0.0000 | 0.0000 | 0.0000 |
 | 3 | β_hv | 0.0000 | 0.0000 | 0.0000 |
 | 4 | β_wm | 0.0000 | 0.0000 | 0.0000 |

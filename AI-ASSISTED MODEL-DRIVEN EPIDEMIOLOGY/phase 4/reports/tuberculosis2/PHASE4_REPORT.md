@@ -69,8 +69,8 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | Change in contact rate | 0.0000 | 0.0000 | 169750251854.8486 |
-| 2 | Relative case detection rate of non-infectious cases | 0.0000 | 0.0000 | 0.5265 |
+| 1 | Change in contact rate | 0.0000 | 0.0000 | 169731136208.9073 |
+| 2 | Relative case detection rate of non-infectious cases | 0.0000 | 0.0000 | 0.5277 |
 | 3 | Case detection rate | 0.0000 | 0.0000 | 0.0000 |
 | 4 | Cure rate | 0.0000 | 0.0000 | 0.0000 |
 | 5 | Case detection rate, old programme | 0.0000 | 0.0000 | 0.0000 |

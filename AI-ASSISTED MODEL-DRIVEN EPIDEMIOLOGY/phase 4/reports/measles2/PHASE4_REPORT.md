@@ -68,7 +68,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | infection rate | 0.0000 | 0.0000 | 0.8044 |
+| 1 | infection rate | 0.0000 | 0.0000 | 1.2265 |
 | 2 | duration of maternal immunity | 0.0000 | 0.0000 | 0.0000 |
 | 3 | seasonality of transmission | 0.0000 | 0.0000 | 0.0000 |
 | 4 | importation parameters | 0.0000 | 0.0000 | 0.0000 |

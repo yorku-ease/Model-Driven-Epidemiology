@@ -60,7 +60,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | C | 0.0000 | 0.0000 | 0.5323 |
+| 1 | C | 0.0000 | 0.0000 | 0.1904 |
 | 2 | h | 0.0000 | 0.0000 | 0.0000 |
 | 3 | c | 0.0000 | 0.0000 | 0.0000 |
 | 4 | p | 0.0000 | 0.0000 | 0.0000 |

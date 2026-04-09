@@ -71,7 +71,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | beta | 0.0000 | 0.0000 | 0.4063 |
+| 1 | beta | 0.0000 | 0.0000 | 0.4079 |
 | 2 | relative_infectiousness_smear_negative | 0.0000 | 0.0000 | 0.0000 |
 | 3 | relative_rate_early_progression | 0.0000 | 0.0000 | 0.0000 |
 | 4 | rapid_progression_rate | 0.0000 | 0.0000 | 0.0000 |
