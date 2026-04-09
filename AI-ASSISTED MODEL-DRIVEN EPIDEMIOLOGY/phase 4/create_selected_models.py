@@ -24,7 +24,7 @@ def main():
     ap = argparse.ArgumentParser(description="Populate selected_models/ from a Phase 3 showcase directory.")
     ap.add_argument("--showcase-dir", required=True,
                     help="Phase 3 showcase directory (e.g. '../phase 3/showcase_gemini')")
-    ap.add_argument("--mode", default="both", choices=["rag_only", "llm_only", "both"],
+    ap.add_argument("--mode", default="both", choices=["retrieval_only", "rag_only", "llm_only", "both"],
                     help="Fill mode to use (default: both)")
     ap.add_argument("--output", default="../phase 3/selected_models",
                     help="Target selected_models directory (default: ../phase 3/selected_models)")
@@ -33,7 +33,12 @@ def main():
     args = ap.parse_args()
 
     showcase = Path(args.showcase_dir).resolve()
-    mode_dir = showcase / args.mode
+    mode = "retrieval_only" if args.mode == "rag_only" else args.mode
+    mode_dir = showcase / mode
+    if not mode_dir.is_dir() and mode == "retrieval_only":
+        legacy = showcase / "rag_only"
+        if legacy.is_dir():
+            mode_dir = legacy
     out_root = Path(args.output).resolve()
 
     if not mode_dir.is_dir():

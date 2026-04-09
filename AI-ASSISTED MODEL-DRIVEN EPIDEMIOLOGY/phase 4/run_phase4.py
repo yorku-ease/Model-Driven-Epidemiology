@@ -11,7 +11,7 @@ Usage:
   python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --output reports
 
   # Only a specific fill mode (default: both)
-  python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --mode rag_only --output reports
+  python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --mode retrieval_only --output reports
 
   # Auto mode: picks best fill strategy per paper based on recall + param gap score
   python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --mode auto --output reports
@@ -41,7 +41,8 @@ from src.visualization import plot_uncertainty_bands, plot_sensitivity_tornado
 from src.report import generate_report
 
 FRAMEWORK_PATH = PHASE4_DIR / "data" / "general_framework.json"
-ALL_MODES = ["rag_only", "llm_only", "both"]
+ALL_MODES = ["retrieval_only", "llm_only", "both"]
+MODE_ALIASES = {"rag_only": "retrieval_only"}
 
 
 def _run_dir_stem(run_dir: Path) -> str:
@@ -108,7 +109,15 @@ def _pick_best_mode(showcase_dir: Path, disease_stem: str) -> tuple[str, Path, P
         # Find the run_dir for this disease stem under this mode
         mode_dir = showcase_dir / mode
         if not mode_dir.is_dir():
-            continue
+            # Backward-compat: accept old rag_only folder
+            if mode == "retrieval_only":
+                legacy = showcase_dir / "rag_only"
+                if legacy.is_dir():
+                    mode_dir = legacy
+                else:
+                    continue
+            else:
+                continue
         for run_dir in mode_dir.iterdir():
             if not run_dir.is_dir():
                 continue
@@ -146,7 +155,14 @@ def _iter_showcase_models(showcase_dir: Path, mode: str = "both"):
         for m in ALL_MODES:
             mode_dir = showcase_dir / m
             if not mode_dir.is_dir():
-                continue
+                if m == "retrieval_only":
+                    legacy = showcase_dir / "rag_only"
+                    if legacy.is_dir():
+                        mode_dir = legacy
+                    else:
+                        continue
+                else:
+                    continue
             for run_dir in mode_dir.iterdir():
                 if run_dir.is_dir() and (run_dir / "model_filled.compmodel").exists():
                     stems.add(_run_dir_stem(run_dir))
@@ -238,7 +254,7 @@ def main():
     ap.add_argument("--showcase-dir", type=str, default=None,
                     help="Phase 3 showcase directory (e.g. '../phase 3/showcase_gemini'); iterates all <mode>/<disease>_phase3/ runs")
     ap.add_argument("--mode", type=str, default="both",
-                    choices=["rag_only", "llm_only", "both", "auto"],
+                    choices=["retrieval_only", "rag_only", "llm_only", "both", "auto"],
                     help="Which Phase 3 fill mode to use from showcase. "
                          "'auto' picks the best mode per paper using "
                          "score = comp_recall + flow_recall − 0.05×param_gaps (default: both)")
@@ -276,16 +292,18 @@ def main():
         if not showcase.is_dir():
             print(f"Error: showcase-dir not found: {showcase}")
             sys.exit(1)
-        model_paths = list(_iter_showcase_models(showcase, mode=args.mode))
+        mode = MODE_ALIASES.get(args.mode, args.mode)
+        model_paths = list(_iter_showcase_models(showcase, mode=mode))
         if not model_paths:
-            hint = "any mode" if args.mode == "auto" else showcase / args.mode
+            hint = "any mode" if mode == "auto" else showcase / mode
             print(f"No model_filled.compmodel found under {hint}/")
             sys.exit(1)
-        mode_label = args.mode
+        mode_label = mode
         print(f"Running Phase 4 for {len(model_paths)} papers (mode={mode_label})...")
         for disease, model_path, run_dir in sorted(model_paths, key=lambda x: x[0]):
             # Infer actual mode from run_dir's parent when using auto
-            actual_mode = run_dir.parent.name if args.mode == "auto" else args.mode
+            actual_mode = run_dir.parent.name if mode == "auto" else mode
+            actual_mode = MODE_ALIASES.get(actual_mode, actual_mode)
             print(f"\n{'─'*50}\n  {disease}  [mode={actual_mode}]")
             # Load Phase 3 source info for report context
             source_json = run_dir / "phase3_showcase_source.json"

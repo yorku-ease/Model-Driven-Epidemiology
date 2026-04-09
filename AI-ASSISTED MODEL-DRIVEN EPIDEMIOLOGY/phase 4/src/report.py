@@ -27,6 +27,8 @@ def generate_report(
     context = context or {}
     display = disease.replace("_", " ").title()
     fill_mode = context.get("fill_mode", "")
+    if fill_mode == "rag_only":
+        fill_mode = "retrieval_only"
     best_p2 = context.get("best_phase2_extractor", "")
     p2_score = context.get("phase2_score", "")
     p3_llm = context.get("phase3_llm_provider", "")

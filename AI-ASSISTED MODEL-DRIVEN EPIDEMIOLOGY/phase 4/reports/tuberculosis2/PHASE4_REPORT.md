@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | rag_only |
+| Phase 3 fill mode | retrieval_only |
 | Phase 3 run dir | `tuberculosis2_gemini_phase3` |
 
 ---

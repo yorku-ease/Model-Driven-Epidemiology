@@ -47,7 +47,7 @@ python3 run_phase4.py \
 
 ### How `--mode auto` works
 
-For each paper, Phase 4 evaluates all three fill modes (`rag_only`, `llm_only`, `both`) and picks the one with the highest score:
+For each paper, Phase 4 evaluates all three fill modes (`retrieval_only` = Rule-Based Retrieval only, `llm_only`, `both`) and picks the one with the highest score:
 
 ```
 score = comp_recall + flow_recall − 0.05 × param_gaps_after
@@ -109,7 +109,7 @@ This section documents the rationale behind each design decision so it can be re
 
 Compartmental epidemiological models (SIR, SEIR, and their variants) translate biological and social processes into differential equations. Every parameter in those equations — transmission rate, recovery rate, drug efficacy, vaccine protection — is estimated from real-world data that is noisy, context-dependent, and often comes from different populations or time periods than the one being modelled.
 
-**Phase 2** extracts these parameters from scientific papers using LLMs. **Phase 3** fills gaps using RAG and LLM inference. But even after filling, the extracted values are point estimates: single numbers. In reality, β = 0.3 means "somewhere around 0.3". Phase 4 converts those point estimates into **probability distributions** and asks: given that uncertainty, how much do model predictions vary?
+**Phase 2** extracts these parameters from scientific papers using LLMs. **Phase 3** fills gaps using Rule-Based Retrieval and LLM inference. But even after filling, the extracted values are point estimates: single numbers. In reality, β = 0.3 means "somewhere around 0.3". Phase 4 converts those point estimates into **probability distributions** and asks: given that uncertainty, how much do model predictions vary?
 
 This is standard practice in infectious disease modelling (e.g. Morris sensitivity analysis, Latin Hypercube Sampling). What is novel in this pipeline is doing it **automatically from LLM-extracted parameters** across 30 heterogeneous disease models.
 
@@ -121,9 +121,9 @@ Rather than manually choosing distributions for each disease, `data/general_fram
 
 This ensures methodological consistency: the same rules apply to cholera, HIV, and Zika. A human expert could override these choices per-disease, but the framework provides a defensible starting point.
 
-### Why RAG-only for Phase 3 input (not "both")?
+### Why Rule-Based Retrieval-only for Phase 3 input (not "both")?
 
-We evaluated three Phase 3 gap-filling strategies: RAG-only, LLM-only, and both. RAG-only produced the best structural recall (0.94 comp, 0.85 flow). Adding LLM inference slightly hurt recall on average because LLMs occasionally hallucinate structurally plausible but incorrect compartments. Since Phase 4 runs the ODE of the filled model, structural correctness matters — a spurious compartment creates spurious flows. We therefore use `--mode auto`, which scores all three modes and picks the best per paper; in the current Gemini showcase this always selects RAG-only.
+We evaluated three Phase 3 gap-filling strategies: Rule-Based Retrieval-only, LLM-only, and both. Rule-Based Retrieval-only produced the best structural recall (0.94 comp, 0.85 flow). Adding LLM inference slightly hurt recall on average because LLMs occasionally hallucinate structurally plausible but incorrect compartments. Since Phase 4 runs the ODE of the filled model, structural correctness matters — a spurious compartment creates spurious flows. We therefore use `--mode auto`, which scores all three modes and picks the best per paper; in the current Gemini showcase this always selects `retrieval_only` (Rule-Based Retrieval-only).
 
 ### Why fix the initial conditions in `generic_simulator.py`?
 
