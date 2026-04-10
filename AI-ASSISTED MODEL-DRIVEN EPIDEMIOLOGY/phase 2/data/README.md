@@ -44,7 +44,7 @@ You still **author** each `.compmodel` by hand from the paper’s equations; the
 Example for one disease (repeat for each):
 
 ```bash
-cd "$(dirname "$0")"   # phase 2/data — adjust path
+cd "$(dirname "$0")"   # phase 2/data - adjust path
 mkdir -p diseases/covid
 mv papers/covid.pdf diseases/covid/covid1.pdf
 mv ../baseline_models/covid.compmodel diseases/covid/covid1.compmodel

@@ -23,7 +23,7 @@ Gold standard = hand-authored `.compmodel` files under `data/diseases/<disease>/
 | **Best per disease** | **0.84** | **0.66** |
 
 Full per-disease tables: see `RESULTS_FUZZY.md` (run `python3 build_results_md.py -e evaluation_report_fuzzy_temp.json -o RESULTS_FUZZY.md` to regenerate).  
-Phase 3 (Rule-Based Retrieval + gap filling) improves these to **0.89 compartment recall / 0.82 flow recall** — see `phase 3/README.md`.
+Phase 3 (Rule-Based Retrieval + gap filling) improves these to **0.89 compartment recall / 0.82 flow recall** - see `phase 3/README.md`.
 
 ---
 
@@ -93,7 +93,7 @@ done
 1. **PDF** → cleaned text, sections, tables (`paper_text.json`, `paper_sections.json`).
 2. **Paper promises** (pattern-only) → `paper_promises.json`.
 3. **Entity extraction** (LLM when a key is available, else patterns) → `extracted_entities.json`.
-4. **Synthesis** → `model_draft.compmodel`.
+4. **Syn** → `model_draft.compmodel`.
 5. **Traceability** → `traceability.json`.
 6. **Gap analysis** → `phase2_gap_report.json` *(empty unless `--enable-gap-steps`)*.
 7. **Gap-fill suggestions** → `gap_fill_suggestions.json` *(same)*.
@@ -106,11 +106,11 @@ When paths exist, Phase 2 loads the epidemiology metamodel and example models fr
 
 | Phase 1 path | Phase 2 flag | Used for |
 |--------------|--------------|----------|
-| `../phase 1/metamodel_epidemiology.json` | `--metamodel` | Prompts & synthesis (default points here) |
+| `../phase 1/metamodel_epidemiology.json` | `--metamodel` | Prompts & syn (default points here) |
 | `../phase 1/papers/epimde/*.compmodel` | `--phase1-dir` | Optional **example** context for entity extraction (if folder exists) |
 | `../phase 1/reports/model_analysis/*_analysis.json` | `--prior-models-dir` | **Only when** `--enable-gap-steps` runs Step 7 (prior-model suggestions) |
 
-**Gap steps (6–7) are off by default** — see below. Quality checks (Step 8) still invoke Phase 1 analyzers via `--phase1-dir`.
+**Gap steps (6–7) are off by default** - see below. Quality checks (Step 8) still invoke Phase 1 analyzers via `--phase1-dir`.
 
 ---
 
@@ -118,21 +118,21 @@ When paths exist, Phase 2 loads the epidemiology metamodel and example models fr
 
 ### 1. How were the **patterns** chosen?
 
-- **Paper promises (Step 2):** Hand-written **regex** lists in `src/extraction/paper_promise_extractor.py` (`extract_with_patterns`) — e.g. phrases like “compartments … include”, SEIR/SIR keywords, stratification and intervention keywords. There is **no** separate systematic literature review driving those regexes; they are **engineering heuristics** informed by common paper wording.
-- **Entity extraction:** Additional **pattern** passes and keyword lists live in `src/extraction/entity_extractor.py` (plus LLM prompts when `--use-llm`). Optional **Phase 1** assets such as `phase 1/reports/patterns/pattern_library.json` may be loaded elsewhere for documentation/retrieval context, but the **default** extraction patterns are **not** auto-mined from a corpus — they are **manual / iterative** code.
+- **Paper promises (Step 2):** Hand-written **regex** lists in `src/extraction/paper_promise_extractor.py` (`extract_with_patterns`) - e.g. phrases like “compartments … include”, SEIR/SIR keywords, stratification and intervention keywords. There is **no** separate systematic literature review driving those regexes; they are **engineering heuristics** informed by common paper wording.
+- **Entity extraction:** Additional **pattern** passes and keyword lists live in `src/extraction/entity_extractor.py` (plus LLM prompts when `--use-llm`). Optional **Phase 1** assets such as `phase 1/reports/patterns/pattern_library.json` may be loaded elsewhere for documentation/retrieval context, but the **default** extraction patterns are **not** auto-mined from a corpus - they are **manual / iterative** code.
 
-### 2. **Step 7 (gap filler)** — examples, LLM behavior, ablations
+### 2. **Step 7 (gap filler)** - examples, LLM behavior, ablations
 
 - **Default pipeline:** Steps **6–7 are skipped**; `phase2_gap_report.json` and `gap_fill_suggestions.json` are **empty stubs**. This avoids extra LLM calls and kept the main extraction path stable. To **actually run** gap analysis + gap fill:  
   `python run_phase2.py --paper YOUR.pdf --enable-gap-steps`  
   (Optionally set `--prior-models-dir` to Phase 1 `reports/model_analysis/`.)
-- **Implementation (`src/analysis/gap_filler.py`):** For each gap, suggestions come from (1) **text search** in the paper, (2) **prior Phase 1 JSONs** (string match on compartment/parameter names — **not** injected as numbered few-shot *examples* inside the domain-knowledge LLM prompt), (3) **LLM** with a **format-only** prompt (JSON schema + rules) — **no** multi-example “here are 3 exemplar answers” block in the current code. So the INSTRUCTIONS-style narrative about “examples from prior models” in the **LLM** prompt is **misleading**; prior models are a **separate** suggestion channel.
-- **Ablations:** The repository does **not** ship results for “prompt without examples” vs “with examples” for Step 7, because the production LLM path is **zero-shot** JSON. Any study of **last-example bias** would require a **controlled experiment** (same gaps, vary prompts) — not pre-computed here.
+- **Implementation (`src/analysis/gap_filler.py`):** For each gap, suggestions come from (1) **text search** in the paper, (2) **prior Phase 1 JSONs** (string match on compartment/parameter names - **not** injected as numbered few-shot *examples* inside the domain-knowledge LLM prompt), (3) **LLM** with a **format-only** prompt (JSON schema + rules) - **no** multi-example “here are 3 exemplar answers” block in the current code. So the INSTRUCTIONS-style narrative about “examples from prior models” in the **LLM** prompt is **misleading**; prior models are a **separate** suggestion channel.
+- **Ablations:** The repository does **not** ship results for “prompt without examples” vs “with examples” for Step 7, because the production LLM path is **zero-shot** JSON. Any study of **last-example bias** would require a **controlled experiment** (same gaps, vary prompts) - not pre-computed here.
 
 ### 3. Do LLMs **remember** across papers? Improvement with more models?
 
 - **No persistent memory:** Each API call is **stateless** unless the client sends **chat history**. Phase 2 uses **one-shot** (or chunked) calls per step; processing **paper A** does not change the model weights or hidden state for **paper B**.
-- **No automatic “learning”** from analyzing more PDFs: quality gains come from **better prompts, baselines, or post-processing**, not from the LLM “remembering” prior runs. You can **reuse** outputs (e.g. Phase 1 JSON) as **context** in later steps — that is explicit **retrieval**, not model memory.
+- **No automatic “learning”** from analyzing more PDFs: quality gains come from **better prompts, baselines, or post-processing**, not from the LLM “remembering” prior runs. You can **reuse** outputs (e.g. Phase 1 JSON) as **context** in later steps - that is explicit **retrieval**, not model memory.
 
 ---
 

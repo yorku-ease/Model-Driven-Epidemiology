@@ -7,7 +7,7 @@ A comprehensive framework for analyzing, extracting, and validating compartmenta
 | Phase | Purpose | Key Technique |
 |-------|---------|---------------|
 | **Phase 1** | Analyze existing `.compmodel` files | Structural analysis, sensitivity analysis |
-| **Phase 2** | Extract models from PDF papers | LLM-driven entity extraction + synthesis |
+| **Phase 2** | Extract models from PDF papers | LLM-driven entity extraction + syn |
 | **Phase 3** | Fill gaps and validate results | Rule-Based Retrieval lookup + LLM inference vs gold standard |
 
 ## End-to-End Workflow
@@ -48,7 +48,7 @@ AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
 │   ├── .api_key.txt              ← LLM API key (Gemini/OpenAI/Claude)
 │   ├── src/
 │   │   ├── extraction/           ← PDF processing + entity extraction
-│   │   ├── synthesis/            ← .compmodel generation
+│   │   ├── syn/            ← .compmodel generation
 │   │   ├── analysis/             ← Gap analysis + filling
 │   │   ├── evaluation/           ← Quality checks
 │   │   └── utils/                ← LLM client (shared with Phase 3)
@@ -107,10 +107,10 @@ Analyzes existing `.compmodel` files to understand model structure, identify gap
 
 ### What it does
 
-1. **Model Analysis** — parses `.compmodel` XML, extracts compartments, flows, parameters
-2. **Gap Analysis** — identifies missing components based on expected patterns
-3. **Uncertainty Analysis** — documents parameter values, sources, literature ranges
-4. **Sensitivity Analysis** — tests output sensitivity to parameter changes (Morris, Grid, Random, Sobol)
+1. **Model Analysis** - parses `.compmodel` XML, extracts compartments, flows, parameters
+2. **Gap Analysis** - identifies missing components based on expected patterns
+3. **Uncertainty Analysis** - documents parameter values, sources, literature ranges
+4. **Sensitivity Analysis** - tests output sensitivity to parameter changes (Morris, Grid, Random, Sobol)
 
 ### Running Phase 1
 
@@ -121,10 +121,10 @@ python run_phase1.py --model papers/epimde/malaria.compmodel --output reports/ma
 
 ### Outputs
 
-- `model_analysis.json` — model structure summary
-- `gap_report.json` — missing components
-- `uncertainty_analysis.json` — parameter uncertainty
-- `sensitivity_analysis.json` — sensitivity results
+- `model_analysis.json` - model structure summary
+- `gap_report.json` - missing components
+- `uncertainty_analysis.json` - parameter uncertainty
+- `sensitivity_analysis.json` - sensitivity results
 
 ---
 
@@ -139,7 +139,7 @@ Extracts compartmental models from scientific paper PDFs using a 9-step LLM-assi
 | 1 | PDF text extraction | No | `paper_text.json`, `paper_sections.json` |
 | 2 | Paper promises | Yes (optional) | `paper_promises.json` |
 | 3 | Entity extraction | Yes | `extracted_entities.json` |
-| 4 | Model synthesis | No | `model_draft.compmodel` |
+| 4 | Model syn | No | `model_draft.compmodel` |
 | 5 | Traceability | No | `traceability.json` |
 | 6 | Gap analysis | No | `phase2_gap_report.json` |
 | 7 | Gap filling | Yes | `gap_fill_suggestions.json` |
@@ -177,9 +177,9 @@ Phase 2 report  →  Gap Detection  →  Gap Filling  →  Validation  →  Repo
 
 ### Gap Filling: 3-tier approach
 
-1. **Rule-Based Retrieval** — searches indexed paper database (585+ parameters, 894+ text chunks) for matching values
-2. **LLM Inference** — uses a selected Phase 3 provider (Gemini recommended from Phase 2 results) to suggest plausible values with reasoning
-3. **Flag** — marks for manual review when both tiers fail
+1. **Rule-Based Retrieval** - searches indexed paper database (585+ parameters, 894+ text chunks) for matching values
+2. **LLM Inference** - uses a selected Phase 3 provider (Gemini recommended from Phase 2 results) to suggest plausible values with reasoning
+3. **Flag** - marks for manual review when both tiers fail
 
 ### Validation
 
@@ -272,8 +272,8 @@ See **`phase 3/README.md`** (overview) and **`phase 3/INSTRUCTIONS.md`** (comman
 
 ### Phase 1 and Phase 2 outputs
 
-- **Phase 1:** `phase 1/reports/<name>/` — model_analysis.json, gap_report.json, uncertainty_analysis.json, sensitivity_analysis.json.
-- **Phase 2:** `phase 2/reports/<disease>_llm_<provider>_<timestamp>/` — model_draft.compmodel, phase2_final_report.json, traceability.json, etc.
+- **Phase 1:** `phase 1/reports/<name>/` - model_analysis.json, gap_report.json, uncertainty_analysis.json, sensitivity_analysis.json.
+- **Phase 2:** `phase 2/reports/<disease>_llm_<provider>_<timestamp>/` - model_draft.compmodel, phase2_final_report.json, traceability.json, etc.
 
 ---
 
@@ -288,12 +288,12 @@ No code changes required:
 
 ## Key Principles
 
-- **Faithfulness** — only extract what papers explicitly describe
-- **Evidence-Based** — every entity has a text span and page number
-- **Traceability** — every model element links back to paper evidence
-- **Dynamic** — no hardcoded disease names; fully data-driven
-- **Honest Evaluation** — gold standard used only for validation, not filling
-- **Multi-Provider** — works with Gemini, OpenAI, or Claude; Phase 2 compares providers and Phase 3 runs on the selected best Phase 2 drafts
+- **Faithfulness** - only extract what papers explicitly describe
+- **Evidence-Based** - every entity has a text span and page number
+- **Traceability** - every model element links back to paper evidence
+- **Dynamic** - no hardcoded disease names; fully data-driven
+- **Honest Evaluation** - gold standard used only for validation, not filling
+- **Multi-Provider** - works with Gemini, OpenAI, or Claude; Phase 2 compares providers and Phase 3 runs on the selected best Phase 2 drafts
 
 ## Documentation
 
@@ -304,11 +304,11 @@ Each phase uses **README.md** (overview, no shell commands) and **INSTRUCTIONS.m
 - **Phase 3:** `phase 3/README.md`, `phase 3/INSTRUCTIONS.md`
 - **Phase 4:** `phase 4/README.md`, `phase 4/INSTRUCTIONS.md`
 - **Phase RLM:** `phase_rlm/README.md`, `phase_rlm/INSTRUCTIONS.md`
-- **`docs/CLEANUP_NOTES.md`** — optional cleanup history
+- **`docs/CLEANUP_NOTES.md`** - optional cleanup history
 
 This root **README** keeps a **high-level** workflow and quick-start snippets. **Full flags, options, and troubleshooting** for each phase are in that phase’s **`INSTRUCTIONS.md`** (Phase 1’s file also embeds the historical long guide + results appendix).
 
 ## Repository hygiene
 
-- Use a **local virtualenv** (`venv/`) — listed in `.gitignore`; recreate with `pip install -r requirements.txt`.
-- **API keys** belong in `phase 2/.api_key.txt` or environment variables — never commit (see `.gitignore`).
+- Use a **local virtualenv** (`venv/`) - listed in `.gitignore`; recreate with `pip install -r requirements.txt`.
+- **API keys** belong in `phase 2/.api_key.txt` or environment variables - never commit (see `.gitignore`).

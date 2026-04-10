@@ -1,4 +1,4 @@
-# Phase 2 (temp): Automated Model Extraction — Alternate Pipeline
+# Phase 2 (temp): Automated Model Extraction - Alternate Pipeline
 
 `phase 2_temp` is an alternative / experimental version of the Phase 2 extraction pipeline.
 It shares the same 9-step structure but lacks the `--paper-id` corpus mode and some later enhancements.
@@ -71,8 +71,8 @@ done
 
 ## Gold standard auto-detection (Step 9)
 
-1. `data/diseases/<disease>/<stem>.compmodel` — exact stem match (case-insensitive).
-2. `data/baseline_models/*.compmodel` — legacy fallback (fuzzy name match).
+1. `data/diseases/<disease>/<stem>.compmodel` - exact stem match (case-insensitive).
+2. `data/baseline_models/*.compmodel` - legacy fallback (fuzzy name match).
 
 ## Outputs
 

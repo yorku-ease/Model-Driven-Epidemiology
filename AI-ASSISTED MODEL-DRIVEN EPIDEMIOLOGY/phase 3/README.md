@@ -10,11 +10,11 @@ Phase 2 report  ──►  Gap detection  ──►  Gap filling  ──►  Val
                       promises)
 ```
 
-1. **Gap detection** — Missing **compartments**, **parameters**, **stratifications**, and **flows** (`Source->Target` from XML / `extracted_entities`) vs baseline (preferred) or vs `paper_promises.json` (fallback).
-2. **Gap filling (3-tier)** — **Parameters:** Rule-Based Retrieval → LLM inference → flag. **Compartments / flows:** Rule-Based Retrieval (`structure_lookup`: text evidence + `flow_index`) → LLM (`infer_compartment_llm` / `infer_flow_llm`) → flag. New compartment shells may be written to `model_filled.compmodel`; **flow wiring** is left to manual edit or **Phase RLM** (full-XML repair).
-3. **Validation** — **Numeric:** each filled **parameter value** vs gold (exact / close / approximate / poor). **Structural:** precision / recall / F1 for **compartments** and **flows** between draft/filled model and gold `.compmodel` (both appear in `phase3_validation.json` and `gap_report.md`). For cross-phase comparisons in this project, we report **fuzzy recall** as the primary metric.
-4. **Outputs** — `model_filled.compmodel`, `phase3_gaps.json`, `phase3_filled.json`, `phase3_validation.json`, `phase3_improvement.json`, and `gap_report.md` per run.
-5. **Showcase comparison (optional)** — `run_phase3_showcase.py` compares `retrieval_only` (Rule-Based Retrieval only) / `llm_only` / `both` on the best Phase 2 report per disease from `../phase 2/reports/` (enhanced pipeline).
+1. **Gap detection** - Missing **compartments**, **parameters**, **stratifications**, and **flows** (`Source->Target` from XML / `extracted_entities`) vs baseline (preferred) or vs `paper_promises.json` (fallback).
+2. **Gap filling (3-tier)** - **Parameters:** Rule-Based Retrieval → LLM inference → flag. **Compartments / flows:** Rule-Based Retrieval (`structure_lookup`: text evidence + `flow_index`) → LLM (`infer_compartment_llm` / `infer_flow_llm`) → flag. New compartment shells may be written to `model_filled.compmodel`; **flow wiring** is left to manual edit or **Phase RLM** (full-XML repair).
+3. **Validation** - **Numeric:** each filled **parameter value** vs gold (exact / close / approximate / poor). **Structural:** precision / recall / F1 for **compartments** and **flows** between draft/filled model and gold `.compmodel` (both appear in `phase3_validation.json` and `gap_report.md`). For cross-phase comparisons in this project, we report **fuzzy recall** as the primary metric.
+4. **Outputs** - `model_filled.compmodel`, `phase3_gaps.json`, `phase3_filled.json`, `phase3_validation.json`, `phase3_improvement.json`, and `gap_report.md` per run.
+5. **Showcase comparison (optional)** - `run_phase3_showcase.py` compares `retrieval_only` (Rule-Based Retrieval only) / `llm_only` / `both` on the best Phase 2 report per disease from `../phase 2/reports/` (enhanced pipeline).
 
 ---
 
@@ -28,9 +28,9 @@ The **gold standard** for gap detection and for **validation** is **not** comput
 
 **Discovery order** (`run_phase3.py` → `_find_gold_standard` → `find_gold_compmodel_for_run_stem` in `phase 2/src/utils/phase2_paths.py`):
 
-1. **`phase 2/data/diseases/<disease>/<stem>.compmodel`** — Exact stem match (case-insensitive) under the diseases benchmark tree. The report folder prefix (everything before `_llm_`) is used as the stem, e.g. `covid1_llm_openai_...` → looks for `covid1.compmodel` in any `diseases/*/` folder.
-2. Else **`phase 2/data/<disease>/<stem>.compmodel`** — Legacy flat layout without the `diseases/` wrapper.
-3. Else **`phase 2/data/baseline_models/*.compmodel`** — Legacy flat baseline directory (fallback).
+1. **`phase 2/data/diseases/<disease>/<stem>.compmodel`** - Exact stem match (case-insensitive) under the diseases benchmark tree. The report folder prefix (everything before `_llm_`) is used as the stem, e.g. `covid1_llm_openai_...` → looks for `covid1.compmodel` in any `diseases/*/` folder.
+2. Else **`phase 2/data/<disease>/<stem>.compmodel`** - Legacy flat layout without the `diseases/` wrapper.
+3. Else **`phase 2/data/baseline_models/*.compmodel`** - Legacy flat baseline directory (fallback).
 
 **What is loaded:**
 
@@ -39,7 +39,7 @@ The **gold standard** for gap detection and for **validation** is **not** comput
 
 **Important:** Gold files are **curated inputs** (manually authored or imported models placed under `baseline_models/` or Phase 1). Phase 3 does not derive them from the LLM extraction alone.
 
-### 2. Promise-based comparisons — when they are used and why you may see “none”
+### 2. Promise-based comparisons - when they are used and why you may see “none”
 
 Gap detection supports two modes (`gap_detector.detect_gaps`):
 
@@ -52,7 +52,7 @@ Gap detection supports two modes (`gap_detector.detect_gaps`):
 
 **Note:** For promise mode to be meaningful, `paper_promises.json` must be **populated**; empty or sparse promises yield few or no gaps.
 
-### 3. Database: “54 entries” — are these papers? How many per disease?
+### 3. Database: “54 entries” - are these papers? How many per disease?
 
 The **paper database** is the JSON index written by `build_database.py` to `data/paper_database/index.json`. The field **`num_entries`** (e.g. **54**) counts **indexed records**, not “54 PDF files” as a 1:1 mapping.
 
@@ -62,9 +62,9 @@ Each **entry** is one logical bundle, for example:
 - **Phase 2:** **One entry per (disease × provider)** using the **latest** Phase 2 report directory for that pair (includes `paper_text`-derived chunks, `extracted_entities.json`, `model_structure` from `model_draft.compmodel`, promises, evaluation snippets, etc.).
 - **Phase 2 baselines:** One entry per **`phase 2/data/baseline_models/*.compmodel`**.
 
-The index also stores **`knowledge_base`**: Phase 1 global assets (pattern library, taxonomies, protocols, paper collection metadata, etc.) — separate from the per-entry list.
+The index also stores **`knowledge_base`**: Phase 1 global assets (pattern library, taxonomies, protocols, paper collection metadata, etc.) - separate from the per-entry list.
 
-**Typical scale (example from a built index):** Total **54** entries across **10** diseases → about **5–7 entries per disease** (mix of Phase 1 pieces, three Phase-2 provider snapshots, and baseline rows — exact counts depend on what exists on disk).
+**Typical scale (example from a built index):** Total **54** entries across **10** diseases → about **5–7 entries per disease** (mix of Phase 1 pieces, three Phase-2 provider snapshots, and baseline rows - exact counts depend on what exists on disk).
 
 ### 4. What is included for Rule-Based Retrieval
 
@@ -75,7 +75,7 @@ Rule-Based Retrieval in Phase 3 is **retrieval from the built index**, not a liv
   - **`extracted_entities.parameters`** from Phase 2 reports,
   - **`uncertainty.parameters`** where present.
 - **Text `chunks`:** For Phase 2 entries that have `paper_text.json`, the **`full_text`** field is split into overlapping character windows (see §7). Chunks are used for keyword search and regex value extraction.
-- **Structured fields per entry:** e.g. `extracted_entities`, `promises`, `evaluation` subsets, `analysis`, `sensitivity` — as emitted by `build_database.py`.
+- **Structured fields per entry:** e.g. `extracted_entities`, `promises`, `evaluation` subsets, `analysis`, `sensitivity` - as emitted by `build_database.py`.
 - **`knowledge_base`:** Phase 1 JSON assets (patterns, taxonomies, extraction protocols, etc.) for possible downstream use.
 
 **Gap filling does not peek at gold values:** The gold `.compmodel` is used for **which** gaps exist and for **post-hoc validation**, not as the source of suggested numbers during retrieval/inference (`gap_filler_phase3.py`).
@@ -96,7 +96,7 @@ Inferred values are labeled as **low confidence** and should be verified against
 - Rule-Based Retrieval did **not** return an `extracted_value`, **and**
 - LLM inference did **not** return a usable value/reasoning,
 
-**or** the gap is **not** a missing parameter (missing compartments / stratifications / interventions are not filled by the current retrieval+LLM path in the same way — they get a **manual_review** style suggestion).
+**or** the gap is **not** a missing parameter (missing compartments / stratifications / interventions are not filled by the current retrieval+LLM path in the same way - they get a **manual_review** style suggestion).
 
 So “flagged” means **no automatic fill**: human review or another pipeline is expected.
 
@@ -136,7 +136,7 @@ Full per-paper tables are in [`RESULTS_PHASE3_GEMINI.md`](RESULTS_PHASE3_GEMINI.
 | **Phase 2 best** | 0.75 | 0.77 | 0.53 | 0.53 |
 | Rule-Based Retrieval only (`retrieval_only`) | **0.79** (+0.03) | 0.79 | **0.62** (+0.09) | 0.60 |
 | LLM only (`llm_only`) | **0.93** (+0.17) | 0.86 | **0.81** (+0.28) | 0.73 |
-| **Both — Rule-Based Retrieval + LLM (`both`)** | **0.94** (+0.18) | **0.86** | **0.80** (+0.27) | **0.73** |
+| **Both - Rule-Based Retrieval + LLM (`both`)** | **0.94** (+0.18) | **0.86** | **0.80** (+0.27) | **0.73** |
 
 ### Which mode to use
 
@@ -151,12 +151,12 @@ Full per-paper tables are in [`RESULTS_PHASE3_GEMINI.md`](RESULTS_PHASE3_GEMINI.
 
 ### Key observations
 
-- **LLM is the primary driver of improvement** — the gap from `retrieval_only` (+0.03 comp / +0.09 flow) to `both` (+0.18 comp / +0.27 flow) shows that LLM inference is responsible for most of the structural gains.
-- **Flow recall improves more than compartment recall** — flows are harder to extract from text alone (Phase 2: 0.53 flow recall vs 0.75 comp recall), so there is more room to improve.
-- **Papers with weak Phase 2 drafts benefit most** — diseases such as Dengue P3 (0.00 → 1.00), HIV P2 (0.33 → 0.67), Cholera P2 (0.55 → 1.00) see the largest gains in `both` mode.
-- **Papers already at ceiling stay there** — well-extracted papers (e.g. Malaria P1/P2, Zika P1/P3) remain at 1.00 / 1.00 without any regression.
-- **No regressions** — every Δ in the final results is ≥ 0; the non-regression guard in `run_phase3.py` reverts to the Phase 2 draft if structural F1 drops.
-- **Param gaps reflect genuine difficulty** — Tuberculosis P2/P3 (17–18 gaps), Malaria P3 (16 gaps), and Cholera P2 (24 gaps) are the hardest parameter-wise even after filling.
+- **LLM is the primary driver of improvement** - the gap from `retrieval_only` (+0.03 comp / +0.09 flow) to `both` (+0.18 comp / +0.27 flow) shows that LLM inference is responsible for most of the structural gains.
+- **Flow recall improves more than compartment recall** - flows are harder to extract from text alone (Phase 2: 0.53 flow recall vs 0.75 comp recall), so there is more room to improve.
+- **Papers with weak Phase 2 drafts benefit most** - diseases such as Dengue P3 (0.00 → 1.00), HIV P2 (0.33 → 0.67), Cholera P2 (0.55 → 1.00) see the largest gains in `both` mode.
+- **Papers already at ceiling stay there** - well-extracted papers (e.g. Malaria P1/P2, Zika P1/P3) remain at 1.00 / 1.00 without any regression.
+- **No regressions** - every Δ in the final results is ≥ 0; the non-regression guard in `run_phase3.py` reverts to the Phase 2 draft if structural F1 drops.
+- **Param gaps reflect genuine difficulty** - Tuberculosis P2/P3 (17–18 gaps), Malaria P3 (16 gaps), and Cholera P2 (24 gaps) are the hardest parameter-wise even after filling.
 
 ### Why results vary by disease
 

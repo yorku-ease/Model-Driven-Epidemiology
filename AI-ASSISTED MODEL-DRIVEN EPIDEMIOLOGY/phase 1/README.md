@@ -19,7 +19,7 @@ Python tooling to analyze compartmental **epidemiological** `.compmodel` files, 
 
 `run_phase1.py` runs the full task chain in one go.
 
-Optional knowledge-base files live under `reports/protocols/`, `reports/taxonomies/`, `reports/patterns/`, `reports/manual_extraction/` — they are **not** produced by `run_phase1.py`; restore from Git (e.g. `origin/compartmental`) or backup if deleted. Phase 3’s `build_database.py` loads them when present. **See [`reports/REPORTS.md`](reports/REPORTS.md)** for a full catalog of every subfolder and how outputs relate to tasks and Phase 3.
+Optional knowledge-base files live under `reports/protocols/`, `reports/taxonomies/`, `reports/patterns/`, `reports/manual_extraction/` - they are **not** produced by `run_phase1.py`; restore from Git (e.g. `origin/compartmental`) or backup if deleted. Phase 3’s `build_database.py` loads them when present. **See [`reports/REPORTS.md`](reports/REPORTS.md)** for a full catalog of every subfolder and how outputs relate to tasks and Phase 3.
 
 ## Principles
 
@@ -33,14 +33,14 @@ Optional knowledge-base files live under `reports/protocols/`, `reports/taxonomi
 
 **Paper “promises”** (what the PDF is claimed to describe) may come from **pattern-based** regex/heuristics or an **LLM**. Quality is bounded by the method: LLM output depends on model, prompt, and PDF quality; pattern-based output misses nuanced wording.
 
-**What you can do:** For a small **gold set** of papers, code promises **manually** (or from a structured abstract) and compare agreement with pattern-based vs LLM-based extraction (e.g. overlap on compartments/parameters). Report **disagreement rates** — that is a proper validity check, not assumed by the pipeline.
+**What you can do:** For a small **gold set** of papers, code promises **manually** (or from a structured abstract) and compare agreement with pattern-based vs LLM-based extraction (e.g. overlap on compartments/parameters). Report **disagreement rates** - that is a proper validity check, not assumed by the pipeline.
 
 ### Comparing manual vs pattern-based vs LLM-based
 
 | Mode | Role in this repo |
 |------|---------------------|
 | **Manual** | Human-supplied promise lists (outside the default batch) or qualitative comparison for validation. |
-| **Pattern-based** | Default in `gap_analyzer` / `paper_promise_extractor` when no LLM — fast, no API. |
+| **Pattern-based** | Default in `gap_analyzer` / `paper_promise_extractor` when no LLM - fast, no API. |
 | **LLM-based** | Optional (`--use-llm` where supported); better flexibility, same validity caveats as any LLM extraction. |
 
 A **structured comparison study** (same PDFs, three methods, manual reference) is recommended for publications; the code supports switching modes but does not auto-run that evaluation.
@@ -51,7 +51,7 @@ Task 2.2 is specifically **parameter uncertainty**: documenting **numeric parame
 
 ### Why confidence is often “Unknown”
 
-Non-unknown **High / Medium / Low** confidence is only assigned where **hard-coded heuristics** match **disease name** (a small set) and **parameter name** substrings (`uncertainty_analyzer.py`). For **other diseases** or **parameters**, the default is **Unknown** because the tool does **not** query papers or databases automatically — filling confidence properly requires **literature linkage** (DOI, tables) or **expert judgment**, then editing the JSON or extending the code.
+Non-unknown **High / Medium / Low** confidence is only assigned where **hard-coded heuristics** match **disease name** (a small set) and **parameter name** substrings (`uncertainty_analyzer.py`). For **other diseases** or **parameters**, the default is **Unknown** because the tool does **not** query papers or databases automatically - filling confidence properly requires **literature linkage** (DOI, tables) or **expert judgment**, then editing the JSON or extending the code.
 
 ### Sensitivity analysis: “parameter mapping” methodology
 
@@ -63,7 +63,7 @@ Each entry supports **`venue`** (e.g. journal name), **`venueType`** (`journal` 
 
 ### Taxonomies and patterns (`reports/taxonomies/`, `reports/patterns/`)
 
-These JSON files are **curated knowledge-base** artifacts. **Automatically** deriving a complete, literature-grounded taxonomy or pattern library would require a **dedicated systematic review** — suitable as **its own paper** or appendix. The pipeline **consumes** these files where present; it does **not** replace a full literature review for taxonomy construction.
+These JSON files are **curated knowledge-base** artifacts. **Automatically** deriving a complete, literature-grounded taxonomy or pattern library would require a **dedicated systematic review** - suitable as **its own paper** or appendix. The pipeline **consumes** these files where present; it does **not** replace a full literature review for taxonomy construction.
 
 ---
 
@@ -115,7 +115,7 @@ Phase 1’s `analysis/sensitivity_analysis.py` implements four approaches. Each 
 | File | Purpose |
 |------|---------|
 | **[INSTRUCTIONS.md](INSTRUCTIONS.md)** | Setup, commands, per-task CLI, programmatic notes, troubleshooting, **appendix** with the former Phase 1 results summary. |
-| **[reports/REPORTS.md](reports/REPORTS.md)** | **Catalog of `reports/`** — generated vs static files, filenames, Phase 3 usage, regeneration. |
+| **[reports/REPORTS.md](reports/REPORTS.md)** | **Catalog of `reports/`** - generated vs static files, filenames, Phase 3 usage, regeneration. |
 
 ---
 
