@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | llm_only |
 | Phase 3 run dir | `measles3_gemini_phase3` |
 
 ---
@@ -15,39 +15,42 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| Force of infection | transmission | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| Rate of progression from latency | progression | lognormal | 28.09144880776251 | 88.78537172783501 | 52.14 |
-| Rate of recovery from infection | recovery | lognormal | 31.219021438614686 | 81.95846746741321 | 52.14 |
-| Rate of loss of passive immunity | recovery | lognormal | 23.950150700893502 | 62.875694259618854 | 40.0 |
-| Vaccine efficacy | mortality | lognormal | 0.3927167237478204 | 1.7780650016762647 | 0.9 |
-| Birth rate | other | uniform | 333333.0 | 999999.0 | 666666.0 |
-| Background death rate | mortality | lognormal | 0.436351915275356 | 1.9756277796402941 | 1.0 |
-| Contact rates | transmission | lognormal | 0.01 | 1.0 | 0.505 |
-| maternalimmunitylossrate | recovery | lognormal | 0.0999918791762304 | 0.26250602353390873 | 0.167 |
-| susceptibleinfectionrate | other | uniform | 0.4 | 1.2000000000000002 | 0.8 |
-| effectivevaccinationrate | other | uniform | 0.015 | 0.045 | 0.03 |
-| vaccinefailurerate | other | uniform | 0.01 | 0.03 | 0.02 |
-| vaccinefailureinfectionrate | transmission | lognormal | 0.21550785429813968 | 0.6811305847935176 | 0.4 |
-| latentprogressionrate | progression | lognormal | 0.2833928284020537 | 0.8956867190034757 | 0.526 |
-| recoveryrate | recovery | lognormal | 0.08382552745312725 | 0.220064929908666 | 0.14 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| Force of infection | transmission | lognormal | 0.5388 | 1.703 | 1 |  |
+| Rate of progression from latency | progression | lognormal | 28.09 | 88.79 | 52.14 |  |
+| Rate of recovery from infection | recovery | lognormal | 31.22 | 81.96 | 52.14 |  |
+| Rate of loss of passive immunity | recovery | lognormal | 23.95 | 62.88 | 40 |  |
+| Vaccine efficacy | mortality | lognormal | 0.3927 | 1.778 | 0.9 |  |
+| Birth rate | other | uniform | 3.333e+05 | 1e+06 | 6.667e+05 |  |
+| Background death rate | mortality | lognormal | 0.4364 | 1.976 | 1 |  |
+| Contact rates | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| maternalimmunitylossrate | mortality | lognormal | 0.6982 | 3.161 | 1.6 |  |
+| susceptibleinfectionrate | other | uniform | 547.5 | 1642 | 1095 |  |
+| effectivevaccinationrate | other | uniform | 0.00125 | 0.00375 | 0.0025 |  |
+| vaccinefailurerate | other | uniform | 0.015 | 0.045 | 0.03 |  |
+| vaccinefailureinfectionrate | other | uniform | 0.015 | 0.045 | 0.03 |  |
+| latentprogressionrate | progression | lognormal | 0.0598 | 0.189 | 0.111 |  |
+| recoveryrate | recovery | lognormal | 0.07484 | 0.1965 | 0.125 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Maternally Immune, Susceptible, Latent, Infectious, Immune, Vaccine Failure, maternalimmunity
+- **Samples:** 1000   **Days:** 200   **Compartments:** Maternally Immune, Susceptible, Latent, Infectious, Immune, Vaccine Failure, MaternalImmunity, Vaccine-Failed
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Maternally Immune | — | — | — |
-| Susceptible | — | — | — |
-| Latent | — | — | — |
-| Infectious | — | — | — |
-| Immune | — | — | — |
-| Vaccine Failure | — | — | — |
-| maternalimmunity | — | — | — |
+| Maternally Immune | 99000.00 | 99000.00 | 99000.00 |
+| Susceptible | 1000.00 | 1000.00 | 1000.00 |
+| Latent | 0.00 | 0.00 | 0.00 |
+| Infectious | 0.00 | 0.00 | 0.00 |
+| Immune | 0.00 | 0.00 | 0.00 |
+| Vaccine Failure | 0.00 | 0.00 | 0.00 |
+| MaternalImmunity | 0.00 | 0.00 | 0.00 |
+| Vaccine-Failed | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 

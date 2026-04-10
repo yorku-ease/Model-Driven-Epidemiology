@@ -15,27 +15,26 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| β | transmission | uniform | 1e-10 | 1.0 | -2.0 |
-| 1/γ | recovery | lognormal | 2.9 | 14.0 | 8.45 |
-| 1/δ | mortality | lognormal | 3.0 | 41.0 | 22.0 |
-| ξ | other | uniform | 0.01 | 10.0 | 5.005 |
-| κ | transmission | lognormal | 5.0 | 10.0 | 7.5 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| β | transmission | lognormal | 1 | 5 | 3 |  |
+| 1/γ | recovery | lognormal | 2.9 | 14 | 8.45 |  |
+| 1/δ | mortality | lognormal | 3 | 41 | 22 |  |
+| ξ | other | uniform | 0.01 | 10 | 5.005 |  |
+| κ | transmission | lognormal | 5 | 10 | 7.5 |  |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious, Recovered, Bacteria in Water Reservoir, chollerae bacterial concentration
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious, Recovered, Bacteria in Water Reservoir
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Infectious | — | — | — |
-| Recovered | — | — | — |
-| Bacteria in Water Reservoir | — | — | — |
-| chollerae bacterial concentration | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Infectious | 1000.00 | 1000.00 | 1000.00 |
+| Recovered | 559.07 | 1054.00 | 1981.47 |
+| Bacteria in Water Reservoir | 67.88 | 575.27 | 985.39 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -45,10 +44,10 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | β | 0.0000 | 0.0000 | 0.1000 |
-| 2 | 1/γ | 0.0000 | 0.0000 | 0.0024 |
-| 3 | 1/δ | 0.0000 | 0.0000 | 0.0000 |
-| 4 | ξ | 0.0000 | 0.0000 | 0.0000 |
+| 1 | β | 0.0000 | 0.0946 | 0.0946 |
+| 2 | 1/γ | 0.0000 | -0.0312 | 0.0312 |
+| 3 | ξ | 0.0000 | -0.0124 | 0.0124 |
+| 4 | 1/δ | 0.0000 | 0.0000 | 0.0000 |
 | 5 | κ | 0.0000 | 0.0000 | 0.0000 |
 
 ![Sensitivity tornado](sensitivity_tornado.png)

@@ -326,7 +326,8 @@ class GenericModelSimulator:
 
         return derivatives
 
-    def simulate(self, params: Dict[str, float], days: int = 200, dt: float = 0.1) -> Dict[str, Any]:
+    def simulate(self, params: Dict[str, float], days: int = 200, dt: float = 0.1,
+                 initial_infected: int = 1) -> Dict[str, Any]:
         """
         Simulate the model with given parameters.
 
@@ -334,6 +335,9 @@ class GenericModelSimulator:
             params: Parameter values to use (overrides for specific parameters)
             days: Number of days to simulate
             dt: Time step size
+            initial_infected: Seed infectious individuals when model has no population data.
+                              Use 1 (default) to let epidemic dynamics determine growth organically.
+                              Use e.g. 1000 for uncertainty/sensitivity analysis to see wider dynamics.
 
         Returns:
             Dictionary with simulation results and metrics
@@ -411,21 +415,13 @@ class GenericModelSimulator:
                         if mosquito_start_idx + 2 < n_comps:
                             populations[0][mosquito_start_idx + 2] = 1
             else:
-                # Standard SEIR-like model: one seed case, everyone else susceptible.
-                # Starting with a large I₀ (e.g. 1000) puts many models past their
-                # epidemic peak at t=0, producing flat trajectories. A single seed
-                # case (I₀=1) lets the ODE dynamics determine the peak organically.
+                # Standard SEIR-like model: seed `initial_infected` cases, everyone else susceptible.
                 N = 100000
+                seed = max(1, min(initial_infected, N - 1))
                 if n_comps > 0:
-                    if HAS_NUMPY:
-                        populations[0][0] = N - 1
-                    else:
-                        populations[0][0] = N - 1
+                    populations[0][0] = N - seed
                 if n_comps > 1:
-                    if HAS_NUMPY:
-                        populations[0][1] = 1
-                    else:
-                        populations[0][1] = 1
+                    populations[0][1] = seed
 
         # Run simulation using Euler integration
         for t in range(1, n_steps):

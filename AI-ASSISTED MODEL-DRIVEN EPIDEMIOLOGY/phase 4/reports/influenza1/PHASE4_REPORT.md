@@ -15,19 +15,21 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| π | other | uniform | 0.0 | 0.0 | 0.0 |
-| λ0 | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| ψ | other | uniform | 0.0 | 0.0 | 0.0 |
-| β | transmission | lognormal | 0.01 | 1.0 | 0.505 |
-| σ | progression | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| γ | recovery | lognormal | 0.3470975590326991 | 0.9112259990575264 | 0.5797 |
-| p_ICU | other | uniform | 0.0 | 0.0 | 0.0 |
-| η | contact | lognormal | 0.4847804928769282 | 1.8376741844439803 | 1.0 |
-| µ_ICU|E | other | uniform | 2.854 | 8.562000000000001 | 5.708 |
-| σ^2_ICU|E | progression | lognormal | 9.827158155995171 | 31.0595546665844 | 18.24 |
-| N | other | uniform | 0.0 | 1.0 | 0.5 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| π | other | uniform | 0 | 1 | 0.5 | † |
+| λ0 | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| ψ | other | uniform | 0 | 1 | 0.5 | † |
+| β | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| σ | progression | lognormal | 0.5388 | 1.703 | 1 |  |
+| γ | recovery | lognormal | 0.3471 | 0.9112 | 0.5797 |  |
+| p_ICU | other | uniform | 0 | 1 | 0.5 | † |
+| η | contact | lognormal | 0.4848 | 1.838 | 1 |  |
+| µ_ICU|E | other | uniform | 2.854 | 8.562 | 5.708 |  |
+| σ^2_ICU|E | progression | lognormal | 9.827 | 31.06 | 18.24 |  |
+| N | other | uniform | 0 | 1 | 0.5 | † |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -37,12 +39,12 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Exposed 1 | — | — | — |
-| Exposed 2 | — | — | — |
-| Infectious 1 | — | — | — |
-| Infectious 2 | — | — | — |
-| Recovered | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Exposed 1 | 1000.00 | 1000.00 | 8026.05 |
+| Exposed 2 | 386.45 | 485.81 | 7857.19 |
+| Infectious 1 | 359.52 | 569.56 | 11437.73 |
+| Infectious 2 | 1130.75 | 1784.30 | 71181.85 |
+| Recovered | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -52,9 +54,9 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | σ | 0.0000 | 0.0000 | 14.0488 |
-| 2 | β | 0.0000 | 0.0000 | 1.5126 |
-| 3 | γ | 0.0000 | 0.0000 | 0.0000 |
+| 1 | σ | -0.5064 | -0.5064 | 1.0129 |
+| 2 | β | 0.4419 | 0.4419 | 0.8838 |
+| 3 | γ | -0.0000 | 0.0000 | 0.0000 |
 | 4 | π | 0.0000 | 0.0000 | 0.0000 |
 | 5 | λ0 | 0.0000 | 0.0000 | 0.0000 |
 | 6 | ψ | 0.0000 | 0.0000 | 0.0000 |

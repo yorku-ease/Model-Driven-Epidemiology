@@ -15,24 +15,24 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| β | transmission | lognormal | 0.28662544621652575 | 0.9059036777753784 | 0.532 |
-| θ | transmission | lognormal | 0.1767164405244745 | 0.5585270795306844 | 0.328 |
-| φ | transmission | lognormal | 1.1335713136082148 | 3.5827468760139025 | 2.104 |
-| η | contact | lognormal | 2.3269463658092553 | 8.820836085331104 | 4.8 |
-| b | mortality | lognormal | 2.3563003424869224 | 10.66839001005759 | 5.4 |
-| γ | recovery | lognormal | 6.227039182232313 | 16.34768050750091 | 10.4 |
-| α | recovery | lognormal | 5.987537675223379 | 15.718923564904724 | 10.0 |
-| γH | recovery | lognormal | 2.7542673306027528 | 7.230704839856167 | 4.6 |
-| δ | mortality | lognormal | 31.85368981510098 | 144.2208279137415 | 73.0 |
-| δH | mortality | lognormal | 26.617466831796715 | 120.51329455805788 | 61.0 |
-| κ | other | uniform | 0.00125 | 0.00375 | 0.0025 |
-| hospitalizationrate | other | uniform | 0.1 | 0.30000000000000004 | 0.2 |
-| recoveryrate | recovery | lognormal | 0.08382552745312725 | 0.220064929908666 | 0.14 |
-| deathratecommunity | mortality | lognormal | 0.0654527872913034 | 0.2963441669460441 | 0.15 |
-| recoveryratehospital | recovery | lognormal | 0.059875376752233776 | 0.15718923564904722 | 0.1 |
-| deathratehospital | mortality | lognormal | 0.04363519152753561 | 0.19756277796402943 | 0.1 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| β | transmission | lognormal | 0.2866 | 0.9059 | 0.532 |  |
+| θ | transmission | lognormal | 0.1767 | 0.5585 | 0.328 |  |
+| φ | transmission | lognormal | 1.134 | 3.583 | 2.104 |  |
+| η | contact | lognormal | 2.327 | 8.821 | 4.8 |  |
+| b | mortality | lognormal | 2.356 | 10.67 | 5.4 |  |
+| γ | recovery | lognormal | 6.227 | 16.35 | 10.4 |  |
+| α | recovery | lognormal | 5.988 | 15.72 | 10 |  |
+| γH | recovery | lognormal | 2.754 | 7.231 | 4.6 |  |
+| δ | mortality | lognormal | 31.85 | 144.2 | 73 |  |
+| δH | mortality | lognormal | 26.62 | 120.5 | 61 |  |
+| κ | other | uniform | 0.00125 | 0.00375 | 0.0025 |  |
+| hospitalizationrate | other | uniform | 5000 | 1.5e+04 | 1e+04 |  |
+| recoveryrate | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| deathratecommunity | mortality | lognormal | 4364 | 1.976e+04 | 1e+04 |  |
+| recoveryratehospital | recovery | lognormal | 5988 | 1.572e+04 | 1e+04 |  |
+| deathratehospital | mortality | lognormal | 4364 | 1.976e+04 | 1e+04 |  |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -42,14 +42,14 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Exposed | — | — | — |
-| Infectious in the Community | — | — | — |
-| Hospitalized Patients | — | — | — |
-| Dead Patients Not Yet Buried | — | — | — |
-| Recovered | — | — | — |
-| Cumulative Cases | — | — | — |
-| Burials | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Exposed | 1000.00 | 1000.00 | 1000.00 |
+| Infectious in the Community | 332.62 | 644.80 | 1219.51 |
+| Hospitalized Patients | 16.37 | 37.67 | 88.97 |
+| Dead Patients Not Yet Buried | 223.88 | 468.97 | 1448.31 |
+| Recovered | 6966.48 | 9254.25 | 11962.73 |
+| Cumulative Cases | 0.00 | 0.00 | 0.00 |
+| Burials | 3003.17 | 5272.68 | 9408.68 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -59,9 +59,9 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | b | 0.0000 | 0.0000 | 0.4778 |
-| 2 | γ | 0.0000 | 0.0000 | 0.0039 |
-| 3 | β | 0.0000 | 0.0000 | 0.0014 |
+| 1 | b | 0.1393 | -0.0010 | 0.1403 |
+| 2 | γ | 0.0000 | -0.0070 | 0.0070 |
+| 3 | β | 0.0000 | -0.0017 | 0.0017 |
 | 4 | θ | 0.0000 | 0.0000 | 0.0000 |
 | 5 | φ | 0.0000 | 0.0000 | 0.0000 |
 | 6 | η | 0.0000 | 0.0000 | 0.0000 |

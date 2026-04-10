@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | both |
 | Phase 3 run dir | `hiv3_gemini_phase3` |
 
 ---
@@ -15,43 +15,43 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| δ | mortality | lognormal | 0.012654205542985327 | 0.057293205609568514 | 0.029 |
-| μ | mortality | lognormal | 0.007854334474956412 | 0.03556130003352529 | 0.018 |
-| β | transmission | lognormal | 0.41323631061668287 | 1.30606789634157 | 0.767 |
-| ρ | transmission | lognormal | 0.02963232996599421 | 0.09365545540910865 | 0.055 |
-| ν | transmission | lognormal | 0.5366145572023678 | 1.6960151561358587 | 0.996 |
-| ε | transmission | lognormal | 0.005387696357453495 | 0.01702826461983796 | 0.01 |
-| γ_U | recovery | lognormal | 0.1814223915592683 | 0.47628338401661274 | 0.303 |
-| γ_T | recovery | lognormal | 0.0987943716411857 | 0.2593622388209278 | 0.165 |
-| τ | progression | lognormal | 1083.4657374838976 | 3424.3840150494125 | 2011.0 |
-| r | other | uniform | 0.5 | 1.5 | 1.0 |
-| m | mortality | lognormal | 0.3927167237478204 | 1.7780650016762647 | 0.9 |
-| ψ | other | uniform | 0.5 | 1.5 | 1.0 |
-| θ | other | uniform | 0.04 | 0.12 | 0.08 |
-| ω | other | uniform | 0.0075 | 0.0225 | 0.015 |
-| α | other | uniform | 0.05 | 0.15000000000000002 | 0.1 |
-| φ | transmission | lognormal | 0.21550785429813968 | 0.6811305847935176 | 0.4 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| δ | mortality | lognormal | 0.01265 | 0.05729 | 0.029 |  |
+| μ | mortality | lognormal | 0.007854 | 0.03556 | 0.018 |  |
+| β | transmission | lognormal | 0.4132 | 1.306 | 0.767 |  |
+| ρ | transmission | lognormal | 0.02963 | 0.09366 | 0.055 |  |
+| ν | transmission | lognormal | 0.5366 | 1.696 | 0.996 |  |
+| ε | transmission | lognormal | 0.005388 | 0.01703 | 0.01 |  |
+| γ_U | recovery | lognormal | 0.1814 | 0.4763 | 0.303 |  |
+| γ_T | recovery | lognormal | 0.09879 | 0.2594 | 0.165 |  |
+| τ | progression | lognormal | 1083 | 3424 | 2011 |  |
+| r | other | uniform | 0.5 | 1.5 | 1 |  |
+| m | mortality | lognormal | 0.3927 | 1.778 | 0.9 |  |
+| ψ | other | uniform | 0.5 | 1.5 | 1 |  |
+| θ | other | uniform | 0.04 | 0.12 | 0.08 |  |
+| ω | other | uniform | 0.0075 | 0.0225 | 0.015 |  |
+| α | other | uniform | 0.05 | 0.15 | 0.1 |  |
+| φ | transmission | lognormal | 0.2155 | 0.6811 | 0.4 |  |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious Untreated, Infectious Treated, untreatedstagei1, untreatedstagei2, untreatedstagei3, untreatedstagei4, artstagea1, artstagea2, artstagea3, artstagea4, removed
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious Untreated, Infectious Treated, Untreated Stage I, AIDS Phase, AIDS Stage, ART Stage, Disease Stages, Acute HIV Infection, Latent Infection, Latent Stage
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Infectious Untreated | — | — | — |
-| Infectious Treated | — | — | — |
-| untreatedstagei1 | — | — | — |
-| untreatedstagei2 | — | — | — |
-| untreatedstagei3 | — | — | — |
-| untreatedstagei4 | — | — | — |
-| artstagea1 | — | — | — |
-| artstagea2 | — | — | — |
-| artstagea3 | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Infectious Untreated | 50000.00 | 50000.00 | 50000.00 |
+| Infectious Treated | 50000.00 | 50000.00 | 50000.00 |
+| Untreated Stage I | 0.00 | 0.00 | 0.00 |
+| AIDS Phase | 0.00 | 0.00 | 0.00 |
+| AIDS Stage | 0.00 | 0.00 | 0.00 |
+| ART Stage | 0.00 | 0.00 | 0.00 |
+| Disease Stages | 0.00 | 0.00 | 0.00 |
+| Acute HIV Infection | 0.00 | 0.00 | 0.00 |
+| Latent Infection | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 

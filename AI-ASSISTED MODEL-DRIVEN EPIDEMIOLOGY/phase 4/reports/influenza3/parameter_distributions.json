@@ -1,5 +1,5 @@
 {
-  "model_path": "../phase 3/showcase_gemini/retrieval_only/influenza3_gemini_phase3/model_filled.compmodel",
+  "model_path": "../phase 3/showcase_gemini/llm_only/influenza3_gemini_phase3/model_filled.compmodel",
   "model_type_hint": null,
   "parameter_distributions": {
     "kappa": {
@@ -8,7 +8,8 @@
       "low": 0.5387696357453492,
       "high": 1.702826461983794,
       "point_estimate": 1.0,
-      "source_expression": "1/1.9"
+      "source_expression": "1/1.9",
+      "inferred_range": false
     },
     "gamma_1": {
       "parameter_type": "recovery",
@@ -16,7 +17,8 @@
       "low": 0.5987537675223377,
       "high": 1.5718923564904717,
       "point_estimate": 1.0,
-      "source_expression": "1/1.5"
+      "source_expression": "1/1.5",
+      "inferred_range": false
     },
     "gamma_2": {
       "parameter_type": "recovery",
@@ -24,7 +26,8 @@
       "low": 0.5987537675223377,
       "high": 1.5718923564904717,
       "point_estimate": 1.0,
-      "source_expression": "1/1.5"
+      "source_expression": "1/1.5",
+      "inferred_range": false
     },
     "alpha_i": {
       "parameter_type": "other",
@@ -32,7 +35,8 @@
       "low": 0.5,
       "high": 1.5,
       "point_estimate": 1.0,
-      "source_expression": "(p_Hi / (1 - p_Hi)) * gamma_1"
+      "source_expression": "(p_Hi / (1 - p_Hi)) * gamma_1",
+      "inferred_range": false
     },
     "delta_i": {
       "parameter_type": "mortality",
@@ -40,23 +44,26 @@
       "low": 0.436351915275356,
       "high": 1.9756277796402941,
       "point_estimate": 1.0,
-      "source_expression": "(CFP_i / (1 - CFP_i)) * gamma_2"
+      "source_expression": "(CFP_i / (1 - CFP_i)) * gamma_2",
+      "inferred_range": false
     },
     "q": {
       "parameter_type": "transmission",
       "family": "lognormal",
-      "low": 0.0,
-      "high": 0.0,
-      "point_estimate": 0.0,
-      "source_expression": "calibrated to R0"
+      "low": 0.05,
+      "high": 1.0,
+      "point_estimate": null,
+      "source_expression": "calibrated to R0",
+      "inferred_range": true
     },
     "beta_ij": {
       "parameter_type": "transmission",
       "family": "lognormal",
-      "low": 0.01,
+      "low": 0.05,
       "high": 1.0,
       "point_estimate": null,
-      "source_expression": "q * c_ij"
+      "source_expression": "q * c_ij",
+      "inferred_range": true
     },
     "R0": {
       "parameter_type": "other",
@@ -64,7 +71,8 @@
       "low": 1.4,
       "high": 1.8,
       "point_estimate": 1.6,
-      "source_expression": "1.4-1.8"
+      "source_expression": "1.4-1.8",
+      "inferred_range": false
     },
     "e_i": {
       "parameter_type": "other",
@@ -72,7 +80,8 @@
       "low": 0.3875,
       "high": 1.1625,
       "point_estimate": 0.775,
-      "source_expression": "0.775 (<65y), 0.35 (>=65y)"
+      "source_expression": "0.775 (<65y), 0.35 (>=65y)",
+      "inferred_range": false
     },
     "gamma": {
       "parameter_type": "recovery",
@@ -80,7 +89,8 @@
       "low": 0.5987537675223377,
       "high": 1.5718923564904717,
       "point_estimate": 1.0,
-      "source_expression": "1/10"
+      "source_expression": "1/10",
+      "inferred_range": false
     },
     "nu(t)": {
       "parameter_type": "other",
@@ -88,7 +98,8 @@
       "low": 2.5,
       "high": 7.5,
       "point_estimate": 5.0,
-      "source_expression": "exponential with mean 5 days"
+      "source_expression": "exponential with mean 5 days",
+      "inferred_range": false
     },
     "vaccination_coverage": {
       "parameter_type": "other",
@@ -96,7 +107,8 @@
       "low": 5.0,
       "high": 20.0,
       "point_estimate": 12.5,
-      "source_expression": "5-20"
+      "source_expression": "5-20",
+      "inferred_range": false
     },
     "t*": {
       "parameter_type": "other",
@@ -104,63 +116,71 @@
       "low": 12.5,
       "high": 37.5,
       "point_estimate": 25.0,
-      "source_expression": "25 or 37"
+      "source_expression": "25 or 37",
+      "inferred_range": false
     },
     "communitytransmissionrate": {
       "parameter_type": "transmission",
       "family": "lognormal",
-      "low": 0.24244633608540714,
-      "high": 0.7662719078927073,
-      "point_estimate": 0.45,
-      "source_expression": "0.45"
+      "low": 0.9697853443416287,
+      "high": 3.0650876315708295,
+      "point_estimate": 1.8,
+      "source_expression": "1.8",
+      "inferred_range": false
     },
     "hospitaltransmissionrate": {
       "parameter_type": "transmission",
       "family": "lognormal",
-      "low": 0.10775392714906984,
-      "high": 0.3405652923967588,
-      "point_estimate": 0.2,
-      "source_expression": "0.20"
+      "low": 0.1616308907236047,
+      "high": 0.5108479385951381,
+      "point_estimate": 0.3,
+      "source_expression": "0.3",
+      "inferred_range": false
     },
     "effectivevaccinationrate": {
       "parameter_type": "other",
       "family": "uniform",
-      "low": 0.015,
-      "high": 0.045,
-      "point_estimate": 0.03,
-      "source_expression": "0.03"
+      "low": 0.0,
+      "high": 1.0,
+      "point_estimate": null,
+      "source_expression": "0",
+      "inferred_range": true
     },
     "ineffectivevaccinationrate": {
+      "parameter_type": "other",
+      "family": "uniform",
+      "low": 0.25,
+      "high": 0.75,
+      "point_estimate": 0.5,
+      "source_expression": "0.5",
+      "inferred_range": false
+    },
+    "protectiondelayrate": {
+      "parameter_type": "other",
+      "family": "uniform",
+      "low": 0.05,
+      "high": 0.15000000000000002,
+      "point_estimate": 0.1,
+      "source_expression": "0.1",
+      "inferred_range": false
+    },
+    "latentprogressionrate": {
+      "parameter_type": "progression",
+      "family": "lognormal",
+      "low": 0.2693848178726746,
+      "high": 0.851413230991897,
+      "point_estimate": 0.5,
+      "source_expression": "0.5",
+      "inferred_range": false
+    },
+    "hospitalizationrate": {
       "parameter_type": "other",
       "family": "uniform",
       "low": 0.005,
       "high": 0.015,
       "point_estimate": 0.01,
-      "source_expression": "0.01"
-    },
-    "protectiondelayrate": {
-      "parameter_type": "recovery",
-      "family": "lognormal",
-      "low": 0.059875376752233776,
-      "high": 0.15718923564904722,
-      "point_estimate": 0.1,
-      "source_expression": "0.10"
-    },
-    "latentprogressionrate": {
-      "parameter_type": "progression",
-      "family": "lognormal",
-      "low": 0.2833928284020537,
-      "high": 0.8956867190034757,
-      "point_estimate": 0.526,
-      "source_expression": "0.526"
-    },
-    "hospitalizationrate": {
-      "parameter_type": "other",
-      "family": "uniform",
-      "low": 0.1,
-      "high": 0.30000000000000004,
-      "point_estimate": 0.2,
-      "source_expression": "0.2"
+      "source_expression": "0.01",
+      "inferred_range": false
     },
     "communityrecoveryrate": {
       "parameter_type": "recovery",
@@ -168,23 +188,26 @@
       "low": 0.11975075350446751,
       "high": 0.3143784712980943,
       "point_estimate": 0.2,
-      "source_expression": "0.20"
+      "source_expression": "0.2",
+      "inferred_range": false
     },
     "hospitalrecoveryrate": {
       "parameter_type": "recovery",
       "family": "lognormal",
-      "low": 0.14968844188058442,
-      "high": 0.39297308912261786,
-      "point_estimate": 0.25,
-      "source_expression": "0.25"
+      "low": 0.059875376752233776,
+      "high": 0.15718923564904722,
+      "point_estimate": 0.1,
+      "source_expression": "0.1",
+      "inferred_range": false
     },
     "hospitalmortalityrate": {
       "parameter_type": "mortality",
       "family": "lognormal",
-      "low": 0.006545278729130341,
-      "high": 0.029634416694604402,
-      "point_estimate": 0.015,
-      "source_expression": "0.015"
+      "low": 0.010908797881883899,
+      "high": 0.04939069449100735,
+      "point_estimate": 0.025,
+      "source_expression": "0.025",
+      "inferred_range": false
     }
   },
   "framework_source": "/home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/phase 4/data/general_framework.json"

@@ -55,22 +55,41 @@ def run_sensitivity(
             else:
                 baseline_params[name] = 1.0
 
-    baseline_result = simulator.simulate(baseline_params, days=days, dt=dt)
+    baseline_result = simulator.simulate(baseline_params, days=days, dt=dt, initial_infected=1000)
     baseline_peak = baseline_result.get("peakInfections", 0) or 0.1
     baseline_cases = baseline_result.get("totalCases", 0) or 0.1
 
+    _RATE_TYPES = {"transmission", "recovery", "mortality", "progression", "contact"}
+
     sensitivities = []
     for name, spec in param_specs.items():
-        point = baseline_params.get(name, (spec.get("low", 0) + spec.get("high", 1)) / 2)
-        if point == 0:
-            delta = 0.1
-        else:
-            delta = abs(point) * perturb_fraction
-        low_val = max(spec.get("low", point - delta), 1e-10) if point > 0 else point - delta
-        high_val = point + delta
+        spec_low  = spec.get("low",  0)
+        spec_high = spec.get("high", 1)
+        ptype     = spec.get("parameter_type", "other")
 
-        result_low = simulator.simulate({**baseline_params, name: low_val}, days=days, dt=dt)
-        result_high = simulator.simulate({**baseline_params, name: high_val}, days=days, dt=dt)
+        # Skip degenerate distributions (low == high == 0 means parameter was unfilled)
+        if spec_low == 0 and spec_high == 0:
+            continue
+
+        point = baseline_params.get(name, (spec_low + spec_high) / 2)
+
+        # Skip parameters whose baseline value is negative for rate types —
+        # negative rates break the ODE. They are policy deltas, not rates.
+        if point < 0 and ptype in _RATE_TYPES:
+            continue
+
+        delta = abs(point) * perturb_fraction if point != 0 else (spec_high - spec_low) * 0.1
+
+        # Always clamp perturbation bounds to be strictly positive for rate parameters
+        if ptype in _RATE_TYPES:
+            low_val  = max(point - delta, 1e-10)
+            high_val = max(point + delta, low_val * 1.01)
+        else:
+            low_val  = max(spec_low, point - delta)
+            high_val = point + delta
+
+        result_low = simulator.simulate({**baseline_params, name: low_val}, days=days, dt=dt, initial_infected=1000)
+        result_high = simulator.simulate({**baseline_params, name: high_val}, days=days, dt=dt, initial_infected=1000)
         peak_low = result_low.get("peakInfections", 0)
         peak_high = result_high.get("peakInfections", 0)
         cases_low = result_low.get("totalCases", 0)
@@ -81,8 +100,9 @@ def run_sensitivity(
         combined = abs(sens_peak) + abs(sens_cases)
         sensitivities.append({
             "parameter": name,
-            "parameter_type": spec.get("parameter_type", "other"),
+            "parameter_type": ptype,
             "point_estimate": point,
+            "inferred_range": spec.get("inferred_range", False),
             "low": low_val,
             "high": high_val,
             "peak_infections_sensitivity": sens_peak,

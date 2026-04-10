@@ -107,48 +107,76 @@ def assign_distributions(
         cv = spec_default.get("cv")
         rel_range = spec_default.get("relative_range", 0.5)
 
+        import math
+
+        # Type-based fallbacks used when the expression is missing or zero.
+        # These are conservative literature-informed ranges, not disease-specific.
+        _TYPE_FALLBACK = {
+            "transmission": (0.05, 1.0),      # β typically 0.05–1.0 /day
+            "recovery":     (0.05, 0.5),       # γ → 2–20 day infectious period
+            "mortality":    (1e-5, 0.02),      # μ very small
+            "progression":  (0.1,  1.0),       # σ → 1–10 day incubation
+            "contact":      (0.5,  10.0),      # contact/biting rates
+            "other":        (0.0,  1.0),
+        }
+
+        _RATE_TYPES = {"transmission", "recovery", "mortality", "progression", "contact"}
+
         point, high = _parse_point_or_range(expr)
         low_val, high_val = None, None
+
+        # Treat negative point estimate on a rate parameter as its absolute value.
+        # Negative numbers here are usually policy deltas (e.g. "−0.7 = 70% reduction"),
+        # not literal negative rates. We preserve the magnitude as a positive rate.
+        if point is not None and point < 0 and ptype in _RATE_TYPES:
+            point = abs(point)
+
         if point is not None and high is not None:
+            # Expression is already a range (e.g. "2.9 to 14")
             low_val, high_val = point, high
-        elif point is not None:
-            if family == "lognormal" and cv and point > 0:
-                import math
+
+        elif point is not None and point > 0:
+            # Single positive point estimate — apply CV-based or relative uncertainty
+            if family == "lognormal" and cv:
                 sigma = (math.log(1 + cv ** 2)) ** 0.5
                 mu = math.log(point) - 0.5 * sigma ** 2
                 low_val = math.exp(mu - 1.96 * sigma)
                 high_val = math.exp(mu + 1.96 * sigma)
             else:
                 r = rel_range or 0.5
-                low_val = point * (1 - r)
+                low_val = max(point * (1 - r), 1e-10) if ptype in _RATE_TYPES else point * (1 - r)
                 high_val = point * (1 + r)
-                if low_val < 0 and "rate" in ptype:
-                    low_val = point * 0.1
-        else:
-            if ptype == "transmission":
-                low_val, high_val = 0.01, 1.0
-            elif ptype == "recovery":
-                low_val, high_val = 0.05, 0.5
-            elif ptype == "mortality":
-                low_val, high_val = 1e-5, 0.01
-            else:
-                low_val, high_val = 0.0, 1.0
 
+        else:
+            # Point is None or zero — treat as unknown, apply type-based fallback range.
+            # This prevents degenerate [0, 0] distributions.
+            lo, hi = _TYPE_FALLBACK.get(ptype, (0.0, 1.0))
+            low_val, high_val = lo, hi
+            point = None   # mark as unknown so the report shows no false precision
+
+        # Integrity checks
         if low_val is not None and high_val is not None and low_val > high_val:
             low_val, high_val = high_val, low_val
-        if low_val is not None and low_val < 0 and family == "lognormal":
+        # Lognormal requires strictly positive bounds
+        if family == "lognormal" and low_val is not None and low_val <= 0:
             family = "uniform"
-        if ptype in ("transmission", "recovery", "contact", "progression", "mortality") and low_val is not None and low_val < 0:
-            low_val = 1e-10
-        if high_val is not None and high_val < 0 and ptype in ("transmission", "recovery", "contact", "progression", "mortality"):
-            high_val = max(0.1, low_val or 0.1)
+        # Rate parameters must be positive
+        if ptype in _RATE_TYPES:
+            if low_val is not None and low_val < 0:
+                low_val = 1e-10
+            if high_val is not None and high_val <= 0:
+                high_val = _TYPE_FALLBACK.get(ptype, (0.0, 1.0))[1]
+
         distributions[name] = {
             "parameter_type": ptype,
             "family": family,
             "low": low_val,
             "high": high_val,
-            "point_estimate": point if high is None else (point + high) / 2 if point is not None else None,
+            "point_estimate": point if (point is not None and high is None) else (
+                (point + high) / 2 if (point is not None and high is not None) else None
+            ),
             "source_expression": expr,
+            "inferred_range": point is None,  # flag when we used the type-based fallback
         }
     return {
         "model_path": str(compmodel_path),

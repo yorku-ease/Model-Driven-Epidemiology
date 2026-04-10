@@ -15,29 +15,30 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| H | other | uniform | 0.0 | 1.0 | 0.5 |
-| n | mortality | lognormal | 1e-05 | 0.01 | 0.005005 |
-| a | transmission | lognormal | 0.01 | 1.0 | 0.505 |
-| K | other | uniform | 25.0 | 75.0 | 50.0 |
-| r | recovery | lognormal | 0.05 | 0.5 | 0.275 |
-| nb | other | uniform | 0.0 | 1.0 | 0.5 |
-| mb | other | uniform | 0.0 | 1.0 | 0.5 |
-| e | other | uniform | 0.0 | 1.0 | 0.5 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| H | other | uniform | 0 | 1 | 0.5 | † |
+| n | mortality | lognormal | 1e-05 | 0.02 | 0.01001 | † |
+| a | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| K | other | uniform | 25 | 75 | 50 |  |
+| r | recovery | lognormal | 0.05 | 0.5 | 0.275 | † |
+| nb | other | uniform | 0 | 1 | 0.5 | † |
+| mb | other | uniform | 0 | 1 | 0.5 | † |
+| e | other | uniform | 0 | 1 | 0.5 | † |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious, Aquatic Reservoir of Vibrio cholerae, aquatic toxigenic vibrio cholerae
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious, Aquatic Reservoir of Vibrio cholerae
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Infectious | — | — | — |
-| Aquatic Reservoir of Vibrio cholerae | — | — | — |
-| aquatic toxigenic vibrio cholerae | — | — | — |
+| Susceptible | 99009.85 | 99009.85 | 99009.86 |
+| Infectious | 1000.00 | 1000.00 | 1000.00 |
+| Aquatic Reservoir of Vibrio cholerae | 989.86 | 990.15 | 990.15 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -47,7 +48,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | H | 0.0000 | 0.0000 | 0.0000 |
+| 1 | H | 0.0000 | -0.0000 | 0.0000 |
 | 2 | n | 0.0000 | 0.0000 | 0.0000 |
 | 3 | a | 0.0000 | 0.0000 | 0.0000 |
 | 4 | K | 0.0000 | 0.0000 | 0.0000 |

@@ -15,18 +15,20 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| β_H | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| β_V | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| 1/α_H | recovery | lognormal | 3.532647228381792 | 9.274164903293782 | 5.9 |
-| 1/α_V | recovery | lognormal | 6.286914558984546 | 16.504869743149957 | 10.5 |
-| 1/γ | recovery | lognormal | 2.9937688376116878 | 7.859461782452358 | 5.0 |
-| 1/δ | recovery | lognormal | 4.670279386674236 | 12.260760380625685 | 7.8 |
-| r | other | uniform | 0.0 | 0.0 | 0.0 |
-| ϕ | other | uniform | 0.0 | 0.0 | 0.0 |
-| N | other | uniform | 0.0 | 1.0 | 0.5 |
-| R_0 | transmission | lognormal | 1.400801052937908 | 4.427348801157865 | 2.6 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| β_H | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| β_V | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| 1/α_H | recovery | lognormal | 3.533 | 9.274 | 5.9 |  |
+| 1/α_V | recovery | lognormal | 6.287 | 16.5 | 10.5 |  |
+| 1/γ | recovery | lognormal | 2.994 | 7.859 | 5 |  |
+| 1/δ | recovery | lognormal | 4.67 | 12.26 | 7.8 |  |
+| r | other | uniform | 0 | 1 | 0.5 | † |
+| ϕ | other | uniform | 0 | 1 | 0.5 | † |
+| N | other | uniform | 0 | 1 | 0.5 | † |
+| R_0 | transmission | lognormal | 1.401 | 4.427 | 2.6 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -36,13 +38,13 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Humans | — | — | — |
-| Exposed Humans | — | — | — |
-| Infectious Humans | — | — | — |
-| Recovered Humans | — | — | — |
-| Susceptible Mosquitoes | — | — | — |
-| Exposed Mosquitoes | — | — | — |
-| Infectious Mosquitoes | — | — | — |
+| Susceptible Humans | 99999.00 | 99999.00 | 99999.00 |
+| Exposed Humans | 0.00 | 0.00 | 0.00 |
+| Infectious Humans | 1.00 | 1.00 | 1.00 |
+| Recovered Humans | 1.00 | 1.00 | 1.00 |
+| Susceptible Mosquitoes | 199999.00 | 199999.00 | 199999.00 |
+| Exposed Mosquitoes | 0.00 | 0.00 | 0.00 |
+| Infectious Mosquitoes | 1.00 | 1.00 | 1.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -52,13 +54,13 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | r | 0.0000 | 0.0000 | 217468417.8416 |
-| 2 | β_H | 0.0000 | 0.0000 | 0.0000 |
-| 3 | β_V | 0.0000 | 0.0000 | 0.0000 |
-| 4 | 1/α_H | 0.0000 | 0.0000 | 0.0000 |
-| 5 | 1/α_V | 0.0000 | 0.0000 | 0.0000 |
-| 6 | 1/γ | 0.0000 | 0.0000 | 0.0000 |
-| 7 | 1/δ | 0.0000 | 0.0000 | 0.0000 |
+| 1 | β_H | 0.0000 | 0.0000 | 0.0000 |
+| 2 | β_V | 0.0000 | 0.0000 | 0.0000 |
+| 3 | 1/α_H | 0.0000 | 0.0000 | 0.0000 |
+| 4 | 1/α_V | 0.0000 | 0.0000 | 0.0000 |
+| 5 | 1/γ | 0.0000 | 0.0000 | 0.0000 |
+| 6 | 1/δ | 0.0000 | 0.0000 | 0.0000 |
+| 7 | r | 0.0000 | 0.0000 | 0.0000 |
 | 8 | ϕ | 0.0000 | 0.0000 | 0.0000 |
 | 9 | N | 0.0000 | 0.0000 | 0.0000 |
 | 10 | R_0 | 0.0000 | 0.0000 | 0.0000 |

@@ -100,7 +100,7 @@ def run_monte_carlo(
             params[name] = sample_parameter(spec, rng)
         all_param_samples.append(params)
         try:
-            result = simulator.simulate(params, days=days, dt=dt)
+            result = simulator.simulate(params, days=days, dt=dt, initial_infected=1000)
             traj = result.get("trajectory", result.get("populations", []))
             if traj is None:
                 traj = [[0.0] * n_comps]

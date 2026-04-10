@@ -15,26 +15,28 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| Per-exposure protection from vaccination for seronegative vaccinees | other | uniform | 0.1605 | 0.48150000000000004 | 0.321 |
-| Per-exposure protection from vaccination for seropositive vaccinees | other | uniform | 0.258 | 0.774 | 0.516 |
-| Average duration of protection for seronegative vaccinees | recovery | lognormal | 255.06910496451593 | 669.6261438649408 | 426.0 |
-| Average duration of protection for seropositive vaccinees | recovery | lognormal | 154.4784720207631 | 405.5482279745414 | 258.0 |
-| Probability of symptoms conditional on infection (primary) | other | uniform | 0.2025 | 0.6075 | 0.405 |
-| Probability of symptoms conditional on infection (secondary) | other | uniform | 0.1695 | 0.5085000000000001 | 0.339 |
-| Probability of symptoms conditional on infection (post-secondary) | other | uniform | 0.045 | 0.135 | 0.09 |
-| Probability of hospitalization conditional on symptoms (primary) | other | uniform | 0.037 | 0.11099999999999999 | 0.074 |
-| Probability of hospitalization conditional on symptoms (secondary) | other | uniform | 0.188 | 0.5640000000000001 | 0.376 |
-| Probability of hospitalization conditional on symptoms (post-secondary) | other | uniform | 0.0505 | 0.15150000000000002 | 0.101 |
-| Probability of death conditional on symptomatic disease | mortality | lognormal | 0.003403544939147775 | 0.015409896681194298 | 0.0078 |
-| Probability of mosquito to human transmission | transmission | lognormal | 0.01 | 1.0 | 0.505 |
-| Mosquito emergence rate | other | uniform | 0.0 | 1.0 | 0.5 |
-| transmissionrate | transmission | lognormal | 0.15085549800869777 | 0.4767914093554623 | 0.28 |
-| incubationrate | progression | lognormal | 0.10775392714906984 | 0.3405652923967588 | 0.2 |
-| recoveryrate | recovery | lognormal | 0.08382552745312725 | 0.220064929908666 | 0.14 |
-| screeningandvaccinationrate | other | uniform | 0.02 | 0.06 | 0.04 |
-| vaccinebreakthroughrate | other | uniform | 0.025 | 0.07500000000000001 | 0.05 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| Per-exposure protection from vaccination for seronegative vaccinees | other | uniform | 0.1605 | 0.4815 | 0.321 |  |
+| Per-exposure protection from vaccination for seropositive vaccinees | other | uniform | 0.258 | 0.774 | 0.516 |  |
+| Average duration of protection for seronegative vaccinees | recovery | lognormal | 255.1 | 669.6 | 426 |  |
+| Average duration of protection for seropositive vaccinees | recovery | lognormal | 154.5 | 405.5 | 258 |  |
+| Probability of symptoms conditional on infection (primary) | other | uniform | 0.2025 | 0.6075 | 0.405 |  |
+| Probability of symptoms conditional on infection (secondary) | other | uniform | 0.1695 | 0.5085 | 0.339 |  |
+| Probability of symptoms conditional on infection (post-secondary) | other | uniform | 0.045 | 0.135 | 0.09 |  |
+| Probability of hospitalization conditional on symptoms (primary) | other | uniform | 0.037 | 0.111 | 0.074 |  |
+| Probability of hospitalization conditional on symptoms (secondary) | other | uniform | 0.188 | 0.564 | 0.376 |  |
+| Probability of hospitalization conditional on symptoms (post-secondary) | other | uniform | 0.0505 | 0.1515 | 0.101 |  |
+| Probability of death conditional on symptomatic disease | mortality | lognormal | 0.003404 | 0.01541 | 0.0078 |  |
+| Probability of mosquito to human transmission | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| Mosquito emergence rate | other | uniform | 0 | 1 | 0.5 | † |
+| transmissionrate | transmission | lognormal | 5.388e-05 | 0.0001703 | 0.0001 |  |
+| incubationrate | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| recoveryrate | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| screeningandvaccinationrate | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| vaccinebreakthroughrate | other | uniform | 5000 | 1.5e+04 | 1e+04 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -44,13 +46,13 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Humans | — | — | — |
-| Infectious Humans | — | — | — |
-| Recovered Humans | — | — | — |
-| Susceptible Mosquitoes | — | — | — |
-| Infectious Mosquitoes | — | — | — |
-| exposed | — | — | — |
-| vaccinated | — | — | — |
+| Susceptible Humans | 99999.00 | 99999.00 | 99999.00 |
+| Infectious Humans | 0.00 | 0.00 | 0.00 |
+| Recovered Humans | 1.00 | 1.00 | 1.00 |
+| Susceptible Mosquitoes | 199999.00 | 199999.00 | 199999.00 |
+| Infectious Mosquitoes | 0.00 | 0.00 | 0.00 |
+| exposed | 1.00 | 1.00 | 1.00 |
+| vaccinated | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 

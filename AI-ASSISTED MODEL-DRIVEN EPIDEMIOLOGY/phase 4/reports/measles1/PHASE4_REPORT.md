@@ -15,26 +15,27 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| L | other | uniform | 0.0 | 1.0 | 0.5 |
-| xU | other | uniform | 0.0435 | 0.1305 | 0.087 |
-| xM | other | uniform | 2.385 | 7.154999999999999 | 4.77 |
-| xA | other | uniform | 0.0 | 0.0 | 0.0 |
-| bC | transmission | lognormal | 0.0010128869152012563 | 0.0032013137485295343 | 0.00188 |
-| bA | transmission | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| m | mortality | lognormal | 0.436351915275356 | 1.9756277796402941 | 1.0 |
-| g | recovery | lognormal | 0.5987537675223377 | 1.5718923564904717 | 1.0 |
-| j | other | uniform | 0.5 | 1.5 | 1.0 |
-| e | transmission | lognormal | 0.10775392714906984 | 0.3405652923967588 | 0.2 |
-| hA | mortality | lognormal | 0.0 | 0.0 | 0.0 |
-| hU | mortality | lognormal | 1.309055745826068 | 5.926883338920882 | 3.0 |
-| hM | mortality | lognormal | 0.07287076985098445 | 0.32992983919992913 | 0.167 |
-| d | progression | lognormal | 0.37713874502174444 | 1.1919785233886557 | 0.7 |
-| q | other | uniform | 0.075 | 0.22499999999999998 | 0.15 |
-| a | transmission | lognormal | 0.006750783535889225 | 0.021336415568656942 | 0.01253 |
-| ξu | other | uniform | 0.00435 | 0.013049999999999999 | 0.0087 |
-| φ | other | uniform | 0.00064 | 0.0019200000000000003 | 0.00128 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| L | other | uniform | 0 | 1 | 0.5 | † |
+| xU | other | uniform | 0.0435 | 0.1305 | 0.087 |  |
+| xM | other | uniform | 2.385 | 7.155 | 4.77 |  |
+| xA | other | uniform | 0 | 1 | 0.5 | † |
+| bC | transmission | lognormal | 0.001013 | 0.003201 | 0.00188 |  |
+| bA | transmission | lognormal | 0.5388 | 1.703 | 1 |  |
+| m | mortality | lognormal | 0.4364 | 1.976 | 1 |  |
+| g | recovery | lognormal | 0.5988 | 1.572 | 1 |  |
+| j | other | uniform | 0.5 | 1.5 | 1 |  |
+| e | transmission | lognormal | 0.1078 | 0.3406 | 0.2 |  |
+| hA | mortality | lognormal | 1e-05 | 0.02 | 0.01001 | † |
+| hU | mortality | lognormal | 1.309 | 5.927 | 3 |  |
+| hM | mortality | lognormal | 0.07287 | 0.3299 | 0.167 |  |
+| d | progression | lognormal | 0.3771 | 1.192 | 0.7 |  |
+| q | other | uniform | 0.075 | 0.225 | 0.15 |  |
+| a | transmission | lognormal | 0.006751 | 0.02134 | 0.01253 |  |
+| φ | transmission | lognormal | 0.2155 | 0.6811 | 0.4 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -44,16 +45,16 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Children | — | — | — |
-| Un-monitored Vaccinated Children | — | — | — |
-| Monitored Vaccinated Children | — | — | — |
-| Exposed Children | — | — | — |
-| Infectious Children | — | — | — |
-| Immune Children | — | — | — |
-| Susceptible Adults | — | — | — |
-| Un-monitored Vaccinated Adults | — | — | — |
-| Vaccinated Adults | — | — | — |
-| Exposed Adults | — | — | — |
+| Susceptible Children | 99000.00 | 99000.00 | 99000.00 |
+| Un-monitored Vaccinated Children | 6628.64 | 15137.02 | 17170.67 |
+| Monitored Vaccinated Children | 8295.91 | 18835.88 | 20793.43 |
+| Exposed Children | 0.00 | 0.00 | 0.00 |
+| Infectious Children | 0.00 | 0.00 | 0.00 |
+| Immune Children | 49999.85 | 50000.00 | 50000.00 |
+| Susceptible Adults | 8295.91 | 18835.88 | 20793.43 |
+| Un-monitored Vaccinated Adults | 3920.64 | 17317.70 | 19959.43 |
+| Vaccinated Adults | 0.00 | 0.00 | 0.00 |
+| Exposed Adults | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -63,7 +64,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | L | 0.0000 | 0.0000 | 1.0000 |
+| 1 | L | 0.0000 | 0.0000 | 0.0000 |
 | 2 | xU | 0.0000 | 0.0000 | 0.0000 |
 | 3 | xM | 0.0000 | 0.0000 | 0.0000 |
 | 4 | xA | 0.0000 | 0.0000 | 0.0000 |

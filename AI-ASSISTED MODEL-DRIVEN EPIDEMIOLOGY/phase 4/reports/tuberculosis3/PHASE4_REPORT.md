@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | llm_only |
 | Phase 3 run dir | `tuberculosis3_gemini_phase3` |
 
 ---
@@ -15,53 +15,53 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| beta | transmission | lognormal | 8.674191135500122 | 27.415506037939075 | 16.1 |
-| relative_infectiousness_smear_negative | other | uniform | 0.11 | 0.33 | 0.22 |
-| relative_rate_early_progression | progression | lognormal | 0.2693848178726746 | 0.851413230991897 | 0.5 |
-| rapid_progression_rate | progression | lognormal | 0.03771387450217445 | 0.11919785233886557 | 0.07 |
-| slow_progression_rate | progression | lognormal | 0.0002693848178726749 | 0.0008514132309918977 | 0.0005 |
-| proportion_extrapulmonary | other | uniform | 0.12 | 0.36 | 0.24 |
-| proportion_smear_positive | other | uniform | 0.325 | 0.9750000000000001 | 0.65 |
-| mortality_rate_smear_positive | mortality | lognormal | 0.10036094051333187 | 0.45439438931726756 | 0.23 |
-| mortality_rate_smear_negative_extrapulmonary | mortality | lognormal | 0.030544634069274924 | 0.13829394457482058 | 0.07 |
-| natural_cure_rate_smear_positive | other | uniform | 0.05 | 0.15000000000000002 | 0.1 |
-| natural_cure_rate_smear_negative_extrapulmonary | other | uniform | 0.135 | 0.405 | 0.27 |
-| informal_sector_size | other | uniform | 0.2275 | 0.6825 | 0.455 |
-| treatment_success_notified_2008 | other | uniform | 0.375 | 1.125 | 0.75 |
-| treatment_success_informal | other | uniform | 0.25 | 0.75 | 0.5 |
-| relapse_rate | other | uniform | 0.012 | 0.036000000000000004 | 0.024 |
-| population_growth_rate | other | uniform | 0.015 | 0.045 | 0.03 |
-| diagnostic_rate_smear_positive_2008 | other | uniform | 0.205 | 0.615 | 0.41 |
-| diagnostic_rate_smear_negative_2008 | other | uniform | 0.08 | 0.24 | 0.16 |
-| diagnostic_rate_extrapulmonary_2008 | other | uniform | 0.25 | 0.75 | 0.5 |
-| infectionratefromsmearpositive | transmission | lognormal | 0.1616308907236047 | 0.5108479385951381 | 0.3 |
-| infectionratefromsmearnegative | transmission | lognormal | 0.03555879595919305 | 0.11238654649093037 | 0.066 |
-| recenttoremotestabilizationrate | other | uniform | 0.25 | 0.75 | 0.5 |
-| rapidprogressiontosmearpositiverate | progression | lognormal | 0.024514018426413386 | 0.0774786040202626 | 0.0455 |
-| rapidprogressiontosmearnegativerate | progression | lognormal | 0.013199856075761051 | 0.04171924831860294 | 0.0245 |
-| rapidprogressiontoextrapulmonaryrate | progression | lognormal | 0.0056570811753261655 | 0.017879677850829844 | 0.0105 |
-| … | … | … | … | … | … (*37 total*) |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| beta | transmission | lognormal | 8.674 | 27.42 | 16.1 |  |
+| relative_infectiousness_smear_negative | other | uniform | 0.11 | 0.33 | 0.22 |  |
+| relative_rate_early_progression | progression | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| rapid_progression_rate | progression | lognormal | 0.03771 | 0.1192 | 0.07 |  |
+| slow_progression_rate | progression | lognormal | 0.0002694 | 0.0008514 | 0.0005 |  |
+| proportion_extrapulmonary | other | uniform | 0.12 | 0.36 | 0.24 |  |
+| proportion_smear_positive | other | uniform | 0.325 | 0.975 | 0.65 |  |
+| mortality_rate_smear_positive | mortality | lognormal | 0.1004 | 0.4544 | 0.23 |  |
+| mortality_rate_smear_negative_extrapulmonary | mortality | lognormal | 0.03054 | 0.1383 | 0.07 |  |
+| natural_cure_rate_smear_positive | other | uniform | 0.05 | 0.15 | 0.1 |  |
+| natural_cure_rate_smear_negative_extrapulmonary | other | uniform | 0.135 | 0.405 | 0.27 |  |
+| informal_sector_size | other | uniform | 0.2275 | 0.6825 | 0.455 |  |
+| treatment_success_notified_2008 | other | uniform | 0.375 | 1.125 | 0.75 |  |
+| treatment_success_informal | other | uniform | 0.25 | 0.75 | 0.5 |  |
+| relapse_rate | other | uniform | 0.012 | 0.036 | 0.024 |  |
+| population_growth_rate | other | uniform | 0.015 | 0.045 | 0.03 |  |
+| diagnostic_rate_smear_positive_2008 | other | uniform | 0.205 | 0.615 | 0.41 |  |
+| diagnostic_rate_smear_negative_2008 | other | uniform | 0.08 | 0.24 | 0.16 |  |
+| diagnostic_rate_extrapulmonary_2008 | other | uniform | 0.25 | 0.75 | 0.5 |  |
+| infectionratefromsmearpositive | other | uniform | 5e-07 | 1.5e-06 | 1e-06 |  |
+| infectionratefromsmearnegative | other | uniform | 0.075 | 0.225 | 0.15 |  |
+| recenttoremotestabilizationrate | other | uniform | 0.25 | 0.75 | 0.5 |  |
+| rapidprogressiontosmearpositiverate | progression | lognormal | 0.02694 | 0.08514 | 0.05 |  |
+| rapidprogressiontosmearnegativerate | progression | lognormal | 3.233 | 10.22 | 6 |  |
+| rapidprogressiontoextrapulmonaryrate | progression | lognormal | 0.02694 | 0.08514 | 0.05 |  |
+| … | … | … | … | … | … | (*37 total*) |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Uninfected, Recently Infected Latent TB, Remotely Infected Latent TB, Active TB Smear-Positive Pulmonary, Active TB Smear-Negative Pulmonary, Active TB Extrapulmonary, Recently Treated and Recovered, recenttbinfection, remotetbinfection, recentlytreatedrecovered
+- **Samples:** 1000   **Days:** 200   **Compartments:** Uninfected, Recently Infected Latent TB, Remotely Infected Latent TB, Active TB Smear-Positive Pulmonary, Active TB Smear-Negative Pulmonary, Active TB Extrapulmonary, Recently Treated and Recovered, Remote TB Infection, Active TB Smear-Negative Undiagnosed, Recently Treated Recovered, Recent Latent TB, Latent Infection
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Uninfected | — | — | — |
-| Recently Infected Latent TB | — | — | — |
-| Remotely Infected Latent TB | — | — | — |
-| Active TB Smear-Positive Pulmonary | — | — | — |
-| Active TB Smear-Negative Pulmonary | — | — | — |
-| Active TB Extrapulmonary | — | — | — |
-| Recently Treated and Recovered | — | — | — |
-| recenttbinfection | — | — | — |
-| remotetbinfection | — | — | — |
-| recentlytreatedrecovered | — | — | — |
+| Uninfected | 99000.00 | 99000.00 | 99000.00 |
+| Recently Infected Latent TB | 1000.00 | 1000.00 | 1000.00 |
+| Remotely Infected Latent TB | 1111.94 | 1776.86 | 2870.41 |
+| Active TB Smear-Positive Pulmonary | 2346.52 | 4930.09 | 11101.16 |
+| Active TB Smear-Negative Pulmonary | 2346.52 | 4930.09 | 11101.16 |
+| Active TB Extrapulmonary | 2346.52 | 4930.09 | 11101.16 |
+| Recently Treated and Recovered | 1761.25 | 3700.57 | 8332.24 |
+| Remote TB Infection | 0.00 | 0.00 | 0.00 |
+| Active TB Smear-Negative Undiagnosed | 0.00 | 0.00 | 0.00 |
+| Recently Treated Recovered | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -71,7 +71,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | beta | 0.0000 | 0.0000 | 0.4079 |
+| 1 | beta | 0.0000 | 0.2458 | 0.2458 |
 | 2 | relative_infectiousness_smear_negative | 0.0000 | 0.0000 | 0.0000 |
 | 3 | relative_rate_early_progression | 0.0000 | 0.0000 | 0.0000 |
 | 4 | rapid_progression_rate | 0.0000 | 0.0000 | 0.0000 |

@@ -66,19 +66,29 @@ def generate_report(
     lines.append("Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.")
     lines.append("")
     dists = distributions_data.get("parameter_distributions", {})
-    lines.append("| Parameter | Type | Family | Low | High | Point |")
-    lines.append("|-----------|------|--------|-----|------|-------|")
+    lines.append("| Parameter | Type | Family | Low | High | Point | Note |")
+    lines.append("|-----------|------|--------|-----|------|-------|------|")
+    n_inferred = 0
     for name, spec in list(dists.items())[:25]:
         ptype = spec.get("parameter_type", "—")
         family = spec.get("family", "—")
         low = spec.get("low", "—")
         high = spec.get("high", "—")
         point = spec.get("point_estimate", "—")
+        inferred = spec.get("inferred_range", False)
+        if inferred:
+            n_inferred += 1
         if low is not None and high is not None and point is None:
             point = (low + high) / 2
-        lines.append(f"| {name} | {ptype} | {family} | {low} | {high} | {point} |")
+        note = "†" if inferred else ""
+        fmt_low  = f"{low:.4g}"  if isinstance(low,  (int, float)) else str(low)
+        fmt_high = f"{high:.4g}" if isinstance(high, (int, float)) else str(high)
+        fmt_pt   = f"{point:.4g}" if isinstance(point, (int, float)) else str(point)
+        lines.append(f"| {name} | {ptype} | {family} | {fmt_low} | {fmt_high} | {fmt_pt} | {note} |")
     if len(dists) > 25:
-        lines.append(f"| … | … | … | … | … | … (*{len(dists)} total*) |")
+        lines.append(f"| … | … | … | … | … | … | (*{len(dists)} total*) |")
+    if n_inferred:
+        lines.append(f"\n† Range inferred from parameter type — no value recovered from paper text.")
     lines.extend(["", "## 2. Monte Carlo simulation (Task 9.2)", ""])
 
     if monte_carlo_data and "error" not in monte_carlo_data:
@@ -97,9 +107,10 @@ def generate_report(
                 "|-------------|---------|----------|----------|",
             ]
             for comp in compartments[:10]:
-                traj_50 = pct.get("p50", {}).get(comp, [])
-                traj_05 = pct.get("p05", {}).get(comp, [])
-                traj_95 = pct.get("p95", {}).get(comp, [])
+                comp_pct = pct.get(comp, {})
+                traj_50 = comp_pct.get("p50", [])
+                traj_05 = comp_pct.get("p05", [])
+                traj_95 = comp_pct.get("p95", [])
                 pk50 = f"{max(traj_50):.2f}" if traj_50 else "—"
                 pk05 = f"{max(traj_05):.2f}" if traj_05 else "—"
                 pk95 = f"{max(traj_95):.2f}" if traj_95 else "—"
@@ -124,8 +135,8 @@ def generate_report(
         ]
         for i, s in enumerate(sensitivities[:10], 1):
             pname = s.get("parameter", "—")
-            peak = s.get("peak_sensitivity", 0)
-            total = s.get("total_sensitivity", 0)
+            peak = s.get("peak_infections_sensitivity", s.get("peak_sensitivity", 0))
+            total = s.get("total_cases_sensitivity", s.get("total_sensitivity", 0))
             combined = s.get("combined_importance", 0)
             lines.append(f"| {i} | {pname} | {peak:.4f} | {total:.4f} | {combined:.4f} |")
         lines.append("")

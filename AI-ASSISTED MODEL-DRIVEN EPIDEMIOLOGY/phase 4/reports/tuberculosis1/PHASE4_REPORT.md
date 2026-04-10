@@ -15,17 +15,17 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| A | other | uniform | 0.5 | 1.5 | 1.0 |
-| β | transmission | lognormal | 0.01 | 5.0 | 2.505 |
-| ϵ | other | uniform | 0.0 | 1.0 | 0.5 |
-| u | other | uniform | 0.0 | 1.0 | 0.5 |
-| θ | other | uniform | 0.067 | 0.1 | 0.0835 |
-| γ | recovery | lognormal | 0.5 | 2.0 | 1.25 |
-| δ | mortality | lognormal | 0.003 | 0.02 | 0.0115 |
-| μ | mortality | lognormal | 0.436351915275356 | 1.9756277796402941 | 1.0 |
-| π | other | uniform | 0.00295 | 0.00885 | 0.0059 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| A | other | uniform | 0.5 | 1.5 | 1 |  |
+| β | transmission | lognormal | 0.01 | 5 | 2.505 |  |
+| ϵ | other | uniform | 0 | 1 | 0.5 |  |
+| u | other | uniform | 0 | 1 | 0.5 |  |
+| θ | other | uniform | 0.067 | 0.1 | 0.0835 |  |
+| γ | recovery | lognormal | 0.5 | 2 | 1.25 |  |
+| δ | mortality | lognormal | 0.003 | 0.02 | 0.0115 |  |
+| μ | mortality | lognormal | 0.4364 | 1.976 | 1 |  |
+| π | other | uniform | 100 | 300 | 200 |  |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -35,10 +35,10 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Vaccinated | — | — | — |
-| Infectious | — | — | — |
-| Recovered | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Vaccinated | 50000.00 | 50000.00 | 50000.00 |
+| Infectious | 0.00 | 0.00 | 0.00 |
+| Recovered | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 

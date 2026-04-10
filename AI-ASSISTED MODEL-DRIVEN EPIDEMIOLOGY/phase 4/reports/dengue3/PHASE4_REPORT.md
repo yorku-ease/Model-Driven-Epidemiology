@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | both |
 | Phase 3 run dir | `dengue3_gemini_phase3` |
 
 ---
@@ -15,48 +15,50 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| β_hv | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| β_vh | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| γ_h | recovery | lognormal | 0.0 | 0.0 | 0.0 |
-| σ_v | progression | lognormal | 0.0 | 0.0 | 0.0 |
-| μ_h | mortality | lognormal | 0.436351915275356 | 1.9756277796402941 | 1.0 |
-| μ_v | mortality | lognormal | 0.0 | 0.0 | 0.0 |
-| Case fatality rate | mortality | lognormal | 0.0003 | 0.0009 | 0.0006 |
-| Default vaccine coverage | other | uniform | 0.4 | 1.2000000000000002 | 0.8 |
-| Default vaccination age | other | uniform | 4.5 | 13.5 | 9.0 |
-| Discount rate | other | uniform | 0.015 | 0.045 | 0.03 |
-| DALYs per symptomatic dengue case | other | uniform | 0.003 | 0.009000000000000001 | 0.006 |
-| DALYs per severe dengue case | other | uniform | 0.01 | 0.03 | 0.02 |
-| Cost per hospitalised case (public payer, Latin America) | other | uniform | 100.0 | 300.0 | 200.0 |
-| primarytransmissionrate | transmission | lognormal | 0.1400801052937908 | 0.44273488011578643 | 0.26 |
-| incubationrate | progression | lognormal | 0.10775392714906984 | 0.3405652923967588 | 0.2 |
-| recoveryrate | recovery | lognormal | 0.08382552745312725 | 0.220064929908666 | 0.14 |
-| routinevaccinationrate | other | uniform | 0.025 | 0.07500000000000001 | 0.05 |
-| naturalcrossprotectionwaningrate | other | uniform | 0.01 | 0.03 | 0.02 |
-| vaccinecrossprotectionwaningrate | other | uniform | 0.015 | 0.045 | 0.03 |
-| secondarytransmissionrate | transmission | lognormal | 0.1616308907236047 | 0.5108479385951381 | 0.3 |
-| postvaccinationtransmissionrate | transmission | lognormal | 0.1293047125788838 | 0.4086783508761105 | 0.24 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| β_hv | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| β_vh | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| γ_h | recovery | lognormal | 0.05 | 0.5 | 0.275 | † |
+| σ_v | progression | lognormal | 0.1 | 1 | 0.55 | † |
+| μ_h | mortality | lognormal | 0.4364 | 1.976 | 1 |  |
+| μ_v | mortality | lognormal | 1e-05 | 0.02 | 0.01001 | † |
+| Case fatality rate | mortality | lognormal | 0.0003 | 0.0009 | 0.0006 |  |
+| Default vaccine coverage | other | uniform | 0.4 | 1.2 | 0.8 |  |
+| Default vaccination age | other | uniform | 4.5 | 13.5 | 9 |  |
+| Discount rate | other | uniform | 0.015 | 0.045 | 0.03 |  |
+| DALYs per symptomatic dengue case | other | uniform | 0.003 | 0.009 | 0.006 |  |
+| DALYs per severe dengue case | other | uniform | 0.01 | 0.03 | 0.02 |  |
+| Cost per hospitalised case (public payer, Latin America) | other | uniform | 100 | 300 | 200 |  |
+| primarytransmissionrate | transmission | lognormal | 5.388e-05 | 0.0001703 | 0.0001 |  |
+| incubationrate | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| recoveryrate | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| routinevaccinationrate | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| naturalcrossprotectionwaningrate | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| vaccinecrossprotectionwaningrate | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| secondarytransmissionrate | transmission | lognormal | 5.388e-05 | 0.0001703 | 0.0001 |  |
+| postvaccinationtransmissionrate | transmission | lognormal | 5.388e-05 | 0.0001703 | 0.0001 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible Humans, Infectious Humans (Primary), Recovered Humans (Primary), Infectious Humans (Secondary), Recovered Humans (Post-Secondary), Susceptible Mosquitoes, Exposed Mosquitoes, Infectious Mosquitoes, primarysusceptible, primaryexposed, primaryinfectious, postprimaryimmune, vaccinatedsilentinfection, secondarysusceptible, postvaccinationsusceptible, secondaryinfectious, postsecondaryimmune
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible Humans, Infectious Humans (Primary), Recovered Humans (Primary), Infectious Humans (Secondary), Recovered Humans (Post-Secondary), Susceptible Mosquitoes, Exposed Mosquitoes, Infectious Mosquitoes, Primary Susceptible, Primary Exposed, Primary Infectious, Post Primary Immune, Vaccinated Silent Infection, Secondary Susceptible, Vaccinated Susceptible, SecondaryInfectious, Postsecondary Immune, Vaccinated Asymptomatic Infected, Postvaccination Susceptible
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Humans | — | — | — |
-| Infectious Humans (Primary) | — | — | — |
-| Recovered Humans (Primary) | — | — | — |
-| Infectious Humans (Secondary) | — | — | — |
-| Recovered Humans (Post-Secondary) | — | — | — |
-| Susceptible Mosquitoes | — | — | — |
-| Exposed Mosquitoes | — | — | — |
-| Infectious Mosquitoes | — | — | — |
-| primarysusceptible | — | — | — |
-| primaryexposed | — | — | — |
+| Susceptible Humans | 99999.00 | 99999.00 | 99999.00 |
+| Infectious Humans (Primary) | 0.00 | 0.00 | 0.00 |
+| Recovered Humans (Primary) | 1.00 | 1.00 | 1.00 |
+| Infectious Humans (Secondary) | 0.00 | 0.00 | 0.00 |
+| Recovered Humans (Post-Secondary) | 0.00 | 0.00 | 0.00 |
+| Susceptible Mosquitoes | 199999.00 | 199999.00 | 199999.00 |
+| Exposed Mosquitoes | 0.00 | 0.00 | 0.00 |
+| Infectious Mosquitoes | 1.00 | 1.00 | 1.00 |
+| Primary Susceptible | 0.00 | 0.00 | 0.00 |
+| Primary Exposed | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 

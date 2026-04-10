@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | both |
 | Phase 3 run dir | `covid3_gemini_phase3` |
 
 ---
@@ -15,36 +15,41 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| R_t | other | uniform | 0.0 | 0.0 | 0.0 |
-| Initial R_t | other | uniform | 1.9 | 5.699999999999999 | 3.8 |
-| Serial Interval Distribution | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| Infection Fatality Ratio | contact | lognormal | 0.0 | 0.0 | 0.0 |
-| Infection-to-death distribution | mortality | lognormal | 0.0 | 0.0 | 0.0 |
-| Lockdown effect | transmission | lognormal | 0.10236623079161633 | 0.3235370277769209 | 0.19 |
-| population11countries | other | uniform | 370500000.0 | 1111500000.0 | 741000000.0 |
-| generationintervaldays | contact | lognormal | 3.1510732037000335 | 11.94488219888587 | 6.5 |
-| publiceventsbaneffect | transmission | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| schoolclosureeffect | transmission | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| selfisolationeffect | transmission | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| socialdistancingeffect | transmission | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| meanoutcomedelaydays | progression | lognormal | 9.697853443416285 | 30.65087631570828 | 18.0 |
-| removalrate | other | uniform | 0.5 | 1.5 | 1.0 |
-| deathrate | mortality | lognormal | 0.0021817595763767815 | 0.009878138898201468 | 0.005 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| R_t | other | uniform | 0 | 1 | 0.5 | † |
+| Initial R_t | other | uniform | 1.9 | 5.7 | 3.8 |  |
+| Serial Interval Distribution | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| Infection Fatality Ratio | contact | lognormal | 0.5 | 10 | 5.25 | † |
+| Infection-to-death distribution | mortality | lognormal | 1e-05 | 0.02 | 0.01001 | † |
+| Lockdown effect | other | uniform | 40.5 | 121.5 | 81 |  |
+| population11countries | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| generationintervaldays | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| basetransmissionrate | transmission | lognormal | 5.388e-05 | 0.0001703 | 0.0001 |  |
+| publiceventsbaneffect | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| schoolclosureeffect | other | uniform | 5000 | 1.5e+04 | 1e+04 |  |
+| selfisolationeffect | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| socialdistancingeffect | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| combinedinterventionmultiplier | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| effectivetransmissionrate | transmission | lognormal | 5.388e-05 | 0.0001703 | 0.0001 |  |
+| meanoutcomedelaydays | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+| removalrate | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| deathrate | mortality | lognormal | 4364 | 1.976e+04 | 1e+04 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Infectious, Dead, susceptible, removed
+- **Samples:** 1000   **Days:** 200   **Compartments:** Infectious, Dead, susceptible, Recovered
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Infectious | — | — | — |
-| Dead | — | — | — |
-| susceptible | — | — | — |
-| removed | — | — | — |
+| Infectious | 99000.00 | 99000.00 | 99000.00 |
+| Dead | 1000.00 | 1000.00 | 1000.00 |
+| susceptible | 0.00 | 0.00 | 0.00 |
+| Recovered | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -62,8 +67,8 @@ Distributions are assigned using the **general framework** (typed parameter unce
 | 6 | Lockdown effect | 0.0000 | 0.0000 | 0.0000 |
 | 7 | population11countries | 0.0000 | 0.0000 | 0.0000 |
 | 8 | generationintervaldays | 0.0000 | 0.0000 | 0.0000 |
-| 9 | publiceventsbaneffect | 0.0000 | 0.0000 | 0.0000 |
-| 10 | schoolclosureeffect | 0.0000 | 0.0000 | 0.0000 |
+| 9 | basetransmissionrate | 0.0000 | 0.0000 | 0.0000 |
+| 10 | publiceventsbaneffect | 0.0000 | 0.0000 | 0.0000 |
 
 ![Sensitivity tornado](sensitivity_tornado.png)
 

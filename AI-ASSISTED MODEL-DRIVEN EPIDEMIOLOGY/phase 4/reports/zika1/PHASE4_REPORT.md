@@ -15,53 +15,51 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| βb | transmission | lognormal | 0.05 | 0.12 | 0.08499999999999999 |
-| 1/α_H | progression | lognormal | 2.0 | 4.0 | 3.0 |
-| 1/α_V | progression | lognormal | 8.0 | 12.0 | 10.0 |
-| 1/γ | recovery | lognormal | 5.0 | 7.0 | 6.0 |
-| e_V | other | uniform | 40.0 | 120.0 | 80.0 |
-| 1/τ1 | progression | lognormal | 1.6163089072360477 | 5.108479385951383 | 3.0 |
-| μ1 | mortality | lognormal | 0.0218175957637678 | 0.0987813889820147 | 0.05 |
-| 1/τ2 | progression | lognormal | 4.848926721708144 | 15.325438157854146 | 9.0 |
-| μ2 | mortality | lognormal | 0.010908797881883899 | 0.04939069449100735 | 0.025 |
-| 1/τ3 | progression | lognormal | 1.6163089072360477 | 5.108479385951383 | 3.0 |
-| μ3 | mortality | lognormal | 0.0010908797881883908 | 0.004939069449100734 | 0.0025 |
-| μ_V | mortality | lognormal | 0.0218175957637678 | 0.0987813889820147 | 0.05 |
-| q | other | uniform | 0.34 | 1.02 | 0.68 |
-| K_H | other | uniform | 15000000.0 | 45000000.0 | 30000000.0 |
-| K_V | other | uniform | 50000000.0 | 150000000.0 | 100000000.0 |
-| κ | mortality | lognormal | 0.436351915275356 | 1.9756277796402941 | 1.0 |
-| M | other | uniform | 50000.0 | 150000.0 | 100000.0 |
-| λ | transmission | lognormal | 2.6938481787267506e-05 | 8.514132309918975e-05 | 5e-05 |
-| R0 | other | uniform | 0.55695 | 1.6708499999999997 | 1.1139 |
-| 1/τ_h | progression | lognormal | 0.2693848178726746 | 0.851413230991897 | 0.5 |
-| b_v | transmission | lognormal | 0.0005387696357453494 | 0.0017028264619837956 | 0.001 |
-| 1/τ_v | progression | lognormal | 0.06734620446816866 | 0.21285330774797423 | 0.125 |
-| r_h | other | uniform | 2.5e-05 | 7.500000000000001e-05 | 5e-05 |
-| f | other | uniform | 40.0 | 120.0 | 80.0 |
-| δ_l | mortality | lognormal | 0.436351915275356 | 1.9756277796402941 | 1.0 |
-| … | … | … | … | … | … (*26 total*) |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| βb | transmission | lognormal | 0.05 | 0.12 | 0.085 |  |
+| 1/α_H | progression | lognormal | 2 | 4 | 3 |  |
+| 1/α_V | progression | lognormal | 8 | 12 | 10 |  |
+| 1/γ | recovery | lognormal | 5 | 7 | 6 |  |
+| e_V | other | uniform | 40 | 120 | 80 |  |
+| 1/τ1 | progression | lognormal | 1.616 | 5.108 | 3 |  |
+| μ1 | mortality | lognormal | 0.02182 | 0.09878 | 0.05 |  |
+| 1/τ2 | progression | lognormal | 4.849 | 15.33 | 9 |  |
+| μ2 | mortality | lognormal | 0.01091 | 0.04939 | 0.025 |  |
+| 1/τ3 | progression | lognormal | 1.616 | 5.108 | 3 |  |
+| μ3 | mortality | lognormal | 0.001091 | 0.004939 | 0.0025 |  |
+| μ_V | mortality | lognormal | 0.02182 | 0.09878 | 0.05 |  |
+| q | other | uniform | 0.34 | 1.02 | 0.68 |  |
+| K_H | other | uniform | 1.5e+07 | 4.5e+07 | 3e+07 |  |
+| K_V | other | uniform | 5e+07 | 1.5e+08 | 1e+08 |  |
+| κ | mortality | lognormal | 0.4364 | 1.976 | 1 |  |
+| M | other | uniform | 5e+04 | 1.5e+05 | 1e+05 |  |
+| λ | transmission | lognormal | 2.694e-05 | 8.514e-05 | 5e-05 |  |
+| R0 | other | uniform | 0.5569 | 1.671 | 1.114 |  |
+| 1/τ_h | progression | lognormal | 5388 | 1.703e+04 | 1e+04 |  |
+| 1/τ_v | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| r_h | other | uniform | 5000 | 1.5e+04 | 1e+04 |  |
+| δ_l | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| φ | transmission | lognormal | 0.2155 | 0.6811 | 0.4 |  |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible Humans, Exposed Humans, Infectious Humans, Recovered Humans, Eggs, Larvae, Pupae, Susceptible Vectors, Exposed Vectors, Infectious Vectors, susceptible female adults, exposed female adults, infectious female adults
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible Humans, Exposed Humans, Infectious Humans, Recovered Humans, Eggs, Larvae, Pupae, Susceptible Vectors, Exposed Vectors, Infectious Vectors
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Humans | — | — | — |
-| Exposed Humans | — | — | — |
-| Infectious Humans | — | — | — |
-| Recovered Humans | — | — | — |
-| Eggs | — | — | — |
-| Larvae | — | — | — |
-| Pupae | — | — | — |
-| Susceptible Vectors | — | — | — |
-| Exposed Vectors | — | — | — |
-| Infectious Vectors | — | — | — |
+| Susceptible Humans | 99000.00 | 99000.00 | 99000.00 |
+| Exposed Humans | 1000.00 | 1000.00 | 1000.00 |
+| Infectious Humans | 5519258.36 | 10051757.44 | 14533111.65 |
+| Recovered Humans | 30462214228.52 | 101038015091.59 | 211211359953.37 |
+| Eggs | 0.00 | 0.00 | 0.00 |
+| Larvae | 0.00 | 0.00 | 0.00 |
+| Pupae | 0.00 | 0.00 | 0.00 |
+| Susceptible Vectors | 0.00 | 0.00 | 0.00 |
+| Exposed Vectors | 0.00 | 0.00 | 0.00 |
+| Infectious Vectors | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -71,8 +69,8 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | M | 0.0000 | 0.0000 | 0.7000 |
-| 2 | βb | 0.0000 | 0.0000 | 0.0052 |
+| 1 | M | 0.4000 | 0.0000 | 0.4000 |
+| 2 | βb | 0.0000 | 0.0033 | 0.0033 |
 | 3 | 1/α_H | 0.0000 | 0.0000 | 0.0000 |
 | 4 | 1/α_V | 0.0000 | 0.0000 | 0.0000 |
 | 5 | 1/γ | 0.0000 | 0.0000 | 0.0000 |

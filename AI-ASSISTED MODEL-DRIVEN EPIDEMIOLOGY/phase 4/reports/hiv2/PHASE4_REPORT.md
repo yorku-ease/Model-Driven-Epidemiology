@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | llm_only |
 | Phase 3 run dir | `hiv2_gemini_phase3` |
 
 ---
@@ -15,48 +15,48 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| CD4 treatment eligibility threshold | other | uniform | 100.0 | 300.0 | 200.0 |
-| Average time from eligibility to treatment initiation | other | uniform | 0.5 | 1.5 | 1.0 |
-| Treatment access | other | uniform | 25.0 | 75.0 | 50.0 |
-| Retention on treatment after 3 years | mortality | lognormal | 32.72639364565169 | 148.17208347302207 | 75.0 |
-| ART introduction time | other | uniform | 1006.0 | 3018.0 | 2012.0 |
-| Baseline future scale-up ART starts | other | uniform | 200.0 | 600.0 | 400.0 |
-| Low future scale-up ART starts | other | uniform | 2012.0 | 2016.0 | 2014.0 |
-| Medium future scale-up ART starts | other | uniform | 2012.0 | 2016.0 | 2014.0 |
-| High future scale-up ART starts | other | uniform | 2012.0 | 2016.0 | 2014.0 |
-| ART transmission reduction | transmission | lognormal | 48.48926721708145 | 153.25438157854157 | 90.0 |
-| Early infection transmissibility increase | other | uniform | 5.0 | 15.0 | 10.0 |
-| betaearly | transmission | lognormal | 0.4310157085962794 | 1.3622611695870352 | 0.8 |
-| betachronic | transmission | lognormal | 0.1616308907236047 | 0.5108479385951381 | 0.3 |
-| betalate | transmission | lognormal | 0.3232617814472095 | 1.0216958771902764 | 0.6 |
-| betaart | transmission | lognormal | 0.026938481787267467 | 0.08514132309918969 | 0.05 |
-| progression1 | progression | lognormal | 0.2693848178726746 | 0.851413230991897 | 0.5 |
-| progression2 | progression | lognormal | 0.10775392714906984 | 0.3405652923967588 | 0.2 |
-| artstart1 | other | uniform | 0.15 | 0.44999999999999996 | 0.3 |
-| artstart2 | other | uniform | 0.2 | 0.6000000000000001 | 0.4 |
-| deathlate | mortality | lognormal | 0.08727038305507122 | 0.3951255559280588 | 0.2 |
-| deathart | mortality | lognormal | 0.0218175957637678 | 0.0987813889820147 | 0.05 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| CD4 treatment eligibility threshold | other | uniform | 100 | 300 | 200 |  |
+| Average time from eligibility to treatment initiation | other | uniform | 0.5 | 1.5 | 1 |  |
+| Treatment access | other | uniform | 25 | 75 | 50 |  |
+| Retention on treatment after 3 years | mortality | lognormal | 32.73 | 148.2 | 75 |  |
+| ART introduction time | other | uniform | 1006 | 3018 | 2012 |  |
+| Baseline future scale-up ART starts | other | uniform | 200 | 600 | 400 |  |
+| Low future scale-up ART starts | other | uniform | 2012 | 2016 | 2014 |  |
+| Medium future scale-up ART starts | other | uniform | 2012 | 2016 | 2014 |  |
+| High future scale-up ART starts | other | uniform | 2012 | 2016 | 2014 |  |
+| ART transmission reduction | transmission | lognormal | 48.49 | 153.3 | 90 |  |
+| Early infection transmissibility increase | other | uniform | 5 | 15 | 10 |  |
+| betaearly | transmission | lognormal | 0.0002694 | 0.0008514 | 0.0005 |  |
+| betachronic | transmission | lognormal | 2.694e-05 | 8.514e-05 | 5e-05 |  |
+| betalate | transmission | lognormal | 0.002694 | 0.008514 | 0.005 |  |
+| betaart | transmission | lognormal | 0.00431 | 0.01362 | 0.008 |  |
+| progression1 | progression | lognormal | 0.05388 | 0.1703 | 0.1 |  |
+| progression2 | progression | lognormal | 0.02694 | 0.08514 | 0.05 |  |
+| artstart1 | other | uniform | 175 | 525 | 350 |  |
+| artstart2 | other | uniform | 175 | 525 | 350 |  |
+| deathlate | mortality | lognormal | 0.02182 | 0.09878 | 0.05 |  |
+| deathart | mortality | lognormal | 0.01309 | 0.05927 | 0.03 |  |
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Early Infection, Asymptomatic Infection, Pre-AIDS Infection, AIDS, On Antiretroviral Therapy, Dropped Out of Treatment, chronicinfection, lateinfection, onart, removed
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Early Infection, Asymptomatic Infection, Pre-AIDS Infection, AIDS, On Antiretroviral Therapy, Dropped Out of Treatment, Chronic Infection, Late Infection, On ART, Treated Infected
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Early Infection | — | — | — |
-| Asymptomatic Infection | — | — | — |
-| Pre-AIDS Infection | — | — | — |
-| AIDS | — | — | — |
-| On Antiretroviral Therapy | — | — | — |
-| Dropped Out of Treatment | — | — | — |
-| chronicinfection | — | — | — |
-| lateinfection | — | — | — |
-| onart | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Early Infection | 1000.00 | 1000.00 | 1000.00 |
+| Asymptomatic Infection | 6218.10 | 9943.02 | 16239.45 |
+| Pre-AIDS Infection | 38664.76 | 98863.65 | 263719.59 |
+| AIDS | 365566.62 | 983003.32 | 4282660.23 |
+| On Antiretroviral Therapy | 0.00 | 0.00 | 0.00 |
+| Dropped Out of Treatment | 0.00 | 0.00 | 0.00 |
+| Chronic Infection | 0.00 | 0.00 | 0.00 |
+| Late Infection | 0.00 | 0.00 | 0.00 |
+| On ART | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -66,7 +66,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | ART transmission reduction | 0.0000 | 0.0000 | 1.3786 |
+| 1 | ART transmission reduction | 0.4000 | 0.2374 | 0.6374 |
 | 2 | CD4 treatment eligibility threshold | 0.0000 | 0.0000 | 0.0000 |
 | 3 | Average time from eligibility to treatment initiation | 0.0000 | 0.0000 | 0.0000 |
 | 4 | Treatment access | 0.0000 | 0.0000 | 0.0000 |

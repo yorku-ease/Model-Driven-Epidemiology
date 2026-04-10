@@ -15,15 +15,17 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| r | recovery | lognormal | 0.05 | 0.5 | 0.275 |
-| ε | progression | lognormal | 0.5387696357453492 | 1.702826461983794 | 1.0 |
-| c | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| R0 | other | uniform | 1.4 | 3.9 | 2.65 |
-| Incubation Period | progression | lognormal | 4.1 | 7.0 | 5.55 |
-| Infectious Period | transmission | lognormal | 4.3 | 7.5 | 5.9 |
-| initialseed | other | uniform | 2.5 | 7.5 | 5.0 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| r | recovery | lognormal | 0.05 | 0.5 | 0.275 | † |
+| ε | progression | lognormal | 0.5388 | 1.703 | 1 |  |
+| c | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| R0 | other | uniform | 1.4 | 3.9 | 2.65 |  |
+| Incubation Period | progression | lognormal | 4.1 | 7 | 5.55 |  |
+| Infectious Period | transmission | lognormal | 4.3 | 7.5 | 5.9 |  |
+| initialseed | mortality | lognormal | 4.364e-05 | 0.0001976 | 0.0001 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -33,10 +35,10 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Exposed | — | — | — |
-| Infectious | — | — | — |
-| Recovered/Removed | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Exposed | 1000.00 | 1000.00 | 1000.00 |
+| Infectious | 628.09 | 879.97 | 914.79 |
+| Recovered/Removed | 12013.55 | 13509.65 | 13536.66 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -46,7 +48,7 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | r | 0.0000 | 0.0000 | 0.9962 |
+| 1 | r | 0.0006 | 0.0041 | 0.0047 |
 | 2 | ε | 0.0000 | 0.0000 | 0.0000 |
 | 3 | c | 0.0000 | 0.0000 | 0.0000 |
 | 4 | R0 | 0.0000 | 0.0000 | 0.0000 |

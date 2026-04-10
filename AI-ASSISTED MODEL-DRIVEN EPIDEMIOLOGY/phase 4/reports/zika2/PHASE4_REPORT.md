@@ -6,7 +6,7 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 | Field | Value |
 |-------|-------|
-| Phase 3 fill mode | retrieval_only |
+| Phase 3 fill mode | llm_only |
 | Phase 3 run dir | `zika2_gemini_phase3` |
 
 ---
@@ -15,43 +15,45 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| β_vh | transmission | lognormal | 0.005387696357453495 | 0.01702826461983796 | 0.01 |
-| β_hv | transmission | lognormal | 0.04848926721708142 | 0.15325438157854138 | 0.09 |
-| β_wm | transmission | lognormal | 0.0005387696357453494 | 0.0017028264619837956 | 0.001 |
-| β_mw | transmission | lognormal | 0.005387696357453495 | 0.01702826461983796 | 0.01 |
-| ϕ | other | uniform | 0.05 | 0.15000000000000002 | 0.1 |
-| 1/λ_h | transmission | lognormal | 3.6636335230683748 | 11.579219941489796 | 6.8 |
-| 1/λ_v | transmission | lognormal | 5.3876963574534935 | 17.02826461983794 | 10.0 |
-| 1/γ_1 | recovery | lognormal | 5.987537675223379 | 15.718923564904724 | 10.0 |
-| 1/γ_2 | recovery | lognormal | 5.987537675223379 | 15.718923564904724 | 10.0 |
-| 1/γ_3 | recovery | lognormal | 0.5987537675223377 | 1.5718923564904717 | 1.0 |
-| 1/ν | other | uniform | 7.0 | 21.0 | 14.0 |
-| ρ | mortality | lognormal | 3.0544634069274914 | 13.829394457482053 | 7.0 |
-| a | other | uniform | 0.0 | 0.0 | 0.0 |
-| b | other | uniform | 0.0 | 0.0 | 0.0 |
-| c | other | uniform | 0.0 | 0.0 | 0.0 |
-| m | other | uniform | 0.0 | 0.0 | 0.0 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| β_vh | transmission | lognormal | 0.005388 | 0.01703 | 0.01 |  |
+| β_hv | transmission | lognormal | 0.04849 | 0.1533 | 0.09 |  |
+| β_wm | transmission | lognormal | 0.0005388 | 0.001703 | 0.001 |  |
+| β_mw | transmission | lognormal | 0.005388 | 0.01703 | 0.01 |  |
+| ϕ | other | uniform | 0.05 | 0.15 | 0.1 |  |
+| 1/λ_h | transmission | lognormal | 3.664 | 11.58 | 6.8 |  |
+| 1/λ_v | transmission | lognormal | 5.388 | 17.03 | 10 |  |
+| 1/γ_1 | recovery | lognormal | 5.988 | 15.72 | 10 |  |
+| 1/γ_2 | recovery | lognormal | 5.988 | 15.72 | 10 |  |
+| 1/γ_3 | recovery | lognormal | 0.5988 | 1.572 | 1 |  |
+| 1/ν | other | uniform | 7 | 21 | 14 |  |
+| ρ | mortality | lognormal | 3.054 | 13.83 | 7 |  |
+| a | other | uniform | 0 | 1 | 0.5 | † |
+| b | other | uniform | 0 | 1 | 0.5 | † |
+| c | other | uniform | 0 | 1 | 0.5 | † |
+| m | other | uniform | 0 | 1 | 0.5 | † |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible Women, Exposed Women, Symptomatic Infectious Women, Asymptomatic Infectious Women, Infectious Women Genital Only, Recovered Women, Susceptible Men, Exposed Men, Symptomatic Infectious Men, Asymptomatic Infectious Men, Infectious Men Genital Only, Recovered Men, Susceptible Mosquitoes, Exposed Mosquitoes, Infectious Mosquitoes, infectiouswomensymptomaticblood, infectiouswomenasymptomaticblood, infectiouswomengenitalpersistence, infectiousmensymptomaticblood, infectiousmenasymptomaticblood, infectiousmensemenpersistence
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible Women, Exposed Women, Symptomatic Infectious Women, Asymptomatic Infectious Women, Infectious Women Genital Only, Recovered Women, Susceptible Men, Exposed Men, Symptomatic Infectious Men, Asymptomatic Infectious Men, Infectious Men Genital Only, Recovered Men, Susceptible Mosquitoes, Exposed Mosquitoes, Infectious Mosquitoes, Infectious Women Symptomatic, InfectiousMenAsymptomaticBlood, Infectious Women Genital Persistence, InfectiousMenSymptomatic, Infectious Men (Semen), InfectiousWomenAsymptomatic
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Women | — | — | — |
-| Exposed Women | — | — | — |
-| Symptomatic Infectious Women | — | — | — |
-| Asymptomatic Infectious Women | — | — | — |
-| Infectious Women Genital Only | — | — | — |
-| Recovered Women | — | — | — |
-| Susceptible Men | — | — | — |
-| Exposed Men | — | — | — |
-| Symptomatic Infectious Men | — | — | — |
-| Asymptomatic Infectious Men | — | — | — |
+| Susceptible Women | 99999.00 | 99999.00 | 99999.00 |
+| Exposed Women | 0.00 | 0.00 | 0.00 |
+| Symptomatic Infectious Women | 1.00 | 1.00 | 1.00 |
+| Asymptomatic Infectious Women | 0.00 | 0.00 | 0.00 |
+| Infectious Women Genital Only | 0.15 | 0.36 | 0.39 |
+| Recovered Women | 1.00 | 1.00 | 1.00 |
+| Susceptible Men | 0.00 | 0.00 | 0.00 |
+| Exposed Men | 0.00 | 0.00 | 0.00 |
+| Symptomatic Infectious Men | 0.00 | 0.00 | 0.00 |
+| Asymptomatic Infectious Men | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -61,16 +63,16 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | a | 0.0000 | 0.0000 | 217468417.8416 |
-| 2 | β_vh | 0.0000 | 0.0000 | 0.0000 |
-| 3 | β_hv | 0.0000 | 0.0000 | 0.0000 |
-| 4 | β_wm | 0.0000 | 0.0000 | 0.0000 |
-| 5 | β_mw | 0.0000 | 0.0000 | 0.0000 |
-| 6 | ϕ | 0.0000 | 0.0000 | 0.0000 |
-| 7 | 1/λ_h | 0.0000 | 0.0000 | 0.0000 |
-| 8 | 1/λ_v | 0.0000 | 0.0000 | 0.0000 |
-| 9 | 1/γ_1 | 0.0000 | 0.0000 | 0.0000 |
-| 10 | 1/γ_2 | 0.0000 | 0.0000 | 0.0000 |
+| 1 | β_vh | 0.0000 | 0.0000 | 0.0000 |
+| 2 | β_hv | 0.0000 | 0.0000 | 0.0000 |
+| 3 | β_wm | 0.0000 | 0.0000 | 0.0000 |
+| 4 | β_mw | 0.0000 | 0.0000 | 0.0000 |
+| 5 | ϕ | 0.0000 | 0.0000 | 0.0000 |
+| 6 | 1/λ_h | 0.0000 | 0.0000 | 0.0000 |
+| 7 | 1/λ_v | 0.0000 | 0.0000 | 0.0000 |
+| 8 | 1/γ_1 | 0.0000 | 0.0000 | 0.0000 |
+| 9 | 1/γ_2 | 0.0000 | 0.0000 | 0.0000 |
+| 10 | 1/γ_3 | 0.0000 | 0.0000 | 0.0000 |
 
 ![Sensitivity tornado](sensitivity_tornado.png)
 

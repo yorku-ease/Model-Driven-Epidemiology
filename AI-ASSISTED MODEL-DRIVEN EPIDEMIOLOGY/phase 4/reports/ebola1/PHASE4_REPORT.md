@@ -15,43 +15,46 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| α1 | other | uniform | 5.0 | 15.0 | 10.0 |
-| α2 | other | uniform | 1.5 | 4.5 | 3.0 |
-| ψ1 | contact | lognormal | 0.0029086829572615687 | 0.011026045106663872 | 0.006 |
-| ψ2 | contact | lognormal | 0.0005817365914523137 | 0.002205209021332774 | 0.0012 |
-| ψ3 | contact | lognormal | 0.0029086829572615687 | 0.011026045106663872 | 0.006 |
-| ε | mortality | lognormal | 0.21817595763767803 | 0.9878138898201471 | 0.5 |
-| ρ1 | mortality | lognormal | 0.05367128557886877 | 0.2430022168957561 | 0.123 |
-| ρ2 | progression | lognormal | 0.021550785429813972 | 0.06811305847935176 | 0.04 |
-| ρ3 | progression | lognormal | 0.06465235628944191 | 0.20433917543805524 | 0.12 |
-| w1 | other | uniform | 0.02 | 0.06 | 0.04 |
-| w2 | other | uniform | 0.11 | 0.33 | 0.22 |
-| h | other | uniform | 0.02 | 0.06 | 0.04 |
-| c | other | uniform | 0.4 | 1.2000000000000002 | 0.8 |
-| b | other | uniform | 0.0 | 0.0 | 0.0 |
-| d | other | uniform | 0.00075 | 0.0022500000000000003 | 0.0015 |
-| μ | mortality | lognormal | 4.581695110391237 | 20.744091686223083 | 10.5 |
-| ω2 | other | uniform | 0.001925 | 0.005775000000000001 | 0.00385 |
-| ω1 | other | uniform | 0.009615 | 0.028845000000000003 | 0.01923 |
-| η | mortality | lognormal | 0.01178150171243461 | 0.053341950050287926 | 0.027 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| α1 | other | uniform | 5 | 15 | 10 |  |
+| α2 | other | uniform | 1.5 | 4.5 | 3 |  |
+| ψ1 | contact | lognormal | 0.002909 | 0.01103 | 0.006 |  |
+| ψ2 | contact | lognormal | 0.0005817 | 0.002205 | 0.0012 |  |
+| ψ3 | contact | lognormal | 0.002909 | 0.01103 | 0.006 |  |
+| ε | mortality | lognormal | 0.2182 | 0.9878 | 0.5 |  |
+| ρ1 | mortality | lognormal | 0.05367 | 0.243 | 0.123 |  |
+| ρ2 | progression | lognormal | 0.02155 | 0.06811 | 0.04 |  |
+| ρ3 | progression | lognormal | 0.06465 | 0.2043 | 0.12 |  |
+| w1 | other | uniform | 0.02 | 0.06 | 0.04 |  |
+| w2 | other | uniform | 0.11 | 0.33 | 0.22 |  |
+| h | other | uniform | 0.02 | 0.06 | 0.04 |  |
+| c | other | uniform | 0.4 | 1.2 | 0.8 |  |
+| b | other | uniform | 0 | 1 | 0.5 | † |
+| d | other | uniform | 0.00075 | 0.00225 | 0.0015 |  |
+| μ | mortality | lognormal | 4.582 | 20.74 | 10.5 |  |
+| ω2 | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| ω3 | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| ω1 | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| ω1q | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+| η | transmission | lognormal | 0.2694 | 0.8514 | 0.5 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
-- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious, Quarantine, Recovered, Ebola Virus Pathogens in Environment, Dead, environment pathogens
+- **Samples:** 1000   **Days:** 200   **Compartments:** Susceptible, Infectious, Quarantine, Recovered, Ebola Virus Pathogens in Environment, Dead
 
 **Peak value spread (5th / 50th / 95th percentile across ensemble):**
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible | — | — | — |
-| Infectious | — | — | — |
-| Quarantine | — | — | — |
-| Recovered | — | — | — |
-| Ebola Virus Pathogens in Environment | — | — | — |
-| Dead | — | — | — |
-| environment pathogens | — | — | — |
+| Susceptible | 99000.00 | 99000.00 | 99000.00 |
+| Infectious | 1000.00 | 1000.00 | 1000.00 |
+| Quarantine | 381.33 | 502.31 | 633.00 |
+| Recovered | 628.53 | 782.95 | 886.00 |
+| Ebola Virus Pathogens in Environment | 147.89 | 258.31 | 418.45 |
+| Dead | 0.00 | 0.00 | 0.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -61,9 +64,9 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | ψ1 | 0.0000 | 0.0000 | 0.0275 |
-| 2 | ρ3 | 0.0000 | 0.0000 | 0.0261 |
-| 3 | ρ2 | 0.0000 | 0.0000 | 0.0070 |
+| 1 | ψ1 | 0.0000 | 0.0154 | 0.0154 |
+| 2 | ρ3 | 0.0000 | -0.0118 | 0.0118 |
+| 3 | ρ2 | 0.0000 | -0.0039 | 0.0039 |
 | 4 | α1 | 0.0000 | 0.0000 | 0.0000 |
 | 5 | α2 | 0.0000 | 0.0000 | 0.0000 |
 | 6 | ψ2 | 0.0000 | 0.0000 | 0.0000 |

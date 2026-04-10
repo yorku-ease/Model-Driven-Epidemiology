@@ -15,28 +15,30 @@ This report summarizes parameter distributions (general framework), Monte Carlo 
 
 Distributions are assigned using the **general framework** (typed parameter uncertainty): same distribution families and typical ranges for similar parameter types across diseases.
 
-| Parameter | Type | Family | Low | High | Point |
-|-----------|------|--------|-----|------|-------|
-| φ | mortality | lognormal | 0.0 | 0.0 | 0.0 |
-| fT | other | uniform | 0.0 | 0.0 | 0.0 |
-| rT | other | uniform | 0.0 | 0.0 | 0.0 |
-| rP | other | uniform | 0.0 | 0.0 | 0.0 |
-| rD | other | uniform | 0.0 | 0.0 | 0.0 |
-| rA | mortality | lognormal | 0.0 | 0.0 | 0.0 |
-| rU | other | uniform | 0.0 | 0.0 | 0.0 |
-| Λ | transmission | lognormal | 0.0 | 0.0 | 0.0 |
-| EIR | other | uniform | 3.0 | 675.0 | 339.0 |
-| HBI | other | uniform | 0.0 | 0.0 | 0.0 |
-| LLIN_half_life | other | uniform | 1.32 | 3.96 | 2.64 |
-| LLIN_adherence_decay | other | uniform | 0.1 | 0.30000000000000004 | 0.2 |
-| DDT_half_life | other | uniform | 3.0 | 9.0 | 6.0 |
-| ACT_prophylaxis_duration | recovery | lognormal | 14.968844188058437 | 39.29730891226179 | 25.0 |
-| vaccine_efficacy | other | uniform | 0.25 | 0.75 | 0.5 |
-| vaccine_half_life | other | uniform | 1.5 | 4.5 | 3.0 |
-| LLIN_coverage | other | uniform | 0.4 | 1.2000000000000002 | 0.8 |
-| IRS_coverage | other | uniform | 0.4 | 1.2000000000000002 | 0.8 |
-| MSAT_coverage | other | uniform | 0.4 | 1.2000000000000002 | 0.8 |
-| vaccine_coverage | other | uniform | 0.45 | 1.35 | 0.9 |
+| Parameter | Type | Family | Low | High | Point | Note |
+|-----------|------|--------|-----|------|-------|------|
+| φ | mortality | lognormal | 1e-05 | 0.02 | 0.01001 | † |
+| fT | other | uniform | 0 | 1 | 0.5 | † |
+| rT | other | uniform | 0 | 1 | 0.5 | † |
+| rP | other | uniform | 0 | 1 | 0.5 | † |
+| rD | other | uniform | 0 | 1 | 0.5 | † |
+| rA | mortality | lognormal | 1e-05 | 0.02 | 0.01001 | † |
+| rU | other | uniform | 0 | 1 | 0.5 | † |
+| Λ | transmission | lognormal | 0.05 | 1 | 0.525 | † |
+| EIR | other | uniform | 3 | 675 | 339 |  |
+| HBI | other | uniform | 0 | 1 | 0.5 | † |
+| LLIN_half_life | other | uniform | 1.32 | 3.96 | 2.64 |  |
+| LLIN_adherence_decay | other | uniform | 0.1 | 0.3 | 0.2 |  |
+| DDT_half_life | other | uniform | 3 | 9 | 6 |  |
+| ACT_prophylaxis_duration | recovery | lognormal | 14.97 | 39.3 | 25 |  |
+| vaccine_efficacy | other | uniform | 0.25 | 0.75 | 0.5 |  |
+| vaccine_half_life | other | uniform | 1.5 | 4.5 | 3 |  |
+| LLIN_coverage | other | uniform | 0.4 | 1.2 | 0.8 |  |
+| IRS_coverage | other | uniform | 0.4 | 1.2 | 0.8 |  |
+| MSAT_coverage | other | uniform | 0.4 | 1.2 | 0.8 |  |
+| vaccine_coverage | other | uniform | 0.45 | 1.35 | 0.9 |  |
+
+† Range inferred from parameter type — no value recovered from paper text.
 
 ## 2. Monte Carlo simulation (Task 9.2)
 
@@ -46,15 +48,15 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Compartment | P5 peak | P50 peak | P95 peak |
 |-------------|---------|----------|----------|
-| Susceptible Humans | — | — | — |
-| Treated Clinical Disease | — | — | — |
-| Untreated Clinical Disease | — | — | — |
-| Prophylaxis | — | — | — |
-| Asymptomatic Patent Infection | — | — | — |
-| Asymptomatic Sub-patent Infection | — | — | — |
-| Susceptible Mosquitoes | — | — | — |
-| Latent Mosquitoes | — | — | — |
-| Infectious Mosquitoes | — | — | — |
+| Susceptible Humans | 99999.00 | 99999.06 | 100000.00 |
+| Treated Clinical Disease | 0.00 | 0.00 | 0.00 |
+| Untreated Clinical Disease | 1.00 | 1.00 | 1.00 |
+| Prophylaxis | 0.00 | 0.00 | 0.00 |
+| Asymptomatic Patent Infection | 0.17 | 0.92 | 30380.20 |
+| Asymptomatic Sub-patent Infection | 0.00 | 0.28 | 740.08 |
+| Susceptible Mosquitoes | 199999.00 | 199999.00 | 199999.00 |
+| Latent Mosquitoes | 0.00 | 0.00 | 0.00 |
+| Infectious Mosquitoes | 1.00 | 1.00 | 1.00 |
 
 ![Uncertainty bands](uncertainty_bands.png)
 
@@ -64,14 +66,14 @@ Distributions are assigned using the **general framework** (typed parameter unce
 
 | Rank | Parameter | Peak impact | Total cases impact | Combined |
 |------|-----------|------------|-------------------|---------|
-| 1 | rD | 0.0000 | 0.0000 | 1.0000 |
-| 2 | φ | 0.0000 | 0.0000 | 0.0038 |
-| 3 | fT | 0.0000 | 0.0000 | 0.0000 |
-| 4 | rT | 0.0000 | 0.0000 | 0.0000 |
-| 5 | rP | 0.0000 | 0.0000 | 0.0000 |
-| 6 | rA | 0.0000 | 0.0000 | 0.0000 |
-| 7 | rU | 0.0000 | 0.0000 | 0.0000 |
-| 8 | Λ | 0.0000 | 0.0000 | 0.0000 |
+| 1 | rA | -0.0234 | -0.0000 | 0.0234 |
+| 2 | φ | 0.0228 | 0.0000 | 0.0228 |
+| 3 | rD | -0.0014 | -0.0000 | 0.0014 |
+| 4 | Λ | 0.0000 | 0.0000 | 0.0000 |
+| 5 | fT | 0.0000 | 0.0000 | 0.0000 |
+| 6 | rT | 0.0000 | 0.0000 | 0.0000 |
+| 7 | rP | 0.0000 | 0.0000 | 0.0000 |
+| 8 | rU | 0.0000 | 0.0000 | 0.0000 |
 | 9 | EIR | 0.0000 | 0.0000 | 0.0000 |
 | 10 | HBI | 0.0000 | 0.0000 | 0.0000 |
 
