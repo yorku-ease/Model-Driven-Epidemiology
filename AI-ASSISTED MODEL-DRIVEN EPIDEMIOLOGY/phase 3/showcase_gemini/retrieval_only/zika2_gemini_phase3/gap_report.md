@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **29**
-- After fills gaps (re-detected): **19**
-- Delta (before - after): **10**
+- After fills gaps (re-detected): **29**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **6**
-- Delta missing flows: **4**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -69,11 +69,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 34.5% | 30% |
-| **Reference agreement** | 75.8% | 30% |
-| **Fill traceability** | 52.6% | 20% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 42.9% | 30% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **63.6/100** | — |
+| **→ Composite** | **32.9/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -86,16 +86,28 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 15 | 12 | 17 | 44 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 24
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 24
+- **Flagged** for manual review: 58
 
 ### susceptiblewomen (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### exposedwomen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiouswomensymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiouswomenasymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiouswomengenitalpersistence (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
@@ -108,6 +120,18 @@
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### exposedmen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmensymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmenasymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmensemenpersistence (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
@@ -128,59 +152,181 @@
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### SusceptibleWomen->ExposedWomen (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedWomen->InfectiousWomenSymptomaticBlood (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedWomen->InfectiousWomenAsymptomaticBlood (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### InfectiousWomenGenitalPersistence->RecoveredWomen (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### SusceptibleMen->ExposedMen (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedMen->InfectiousMenSymptomaticBlood (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedMen->InfectiousMenAsymptomaticBlood (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### InfectiousMenSemenPersistence->RecoveredMen (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### susceptiblewomen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### exposedwomen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiouswomensymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiouswomenasymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiouswomengenitalpersistence (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### recoveredwomen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### susceptiblemen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### exposedmen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmensymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmenasymptomaticblood (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmensemenpersistence (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### recoveredmen (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### susceptiblemosquitoes (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### exposedmosquitoes (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmosquitoes (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### SusceptibleWomen->ExposedWomen (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedWomen->InfectiousWomenSymptomaticBlood (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedWomen->InfectiousWomenAsymptomaticBlood (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousWomenGenitalPersistence->RecoveredWomen (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### SusceptibleMen->ExposedMen (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedMen->InfectiousMenSymptomaticBlood (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedMen->InfectiousMenAsymptomaticBlood (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousMenSemenPersistence->RecoveredMen (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **15** | Candidate: **21**
-- Precision **0.7143** | Recall **1.0** | F1 **0.8333**
+- Gold count: **15** | Candidate: **15**
+- Precision **0.6** | Recall **0.6** | F1 **0.6**
 ### Flows
-- Gold count: **14** | Candidate: **27**
-- Precision **0.5185** | Recall **1.0** | F1 **0.6829**
+- Gold count: **14** | Candidate: **17**
+- Precision **0.2353** | Recall **0.2857** | F1 **0.2581**

@@ -11,7 +11,7 @@
       "suggestion": {
         "primary_name": "Exposed",
         "description": "",
-        "reasoning": "",
+        "reasoning": "The excerpt",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -27,8 +27,8 @@
       "source": "inference",
       "suggestion": {
         "primary_name": "Vaccinated",
-        "description": "Individuals who have received the dengue vaccine.",
-        "reasoning": "The excerpt extensively discusses dengue vaccines, vaccination strategies, and vaccinees, indicating that a compartment for vaccinated individuals is crucial for modeling the described dynamics.",
+        "description": "",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -43,9 +43,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Vaccinated Infected",
+        "primary_name": "VaccinatedInfected",
         "description": "",
-        "reasoning": "The",
+        "reasoning": "The excerpt highlights the 'elevated risk",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -77,7 +77,7 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": 0.2,
+        "value": 0.5,
         "unit": "per day",
         "reasoning": "",
         "range_low": null,
@@ -97,7 +97,7 @@
       "source": "inference",
       "suggestion": {
         "value": 0.167,
-        "unit": "1/days",
+        "unit": "per day",
         "reasoning": "",
         "range_low": null,
         "range_high": null,
@@ -115,7 +115,7 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": 0.14,
+        "value": 0.143,
         "unit": "per day",
         "reasoning": "",
         "range_low": null,
@@ -134,8 +134,8 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": 0.1,
-        "unit": "per year",
+        "value": 0.001,
+        "unit": "per day",
         "reasoning": "",
         "range_low": null,
         "range_high": null,
@@ -153,9 +153,9 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": 0.4,
+        "value": 0.3,
         "unit": null,
-        "reasoning": "Deng",
+        "reasoning": "",
         "range_low": null,
         "range_high": null,
         "source": "llm_inference",
@@ -173,8 +173,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "ContactFlow",
-        "description": "Susceptible individuals become exposed",
-        "reasoning": "",
+        "description": "Susceptible individuals become exposed to the dengue virus after being bitten by an infected mosquito.",
+        "reasoning": "Dengue is a vector-borne disease, and the transition from Susceptible to Exposed occurs through contact with an infected vector (mosquito), which is a form of contact-based transmission.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -190,8 +190,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Susceptible individuals receive a vaccine and transition to the Vaccinated compartment.",
-        "reasoning": "Vaccination is an intervention applied to susceptible individuals, typically occurring at a specific rate independent of disease transmission dynamics, as discussed in the context of a vaccination strategy.",
+        "description": "Susceptible individuals receive a dengue vaccine and transition to the vaccinated compartment.",
+        "reasoning": "Vaccination is a public health intervention applied to individuals, typically modeled as a rate at which susceptible individuals are vaccinated, rather than through contact-dependent transmission.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -207,8 +207,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Individuals who have been infected with the dengue virus complete their intrinsic incubation period and become capable of transmitting the virus to mosquitoes.",
-        "reasoning": "The transition from the exposed (latent) state to the infectious state",
+        "description": "The transition from the",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -224,8 +224,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "ContactFlow",
-        "description": "Vaccinated individuals become infected",
-        "reasoning": "",
+        "description": "Vaccinated individuals can still become infected with dengue virus through contact with infected individuals.",
+        "reasoning": "The text implies vaccinated individuals can experience 'first natural DENV infection', indicating that vaccination does not confer complete sterilizing immunity and infection can still occur.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -241,8 +241,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Vaccinated individuals recovering from dengue infection.",
-        "reasoning": "Recovery from an infection is a natural biological process that occurs over time, typically modeled as a rate",
+        "description": "Recovery of vaccinated",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -257,5 +257,254 @@
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed",
+        "description": "",
+        "reasoning": "The excerpt",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinated",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccinated",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedinfected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "VaccinatedInfected",
+        "description": "",
+        "reasoning": "The excerpt highlights the 'elevated risk",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedrecovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "VaccinatedRecovered",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "transmissionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.5,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "incubationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.167,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.143,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "screeningandvaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.001,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinebreakthroughrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.3,
+        "unit": null,
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals become exposed to the dengue virus after being bitten by an infected mosquito.",
+        "reasoning": "Dengue is a vector-borne disease, and the transition from Susceptible to Exposed occurs through contact with an infected vector (mosquito), which is a form of contact-based transmission.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Vaccinated",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Susceptible individuals receive a dengue vaccine and transition to the vaccinated compartment.",
+        "reasoning": "Vaccination is a public health intervention applied to individuals, typically modeled as a rate at which susceptible individuals are vaccinated, rather than through contact-dependent transmission.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Exposed->Infectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The transition from the",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Vaccinated->VaccinatedInfected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Vaccinated individuals can still become infected with dengue virus through contact with infected individuals.",
+        "reasoning": "The text implies vaccinated individuals can experience 'first natural DENV infection', indicating that vaccination does not confer complete sterilizing immunity and infection can still occur.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedInfected->VaccinatedRecovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Recovery of vaccinated",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

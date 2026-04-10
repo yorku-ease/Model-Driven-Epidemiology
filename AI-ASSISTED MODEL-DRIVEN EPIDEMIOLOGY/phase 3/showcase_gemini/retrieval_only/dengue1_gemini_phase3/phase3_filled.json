@@ -2,20 +2,6 @@
   "filled_gaps": [
     {
       "gap": {
-        "expected": "susceptible mosquitoes",
-        "severity": "high",
-        "reason": "Present in gold standard but not in extracted model."
-      },
-      "gap_type": "missing_compartments",
-      "source": "flagged",
-      "suggestion": {
-        "action": "manual_review",
-        "reason": "Could not fill compartments gap automatically.",
-        "primary_name": "susceptible mosquitoes"
-      }
-    },
-    {
-      "gap": {
         "expected": "\u03b31",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model."
@@ -23,17 +9,17 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.5",
-        "unit": "1/time",
+        "value": "1/1.5",
+        "unit": "1/day",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Recovery rate of symptomatic infectious hosts (paper: \u03b31a)",
+        "paper_id": "p2_influenza3_llm_claude_20260407_214824",
+        "description": "Recovery rate for infectious class (range 1/4 to 1)",
         "sources": [
-          "p1_model_malaria",
-          "p1_model_dengue",
+          "p2_cholera3_llm_gemini_20260407_204240",
+          "p2_cholera3_llm_openai_20260407_211654",
           "p2_influenza3_llm_claude_20260407_214824",
-          "p1_model_influenza",
-          "p1_model_cholera"
+          "p2_ebola3_llm_openai_20260407_212213",
+          "p2_cholera3_llm_claude_20260407_213639"
         ]
       }
     },
@@ -46,17 +32,17 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.5",
-        "unit": "1/time",
+        "value": "1/1.5",
+        "unit": "1/day",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Recovery rate of asymptomatic infectious hosts (paper: \u03b32a)",
+        "paper_id": "p2_influenza3_llm_claude_20260407_214824",
+        "description": "Recovery rate for hospitalized class (range 1/4 to 1)",
         "sources": [
-          "p1_model_malaria",
-          "p1_model_dengue",
+          "p2_cholera3_llm_gemini_20260407_204240",
+          "p2_cholera3_llm_openai_20260407_211654",
           "p2_influenza3_llm_claude_20260407_214824",
-          "p1_model_influenza",
-          "p1_model_cholera"
+          "p2_ebola3_llm_openai_20260407_212213",
+          "p2_cholera3_llm_claude_20260407_213639"
         ]
       }
     },
@@ -67,53 +53,106 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "Susceptible mosquitoes->Infectious mosquitoes",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible mosquitoes->Infectious mosquitoes",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible mosquitoes->Infectious mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     }
   ],
   "summary": {
-    "rag_count": 3,
+    "rag_count": 2,
     "inference_count": 0,
     "spec_entity_count": 0,
-    "flagged_count": 1,
+    "flagged_count": 2,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "\u03b31",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "1/1.5",
+        "unit": "1/day",
+        "source": "parameter_index",
+        "paper_id": "p2_influenza3_llm_claude_20260407_214824",
+        "description": "Recovery rate for infectious class (range 1/4 to 1)",
+        "sources": [
+          "p2_cholera3_llm_gemini_20260407_204240",
+          "p2_cholera3_llm_openai_20260407_211654",
+          "p2_influenza3_llm_claude_20260407_214824",
+          "p2_ebola3_llm_openai_20260407_212213",
+          "p2_cholera3_llm_claude_20260407_213639"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "\u03b32",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "1/1.5",
+        "unit": "1/day",
+        "source": "parameter_index",
+        "paper_id": "p2_influenza3_llm_claude_20260407_214824",
+        "description": "Recovery rate for hospitalized class (range 1/4 to 1)",
+        "sources": [
+          "p2_cholera3_llm_gemini_20260407_204240",
+          "p2_cholera3_llm_openai_20260407_211654",
+          "p2_influenza3_llm_claude_20260407_214824",
+          "p2_ebola3_llm_openai_20260407_212213",
+          "p2_cholera3_llm_claude_20260407_213639"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible mosquitoes->Infectious mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible mosquitoes->Infectious mosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    }
+  ]
 }

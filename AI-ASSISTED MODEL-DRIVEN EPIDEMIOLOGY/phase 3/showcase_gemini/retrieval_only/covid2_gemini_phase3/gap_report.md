@@ -38,8 +38,8 @@
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 100.0% | 30% |
 | **Fill traceability** | 100.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **100.0/100** | — |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **80.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -59,22 +59,22 @@
 
 ### initialseed (missing_parameters)
 - **Source:** rag
-- **Value:** 5 persons
-- **Description:** Initial infected individuals in Wuhan used by the paper on December 1, 2019
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_hiv
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **1**
-- Exact match (<1% error): **1**
+- Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **100.0%**
-- Median relative error: **0.0%**
+- Poor (>50% error): **1**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **100.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| initialseed | 5.0 | 5.0 | 0.0% | exact |
+| initialseed | 0.0001 | 5.0 | 100.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

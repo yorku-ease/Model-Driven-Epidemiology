@@ -53,9 +53,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
 | **Reference agreement** | 83.8% | 30% |
-| **Fill traceability** | 63.6% | 20% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **57.9/100** | — |
+| **→ Composite** | **55.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,9 +68,9 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 6 | 19 | 13 | 38 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 14
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 8
+- Filled via **inference**: 22
 - **Flagged** for manual review: 0
 
 ### treatedclinicaldisease (missing_compartments)
@@ -90,39 +90,91 @@
 - **Primary name:** Asymptomatic Subpatent Infection
 
 ### Susceptible->TreatedClinicalDisease (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals acquire clinical
 
 ### Susceptible->UntreatedClinicalDisease (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals acquire
 
 ### Susceptible->AsymptomaticPatentInfection (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected
 
 ### TreatedClinicalDisease->Prophylaxis (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 4 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have
 
 ### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 4 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with untreated clinical malaria
 
 ### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 1 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of
 
 ### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with asymptomatic sub-
+
+### treatedclinicaldisease (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated Clinical Disease
+
+### untreatedclinicaldisease (missing_compartments)
+- **Source:** inference
+- **Primary name:** Untreated Clinical Disease
+
+### asymptomaticpatentinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Asymptomatic Patent Infection
+
+### asymptomaticsubpatentinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Asymptomatic Subpatent Infection
+
+### Susceptible->TreatedClinicalDisease (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals who develop
+
+### Susceptible->UntreatedClinicalDisease (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals
+
+### Susceptible->AsymptomaticPatentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals become infected
+
+### TreatedClinicalDisease->Prophylaxis (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have
+
+### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with untreated clinical malaria
+
+### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The natural progression of an asymptomatic malaria infection where parasite densities decline below the threshold of microscopic detection, leading to a sub-patent infection state.
+- **Reasoning:** This transition represents a natural within-host progression of infection intensity, typically driven by the host's
+
+### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with asymptomatic sub
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

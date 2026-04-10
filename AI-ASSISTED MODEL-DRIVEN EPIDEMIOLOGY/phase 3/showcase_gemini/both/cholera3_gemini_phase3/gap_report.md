@@ -42,10 +42,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 14.3% | 30% |
+| **Reference agreement** | 50.0% | 30% |
 | **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **34.3/100** | — |
+| **→ Composite** | **45.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -58,24 +58,33 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 0 | 3 | 4 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 2
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 2
+- Filled via **inference**: 4
 - **Flagged** for manual review: 0
 
 ### aquatic toxigenic vibrio cholerae (missing_compartments)
 - **Source:** inference
-- **Primary name:** Aquatic Vibrio Cholerae
+- **Primary name:** Environmental Vibrio Cholerae
 
 ### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Shedding of tox
+
+### aquatic toxigenic vibrio cholerae (missing_compartments)
+- **Source:** inference
+- **Primary name:** Aquatic Vibrio
+
+### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Shedding
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **3** | Candidate: **4**
-- Precision **0.25** | Recall **0.3333** | F1 **0.2857**
+- Gold count: **3** | Candidate: **3**
+- Precision **0.6667** | Recall **0.6667** | F1 **0.6667**
 ### Flows
 - Gold count: **2** | Candidate: **4**
-- Precision **0.0** | Recall **0.0** | F1 **0.0**
+- Precision **0.25** | Recall **0.5** | F1 **0.3333**

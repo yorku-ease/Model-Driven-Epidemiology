@@ -37,9 +37,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 100.0% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 0.0% | 20% |
-| **→ Composite** | **60.0/100** | — |
+| **→ Composite** | **70.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -60,7 +60,7 @@
 ### initialseed (missing_parameters)
 - **Source:** inference
 - **Value:** 1.0 individuals
-- **Reasoning:** For
+- **Reasoning:** The initial seed typically represents the very first infected individual(s
 - **Confidence:** LOW
 
 ## 6. Fill validation (vs gold standard)

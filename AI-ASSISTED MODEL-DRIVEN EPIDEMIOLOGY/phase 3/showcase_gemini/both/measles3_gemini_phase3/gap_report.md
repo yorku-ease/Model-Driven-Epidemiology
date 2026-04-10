@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **12**
-- After fills gaps (re-detected): **3**
-- Delta (before - after): **9**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **7**
 - Delta missing parameters: **7**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -51,11 +51,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 75.0% | 30% |
-| **Reference agreement** | 96.7% | 30% |
-| **Fill traceability** | 66.7% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **84.8/100** | — |
+| **Gap reduction** | 58.3% | 30% |
+| **Reference agreement** | 93.3% | 30% |
+| **Fill traceability** | 70.6% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **59.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,29 +68,125 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 8 | 3 | 12 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 12
+- Filled via **RAG**: 7
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 3
+- Filled via **inference**: 10
 - **Flagged** for manual review: 0
+
+### maternalimmunity (missing_compartments)
+- **Source:** inference
+- **Primary name:** Maternal Immunity
+- **Reasoning:** The text highlights 'passive immunity' and 'seroepidemiological studies' which are crucial for understanding the initial immune status of infants, a common compartment in measles models.
 
 ### vaccinefailure (missing_compartments)
 - **Source:** inference
 - **Primary name:** Vaccine Failure
 
-### Susceptible->VaccineFailure (missing_flows)
+### maternalimmunitylossrate (missing_parameters)
 - **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
+
+### susceptibleinfectionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### effectivevaccinationrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### vaccinefailurerate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### vaccinefailureinfectionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### latentprogressionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### recoveryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### MaternalImmunity->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The waning of passive maternal antibodies in infants, leading to a loss of protection against measles and transition to a susceptible state.
+- **Reasoning:** Maternal immunity is temporary and naturally decays over time, making infants susceptible to measles as their protective antibodies wane, which is a rate-dependent process not tied to contact.
+
+### Susceptible->VaccineFailure (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The transition of
 
 ### VaccineFailure->Latent (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Individuals whose
+
+### maternalimmunity (missing_compartments)
+- **Source:** inference
+- **Primary name:** MaternalImmunity
+
+### vaccinefailure (missing_compartments)
+- **Source:** inference
+- **Primary name:** WaningVaccineImmunity
+
+### MaternalImmunity->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infants born with passive maternal antibodies gradually lose this protection over time, becoming susceptible to measles infection.
+- **Reasoning:** The paper mentions seroepidemiological studies providing a profile of passive immunity, which inherently includes the waning of maternal antibodies over time, a process independent of contact and thus a rate-based transition.
+
+### Susceptible->VaccineFailure (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals
+
+### VaccineFailure->Latent (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals whose vaccine
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **7**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **7**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.98%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| maternalimmunitylossrate | 0.0001 | 4.0 | 100.0% | poor |
+| susceptibleinfectionrate | 0.0001 | 0.52 | 99.98% | poor |
+| effectivevaccinationrate | 0.0001 | 0.18 | 99.94% | poor |
+| vaccinefailurerate | 0.0001 | 0.02 | 99.5% | poor |
+| vaccinefailureinfectionrate | 0.0001 | 0.4 | 99.98% | poor |
+| latentprogressionrate | 0.0001 | 52.14 | 100.0% | poor |
+| recoveryrate | 0.5 | 52.14 | 99.04% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **6** | Candidate: **7**
-- Precision **1.0** | Recall **1.0** | F1 **1.0**
+- Gold count: **6** | Candidate: **8**
+- Precision **0.875** | Recall **1.0** | F1 **0.9333**
 ### Flows
 - Gold count: **7** | Candidate: **8**
 - Precision **0.875** | Recall **1.0** | F1 **0.9333**

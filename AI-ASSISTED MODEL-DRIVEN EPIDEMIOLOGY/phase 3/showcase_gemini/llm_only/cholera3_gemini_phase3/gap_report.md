@@ -42,10 +42,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 12.5% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 50.0% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **23.8/100** | — |
+| **→ Composite** | **45.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -65,17 +65,28 @@
 
 ### aquatic toxigenic vibrio cholerae (missing_compartments)
 - **Source:** inference
-- **Primary name:** Environmental Vibrio Cholerae
+- **Primary name:** Aquatic Vibrio Cholerae
 
 ### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Shedding
+- **Description:** Shedding of Vibrio cholerae from infected individuals into the aquatic environment.
+- **Reasoning:** Infected individuals with cholera excrete Vibrio cholerae into the environment, particularly water, through their diarrheal stools, as cholera is a waterborne disease.
+
+### aquatic toxigenic vibrio cholerae (missing_compartments)
+- **Source:** inference
+- **Primary name:** Aquatic Vibrio Cholerae
+- **Reasoning:** The excerpt repeatedly emphasizes cholera as a waterborne disease and its association with contaminated water supplies, strongly implying
+
+### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infected individuals shed Vib
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **3** | Candidate: **5**
-- Precision **0.2** | Recall **0.3333** | F1 **0.25**
+- Gold count: **3** | Candidate: **3**
+- Precision **0.6667** | Recall **0.6667** | F1 **0.6667**
 ### Flows
 - Gold count: **2** | Candidate: **4**
-- Precision **0.0** | Recall **0.0** | F1 **0.0**
+- Precision **0.25** | Recall **0.5** | F1 **0.3333**

@@ -2,48 +2,43 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "\u03c0",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "200",
+        "unit": "USD (2014)",
+        "source": "parameter_index",
+        "paper_id": "p2_dengue3_llm_gemini_20260407_204755",
+        "description": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.",
+        "sources": [
+          "p2_dengue3_llm_openai_20260407_212001",
+          "p2_cholera3_llm_gemini_20260407_204240",
+          "p2_dengue3_llm_gemini_20260407_204755",
+          "p2_influenza3_llm_gemini_20260407_205738",
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_influenza3_llm_openai_20260407_212520"
+        ]
+      }
+    },
+    {
+      "gap": {
         "expected": "Susceptible->Infected",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "Susceptible->Infected",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible adults->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible children under 5->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible homosexual men->Untreated infected homosexual men",
-            "disease": "hiv",
-            "paper_id": "p1_model_hiv",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible women->Untreated infected women",
-            "disease": "hiv",
-            "paper_id": "p1_model_hiv",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals acquire Mycobacterium tuberculosis infection through contact with infectious individuals.",
+        "reasoning": "The excerpt emphasizes 'tuberculosis transmission' and 'how disease may spread in a population,' indicating that new infections arise from interactions between susceptible and infected individuals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -53,43 +48,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "Infected->Recovered",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "VaccinatedInfected->VaccinatedRecovered",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infected->Recovered",
-            "disease": "tuberculosis",
-            "paper_id": "p1_model_tuberculosis",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed / recently infected->Symptomatic infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed / recently infected->Asymptomatic infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "The rate at which individuals actively infected with tuberculosis recover from the disease, either spontaneously or through successful treatment, becoming non-infectious.",
+        "reasoning": "Recovery from active infection is a fundamental process in tuberculosis dynamics, influenced by treatment and the natural course of the disease, which is essential for reducing disease prevalence.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -99,53 +65,202 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "Recovered->Infected",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Recovered->Infected",
-            "disease": "tuberculosis",
-            "paper_id": "p1_model_tuberculosis",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible adults->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible children under 5->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated adults (two doses)->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated children under 5 (two doses)->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Recovered individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals become infected with Mycobacterium tuberculosis after coming into contact with infectious individuals.",
+        "reasoning": "The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population,' indicating that new infections arise from contact between susceptible and infected individuals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infected->Recovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "This flow represents individuals who were actively infected with tuberculosis and have successfully recovered, either naturally or, more commonly, through effective treatment, thereby ceasing to be infectious.",
+        "reasoning": "Recovery from active tuberculosis, often facilitated by treatment, is a fundamental process that removes individuals from the infectious compartment and is essential for modeling disease resolution and population-level dynamics.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Recovered->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "A proportion of",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
-    "rag_count": 7,
-    "inference_count": 0,
+    "rag_count": 1,
+    "inference_count": 6,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "\u03c0",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "200",
+        "unit": "USD (2014)",
+        "source": "parameter_index",
+        "paper_id": "p2_dengue3_llm_gemini_20260407_204755",
+        "description": "Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting.",
+        "sources": [
+          "p2_dengue3_llm_openai_20260407_212001",
+          "p2_cholera3_llm_gemini_20260407_204240",
+          "p2_dengue3_llm_gemini_20260407_204755",
+          "p2_influenza3_llm_gemini_20260407_205738",
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_influenza3_llm_openai_20260407_212520"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals acquire Mycobacterium tuberculosis infection through contact with infectious individuals.",
+        "reasoning": "The excerpt emphasizes 'tuberculosis transmission' and 'how disease may spread in a population,' indicating that new infections arise from interactions between susceptible and infected individuals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infected->Recovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at which individuals actively infected with tuberculosis recover from the disease, either spontaneously or through successful treatment, becoming non-infectious.",
+        "reasoning": "Recovery from active infection is a fundamental process in tuberculosis dynamics, influenced by treatment and the natural course of the disease, which is essential for reducing disease prevalence.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Recovered->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Recovered individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals become infected with Mycobacterium tuberculosis after coming into contact with infectious individuals.",
+        "reasoning": "The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population,' indicating that new infections arise from contact between susceptible and infected individuals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infected->Recovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "This flow represents individuals who were actively infected with tuberculosis and have successfully recovered, either naturally or, more commonly, through effective treatment, thereby ceasing to be infectious.",
+        "reasoning": "Recovery from active tuberculosis, often facilitated by treatment, is a fundamental process that removes individuals from the infectious compartment and is essential for modeling disease resolution and population-level dynamics.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Recovered->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "A proportion of",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

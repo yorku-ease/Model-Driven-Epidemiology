@@ -58,10 +58,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 68.4% | 30% |
-| **Reference agreement** | 25.0% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 0.0% | 20% |
-| **→ Composite** | **28.0/100** | — |
+| **Reference agreement** | 42.9% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 7.7% | 20% |
+| **→ Composite** | **44.9/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -79,58 +79,177 @@
 - Filled via **inference**: 25
 - **Flagged** for manual review: 0
 
+### susceptible (missing_compartments)
+- **Source:** inference
+- **Primary name:** Susceptible
+
 ### removed (missing_compartments)
 - **Source:** inference
 - **Primary name:** Deceased
 - **Reasoning:** The model
 
+### population11countries (missing_parameters)
+- **Source:** inference
+- **Value:** 750000000.0 
+- **Confidence:** LOW
+
 ### initialrt (missing_parameters)
 - **Source:** inference
 - **Value:** 3.0 
-- **Reasoning:** The text explicitly states that initial R_t for SARS-CoV-2 in uncontrolled epidemic settings in China was typically around 2-4.
+- **Reasoning:** The text indicates that R_t during the uncontrolled epidemic phase for SARS-CoV-2 was typically around 2-4. A value of 3.0 is a reasonable mid-point for the initial R_t before interventions.
+- **Confidence:** LOW
+
+### generationintervaldays (missing_parameters)
+- **Source:** inference
+- **Value:** 5.5 days
+- **Reasoning:** The generation interval for COVID-19 is typically estimated to be between 4 and 7 days, reflecting the average time between successive infections in a transmission chain.
+- **Confidence:** LOW
+
+### basetransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 1/day
+- **Reasoning:** Based on an estimated R0 for uncontrolled COVID-19 of around 3 and an average infectious period of 6 days (beta = R0/D).
+- **Confidence:** LOW
+
+### publiceventsbaneffect (missing_parameters)
+- **Source:** inference
+- **Value:** 0.7 
+- **Confidence:** LOW
+
+### schoolclosureeffect (missing_parameters)
+- **Source:** inference
+- **Value:** 0.15 
+- **Confidence:** LOW
+
+### selfisolationeffect (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 
+- **Reasoning:** Self
+- **Confidence:** LOW
+
+### socialdistancingeffect (missing_parameters)
+- **Source:** inference
+- **Value:** 0.6 
+- **Reasoning:** Social distancing
 - **Confidence:** LOW
 
 ### lockdowneffect (missing_parameters)
 - **Source:** inference
-- **Value:** 0.25 
+- **Value:** 0.3 
+- **Confidence:** LOW
+
+### combinedinterventionmultiplier (missing_parameters)
+- **Source:** inference
+- **Value:** 0.3 
+- **Confidence:** LOW
+
+### effectivetransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 3.0 
+- **Reasoning:** The provided text indicates that the effective reproduction rate (R_t) for SARS-CoV-2 during an uncontrolled epidemic ranged from 2-4. A value of 3.0 represents a central estimate for this uncontrolled phase.
+- **Confidence:** LOW
+
+### meanoutcomedelaydays (missing_parameters)
+- **Source:** inference
+- **Value:** 24 days
+- **Reasoning:** This parameter represents the mean delay from infection to death. For COVID-19, this typically ranges from 20 to 30 days, accounting for the incubation period and the time from symptom onset to death.
+- **Confidence:** LOW
+
+### removalrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.1 per day
+- **Reasoning:** This value represents the inverse of a typical infectious period for COVID-19, commonly estimated to be around 10 days.
+- **Confidence:** LOW
+
+### deathrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.01 
+- **Reasoning:** The Infection Fatality Rate (IFR) for COVID-19 typically ranges from 0.5% to 1.5% globally, varying by age and healthcare system, with 1% being a commonly cited average.
+- **Confidence:** LOW
+
+### Susceptible->Infected (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected through contact with infected individuals.
+- **Reasoning:** COVID-19 is a directly transmissible disease, and the concept of R_t (reproduction number) discussed in the paper implies a contact-dependent infection process.
+
+### Infected->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals move from the infected state to the removed state due to recovery or death, no longer contributing to transmission.
+- **Reasoning:** The paper explicitly discusses 'linking the infection cycle to observed deaths' and 'estimating the deaths that would have occurred without interventions,' indicating that death is a key outcome of infection and a component of the 'Removed' state in a mechanistic model.
+
+### Infected->Dead (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who are infected with
+
+### removed (missing_compartments)
+- **Source:** inference
+- **Primary name:** Deceased
+- **Reasoning:** The
+
+### initialrt (missing_parameters)
+- **Source:** inference
+- **Value:** 3.0 
+- **Reasoning:** The provided text states that R_t for SARS-CoV-2 during an uncontrolled epidemic typically ranges from 2-4. This value represents the initial reproduction number before interventions.
+- **Confidence:** LOW
+
+### lockdowneffect (missing_parameters)
+- **Source:** inference
+- **Value:** 0.6 
+- **Reasoning:** Lockdowns
 - **Confidence:** LOW
 
 ### Susceptible->Infected (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
 - **Description:** Susceptible individuals become infected after effective contact with infectious individuals.
-- **Reasoning:** The paper discusses the 'infection cycle' and 'R_t' (reproduction number), which are characteristic of contact-based transmission where the rate of new infections depends on interactions between susceptible and infected individuals.
+- **Reasoning:** Infectious diseases like COVID-19 spread through interactions between susceptible and infected individuals, making the transition dependent on contact rates.
 
 ### Infected->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** The rate at which infected individuals either recover from the disease or die due to the disease, thereby being removed from the infectious population.
-- **Reasoning:** The paper discusses linking the 'infection cycle to observed deaths' and 'estimating the deaths that would have occurred without interventions', which implies a transition out of the infected state into a removed state (including death).
+- **Description:** This flow represents infected individuals either recovering from the disease or dying due to it, thereby moving out of the infectious state.
+- **Reasoning:** The excerpt discusses 'observed deaths' and the 'infection cycle,' implying that infected individuals eventually exit the infected state through recovery or death, which are processes typically modeled as a rate.
 
 ### Infected->Dead (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Mortality of infected individuals due to the disease.
-- **Reasoning:** The paper describes a mechanistic model linking the infection cycle to observed deaths, implying a direct transition from the infected state to death at a specific rate.
+- **Description:** Mortality of individuals infected
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **2**
+- Parameters compared: **13**
 - Exact match (<1% error): **0**
-- Close (<10% error): **0**
-- Approximate (<50% error): **2**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **0.0%**
-- Median relative error: **31.58%**
+- Close (<10% error): **1**
+- Approximate (<50% error): **6**
+- Poor (>50% error): **6**
+- **Accuracy (exact+close)**: **7.7%**
+- Median relative error: **40.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
+| population11countries | 750000000.0 | 741000000.0 | 1.21% | close |
 | initialrt | 3.0 | 3.8 | 21.05% | approximate |
-| lockdowneffect | 0.25 | 0.19 | 31.58% | approximate |
+| generationintervaldays | 5.5 | 6.5 | 15.38% | approximate |
+| basetransmissionrate | 0.5 | InitialRt / GenerationIntervalDays | — | no_comparison |
+| publiceventsbaneffect | 0.7 | 1.0 | 30.0% | approximate |
+| schoolclosureeffect | 0.15 | 1.0 | 85.0% | poor |
+| selfisolationeffect | 0.5 | 1.0 | 50.0% | poor |
+| socialdistancingeffect | 0.6 | 1.0 | 40.0% | approximate |
+| lockdowneffect | 0.3 | 0.19 | 57.89% | poor |
+| combinedinterventionmultiplier | 0.3 | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | — | no_comparison |
+| effectivetransmissionrate | 3.0 | BaseTransmissionRate * CombinedInterventionMultiplier | — | no_comparison |
+| meanoutcomedelaydays | 24.0 | 18.0 | 33.33% | approximate |
+| removalrate | 0.1 | 1.0 | 90.0% | poor |
+| deathrate | 0.01 | 0.005 | 100.0% | poor |
+| initialrt | 3.0 | 3.8 | 21.05% | approximate |
+| lockdowneffect | 0.6 | 0.19 | 215.79% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **4** | Candidate: **4**
-- Precision **0.5** | Recall **0.5** | F1 **0.5**
+- Precision **1.0** | Recall **0.75** | F1 **0.8571**
 ### Flows
 - Gold count: **3** | Candidate: **1**
 - Precision **0.0** | Recall **0.0** | F1 **0.0**

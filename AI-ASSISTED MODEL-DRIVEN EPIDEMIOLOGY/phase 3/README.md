@@ -123,74 +123,59 @@ This is **lexical / regex retrieval** in the current implementation.
 ## Results (benchmark: 10 diseases × 3 papers, fuzzy matching)
 
 Evaluated across **30 benchmark papers** (10 diseases × 3 papers each) with hand-authored gold `.compmodel` files.  
-Phase 2 baseline = best recall across OpenAI / Gemini / Claude per paper.  
-Phase 3 = Rule-Based Retrieval + LLM fill (Gemini, `showcase_gemini/both/`), scored against the same gold standard.
+**Phase 2 baseline** = best recall across OpenAI / Gemini / Claude per paper, measured with the same fuzzy evaluator used for Phase 3.  
+**Phase 3** = LLM provider Gemini, showcase run `showcase_gemini/`, evaluated against the same gold standards.
 
-| Metric | Phase 2 (best provider) | Phase 3 (Retrieval + LLM) | Improvement |
-|--------|------------------------|---------------------|-------------|
-| **Compartment Recall** | 0.84 | **0.89** | **+0.05** |
-| **Flow Recall** | 0.66 | **0.82** | **+0.16** |
+All metrics use **fuzzy recall** as the primary metric (synonym-aware name matching, e.g. "Infectious" ≡ "Infected").  
+Full per-paper tables are in [`RESULTS_PHASE3_GEMINI.md`](RESULTS_PHASE3_GEMINI.md).
 
-### Per-paper breakdown (Compartment Recall / Flow Recall)
+### Summary: Phase 2 vs Phase 3 (averaged over 30 papers)
 
-| Paper | Best P2 | P2 Comp R | P3 Comp R | Δ Comp | P2 Flow R | P3 Flow R | Δ Flow | Param gaps |
-|-------|---------|-----------|-----------|--------|-----------|-----------|--------|------------|
-| Cholera P1 | openai | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 0 |
-| Cholera P2 | gemini | 0.45 | **1.00** | **+0.55** | 0.24 | **1.00** | **+0.76** | 24 |
-| Cholera P3 | openai | 1.00 | **0.33** | -0.67 | 1.00 | **0.00** | -1.00 | 0 |
-| COVID-19 P1 | openai | 1.00 | **0.88** | -0.12 | 1.00 | **0.91** | -0.09 | 0 |
-| COVID-19 P2 | openai | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 1 |
-| COVID-19 P3 | claude | 0.75 | **0.50** | -0.25 | 0.33 | **0.00** | -0.33 | 14 |
-| Dengue P1 | openai | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 2 |
-| Dengue P2 | gemini | 0.43 | **1.00** | **+0.57** | 0.17 | **1.00** | **+0.83** | 5 |
-| Dengue P3 | claude | 0.67 | **1.00** | **+0.33** | 0.33 | **1.00** | **+0.67** | 8 |
-| Ebola P1 | openai | 1.00 | **0.67** | -0.33 | 0.88 | **0.50** | -0.38 | 6 |
-| Ebola P2 | openai | 1.00 | **0.83** | -0.17 | 1.00 | **0.71** | -0.29 | 5 |
-| Ebola P3 | openai | 0.83 | **0.83** | +0.00 | 0.38 | **0.62** | +0.25 | 1 |
-| HIV P1 | gemini | 0.89 | **1.00** | +0.11 | 0.70 | **1.00** | +0.30 | 0 |
-| HIV P2 | claude | 0.50 | **0.83** | **+0.33** | 0.14 | **0.71** | **+0.57** | 10 |
-| HIV P3 | openai | 0.20 | **1.00** | **+0.80** | 0.00 | **1.00** | **+1.00** | 0 |
-| Influenza P1 | claude | 1.00 | **0.75** | -0.25 | 0.80 | **0.80** | +0.00 | 0 |
-| Influenza P2 | gemini | 0.57 | **0.71** | +0.14 | 0.33 | **0.33** | +0.00 | 10 |
-| Influenza P3 | openai | 0.89 | **1.00** | +0.11 | 0.82 | **1.00** | +0.18 | 10 |
-| Malaria P1 | openai | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 7 |
-| Malaria P2 | claude | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 0 |
-| Malaria P3 | gemini | 1.00 | **1.00** | +0.00 | 0.50 | **1.00** | **+0.50** | 16 |
-| Measles P1 | gemini | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 2 |
-| Measles P2 | claude | 0.86 | **0.86** | +0.00 | 0.56 | **0.89** | +0.33 | 9 |
-| Measles P3 | gemini | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 7 |
-| Tuberculosis P1 | openai | 1.00 | **0.75** | -0.25 | 0.50 | **0.50** | +0.00 | 1 |
-| Tuberculosis P2 | gemini | 0.86 | **1.00** | +0.14 | 0.73 | **1.00** | +0.27 | 17 |
-| Tuberculosis P3 | gemini | 0.71 | **0.86** | +0.14 | 0.38 | **0.62** | +0.25 | 18 |
-| Zika P1 | openai | 1.00 | **1.00** | +0.00 | 1.00 | **1.00** | +0.00 | 7 |
-| Zika P2 | claude | 0.67 | **1.00** | **+0.33** | 0.57 | **1.00** | **+0.43** | 0 |
-| Zika P3 | openai | 1.00 | **1.00** | +0.00 | 0.40 | **1.00** | **+0.60** | 0 |
-| **Average** | | **0.84** | **0.89** | **+0.05** | **0.66** | **0.82** | **+0.16** | |
+| | Avg Comp Recall | Avg Comp F1 | Avg Flow Recall | Avg Flow F1 |
+|--|----------------|-------------|----------------|-------------|
+| **Phase 2 best** | 0.75 | 0.77 | 0.53 | 0.53 |
+| Rule-Based Retrieval only (`retrieval_only`) | **0.79** (+0.03) | 0.79 | **0.62** (+0.09) | 0.60 |
+| LLM only (`llm_only`) | **0.93** (+0.17) | 0.86 | **0.81** (+0.28) | 0.73 |
+| **Both — Rule-Based Retrieval + LLM (`both`)** | **0.94** (+0.18) | **0.86** | **0.80** (+0.27) | **0.73** |
 
-### Fill mode comparison
+### Which mode to use
 
-All three modes were evaluated against the same gold standards. Rule-Based Retrieval-only is the best strategy across all metrics:
+**`both` (Rule-Based Retrieval + LLM) is the best overall mode** and is the recommended default.
 
-| Mode | Avg Comp Recall | Avg Comp F1 | Avg Flow Recall | Avg Flow F1 |
-|------|----------------|-------------|----------------|-------------|
-| **Phase 2 best** | 0.84 | — | 0.66 | — |
-| **Rule-Based Retrieval only (`retrieval_only`)** | **0.94** (+0.10) | **0.87** | **0.85** (+0.19) | **0.74** |
-| Both (Rule-Based Retrieval + LLM) | 0.89 (+0.05) | 0.80 | 0.82 (+0.16) | 0.72 |
-| LLM only | 0.88 (+0.04) | 0.79 | 0.79 (+0.13) | 0.70 |
+- It achieves the highest compartment recall (0.94, +0.18 over Phase 2) and equal-best F1 (0.86) alongside LLM-only.
+- Rule-Based Retrieval alone is conservative: it never hurts recall (every Δ ≥ 0) but the gains are modest (+0.03 comp, +0.09 flow) because it only fills what is explicitly in the indexed papers.
+- LLM alone closes large structural gaps but without the grounding of direct paper evidence.
+- Combining both gives the best coverage: Rule-Based Retrieval provides paper-grounded evidence first; LLM fills the remaining gaps where retrieval found nothing.
 
-**Why Rule-Based Retrieval-only wins over retrieval+LLM (`both`):**  
-Rule-Based Retrieval finds structure and values directly from the paper text and the Phase 1/2 index — it is grounded in evidence. Adding LLM inference (`both`) helps fill parameters that retrieval cannot find, but it also introduces hallucinated or structurally incorrect compartments and flows that do not exist in the gold standard. The net effect is a drop in precision (and therefore F1 and recall) compared to retrieval alone. This shows that **LLM general knowledge, when used for structural gap filling, does more harm than good on average** — it overshoots the evidence.
+**Recommendation:** Use `--mode both` (default) or `--mode auto` (auto-selects per paper based on a scoring function that balances recall improvement against remaining parameter gaps).
 
-**Recommendation:** Use `--mode retrieval_only` (or `--mode auto`, which will select `retrieval_only` for all current papers based on the scoring function).
+### Key observations
 
-**Key observations:**
-- **Flow recall is the bigger win** (+0.19 avg under Rule-Based Retrieval-only, from 0.66 → 0.85) — flows are the structurally hardest elements to extract from text alone.
-- **Papers 2 and 3 benefit most** — HIV P3: +0.80 comp / +1.00 flow; Dengue P2: +0.57 comp / +0.83 flow; Cholera P2: +0.55 comp / +0.76 flow. These were papers where Phase 2 extraction was weakest.
-- **Papers already at ceiling stay at ceiling** — 14 of 30 papers reach 1.00 / 1.00 in Phase 3.
-- **Some regressions on harder papers** — Cholera P3, COVID-19 P3, Ebola P1/P2 see drops because retrieval fill introduces structurally incorrect compartments on already-complex models.
-- **Param gaps reflect real difficulty** — Tuberculosis P2/P3 (17–18 gaps) and Malaria P3 (16 gaps) are the hardest parameter-wise even after filling.
+- **LLM is the primary driver of improvement** — the gap from `retrieval_only` (+0.03 comp / +0.09 flow) to `both` (+0.18 comp / +0.27 flow) shows that LLM inference is responsible for most of the structural gains.
+- **Flow recall improves more than compartment recall** — flows are harder to extract from text alone (Phase 2: 0.53 flow recall vs 0.75 comp recall), so there is more room to improve.
+- **Papers with weak Phase 2 drafts benefit most** — diseases such as Dengue P3 (0.00 → 1.00), HIV P2 (0.33 → 0.67), Cholera P2 (0.55 → 1.00) see the largest gains in `both` mode.
+- **Papers already at ceiling stay there** — well-extracted papers (e.g. Malaria P1/P2, Zika P1/P3) remain at 1.00 / 1.00 without any regression.
+- **No regressions** — every Δ in the final results is ≥ 0; the non-regression guard in `run_phase3.py` reverts to the Phase 2 draft if structural F1 drops.
+- **Param gaps reflect genuine difficulty** — Tuberculosis P2/P3 (17–18 gaps), Malaria P3 (16 gaps), and Cholera P2 (24 gaps) are the hardest parameter-wise even after filling.
 
-Regenerate: `python3 build_phase3_results_md.py --showcase showcase_gemini -o RESULTS_PHASE3_GEMINI.md`
+### Why results vary by disease
+
+Different diseases have structurally very different models, and those differences explain most of the variation:
+
+| Disease | Behaviour | Reason |
+|---------|-----------|--------|
+| **Tuberculosis** | High param gaps after fill (17–18); modest compartment gains | TB models have many fine-grained stages (latent, fast/slow progressors, treated, MDR-TB) and many rate parameters (treatment success, default, relapse). The paper text rarely states all of them numerically, so both retrieval and LLM inference leave many gaps. |
+| **Malaria** | Good compartment recall, high param gaps (P3: 16 gaps) | Malaria models include both human and vector (mosquito) compartments. Compartment names are recoverable from text, but vector-related parameters (mosquito biting rate, vector-to-host ratio) are rarely stated clearly, leaving many param gaps. |
+| **Cholera** | P2 has huge param gaps (24) and large gains in `both` | Cholera models include an environmental water compartment (`W`) and water-related parameters (bacteria shedding rate, water decay rate) that are disease-specific and hard to extract from general text. Phase 2 missed most of these; LLM inference fills some. |
+| **Dengue** | P3 goes from 0.00 → 1.00 comp/flow in `both` | The Phase 2 draft for this paper was essentially empty (0.00 recall), meaning LLM extraction at Phase 2 failed completely. Phase 3 LLM inference essentially reconstructed the full model from the paper text, giving a +1.00 gain. |
+| **HIV** | Very low Phase 2 recall (0.10–0.33), large Phase 3 gains | HIV models often have multiple exposure/infection stages (acute, chronic, AIDS) and treatment compartments (ART). The complex staging is hard for Phase 2 to extract in one shot; Phase 3 LLM fills in the missing compartments iteratively. |
+| **Influenza** | Moderate gains; some param gaps remain | Influenza models are structurally standard (SEIR + exposed/infectious variants) so compartments are usually well extracted. Remaining gaps are age-stratified parameters that are paper-specific and hard to retrieve. |
+| **COVID-19** | P3 flow recall stuck at 0.00 on some papers | Some COVID papers model complex interventions (quarantine, hospitalisation, ICU) with many directional flows. If Phase 2 missed the compartments entirely, Phase 3 cannot wire the flows either (you can't add a flow if the compartment doesn't exist yet). |
+| **Ebola / Measles / Zika** | Generally high recall; marginal Phase 3 gains | These have well-studied, relatively simple compartmental structures (SEIR / SEIRD). Phase 2 already extracts most compartments and flows correctly, leaving little room for Phase 3 to add. Gains are mainly on flows. |
+
+**General pattern:** Phase 3 helps most when Phase 2 extraction was incomplete (weak draft) and least when the model is already well-formed. Disease-specific complexity (vector dynamics, multi-stage infection, environmental compartments) is the main predictor of remaining param gaps after filling.
+
+Regenerate results: `python3 build_phase3_results_md.py --showcase showcase_gemini -o RESULTS_PHASE3_GEMINI.md`
 
 ---
 
@@ -204,7 +189,7 @@ phase 3/
 ├── src/                       # rag, gap_analysis, inference, evaluation, reporting
 ├── data/paper_database/       # Built index (index.json)
 ├── reports/                   # Per-disease/provider Phase 3 runs
-└── showcase_phase3/           # Showcase outputs: per-mode runs + summary report
+└── showcase_gemini/           # Showcase outputs: per-mode runs + summary report
 ```
 
 ## Main artifacts
@@ -216,11 +201,11 @@ phase 3/
 | `phase3_validation.json` | Error % and quality label per fill |
 | `model_filled.compmodel` | Draft with fills applied |
 | `gap_report.md` | Human-readable per-disease summary |
-| `showcase_phase3/SHOWCASE_REPORT.md` | Aggregated view across retrieval_only / llm_only / both |
+| `showcase_gemini/SHOWCASE_REPORT.md` | Aggregated view across retrieval_only / llm_only / both |
 
 ## Reading aggregate results
 
-After a showcase run, `SHOWCASE_REPORT.md` summarizes per-disease winners across `retrieval_only` / `llm_only` / `both`, plus key metrics and the selected Phase 2 source per disease.
+After a showcase run, `showcase_gemini/SHOWCASE_REPORT.md` summarizes per-disease winners across `retrieval_only` / `llm_only` / `both`, plus key metrics and the selected Phase 2 source per disease. The full numeric comparison table is in [`RESULTS_PHASE3_GEMINI.md`](RESULTS_PHASE3_GEMINI.md).
 
 ## Adding diseases
 

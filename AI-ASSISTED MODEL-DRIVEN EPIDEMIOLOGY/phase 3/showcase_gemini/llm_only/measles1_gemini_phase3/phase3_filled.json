@@ -9,8 +9,8 @@
       "gap_type": "missing_parameters",
       "source": "inference",
       "suggestion": {
-        "value": 0.0005,
-        "unit": "per day",
+        "value": 0.85,
+        "unit": null,
         "reasoning": "",
         "range_low": null,
         "range_high": null,
@@ -48,8 +48,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Exposed children age and transition into the Exposed adult compartment.",
-        "reasoning": "The model categorizes the population into two age groups (0-15 yrs and above 15 yrs), necessitating a flow to represent children aging into adults.",
+        "description": "Exposed children age into",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -65,8 +65,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Infectious children aging into the infectious adult compartment.",
-        "reasoning": "This transition represents individuals aging from the child age group to the adult age group while remaining in the infectious state, which is",
+        "description": "Infectious children aging into infectious adults.",
+        "reasoning": "This flow represents the natural aging process of an individual from the child age group to the adult age group while remaining in the infectious state.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -82,8 +82,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Immune children age and transition into the adult population, retaining their immunity.",
-        "reasoning": "The model categorizes the population into two age groups (0-15 yrs and above 15 yrs), implying a natural aging process where children transition to adults.",
+        "description": "Immune children age into immune adults, retaining their immunity as they transition from the child age group to the adult age group.",
+        "reasoning": "The paper categorizes the population into two age groups (0-15 yrs and above 15 yrs), necessitating a flow for individuals to age from the 'children' compartment to the 'adults' compartment while maintaining their immune status.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -99,8 +99,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Susceptible adults receiving vaccination, either through a catch-up program or a monitored program, transitioning them to the vaccinated compartment.",
-        "reasoning": "Vaccination is an external intervention applied at a specific rate to susceptible individuals, not a result of contact-dependent disease transmission.",
+        "description": "Susceptible adults",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -115,5 +115,112 @@
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "\u03beu",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.85,
+        "unit": null,
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "\u03c6",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.0005,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Exposed children->Exposed adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed children age into",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious children->Infectious adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious children aging into infectious adults.",
+        "reasoning": "This flow represents the natural aging process of an individual from the child age group to the adult age group while remaining in the infectious state.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Immune children->Immune adults",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Immune children age into immune adults, retaining their immunity as they transition from the child age group to the adult age group.",
+        "reasoning": "The paper categorizes the population into two age groups (0-15 yrs and above 15 yrs), necessitating a flow for individuals to age from the 'children' compartment to the 'adults' compartment while maintaining their immune status.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible adults->Vaccinated adults (catch-up/monitored)",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Susceptible adults",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

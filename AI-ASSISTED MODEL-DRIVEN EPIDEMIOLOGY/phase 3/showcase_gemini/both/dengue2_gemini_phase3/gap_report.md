@@ -54,9 +54,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 91.7% | 30% |
-| **Fill traceability** | 85.7% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **94.6/100** | — |
+| **Fill traceability** | 75.0% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **72.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -69,9 +69,9 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 13 | 2 | 15 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 12
+- Filled via **RAG**: 7
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 2
+- Filled via **inference**: 7
 - **Flagged** for manual review: 0
 
 ### exposed (missing_compartments)
@@ -88,84 +88,88 @@
 
 ### vaccinatedinfected (missing_compartments)
 - **Source:** inference
-- **Primary name:** VaccinatedInfected
-- **Reasoning:** The text describes an elevated risk of
+- **Primary name:** Vaccinated Infected
+- **Reasoning:** The text explicitly discusses 'vaccinees' who experience 'their first natural DENV infection,' indicating a state where vaccinated individuals can still become infected.
 
 ### vaccinatedrecovered (missing_compartments)
 - **Source:** inference
-- **Primary name:** VaccinatedRecovered
+- **Primary name:** Vaccinated Recovered
 
 ### transmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.28 
-- **Description:** Approximate transmission parameter for simplified human-side dengue model
-- **From papers:** p1_model_cholera, p1_model_covid, p1_model_dengue
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### incubationrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.20 
-- **Description:** Progression from exposed to infectious
-- **From papers:** p1_model_cholera, p1_model_dengue, p1_model_ebola
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### recoveryrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.14 
-- **Description:** Recovery from infectious state
-- **From papers:** p1_model_measles, p1_model_cholera, p1_model_dengue
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### screeningandvaccinationrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.04 
-- **Description:** Routine screening at age 9 followed by vaccination if seropositive
-- **From papers:** p1_model_cholera, p1_model_covid, p1_model_dengue
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### vaccinebreakthroughrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.05 
-- **Description:** Residual post-vaccination infection risk representing imperfect protection
-- **From papers:** p1_model_cholera, p1_model_dengue
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639
 
 ### Susceptible->Exposed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become exposed to the dengue virus, typically through the bite of an infected mosquito, transitioning into the exposed compartment.
+- **Reasoning:** The text refers to 'first natural DENV infection' and 'prior DENV exposure,' indicating a transmission event that is contact-dependent (via vector) for a susceptible individual to become exposed.
 
 ### Susceptible->Vaccinated (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals receive a dengue vaccine, transitioning them into a vaccinated state.
+- **Reasoning:** Vaccination is an external public health intervention applied to susceptible individuals, not a result of direct contact with infected individuals or an intrinsic biological process related to the disease itself.
 
 ### Exposed->Infectious (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have been exposed to the dengue virus complete their intrinsic incubation period and become infectious.
+- **Reasoning:** The progression from an exposed state to an infectious state is an intrinsic biological process within an individual, typically governed by an incubation period, making it a rate-dependent transition rather than one driven by contact.
 
 ### Vaccinated->VaccinatedInfected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Vaccinated individuals become infected with the
 
 ### VaccinatedInfected->VaccinatedRecovered (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Recovery of vaccinated individuals from dengue infection.
+- **Reasoning:** Infected individuals, including those who are vaccinated, typically recover from dengue infection over time, which is a standard process in infectious disease models.
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **5**
-- Exact match (<1% error): **5**
+- Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **100.0%**
-- Median relative error: **0.0%**
+- Poor (>50% error): **5**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.96%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| transmissionrate | 0.28 | 0.28 | 0.0% | exact |
-| incubationrate | 0.2 | 0.2 | 0.0% | exact |
-| recoveryrate | 0.14 | 0.14 | 0.0% | exact |
-| screeningandvaccinationrate | 0.04 | 0.04 | 0.0% | exact |
-| vaccinebreakthroughrate | 0.05 | 0.05 | 0.0% | exact |
+| transmissionrate | 0.0001 | 0.28 | 99.96% | poor |
+| incubationrate | 0.0001 | 0.2 | 99.95% | poor |
+| recoveryrate | 0.5 | 0.14 | 257.14% | poor |
+| screeningandvaccinationrate | 0.0001 | 0.04 | 99.75% | poor |
+| vaccinebreakthroughrate | 10000.0 | 0.05 | 19999900.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

@@ -16,22 +16,22 @@
   <parameters name="ACT treatment efficacy" expression="95" type="CONSTANT" description="Efficacy of ACTs at clearing parasites" unit="%" />
   <parameters name="Relative infectivity of asymptomatic vs symptomatic" expression="0.33" type="CONSTANT" description="Asymptomatic cases (A) are approximately 3-fold less likely to infect a biting mosquito than symptomatic (D)" unit="dimensionless" />
   <parameters name="Relative infectivity of subpatent vs symptomatic" expression="0.06" type="CONSTANT" description="Subpatent stage (U) is approximately 17-fold less likely to infect mosquitoes than symptomatic (D)" unit="dimensionless" />
-  <parameters name="susceptibletosymptomaticinfectionrate" expression="0.040" type="CONSTANT" description="Representative force-of-infection term from infectious mosquito bites leading to symptomatic infection after the liver-stage delay" />
-  <parameters name="susceptibletoasymptomaticinfectionrate" expression="0.030" type="CONSTANT" description="Representative force-of-infection term from infectious mosquito bites leading to asymptomatic patent infection" />
-  <parameters name="treatmentrate" expression="1.0" type="CONSTANT" description="Rapid treatment rate for clinical cases; chosen to reflect same-day to one-day treatment emphasis in the paper" />
-  <parameters name="symptomatictoasymptomaticrate" expression="0.20" type="CONSTANT" description="Progression of untreated symptomatic infections into asymptomatic patent infection A" />
-  <parameters name="superinfectiontosymptomaticrate" expression="0.025" type="CONSTANT" description="Superinfection rate for already-infected humans resulting in symptomatic infection" />
-  <parameters name="superinfectiontoasymptomaticrate" expression="0.020" type="CONSTANT" description="Superinfection rate for already-infected humans resulting in asymptomatic patent infection" />
-  <parameters name="patenttosubpatentrate" expression="0.12" type="CONSTANT" description="Rate r_A from patent asymptomatic infection to sub-patent infection" />
-  <parameters name="subpatentclearancerate" expression="0.10" type="CONSTANT" description="Rate r_U from sub-patent infection to susceptible" />
-  <parameters name="treatmentrecoverytoprotectionrate" expression="0.25" type="CONSTANT" description="Rate of parasite clearance after treatment and movement into prophylactic protection P" />
-  <parameters name="treatmentfailurerate" expression="0.05" type="CONSTANT" description="Treatment failure rate from T to A; treatment failures enter the asymptomatic state in the paper" />
-  <parameters name="protectionlossrate" expression="0.05" type="CONSTANT" description="Loss of prophylactic or vaccine-induced protection" />
-  <parameters name="humantomosquitotransmissionrate_d" expression="0.20" type="CONSTANT" description="Mosquito infection rate from symptomatic infectious humans D; highest human-to-mosquito infectivity class" />
-  <parameters name="humantomosquitotransmissionrate_a" expression="0.067" type="CONSTANT" description="Mosquito infection rate from asymptomatic patent infectious humans A; approximately three-fold lower than D" />
-  <parameters name="humantomosquitotransmissionrate_u" expression="0.012" type="CONSTANT" description="Mosquito infection rate from subpatent infectious humans U; approximately seventeen-fold lower than D" />
-  <parameters name="humantomosquitotransmissionrate_t" expression="0.04" type="CONSTANT" description="Mosquito infection rate from treated infectious humans T before parasite clearance, reduced by treatment" />
-  <parameters name="mosquitolatentprogressionrate" expression="0.10" type="CONSTANT" description="Progression rate from exposed mosquitoes to infectious mosquitoes in the SEI vector model" />
+  <parameters name="susceptibletosymptomaticinfectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="susceptibletoasymptomaticinfectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatmentrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="symptomatictoasymptomaticrate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="superinfectiontosymptomaticrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="superinfectiontoasymptomaticrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="patenttosubpatentrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="subpatentclearancerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatmentrecoverytoprotectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatmentfailurerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="protectionlossrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="humantomosquitotransmissionrate_d" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="humantomosquitotransmissionrate_a" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="humantomosquitotransmissionrate_u" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="humantomosquitotransmissionrate_t" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="mosquitolatentprogressionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Infection from infectious mosquito bite leading to symptomatic disease, probability depends on infection-blocking immunity and clinical immunity" />
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Infection from infectious mosquito bite leading to asymptomatic infection (due to clinical immunity reducing probability of symptoms)" />
@@ -43,19 +43,16 @@
   <compartments PrimaryName="Asymptomatic Infectious Humans" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Progression from patent asymptomatic infection to subpatent infection, rate depends on blood-stage immunity" />
     <outgoingFlows target="//@compartments.4" />
-    <outgoingFlows target="//@compartments.9" />
     <outgoingFlows target="//@compartments.2" />
   </compartments>
   <compartments PrimaryName="Subpatent Infectious Humans" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Recovery from subpatent infection to susceptible state" />
     <outgoingFlows target="//@compartments.6" />
     <outgoingFlows target="//@compartments.2" />
-    <outgoingFlows target="//@compartments.9" />
   </compartments>
   <compartments PrimaryName="Treated Infectious Humans" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Successful parasite clearance followed by prophylactic protection dependent on drug half-life" />
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Treatment failure, entering asymptomatic infection state" />
-    <outgoingFlows target="//@compartments.10" />
     <outgoingFlows target="//@compartments.9" />
   </compartments>
   <compartments PrimaryName="Prophylactically Protected Humans" population="0">
@@ -64,19 +61,12 @@
   <compartments PrimaryName="Susceptible Mosquitoes" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRate="0.0" target="//@compartments.7" description="Mosquito becomes infected after biting an infectious human (D, A, U, or T states with different infectivity levels)" />
     <outgoingFlows target="//@compartments.2" />
-    <outgoingFlows target="//@compartments.9" />
   </compartments>
   <compartments PrimaryName="Exposed Mosquitoes" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.8" description="Completion of extrinsic incubation period in mosquito, becoming infectious" />
   </compartments>
   <compartments PrimaryName="Infectious Mosquitoes" population="0" />
-  <compartments PrimaryName="Asymptomatic Patent Infectious">
-    <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.2" />
-    <outgoingFlows target="//@compartments.9" />
-  </compartments>
   <compartments PrimaryName="Protected by Prophylaxis">
     <outgoingFlows target="//@compartments.6" />
   </compartments>
-  <compartments PrimaryName="Asymptomatic Infected" />
 </ns0:CompartmentalModel>

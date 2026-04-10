@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **2**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **2**
+- After fills gaps (re-detected): **2**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -41,11 +41,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 71.7% | 30% |
-| **Fill traceability** | 50.0% | 20% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 57.5% | 30% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **81.5/100** | — |
+| **→ Composite** | **37.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -58,24 +58,31 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 0 | 5 | 6 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 1
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 1
+- **Flagged** for manual review: 4
 
 ### chollerae bacterial concentration (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### Infectious->Chollerae bacterial concentration (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### chollerae bacterial concentration (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Infectious->Chollerae bacterial concentration (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **4** | Candidate: **5**
-- Precision **0.8** | Recall **1.0** | F1 **0.8889**
+- Gold count: **4** | Candidate: **4**
+- Precision **0.75** | Recall **0.75** | F1 **0.75**
 ### Flows
-- Gold count: **3** | Candidate: **8**
-- Precision **0.375** | Recall **1.0** | F1 **0.5455**
+- Gold count: **3** | Candidate: **7**
+- Precision **0.2857** | Recall **0.6667** | F1 **0.4**

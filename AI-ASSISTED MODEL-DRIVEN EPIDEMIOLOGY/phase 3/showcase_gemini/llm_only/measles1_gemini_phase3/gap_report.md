@@ -47,9 +47,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 98.8% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 0.0% | 20% |
-| **→ Composite** | **59.6/100** | — |
+| **→ Composite** | **69.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -69,7 +69,7 @@
 
 ### ξu (missing_parameters)
 - **Source:** inference
-- **Value:** 0.0005 per day
+- **Value:** 0.85 
 - **Confidence:** LOW
 
 ### φ (missing_parameters)
@@ -80,26 +80,24 @@
 ### Exposed children->Exposed adults (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Exposed children age and transition into the Exposed adult compartment.
-- **Reasoning:** The model categorizes the population into two age groups (0-15 yrs and above 15 yrs), necessitating a flow to represent children aging into adults.
+- **Description:** Exposed children age into
 
 ### Infectious children->Infectious adults (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Infectious children aging into the infectious adult compartment.
-- **Reasoning:** This transition represents individuals aging from the child age group to the adult age group while remaining in the infectious state, which is
+- **Description:** Infectious children aging into infectious adults.
+- **Reasoning:** This flow represents the natural aging process of an individual from the child age group to the adult age group while remaining in the infectious state.
 
 ### Immune children->Immune adults (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Immune children age and transition into the adult population, retaining their immunity.
-- **Reasoning:** The model categorizes the population into two age groups (0-15 yrs and above 15 yrs), implying a natural aging process where children transition to adults.
+- **Description:** Immune children age into immune adults, retaining their immunity as they transition from the child age group to the adult age group.
+- **Reasoning:** The paper categorizes the population into two age groups (0-15 yrs and above 15 yrs), necessitating a flow for individuals to age from the 'children' compartment to the 'adults' compartment while maintaining their immune status.
 
 ### Susceptible adults->Vaccinated adults (catch-up/monitored) (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Susceptible adults receiving vaccination, either through a catch-up program or a monitored program, transitioning them to the vaccinated compartment.
-- **Reasoning:** Vaccination is an external intervention applied at a specific rate to susceptible individuals, not a result of contact-dependent disease transmission.
+- **Description:** Susceptible adults
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **2**
@@ -108,11 +106,11 @@
 - Approximate (<50% error): **0**
 - Poor (>50% error): **2**
 - **Accuracy (exact+close)**: **0.0%**
-- Median relative error: **94.25%**
+- Median relative error: **9670.11%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| ξu | 0.0005 | 0.0087 | 94.25% | poor |
+| ξu | 0.85 | 0.0087 | 9670.11% | poor |
 | φ | 0.0005 | 0.00128 | 60.94% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)

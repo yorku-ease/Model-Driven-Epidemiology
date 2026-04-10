@@ -9,9 +9,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Bacterial Concentration",
+        "primary_name": "Environmental Bacteria",
         "description": "",
-        "reasoning": "",
+        "reasoning": "Chol",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -24,53 +24,127 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "Infectious->Chollerae bacterial concentration",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Symptomatic infectious->Recovered / naturally immune",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Symptomatic infectious->Environmental Vibrio cholerae reservoir",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Asymptomatic infectious->Recovered / naturally immune",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Infectious individuals shed cholera bacteria into the environment, increasing the environmental bacterial concentration.",
+        "reasoning": "This flow represents the rate at which infectious individuals excrete bacteria, directly contributing to the environmental pathogen load, which is a key aspect of cholera transmission dynamics.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Environmental Bacteria",
+        "description": "Concentration of Vibrio cholerae bacteria in the environment, primarily water sources, which serves",
+        "reasoning": "Cholera is a waterborne disease, and an environmental compartment representing the concentration of Vibrio cholerae in water is crucial for modeling its transmission dynamics, as humans become infected by ingesting contaminated water.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Shed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
-    "rag_count": 1,
-    "inference_count": 1,
+    "rag_count": 0,
+    "inference_count": 4,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Environmental Bacteria",
+        "description": "",
+        "reasoning": "Chol",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious individuals shed cholera bacteria into the environment, increasing the environmental bacterial concentration.",
+        "reasoning": "This flow represents the rate at which infectious individuals excrete bacteria, directly contributing to the environmental pathogen load, which is a key aspect of cholera transmission dynamics.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Environmental Bacteria",
+        "description": "Concentration of Vibrio cholerae bacteria in the environment, primarily water sources, which serves",
+        "reasoning": "Cholera is a waterborne disease, and an environmental compartment representing the concentration of Vibrio cholerae in water is crucial for modeling its transmission dynamics, as humans become infected by ingesting contaminated water.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Chollerae bacterial concentration",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Shed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

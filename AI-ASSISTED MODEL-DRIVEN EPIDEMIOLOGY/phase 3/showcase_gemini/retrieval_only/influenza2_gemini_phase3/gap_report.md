@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **16**
-- After fills gaps (re-detected): **1**
-- Delta (before - after): **15**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **13**
 - Delta missing parameters: **10**
-- Delta missing compartments: **2**
-- Delta missing flows: **3**
+- Delta missing compartments: **1**
+- Delta missing flows: **2**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -54,11 +54,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 93.8% | 30% |
-| **Reference agreement** | 54.5% | 30% |
-| **Fill traceability** | 100.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **84.5/100** | — |
+| **Gap reduction** | 81.2% | 30% |
+| **Reference agreement** | 89.9% | 30% |
+| **Fill traceability** | 57.9% | 20% |
+| **Parameter accuracy** | 10.0% | 20% |
+| **→ Composite** | **64.9/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -71,20 +71,135 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 19 | 0 | 19 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 16
+- Filled via **RAG**: 11
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 1
+- **Flagged** for manual review: 8
+
+### treatedclinical (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### protected (missing_compartments)
+- **Source:** rag
+- **Primary name:** protected
+- **Evidence chunks:** 3 snippet(s) in database
+- *Use paper snippets to confirm compartment label and add to model.*
+
+### clinicaltransmissionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### subclinicaltransmissionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### clinicalprogressionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### subclinicalprogressionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### treatmentrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### clinicalrecoveryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### subclinicalrecoveryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### protectionacquisitionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### treatedrecoveryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### protectionlossrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### Susceptible->Protected (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousClinical->TreatedClinical (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### TreatedClinical->Removed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Protected->Susceptible (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### treatedclinical (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### InfectiousClinical->TreatedClinical (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### TreatedClinical->Removed (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **10**
+- Exact match (<1% error): **1**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **9**
+- **Accuracy (exact+close)**: **10.0%**
+- Median relative error: **99.97%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| clinicaltransmissionrate | 0.0001 | 0.45 | 99.98% | poor |
+| subclinicaltransmissionrate | 0.0001 | 0.22 | 99.95% | poor |
+| clinicalprogressionrate | 0.0001 | 0.38 | 99.97% | poor |
+| subclinicalprogressionrate | 0.0001 | 0.38 | 99.97% | poor |
+| treatmentrate | 0.0001 | 1.0 | 99.99% | poor |
+| clinicalrecoveryrate | 0.0001 | 0.33 | 99.97% | poor |
+| subclinicalrecoveryrate | 0.0001 | 0.33 | 99.97% | poor |
+| protectionacquisitionrate | 0.0001 | 0.02 | 99.5% | poor |
+| treatedrecoveryrate | 0.5 | 0.5 | 0.0% | exact |
+| protectionlossrate | 0.0001 | 0.05 | 99.8% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **7** | Candidate: **6**
-- Precision **0.6667** | Recall **0.7143** | F1 **0.6897**
+- Gold count: **7** | Candidate: **5**
+- Precision **1.0** | Recall **0.8571** | F1 **0.9231**
 ### Flows
-- Gold count: **9** | Candidate: **6**
-- Precision **0.5** | Recall **0.3333** | F1 **0.4**
+- Gold count: **9** | Candidate: **5**
+- Precision **1.0** | Recall **0.7778** | F1 **0.875**

@@ -11,7 +11,7 @@
       "suggestion": {
         "primary_name": "Susceptible Humans",
         "description": "",
-        "reasoning": "",
+        "reasoning": "The",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -60,9 +60,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Recovered",
+        "primary_name": "Recovered Humans",
         "description": "",
-        "reasoning": "The excerpt",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -112,8 +112,8 @@
       "source": "inference",
       "suggestion": {
         "primary_name": "Infectious Mosquitoes",
-        "description": "Mosquitoes that have acquired the Zika virus and are capable of transmitting it to humans.",
-        "reasoning": "The excerpt explicitly states ZIKV transmission is predominantly vector-borne, necessitating a compartment for the infectious vector in a compartmental model.",
+        "description": "",
+        "reasoning": "The paper explicitly states ZIKV transmission is predominantly vector",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -126,43 +126,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "SusceptibleHumans->ExposedHumans",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible humans->Exposed humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible humans (SH)->Vector-exposed humans (EH1)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible humans (SH)->Non-vector-exposed humans (EH2)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "SusceptibleHumans->ExposedHumans",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "ContactFlow",
+        "description": "Susceptible humans become exposed to ZIKV through contact with infectious vectors or other infected humans.",
+        "reasoning": "The paper states ZIKV transmission is predominantly vector-borne and can also occur via sexual contact, both indicating contact",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -172,43 +143,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedHumans->InfectiousHumans",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed humans->Asymptomatic infectious humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed humans->Symptomatic infectious humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vector-exposed humans (EH1)->Infectious humans (IH)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Non-vector-exposed humans (EH2)->Infectious humans (IH)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "The rate at which exposed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -218,43 +160,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousHumans->RecoveredHumans",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Asymptomatic infectious humans->Recovered humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Symptomatic infectious humans->Recovered humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious humans->Recovered humans",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Infectious humans",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -264,43 +177,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "SusceptibleMosquitoes->ExposedMosquitoes",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible mosquitoes (SM)->Exposed mosquitoes (EM)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "SusceptibleMosquitoes->ExposedMosquitoes",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "ContactFlow",
+        "description": "Susceptible",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -310,53 +194,637 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedMosquitoes->InfectiousMosquitoes",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed mosquitoes (EM)->Infectious mosquitoes (IM)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ExposedMosquitoes->InfectiousMosquitoes",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Exposed mosquitoes become infectious after completing the extrinsic incubation period.",
+        "reasoning": "Mosquitoes infected with ZIKV undergo an extrinsic incubation period before they can transmit the virus, making this a time-dependent progression within the vector population.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblehumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedhumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectioushumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredhumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Humans",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "",
+        "reasoning": "The excerpt states ZIKV transmission is predominantly vector-borne, necessitating a mosquito compartment, and a susceptible state is fundamental for any population",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Mosquitoes",
+        "description": "",
+        "reasoning": "The excerpt explicitly states ZIKV transmission is predominantly vector-",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleHumans->ExposedHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedHumans->InfectiousHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The progression of an exposed human completing their latent period and becoming infectious.",
+        "reasoning": "This transition represents the natural biological progression of ZIKV infection within an individual, moving from a state of being infected but not yet able to transmit, to a state where they can transmit the virus.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousHumans->RecoveredHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious humans recover from zika3 infection, becoming immune and no longer capable of transmitting the",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible mosquitoes become exposed to the zika3 virus after biting an infectious human or another infectious mosquito.",
+        "reasoning": "The paper states 'Transmission of ZIKV is predominantly vector-borne,' indicating that mosquitoes acquire the infection through contact with an infectious source, which is characteristic of a contact-driven transition to an exposed state.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMosquitoes->InfectiousMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Mosquitoes completing their extrinsic incubation period and becoming infectious.",
+        "reasoning": "The transition from exposed to infectious in a mosquito is an internal biological process governed by the extrinsic incubation period, occurring at a specific rate rather than through contact.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
-    "rag_count": 10,
-    "inference_count": 14,
+    "rag_count": 0,
+    "inference_count": 24,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "susceptiblehumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Humans",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedhumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Humans",
+        "description": "",
+        "reasoning": "Z",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectioushumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredhumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Mosquitoes",
+        "description": "",
+        "reasoning": "The paper explicitly states ZIKV transmission is predominantly vector",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleHumans->ExposedHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible humans become exposed to ZIKV through contact with infectious vectors or other infected humans.",
+        "reasoning": "The paper states ZIKV transmission is predominantly vector-borne and can also occur via sexual contact, both indicating contact",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedHumans->InfectiousHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at which exposed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousHumans->RecoveredHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious humans",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMosquitoes->InfectiousMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed mosquitoes become infectious after completing the extrinsic incubation period.",
+        "reasoning": "Mosquitoes infected with ZIKV undergo an extrinsic incubation period before they can transmit the virus, making this a time-dependent progression within the vector population.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblehumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedhumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectioushumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredhumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Humans",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "",
+        "reasoning": "The excerpt states ZIKV transmission is predominantly vector-borne, necessitating a mosquito compartment, and a susceptible state is fundamental for any population",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Mosquitoes",
+        "description": "",
+        "reasoning": "The excerpt explicitly states ZIKV transmission is predominantly vector-",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleHumans->ExposedHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedHumans->InfectiousHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The progression of an exposed human completing their latent period and becoming infectious.",
+        "reasoning": "This transition represents the natural biological progression of ZIKV infection within an individual, moving from a state of being infected but not yet able to transmit, to a state where they can transmit the virus.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousHumans->RecoveredHumans",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious humans recover from zika3 infection, becoming immune and no longer capable of transmitting the",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible mosquitoes become exposed to the zika3 virus after biting an infectious human or another infectious mosquito.",
+        "reasoning": "The paper states 'Transmission of ZIKV is predominantly vector-borne,' indicating that mosquitoes acquire the infection through contact with an infectious source, which is characteristic of a contact-driven transition to an exposed state.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMosquitoes->InfectiousMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Mosquitoes completing their extrinsic incubation period and becoming infectious.",
+        "reasoning": "The transition from exposed to infectious in a mosquito is an internal biological process governed by the extrinsic incubation period, occurring at a specific rate rather than through contact.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

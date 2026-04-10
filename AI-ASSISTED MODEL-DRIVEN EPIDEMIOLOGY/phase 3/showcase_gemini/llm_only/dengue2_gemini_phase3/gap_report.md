@@ -54,9 +54,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 91.7% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 20.0% | 20% |
-| **→ Composite** | **61.5/100** | — |
+| **→ Composite** | **71.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -77,16 +77,16 @@
 ### exposed (missing_compartments)
 - **Source:** inference
 - **Primary name:** Exposed
+- **Reasoning:** The excerpt
 
 ### vaccinated (missing_compartments)
 - **Source:** inference
 - **Primary name:** Vaccinated
-- **Reasoning:** The excerpt extensively discusses dengue vaccines, vaccination strategies, and vaccinees, indicating that a compartment for vaccinated individuals is crucial for modeling the described dynamics.
 
 ### vaccinatedinfected (missing_compartments)
 - **Source:** inference
-- **Primary name:** Vaccinated Infected
-- **Reasoning:** The
+- **Primary name:** VaccinatedInfected
+- **Reasoning:** The excerpt highlights the 'elevated risk
 
 ### vaccinatedrecovered (missing_compartments)
 - **Source:** inference
@@ -94,74 +94,73 @@
 
 ### transmissionrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.2 per day
+- **Value:** 0.5 per day
 - **Confidence:** LOW
 
 ### incubationrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.167 1/days
+- **Value:** 0.167 per day
 - **Confidence:** LOW
 
 ### recoveryrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.14 per day
+- **Value:** 0.143 per day
 - **Confidence:** LOW
 
 ### screeningandvaccinationrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.1 per year
+- **Value:** 0.001 per day
 - **Confidence:** LOW
 
 ### vaccinebreakthroughrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.4 
-- **Reasoning:** Deng
+- **Value:** 0.3 
 - **Confidence:** LOW
 
 ### Susceptible->Exposed (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Susceptible individuals become exposed
+- **Description:** Susceptible individuals become exposed to the dengue virus after being bitten by an infected mosquito.
+- **Reasoning:** Dengue is a vector-borne disease, and the transition from Susceptible to Exposed occurs through contact with an infected vector (mosquito), which is a form of contact-based transmission.
 
 ### Susceptible->Vaccinated (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Susceptible individuals receive a vaccine and transition to the Vaccinated compartment.
-- **Reasoning:** Vaccination is an intervention applied to susceptible individuals, typically occurring at a specific rate independent of disease transmission dynamics, as discussed in the context of a vaccination strategy.
+- **Description:** Susceptible individuals receive a dengue vaccine and transition to the vaccinated compartment.
+- **Reasoning:** Vaccination is a public health intervention applied to individuals, typically modeled as a rate at which susceptible individuals are vaccinated, rather than through contact-dependent transmission.
 
 ### Exposed->Infectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals who have been infected with the dengue virus complete their intrinsic incubation period and become capable of transmitting the virus to mosquitoes.
-- **Reasoning:** The transition from the exposed (latent) state to the infectious state
+- **Description:** The transition from the
 
 ### Vaccinated->VaccinatedInfected (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Vaccinated individuals become infected
+- **Description:** Vaccinated individuals can still become infected with dengue virus through contact with infected individuals.
+- **Reasoning:** The text implies vaccinated individuals can experience 'first natural DENV infection', indicating that vaccination does not confer complete sterilizing immunity and infection can still occur.
 
 ### VaccinatedInfected->VaccinatedRecovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Vaccinated individuals recovering from dengue infection.
-- **Reasoning:** Recovery from an infection is a natural biological process that occurs over time, typically modeled as a rate
+- **Description:** Recovery of vaccinated
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **5**
-- Exact match (<1% error): **1**
-- Close (<10% error): **0**
-- Approximate (<50% error): **2**
-- Poor (>50% error): **2**
+- Exact match (<1% error): **0**
+- Close (<10% error): **1**
+- Approximate (<50% error): **1**
+- Poor (>50% error): **3**
 - **Accuracy (exact+close)**: **20.0%**
-- Median relative error: **28.57%**
+- Median relative error: **78.57%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| transmissionrate | 0.2 | 0.28 | 28.57% | approximate |
+| transmissionrate | 0.5 | 0.28 | 78.57% | poor |
 | incubationrate | 0.167 | 0.2 | 16.5% | approximate |
-| recoveryrate | 0.14 | 0.14 | 0.0% | exact |
-| screeningandvaccinationrate | 0.1 | 0.04 | 150.0% | poor |
-| vaccinebreakthroughrate | 0.4 | 0.05 | 700.0% | poor |
+| recoveryrate | 0.143 | 0.14 | 2.14% | close |
+| screeningandvaccinationrate | 0.001 | 0.04 | 97.5% | poor |
+| vaccinebreakthroughrate | 0.3 | 0.05 | 500.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

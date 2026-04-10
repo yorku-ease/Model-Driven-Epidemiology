@@ -11,7 +11,7 @@
       "suggestion": {
         "primary_name": "Maternal Protected",
         "description": "",
-        "reasoning": "An age-stratified measles model, especially one evaluating vaccination impact, typically includes a compartment for infants protected by maternal antibodies,",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -26,9 +26,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Vaccinated One Dose",
-        "description": "",
-        "reasoning": "",
+        "primary_name": "VaccinatedOneDose",
+        "description": "Individuals who have received the first dose of the MMR vaccine.",
+        "reasoning": "The paper explicitly discusses the impact of 'first-dose coverage' and 'second MMR dose' schedules, necessitating a compartment to track individuals who have received only one vaccine dose.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -44,11 +44,182 @@
       "source": "inference",
       "suggestion": {
         "primary_name": "VaccinatedTwoDose",
-        "description": "Individuals who have received two doses",
-        "reasoning": "The paper explicitly models the impact of an earlier second MMR dose and different vaccination schedules, requiring a compartment to track individuals who have received two vaccine doses.",
+        "description": "Individuals who have received two doses of the Measles-Mumps-Rubella (MM",
+        "reasoning": "The paper explicitly models the impact of an earlier second MMR dose and different vaccination schedules, necessitating a compartment to track individuals who have received two vaccine doses.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "maternalimmunitylossrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 1.75,
+        "unit": "1/year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "mmr1vaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.92,
+        "unit": null,
+        "reasoning": "First dose MMR vaccination coverage in the UK has consistently been high, typically exceeding 90% for many years due to robust public health programs.",
+        "range_low": 0.85,
+        "range_high": 0.97,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptibleinfectionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.3,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "mmr2vaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.88,
+        "unit": null,
+        "reasoning": "This",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "onedosebreakthroughrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.07,
+        "unit": null,
+        "reasoning": "One dose of MMR vaccine typically provides 90-97% protection against measles. A breakthrough rate of 7% reflects the",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "twodosebreakthroughrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.01,
+        "unit": null,
+        "reasoning": "The two-dose MMR vaccine is highly effective against measles, typically providing 97-99% protection. A breakthrough rate of 1% reflects the small proportion of vaccinated individuals who may still contract measles.",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinewaningrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.005,
+        "unit": "per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "incubationprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.0833,
+        "unit": "days^-1",
+        "reasoning": "The incubation progression rate is the inverse of the average incubation period. For measles, the average incubation period is typically",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.125,
+        "unit": "days^-1",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
       }
     },
     {
@@ -61,8 +232,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Waning of maternal antibodies, leading to loss of passive immunity and return to susceptibility.",
-        "reasoning": "Maternal antibodies provide temporary protection against measles to newborns, which naturally wanes over time, making them susceptible to infection.",
+        "description": "Waning of maternal antibodies, leading to loss of passive immunity against measles.",
+        "reasoning": "Maternal antibodies provide temporary protection to infants, which naturally wanes over time, making them susceptible to measles before vaccination.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -78,8 +249,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Individuals in the susceptible",
-        "reasoning": "",
+        "description": "Individuals in the susceptible compartment receive their first dose of the Measles-Mumps-Rubella (MMR) vaccine, transitioning them to the VaccinatedOneDose compartment.",
+        "reasoning": "The paper explicitly discusses 'increasing first-dose coverage' and the impact of vaccination schedules, necessitating a flow for susceptible individuals to receive their initial vaccine dose.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -95,8 +266,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Individuals who have received one dose of the MMR vaccine receive their second dose, transitioning to a two-dose vaccinated state.",
-        "reasoning": "The paper discusses the impact of an 'earlier second dose for the Measles-Mumps-Rubella (MMR) vaccine', directly implying a transition from one-dose to two-dose vaccination status, which is a rate-based process.",
+        "description": "Individuals who have received one dose of the MMR vaccine receive their second dose, transitioning to a fully vaccinated state.",
+        "reasoning": "The paper discusses the impact of an 'earlier second MMR dose' on measles transmission, directly implying a rate-based transition from one-dose to two-dose vaccinated states within the model.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -112,7 +283,7 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "ContactFlow",
-        "description": "Vaccinated individuals with",
+        "description": "Vaccinated individuals",
         "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
@@ -129,7 +300,7 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Waning",
+        "description": "Vaccinated individuals with two",
         "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
@@ -146,8 +317,42 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Waning of vaccine-induced immunity, where individuals who received two doses of the MMR vaccine lose their protection over time and revert to a susceptible state.",
-        "reasoning": "The paper explicitly mentions 'waning of vaccine-induced immunity was included' in their model, indicating a transition from a vaccinated state back to susceptibility due to loss of protection over time.",
+        "description": "Individuals who received two doses of the MMR vaccine lose their vaccine-induced immunity over time and become susceptible to measles infection again.",
+        "reasoning": "The paper excerpt explicitly states that 'waning of vaccine-induced immunity was included' in their model, indicating a transition from a vaccinated state back to susceptibility.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "maternalprotected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Maternally Protected",
+        "description": "Infants who possess passive",
+        "reasoning": "A comprehensive measles compartmental model, particularly one that is age-stratified and examines early childhood vaccination, should include a compartment for infants protected by maternally derived antibodies.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "MaternalProtected->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning of maternal antibodies, leading to loss of passive immunity and becoming susceptible to measles.",
+        "reasoning": "Infants born to immune mothers receive passive immunity which naturally wanes",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -156,11 +361,370 @@
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 27,
+    "inference_count": 20,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "maternalprotected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Maternal Protected",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedonedose",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "VaccinatedOneDose",
+        "description": "Individuals who have received the first dose of the MMR vaccine.",
+        "reasoning": "The paper explicitly discusses the impact of 'first-dose coverage' and 'second MMR dose' schedules, necessitating a compartment to track individuals who have received only one vaccine dose.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedtwodose",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "VaccinatedTwoDose",
+        "description": "Individuals who have received two doses of the Measles-Mumps-Rubella (MM",
+        "reasoning": "The paper explicitly models the impact of an earlier second MMR dose and different vaccination schedules, necessitating a compartment to track individuals who have received two vaccine doses.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "maternalimmunitylossrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 1.75,
+        "unit": "1/year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "mmr1vaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.92,
+        "unit": null,
+        "reasoning": "First dose MMR vaccination coverage in the UK has consistently been high, typically exceeding 90% for many years due to robust public health programs.",
+        "range_low": 0.85,
+        "range_high": 0.97,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptibleinfectionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.3,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "mmr2vaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.88,
+        "unit": null,
+        "reasoning": "This",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "onedosebreakthroughrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.07,
+        "unit": null,
+        "reasoning": "One dose of MMR vaccine typically provides 90-97% protection against measles. A breakthrough rate of 7% reflects the",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "twodosebreakthroughrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.01,
+        "unit": null,
+        "reasoning": "The two-dose MMR vaccine is highly effective against measles, typically providing 97-99% protection. A breakthrough rate of 1% reflects the small proportion of vaccinated individuals who may still contract measles.",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinewaningrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.005,
+        "unit": "per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "incubationprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.0833,
+        "unit": "days^-1",
+        "reasoning": "The incubation progression rate is the inverse of the average incubation period. For measles, the average incubation period is typically",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.125,
+        "unit": "days^-1",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "MaternalProtected->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning of maternal antibodies, leading to loss of passive immunity against measles.",
+        "reasoning": "Maternal antibodies provide temporary protection to infants, which naturally wanes over time, making them susceptible to measles before vaccination.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->VaccinatedOneDose",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals in the susceptible compartment receive their first dose of the Measles-Mumps-Rubella (MMR) vaccine, transitioning them to the VaccinatedOneDose compartment.",
+        "reasoning": "The paper explicitly discusses 'increasing first-dose coverage' and the impact of vaccination schedules, necessitating a flow for susceptible individuals to receive their initial vaccine dose.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedOneDose->VaccinatedTwoDose",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who have received one dose of the MMR vaccine receive their second dose, transitioning to a fully vaccinated state.",
+        "reasoning": "The paper discusses the impact of an 'earlier second MMR dose' on measles transmission, directly implying a rate-based transition from one-dose to two-dose vaccinated states within the model.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedOneDose->Exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Vaccinated individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedTwoDose->Exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Vaccinated individuals with two",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedTwoDose->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who received two doses of the MMR vaccine lose their vaccine-induced immunity over time and become susceptible to measles infection again.",
+        "reasoning": "The paper excerpt explicitly states that 'waning of vaccine-induced immunity was included' in their model, indicating a transition from a vaccinated state back to susceptibility.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "maternalprotected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Maternally Protected",
+        "description": "Infants who possess passive",
+        "reasoning": "A comprehensive measles compartmental model, particularly one that is age-stratified and examines early childhood vaccination, should include a compartment for infants protected by maternally derived antibodies.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "MaternalProtected->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Waning of maternal antibodies, leading to loss of passive immunity and becoming susceptible to measles.",
+        "reasoning": "Infants born to immune mothers receive passive immunity which naturally wanes",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

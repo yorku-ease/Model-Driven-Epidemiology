@@ -43,7 +43,7 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Infectious Women Symptomatic Blood",
+        "primary_name": "Infectious Women",
         "description": "",
         "reasoning": "",
         "source": "llm_inference",
@@ -94,9 +94,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Recovered",
+        "primary_name": "Recovered Women",
         "description": "",
-        "reasoning": "A compartmental",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -111,9 +111,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "SusceptibleMen",
+        "primary_name": "Susceptible Men",
         "description": "",
-        "reasoning": "The model explicitly includes sexual contact as a main transmission pathway,",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -128,9 +128,43 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Exposed Men",
+        "primary_name": "Exposed Humans",
         "description": "",
-        "reasoning": "The",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men Symptomatic Blood",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmenasymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "InfectiousMenAsymptomatic",
+        "description": "",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -145,9 +179,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Infectious Men Semen Persistence",
+        "primary_name": "Infectious Men (Semen)",
         "description": "",
-        "reasoning": "The model explicitly includes sexual transmission of ZIKV, and the persistence",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -163,8 +197,8 @@
       "source": "inference",
       "suggestion": {
         "primary_name": "Recovered Men",
-        "description": "Individuals who have recovered from Zika infection and are assumed to have immunity.",
-        "reasoning": "The gold label explicitly indicates 'recoveredmen' as the missing compartment, suggesting the model differentiates by sex and includes a recovered state.",
+        "description": "",
+        "reasoning": "The",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -180,8 +214,8 @@
       "source": "inference",
       "suggestion": {
         "primary_name": "Susceptible Mosquitoes",
-        "description": "",
-        "reasoning": "",
+        "description": "Mosquitoes that are not infected with the Zika virus and are capable of becoming infected.",
+        "reasoning": "The paper explicitly states that Zika is primarily transmitted by Aedes mosquitoes and that the model includes mosquito bites as a main transmission pathway, necessitating a compartment for susceptible mosquitoes.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -228,43 +262,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "SusceptibleWomen->ExposedWomen",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "SusceptibleWomen->ExposedWomen",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Vaccinated",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "ContactFlow",
+        "description": "Susceptible women become exposed to the Zika virus through contact with infected individuals, such as infected mosquitoes or infected sexual partners.",
+        "reasoning": "The paper states that ZIKV is transmitted by mosquito bites and sexual contact",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -274,43 +279,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedWomen->InfectiousWomenSymptomaticBlood",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ExposedWomen->InfectiousWomenSymptomaticBlood",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed->InfectiousCommunity",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Exposed women progress to an infectious and symptomatic state, with the Zika virus present in their blood.",
+        "reasoning": "This transition represents the progression of the disease within an exposed woman, from the latent period to the onset of symptoms and infectivity relevant for mosquito transmission.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -320,43 +296,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedWomen->InfectiousWomenAsymptomaticBlood",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ExposedWomen->InfectiousWomenAsymptomaticBlood",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed->InfectiousCommunity",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Progression of",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -366,43 +313,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "The establishment of persistent Zika virus infection in the genital tract of a symptomatic infectious woman, following acute viremia.",
+        "reasoning": "This flow represents the physiological progression of Zika virus from the bloodstream to a persistent state in the genital tract, a known characteristic that enables sexual transmission.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -412,43 +330,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "The establishment of Zika virus",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -458,43 +347,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousWomenGenitalPersistence->RecoveredWomen",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Recovered",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousWomenGenitalPersistence->RecoveredWomen",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Women with persistent",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -504,43 +364,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "SusceptibleMen->ExposedMen",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "SusceptibleMen->ExposedMen",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Vaccinated",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "ContactFlow",
+        "description": "Susceptible men become exposed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -550,43 +381,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedMen->InfectiousMenSymptomaticBlood",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ExposedMen->InfectiousMenSymptomaticBlood",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed->InfectiousCommunity",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Progression",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -596,43 +398,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedMen->InfectiousMenAsymptomaticBlood",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ExposedMen->InfectiousMenAsymptomaticBlood",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed->InfectiousCommunity",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -642,43 +415,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "The rate at which",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -688,43 +432,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "The rate at",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -734,43 +449,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousMenSemenPersistence->RecoveredMen",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Recovered",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousMenSemenPersistence->RecoveredMen",
-            "disease": "zika",
-            "paper_id": "p1_model_zika",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Men who have been",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -780,43 +466,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "SusceptibleMosquitoes->ExposedMosquitoes",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible mosquitoes (SM)->Exposed mosquitoes (EM)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "SusceptibleMosquitoes->ExposedMosquitoes",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "ContactFlow",
+        "description": "Susceptible mosquitoes become exposed to the Zika virus after biting an infected human host.",
+        "reasoning": "The paper states ZIKV is primarily transmitted by Aedes mosquitoes, indicating infection occurs through contact (bites) with an infected host.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -826,53 +483,1470 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ExposedMosquitoes->InfectiousMosquitoes",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed mosquitoes (EM)->Infectious mosquitoes (IM)",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ExposedMosquitoes->InfectiousMosquitoes",
-            "disease": "malaria",
-            "paper_id": "p1_model_malaria",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Exposed mosquitoes become infectious",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblewomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedwomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "InfectiousSexual",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomenasymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "InfectiousAsymptomaticWomen",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomengenitalpersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Women with Genital",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredwomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Women",
+        "description": "",
+        "reasoning": "Given",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men Symptomatic Blood",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensemenpersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men Semen Persistence",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredmen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "Mosquitoes that are not infected with ZIKV and are capable of acquiring",
+        "reasoning": "The paper states the model includes mosquito bites as a main transmission pathway, which necessitates a compartment for mosquitoes that can become infected.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Mosquitoes",
+        "description": "Mosquitoes that have been infected with the Zika virus and are capable of transmitting it to susceptible humans.",
+        "reasoning": "The paper explicitly states the model includes 'mosquito bites' as a main transmission pathway, necessitating a compartment for mosquitoes capable of transmitting the virus.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleWomen->ExposedWomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible women become",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedWomen->InfectiousWomenSymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed women complete their",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedWomen->InfectiousWomenAsymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed women complete their",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The progression of a symptomatic woman with ZIKV in her blood to developing a persistent ZIKV infection in her genital tract.",
+        "reasoning": "This flow represents the internal progression of a woman's infection from systemic (blood) to a persistent state in the genital tract, which is a rate-dependent process within an individual.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The establishment of Zika",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenGenitalPersistence->RecoveredWomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Women with persistent genital ZIKV infection eventually clear the virus and recover, becoming immune.",
+        "reasoning": "Even with genital persistence, ZIKV infections eventually resolve, leading to recovery and potential immunity in women, which is typically modeled as a rate of transition.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMen->ExposedMen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible men",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMen->InfectiousMenSymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed men",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMen->InfectiousMenAsymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed men to an infectious, asymptomatic state where the virus is present in their blood.",
+        "reasoning": "This flow represents the progression of exposed men through their latent period to become infectious in their blood, without symptoms.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at which Zika virus, present in the blood of a symptomatic infectious man, establishes persistence in his semen.",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of asymptomatic",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenSemenPersistence->RecoveredMen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Recovery of infectious men",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible mosquitoes become exposed to the Zika virus after biting an infected human.",
+        "reasoning": "The paper explicitly states ZIKV is primarily transmitted by Aedes mosquitoes and includes 'mosquito bites' as a main transmission pathway, indicating contact-dependent infection of mosquitoes.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMosquitoes->InfectiousMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Mosquitoes that have been infected with the Zika virus progress from the exposed state to the infectious state after an extrinsic incubation period.",
+        "reasoning": "After acquiring the virus, mosquitoes undergo an extrinsic incubation period during which the virus replicates and disseminates, making them capable of transmitting the disease.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
-    "rag_count": 28,
-    "inference_count": 28,
+    "rag_count": 0,
+    "inference_count": 57,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "susceptiblewomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedwomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomenasymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Asymptomatic Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomengenitalpersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Women Genital Persistence",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredwomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Humans",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men Symptomatic Blood",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmenasymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "InfectiousMenAsymptomatic",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensemenpersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men (Semen)",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredmen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Men",
+        "description": "",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "Mosquitoes that are not infected with the Zika virus and are capable of becoming infected.",
+        "reasoning": "The paper explicitly states that Zika is primarily transmitted by Aedes mosquitoes and that the model includes mosquito bites as a main transmission pathway, necessitating a compartment for susceptible mosquitoes.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleWomen->ExposedWomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible women become exposed to the Zika virus through contact with infected individuals, such as infected mosquitoes or infected sexual partners.",
+        "reasoning": "The paper states that ZIKV is transmitted by mosquito bites and sexual contact",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedWomen->InfectiousWomenSymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed women progress to an infectious and symptomatic state, with the Zika virus present in their blood.",
+        "reasoning": "This transition represents the progression of the disease within an exposed woman, from the latent period to the onset of symptoms and infectivity relevant for mosquito transmission.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedWomen->InfectiousWomenAsymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The establishment of persistent Zika virus infection in the genital tract of a symptomatic infectious woman, following acute viremia.",
+        "reasoning": "This flow represents the physiological progression of Zika virus from the bloodstream to a persistent state in the genital tract, a known characteristic that enables sexual transmission.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The establishment of Zika virus",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenGenitalPersistence->RecoveredWomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Women with persistent",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMen->ExposedMen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible men become exposed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMen->InfectiousMenSymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMen->InfectiousMenAsymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at which",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenSemenPersistence->RecoveredMen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Men who have been",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible mosquitoes become exposed to the Zika virus after biting an infected human host.",
+        "reasoning": "The paper states ZIKV is primarily transmitted by Aedes mosquitoes, indicating infection occurs through contact (bites) with an infected host.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMosquitoes->InfectiousMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed mosquitoes become infectious",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblewomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedwomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Women",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "InfectiousSexual",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomenasymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "InfectiousAsymptomaticWomen",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiouswomengenitalpersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Women with Genital",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredwomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Women",
+        "description": "",
+        "reasoning": "Given",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensymptomaticblood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men Symptomatic Blood",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmensemenpersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Men Semen Persistence",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveredmen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Recovered Men",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptiblemosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Susceptible Mosquitoes",
+        "description": "Mosquitoes that are not infected with ZIKV and are capable of acquiring",
+        "reasoning": "The paper states the model includes mosquito bites as a main transmission pathway, which necessitates a compartment for mosquitoes that can become infected.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "exposedmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Exposed Mosquitoes",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "infectiousmosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Infectious Mosquitoes",
+        "description": "Mosquitoes that have been infected with the Zika virus and are capable of transmitting it to susceptible humans.",
+        "reasoning": "The paper explicitly states the model includes 'mosquito bites' as a main transmission pathway, necessitating a compartment for mosquitoes capable of transmitting the virus.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleWomen->ExposedWomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible women become",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedWomen->InfectiousWomenSymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed women complete their",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedWomen->InfectiousWomenAsymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Exposed women complete their",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenSymptomaticBlood->InfectiousWomenGenitalPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The progression of a symptomatic woman with ZIKV in her blood to developing a persistent ZIKV infection in her genital tract.",
+        "reasoning": "This flow represents the internal progression of a woman's infection from systemic (blood) to a persistent state in the genital tract, which is a rate-dependent process within an individual.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenAsymptomaticBlood->InfectiousWomenGenitalPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The establishment of Zika",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousWomenGenitalPersistence->RecoveredWomen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Women with persistent genital ZIKV infection eventually clear the virus and recover, becoming immune.",
+        "reasoning": "Even with genital persistence, ZIKV infections eventually resolve, leading to recovery and potential immunity in women, which is typically modeled as a rate of transition.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMen->ExposedMen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible men",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMen->InfectiousMenSymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed men",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMen->InfectiousMenAsymptomaticBlood",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of exposed men to an infectious, asymptomatic state where the virus is present in their blood.",
+        "reasoning": "This flow represents the progression of exposed men through their latent period to become infectious in their blood, without symptoms.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenSymptomaticBlood->InfectiousMenSemenPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at which Zika virus, present in the blood of a symptomatic infectious man, establishes persistence in his semen.",
+        "reasoning": "The",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenAsymptomaticBlood->InfectiousMenSemenPersistence",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Progression of asymptomatic",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousMenSemenPersistence->RecoveredMen",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Recovery of infectious men",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "SusceptibleMosquitoes->ExposedMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible mosquitoes become exposed to the Zika virus after biting an infected human.",
+        "reasoning": "The paper explicitly states ZIKV is primarily transmitted by Aedes mosquitoes and includes 'mosquito bites' as a main transmission pathway, indicating contact-dependent infection of mosquitoes.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ExposedMosquitoes->InfectiousMosquitoes",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Mosquitoes that have been infected with the Zika virus progress from the exposed state to the infectious state after an extrinsic incubation period.",
+        "reasoning": "After acquiring the virus, mosquitoes undergo an extrinsic incubation period during which the virus replicates and disseminates, making them capable of transmitting the disease.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

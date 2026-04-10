@@ -10,8 +10,25 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Infectious individuals either recover from the disease, potentially gaining immunity, or die due to the disease, thus being removed from the pool of infectious individuals.",
-        "reasoning": "The transition from Infectious to Removed (recovery or death) is an intrinsic process for an infected individual, occurring at a specific rate per individual, independent of contact with others.",
+        "description": "Individuals who are infectious either recover from influenza or die due to the disease, thereby being removed from the infectious compartment.",
+        "reasoning": "The transition from Infectious to Removed is an intrinsic process for an infected individual (recovery or death), typically modeled as a per-capita rate rather than through contact-dependent interactions.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious individuals either recover from the disease and become immune, or die due to the disease, thus being removed from the infectious population.",
+        "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -26,5 +43,40 @@
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "Infectious->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who are infectious either recover from influenza or die due to the disease, thereby being removed from the infectious compartment.",
+        "reasoning": "The transition from Infectious to Removed is an intrinsic process for an infected individual (recovery or death), typically modeled as a per-capita rate rather than through contact-dependent interactions.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infectious->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Infectious individuals either recover from the disease and become immune, or die due to the disease, thus being removed from the infectious population.",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

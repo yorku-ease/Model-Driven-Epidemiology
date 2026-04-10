@@ -67,10 +67,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 40.6% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 27.3% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **32.2/100** | — |
+| **→ Composite** | **38.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -94,11 +94,11 @@
 
 ### untreatedstagei2 (missing_compartments)
 - **Source:** inference
-- **Primary name:** Untreated Stage I HIV
+- **Primary name:** AIDS Stage
 
 ### untreatedstagei3 (missing_compartments)
 - **Source:** inference
-- **Primary name:** Untreated Stage I HIV
+- **Primary name:** Untreated Stage I
 
 ### untreatedstagei4 (missing_compartments)
 - **Source:** inference
@@ -110,50 +110,48 @@
 
 ### artstagea2 (missing_compartments)
 - **Source:** inference
-- **Primary name:** Late Stage
-- **Reasoning:** The
+- **Primary name:** Acute Infection
 
 ### artstagea3 (missing_compartments)
 - **Source:** inference
-- **Primary name:** Fie
+- **Primary name:** AIDS Stage
+- **Reasoning:** The model
 
 ### artstagea4 (missing_compartments)
 - **Source:** inference
-- **Primary name:** Disease Stages
-- **Reasoning:** The model
+- **Primary name:** Latent Stage
 
 ### removed (missing_compartments)
 - **Source:** inference
-- **Primary name:** AIDS Phase
-- **Reasoning:** The model
+- **Primary name:** AIDS
+- **Reasoning:** The
 
 ### Susceptible->UntreatedStageI1 (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Susceptible individuals become infected with HIV and transition to the Untreated Stage I1 through contact with infectious partners.
-- **Reasoning:** The excerpt describes 'probabilities, per unit time step, that the index case infects any one partner', which is characteristic of contact-based transmission leading to infection.
+- **Description:** Infection of a susceptible individual with HIV, leading to entry into the untreated Stage I of the disease.
+- **Reasoning:** The paper explicitly mentions probabilities of infection per unit time step through partners, indicating transmission via contact.
 
 ### UntreatedStageI1->UntreatedStageI2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of HIV infection
+- **Description:** Progression of
 
 ### UntreatedStageI1->ARTStageA1 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals in Untreated Stage I1 initiate Antiretroviral Therapy (ART) and transition to ART Stage A1.
-- **Reasoning:** The transition from an untreated disease stage to an ART-treated stage represents the initiation of medical intervention, which is typically modeled as a rate of treatment uptake within a population.
+- **Description:** Initiation of Antiretroviral Therapy (ART) for individuals in Untreated Stage I1.
+- **Reasoning:** The transition from an untreated stage to an ART stage represents individuals starting treatment, which is typically modeled as a rate of treatment initiation rather than a contact-driven event.
 
 ### UntreatedStageI2->UntreatedStageI3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of untreated HIV infection from stage I2 to stage I3.
-- **Reasoning:** Disease progression between defined stages in an untreated population is typically modeled as a rate, reflecting the natural course of the infection.
+- **Description:** Progression of
 
 ### UntreatedStageI2->ARTStageA2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Initiation of antiretro
+- **Description:** Individuals in Untreated
 
 ### UntreatedStageI3->UntreatedStageI4 (missing_flows)
 - **Source:** inference
@@ -163,39 +161,38 @@
 ### UntreatedStageI3->ARTStageA3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals in untreated
+- **Description:** Initiation of antiretro
 
 ### UntreatedStageI4->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals in Unt
+- **Description:** Individuals in UntreatedStageI4 die and are removed
 
 ### UntreatedStageI4->ARTStageA4 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Untreated HIV-
+- **Description:** Individuals in untreated HIV
 
 ### ARTStageA1->ARTStageA2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of an individual from an initial stage of antiretroviral therapy (ARTStageA1) to a subsequent stage (ARTStageA2), reflecting changes in treatment effectiveness or patient health status over time.
-- **Reasoning:** The transition between ART stages represents an internal
+- **Description:** Progression of an
 
 ### ARTStageA1->UntreatedStageI1 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals on Antiretroviral Therapy (ART) in stage A1 discontinue treatment and revert to an untreated state in stage I1.
-- **Reasoning:** This transition represents treatment discontinuation, which is an internal progression or regression within an individual's treatment status, typically modeled as a rate.
+- **Description:** Cessation of
 
 ### ARTStageA2->ARTStageA3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of individuals from
+- **Description:** Progression of an individual from ART stage A2 to ART stage A3, indicating an improvement in treatment response or health status due to ongoing antiretroviral therapy.
+- **Reasoning:** This transition describes an internal progression within an individual's treatment journey, driven by the efficacy of ART rather than direct contact with others.
 
 ### ARTStageA2->UntreatedStageI2 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Cessation of
+- **Description:** Individuals on antiretroviral
 
 ### ARTStageA3->ARTStageA4 (missing_flows)
 - **Source:** inference
@@ -205,23 +202,151 @@
 ### ARTStageA3->UntreatedStageI3 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals discontinuing or failing antiretroviral therapy (ART) and reverting to an untreated state while maintaining their current CD4 stage.
-- **Reasoning:** This transition describes a change in treatment status (from ART to untreated) within the same disease progression stage, which is typically modeled as a rate rather than a contact-dependent event.
+- **Description:** Cessation of
 
 ### ARTStageA4->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Mortality
+- **Description:** Individuals in ART stage A4 dying.
+- **Reasoning:** The paper explicitly mentions a Weibull survival distribution, indicating that individuals can be removed from the population due to death.
 
 ### ARTStageA4->UntreatedStageI4 (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals on antire
+- **Description:** Individuals discontinuing Antire
+
+### untreatedstagei1 (missing_compartments)
+- **Source:** inference
+- **Primary name:** Untreated Stage I
+
+### untreatedstagei2 (missing_compartments)
+- **Source:** inference
+- **Primary name:** HIV Stages
+- **Reasoning:** The
+
+### untreatedstagei3 (missing_compartments)
+- **Source:** inference
+- **Primary name:** HIV Stage I
+
+### untreatedstagei4 (missing_compartments)
+- **Source:** inference
+- **Primary name:** AIDS Stage
+- **Reasoning:** The
+
+### artstagea1 (missing_compartments)
+- **Source:** inference
+- **Primary name:** AIDS Stage
+
+### artstagea2 (missing_compartments)
+- **Source:** inference
+- **Primary name:** Late Stage HIV
+
+### artstagea3 (missing_compartments)
+- **Source:** inference
+- **Primary name:** Disease Stages
+- **Reasoning:** The
+
+### artstagea4 (missing_compartments)
+- **Source:** inference
+- **Primary name:** ART Stages
+- **Reasoning:** The
+
+### removed (missing_compartments)
+- **Source:** inference
+- **Primary name:** AIDS
+
+### Susceptible->UntreatedStageI1 (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Infection of a susceptible individual by an infected partner, leading to the Untreated Stage I HIV infection.
+- **Reasoning:** The excerpt describes probabilities of an index case infecting partners, which is characteristic of contact-based disease transmission.
+
+### UntreatedStageI1->UntreatedStageI2 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of HIV
+
+### UntreatedStageI1->ARTStageA1 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in Untreated Stage
+
+### UntreatedStageI2->UntreatedStageI3 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of an untreated individual from HIV disease stage I2 to stage I
+
+### UntreatedStageI2->ARTStageA2 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in Untreated Stage
+
+### UntreatedStageI3->UntreatedStageI4 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression
+
+### UntreatedStageI3->ARTStageA3 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Initiation of
+
+### UntreatedStageI4->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in Untreated
+
+### UntreatedStageI4->ARTStageA4 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Initiation of antiretro
+
+### ARTStageA1->ARTStageA2 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of an individual
+
+### ARTStageA1->UntreatedStageI1 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals on Antiretro
+
+### ARTStageA2->ARTStageA3 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of an individual from ART Stage A2 to ART Stage A3, likely representing a change in treatment status, adherence, or duration on antiretroviral therapy.
+- **Reasoning:** Transitions between defined treatment stages (ART stages) are typically modeled as
+
+### ARTStageA2->UntreatedStageI2 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Discontinuation of
+
+### ARTStageA3->ARTStageA4 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of an individual living with HIV from ART stage 3 to ART stage 4, representing advancement in their antiretroviral therapy regimen or clinical status.
+- **Reasoning:** The transition between
+
+### ARTStageA3->UntreatedStageI3 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Discontinuation or failure
+
+### ARTStageA4->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mortality of individuals
+
+### ARTStageA4->UntreatedStageI4 (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals discontinue Antiretro
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **10** | Candidate: **11**
-- Precision **0.2727** | Recall **0.6** | F1 **0.375**
+- Gold count: **10** | Candidate: **12**
+- Precision **0.1667** | Recall **0.5** | F1 **0.25**
 ### Flows
-- Gold count: **17** | Candidate: **7**
-- Precision **0.5714** | Recall **0.3529** | F1 **0.4364**
+- Gold count: **17** | Candidate: **5**
+- Precision **0.4** | Recall **0.2353** | F1 **0.2963**

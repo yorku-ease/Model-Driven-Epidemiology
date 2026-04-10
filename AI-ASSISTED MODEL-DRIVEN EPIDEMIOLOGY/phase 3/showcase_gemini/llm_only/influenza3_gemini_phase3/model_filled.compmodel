@@ -13,16 +13,16 @@
   <parameters name="nu(t)" expression="exponential with mean 5 days" type="CONSTANT" description="Vaccination rate, applied t* days after epidemic onset" unit="1/day" />
   <parameters name="vaccination_coverage" expression="5-20" type="CONSTANT" description="Vaccination coverage with full course of 1-2 doses" unit="%" />
   <parameters name="t*" expression="25 or 37" type="CONSTANT" description="Time after epidemic onset when vaccination is initiated" unit="days" />
-  <parameters name="communitytransmissionrate" expression="0.2" type="CONSTANT" unit="per day" />
-  <parameters name="hospitaltransmissionrate" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="effectivevaccinationrate" expression="0.0" type="CONSTANT" />
-  <parameters name="ineffectivevaccinationrate" expression="0.4" type="CONSTANT" />
-  <parameters name="protectiondelayrate" expression="0.1" type="CONSTANT" unit="per day" />
+  <parameters name="communitytransmissionrate" expression="1.8" type="CONSTANT" />
+  <parameters name="hospitaltransmissionrate" expression="0.3" type="CONSTANT" />
+  <parameters name="effectivevaccinationrate" expression="0" type="CONSTANT" />
+  <parameters name="ineffectivevaccinationrate" expression="0.5" type="CONSTANT" />
+  <parameters name="protectiondelayrate" expression="0.1" type="CONSTANT" unit="1/day" />
   <parameters name="latentprogressionrate" expression="0.5" type="CONSTANT" unit="per day" />
-  <parameters name="hospitalizationrate" expression="0.005" type="CONSTANT" />
-  <parameters name="communityrecoveryrate" expression="0.25" type="CONSTANT" unit="per day" />
-  <parameters name="hospitalrecoveryrate" expression="0.17" type="CONSTANT" unit="per day" />
-  <parameters name="hospitalmortalityrate" expression="0.03" type="CONSTANT" />
+  <parameters name="hospitalizationrate" expression="0.01" type="CONSTANT" unit="per case" />
+  <parameters name="communityrecoveryrate" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="hospitalrecoveryrate" expression="0.1" type="CONSTANT" unit="per day" />
+  <parameters name="hospitalmortalityrate" expression="0.025" type="CONSTANT" unit="proportion" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.1" description="Successful vaccination of susceptible individuals at rate e_i * nu(t)" />
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.2" description="Ineffective vaccination of susceptible individuals at rate (1 - e_i) * nu(t)" />

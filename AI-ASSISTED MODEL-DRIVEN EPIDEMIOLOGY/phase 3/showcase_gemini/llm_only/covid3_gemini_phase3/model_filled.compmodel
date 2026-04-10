@@ -5,19 +5,19 @@
   <parameters name="Serial Interval Distribution" expression="0.0" type="CONSTANT" description="Distribution of the time between successive cases in a chain of transmission. Used to approximate the generation time distribution." unit="days" />
   <parameters name="Infection Fatality Ratio" expression="0.0" type="CONSTANT" description="Population-averaged infection fatality ratio, adjusted for the age structure and contact patterns of each country. Based on previous work." unit="dimensionless" />
   <parameters name="Infection-to-death distribution" expression="0.0" type="CONSTANT" description="Time lag distribution from infection to death, derived from assumptions about infection-to-symptom and symptom-to-death distributions." unit="days" />
-  <parameters name="Lockdown effect" expression="0.25" type="CONSTANT" description="The relative reduction in the reproduction number attributed to a lockdown intervention (95% credible interval: 75-87%)." unit="percent reduction in R_t" />
-  <parameters name="population11countries" expression="750000000.0" type="CONSTANT" unit="people" />
+  <parameters name="Lockdown effect" expression="0.6" type="CONSTANT" description="The relative reduction in the reproduction number attributed to a lockdown intervention (95% credible interval: 75-87%)." unit="percent reduction in R_t" />
+  <parameters name="population11countries" expression="750000000.0" type="CONSTANT" />
   <parameters name="generationintervaldays" expression="5.5" type="CONSTANT" unit="days" />
-  <parameters name="basetransmissionrate" expression="0.5" type="CONSTANT" unit="per day" />
-  <parameters name="publiceventsbaneffect" expression="0.8" type="CONSTANT" />
-  <parameters name="schoolclosureeffect" expression="0.85" type="CONSTANT" />
+  <parameters name="basetransmissionrate" expression="0.5" type="CONSTANT" unit="1/day" />
+  <parameters name="publiceventsbaneffect" expression="0.7" type="CONSTANT" />
+  <parameters name="schoolclosureeffect" expression="0.15" type="CONSTANT" />
   <parameters name="selfisolationeffect" expression="0.5" type="CONSTANT" />
-  <parameters name="socialdistancingeffect" expression="0.5" type="CONSTANT" />
-  <parameters name="combinedinterventionmultiplier" expression="0.25" type="CONSTANT" />
+  <parameters name="socialdistancingeffect" expression="0.6" type="CONSTANT" />
+  <parameters name="combinedinterventionmultiplier" expression="0.3" type="CONSTANT" />
   <parameters name="effectivetransmissionrate" expression="3.0" type="CONSTANT" />
-  <parameters name="meanoutcomedelaydays" expression="21.0" type="CONSTANT" unit="days" />
+  <parameters name="meanoutcomedelaydays" expression="24" type="CONSTANT" unit="days" />
   <parameters name="removalrate" expression="0.1" type="CONSTANT" unit="per day" />
-  <parameters name="deathrate" expression="0.007" type="CONSTANT" />
+  <parameters name="deathrate" expression="0.01" type="CONSTANT" />
   <compartments PrimaryName="Infectious" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.0" contactRateParameter="//@parameters.0" target="//@compartments.0" description="Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution." />
   </compartments>

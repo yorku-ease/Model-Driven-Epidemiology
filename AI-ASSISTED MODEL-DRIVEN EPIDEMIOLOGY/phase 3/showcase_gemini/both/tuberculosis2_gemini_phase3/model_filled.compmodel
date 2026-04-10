@@ -16,23 +16,23 @@
   <parameters name="Change in death rate" expression="2.9, -2.7, -2.2, -4.6, -0.7, -0.7, -1.6" type="CONSTANT" description="Regional annual change in death rate." unit="% per year" />
   <parameters name="Change in contact rate" expression="-0.7, -0.8, -1.0, -0.5, -0.9, -0.5, -0.6" type="CONSTANT" description="Regional annual change in contact rate used to represent declining transmission." unit="% per year" />
   <parameters name="HIV-1 infection in tuberculosis cases, 2020" expression="21, 2.5, 0.2, 0.5, 0.5, 4.0, 1.4" type="CONSTANT" description="Projected proportion of tuberculosis cases that are HIV-1 positive in 2020 by region." unit="%" />
-  <parameters name="primaryinfectiontolatentrate" expression="0.18" type="CONSTANT" description="New infection leading to latent class" />
-  <parameters name="primaryinfectiontoinfectiousrate" expression="0.015" type="CONSTANT" description="Progressive primary disease to infectious tuberculosis" />
-  <parameters name="primaryinfectiontononinfectiousrate" expression="0.010" type="CONSTANT" description="Progressive primary disease to non-infectious tuberculosis" />
-  <parameters name="latentreactivationtoinfectiousrate" expression="0.0025" type="CONSTANT" description="Endogenous reactivation from latent infection to infectious disease" />
-  <parameters name="latentreactivationtononinfectiousrate" expression="0.0015" type="CONSTANT" description="Endogenous reactivation from latent infection to non-infectious disease" />
-  <parameters name="exogenousreinfectiontoinfectiousrate" expression="0.006" type="CONSTANT" description="Reinfection-driven progression from latent infection to infectious disease" />
-  <parameters name="exogenousreinfectiontononinfectiousrate" expression="0.004" type="CONSTANT" description="Reinfection-driven progression from latent infection to non-infectious disease" />
-  <parameters name="infectiouscasedetectionrate" expression="0.70" type="CONSTANT" description="Representative DOTS case-detection parameter for infectious cases based on WHO target discussed in the paper" />
-  <parameters name="infectiousselfcurerate" expression="0.03" type="CONSTANT" description="Self-cure from infectious tuberculosis without treatment" />
-  <parameters name="noninfectiouscasedetectionrate" expression="0.42" type="CONSTANT" description="Detection of non-infectious cases represented as a fraction of infectious case detection, reflecting the paper's region-specific relative detection of non-infectious cases" />
-  <parameters name="noninfectiousselfcurerate" expression="0.04" type="CONSTANT" description="Self-cure from non-infectious tuberculosis without treatment" />
-  <parameters name="treatmentcurerate" expression="0.85" type="CONSTANT" description="Cure rate under DOTS-like short-course chemotherapy, matching the WHO target emphasized in the paper" />
-  <parameters name="treatmentfailurerate" expression="0.05" type="CONSTANT" description="Treatment failure rate from T to A; treatment failures enter the asymptomatic state in the paper" />
-  <parameters name="failurerelapsetoinfectiousrate" expression="0.06" type="CONSTANT" description="Redevelopment of infectious tuberculosis after treatment failure" />
-  <parameters name="failurerelapsetononinfectiousrate" expression="0.04" type="CONSTANT" description="Redevelopment of non-infectious tuberculosis after treatment failure" />
-  <parameters name="selfcurerelapsetoinfectiousrate" expression="0.03" type="CONSTANT" description="Relapse to infectious tuberculosis after self-cure" />
-  <parameters name="selfcurerelapsetononinfectiousrate" expression="0.02" type="CONSTANT" description="Relapse to non-infectious tuberculosis after self-cure" />
+  <parameters name="primaryinfectiontolatentrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="primaryinfectiontoinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="primaryinfectiontononinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="latentreactivationtoinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="latentreactivationtononinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="exogenousreinfectiontoinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="exogenousreinfectiontononinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="infectiouscasedetectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="infectiousselfcurerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="noninfectiouscasedetectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="noninfectiousselfcurerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatmentcurerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatmentfailurerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="failurerelapsetoinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="failurerelapsetononinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="selfcurerelapsetoinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="selfcurerelapsetononinfectiousrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.14" target="//@compartments.1" description="New infection with Mycobacterium tuberculosis." />
     <outgoingFlows target="//@compartments.3" />
@@ -65,4 +65,5 @@
     <outgoingFlows target="//@compartments.1" />
     <outgoingFlows target="//@compartments.4" />
   </compartments>
+  <compartments PrimaryName="Latent Tuberculosis" />
 </ns0:CompartmentalModel>

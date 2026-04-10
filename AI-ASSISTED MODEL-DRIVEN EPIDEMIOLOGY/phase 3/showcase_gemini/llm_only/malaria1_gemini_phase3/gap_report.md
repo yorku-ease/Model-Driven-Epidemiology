@@ -49,9 +49,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 95.8% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 0.0% | 20% |
-| **→ Composite** | **58.8/100** | — |
+| **→ Composite** | **68.8/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -71,7 +71,7 @@
 
 ### μ1 (missing_parameters)
 - **Source:** inference
-- **Value:** 1e-05 per day
+- **Value:** 1e-05 per
 - **Confidence:** LOW
 
 ### λv^v (missing_parameters)
@@ -81,17 +81,17 @@
 
 ### λv^s (missing_parameters)
 - **Source:** inference
-- **Value:** 0.0001 per day
+- **Value:** 1e-05 per day
 - **Confidence:** LOW
 
 ### λh^v (missing_parameters)
 - **Source:** inference
-- **Value:** 1e-05 per person per
+- **Value:** 1e-06 per day
 - **Confidence:** LOW
 
 ### λh^s (missing_parameters)
 - **Source:** inference
-- **Value:** 1e-05 per person per
+- **Value:** 1e-05 per day
 - **Confidence:** LOW
 
 ### λm (missing_parameters)
@@ -101,7 +101,7 @@
 
 ### μ2 (missing_parameters)
 - **Source:** inference
-- **Value:** 0.0001 per day
+- **Value:** 4e-05 1/day
 - **Confidence:** LOW
 
 ## 6. Fill validation (vs gold standard)
@@ -117,11 +117,11 @@
 |-----------|--------|------|---------|---------|
 | μ1 | 1e-05 | 0.001384 | 99.28% | poor |
 | λv^v | 1e-05 | 0.0 | 100.0% | poor |
-| λv^s | 0.0001 | 0.0 | 100.0% | poor |
-| λh^v | 1e-05 | 0.0 | 100.0% | poor |
+| λv^s | 1e-05 | 0.0 | 100.0% | poor |
+| λh^v | 1e-06 | 0.0 | 100.0% | poor |
 | λh^s | 1e-05 | 0.0 | 100.0% | poor |
 | λm | 1e-05 | 0.0 | 100.0% | poor |
-| μ2 | 0.0001 | 0.1 | 99.9% | poor |
+| μ2 | 4e-05 | 0.1 | 99.96% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

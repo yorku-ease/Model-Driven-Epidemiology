@@ -5,23 +5,23 @@
 **Comparison mode:** gold_standard
 
 ## 1. Gap summary
-- Total gaps: **48**
-- Missing compartments: 6
+- Total gaps: **45**
+- Missing compartments: 5
 - Missing parameters: 24
 - Missing stratifications: 0
 - Missing interventions: 0
-- Missing flows: 18
+- Missing flows: 16
 - Extra compartments (not in gold standard): 0
 - Extra parameters (not in gold standard): 9
-- Extra flows (not in gold standard): 1
+- Extra flows (not in gold standard): 0
 
 ## 1b. Improvement vs Phase 2 draft
-- Phase 2 gaps (before fills): **48**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **48**
+- Phase 2 gaps (before fills): **45**
+- After fills gaps (re-detected): **21**
+- Delta (before - after): **24**
 - Delta missing parameters: **24**
-- Delta missing compartments: **6**
-- Delta missing flows: **18**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -31,14 +31,11 @@
 - **vaccinated children under 5 (two doses)** — Present in gold standard but not in extracted model. (severity: high)
 - **vaccinated adults (one dose)** — Present in gold standard but not in extracted model. (severity: high)
 - **vaccinated children under 5 (one dose)** — Present in gold standard but not in extracted model. (severity: high)
-- **exposed / recently infected** — Present in gold standard but not in extracted model. (severity: high)
 - **environmental vibrio cholerae reservoir** — Present in gold standard but not in extracted model. (severity: high)
 
 ## 3b. Missing flows (gold vs extraction/XML)
-- **Susceptible adults->Exposed / recently infected** — Present in gold standard but not in extracted model (or flows list).
 - **Susceptible adults->Vaccinated adults (two doses)** — Present in gold standard but not in extracted model (or flows list).
 - **Susceptible adults->Vaccinated adults (one dose)** — Present in gold standard but not in extracted model (or flows list).
-- **Susceptible children under 5->Exposed / recently infected** — Present in gold standard but not in extracted model (or flows list).
 - **Susceptible children under 5->Vaccinated children under 5 (two doses)** — Present in gold standard but not in extracted model (or flows list).
 - **Susceptible children under 5->Vaccinated children under 5 (one dose)** — Present in gold standard but not in extracted model (or flows list).
 - **Vaccinated adults (two doses)->Exposed / recently infected** — Present in gold standard but not in extracted model (or flows list).
@@ -86,11 +83,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 98.6% | 30% |
-| **Fill traceability** | 87.5% | 20% |
-| **Parameter accuracy** | 91.7% | 20% |
-| **→ Composite** | **95.4/100** | — |
+| **Gap reduction** | 53.3% | 30% |
+| **Reference agreement** | 54.5% | 30% |
+| **Fill traceability** | 36.4% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **39.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -99,14 +96,14 @@
 | Layer | Description | C | P | F | Total |
 |-------|-------------|---|---|---|-------|
 | **Spec → Model** | Recognised from paper text but absent from model | 0 | 0 | 0 | 0 |
-| **Model → Gold** | Reference model items absent from extraction | 6 | 24 | 18 | 48 |
-| **Extra in model** | Model items not in reference (noise/convention) | 0 | 9 | 1 | 10 |
+| **Model → Gold** | Reference model items absent from extraction | 5 | 24 | 16 | 45 |
+| **Extra in model** | Model items not in reference (noise/convention) | 0 | 9 | 0 | 9 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 42
+- Filled via **RAG**: 24
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 6
+- **Flagged** for manual review: 42
 
 ### vaccinated adults (two doses) (missing_compartments)
 - **Source:** flagged
@@ -124,7 +121,231 @@
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
-### exposed / recently infected (missing_compartments)
+### environmental vibrio cholerae reservoir (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### βa (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### βc (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### βa_2dose (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### βc_2dose (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### βa_1dose (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### βc_1dose (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### σ*k (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_cholera3_llm_openai_20260407_211654
+
+### (1-σ)*k (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_cholera3_llm_openai_20260407_211654
+
+### γ (missing_parameters)
+- **Source:** rag
+- **Value:** 1/10 1/day
+- **Description:** Rate at which successfully vaccinated individuals develop protection (mean 10 days)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_hiv3_llm_claude_20260407_214604, p2_influenza3_llm_claude_20260407_214824
+
+### ν2 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_gemini_20260407_204240
+
+### ν1 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_gemini_20260407_204240
+
+### ω2 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ω1 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ωr (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ξs (missing_parameters)
+- **Source:** rag
+- **Value:** 10 days
+- **Description:** Duration of inhibitory antimalarial blood concentration for short-acting drug
+- **From papers:** p2_covid3_llm_openai_20260407_211832, p2_covid3_llm_gemini_20260407_204521, p2_dengue3_llm_claude_20260407_214050
+
+### ξa (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p2_cholera3_llm_openai_20260407_211654, p2_dengue3_llm_claude_20260407_214050
+
+### λa (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_gemini_20260407_204240
+
+### λc (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_gemini_20260407_204240
+
+### δ (missing_parameters)
+- **Source:** rag
+- **Value:** 0.029 /yr
+- **Description:** Birth rate
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_hiv3_llm_gemini_20260407_205438, p2_cholera3_llm_gemini_20260407_204240
+
+### μb (missing_parameters)
+- **Source:** rag
+- **Value:** 0.018 /yr
+- **Description:** Background mortality rate
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_gemini_20260407_211201, p2_hiv3_llm_gemini_20260407_205438
+
+### ve2a (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ve2c (missing_parameters)
+- **Source:** rag
+- **Value:** 10 cells/ml day^-1 person^-1
+- **Description:** Contribution of each infected person to the population of V. cholerae in the aquatic environment
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ve1a (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ve1c (missing_parameters)
+- **Source:** rag
+- **Value:** 10 cells/ml day^-1 person^-1
+- **Description:** Contribution of each infected person to the population of V. cholerae in the aquatic environment
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### Susceptible adults->Vaccinated adults (two doses) (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible adults->Vaccinated adults (one dose) (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible children under 5->Vaccinated children under 5 (two doses) (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible children under 5->Vaccinated children under 5 (one dose) (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated adults (two doses)->Exposed / recently infected (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated adults (two doses)->Susceptible adults (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated children under 5 (two doses)->Exposed / recently infected (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated children under 5 (two doses)->Susceptible children under 5 (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated adults (one dose)->Exposed / recently infected (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated adults (one dose)->Susceptible adults (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated children under 5 (one dose)->Exposed / recently infected (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Vaccinated children under 5 (one dose)->Susceptible children under 5 (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Exposed / recently infected->Symptomatic infectious (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Exposed / recently infected->Asymptomatic infectious (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Symptomatic infectious->Environmental Vibrio cholerae reservoir (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Asymptomatic infectious->Environmental Vibrio cholerae reservoir (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### vaccinated adults (two doses) (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### vaccinated children under 5 (two doses) (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### vaccinated adults (one dose) (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### vaccinated children under 5 (one dose) (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
@@ -132,280 +353,110 @@
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
-### βa (missing_parameters)
-- **Source:** rag
-- **Value:** 0.35 1/week
-- **Description:** Adult environmental transmission/contact rate
-- **From papers:** p1_model_measles, p1_model_dengue, p1_model_cholera
-
-### βc (missing_parameters)
-- **Source:** rag
-- **Value:** 0.35 1/week
-- **Description:** Child environmental transmission/contact rate
-- **From papers:** p1_model_measles, p1_model_cholera
-
-### βa_2dose (missing_parameters)
-- **Source:** rag
-- **Value:** βA * (1 - VE2A) 1/week
-- **Description:** Breakthrough transmission rate for adults after two doses
-- **From papers:** p1_model_dengue, p1_model_cholera, p1_model_hiv
-
-### βc_2dose (missing_parameters)
-- **Source:** rag
-- **Value:** βC * (1 - VE2C) 1/week
-- **Description:** Breakthrough transmission rate for children under 5 after two doses
-- **From papers:** p1_model_dengue, p1_model_covid, p1_model_cholera
-
-### βa_1dose (missing_parameters)
-- **Source:** rag
-- **Value:** βA * (1 - VE1A) 1/week
-- **Description:** Breakthrough transmission rate for adults after one dose
-- **From papers:** p1_model_dengue, p1_model_cholera, p1_model_hiv
-
-### βc_1dose (missing_parameters)
-- **Source:** rag
-- **Value:** βC * (1 - VE1C) 1/week
-- **Description:** Breakthrough transmission rate for children under 5 after one dose
-- **From papers:** p1_model_dengue, p1_model_covid, p1_model_cholera
-
-### σ*k (missing_parameters)
-- **Source:** rag
-- **Value:** 0.14 1/week
-- **Description:** Progression from exposure to symptomatic infection
-- **From papers:** p1_model_dengue, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_claude_20260407_215851
-
-### (1-σ)*k (missing_parameters)
-- **Source:** rag
-- **Value:** 0.21 1/week
-- **Description:** Progression from exposure to asymptomatic infection
-- **From papers:** p1_model_dengue, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_claude_20260407_215851
-
-### γ (missing_parameters)
-- **Source:** rag
-- **Value:** 0.11834  days
-- **Description:** Probability an exposed host becomes symptomatic
-- **From papers:** p1_model_malaria, p1_model_influenza, p1_model_measles
-
-### ν2 (missing_parameters)
-- **Source:** rag
-- **Value:** 0.015 1/week
-- **Description:** Campaign vaccination rate into two-dose classes; scenario-dependent rollout parameter
-- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p2_cholera3_llm_claude_20260407_213639, p1_model_covid
-
-### ν1 (missing_parameters)
-- **Source:** rag
-- **Value:** 0.002 1/week
-- **Description:** Campaign vaccination rate into one-dose classes; scenario-dependent rollout parameter
-- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p2_cholera3_llm_claude_20260407_213639, p1_model_covid
-
-### ω2 (missing_parameters)
-- **Source:** rag
-- **Value:** 0.00385 1/week
-- **Description:** Waning rate of two-dose protection; approximately 5-year horizon
-- **From papers:** p1_model_measles, p1_model_malaria, p1_model_cholera
-
-### ω1 (missing_parameters)
-- **Source:** rag
-- **Value:** 0.01923 1/week
-- **Description:** Waning rate of one-dose protection; protection assumed lost after about 1 year
-- **From papers:** p1_model_measles, p1_model_malaria, p1_model_cholera
-
-### ωr (missing_parameters)
-- **Source:** rag
-- **Value:** 0.01 1/week
-- **Description:** Waning rate of natural immunity
-- **From papers:** p1_model_measles, p1_model_malaria, p1_model_covid
-
-### ξs (missing_parameters)
-- **Source:** rag
-- **Value:** 0.8 1/week
-- **Description:** Shedding rate from symptomatic infectious individuals into environmental reservoir
-- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p1_model_malaria, p2_covid3_llm_gemini_20260407_204521
-
-### ξa (missing_parameters)
-- **Source:** rag
-- **Value:** 0.2 1/week
-- **Description:** Shedding rate from asymptomatic infectious individuals into environmental reservoir
-- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p2_cholera3_llm_claude_20260407_213639, p2_dengue3_llm_claude_20260407_214050
-
-### λa (missing_parameters)
-- **Source:** rag
-- **Value:** 2500 persons/week
-- **Description:** Recruitment rate into adult susceptible class
-- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p1_model_dengue, p2_cholera3_llm_claude_20260407_213639
-
-### λc (missing_parameters)
-- **Source:** rag
-- **Value:** 2500 persons/week
-- **Description:** Recruitment rate into adult susceptible class
-- **From papers:** p2_cholera3_llm_gemini_20260407_204240, p1_model_dengue, p2_cholera3_llm_claude_20260407_213639
-
-### δ (missing_parameters)
-- **Source:** rag
-- **Value:** 0.04545 days
-- **Description:** human infection rate
-- **From papers:** p1_model_tuberculosis, p1_model_cholera, p1_model_hiv
-
-### μb (missing_parameters)
-- **Source:** rag
-- **Value:** 0.6 1/week
-- **Description:** Environmental bacterial decay rate
-- **From papers:** p1_model_dengue, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_claude_20260407_215851
-
-### ve2a (missing_parameters)
-- **Source:** rag
-- **Value:** 0.76 dimensionless
-- **Description:** Initial effectiveness of two-dose OCV in adults
-- **From papers:** p1_model_measles, p1_model_dengue, p2_cholera3_llm_claude_20260407_213639
-
-### ve2c (missing_parameters)
-- **Source:** rag
-- **Value:** 0.469 * VE2A dimensionless
-- **Description:** Two-dose vaccine effectiveness in children under 5, scaled as 46.9% of adult protection
-- **From papers:** p1_model_dengue, p2_cholera3_llm_claude_20260407_213639, p1_model_cholera
-
-### ve1a (missing_parameters)
-- **Source:** rag
-- **Value:** 0.76 dimensionless
-- **Description:** One-dose adult protection during the first year, assumed equal initially to two-dose protection
-- **From papers:** p1_model_measles, p1_model_dengue, p2_cholera3_llm_claude_20260407_213639
-
-### ve1c (missing_parameters)
-- **Source:** rag
-- **Value:** 0.469 * VE1A dimensionless
-- **Description:** One-dose protection in children under 5 during the first year
-- **From papers:** p1_model_dengue, p2_cholera3_llm_claude_20260407_213639, p1_model_cholera
-
-### Susceptible adults->Exposed / recently infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
-
 ### Susceptible adults->Vaccinated adults (two doses) (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Susceptible adults->Vaccinated adults (one dose) (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
-
-### Susceptible children under 5->Exposed / recently infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Susceptible children under 5->Vaccinated children under 5 (two doses) (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Susceptible children under 5->Vaccinated children under 5 (one dose) (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated adults (two doses)->Exposed / recently infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated adults (two doses)->Susceptible adults (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated children under 5 (two doses)->Exposed / recently infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated children under 5 (two doses)->Susceptible children under 5 (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated adults (one dose)->Exposed / recently infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated adults (one dose)->Susceptible adults (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated children under 5 (one dose)->Exposed / recently infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Vaccinated children under 5 (one dose)->Susceptible children under 5 (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Exposed / recently infected->Symptomatic infectious (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Exposed / recently infected->Asymptomatic infectious (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Symptomatic infectious->Environmental Vibrio cholerae reservoir (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Asymptomatic infectious->Environmental Vibrio cholerae reservoir (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **24**
-- Exact match (<1% error): **22**
+- Exact match (<1% error): **0**
 - Close (<10% error): **0**
-- Approximate (<50% error): **0**
-- Poor (>50% error): **2**
-- **Accuracy (exact+close)**: **91.7%**
-- Median relative error: **0.0%**
+- Approximate (<50% error): **4**
+- Poor (>50% error): **20**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.98%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| βa | 0.35 | 0.35 | 0.0% | exact |
-| βc | 0.35 | 0.35 | 0.0% | exact |
-| βa_2dose | 1.0 | 1.0 | 0.0% | exact |
-| βc_2dose | 1.0 | 1.0 | 0.0% | exact |
-| βa_1dose | 1.0 | 1.0 | 0.0% | exact |
-| βc_1dose | 1.0 | 1.0 | 0.0% | exact |
-| σ*k | 0.14 | 0.14 | 0.0% | exact |
-| (1-σ)*k | 0.21 | 0.21 | 0.0% | exact |
-| γ | 0.11834 | 0.5 | 76.33% | poor |
-| ν2 | 0.015 | 0.015 | 0.0% | exact |
-| ν1 | 0.002 | 0.002 | 0.0% | exact |
-| ω2 | 0.00385 | 0.00385 | 0.0% | exact |
-| ω1 | 0.01923 | 0.01923 | 0.0% | exact |
-| ωr | 0.01 | 0.01 | 0.0% | exact |
-| ξs | 0.8 | 0.8 | 0.0% | exact |
-| ξa | 0.2 | 0.2 | 0.0% | exact |
-| λa | 2500.0 | 2500.0 | 0.0% | exact |
-| λc | 2500.0 | 2500.0 | 0.0% | exact |
-| δ | 0.04545 | 0.002 | 2172.5% | poor |
-| μb | 0.6 | 0.6 | 0.0% | exact |
-| ve2a | 0.76 | 0.76 | 0.0% | exact |
-| ve2c | 0.469 | 0.469 | 0.0% | exact |
-| ve1a | 0.76 | 0.76 | 0.0% | exact |
-| ve1c | 0.469 | 0.469 | 0.0% | exact |
+| βa | 0.5 | 0.35 | 42.86% | approximate |
+| βc | 0.5 | 0.35 | 42.86% | approximate |
+| βa_2dose | 0.5 | 1.0 | 50.0% | poor |
+| βc_2dose | 0.5 | 1.0 | 50.0% | poor |
+| βa_1dose | 0.5 | 1.0 | 50.0% | poor |
+| βc_1dose | 0.5 | 1.0 | 50.0% | poor |
+| σ*k | 0.5 | 0.14 | 257.14% | poor |
+| (1-σ)*k | 0.5 | 0.21 | 138.1% | poor |
+| γ | 1.0 | 0.5 | 100.0% | poor |
+| ν2 | 0.0001 | 0.015 | 99.33% | poor |
+| ν1 | 0.0001 | 0.002 | 95.0% | poor |
+| ω2 | 0.5 | 0.00385 | 12887.01% | poor |
+| ω1 | 0.5 | 0.01923 | 2500.1% | poor |
+| ωr | 0.5 | 0.01 | 4900.0% | poor |
+| ξs | 10.0 | 0.8 | 1150.0% | poor |
+| ξa | 0.5 | 0.2 | 150.0% | poor |
+| λa | 0.5 | 2500.0 | 99.98% | poor |
+| λc | 0.5 | 2500.0 | 99.98% | poor |
+| δ | 0.029 | 0.002 | 1350.0% | poor |
+| μb | 0.018 | 0.6 | 97.0% | poor |
+| ve2a | 0.5 | 0.76 | 34.21% | approximate |
+| ve2c | 10.0 | 0.469 | 2032.2% | poor |
+| ve1a | 0.5 | 0.76 | 34.21% | approximate |
+| ve1c | 10.0 | 0.469 | 2032.2% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **11** | Candidate: **9**
-- Precision **1.0** | Recall **1.0** | F1 **1.0**
+- Gold count: **11** | Candidate: **3**
+- Precision **1.0** | Recall **0.5455** | F1 **0.7059**
 ### Flows
-- Gold count: **21** | Candidate: **18**
-- Precision **0.9444** | Recall **1.0** | F1 **0.9714**
+- Gold count: **21** | Candidate: **3**
+- Precision **1.0** | Recall **0.2381** | F1 **0.3846**

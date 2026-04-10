@@ -52,10 +52,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 58.3% | 30% |
-| **Reference agreement** | 61.5% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **56.0/100** | — |
+| **Reference agreement** | 69.2% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **48.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -77,31 +77,112 @@
 - **Source:** inference
 - **Primary name:** Environmental Pathogens
 
+### μ (missing_parameters)
+- **Source:** inference
+- **Value:** 2e-05 per day
+- **Confidence:** LOW
+
+### ω2 (missing_parameters)
+- **Source:** inference
+- **Value:** 0.001 1/day
+- **Confidence:** LOW
+
+### ω3 (missing_parameters)
+- **Source:** inference
+- **Value:** 0.0001 per day
+- **Confidence:** LOW
+
+### ω1 (missing_parameters)
+- **Source:** inference
+- **Value:** 0.001 per day
+- **Confidence:** LOW
+
+### ω1q (missing_parameters)
+- **Source:** inference
+- **Value:** None 
+- **Reasoning:** No default in library; manual lookup required.
+- **Confidence:** LOW
+
+### η (missing_parameters)
+- **Source:** inference
+- **Value:** 0.001 per day
+- **Confidence:** LOW
+
+### Infectious->Recovered (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The rate at which infectious individuals recover from the disease and acquire permanent immunity.
+- **Reasoning:** The paper explicitly states 'Permanent disease-induced immunity exists,' which directly implies a transition from the infectious state to a recovered state with immunity.
+
 ### Infectious->Deceased (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Rate of deaths of human individuals due
+- **Description:** The rate at which infected individuals die due to the Ebola Virus Disease.
+- **Reasoning:** The paper excerpt explicitly states 'Rate of deaths of human individuals due to infection,' which directly describes the transition from the infectious compartment to the deceased state due to the disease.
 
 ### Infectious->Environment pathogens (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Shedding of Ebola virus pathogens from infected humans into the environment through urine and faeces.
-- **Reasoning:** The paper excerpt explicitly states that 'The disease can enter the environment through the urine and faeces of infected or deceased individuals', indicating a rate of pathogen shedding from infectious individuals to the environment.
+- **Description:** Shed
 
 ### Quarantine->Deceased (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** The rate at which individuals
+- **Description:** The rate
 
 ### Deceased->Environment pathogens (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
+- **Description:** Shedding of
+
+### environment pathogens (missing_compartments)
+- **Source:** inference
+- **Primary name:** Environmental Pathogens
+
+### Infectious->Deceased (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Rate of deaths of human individuals due to infection
+- **Reasoning:** The text explicitly mentions 'Rate of deaths of human individuals due to infection', which directly describes the transition from an infectious state to a deceased state.
+
+### Infectious->Environment pathogens (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Shedding of Ebola virus pathogens from infected individuals into the environment through bodily fluids like urine and faeces.
+- **Reasoning:** The excerpt explicitly states '
+
+### Quarantine->Deceased (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
 - **Description:** The rate
+
+### Deceased->Environment pathogens (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Pathogens are shed from deceased individuals into the environment through bodily fluids such as urine and faeces.
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **5**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **5**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **100.0%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| μ | 2e-05 | 0.00038461 | 94.8% | poor |
+| ω2 | 0.001 | 0.0 | 100.0% | poor |
+| ω3 | 0.0001 | 0.0 | 100.0% | poor |
+| ω1 | 0.001 | 0.0 | 100.0% | poor |
+| ω1q | None | 0.0 | — | no_fill |
+| η | 0.001 | 0.0 | 100.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **7**
-- Precision **0.5714** | Recall **0.6667** | F1 **0.6154**
+- Precision **0.7143** | Recall **0.8333** | F1 **0.7692**
 ### Flows
 - Gold count: **8** | Candidate: **5**
 - Precision **0.8** | Recall **0.5** | F1 **0.6154**

@@ -63,9 +63,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 45.5% | 30% |
 | **Reference agreement** | 54.4% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **50.0/100** | — |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **40.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -86,67 +86,198 @@
 ### earlyinfection (missing_compartments)
 - **Source:** inference
 - **Primary name:** Early Infection
-- **Reasoning:** The excerpt
+- **Reasoning:** The
 
 ### chronicinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** Chronically Infected
+- **Primary name:** Chronic Infection
 - **Reasoning:** The
 
 ### lateinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** On ART
-- **Reasoning:** The
+- **Primary name:** Late Infection
 
 ### onart (missing_compartments)
 - **Source:** inference
 - **Primary name:** On ART
-- **Reasoning:** The
+- **Reasoning:** The excerpt
 
 ### removed (missing_compartments)
 - **Source:** inference
-- **Primary name:** On Antiretroviral Therapy
+- **Primary name:** Treated Infected
+
+### betaearly (missing_parameters)
+- **Source:** inference
+- **Value:** 0.0005 per susceptible
+- **Confidence:** LOW
+
+### betachronic (missing_parameters)
+- **Source:** inference
+- **Value:** 5e-05 per susceptible-infected
+- **Confidence:** LOW
+
+### betalate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.005 
+- **Confidence:** LOW
+
+### betaart (missing_parameters)
+- **Source:** inference
+- **Value:** 0.008 per susceptible-
+- **Confidence:** LOW
+
+### progression1 (missing_parameters)
+- **Source:** inference
+- **Value:** 0.1 per year
+- **Confidence:** LOW
+
+### progression2 (missing_parameters)
+- **Source:** inference
+- **Value:** 0.05 per year
+- **Confidence:** LOW
+
+### artstart1 (missing_parameters)
+- **Source:** inference
+- **Value:** 350.0 cells/µL
+- **Confidence:** LOW
+
+### artstart2 (missing_parameters)
+- **Source:** inference
+- **Value:** 350.0 cells/mm³
+- **Confidence:** LOW
+
+### deathlate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.05 per year
+- **Confidence:** LOW
+
+### deathart (missing_parameters)
+- **Source:** inference
+- **Value:** 0.03 per year
+- **Confidence:** LOW
 
 ### Susceptible->EarlyInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Transmission of HIV from an infectious individual to a susceptible individual, leading to early infection.
-- **Reasoning:** HIV is a sexually transmitted infection, and its spread is mediated by contact between susceptible and infectious individuals.
+- **Description:** New HIV infections occurring when susceptible individuals come into contact with infected individuals.
+- **Reasoning:** HIV is a communicable disease primarily transmitted through contact, and the text discusses 'reducing the spread' and 'transmission of infection', indicating contact-driven incidence.
 
 ### EarlyInfection->ChronicInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of HIV infection from the acute seroconversion phase to the chronic, clinically latent stage.
-- **Reasoning:** This transition represents the natural history of HIV infection where individuals move from the initial acute phase to a prolonged chronic phase, a fundamental process in HIV epidemiology models.
+- **Description:** Natural progression of HIV infection from the acute/early phase to the chronic phase within an infected individual.
+- **Reasoning:** This transition represents the natural, time-dependent progression of HIV disease within an individual from the initial acute infection stage to the long-term chronic stage.
 
 ### ChronicInfection->LateInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Progression of HIV-infected individuals from the chronic asymptomatic stage to the late symptomatic (AIDS) stage due to immune system decline.
-- **Reasoning:** This transition represents the natural progression of HIV disease over time as the immune system deteriorates, leading to the late symptomatic stage (AIDS) if not treated.
+- **Description:** Progression of HIV infection from the chronic phase to the late-stage phase, characterized by severe immunosuppression and increased susceptibility to opportunistic infections.
+- **Reasoning:** This transition represents the natural biological progression of HIV disease within an infected individual over time, independent of contact, as the immune system deteriorates.
 
 ### ChronicInfection->OnART (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals with chronic HIV infection initiating antiretroviral therapy (ART).
-- **Reasoning:** The excerpt discusses the expansion and provision of antiretroviral therapy (ART) to HIV-infected individuals, directly representing the transition from chronic infection to being on ART.
+- **Description:** Initiation of antire
+
+### LateInfection->OnART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Initiation of antiretroviral therapy (ART) for individuals in the late stage of HIV infection.
+- **Reasoning:** The paper excerpt discusses the provision of ART, including 'immediate treatment for all HIV-infected individuals' and 'providing treatment in line with current therapeutic guidelines', directly supporting a transition to ART for infected individuals.
+
+### LateInfection->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mortality due
+
+### OnART->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals on antiretroviral therapy (ART) who are removed from the modeled population due to death, loss to follow-up, or migration.
+- **Reasoning:** The transition from 'OnART' to 'Removed' typically represents events like death or loss to follow-up, which are generally modeled as a constant rate per unit of time, characteristic of a RateFlow.
+
+### earlyinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Early Infection
+- **Reasoning:** The
+
+### chronicinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Untreated Chronic Infection
+
+### lateinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Late Infection
+
+### onart (missing_compartments)
+- **Source:** inference
+- **Primary name:** On Antiretroviral Therapy
+
+### removed (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated Infected
+- **Reasoning:** The
+
+### Susceptible->EarlyInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** A susceptible individual acquires HIV infection from an infected individual through contact, transitioning into an early infection stage.
+- **Reasoning:** The excerpt discusses 'reducing the spread of HIV' and 'reduce transmission of infection,' indicating that new infections arise from contact between susceptible and infected individuals.
+
+### EarlyInfection->ChronicInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Natural progression of HIV infection from the acute/early phase to the chronic asymptomatic phase within an infected individual.
+- **Reasoning:** This transition represents the natural, time-dependent progression of HIV infection within an individual from the acute phase to the chronic phase, which is a characteristic epidemiological feature of HIV.
+
+### ChronicInfection->LateInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of HIV disease within an infected individual from the chronic asymptomatic phase to the late-stage symptomatic phase (e.g., AIDS).
+- **Reasoning:** This transition represents the natural, time-dependent progression of HIV infection within an individual, typically characterized by a decline in CD4 cell count and the onset of opportunistic infections, moving from a chronic state to a more advanced, late-stage disease.
+
+### ChronicInfection->OnART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Initiation of
 
 ### LateInfection->OnART (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
 - **Description:** Individuals in the late stage of HIV infection initiate antiretroviral therapy (ART).
-- **Reasoning:** The excerpt discusses the provision and expansion of ART for HIV-infected individuals, indicating a transition from an infected state to a state of being on treatment.
+- **Reasoning:** This transition represents the rate at which individuals with late-stage HIV infection are diagnosed and subsequently start ART, a medical intervention discussed in the excerpt.
 
 ### LateInfection->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Mortality due to AIDS-related complications in individuals with late-stage HIV infection.
-- **Reasoning:** The excerpt discusses the impact of antiretroviral therapy (ART) on reducing HIV spread and preventing progression, implying that without effective treatment, individuals in late infection stages would die and be removed from the population.
+- **Description:** Mortality due to
 
 ### OnART->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Mortality or loss
+- **Description:** Mortality (HIV-
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **10**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **1**
+- Poor (>50% error): **9**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.17%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| betaearly | 0.0005 | 0.8 | 99.94% | poor |
+| betachronic | 5e-05 | 0.3 | 99.98% | poor |
+| betalate | 0.005 | 0.6 | 99.17% | poor |
+| betaart | 0.008 | 0.05 | 84.0% | poor |
+| progression1 | 0.1 | 0.5 | 80.0% | poor |
+| progression2 | 0.05 | 0.2 | 75.0% | poor |
+| artstart1 | 350.0 | 0.3 | 116566.67% | poor |
+| artstart2 | 350.0 | 0.4 | 87400.0% | poor |
+| deathlate | 0.05 | 0.2 | 75.0% | poor |
+| deathart | 0.03 | 0.05 | 40.0% | approximate |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

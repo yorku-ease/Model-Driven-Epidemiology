@@ -47,9 +47,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
 | **Reference agreement** | 98.8% | 30% |
-| **Fill traceability** | 100.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **99.6/100** | — |
+| **Fill traceability** | 58.3% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **71.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -62,56 +62,57 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 6 | 1 | 7 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 6
+- Filled via **RAG**: 1
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 0
+- Filled via **inference**: 5
 - **Flagged** for manual review: 0
 
 ### ξu (missing_parameters)
-- **Source:** rag
-- **Value:** 0.0087 1/week
-- **Description:** Un-monitored child vaccination rate (xU)
-- **From papers:** p1_model_cholera, p1_model_measles
+- **Source:** inference
+- **Value:** 0.85 
+- **Confidence:** LOW
 
 ### φ (missing_parameters)
 - **Source:** rag
-- **Value:** 0.00128 1/week
-- **Description:** Maturation rate child→adult (j)
-- **From papers:** p1_model_zika, p2_influenza3_llm_gemini_20260407_205738, p2_cholera3_llm_gemini_20260407_204240
+- **Value:** 0.40 dimensionless
+- **Description:** Reduction in transmission from other interventions
+- **From papers:** p2_dengue3_llm_claude_20260407_214050, p2_cholera3_llm_gemini_20260407_204240, p2_cholera3_llm_claude_20260407_213639
 
 ### Exposed children->Exposed adults (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Exposed children age
 
 ### Infectious children->Infectious adults (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infectious children age and transition into the infectious adult compartment.
+- **Reasoning:** The model categorizes the population into two age groups, necessitating a flow for individuals to age from the child to the adult compartment while maintaining their infectious status.
 
 ### Immune children->Immune adults (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Immune children age and transition into the immune adult population.
+- **Reasoning:** The model categorizes the population into age groups, so children naturally age into adults, maintaining their immune status.
 
 ### Susceptible adults->Vaccinated adults (catch-up/monitored) (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible adults
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **2**
-- Exact match (<1% error): **2**
+- Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **100.0%**
-- Median relative error: **0.0%**
+- Poor (>50% error): **2**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **31150.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| ξu | 0.0087 | 0.0087 | 0.0% | exact |
-| φ | 0.00128 | 0.00128 | 0.0% | exact |
+| ξu | 0.85 | 0.0087 | 9670.11% | poor |
+| φ | 0.4 | 0.00128 | 31150.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

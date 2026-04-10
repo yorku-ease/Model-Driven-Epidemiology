@@ -13,22 +13,21 @@
   <parameters name="nu(t)" expression="exponential with mean 5 days" type="CONSTANT" description="Vaccination rate, applied t* days after epidemic onset" unit="1/day" />
   <parameters name="vaccination_coverage" expression="5-20" type="CONSTANT" description="Vaccination coverage with full course of 1-2 doses" unit="%" />
   <parameters name="t*" expression="25 or 37" type="CONSTANT" description="Time after epidemic onset when vaccination is initiated" unit="days" />
-  <parameters name="communitytransmissionrate" expression="0.45" type="CONSTANT" description="Representative age-specific transmission term from infectious community cases; in the paper lambda_i depends on the age-structured contact matrix and transmission probability q" />
-  <parameters name="hospitaltransmissionrate" expression="0.20" type="CONSTANT" description="Representative contribution of hospitalized infectious individuals to the force of infection; the paper includes I_j + H_j in the force of infection" />
-  <parameters name="effectivevaccinationrate" expression="0.03" type="CONSTANT" description="e_i * nu(t), effective vaccination rate for this representative age group" />
-  <parameters name="ineffectivevaccinationrate" expression="0.01" type="CONSTANT" description="(1-e_i) * nu(t), ineffective vaccination rate for this representative age group" />
-  <parameters name="protectiondelayrate" expression="0.10" type="CONSTANT" description="gamma, rate of becoming protected after vaccination; mean 10 days in the paper" />
-  <parameters name="latentprogressionrate" expression="0.526" type="CONSTANT" description="kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper" />
-  <parameters name="hospitalizationrate" expression="0.2" type="CONSTANT" />
-  <parameters name="communityrecoveryrate" expression="0.20" type="CONSTANT" description="Aggregate recovery/removal rate for non-hospitalized infectious survivors in weekly units" />
-  <parameters name="hospitalrecoveryrate" expression="0.25" type="CONSTANT" description="Aggregate recovery/removal rate from H to R in weekly units" />
-  <parameters name="hospitalmortalityrate" expression="0.015" type="CONSTANT" description="d_i, age-specific mortality rate among hospitalized individuals" />
+  <parameters name="communitytransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="hospitaltransmissionrate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="effectivevaccinationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="ineffectivevaccinationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="protectiondelayrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="latentprogressionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="hospitalizationrate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="communityrecoveryrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="hospitalrecoveryrate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="hospitalmortalityrate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.1" description="Successful vaccination of susceptible individuals at rate e_i * nu(t)" />
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.8" target="//@compartments.2" description="Ineffective vaccination of susceptible individuals at rate (1 - e_i) * nu(t)" />
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.5" target="//@compartments.4" description="Infection of susceptible individuals at the age-dependent force of infection lambda_i" />
     <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.9" />
   </compartments>
   <compartments PrimaryName="Effectively Vaccinated" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.9" target="//@compartments.3" description="Development of vaccine-induced protection at rate gamma" />
@@ -54,7 +53,4 @@
   </compartments>
   <compartments PrimaryName="Recovered" population="0" />
   <compartments PrimaryName="Dead" population="0" />
-  <compartments PrimaryName="vaccinatedineffective">
-    <outgoingFlows target="//@compartments.4" />
-  </compartments>
 </ns0:CompartmentalModel>

@@ -53,9 +53,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
 | **Reference agreement** | 83.8% | 30% |
-| **Fill traceability** | 63.6% | 20% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **57.9/100** | — |
+| **→ Composite** | **45.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,10 +68,10 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 6 | 19 | 13 | 38 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 14
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 8
+- **Flagged** for manual review: 22
 
 ### treatedclinicaldisease (missing_compartments)
 - **Source:** flagged
@@ -90,39 +90,76 @@
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### Susceptible->TreatedClinicalDisease (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Susceptible->UntreatedClinicalDisease (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Susceptible->AsymptomaticPatentInfection (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### TreatedClinicalDisease->Prophylaxis (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 4 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 4 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 1 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### treatedclinicaldisease (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### untreatedclinicaldisease (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### asymptomaticpatentinfection (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### asymptomaticsubpatentinfection (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Susceptible->TreatedClinicalDisease (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible->UntreatedClinicalDisease (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible->AsymptomaticPatentInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### TreatedClinicalDisease->Prophylaxis (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

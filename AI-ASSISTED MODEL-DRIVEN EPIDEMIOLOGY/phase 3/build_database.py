@@ -36,6 +36,7 @@ Output: data/paper_database/index.json
 """
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -78,6 +79,36 @@ def _canonical(name: str) -> str:
         if k in n:
             return v
     return n
+
+
+def _file_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for block in iter(lambda: f.read(65536), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def _collect_gold_standard_hashes() -> Set[str]:
+    """
+    Return SHA-256 hashes of every known gold-standard .compmodel file.
+
+    Gold standards live in two mirrored locations:
+      - phase 2/data/diseases/<disease>/<stem>.compmodel   (canonical)
+      - phase 1/papers/<disease>/<stem>.compmodel          (identical copies)
+
+    Hashing the Phase 2 diseases tree covers the canonical set.
+    We also hash Phase 1 papers so any extra copies there are also detected.
+    """
+    hashes: Set[str] = set()
+    for search_root in [
+        PHASE2_DIR / "data" / "diseases",
+        PHASE1_DIR / "papers",
+    ]:
+        if search_root.is_dir():
+            for cm in search_root.glob("**/*.compmodel"):
+                hashes.add(_file_sha256(cm))
+    return hashes
 
 
 def _chunk_text(text: str, size: int = 2000, overlap: int = 300) -> List[str]:
@@ -216,11 +247,16 @@ def _collect_phase1_paper_metadata_entries() -> List[Dict[str, Any]]:
     return out
 
 
-def _collect_phase1_entries() -> List[Dict[str, Any]]:
+def _collect_phase1_entries(
+    gold_hashes: Optional[Set[str]] = None,
+) -> List[Dict[str, Any]]:
     """
     Phase 1 models: prefer ``papers/epimde/*.compmodel`` (canonical per ``phase 1/utils/phase1_paths.py``),
     then any other ``papers/**/*.compmodel`` not already indexed. Unlinked PDFs under ``papers/`` are
     indexed as text-only entries. Paper metadata folders under ``data/papers/`` are included.
+
+    When ``gold_hashes`` is provided, any .compmodel whose SHA-256 matches a gold-standard
+    file is silently skipped (prevents data leakage via Phase 1 copies of gold standards).
     """
     entries: List[Dict[str, Any]] = []
     if not PHASE1_DIR.exists():
@@ -229,11 +265,20 @@ def _collect_phase1_entries() -> List[Dict[str, Any]]:
 
     linked_pdfs: Set[str] = set()
     seen_cm: Set[str] = set()
+    skipped_gold = 0
+
+    def _is_gold(cm: Path) -> bool:
+        if not gold_hashes:
+            return False
+        return _file_sha256(cm) in gold_hashes
 
     # 1a) Primary: epimde reference models
     epimde = PHASE1_DIR / "papers" / "epimde"
     if epimde.is_dir():
         for cm in sorted(epimde.glob("*.compmodel")):
+            if _is_gold(cm):
+                skipped_gold += 1
+                continue
             seen_cm.add(str(cm.resolve()))
             e = _phase1_entry_from_compmodel(cm)
             if e.get("pdf_path"):
@@ -244,11 +289,18 @@ def _collect_phase1_entries() -> List[Dict[str, Any]]:
     for cm in sorted(PHASE1_DIR.glob("papers/**/*.compmodel")):
         if str(cm.resolve()) in seen_cm:
             continue
+        if _is_gold(cm):
+            skipped_gold += 1
+            continue
         seen_cm.add(str(cm.resolve()))
         e = _phase1_entry_from_compmodel(cm)
         if e.get("pdf_path"):
             linked_pdfs.add(str(Path(e["pdf_path"]).resolve()))
         entries.append(e)
+
+    if skipped_gold:
+        print(f"  [INFO] Phase 1: skipped {skipped_gold} compmodel(s) that are "
+              "identical to gold-standard files (data-leakage prevention)")
 
     # 2) PDFs not yet linked
     for pdf in sorted(PHASE1_DIR.glob("papers/**/*.pdf")):
@@ -348,7 +400,10 @@ def _read_full_text(paper_text_path: Path) -> str:
         return ""
 
 
-def _collect_phase2_entries(exclude_baselines: bool = False) -> List[Dict[str, Any]]:
+def _collect_phase2_entries(
+    exclude_baselines: bool = False,
+    gold_hashes: Optional[Set[str]] = None,
+) -> List[Dict[str, Any]]:
     entries: List[Dict[str, Any]] = []
     reports_dir = PHASE2_DIR / "reports"
     latest = _latest_reports(reports_dir)
@@ -428,18 +483,35 @@ def _collect_phase2_entries(exclude_baselines: bool = False) -> List[Dict[str, A
 
         entries.append(entry)
 
-    # Baseline .compmodel files (gold standards — exclude during benchmark eval to avoid data leakage)
+    # Legacy baseline_models/ directory (may or may not exist)
     baselines = PHASE2_DIR / "data" / "baseline_models"
     if baselines.is_dir():
         if exclude_baselines:
-            print("  [INFO] --exclude-baselines: skipping gold-standard baseline_models/ "
-                  "(safe for benchmark evaluation runs)")
+            print("  [INFO] --exclude-baselines: skipping legacy baseline_models/ directory")
         else:
             for cm in sorted(baselines.glob("*.compmodel")):
                 disease = _canonical(cm.stem)
                 entries.append({
                     "paper_id": f"p2_baseline_{disease}",
                     "source_phase": "phase2_baseline",
+                    "disease": disease,
+                    "compmodel_path": str(cm),
+                    "model_structure": _parse_compmodel(cm),
+                })
+
+    # Gold-standard models in data/diseases/ — always excluded when flag is set
+    diseases_dir = PHASE2_DIR / "data" / "diseases"
+    if diseases_dir.is_dir():
+        if exclude_baselines:
+            count = sum(1 for _ in diseases_dir.glob("**/*.compmodel"))
+            print(f"  [INFO] --exclude-baselines: skipping {count} gold-standard "
+                  "compmodel(s) from data/diseases/ (data-leakage prevention)")
+        else:
+            for cm in sorted(diseases_dir.glob("**/*.compmodel")):
+                disease = _canonical(cm.stem.rstrip("0123456789") or cm.parent.name)
+                entries.append({
+                    "paper_id": f"p2_gold_{cm.stem}",
+                    "source_phase": "phase2_gold",
                     "disease": disease,
                     "compmodel_path": str(cm),
                     "model_structure": _parse_compmodel(cm),
@@ -560,11 +632,20 @@ def main():
     else:
         print("  Mode    : FULL (gold-standard baselines included — NOT for benchmarking)\n")
 
+    # Pre-compute gold-standard hashes so both collectors can filter them
+    gold_hashes: Optional[Set[str]] = None
+    if args.exclude_baselines:
+        gold_hashes = _collect_gold_standard_hashes()
+        print(f"  Gold-standard hashes collected: {len(gold_hashes)} unique file(s) to exclude")
+
     # Collect entries
-    p1_entries = _collect_phase1_entries()
+    p1_entries = _collect_phase1_entries(gold_hashes=gold_hashes)
     print(f"  Phase 1 entries : {len(p1_entries)}")
 
-    p2_entries = _collect_phase2_entries(exclude_baselines=args.exclude_baselines)
+    p2_entries = _collect_phase2_entries(
+        exclude_baselines=args.exclude_baselines,
+        gold_hashes=gold_hashes,
+    )
     print(f"  Phase 2 entries : {len(p2_entries)}")
 
     all_entries = p1_entries + p2_entries

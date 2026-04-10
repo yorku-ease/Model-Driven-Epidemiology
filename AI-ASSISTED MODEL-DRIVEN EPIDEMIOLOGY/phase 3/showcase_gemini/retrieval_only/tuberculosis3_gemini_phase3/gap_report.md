@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **40**
-- After fills gaps (re-detected): **15**
-- Delta (before - after): **25**
+- After fills gaps (re-detected): **22**
+- Delta (before - after): **18**
 - Delta missing parameters: **18**
-- Delta missing compartments: **3**
-- Delta missing flows: **4**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -79,11 +79,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 62.5% | 30% |
-| **Reference agreement** | 74.5% | 30% |
-| **Fill traceability** | 80.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.1/100** | — |
+| **Gap reduction** | 45.0% | 30% |
+| **Reference agreement** | 28.6% | 30% |
+| **Fill traceability** | 29.0% | 20% |
+| **Parameter accuracy** | 5.6% | 20% |
+| **→ Composite** | **29.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -96,10 +96,18 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 6 | 19 | 16 | 41 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 46
+- Filled via **RAG**: 18
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 9
+- **Flagged** for manual review: 44
+
+### recenttbinfection (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### remotetbinfection (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### activetbsmearpositive (missing_compartments)
 - **Source:** flagged
@@ -113,70 +121,304 @@
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
-### RecentTBInfection->ActiveTBSmearPositive (missing_flows)
+### recentlytreatedrecovered (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectionratefromsmearpositive (missing_parameters)
 - **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### infectionratefromsmearnegative (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### recenttoremotestabilizationrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### rapidprogressiontosmearpositiverate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### rapidprogressiontosmearnegativerate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### rapidprogressiontoextrapulmonaryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### reinfectionratefromsmearpositive (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### reinfectionratefromsmearnegative (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### remotereactivationtosmearpositiverate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### remotereactivationtosmearnegativerate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### remotereactivationtoextrapulmonaryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### treatmentorselfcureratesmearpositive (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### treatmentorselfcureratesmearnegative (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### treatmentorselfcurerateextrapulmonary (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### recoveredtoremotestabilizationrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### relapsetosmearpositiverate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### relapsetosmearnegativerate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### relapsetoextrapulmonaryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### Uninfected->RecentTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentTBInfection->RemoteTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentTBInfection->ActiveTBSmearPositive (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RecentTBInfection->ActiveTBSmearNegative (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RecentTBInfection->ActiveTBExtrapulmonary (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RemoteTBInfection->RecentTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RemoteTBInfection->ActiveTBSmearPositive (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RemoteTBInfection->ActiveTBSmearNegative (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RemoteTBInfection->ActiveTBExtrapulmonary (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ActiveTBSmearPositive->RecentlyTreatedRecovered (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ActiveTBSmearNegative->RecentlyTreatedRecovered (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ActiveTBExtrapulmonary->RecentlyTreatedRecovered (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentlyTreatedRecovered->RemoteTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RecentlyTreatedRecovered->ActiveTBSmearPositive (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RecentlyTreatedRecovered->ActiveTBSmearNegative (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### RecentlyTreatedRecovered->ActiveTBExtrapulmonary (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### recenttbinfection (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### remotetbinfection (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### activetbsmearpositive (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### activetbsmearnegative (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### activetbextrapulmonary (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### recentlytreatedrecovered (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Uninfected->RecentTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentTBInfection->RemoteTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentTBInfection->ActiveTBSmearPositive (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentTBInfection->ActiveTBSmearNegative (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentTBInfection->ActiveTBExtrapulmonary (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RemoteTBInfection->RecentTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RemoteTBInfection->ActiveTBSmearPositive (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RemoteTBInfection->ActiveTBSmearNegative (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RemoteTBInfection->ActiveTBExtrapulmonary (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ActiveTBSmearPositive->RecentlyTreatedRecovered (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ActiveTBSmearNegative->RecentlyTreatedRecovered (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ActiveTBExtrapulmonary->RecentlyTreatedRecovered (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentlyTreatedRecovered->RemoteTBInfection (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentlyTreatedRecovered->ActiveTBSmearPositive (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentlyTreatedRecovered->ActiveTBSmearNegative (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### RecentlyTreatedRecovered->ActiveTBExtrapulmonary (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **18**
+- Exact match (<1% error): **1**
+- Close (<10% error): **0**
+- Approximate (<50% error): **1**
+- Poor (>50% error): **16**
+- **Accuracy (exact+close)**: **5.6%**
+- Median relative error: **99.85%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| infectionratefromsmearpositive | 0.0001 | 0.3 | 99.97% | poor |
+| infectionratefromsmearnegative | 0.0001 | 0.066 | 99.85% | poor |
+| recenttoremotestabilizationrate | 0.0001 | 0.5 | 99.98% | poor |
+| rapidprogressiontosmearpositiverate | 0.0001 | 0.0455 | 99.78% | poor |
+| rapidprogressiontosmearnegativerate | 0.0001 | 0.0245 | 99.59% | poor |
+| rapidprogressiontoextrapulmonaryrate | 0.0001 | 0.0105 | 99.05% | poor |
+| reinfectionratefromsmearpositive | 0.0001 | 0.18 | 99.94% | poor |
+| reinfectionratefromsmearnegative | 0.0001 | 0.04 | 99.75% | poor |
+| remotereactivationtosmearpositiverate | 0.0001 | 0.000325 | 69.23% | poor |
+| remotereactivationtosmearnegativerate | 0.0001 | 0.000175 | 42.86% | approximate |
+| remotereactivationtoextrapulmonaryrate | 0.0001 | 0.0001 | 0.0% | exact |
+| treatmentorselfcureratesmearpositive | 0.0001 | 0.95 | 99.99% | poor |
+| treatmentorselfcureratesmearnegative | 0.0001 | 0.43 | 99.98% | poor |
+| treatmentorselfcurerateextrapulmonary | 0.0001 | 0.77 | 99.99% | poor |
+| recoveredtoremotestabilizationrate | 0.0001 | 0.2 | 99.95% | poor |
+| relapsetosmearpositiverate | 0.5 | 0.012 | 4066.67% | poor |
+| relapsetosmearnegativerate | 0.0001 | 0.008 | 98.75% | poor |
+| relapsetoextrapulmonaryrate | 0.0001 | 0.004 | 97.5% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **7** | Candidate: **10**
-- Precision **0.7** | Recall **1.0** | F1 **0.8235**
+- Gold count: **7** | Candidate: **7**
+- Precision **0.5714** | Recall **0.5714** | F1 **0.5714**
 ### Flows
-- Gold count: **16** | Candidate: **32**
-- Precision **0.5** | Recall **1.0** | F1 **0.6667**
+- Gold count: **16** | Candidate: **16**
+- Precision **0.0** | Recall **0.0** | F1 **0.0**

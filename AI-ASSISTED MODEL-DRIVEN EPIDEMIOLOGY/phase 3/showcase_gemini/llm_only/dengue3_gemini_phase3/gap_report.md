@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **26**
-- After fills gaps (re-detected): **17**
-- Delta (before - after): **9**
+- After fills gaps (re-detected): **18**
+- Delta (before - after): **8**
 - Delta missing parameters: **8**
-- Delta missing compartments: **1**
+- Delta missing compartments: **0**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -65,11 +65,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 34.6% | 30% |
-| **Reference agreement** | 70.8% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **51.6/100** | — |
+| **Gap reduction** | 30.8% | 30% |
+| **Reference agreement** | 62.6% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 12.5% | 20% |
+| **→ Composite** | **40.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -84,22 +84,153 @@
 ## 5. Gap filling results
 - Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 43
+- Filled via **inference**: 44
 - **Flagged** for manual review: 0
 
 ### primarysusceptible (missing_compartments)
 - **Source:** inference
 - **Primary name:** Primary Susceptible
-- **Reasoning:** The excerpt discusses the impact of vaccination
 
 ### primaryexposed (missing_compartments)
 - **Source:** inference
 - **Primary name:** Primary Exposed
-- **Reasoning:** The
+- **Reasoning:** The text
 
 ### primaryinfectious (missing_compartments)
 - **Source:** inference
 - **Primary name:** Primary Infectious
+- **Reasoning:** The excerpt
+
+### postprimaryimmune (missing_compartments)
+- **Source:** inference
+- **Primary name:** Postprimary Immune
+- **Reasoning:** The
+
+### vaccinatedsilentinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Vaccinated Asymptomatic Infected
+
+### secondarysusceptible (missing_compartments)
+- **Source:** inference
+- **Primary name:** Secondary Susceptible
+
+### postvaccinationsusceptible (missing_compartments)
+- **Source:** inference
+- **Primary name:** Postvaccination Susceptible
+
+### secondaryinfectious (missing_compartments)
+- **Source:** inference
+- **Primary name:** Secondary Infectious
+- **Reasoning:** The text
+
+### postsecondaryimmune (missing_compartments)
+- **Source:** inference
+- **Primary name:** Postsecondary Immune
+- **Reasoning:** The
+
+### primarytransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.2 per day
+- **Confidence:** LOW
+
+### incubationrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.167 1/day
+- **Confidence:** LOW
+
+### recoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.14 per day
+- **Confidence:** LOW
+
+### routinevaccinationrate (missing_parameters)
+- **Source:** inference
+- **Value:** 80.0 % coverage
+- **Confidence:** LOW
+
+### naturalcrossprotectionwaningrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 per year
+- **Confidence:** LOW
+
+### vaccinecrossprotectionwaningrate (missing_parameters)
+- **Source:** inference
+- **Value:** 1.0 per year
+- **Confidence:** LOW
+
+### secondarytransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 3.0 
+- **Reasoning:** The basic
+- **Confidence:** LOW
+
+### postvaccinationtransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 
+- **Confidence:** LOW
+
+### PrimarySusceptible->PrimaryExposed (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** The transition of a susceptible individual to an exposed state after being bitten by an infected mosquito.
+- **Reasoning:** Dengue is a vector
+
+### PrimarySusceptible->VaccinatedSilentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** A susceptible individual receives
+
+### PrimaryExposed->PrimaryInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression from the latent
+
+### PrimaryInfectious->PostPrimaryImmune (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals recovering from a
+
+### PostPrimaryImmune->SecondarySusceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Waning of transient, heterologous immunity acquired from a primary dengue infection, making an individual susceptible to a secondary infection.
+- **Reasoning:** The paper states that natural infection induces 'transient, heterologous protection,' indicating that immunity from a primary infection is not permanent and can wane, leading to susceptibility to subsequent infections.
+
+### VaccinatedSilentInfection->PostVaccinationSusceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The waning
+
+### SecondarySusceptible->SecondaryInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** A previously infected or vaccinated
+
+### PostVaccinationSusceptible->SecondaryInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Vaccinated individuals who
+
+### SecondaryInfectious->PostSecondaryImmune (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals recovering from a secondary dengue infection (dengue3) transition to a post-secondary immune state, characterized by long-lasting immunogenic memory that influences the severity of any subsequent infections.
+- **Reasoning:** The paper states that 'natural infection... establishes a long-lasting immunogenic memory, which determines disease severity of subsequent infections,' directly supporting the transition from an infectious state to an immune state after recovery.
+
+### primarysusceptible (missing_compartments)
+- **Source:** inference
+- **Primary name:** Susceptible
+- **Reasoning:** The
+
+### primaryexposed (missing_compartments)
+- **Source:** inference
+- **Primary name:** Primary Exposed
+- **Reasoning:** The model
+
+### primaryinfectious (missing_compartments)
+- **Source:** inference
+- **Primary name:** Primary Infectious
+- **Reasoning:** The
 
 ### postprimaryimmune (missing_compartments)
 - **Source:** inference
@@ -107,71 +238,97 @@
 
 ### vaccinatedsilentinfection (missing_compartments)
 - **Source:** inference
-- **Primary name:** Vaccinated Silent Infection
+- **Primary name:** Vaccinated Asymptomatic Infected
 
 ### secondarysusceptible (missing_compartments)
 - **Source:** inference
-- **Primary name:** Secondary Susceptible
-- **Reasoning:** The text discusses 'subsequent infections' and 'heterologous protection' after natural infection or vaccination, which implies individuals can become susceptible again to different dengue serotypes.
+- **Primary name:** SecondarySusceptible
 
 ### postvaccinationsusceptible (missing_compartments)
 - **Source:** inference
-- **Primary name:** Vaccinated Susceptible
+- **Primary name:** Postvaccination Susceptible
+
+### secondaryinfectious (missing_compartments)
+- **Source:** inference
+- **Primary name:** Secondary Infectious
 
 ### postsecondaryimmune (missing_compartments)
 - **Source:** inference
-- **Primary name:** PostSecondaryImmune
+- **Primary name:** Postsecondary Immune
 
 ### PrimarySusceptible->PrimaryExposed (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Primary susceptible individuals become exposed to the dengue virus for the first time, typically through contact with an infected mosquito.
-- **Reasoning:** The transition from susceptible to exposed in dengue is driven by contact with the pathogen via an infected vector, making it a contact-dependent process.
+- **Description:** Susceptible individuals become exposed to the dengue virus through contact with infected mosquitoes.
+- **Reasoning:** The excerpt discusses 'natural infection' and 'transmission settings' for dengue, a vector-borne disease, implying exposure occurs via contact with infected vectors.
 
 ### PrimarySusceptible->VaccinatedSilentInfection (missing_flows)
 - **Source:** inference
-- **Flow type:** RateFlow
-- **Description:** Individuals who are susceptible to
+- **Flow type:** ContactFlow
+- **Description:** Primary susceptible individuals who
 
 ### PrimaryExposed->PrimaryInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** The progression of an
+- **Description:** Individuals who have been exposed to dengue for the first time complete their incubation period and become infectious, capable of transmitting the virus.
+- **Reasoning:** The provided text focuses on vaccine efficacy and population-level outcomes, offering no specific details regarding the incubation period or the transition from an exposed state to an infectious state for a primary dengue infection.
 
 ### PrimaryInfectious->PostPrimaryImmune (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals recovering from a primary
+- **Description:** Individuals recovering from a primary dengue infection and acquiring post-primary immunity.
+- **Reasoning:** The paper states that natural infection establishes long-lasting immunogenic memory, implying a transition from an infectious state to an immune state after primary infection.
 
 ### PostPrimaryImmune->SecondarySusceptible (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Waning of transient immunity
+- **Description:** Waning of transient heterologous immunity acquired from a primary dengue infection, leading to susceptibility to a secondary infection.
+- **Reasoning:** The paper states that natural infection induces 'transient, heterologous protection,' implying that this protection eventually wanes, making individuals susceptible to subsequent infections.
 
 ### VaccinatedSilentInfection->PostVaccinationSusceptible (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Waning of transient immunity
+- **Description:** Individuals who experienced
 
 ### SecondarySusceptible->SecondaryInfectious (missing_flows)
 - **Source:** inference
-- **Flow type:** ContactFlow
-- **Description:** Individuals who
+- **Flow type:** RateFlow
+- **Description:** Secondary susceptible individuals become
 
 ### PostVaccinationSusceptible->SecondaryInfectious (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Vaccinated individuals
+- **Description:** Infection of a
 
 ### SecondaryInfectious->PostSecondaryImmune (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
 - **Description:** Individuals recovering from a secondary
 
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **8**
+- Exact match (<1% error): **0**
+- Close (<10% error): **1**
+- Approximate (<50% error): **2**
+- Poor (>50% error): **5**
+- **Accuracy (exact+close)**: **12.5%**
+- Median relative error: **900.0%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| primarytransmissionrate | 0.2 | 0.26 | 23.08% | approximate |
+| incubationrate | 0.167 | 0.18 | 7.22% | close |
+| recoveryrate | 0.14 | 0.12 | 16.67% | approximate |
+| routinevaccinationrate | 80.0 | 0.05 | 159900.0% | poor |
+| naturalcrossprotectionwaningrate | 0.5 | 0.02 | 2400.0% | poor |
+| vaccinecrossprotectionwaningrate | 1.0 | 0.03 | 3233.33% | poor |
+| secondarytransmissionrate | 3.0 | 0.3 | 900.0% | poor |
+| postvaccinationtransmissionrate | 0.5 | 0.24 | 108.33% | poor |
+
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **18**
-- Precision **0.5** | Recall **1.0** | F1 **0.6667**
+- Gold count: **9** | Candidate: **17**
+- Precision **0.4706** | Recall **0.8889** | F1 **0.6154**
 ### Flows
-- Gold count: **9** | Candidate: **15**
-- Precision **0.6** | Recall **1.0** | F1 **0.75**
+- Gold count: **9** | Candidate: **13**
+- Precision **0.5385** | Recall **0.7778** | F1 **0.6364**

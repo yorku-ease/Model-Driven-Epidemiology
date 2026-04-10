@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **2**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **2**
+- After fills gaps (re-detected): **2**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -42,11 +42,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 97.2% | 30% |
-| **Fill traceability** | 50.0% | 20% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 91.7% | 30% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **89.2/100** | — |
+| **→ Composite** | **47.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -59,24 +59,31 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 36 | 1 | 38 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 1
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 1
+- **Flagged** for manual review: 4
 
 ### covid deaths (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### ICU->COVID Deaths (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 2 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### covid deaths (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### ICU->COVID Deaths (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **8** | Candidate: **16**
-- Precision **0.9375** | Recall **1.0** | F1 **0.9677**
+- Gold count: **8** | Candidate: **15**
+- Precision **0.9333** | Recall **0.875** | F1 **0.9032**
 ### Flows
-- Gold count: **11** | Candidate: **22**
-- Precision **0.9545** | Recall **1.0** | F1 **0.9767**
+- Gold count: **11** | Candidate: **21**
+- Precision **0.9524** | Recall **0.9091** | F1 **0.9302**

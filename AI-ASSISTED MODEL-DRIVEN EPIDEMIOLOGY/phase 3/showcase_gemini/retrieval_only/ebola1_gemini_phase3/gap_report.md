@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **12**
-- After fills gaps (re-detected): **4**
-- Delta (before - after): **8**
-- Delta missing parameters: **5**
-- Delta missing compartments: **1**
-- Delta missing flows: **2**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **7**
+- Delta missing parameters: **6**
+- Delta missing compartments: **0**
+- Delta missing flows: **1**
 
 ## 2. Required vs optional
 - **stratification**: optional
@@ -51,11 +51,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 66.7% | 30% |
-| **Reference agreement** | 74.2% | 30% |
-| **Fill traceability** | 75.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.3/100** | — |
+| **Gap reduction** | 58.3% | 30% |
+| **Reference agreement** | 72.4% | 30% |
+| **Fill traceability** | 35.3% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **46.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,34 +68,112 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 9 | 1 | 11 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 12
+- Filled via **RAG**: 6
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 4
+- **Flagged** for manual review: 11
+
+### environment pathogens (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### μ (missing_parameters)
+- **Source:** rag
+- **Value:** 10.5 
+- **From papers:** p2_dengue3_llm_openai_20260407_212001, p2_zika3_llm_claude_20260407_215851, p2_hiv3_llm_claude_20260407_214604
+
+### ω2 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### ω3 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ω1 (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### ω1q (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_openai_20260407_211654, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### η (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_covid3_llm_openai_20260407_211832, p2_covid3_llm_gemini_20260407_204521, p2_dengue3_llm_claude_20260407_214050
+
+### Infectious->Recovered (missing_flows)
 - **Source:** flagged
-- **Action:** manual_review — Could not fill parameters gap automatically.
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Infectious->Deceased (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Infectious->Environment pathogens (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Quarantine->Deceased (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 3 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Deceased->Environment pathogens (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 2 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### environment pathogens (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Infectious->Deceased (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Infectious->Environment pathogens (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Quarantine->Deceased (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Deceased->Environment pathogens (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **6**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **6**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **100.0%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| μ | 10.5 | 0.00038461 | 2729938.22% | poor |
+| ω2 | 0.5 | 0.0 | 100.0% | poor |
+| ω3 | 0.5 | 0.0 | 100.0% | poor |
+| ω1 | 0.5 | 0.0 | 100.0% | poor |
+| ω1q | 0.5 | 0.0 | 100.0% | poor |
+| η | 0.5 | 0.0 | 100.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **6** | Candidate: **7**
-- Precision **0.7143** | Recall **0.8333** | F1 **0.7692**
+- Gold count: **6** | Candidate: **6**
+- Precision **0.8333** | Recall **0.8333** | F1 **0.8333**
 ### Flows
-- Gold count: **8** | Candidate: **6**
-- Precision **0.8333** | Recall **0.625** | F1 **0.7143**
+- Gold count: **8** | Candidate: **5**
+- Precision **0.8** | Recall **0.5** | F1 **0.6154**

@@ -42,10 +42,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 83.9% | 30% |
-| **Fill traceability** | 100.0% | 20% |
+| **Reference agreement** | 94.4% | 30% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **65.2/100** | — |
+| **→ Composite** | **48.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -58,20 +58,23 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 6 | 0 | 6 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 2
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 0
+- **Flagged** for manual review: 2
 
 ### Infectious->Removed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Infectious->Removed (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **4** | Candidate: **6**
-- Precision **0.8333** | Recall **0.75** | F1 **0.7895**
+- Precision **1.0** | Recall **1.0** | F1 **1.0**
 ### Flows
 - Gold count: **5** | Candidate: **4**
 - Precision **1.0** | Recall **0.8** | F1 **0.8889**

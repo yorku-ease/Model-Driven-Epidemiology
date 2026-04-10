@@ -168,10 +168,11 @@ def load_model_structure(compmodel_path: Path) -> Dict[str, Any]:
 
 SYNONYMS = [
     ("exposed", "latent", "incubating"),
-    ("infectious", "infected", "symptomatic"),
+    ("infectious", "infected", "symptomatic", "infective"),
     ("recovered", "removed", "immune"),
     ("dead", "deceased", "death"),
     ("susceptible",),
+    ("vector", "mosquito"),
 ]
 
 GREEK_TO_LATIN = {
@@ -209,8 +210,15 @@ def _fuzzy_match(a: str, b: str) -> bool:
     b_norm = _normalize_param_name(b)
     if a_norm in b_norm or b_norm in a_norm:
         return True
+    # Single-word direct check (fast path for plain compartment names like "Infectious")
     for group in SYNONYMS:
         if a_norm in group and b_norm in group:
+            return True
+    # Word-level check for multi-word names (e.g. "Infectious Humans" ↔ "Infected individuals")
+    a_words = set(re.split(r"[^a-z]+", a.lower())) - {""}
+    b_words = set(re.split(r"[^a-z]+", b.lower())) - {""}
+    for group in SYNONYMS:
+        if any(w in group for w in a_words) and any(w in group for w in b_words):
             return True
     return False
 

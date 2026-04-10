@@ -9,9 +9,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Maternally Immune",
-        "description": "",
-        "reasoning": "",
+        "primary_name": "MaternalImmunity",
+        "description": "Infants born to immune mothers possess temporary passive immunity to measles, which wanes over the first months of life.",
+        "reasoning": "The text highlights the importance of seroepidemiological studies in profiling 'passive immunity', which for measles, primarily refers to the temporary immunity passed from mother to infant.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -36,6 +36,139 @@
     },
     {
       "gap": {
+        "expected": "maternalimmunitylossrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 1.6,
+        "unit": "per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptibleinfectionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 1095.0,
+        "unit": "per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "effectivevaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.0025,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailurerate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.03,
+        "unit": null,
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailureinfectionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.03,
+        "unit": null,
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "latentprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.111,
+        "unit": "days^-1",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.125,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
         "expected": "MaternalImmunity->Susceptible",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
@@ -44,8 +177,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Infants born with passive",
-        "reasoning": "",
+        "description": "The waning of passive maternal antibodies in infants, leading to a loss of temporary immunity and a return to the susceptible state.",
+        "reasoning": "Maternal immunity is a temporary form of passive immunity that naturally wanes over time at a specific rate, making the individual susceptible to infection.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -61,7 +194,7 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "Susceptible individuals receive a",
+        "description": "Individuals who are",
         "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
@@ -78,7 +211,58 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "ContactFlow",
-        "description": "Individuals whose vaccine immunity has",
+        "description": "Vaccinated individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailure",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccine-Failed",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->VaccineFailure",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Susceptible individuals who receive",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccineFailure->Latent",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Individuals who have experienced vaccine failure (i.e., are susceptible despite vaccination or due to waning vaccine immunity) become",
         "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
@@ -88,11 +272,281 @@
   ],
   "summary": {
     "rag_count": 0,
-    "inference_count": 17,
+    "inference_count": 15,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "maternalimmunity",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "MaternalImmunity",
+        "description": "Infants born to immune mothers possess temporary passive immunity to measles, which wanes over the first months of life.",
+        "reasoning": "The text highlights the importance of seroepidemiological studies in profiling 'passive immunity', which for measles, primarily refers to the temporary immunity passed from mother to infant.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailure",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccine Failure",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "maternalimmunitylossrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 1.6,
+        "unit": "per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "susceptibleinfectionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 1095.0,
+        "unit": "per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "effectivevaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.0025,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailurerate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.03,
+        "unit": null,
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailureinfectionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.03,
+        "unit": null,
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "latentprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.111,
+        "unit": "days^-1",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.125,
+        "unit": "per day",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "MaternalImmunity->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The waning of passive maternal antibodies in infants, leading to a loss of temporary immunity and a return to the susceptible state.",
+        "reasoning": "Maternal immunity is a temporary form of passive immunity that naturally wanes over time at a specific rate, making the individual susceptible to infection.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->VaccineFailure",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who are",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccineFailure->Latent",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Vaccinated individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinefailure",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Vaccine-Failed",
+        "description": "",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->VaccineFailure",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Susceptible individuals who receive",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccineFailure->Latent",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Individuals who have experienced vaccine failure (i.e., are susceptible despite vaccination or due to waning vaccine immunity) become",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

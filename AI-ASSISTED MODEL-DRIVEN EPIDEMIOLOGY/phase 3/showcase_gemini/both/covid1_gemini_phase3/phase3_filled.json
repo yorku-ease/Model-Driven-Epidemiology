@@ -9,9 +9,9 @@
       "gap_type": "missing_compartments",
       "source": "inference",
       "suggestion": {
-        "primary_name": "Deceased",
+        "primary_name": "Deaths",
         "description": "Individuals who have died due to COVID-19 infection.",
-        "reasoning": "The model tracks infections, hospitalizations, and ICU cases but does not explicitly mention a compartment for individuals who have died from COVID-19, which is a critical outcome.",
+        "reasoning": "The model tracks infections, hospitalizations, and ICU cases but does not explicitly mention a compartment for individuals who have died from COVID-19, which is a critical outcome for this disease.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred label; verify against gold / paper."
@@ -24,35 +24,59 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "ICU->COVID Deaths",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "ICU->COVID Deaths",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "ICU->Admitted to hospital",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Individuals admitted to the Intensive Care Unit",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
-    "rag_count": 2,
+    "rag_count": 0,
     "inference_count": 2,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "covid deaths",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "inference",
+      "suggestion": {
+        "primary_name": "Deaths",
+        "description": "Individuals who have died due to COVID-19 infection.",
+        "reasoning": "The model tracks infections, hospitalizations, and ICU cases but does not explicitly mention a compartment for individuals who have died from COVID-19, which is a critical outcome for this disease.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred label; verify against gold / paper."
+      }
+    },
+    {
+      "gap": {
+        "expected": "ICU->COVID Deaths",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals admitted to the Intensive Care Unit",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

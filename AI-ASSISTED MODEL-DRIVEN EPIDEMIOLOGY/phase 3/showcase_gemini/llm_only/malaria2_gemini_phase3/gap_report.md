@@ -52,10 +52,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 83.8% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 81.2% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **45.1/100** | — |
+| **→ Composite** | **54.4/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -91,8 +91,8 @@
 
 ### Susceptible->TreatedClinicalDisease (missing_flows)
 - **Source:** inference
-- **Flow type:** ContactFlow
-- **Description:** Susceptible individuals acquire
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals develop clinical
 
 ### Susceptible->UntreatedClinicalDisease (missing_flows)
 - **Source:** inference
@@ -102,7 +102,60 @@
 ### Susceptible->AsymptomaticPatentInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Susceptible individuals become infected
+- **Description:** A susceptible individual becomes
+
+### TreatedClinicalDisease->Prophylaxis (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have recovered from
+
+### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with untreated
+
+### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The natural progression of an asymptomatic malaria infection where the parasite density in an individual decreases over time, falling below the threshold for patent detection but remaining present.
+- **Reasoning:** This transition represents the natural decline in parasite density within an asymptomatically infected individual, leading to
+
+### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals with asymptomatic subpatent
+
+### treatedclinicaldisease (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated Clinical Disease
+
+### untreatedclinicaldisease (missing_compartments)
+- **Source:** inference
+- **Primary name:** Untreated Clinical Disease
+- **Reasoning:** The text discusses 'malaria disease' and
+
+### asymptomaticpatentinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Asymptomatic Infected
+
+### asymptomaticsubpatentinfection (missing_compartments)
+- **Source:** inference
+- **Primary name:** Asymptomatic Subpatent Infection
+
+### Susceptible->TreatedClinicalDisease (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals developing clinical
+
+### Susceptible->UntreatedClinicalDisease (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals acquire
+
+### Susceptible->AsymptomaticPatentInfection (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** The rate
 
 ### TreatedClinicalDisease->Prophylaxis (missing_flows)
 - **Source:** inference
@@ -112,22 +165,23 @@
 ### UntreatedClinicalDisease->AsymptomaticPatentInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals with untreated clinical malaria
+- **Description:** Individuals with untreated clinical malaria disease spontaneously recover from symptoms but remain infected with detectable parasites, transitioning to an asymptomatic patent infection state.
+- **Reasoning:** This transition represents the natural resolution of clinical symptoms within an infected individual, which is an internal biological process governed by a rate rather than external contact.
 
 ### AsymptomaticPatentInfection->AsymptomaticSubPatentInfection (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals with asymptomatic, patent
+- **Description:** The natural
 
 ### AsymptomaticSubPatentInfection->Susceptible (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals with asymptomatic
+- **Description:** Recovery of
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **6** | Candidate: **9**
-- Precision **0.7778** | Recall **1.0** | F1 **0.875**
+- Gold count: **6** | Candidate: **10**
+- Precision **0.7** | Recall **1.0** | F1 **0.8235**
 ### Flows
 - Gold count: **8** | Candidate: **18**
 - Precision **0.6667** | Recall **1.0** | F1 **0.8**

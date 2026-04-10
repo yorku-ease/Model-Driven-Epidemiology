@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **9**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **9**
+- After fills gaps (re-detected): **6**
+- Delta (before - after): **3**
 - Delta missing parameters: **0**
-- Delta missing compartments: **2**
-- Delta missing flows: **7**
+- Delta missing compartments: **0**
+- Delta missing flows: **3**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -49,11 +49,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 89.0% | 30% |
-| **Fill traceability** | 77.8% | 20% |
+| **Gap reduction** | 33.3% | 30% |
+| **Reference agreement** | 71.2% | 30% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **92.3/100** | — |
+| **→ Composite** | **51.4/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -66,10 +66,10 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 7 | 4 | 12 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 7
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 2
+- **Flagged** for manual review: 15
 
 ### treated with art (missing_compartments)
 - **Source:** flagged
@@ -80,44 +80,61 @@
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### Untreated infected homosexual men->Treated with ART (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Untreated infected homosexual men->People living with AIDS (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Untreated infected women->Treated with ART (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Untreated infected women->People living with AIDS (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Untreated infected heterosexual men->Treated with ART (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Untreated infected heterosexual men->People living with AIDS (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Treated with ART->People living with AIDS (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 4 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### treated with art (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### recruitmentsource (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Untreated infected homosexual men->Treated with ART (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Untreated infected women->Treated with ART (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Untreated infected heterosexual men->Treated with ART (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Treated with ART->People living with AIDS (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **10**
-- Precision **0.9** | Recall **1.0** | F1 **0.9474**
+- Gold count: **9** | Candidate: **8**
+- Precision **0.875** | Recall **0.7778** | F1 **0.8235**
 ### Flows
-- Gold count: **10** | Candidate: **14**
-- Precision **0.7143** | Recall **1.0** | F1 **0.8333**
+- Gold count: **10** | Candidate: **10**
+- Precision **0.6** | Recall **0.6** | F1 **0.6**

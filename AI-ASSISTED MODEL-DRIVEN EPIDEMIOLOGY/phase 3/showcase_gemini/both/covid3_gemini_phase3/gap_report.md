@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **19**
-- After fills gaps (re-detected): **9**
-- Delta (before - after): **10**
-- Delta missing parameters: **9**
-- Delta missing compartments: **1**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **14**
+- Delta missing parameters: **12**
+- Delta missing compartments: **2**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -57,11 +57,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 52.6% | 30% |
-| **Reference agreement** | 22.2% | 30% |
-| **Fill traceability** | 88.9% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **60.2/100** | — |
+| **Gap reduction** | 73.7% | 30% |
+| **Reference agreement** | 50.0% | 30% |
+| **Fill traceability** | 85.4% | 20% |
+| **Parameter accuracy** | 15.4% | 20% |
+| **→ Composite** | **57.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -74,82 +74,184 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 6 | 1 | 7 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 26
+- Filled via **RAG**: 17
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 2
+- Filled via **inference**: 7
 - **Flagged** for manual review: 0
+
+### susceptible (missing_compartments)
+- **Source:** rag
+- **Primary name:** susceptible
+- **Evidence chunks:** 3 snippet(s) in database
+- *Use paper snippets to confirm compartment label and add to model.*
 
 ### removed (missing_compartments)
 - **Source:** inference
-- **Primary name:** Deaths
+- **Primary name:** Recovered
 - **Reasoning:** The model
+
+### population11countries (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### initialrt (missing_parameters)
 - **Source:** rag
 - **Value:** 3.8 dimensionless
-- **Description:** Average initial reproduction number estimated across the 11 countries before interventions
-- **From papers:** p2_covid3_llm_gemini_20260407_204521, p1_model_covid, p1_model_cholera
+- **Description:** Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6).
+- **From papers:** p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### generationintervaldays (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### basetransmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** InitialRt / GenerationIntervalDays 1/day
-- **Description:** Compartmental approximation of transmission intensity derived from initial Rt
-- **From papers:** p1_model_dengue, p1_model_covid, p1_model_cholera
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### publiceventsbaneffect (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### schoolclosureeffect (missing_parameters)
+- **Source:** rag
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### selfisolationeffect (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### socialdistancingeffect (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### lockdowneffect (missing_parameters)
 - **Source:** rag
-- **Value:** 0.19 dimensionless
-- **Description:** Approximate remaining transmission multiplier under lockdown, corresponding to about 81 percent reduction in Rt reported in the paper
-- **From papers:** p2_covid3_llm_gemini_20260407_204521, p1_model_covid, p2_covid3_llm_claude_20260407_213850
+- **Value:** 81 percent reduction in Rt
+- **Description:** Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)
+- **From papers:** p2_covid3_llm_claude_20260407_213850, p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639
 
 ### combinedinterventionmultiplier (missing_parameters)
 - **Source:** rag
-- **Value:** PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect dimensionless
-- **Description:** Combined multiplicative effect of interventions on transmission
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201, p2_zika3_llm_claude_20260407_215851
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
 
 ### effectivetransmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** BaseTransmissionRate * CombinedInterventionMultiplier 1/day
-- **Description:** Effective transmission rate after interventions in the compartmental approximation
-- **From papers:** p1_model_covid, p1_model_cholera
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### meanoutcomedelaydays (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### removalrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### deathrate (missing_parameters)
+- **Source:** rag
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### Susceptible->Infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** The process by which a susceptible individual contracts SARS-CoV-2 infection from an infected individual.
+- **Reasoning:** COVID-19 is a directly transmissible disease, and new infections arise from interactions between susceptible and infected individuals, which is characteristic of a ContactFlow.
 
 ### Infected->Removed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals transition from the Infected compartment to the Removed compartment due to recovery or death.
+- **Reasoning:** The model links the infection cycle to observed deaths, indicating that individuals exit the infected state through processes like recovery or death, which constitute the 'Removed' compartment.
 
 ### Infected->Dead (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mortality of infected individuals due to the disease.
+- **Reasoning:** The paper explicitly discusses 'observed deaths' and 'deaths attributable to COVID-19', indicating that infected individuals can transition to a
+
+### initialrt (missing_parameters)
 - **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Value:** 3.8 dimensionless
+- **Description:** Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6).
+- **From papers:** p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### lockdowneffect (missing_parameters)
+- **Source:** rag
+- **Value:** 81 percent reduction in Rt
+- **Description:** Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)
+- **From papers:** p2_covid3_llm_claude_20260407_213850, p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639
+
+### Susceptible->Infected (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible individuals become infected
+
+### Infected->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who are infected either recover from the disease or die due to it, thus being removed from the pool of infectious individuals.
+- **Reasoning:** Recovery or death from an infection are intrinsic processes occurring at a certain rate per individual, not dependent on contact with others.
+
+### Infected->Dead (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mortality
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **2**
+- Parameters compared: **13**
 - Exact match (<1% error): **2**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **100.0%**
-- Median relative error: **0.0%**
+- Poor (>50% error): **11**
+- **Accuracy (exact+close)**: **15.4%**
+- Median relative error: **100.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
+| population11countries | 0.0001 | 741000000.0 | 100.0% | poor |
 | initialrt | 3.8 | 3.8 | 0.0% | exact |
-| basetransmissionrate | InitialRt / GenerationIntervalDays | InitialRt / GenerationIntervalDays | — | no_comparison |
-| lockdowneffect | 0.19 | 0.19 | 0.0% | exact |
-| combinedinterventionmultiplier | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | — | no_comparison |
-| effectivetransmissionrate | BaseTransmissionRate * CombinedInterventionMultiplier | BaseTransmissionRate * CombinedInterventionMultiplier | — | no_comparison |
+| generationintervaldays | 0.0001 | 6.5 | 100.0% | poor |
+| basetransmissionrate | 0.0001-0.001 | InitialRt / GenerationIntervalDays | — | no_comparison |
+| publiceventsbaneffect | 0.0001 | 1.0 | 99.99% | poor |
+| schoolclosureeffect | 10000.0 | 1.0 | 999900.0% | poor |
+| selfisolationeffect | 0.0001 | 1.0 | 99.99% | poor |
+| socialdistancingeffect | 0.0001 | 1.0 | 99.99% | poor |
+| lockdowneffect | 81.0 | 0.19 | 42531.58% | poor |
+| combinedinterventionmultiplier | 0.0001-0.001 | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | — | no_comparison |
+| effectivetransmissionrate | 0.0001-0.001 | BaseTransmissionRate * CombinedInterventionMultiplier | — | no_comparison |
+| meanoutcomedelaydays | 0.0001 | 18.0 | 100.0% | poor |
+| removalrate | 0.5 | 1.0 | 50.0% | poor |
+| deathrate | 10000.0 | 0.005 | 199999900.0% | poor |
+| initialrt | 3.8 | 3.8 | 0.0% | exact |
+| lockdowneffect | 81.0 | 0.19 | 42531.58% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **4** | Candidate: **5**
-- Precision **0.4** | Recall **0.5** | F1 **0.4444**
+- Gold count: **4** | Candidate: **4**
+- Precision **1.0** | Recall **1.0** | F1 **1.0**
 ### Flows
 - Gold count: **3** | Candidate: **1**
 - Precision **0.0** | Recall **0.0** | F1 **0.0**

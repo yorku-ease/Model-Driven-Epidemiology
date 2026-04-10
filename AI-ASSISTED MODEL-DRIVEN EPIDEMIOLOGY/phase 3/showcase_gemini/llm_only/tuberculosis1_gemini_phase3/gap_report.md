@@ -44,10 +44,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 25.0% | 30% |
-| **Reference agreement** | 70.8% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **48.8/100** | — |
+| **Reference agreement** | 83.3% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **42.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -65,27 +65,62 @@
 - Filled via **inference**: 7
 - **Flagged** for manual review: 0
 
+### π (missing_parameters)
+- **Source:** inference
+- **Value:** 0.02 per capita per year
+- **Confidence:** LOW
+
 ### Susceptible->Infected (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
 - **Description:** Susceptible individuals become infected with Mycobacterium tuberculosis through contact with infectious individuals.
-- **Reasoning:** Tuberculosis is an infectious disease that spreads through person-to-person transmission, making the Susceptible to Infected transition a contact-dependent process.
+- **Reasoning:** The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population,' indicating person-to-person transmission via contact.
 
 ### Infected->Recovered (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** The rate at which infected individuals recover from tuberculosis, either naturally or through treatment, and are no longer infectious.
-- **Reasoning:** Tuberculosis is a treatable disease, and individuals can recover from infection, which is a fundamental process in disease dynamics models.
+- **Description:** The rate at which individuals actively infected with tuberculosis recover from the disease, either spontaneously or due to successful treatment, and are no longer infectious.
+- **Reasoning:** Recovery is a fundamental process in the natural history of tuberculosis, whether spontaneous or through treatment, and is essential for reducing disease prevalence.
 
 ### Recovered->Infected (missing_flows)
 - **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Loss of immunity or
+
+### Susceptible->Infected (missing_flows)
+- **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Recovered individuals can
+- **Description:** Susceptible individuals acquire Mycobacterium tuberculosis infection through contact with infectious individuals.
+- **Reasoning:** The excerpt discusses 'tuberculosis transmission' and 'how disease may spread in a population,' which implies person-to-person contact as the mechanism for new infections.
+
+### Infected->Recovered (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The process by which individuals with active tuberculosis infection successfully clear the infection and transition to a recovered state, often due to effective treatment.
+- **Reasoning:** Recovery from active tuberculosis infection is a common and critical outcome, typically achieved through medical treatment, and must be included to accurately model disease dynamics and the impact of interventions.
+
+### Recovered->Infected (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have recovered
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **1**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **1**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **238.98%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| π | 0.02 | 0.0059 | 238.98% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **4** | Candidate: **4**
-- Precision **0.75** | Recall **0.75** | F1 **0.75**
+- Precision **1.0** | Recall **1.0** | F1 **1.0**
 ### Flows
 - Gold count: **6** | Candidate: **3**
 - Precision **1.0** | Recall **0.5** | F1 **0.6667**

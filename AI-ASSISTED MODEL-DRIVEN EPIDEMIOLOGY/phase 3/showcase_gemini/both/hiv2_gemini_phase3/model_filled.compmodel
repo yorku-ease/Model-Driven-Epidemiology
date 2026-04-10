@@ -11,16 +11,16 @@
   <parameters name="High future scale-up ART starts" expression="3,900,000 total over 2012-2016" type="CONSTANT" description="Total adults initiating ART in the high future scale-up scenario." unit="adults" />
   <parameters name="ART transmission reduction" expression="greater than 90%" type="CONSTANT" description="Most models assume ART reduces transmissibility by more than 90%." unit="proportion reduction" />
   <parameters name="Early infection transmissibility increase" expression="10-fold or 26-fold relative to asymptomatic infection" type="CONSTANT" description="Alternative assumptions used across models for early infection infectiousness." unit="relative risk" />
-  <parameters name="betaearly" expression="0.8" type="CONSTANT" />
-  <parameters name="betachronic" expression="0.3" type="CONSTANT" />
-  <parameters name="betalate" expression="0.6" type="CONSTANT" />
-  <parameters name="betaart" expression="0.05" type="CONSTANT" />
-  <parameters name="progression1" expression="0.5" type="CONSTANT" />
-  <parameters name="progression2" expression="0.2" type="CONSTANT" />
-  <parameters name="artstart1" expression="0.3" type="CONSTANT" />
-  <parameters name="artstart2" expression="0.4" type="CONSTANT" />
-  <parameters name="deathlate" expression="0.2" type="CONSTANT" />
-  <parameters name="deathart" expression="0.05" type="CONSTANT" />
+  <parameters name="betaearly" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="betachronic" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="betalate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="betaart" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="progression1" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="progression2" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="artstart1" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="artstart2" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="deathlate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="deathart" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.9" target="//@compartments.1" description="HIV acquisition through sexual transmission." />
   </compartments>
@@ -46,14 +46,9 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.5" description="Return to treatment after dropout in models that allow re-initiation." />
   </compartments>
   <compartments PrimaryName="Chronic Infection">
-    <outgoingFlows target="//@compartments.8" />
     <outgoingFlows target="//@compartments.9" />
   </compartments>
-  <compartments PrimaryName="Late Infection">
-    <outgoingFlows target="//@compartments.9" />
-  </compartments>
+  <compartments PrimaryName="Late Stage Infection" />
   <compartments PrimaryName="On ART" />
-  <compartments PrimaryName="Infected On Treatment" />
-  <compartments PrimaryName="Acute Infection" />
   <compartments PrimaryName="Treated Infected" />
 </ns0:CompartmentalModel>

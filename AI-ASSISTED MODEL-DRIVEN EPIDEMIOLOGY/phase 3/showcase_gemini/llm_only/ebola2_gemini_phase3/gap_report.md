@@ -47,10 +47,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 65.1% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 84.0% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 0.0% | 20% |
-| **→ Composite** | **49.5/100** | — |
+| **→ Composite** | **65.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -70,29 +70,28 @@
 
 ### hospitalizationrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.7 
+- **Value:** 0.9 
 - **Confidence:** LOW
 
 ### recoveryrate (missing_parameters)
 - **Source:** inference
-- **Value:** 0.035 1/day
+- **Value:** 0.025 1/day
 - **Confidence:** LOW
 
 ### deathratecommunity (missing_parameters)
 - **Source:** inference
 - **Value:** 0.6 
-- **Reasoning:** The provided text states that Ebola Virus Disease has a case fatality rate around 50-70%. A value of 0.6 (60%) falls within this typical range.
+- **Reasoning:** The provided text states that Ebola Virus Disease (EVD) has a case fatality rate around 50-70%. A value of 60% is a plausible central estimate within this range.
 - **Confidence:** LOW
 
 ### recoveryratehospital (missing_parameters)
 - **Source:** inference
-- **Value:** 0.0476 per day
+- **Value:** 0.05 per day
 - **Confidence:** LOW
 
 ### deathratehospital (missing_parameters)
 - **Source:** inference
-- **Value:** 0.6 
-- **Reasoning:** Ebola
+- **Value:** 0.05 per day
 - **Confidence:** LOW
 
 ## 6. Fill validation (vs gold standard)
@@ -102,20 +101,20 @@
 - Approximate (<50% error): **0**
 - Poor (>50% error): **5**
 - **Accuracy (exact+close)**: **0.0%**
-- Median relative error: **250.0%**
+- Median relative error: **75.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| hospitalizationrate | 0.7 | 0.2 | 250.0% | poor |
-| recoveryrate | 0.035 | 0.1 | 65.0% | poor |
+| hospitalizationrate | 0.9 | 0.2 | 350.0% | poor |
+| recoveryrate | 0.025 | 0.1 | 75.0% | poor |
 | deathratecommunity | 0.6 | 0.15 | 300.0% | poor |
-| recoveryratehospital | 0.0476 | 0.1 | 52.4% | poor |
-| deathratehospital | 0.6 | 0.1 | 500.0% | poor |
+| recoveryratehospital | 0.05 | 0.1 | 50.0% | poor |
+| deathratehospital | 0.05 | 0.1 | 50.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **8**
-- Precision **0.625** | Recall **0.8333** | F1 **0.7143**
+- Precision **0.75** | Recall **1.0** | F1 **0.8571**
 ### Flows
 - Gold count: **7** | Candidate: **10**
-- Precision **0.5** | Recall **0.7143** | F1 **0.5882**
+- Precision **0.7** | Recall **1.0** | F1 **0.8235**

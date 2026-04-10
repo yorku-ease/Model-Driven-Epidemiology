@@ -55,10 +55,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 81.2% | 30% |
-| **Reference agreement** | 54.5% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **60.7/100** | — |
+| **Reference agreement** | 97.1% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **63.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -81,20 +81,125 @@
 - **Primary name:** Treated Clinical
 - **Reasoning:** The
 
+### protected (missing_compartments)
+- **Source:** inference
+- **Primary name:** Protected
+
+### clinicaltransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.15 
+- **Reasoning:** This
+- **Confidence:** LOW
+
+### subclinicaltransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.75 
+- **Confidence:** LOW
+
+### clinicalprogressionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 day^-1
+- **Reasoning:** The clinical progression rate is the inverse of the incubation period. For influenza, the average incubation period is typically around 2 days.
+- **Confidence:** LOW
+
+### subclinicalprogressionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.2 1/day
+- **Confidence:** LOW
+
+### treatmentrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.1 per day
+- **Confidence:** LOW
+
+### clinicalrecoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.2 per day
+- **Reasoning:** The typical duration of clinical symptoms for influenza is approximately 5-7 days. The clinical recovery rate is the inverse of this duration.
+- **Confidence:** LOW
+
+### subclinicalrecoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.167 per day
+- **Confidence:** LOW
+
+### protectionacquisitionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.6 
+- **Reasoning:** This
+- **Confidence:** LOW
+
+### treatedrecoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.167 per day
+- **Confidence:** LOW
+
+### protectionlossrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.003 per day
+- **Confidence:** LOW
+
+### Susceptible->Protected (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The transition of susceptible individuals to a protected state, likely through vaccination or other prophylactic interventions.
+- **Reasoning:** The paper mentions 'vaccine' as a prevention strategy, which typically confers protection at a given rate, independent of contact with
+
 ### InfectiousClinical->TreatedClinical (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals who are
+- **Description:** The rate at which
 
 ### TreatedClinical->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals receiving treatment recover
+- **Description:** Individuals who were clinically treated
+
+### Protected->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Loss of
+
+### treatedclinical (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated Clinical
+
+### InfectiousClinical->TreatedClinical (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The rate at
+
+### TreatedClinical->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals receiving treatment for clinical
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **10**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **4**
+- Poor (>50% error): **6**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **66.67%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| clinicaltransmissionrate | 0.15 | 0.45 | 66.67% | poor |
+| subclinicaltransmissionrate | 0.75 | 0.22 | 240.91% | poor |
+| clinicalprogressionrate | 0.5 | 0.38 | 31.58% | approximate |
+| subclinicalprogressionrate | 0.2 | 0.38 | 47.37% | approximate |
+| treatmentrate | 0.1 | 1.0 | 90.0% | poor |
+| clinicalrecoveryrate | 0.2 | 0.33 | 39.39% | approximate |
+| subclinicalrecoveryrate | 0.167 | 0.33 | 49.39% | approximate |
+| protectionacquisitionrate | 0.6 | 0.02 | 2900.0% | poor |
+| treatedrecoveryrate | 0.167 | 0.5 | 66.6% | poor |
+| protectionlossrate | 0.003 | 0.05 | 94.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **7** | Candidate: **6**
-- Precision **0.6667** | Recall **0.7143** | F1 **0.6897**
+- Precision **1.0** | Recall **1.0** | F1 **1.0**
 ### Flows
 - Gold count: **9** | Candidate: **6**
-- Precision **0.5** | Recall **0.3333** | F1 **0.4**
+- Precision **1.0** | Recall **0.8889** | F1 **0.9412**

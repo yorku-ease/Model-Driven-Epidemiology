@@ -19,13 +19,11 @@
   <parameters name="M" expression="100000" type="CONSTANT" description="Number of alternative hosts besides humans (Rio de Janeiro State)" unit="hosts" />
   <parameters name="λ" expression="0.00005" type="CONSTANT" description="Human population growth rate" unit="per day" />
   <parameters name="R0" expression="1.1139" type="CONSTANT" description="Basic reproduction number estimated from parameters (Rio de Janeiro State)" unit="dimensionless" />
-  <parameters name="1/τ_h" expression="0.5" type="CONSTANT" unit="1/day" description="Inverse incubation time in humans" />
-  <parameters name="b_v" expression="0.001" type="CONSTANT" unit="1/day" description="Biting/exposure term for vectors becoming infected from infectious humans" />
-  <parameters name="1/τ_v" expression="0.125" type="CONSTANT" unit="1/day" description="Inverse incubation time in vectors" />
-  <parameters name="r_h" expression="0.00005" type="CONSTANT" unit="1/day" description="Human population growth rate (logistic)" />
-  <parameters name="f" expression="80" type="CONSTANT" unit="1/day" description="Eggs laid per female mosquito per unit time" />
-  <parameters name="δ_l" expression="1" type="CONSTANT" unit="1/day" description="Larval density-dependent mortality coefficient (logistic term)" />
-  <parameters name="φ" expression="0.00128" type="CONSTANT" unit="1/week" description="Maturation rate child→adult (j)" />
+  <parameters name="1/τ_h" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="1/τ_v" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="r_h" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="δ_l" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="φ" expression="0.40" type="CONSTANT" unit="dimensionless" description="Reduction in transmission from other interventions" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Humans become exposed through bites from infectious vectors, rate βb·I_V·S_H/(N_H + M)" />
   </compartments>
@@ -44,7 +42,6 @@
   </compartments>
   <compartments PrimaryName="Pupae" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.12" target="//@compartments.7" description="Pupae emerge as susceptible female adult vectors, rate q·τ3 (q is female percentage)" />
-    <outgoingFlows target="//@compartments.10" />
   </compartments>
   <compartments PrimaryName="Susceptible Vectors" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.0" target="//@compartments.8" description="Susceptible vectors become exposed through biting infectious humans, rate βb·I_H·S_V/(N_H + M)" />
@@ -53,11 +50,4 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.16" target="//@compartments.9" description="Exposed vectors become infectious after incubation period, rate α_V" />
   </compartments>
   <compartments PrimaryName="Infectious Vectors" population="0" />
-  <compartments PrimaryName="susceptible female adults">
-    <outgoingFlows target="//@compartments.11" />
-  </compartments>
-  <compartments PrimaryName="exposed female adults">
-    <outgoingFlows target="//@compartments.12" />
-  </compartments>
-  <compartments PrimaryName="infectious female adults" />
 </ns0:CompartmentalModel>

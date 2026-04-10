@@ -47,10 +47,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 50.0% | 30% |
-| **Reference agreement** | 70.4% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **56.1/100** | — |
+| **Reference agreement** | 78.8% | 30% |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **48.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,26 +68,68 @@
 - Filled via **inference**: 9
 - **Flagged** for manual review: 0
 
+### burialrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 per day
+- **Confidence:** LOW
+
 ### InfectiousCommunity->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals in the infectious
+- **Description:** Individuals in the Infectious
+
+### InfectiousCommunity->FuneralInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infectious individuals in
+
+### Hospitalized->FuneralInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Hospitalized individuals who
 
 ### Hospitalized->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Hospitalized individuals either recover from Ebola and gain immunity or die due to the infection, thus moving to the Removed compartment.
-- **Reasoning:** This transition represents the per-capita rate at which hospitalized patients either recover or succumb to the disease, removing them from the active infectious population.
+- **Description:** Recovery or death of individuals
 
 ### FuneralInfectious->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Individuals who died from
+- **Description:** Deceased
+
+### InfectiousCommunity->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who
+
+### Hospitalized->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Hospitalized individuals either recover
+
+### FuneralInfectious->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Deceased individuals who were
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **1**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **1**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **85.71%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| burialrate | 0.5 | 3.5 | 85.71% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **6**
-- Precision **0.6667** | Recall **0.8333** | F1 **0.7407**
+- Precision **0.8333** | Recall **1.0** | F1 **0.9091**
 ### Flows
 - Gold count: **8** | Candidate: **7**
 - Precision **0.7143** | Recall **0.625** | F1 **0.6667**

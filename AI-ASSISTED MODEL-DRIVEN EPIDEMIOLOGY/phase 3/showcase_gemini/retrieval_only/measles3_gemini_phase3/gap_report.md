@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **12**
-- After fills gaps (re-detected): **3**
-- Delta (before - after): **9**
+- After fills gaps (re-detected): **5**
+- Delta (before - after): **7**
 - Delta missing parameters: **7**
-- Delta missing compartments: **1**
-- Delta missing flows: **1**
+- Delta missing compartments: **0**
+- Delta missing flows: **0**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -51,11 +51,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 75.0% | 30% |
-| **Reference agreement** | 96.7% | 30% |
-| **Fill traceability** | 66.7% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **84.8/100** | — |
+| **Gap reduction** | 58.3% | 30% |
+| **Reference agreement** | 88.3% | 30% |
+| **Fill traceability** | 41.2% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **52.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -68,29 +68,116 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 8 | 3 | 12 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 12
+- Filled via **RAG**: 7
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 3
+- **Flagged** for manual review: 10
+
+### maternalimmunity (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### vaccinefailure (missing_compartments)
 - **Source:** flagged
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
-### Susceptible->VaccineFailure (missing_flows)
+### maternalimmunitylossrate (missing_parameters)
 - **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
+
+### susceptibleinfectionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### effectivevaccinationrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### vaccinefailurerate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### vaccinefailureinfectionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### latentprogressionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### recoveryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### MaternalImmunity->Susceptible (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible->VaccineFailure (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### VaccineFailure->Latent (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### maternalimmunity (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### vaccinefailure (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### MaternalImmunity->Susceptible (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Susceptible->VaccineFailure (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### VaccineFailure->Latent (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **7**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **7**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.98%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| maternalimmunitylossrate | 0.0001 | 4.0 | 100.0% | poor |
+| susceptibleinfectionrate | 0.0001 | 0.52 | 99.98% | poor |
+| effectivevaccinationrate | 0.0001 | 0.18 | 99.94% | poor |
+| vaccinefailurerate | 0.0001 | 0.02 | 99.5% | poor |
+| vaccinefailureinfectionrate | 0.0001 | 0.4 | 99.98% | poor |
+| latentprogressionrate | 0.0001 | 52.14 | 100.0% | poor |
+| recoveryrate | 0.5 | 52.14 | 99.04% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **6** | Candidate: **7**
-- Precision **1.0** | Recall **1.0** | F1 **1.0**
+- Gold count: **6** | Candidate: **6**
+- Precision **1.0** | Recall **0.8333** | F1 **0.9091**
 ### Flows
-- Gold count: **7** | Candidate: **8**
-- Precision **0.875** | Recall **1.0** | F1 **0.9333**
+- Gold count: **7** | Candidate: **7**
+- Precision **0.8571** | Recall **0.8571** | F1 **0.8571**

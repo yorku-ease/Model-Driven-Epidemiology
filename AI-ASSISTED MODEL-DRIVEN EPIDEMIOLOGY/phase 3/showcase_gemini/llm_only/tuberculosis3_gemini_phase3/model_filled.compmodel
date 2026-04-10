@@ -19,24 +19,24 @@
   <parameters name="diagnostic_rate_smear_positive_2008" expression="0.41" type="CONSTANT" description="Diagnostic rate for smear-positive pulmonary TB in 2008 (primary analysis)" unit="per year" />
   <parameters name="diagnostic_rate_smear_negative_2008" expression="0.16" type="CONSTANT" description="Diagnostic rate for smear-negative pulmonary TB in 2008 (primary analysis)" unit="per year" />
   <parameters name="diagnostic_rate_extrapulmonary_2008" expression="0.50" type="CONSTANT" description="Diagnostic rate for extrapulmonary TB in 2008 (primary analysis)" unit="per year" />
-  <parameters name="infectionratefromsmearpositive" expression="0.05" type="CONSTANT" unit="per person per year" />
-  <parameters name="infectionratefromsmearnegative" expression="0.05" type="CONSTANT" unit="per year" />
-  <parameters name="recenttoremotestabilizationrate" expression="0.25" type="CONSTANT" unit="per year" />
-  <parameters name="rapidprogressiontosmearpositiverate" expression="0.0001" type="CONSTANT" unit="per day" />
-  <parameters name="rapidprogressiontosmearnegativerate" expression="0.05" type="CONSTANT" unit="per year" />
-  <parameters name="rapidprogressiontoextrapulmonaryrate" expression="0.0005" type="CONSTANT" unit="per year" />
-  <parameters name="reinfectionratefromsmearpositive" expression="0.1" type="CONSTANT" unit="per year" />
-  <parameters name="reinfectionratefromsmearnegative" expression="0.015" type="CONSTANT" unit="per year" />
-  <parameters name="remotereactivationtosmearpositiverate" expression="0.0015" type="CONSTANT" unit="per year" />
+  <parameters name="infectionratefromsmearpositive" expression="1e-06" type="CONSTANT" />
+  <parameters name="infectionratefromsmearnegative" expression="0.15" type="CONSTANT" unit="1/year" />
+  <parameters name="recenttoremotestabilizationrate" expression="0.5" type="CONSTANT" unit="1/year" />
+  <parameters name="rapidprogressiontosmearpositiverate" expression="0.05" type="CONSTANT" unit="per year" />
+  <parameters name="rapidprogressiontosmearnegativerate" expression="6.0" type="CONSTANT" unit="per year" />
+  <parameters name="rapidprogressiontoextrapulmonaryrate" expression="0.05" type="CONSTANT" unit="per year" />
+  <parameters name="reinfectionratefromsmearpositive" expression="0.005" type="CONSTANT" unit="per year" />
+  <parameters name="reinfectionratefromsmearnegative" expression="0.005" type="CONSTANT" unit="per year" />
+  <parameters name="remotereactivationtosmearpositiverate" expression="0.0007" type="CONSTANT" unit="year^-1" />
   <parameters name="remotereactivationtosmearnegativerate" expression="0.0005" type="CONSTANT" unit="per year" />
-  <parameters name="remotereactivationtoextrapulmonaryrate" expression="5e-05" type="CONSTANT" unit="per year" />
+  <parameters name="remotereactivationtoextrapulmonaryrate" expression="0.0003" type="CONSTANT" unit="per person-" />
   <parameters name="treatmentorselfcureratesmearpositive" expression="1.5" type="CONSTANT" unit="per year" />
   <parameters name="treatmentorselfcureratesmearnegative" expression="0.5" type="CONSTANT" unit="per year" />
-  <parameters name="treatmentorselfcurerateextrapulmonary" expression="2.0" type="CONSTANT" unit="per year" />
-  <parameters name="recoveredtoremotestabilizationrate" expression="0.0027" type="CONSTANT" unit="per day" />
-  <parameters name="relapsetosmearpositiverate" expression="0.02" type="CONSTANT" unit="per year" />
+  <parameters name="treatmentorselfcurerateextrapulmonary" expression="1.5" type="CONSTANT" unit="per year" />
+  <parameters name="recoveredtoremotestabilizationrate" expression="0.2" type="CONSTANT" unit="per year" />
+  <parameters name="relapsetosmearpositiverate" expression="0.05" type="CONSTANT" unit="per year" />
   <parameters name="relapsetosmearnegativerate" expression="0.0005" type="CONSTANT" unit="per day" />
-  <parameters name="relapsetoextrapulmonaryrate" expression="0.05" type="CONSTANT" unit="per year" />
+  <parameters name="relapsetoextrapulmonaryrate" expression="0.01" type="CONSTANT" unit="per year" />
   <compartments PrimaryName="Uninfected" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="New TB infection through contact with infectious individuals (smear-positive and smear-negative pulmonary TB cases)" />
   </compartments>
@@ -58,7 +58,6 @@
   </compartments>
   <compartments PrimaryName="Active TB Smear-Negative Pulmonary" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.6" description="Diagnosis and successful treatment of smear-negative pulmonary TB" />
-    <outgoingFlows target="//@compartments.9" />
   </compartments>
   <compartments PrimaryName="Active TB Extrapulmonary" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.6" description="Diagnosis and successful treatment of extrapulmonary TB" />
@@ -70,17 +69,20 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.14" target="//@compartments.5" description="Relapse from recently treated/recovered state to extrapulmonary TB" />
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.14" target="//@compartments.1" description="Reinfection of recovered individuals through contact with infectious cases" />
   </compartments>
-  <compartments PrimaryName="Recent Latent TB Infection" />
   <compartments PrimaryName="Remote TB Infection">
     <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.4" />
+    <outgoingFlows target="//@compartments.8" />
     <outgoingFlows target="//@compartments.5" />
+  </compartments>
+  <compartments PrimaryName="Active TB Smear-Negative Undiagnosed">
+    <outgoingFlows target="//@compartments.9" />
   </compartments>
   <compartments PrimaryName="Recently Treated Recovered">
-    <outgoingFlows target="//@compartments.8" />
+    <outgoingFlows target="//@compartments.7" />
     <outgoingFlows target="//@compartments.3" />
-    <outgoingFlows target="//@compartments.4" />
+    <outgoingFlows target="//@compartments.8" />
     <outgoingFlows target="//@compartments.5" />
   </compartments>
-  <compartments PrimaryName="Active Extrapulmonary TB" />
+  <compartments PrimaryName="Recent Latent TB" />
+  <compartments PrimaryName="Latent Infection" />
 </ns0:CompartmentalModel>

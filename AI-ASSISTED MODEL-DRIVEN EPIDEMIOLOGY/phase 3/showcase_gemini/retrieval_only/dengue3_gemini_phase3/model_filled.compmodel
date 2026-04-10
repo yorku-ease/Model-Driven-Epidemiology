@@ -13,14 +13,14 @@
   <parameters name="DALYs per symptomatic dengue case" expression="0.006" type="CONSTANT" description="Disability-Adjusted Life Years incurred per symptomatic dengue case." unit="DALYs" />
   <parameters name="DALYs per severe dengue case" expression="0.02" type="CONSTANT" description="Disability-Adjusted Life Years incurred per severe dengue case." unit="DALYs" />
   <parameters name="Cost per hospitalised case (public payer, Latin America)" expression="200" type="CONSTANT" description="Cost from a public payer perspective for a hospitalised dengue case in a middle-income Latin American-like setting." unit="USD (2014)" />
-  <parameters name="primarytransmissionrate" expression="0.26" type="CONSTANT" description="Transmission parameter for primary infection" />
-  <parameters name="incubationrate" expression="0.20" type="CONSTANT" description="Progression from exposed to infectious" />
-  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" description="Recovery from infectious state" />
-  <parameters name="routinevaccinationrate" expression="0.05" type="CONSTANT" description="Routine vaccination of 9-year-olds" />
-  <parameters name="naturalcrossprotectionwaningrate" expression="0.02" type="CONSTANT" description="Waning of temporary heterologous protection after natural infection" />
-  <parameters name="vaccinecrossprotectionwaningrate" expression="0.03" type="CONSTANT" description="Waning of temporary heterologous protection after vaccination" />
-  <parameters name="secondarytransmissionrate" expression="0.30" type="CONSTANT" description="Transmission parameter for secondary-like infection after natural primary infection" />
-  <parameters name="postvaccinationtransmissionrate" expression="0.24" type="CONSTANT" description="Transmission parameter after vaccine-induced silent infection" />
+  <parameters name="primarytransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="incubationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="recoveryrate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="routinevaccinationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="naturalcrossprotectionwaningrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="vaccinecrossprotectionwaningrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="secondarytransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="postvaccinationtransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Transmission of dengue from an infectious mosquito to a susceptible human, resulting in a primary infection." />
   </compartments>
@@ -41,30 +41,4 @@
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.7" description="Progression of infected mosquitoes to an infectious state after the extrinsic incubation period." />
   </compartments>
   <compartments PrimaryName="Infectious Mosquitoes" population="0" />
-  <compartments PrimaryName="primarysusceptible">
-    <outgoingFlows target="//@compartments.9" />
-    <outgoingFlows target="//@compartments.12" />
-  </compartments>
-  <compartments PrimaryName="primaryexposed">
-    <outgoingFlows target="//@compartments.10" />
-  </compartments>
-  <compartments PrimaryName="primaryinfectious">
-    <outgoingFlows target="//@compartments.11" />
-  </compartments>
-  <compartments PrimaryName="postprimaryimmune">
-    <outgoingFlows target="//@compartments.13" />
-  </compartments>
-  <compartments PrimaryName="vaccinatedsilentinfection">
-    <outgoingFlows target="//@compartments.14" />
-  </compartments>
-  <compartments PrimaryName="secondarysusceptible">
-    <outgoingFlows target="//@compartments.15" />
-  </compartments>
-  <compartments PrimaryName="postvaccinationsusceptible">
-    <outgoingFlows target="//@compartments.15" />
-  </compartments>
-  <compartments PrimaryName="secondaryinfectious">
-    <outgoingFlows target="//@compartments.16" />
-  </compartments>
-  <compartments PrimaryName="postsecondaryimmune" />
 </ns0:CompartmentalModel>

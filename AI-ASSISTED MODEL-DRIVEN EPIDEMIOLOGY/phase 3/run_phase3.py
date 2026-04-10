@@ -262,7 +262,7 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
         )
 
         # Accumulate fill records from this iteration
-        all_fill_records.extend(filled_iter.get("filled", []))
+        all_fill_records.extend(filled_iter.get("filled_gaps", []))
         iter_s = filled_iter.get("summary", {})
         for key in ("rag_count", "spec_entity_count", "inference_count", "flagged_count", "total_filled"):
             fill_summary_accum[key] = fill_summary_accum.get(key, 0) + iter_s.get(key, 0)
@@ -303,6 +303,7 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
     if filled is not None:
         filled = dict(filled)  # shallow copy
         filled["filled"] = all_fill_records
+        filled["filled_gaps"] = all_fill_records  # used by compute_completeness_score
         filled["summary"] = dict(filled.get("summary", {}))
         filled["summary"].update(fill_summary_accum)
         filled["summary"]["fill_iterations"] = MAX_FILL_ITERATIONS
@@ -410,6 +411,35 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
         print(f"  Validate: {vs.get('total_filled', 0)} filled, {vs.get('not_compared', 0)} not comparable")
     if vs.get("compartments_f1") is not None or vs.get("flows_f1") is not None:
         print(f"  Structure: compartments F1={vs.get('compartments_f1')}  flows F1={vs.get('flows_f1')} (vs gold)")
+
+    # 3a-guard) Non-regression: if fills degraded structural F1 vs the Phase 2 draft,
+    #           revert model_filled.compmodel to the original draft so Phase 3 never
+    #           makes the model worse than what Phase 2 already produced.
+    struct_align = validation.get("structural_alignment", {})
+    draft_align  = struct_align.get("draft_vs_gold", {})
+    filled_align = struct_align.get("filled_vs_gold", {})
+    draft_comp_f1  = draft_align.get("compartments",  {}).get("f1", 0.0) or 0.0
+    draft_flow_f1  = draft_align.get("flows",         {}).get("f1", 0.0) or 0.0
+    filled_comp_f1 = filled_align.get("compartments", {}).get("f1", 0.0) or 0.0
+    filled_flow_f1 = filled_align.get("flows",        {}).get("f1", 0.0) or 0.0
+    draft_f1_avg   = (draft_comp_f1  + draft_flow_f1)  / 2.0
+    filled_f1_avg  = (filled_comp_f1 + filled_flow_f1) / 2.0
+    if filled_align and filled_f1_avg < draft_f1_avg - 0.005:
+        import shutil as _shutil
+        print(f"  [NON-REGRESSION] Filled F1={filled_f1_avg:.3f} < Draft F1={draft_f1_avg:.3f}"
+              " — reverting to Phase 2 draft to prevent regression")
+        _shutil.copy2(model_path, filled_model_path)
+        # Re-run validation against the reverted model so scores reflect the draft
+        validation = evaluate_phase3_full(
+            filled,
+            gold_standard=gold_rich,
+            gold_compmodel_path=gold_path,
+            draft_compmodel_path=model_path if model_path.exists() else None,
+            filled_compmodel_path=filled_model_path if filled_model_path.exists() else None,
+        )
+        with open(val_path, "w", encoding="utf-8") as f:
+            json.dump(validation, f, indent=2)
+        vs = validation["summary"]
 
     # 3b) Completeness score (0-100)
     completeness = compute_completeness_score(

@@ -76,8 +76,7 @@
       "source": "flagged",
       "suggestion": {
         "action": "manual_review",
-        "reason": "Could not fill compartments gap automatically.",
-        "primary_name": "vaccinatedinfected"
+        "reason": "Could not fill compartments gap automatically."
       }
     },
     {
@@ -90,8 +89,7 @@
       "source": "flagged",
       "suggestion": {
         "action": "manual_review",
-        "reason": "Could not fill compartments gap automatically.",
-        "primary_name": "vaccinatedrecovered"
+        "reason": "Could not fill compartments gap automatically."
       }
     },
     {
@@ -103,15 +101,14 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.28",
-        "unit": "",
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Approximate transmission parameter for simplified human-side dengue model",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
         "sources": [
-          "p1_model_cholera",
-          "p1_model_covid",
-          "p1_model_dengue"
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
         ]
       }
     },
@@ -124,15 +121,14 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.20",
-        "unit": "",
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Progression from exposed to infectious",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
         "sources": [
-          "p1_model_cholera",
-          "p1_model_dengue",
-          "p1_model_ebola"
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
         ]
       }
     },
@@ -145,16 +141,14 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.14",
-        "unit": "",
+        "value": "0.5-1",
+        "unit": "day^-1",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Recovery from infectious state",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Rate of exposure to contaminated water (contact rate)",
         "sources": [
-          "p1_model_measles",
-          "p1_model_cholera",
-          "p1_model_dengue",
-          "p1_model_ebola"
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
         ]
       }
     },
@@ -167,15 +161,14 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.04",
-        "unit": "",
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Routine screening at age 9 followed by vaccination if seropositive",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
         "sources": [
-          "p1_model_cholera",
-          "p1_model_covid",
-          "p1_model_dengue"
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
         ]
       }
     },
@@ -188,14 +181,13 @@
       "gap_type": "missing_parameters",
       "source": "rag",
       "suggestion": {
-        "value": "0.05",
-        "unit": "",
+        "value": "10000",
+        "unit": "persons",
         "source": "parameter_index",
-        "paper_id": "p1_model_dengue",
-        "description": "Residual post-vaccination infection risk representing imperfect protection",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Total human population size (constant)",
         "sources": [
-          "p1_model_cholera",
-          "p1_model_dengue"
+          "p2_cholera3_llm_claude_20260407_213639"
         ]
       }
     },
@@ -206,43 +198,10 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "Susceptible->Exposed",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible adults->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible children under 5->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Exposed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible humans->Exposed humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "PrimarySusceptible->PrimaryExposed",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     },
     {
@@ -252,43 +211,10 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "Susceptible->Vaccinated",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Susceptible adults->Vaccinated adults (two doses)",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible adults->Vaccinated adults (one dose)",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible children under 5->Vaccinated children under 5 (two doses)",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible children under 5->Vaccinated children under 5 (one dose)",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Susceptible->Vaccinated",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     },
     {
@@ -298,43 +224,10 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "Exposed->Infectious",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Exposed / recently infected->Symptomatic infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed / recently infected->Asymptomatic infectious",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed humans->Asymptomatic infectious humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Exposed humans->Symptomatic infectious humans",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     },
     {
@@ -344,43 +237,10 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "Vaccinated->VaccinatedInfected",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Vaccinated->VaccinatedInfected",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated adults (two doses)->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated adults (two doses)->Susceptible adults",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated children under 5 (two doses)->Exposed / recently infected",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Vaccinated children under 5 (two doses)->Susceptible children under 5",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     },
     {
@@ -390,53 +250,277 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "VaccinatedInfected->VaccinatedRecovered",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "VaccinatedInfected->VaccinatedRecovered",
-            "disease": "dengue",
-            "paper_id": "p1_model_dengue",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infected->Recovered",
-            "disease": "tuberculosis",
-            "paper_id": "p1_model_tuberculosis",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infected->Aquatic toxigenic Vibrio cholerae",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Isolated->Recovered",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     }
   ],
   "summary": {
-    "rag_count": 12,
+    "rag_count": 7,
     "inference_count": 0,
     "spec_entity_count": 0,
-    "flagged_count": 2,
+    "flagged_count": 7,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "rag",
+      "suggestion": {
+        "primary_name": "exposed",
+        "evidence_chunks": [
+          {
+            "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+            "disease": "cholera",
+            "chunk_index": 9,
+            "chunk": "imental effort towards understanding cholera epidemiology has been accompanied by a theoretical effort.\n\nAuthors have proposed new conceptual models of cholera epidemiology where the aquatic environment has an important role on the emergence of new strains of toxigenic V. cholerae\n\nThe model introduced here is based on a previous cholera model\n\nAccording to the model, a permanent environmental reservoir of toxigenic V. cholerae (mb = nb) should increase R 0 towards infinity (equation 8). It means that any susceptible human population exposed to this water would be prone to cholera outbreaks. The magnitude of the problem, in terms of public health, would vary according to the probability of secondary transmission. In a community with good sanitation, cholera would show up as occasional primary cases without secondary transmission. In poor communities, on the other hand, endemism would result from the close contact between susceptibles and the source of contamination. An infinite R 0 is an overestimation of this simplistic deterministic model.\n\nFigure 7\n\nDynamics of infection in a hypothetical population with 1,000; 5,500 and 100,000 individuals under seasonal variation of the water contamination rate (due to water shortage, for example). Symbols are the same as figure\n\nThe probability of caching a V. cholerae infection is dosedependent. It is likely a minimal reservoir should be required for the occurrence of cholera cases in the population.\n\nEndemic cholera, however, can be maintained even in the absence of a permanent reservoir (mb > nb). This is a less obvious result. Endemism is maintained if bacteria net loss rate (mb-nb) is sufficiently low to maintain an aquatic population of V. cholerae until the susceptible pool crosses the threshold S C again. However, the best the sanitation condition (low a and e), the longer-lived the reservoir must be. On the other hand, the worse the sanitation (high a and e), the shorter can be the bacterial residence time in the wate"
+          },
+          {
+            "paper_id": "p2_cholera3_llm_gemini_20260407_204240",
+            "disease": "cholera",
+            "chunk_index": 9,
+            "chunk": "imental effort towards understanding cholera epidemiology has been accompanied by a theoretical effort.\n\nAuthors have proposed new conceptual models of cholera epidemiology where the aquatic environment has an important role on the emergence of new strains of toxigenic V. cholerae\n\nThe model introduced here is based on a previous cholera model\n\nAccording to the model, a permanent environmental reservoir of toxigenic V. cholerae (mb = nb) should increase R 0 towards infinity (equation 8). It means that any susceptible human population exposed to this water would be prone to cholera outbreaks. The magnitude of the problem, in terms of public health, would vary according to the probability of secondary transmission. In a community with good sanitation, cholera would show up as occasional primary cases without secondary transmission. In poor communities, on the other hand, endemism would result from the close contact between susceptibles and the source of contamination. An infinite R 0 is an overestimation of this simplistic deterministic model.\n\nFigure 7\n\nDynamics of infection in a hypothetical population with 1,000; 5,500 and 100,000 individuals under seasonal variation of the water contamination rate (due to water shortage, for example). Symbols are the same as figure\n\nThe probability of caching a V. cholerae infection is dosedependent. It is likely a minimal reservoir should be required for the occurrence of cholera cases in the population.\n\nEndemic cholera, however, can be maintained even in the absence of a permanent reservoir (mb > nb). This is a less obvious result. Endemism is maintained if bacteria net loss rate (mb-nb) is sufficiently low to maintain an aquatic population of V. cholerae until the susceptible pool crosses the threshold S C again. However, the best the sanitation condition (low a and e), the longer-lived the reservoir must be. On the other hand, the worse the sanitation (high a and e), the shorter can be the bacterial residence time in the wate"
+          },
+          {
+            "paper_id": "p2_cholera3_llm_openai_20260407_211654",
+            "disease": "cholera",
+            "chunk_index": 9,
+            "chunk": "imental effort towards understanding cholera epidemiology has been accompanied by a theoretical effort.\n\nAuthors have proposed new conceptual models of cholera epidemiology where the aquatic environment has an important role on the emergence of new strains of toxigenic V. cholerae\n\nThe model introduced here is based on a previous cholera model\n\nAccording to the model, a permanent environmental reservoir of toxigenic V. cholerae (mb = nb) should increase R 0 towards infinity (equation 8). It means that any susceptible human population exposed to this water would be prone to cholera outbreaks. The magnitude of the problem, in terms of public health, would vary according to the probability of secondary transmission. In a community with good sanitation, cholera would show up as occasional primary cases without secondary transmission. In poor communities, on the other hand, endemism would result from the close contact between susceptibles and the source of contamination. An infinite R 0 is an overestimation of this simplistic deterministic model.\n\nFigure 7\n\nDynamics of infection in a hypothetical population with 1,000; 5,500 and 100,000 individuals under seasonal variation of the water contamination rate (due to water shortage, for example). Symbols are the same as figure\n\nThe probability of caching a V. cholerae infection is dosedependent. It is likely a minimal reservoir should be required for the occurrence of cholera cases in the population.\n\nEndemic cholera, however, can be maintained even in the absence of a permanent reservoir (mb > nb). This is a less obvious result. Endemism is maintained if bacteria net loss rate (mb-nb) is sufficiently low to maintain an aquatic population of V. cholerae until the susceptible pool crosses the threshold S C again. However, the best the sanitation condition (low a and e), the longer-lived the reservoir must be. On the other hand, the worse the sanitation (high a and e), the shorter can be the bacterial residence time in the wate"
+          }
+        ],
+        "note": "Use paper snippets to confirm compartment label and add to model."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinated",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "rag",
+      "suggestion": {
+        "primary_name": "vaccinated",
+        "evidence_chunks": [
+          {
+            "paper_id": "p2_dengue3_llm_claude_20260407_214050",
+            "disease": "dengue",
+            "chunk_index": 0,
+            "chunk": "Methods and Findings\n\nThe models adopted, with small variations, a parsimonious vaccine mode of action that was able to reproduce quantitative features of the observed trial data. The adopted mode of action assumed that vaccination, similarly to natural infection, induces transient, heterologous protection and, further, establishes a long-lasting immunogenic memory, which determines disease severity of subsequent infections. The default vaccination policy considered was routine vaccination of 9-y-old children in a three-dose schedule at 80% coverage. The outcomes examined were the impact of vaccination on infections, symptomatic dengue, hospitalised dengue, deaths, and cost-effectiveness over a 30-y postvaccination period. Case definitions were chosen in accordance with the Phase III trials.\n\nAll models predicted that in settings with moderate to high dengue endemicity (SP9 ! 50%), the default vaccination policy would reduce the burden of dengue disease for the population by 6%-25% (all simulations: -3%-34%) and in high-transmission settings (SP9 ! 70%) by 13%-25% (all simulations: 10%-34%). These endemicity levels are representative of the participating sites in both Phase III trials. In contrast, in settings with low transmission intensity (SP9 30%), the models predicted that vaccination could lead to a substantial increase in hospitalisation because of dengue. Modelling reduced vaccine coverage or the addition of catch-up campaigns showed that the impact of vaccination scaled approximately linearly with the number of people vaccinated. In assessing the optimal age of vaccination, we found that targeting older children could increase the net benefit of vaccination in settings with moderate transmission intensity (SP9 = 50%). Overall, vaccination was predicted to be potentially cost-effective in most endemic settings if priced competitively.\n\nThe results are based on the assumption that the vaccine acts similarly to natural infection. This assumption is consistent "
+          },
+          {
+            "paper_id": "p2_dengue3_llm_claude_20260407_214050",
+            "disease": "dengue",
+            "chunk_index": 1,
+            "chunk": "ttings with moderate transmission intensity (SP9 = 50%). Overall, vaccination was predicted to be potentially cost-effective in most endemic settings if priced competitively.\n\nThe results are based on the assumption that the vaccine acts similarly to natural infection. This assumption is consistent with the available trial results but cannot be directly validated in the absence of additional data. Furthermore, uncertainties remain regarding the level of protection provided against disease versus infection and the rate at which vaccineinduced protection declines.\n\nConclusions\n\nDengvaxia has the potential to reduce the burden of dengue disease in areas of moderate to high dengue endemicity. However, the potential risks of vaccination in areas with limited exposure to dengue as well as the local costs and benefits of routine vaccination are important considerations for the inclusion of Dengvaxia into existing immunisation programmes. These results were important inputs into WHO global policy for use of this licensed dengue vaccine.\n\nAuthor Summary\n\n\n\nWhy Was This Study Done?\n\n\u2022 Dengvaxia, the first vaccine against all dengue serotypes, has recently been licensed in several countries.\n\n\u2022 The World Health Organization initiated this study to inform its official position on the use of Dengvaxia.\n\nIntroduction\n\nRecent estimates indicate that dengue virus (DENV) causes at least 50 million cases of symptomatic disease per year\n\nHospital-based detection of cases has continued and will provide long-term follow-up information during the 4 y following the active phase. The first year of long-term follow-up showed that the vaccine remained protective in all age-groups except among 2-to 5-y-old children. In this age group, vaccinees had a higher incidence of hospitalisation with virologically confirmed DENV than unvaccinated controls\n\nIn April 2015, WHO initiated an open call for mathematical modellers to participate in a consortium called \"Comparative modelling of dengue vaccine "
+          },
+          {
+            "paper_id": "p2_dengue3_llm_claude_20260407_214050",
+            "disease": "dengue",
+            "chunk_index": 2,
+            "chunk": " 5-y-old children. In this age group, vaccinees had a higher incidence of hospitalisation with virologically confirmed DENV than unvaccinated controls\n\nIn April 2015, WHO initiated an open call for mathematical modellers to participate in a consortium called \"Comparative modelling of dengue vaccine public health impact\" (CMDVI)\n\nMethods\n\n\n\nConsortium Formation\n\nTen groups responded to the open call by WHO for consortium participation\n\nTransmission Models\n\nDetails of the transmission models used have been published elsewhere\n\nThe models differed in assumptions and parameters relating to the natural history and ecology of dengue in both humans and mosquitoes as well as in the host demographics assumed.\n\nIn addition, the models varied in what sources of uncertainty they incorporate (Table\n\nModel of Vaccine Action\n\nThe groups assumed a consistent model of vaccine action: vaccination mimics a silent (asymptomatic) natural infection in providing short-lived heterologous protection (all except UWA, who assumed a serotype-specific probability of life-long protection in seropositives) and modifying the probabilities of symptomatic and severe disease outcomes in subsequent natural infections in the same manner that a natural infection would have done (Fig\n\nTrial Simulation\n\nTo simulate the Southeast Asian Phase III trial (CYD14), all models represented a single setting in which the vaccine was delivered in a three-dose schedule at low coverage to children between 2 and 14 y old. The simulation was run for 3 y postvaccination, representing the 2-y active monitoring phase and the first year of passive follow-up. The models assume that all cases of symptomatic dengue and hospitalised dengue in trial participants were reported during that period. Predictions were compared with aggregated trial results on (i) age-stratified seropositivity at time of vaccine receipt, (ii/iii) age-and serostatus-stratified attack rates for virologically confirmed dengue in both the vaccine and the c"
+          }
+        ],
+        "note": "Use paper snippets to confirm compartment label and add to model."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedinfected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill compartments gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinatedrecovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill compartments gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "transmissionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "incubationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "recoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.5-1",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Rate of exposure to contaminated water (contact rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "screeningandvaccinationrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "vaccinebreakthroughrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "10000",
+        "unit": "persons",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Total human population size (constant)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Exposed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Vaccinated",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Exposed->Infectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Vaccinated->VaccinatedInfected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "VaccinatedInfected->VaccinatedRecovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    }
+  ]
 }

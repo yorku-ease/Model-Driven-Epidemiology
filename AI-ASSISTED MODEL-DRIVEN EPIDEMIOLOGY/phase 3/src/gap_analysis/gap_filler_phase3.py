@@ -228,16 +228,15 @@ def fill_gaps(
                         filled.append(result)
                         continue
 
-            # Tier 3: Flag for manual review — still carry the expected name for
-            # compartments so model_updater can add the shell unconditionally.
+            # Tier 3: Flag for manual review.
+            # NOTE: We do NOT add compartment or flow shells here using the gold-standard
+            # name, because doing so would scaffold the model directly from gold-standard
+            # labels without any paper evidence — inflating structural recall dishonestly.
+            # Only RAG and inference fills (above) are allowed to add structural elements.
             fallback: Dict[str, Any] = {
                 "action": "manual_review",
                 "reason": f"Could not fill {gap_type.replace('missing_', '')} gap automatically.",
             }
-            if gap_type == "missing_compartments" and expected:
-                fallback["primary_name"] = str(expected).strip()
-            elif gap_type == "missing_flows" and expected:
-                fallback["signature"] = str(expected).strip()
             result["suggestion"] = fallback
             filled.append(result)
 

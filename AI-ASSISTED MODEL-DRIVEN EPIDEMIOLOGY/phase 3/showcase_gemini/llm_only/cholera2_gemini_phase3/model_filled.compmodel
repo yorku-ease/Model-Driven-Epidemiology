@@ -10,60 +10,48 @@
   <parameters name="High-coverage two-dose vaccine coverage" expression="95%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent" />
   <parameters name="High-coverage one-dose vaccine coverage" expression="1.67%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent" />
   <parameters name="High-coverage no vaccine coverage" expression="3.33%" type="CONSTANT" description="Coverage assumption for the high-coverage campaign." unit="percent" />
-  <parameters name="βa" expression="0.05" type="CONSTANT" unit="per day" />
-  <parameters name="βc" expression="0.3" type="CONSTANT" unit="per day" />
-  <parameters name="βa_2dose" expression="0.1" type="CONSTANT" unit="per day" />
-  <parameters name="βc_2dose" expression="0.15" type="CONSTANT" unit="per day" />
-  <parameters name="βa_1dose" expression="0.05" type="CONSTANT" unit="per day" />
+  <parameters name="βa" expression="0.3" type="CONSTANT" unit="per day" />
+  <parameters name="βc" expression="0.5" type="CONSTANT" unit="per day" />
+  <parameters name="βa_2dose" expression="0.5" type="CONSTANT" unit="1/day" />
+  <parameters name="βc_2dose" expression="0.3" type="CONSTANT" unit="per day" />
+  <parameters name="βa_1dose" expression="0.2" type="CONSTANT" unit="1/day" />
   <parameters name="βc_1dose" expression="0.2" type="CONSTANT" unit="per day" />
-  <parameters name="σ*k" expression="0.1" type="CONSTANT" unit="per day" />
-  <parameters name="(1-σ)*k" expression="0.5" type="CONSTANT" unit="per day" />
-  <parameters name="γ" expression="0.25" type="CONSTANT" unit="day⁻¹" />
-  <parameters name="ν2" expression="0.0005" type="CONSTANT" unit="per day" />
+  <parameters name="σ*k" expression="0.5" type="CONSTANT" unit="days^-1" />
+  <parameters name="(1-σ)*k" expression="0.07" type="CONSTANT" unit="per day" />
+  <parameters name="γ" expression="0.2" type="CONSTANT" unit="per day" />
+  <parameters name="ν2" expression="0.000913" type="CONSTANT" unit="per day" />
   <parameters name="ν1" expression="1e-05" type="CONSTANT" unit="per day" />
-  <parameters name="ω2" expression="0.00137" type="CONSTANT" unit="per day" />
-  <parameters name="ω1" expression="0.25" type="CONSTANT" unit="year^-1" />
-  <parameters name="ωr" expression="0.2" type="CONSTANT" unit="per year" />
+  <parameters name="ω2" expression="0.00137" type="CONSTANT" unit="per" />
+  <parameters name="ω1" expression="0.00091" type="CONSTANT" unit="per day" />
+  <parameters name="ωr" expression="0.00091" type="CONSTANT" unit="per day" />
   <parameters name="ξs" expression="0.65" type="CONSTANT" />
   <parameters name="ξa" expression="0.65" type="CONSTANT" />
-  <parameters name="λa" expression="0.001" type="CONSTANT" unit="per day" />
-  <parameters name="λc" expression="0.05" type="CONSTANT" unit="1/day" />
-  <parameters name="δ" expression="2.7e-05" type="CONSTANT" unit="days⁻" />
-  <parameters name="μb" expression="8.2e-05" type="CONSTANT" unit="per day" />
-  <parameters name="ve2a" expression="0.65" type="CONSTANT" />
-  <parameters name="ve2c" expression="0.65" type="CONSTANT" unit="fraction" />
-  <parameters name="ve1a" expression="0.65" type="CONSTANT" />
-  <parameters name="ve1c" expression="0.75" type="CONSTANT" />
+  <parameters name="λa" expression="0.05" type="CONSTANT" unit="1/day" />
+  <parameters name="λc" expression="0.1" type="CONSTANT" unit="per day" />
+  <parameters name="δ" expression="3.65e-05" type="CONSTANT" unit="per day" />
+  <parameters name="μb" expression="6.85e-05" type="CONSTANT" unit="day^-" />
+  <parameters name="ve2a" expression="0.5" type="CONSTANT" />
+  <parameters name="ve2c" expression="65" type="CONSTANT" unit="percent" />
+  <parameters name="ve1a" expression="0.6" type="CONSTANT" unit="proportion" />
+  <parameters name="ve1c" expression="0.7" type="CONSTANT" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Cholera infection/transmission from exposure to Vibrio cholerae." />
-    <outgoingFlows target="//@compartments.6" />
     <outgoingFlows target="//@compartments.3" />
     <outgoingFlows target="//@compartments.4" />
-    <outgoingFlows target="//@compartments.8" />
   </compartments>
   <compartments PrimaryName="Infectious" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.2" description="Recovery from cholera infection." />
-    <outgoingFlows target="//@compartments.9" />
+    <outgoingFlows target="//@compartments.6" />
   </compartments>
   <compartments PrimaryName="Recovered" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.0" description="Waning of natural immunity back to susceptibility." />
   </compartments>
-  <compartments PrimaryName="Vaccinated Adults">
-    <outgoingFlows target="//@compartments.6" />
+  <compartments PrimaryName="Vaccinated Adults (Two Doses)">
     <outgoingFlows target="//@compartments.0" />
   </compartments>
-  <compartments PrimaryName="Vaccinated Children Under 5 (Two Doses)">
-    <outgoingFlows target="//@compartments.6" />
+  <compartments PrimaryName="Vaccinated Children Under 5">
     <outgoingFlows target="//@compartments.0" />
   </compartments>
-  <compartments PrimaryName="Vaccinated Children &lt;5 (1 Dose)" />
-  <compartments PrimaryName="Exposed">
-    <outgoingFlows target="//@compartments.1" />
-  </compartments>
-  <compartments PrimaryName="Environmental Reservoir" />
-  <compartments PrimaryName="Vaccinated Children Under 5 (One Dose">
-    <outgoingFlows target="//@compartments.6" />
-    <outgoingFlows target="//@compartments.0" />
-  </compartments>
-  <compartments PrimaryName="Environmental Vibrio Cholerae Reservoir" />
+  <compartments PrimaryName="Vaccinated Individuals" />
+  <compartments PrimaryName="Environmental Vibrio Cholerae" />
 </ns0:CompartmentalModel>

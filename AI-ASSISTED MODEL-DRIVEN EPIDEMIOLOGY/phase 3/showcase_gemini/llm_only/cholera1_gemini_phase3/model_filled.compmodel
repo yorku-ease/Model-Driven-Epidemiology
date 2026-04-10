@@ -1,24 +1,23 @@
-<?xml version='1.0' encoding='utf-8'?>
-<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
-  <parameters name="β" expression="10^-5 to 1" type="CONSTANT" description="Rate of contact between susceptible population and contaminated water reservoir" unit="days^-1" />
-  <parameters name="1/γ" expression="2.9 to 14" type="CONSTANT" description="Duration of cholera infection; γ is the per capita recovery rate" unit="days" />
-  <parameters name="1/δ" expression="3 to 41" type="CONSTANT" description="Cholera life span in water reservoir; δ is the bacteria decay/removal rate" unit="days" />
-  <parameters name="ξ" expression="0.01 to 10" type="CONSTANT" description="Rate of water contamination by infectious humans shedding V. cholerae into the water reservoir" unit="cells mL^-1 person^-1 day^-1" />
-  <parameters name="κ" expression="10^5 to 10^6" type="CONSTANT" description="Concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate β" unit="cells/mL" />
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="β" expression="10^-5 to 1" type="CONSTANT" description="Rate of contact between susceptible population and contaminated water reservoir" unit="days^-1"/>
+  <parameters name="1/γ" expression="2.9 to 14" type="CONSTANT" description="Duration of cholera infection; γ is the per capita recovery rate" unit="days"/>
+  <parameters name="1/δ" expression="3 to 41" type="CONSTANT" description="Cholera life span in water reservoir; δ is the bacteria decay/removal rate" unit="days"/>
+  <parameters name="ξ" expression="0.01 to 10" type="CONSTANT" description="Rate of water contamination by infectious humans shedding V. cholerae into the water reservoir" unit="cells mL^-1 person^-1 day^-1"/>
+  <parameters name="κ" expression="10^5 to 10^6" type="CONSTANT" description="Concentration of V. cholerae at which the infection rate is 50% of the maximum infection rate β" unit="cells/mL"/>
   <compartments PrimaryName="Susceptible" population="0">
-    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible people exposed to contaminated water become infected; rate depends on force of infection λ = β * B / (κ + B)" />
-    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Birth into the susceptible population (birth rate)" />
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible people exposed to contaminated water become infected; rate depends on force of infection λ = β * B / (κ + B)"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.0" description="Birth into the susceptible population (birth rate)"/>
   </compartments>
   <compartments PrimaryName="Infectious" population="0">
-    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Infectious people recover and become immune at recovery rate γ" />
-    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.3" description="Infectious people shed V. cholerae into the water reservoir at rate ξ" />
-    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.1" description="Death from infectious compartment due to cholera or other causes" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Infectious people recover and become immune at recovery rate γ"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.3" target="//@compartments.3" description="Infectious people shed V. cholerae into the water reservoir at rate ξ"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.1" description="Death from infectious compartment due to cholera or other causes"/>
   </compartments>
   <compartments PrimaryName="Recovered" population="0">
-    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Natural death from recovered compartment" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.1" target="//@compartments.2" description="Natural death from recovered compartment"/>
   </compartments>
   <compartments PrimaryName="Bacteria in Water Reservoir" population="0">
-    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Bacteria decay/removal from the water reservoir at rate δ" />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Bacteria decay/removal from the water reservoir at rate δ"/>
   </compartments>
-  <compartments PrimaryName="Environmental Bacterial Concentration" />
-</ns0:CompartmentalModel>
+</compartmental:CompartmentalModel>

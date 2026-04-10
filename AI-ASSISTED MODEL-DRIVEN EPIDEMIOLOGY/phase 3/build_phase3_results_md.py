@@ -104,8 +104,42 @@ def load_run_metrics(run_dir: Path) -> dict | None:
     return result
 
 
-def best_p2_recall(disease: str, metric: str) -> float | None:
-    """Best recall across all providers for a disease from Phase 2 fuzzy eval."""
+def load_fuzzy_p2_recalls(showcase_dir: Path) -> dict:
+    """
+    Load Phase 2 recall values from fuzzy_phase2_vs_phase3.json (same algorithm
+    as Phase 3 evaluation — substring + synonym matching vs same gold standard).
+    Returns {disease: {"compartments": recall, "flows": recall}}.
+    """
+    fuzzy_path = showcase_dir / "fuzzy_phase2_vs_phase3.json"
+    if not fuzzy_path.exists():
+        return {}
+    try:
+        rows = json.loads(fuzzy_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    result: dict = {}
+    for row in rows:
+        disease = row.get("disease", "")
+        if not disease or "error" in row:
+            continue
+        p2m = row.get("phase2_metrics", {})
+        result[disease] = {
+            "compartments": (p2m.get("compartments") or {}).get("recall"),
+            "flows": (p2m.get("flows") or {}).get("recall"),
+            "compartments_f1": (p2m.get("compartments") or {}).get("f1"),
+            "flows_f1": (p2m.get("flows") or {}).get("f1"),
+        }
+    return result
+
+
+def best_p2_recall(disease: str, metric: str, fuzzy_p2: dict | None = None) -> float | None:
+    """Phase 2 recall for a disease.
+
+    Prefers fuzzy_phase2_vs_phase3.json (identical methodology to Phase 3 eval).
+    Falls back to Phase 2's own evaluation_report_fuzzy_temp.json files.
+    """
+    if fuzzy_p2 and disease in fuzzy_p2:
+        return fuzzy_p2[disease].get(metric)
     reports = PHASE2_DIR / "reports"
     if not reports.is_dir():
         return None
@@ -129,7 +163,8 @@ def best_p2_recall(disease: str, metric: str) -> float | None:
 def load_showcase(showcase_dir: Path) -> dict:
     """
     Returns:
-      { disease: { mode: metrics_dict, "best_p2": str, "phase2_score": float } }
+      { disease: { mode: metrics_dict, "best_p2": str, "phase2_score": float,
+                   "fuzzy_p2_comp_recall": float, "fuzzy_p2_flow_recall": float } }
     """
     summary_path = showcase_dir / "showcase_summary.json"
     summary = []
@@ -138,6 +173,9 @@ def load_showcase(showcase_dir: Path) -> dict:
 
     best_p2 = {row["disease"]: row.get("best_phase2_extractor", "?") for row in summary}
     p2_scores = {row["disease"]: row.get("phase2_score", None) for row in summary}
+
+    # Load P2 recalls from fuzzy comparison (identical methodology to Phase 3 eval)
+    fuzzy_p2 = load_fuzzy_p2_recalls(showcase_dir)
 
     data: dict = {}
     for mode in MODES + list(LEGACY_MODE_ALIASES.keys()):
@@ -155,7 +193,11 @@ def load_showcase(showcase_dir: Path) -> dict:
                 continue
             canonical_mode = LEGACY_MODE_ALIASES.get(mode, mode)
             if disease not in data:
-                data[disease] = {"best_p2": best_p2.get(disease, "?"), "phase2_score": p2_scores.get(disease)}
+                data[disease] = {
+                    "best_p2": best_p2.get(disease, "?"),
+                    "phase2_score": p2_scores.get(disease),
+                    "fuzzy_p2": fuzzy_p2.get(disease, {}),
+                }
             # Prefer canonical folder name if both exist
             if canonical_mode not in data[disease]:
                 data[disease][canonical_mode] = metrics
@@ -173,13 +215,19 @@ def _table_header(mode_label: str) -> list[str]:
     return lines
 
 
-def _row(disease: str, best_p2_extractor: str, m: dict) -> str:
+def _row(disease: str, best_p2_extractor: str, m: dict, disease_fuzzy_p2: dict | None = None) -> str:
+    """disease_fuzzy_p2 is already the per-disease dict: {compartments: recall, flows: recall}."""
     display = DISEASE_DISPLAY.get(disease, disease)
     fc = m["filled"]["compartments"]
     ff = m["filled"]["flows"]
 
-    p2cr = best_p2_recall(disease, "compartments")
-    p2fr = best_p2_recall(disease, "flows")
+    # Use fuzzy comparison P2 values when available (identical methodology to P3 eval)
+    if disease_fuzzy_p2 and disease_fuzzy_p2.get("compartments") is not None:
+        p2cr = disease_fuzzy_p2["compartments"]
+        p2fr = disease_fuzzy_p2.get("flows")
+    else:
+        p2cr = best_p2_recall(disease, "compartments")
+        p2fr = best_p2_recall(disease, "flows")
     p3cr = fc.get("recall")
     p3fr = ff.get("recall")
 
@@ -238,7 +286,7 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
             m = entry.get(mode)
             if m is None:
                 continue
-            lines.append(_row(disease, entry["best_p2"], m))
+            lines.append(_row(disease, entry["best_p2"], m, entry.get("fuzzy_p2")))
             if m["filled"]["compartments"]["recall"] is not None:
                 all_fc_r.append(m["filled"]["compartments"]["recall"])
                 all_fc_f1.append(m["filled"]["compartments"]["f1"])
@@ -248,8 +296,14 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
 
         # Averages row
         def avg(lst): return sum(lst) / len(lst) if lst else None
-        all_p2c = [best_p2_recall(d, "compartments") for d in DISEASE_ORDER if d in data and data[d].get(mode)]
-        all_p2f = [best_p2_recall(d, "flows") for d in DISEASE_ORDER if d in data and data[d].get(mode)]
+        def _p2c(d):
+            fp = data[d].get("fuzzy_p2", {})
+            return fp.get("compartments") if fp.get("compartments") is not None else best_p2_recall(d, "compartments")
+        def _p2f(d):
+            fp = data[d].get("fuzzy_p2", {})
+            return fp.get("flows") if fp.get("flows") is not None else best_p2_recall(d, "flows")
+        all_p2c = [_p2c(d) for d in DISEASE_ORDER if d in data and data[d].get(mode)]
+        all_p2f = [_p2f(d) for d in DISEASE_ORDER if d in data and data[d].get(mode)]
         all_p2c = [v for v in all_p2c if v is not None]
         all_p2f = [v for v in all_p2f if v is not None]
         a_p2cr = avg(all_p2c); a_p2fr = avg(all_p2f)
@@ -265,13 +319,28 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
         lines.append("")
 
     # --- Quick comparison across modes ---
-    # Global Phase 2 baseline averages
-    p2c_all = [best_p2_recall(d, "compartments") for d in DISEASE_ORDER if d in data]
-    p2f_all = [best_p2_recall(d, "flows") for d in DISEASE_ORDER if d in data]
+    # Global Phase 2 baseline averages (using fuzzy comparison where available)
+    def _gp2c(d):
+        fp = data[d].get("fuzzy_p2", {})
+        return fp.get("compartments") if fp.get("compartments") is not None else best_p2_recall(d, "compartments")
+    def _gp2f(d):
+        fp = data[d].get("fuzzy_p2", {})
+        return fp.get("flows") if fp.get("flows") is not None else best_p2_recall(d, "flows")
+    p2c_all = [_gp2c(d) for d in DISEASE_ORDER if d in data]
+    p2f_all = [_gp2f(d) for d in DISEASE_ORDER if d in data]
     p2c_all = [v for v in p2c_all if v is not None]
     p2f_all = [v for v in p2f_all if v is not None]
     def avg(lst): return sum(lst)/len(lst) if lst else None
     p2ca, p2fa = avg(p2c_all), avg(p2f_all)
+
+    # Phase 2 average F1 (from fuzzy comparison)
+    p2cf1_all = [data[d].get("fuzzy_p2", {}).get("compartments_f1")
+                 for d in DISEASE_ORDER if d in data]
+    p2ff1_all = [data[d].get("fuzzy_p2", {}).get("flows_f1")
+                 for d in DISEASE_ORDER if d in data]
+    p2cf1_all = [v for v in p2cf1_all if v is not None]
+    p2ff1_all = [v for v in p2ff1_all if v is not None]
+    p2cf1a, p2ff1a = avg(p2cf1_all), avg(p2ff1_all)
 
     lines += [
         "---",
@@ -280,7 +349,7 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
         "",
         "| | Avg Comp Recall | Avg Comp F1 | Avg Flow Recall | Avg Flow F1 |",
         "|--|----------------|-------------|----------------|-------------|",
-        f"| **Phase 2 best** | {_fmt(p2ca)} | — | {_fmt(p2fa)} | — |",
+        f"| **Phase 2 best** | {_fmt(p2ca)} | {_fmt(p2cf1a)} | {_fmt(p2fa)} | {_fmt(p2ff1a)} |",
     ]
     for mode in modes:
         all_cr, all_cf1, all_fr, all_ff1 = [], [], [], []

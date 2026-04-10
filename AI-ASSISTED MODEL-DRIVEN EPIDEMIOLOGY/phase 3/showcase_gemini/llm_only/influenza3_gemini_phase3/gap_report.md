@@ -57,9 +57,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 81.2% | 30% |
 | **Reference agreement** | 85.2% | 30% |
-| **Fill traceability** | 0.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **69.9/100** | — |
+| **Fill traceability** | 50.0% | 20% |
+| **Parameter accuracy** | 20.0% | 20% |
+| **→ Composite** | **63.9/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -81,15 +81,123 @@
 - **Source:** inference
 - **Primary name:** Vaccinated Ineffective
 
+### communitytransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 1.8 
+- **Reasoning:** Pand
+- **Confidence:** LOW
+
+### hospitaltransmissionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.3 
+- **Reasoning:** Hospital transmission
+- **Confidence:** LOW
+
+### effectivevaccinationrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0 
+- **Reasoning:** During the early 'Introduction' phase of a novel influenza pandemic, a specific vaccine is typically not yet developed, licensed, or widely available, leading to a negligible effective vaccination rate.
+- **Confidence:** LOW
+
+### ineffectivevaccinationrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 
+- **Reasoning:** Infl
+- **Confidence:** LOW
+
+### protectiondelayrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.1 1/day
+- **Confidence:** LOW
+
+### latentprogressionrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.5 per day
+- **Confidence:** LOW
+
+### hospitalizationrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.01 per case
+- **Confidence:** LOW
+
+### communityrecoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.2 per day
+- **Confidence:** LOW
+
+### hospitalrecoveryrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.1 per day
+- **Confidence:** LOW
+
+### hospitalmortalityrate (missing_parameters)
+- **Source:** inference
+- **Value:** 0.025 proportion
+- **Confidence:** LOW
+
+### Susceptible->VaccinatedEffectiveNotYetProtected (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals receive a vaccine but have not yet developed full protective immunity.
+- **Reasoning:** Vaccination is an intervention that moves individuals from a susceptible state to a vaccinated state
+
 ### Susceptible->VaccinatedIneffective (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Susceptible individuals receive a
+- **Description:** Susceptible individuals receive a vaccine that does not confer effective immunity, transitioning them to a state where they have been vaccinated but remain susceptible to infection.
+- **Reasoning:** The excerpt discusses plans for vaccine formulation and vaccine efficacy, directly implying that vaccination will occur and that some vaccines may not be effective, leading to this transition.
+
+### VaccinatedEffectiveNotYetProtected->Latent (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Infection of vaccinated
+
+### VaccinatedEffectiveNotYetProtected->ProtectedByVaccination (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have received an effective vaccine develop protective immunity over time.
+- **Reasoning:** This transition represents the biological process of the immune system responding to the vaccine and generating protective antibodies, which occurs at an intrinsic rate after vaccination.
 
 ### VaccinatedIneffective->Latent (missing_flows)
 - **Source:** inference
 - **Flow type:** ContactFlow
-- **Description:** Individuals who received an ineffective
+- **Description:** Ineffectively vaccinated
+
+### vaccinatedineffective (missing_compartments)
+- **Source:** inference
+- **Primary name:** Vaccinated Ineffective
+
+### Susceptible->VaccinatedIneffective (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals receive the
+
+### VaccinatedIneffective->Latent (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** An individual
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **10**
+- Exact match (<1% error): **1**
+- Close (<10% error): **1**
+- Approximate (<50% error): **1**
+- Poor (>50% error): **7**
+- **Accuracy (exact+close)**: **20.0%**
+- Median relative error: **85.01%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| communitytransmissionrate | 1.8 | 0.45 | 300.0% | poor |
+| hospitaltransmissionrate | 0.3 | 0.2 | 50.0% | approximate |
+| effectivevaccinationrate | 0.0 | 0.03 | 100.0% | poor |
+| ineffectivevaccinationrate | 0.5 | 0.01 | 4900.0% | poor |
+| protectiondelayrate | 0.1 | 0.1 | 0.0% | exact |
+| latentprogressionrate | 0.5 | 0.526 | 4.94% | close |
+| hospitalizationrate | 0.01 | 0.08 | 87.5% | poor |
+| communityrecoveryrate | 0.2 | 0.667 | 70.01% | poor |
+| hospitalrecoveryrate | 0.1 | 0.667 | 85.01% | poor |
+| hospitalmortalityrate | 0.025 | 0.015 | 66.67% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

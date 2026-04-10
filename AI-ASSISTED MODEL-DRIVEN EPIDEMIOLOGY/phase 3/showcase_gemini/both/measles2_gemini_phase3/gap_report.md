@@ -59,9 +59,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 66.7% | 30% |
 | **Reference agreement** | 79.6% | 30% |
-| **Fill traceability** | 66.7% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **77.2/100** | — |
+| **Fill traceability** | 68.8% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **57.6/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -74,9 +74,9 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 2 | 15 | 2 | 19 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 19
+- Filled via **RAG**: 9
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 5
+- Filled via **inference**: 15
 - **Flagged** for manual review: 0
 
 ### maternalprotected (missing_compartments)
@@ -85,28 +85,154 @@
 
 ### vaccinatedonedose (missing_compartments)
 - **Source:** inference
-- **Primary name:** VaccinatedOneDose
-- **Reasoning:** The paper differentiates between 'first-dose coverage' and 'second MMR dose', indicating a need to model individuals who have received only one dose of the vaccine.
+- **Primary name:** Vaccinated One Dose
+
+### vaccinatedtwodose (missing_compartments)
+- **Source:** inference
+- **Primary name:** VaccinatedTwoDose
+- **Reasoning:** The paper extensively discusses the impact of an earlier second MMR dose and different vaccination schedules, requiring a compartment to track individuals who have received two doses.
+
+### maternalimmunitylossrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
+
+### mmr1vaccinationrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### susceptibleinfectionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### mmr2vaccinationrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### onedosebreakthroughrate (missing_parameters)
+- **Source:** rag
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639
+
+### twodosebreakthroughrate (missing_parameters)
+- **Source:** rag
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639
+
+### vaccinewaningrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### incubationprogressionrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### recoveryrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### MaternalProtected->Susceptible (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Waning of passive maternal immunity, leading to susceptibility to measles.
+- **Reasoning:** Maternal antibodies
 
 ### Susceptible->VaccinatedOneDose (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Susceptible individuals receiving their first dose of the Measles-Mumps-Rubella (MMR) vaccine.
+- **Reasoning:** The paper discusses 'increasing first-dose coverage' and 'improving first-dose uptake' as strategies to reduce measles burden, directly implying a flow from Susceptible to VaccinatedOneDose.
 
 ### VaccinatedOneDose->VaccinatedTwoDose (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have received one dose of the MMR vaccine receive their second dose, transitioning to a two-dose vaccinated state.
+- **Reasoning:** The paper discusses the administration of an 'earlier second dose for the Measles-Mumps-Rubella (MMR) vaccine', which is a scheduled event for individuals already having received the first dose.
 
 ### VaccinatedOneDose->Exposed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have received one dose of the vaccine lose their protective immunity over time or due to vaccine failure, becoming susceptible to measles exposure.
+- **Reasoning:** The paper explicitly mentions 'waning of vaccine-induced immunity' as a factor influencing the effectiveness of vaccination schedules, indicating that vaccinated individuals can become susceptible again.
+
+### VaccinatedTwoDose->Exposed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have received two doses of the MMR vaccine can lose their protective immunity over time and become susceptible to measles exposure.
+- **Reasoning:** The paper explicitly discusses 'waning of vaccine-induced immunity,' indicating that the protection conferred by two vaccine doses is not permanent and can diminish, leading to re-susceptibility and exposure.
+
+### VaccinatedTwoDose->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who received two doses of the MMR vaccine lose their vaccine-induced immunity over time and return to the susceptible state.
+- **Reasoning:** The paper explicitly states 'waning of vaccine-induced immunity was included,' indicating that vaccinated individuals can lose protection and become susceptible again, which is modeled as a rate-based transition.
+
+### maternalprotected (missing_compartments)
+- **Source:** inference
+- **Primary name:** Maternally Protected
+
+### vaccinatedonedose (missing_compartments)
+- **Source:** inference
+- **Primary name:** VaccinatedTwoDoses
+
+### MaternalProtected->Susceptible (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The waning of passively acquired maternal antibodies, leading to infants becoming susceptible to measles.
+- **Reasoning:** Maternal immunity is temporary and naturally declines over time, making the infant vulnerable to infection regardless of contact.
+
+### Susceptible->VaccinatedOneDose (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in the susceptible compartment receive their first dose of the Measles-Mumps-Rubella (MMR) vaccine.
+- **Reasoning:** The paper discusses 'increasing first-dose coverage' and 'improving first-dose uptake' as interventions, which necessitates a flow representing susceptible individuals receiving their first vaccine dose.
+
+### VaccinatedOneDose->VaccinatedTwoDose (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who have received one dose of the Measles-Mumps-Rubella (MMR) vaccine receive their second dose, transitioning to a fully vaccinated state.
+- **Reasoning:** The paper discusses changes to the vaccination schedule, specifically 'delivering an earlier second MMR dose,' which is a programmatic intervention affecting the rate at which individuals receive their second vaccine dose, independent of disease contact.
+
+### VaccinatedOneDose->Exposed (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Vaccinated individuals with
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **9**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **9**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.96%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| maternalimmunitylossrate | 0.0001 | 0.167 | 99.94% | poor |
+| mmr1vaccinationrate | 0.0001 | 0.25 | 99.96% | poor |
+| susceptibleinfectionrate | 0.0001 | 0.8 | 99.99% | poor |
+| mmr2vaccinationrate | 0.0001 | 0.18 | 99.94% | poor |
+| onedosebreakthroughrate | 10000.0 | 0.08 | 12499900.0% | poor |
+| twodosebreakthroughrate | 10000.0 | 0.01 | 99999900.0% | poor |
+| vaccinewaningrate | 0.0001 | 0.002 | 95.0% | poor |
+| incubationprogressionrate | 0.0001 | 0.125 | 99.92% | poor |
+| recoveryrate | 0.5 | 0.143 | 249.65% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

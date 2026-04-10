@@ -17,11 +17,11 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **16**
-- After fills gaps (re-detected): **0**
-- Delta (before - after): **16**
+- After fills gaps (re-detected): **3**
+- Delta (before - after): **13**
 - Delta missing parameters: **10**
-- Delta missing compartments: **1**
-- Delta missing flows: **5**
+- Delta missing compartments: **0**
+- Delta missing flows: **3**
 
 ## 2. Required vs optional
 - **stratification**: required_if_promised
@@ -55,11 +55,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 85.2% | 30% |
-| **Fill traceability** | 93.8% | 20% |
-| **Parameter accuracy** | 70.0% | 20% |
-| **→ Composite** | **88.3/100** | — |
+| **Gap reduction** | 81.2% | 30% |
+| **Reference agreement** | 77.5% | 30% |
+| **Fill traceability** | 52.6% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **58.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -72,10 +72,10 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 2 | 13 | 5 | 20 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 15
+- Filled via **RAG**: 10
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 1
+- **Flagged** for manual review: 9
 
 ### vaccinatedineffective (missing_compartments)
 - **Source:** flagged
@@ -83,114 +83,122 @@
 
 ### communitytransmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.45 
-- **Description:** Representative age-specific transmission term from infectious community cases; in the paper lambda_i depends on the age-structured contact matrix and transmission probability q
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201, p2_zika3_llm_claude_20260407_215851
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
 
 ### hospitaltransmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.20 
-- **Description:** Representative contribution of hospitalized infectious individuals to the force of infection; the paper includes I_j + H_j in the force of infection
-- **From papers:** p1_model_influenza, p1_model_covid, p1_model_cholera
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639
 
 ### effectivevaccinationrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.03 
-- **Description:** e_i * nu(t), effective vaccination rate for this representative age group
-- **From papers:** p1_model_influenza, p1_model_cholera, p1_model_measles
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### ineffectivevaccinationrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.01 
-- **Description:** (1-e_i) * nu(t), ineffective vaccination rate for this representative age group
-- **From papers:** p1_model_influenza, p1_model_covid, p1_model_cholera
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### protectiondelayrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.10 
-- **Description:** gamma, rate of becoming protected after vaccination; mean 10 days in the paper
-- **From papers:** p1_model_influenza, p1_model_covid, p1_model_cholera
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### latentprogressionrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.526 
-- **Description:** kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper
-- **From papers:** p1_model_influenza, p1_model_cholera, p1_model_covid
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### hospitalizationrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.2 
-- **From papers:** p1_model_influenza, p1_model_cholera, p1_model_ebola
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639
 
 ### communityrecoveryrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.20 
-- **Description:** Aggregate recovery/removal rate for non-hospitalized infectious survivors in weekly units
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_claude_20260407_215851, p1_model_influenza
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
 
 ### hospitalrecoveryrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.25 
-- **Description:** Aggregate recovery/removal rate from H to R in weekly units
-- **From papers:** p1_model_influenza, p1_model_cholera, p1_model_ebola
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### hospitalmortalityrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.015 
-- **Description:** d_i, age-specific mortality rate among hospitalized individuals
-- **From papers:** p1_model_influenza, p1_model_covid, p1_model_cholera
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### Susceptible->VaccinatedEffectiveNotYetProtected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Susceptible->VaccinatedIneffective (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### VaccinatedEffectiveNotYetProtected->Latent (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### VaccinatedEffectiveNotYetProtected->ProtectedByVaccination (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### VaccinatedIneffective->Latent (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### vaccinatedineffective (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Susceptible->VaccinatedIneffective (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### VaccinatedIneffective->Latent (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **10**
-- Exact match (<1% error): **7**
+- Exact match (<1% error): **0**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **3**
-- **Accuracy (exact+close)**: **70.0%**
-- Median relative error: **0.0%**
+- Poor (>50% error): **10**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **99.99%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| communitytransmissionrate | 0.45 | 0.45 | 0.0% | exact |
-| hospitaltransmissionrate | 0.2 | 0.2 | 0.0% | exact |
-| effectivevaccinationrate | 0.03 | 0.03 | 0.0% | exact |
-| ineffectivevaccinationrate | 0.01 | 0.01 | 0.0% | exact |
-| protectiondelayrate | 0.1 | 0.1 | 0.0% | exact |
-| latentprogressionrate | 0.526 | 0.526 | 0.0% | exact |
-| hospitalizationrate | 0.2 | 0.08 | 150.0% | poor |
-| communityrecoveryrate | 0.2 | 0.667 | 70.01% | poor |
-| hospitalrecoveryrate | 0.25 | 0.667 | 62.52% | poor |
-| hospitalmortalityrate | 0.015 | 0.015 | 0.0% | exact |
+| communitytransmissionrate | 0.0001 | 0.45 | 99.98% | poor |
+| hospitaltransmissionrate | 10000.0 | 0.2 | 4999900.0% | poor |
+| effectivevaccinationrate | 0.0001 | 0.03 | 99.67% | poor |
+| ineffectivevaccinationrate | 0.0001 | 0.01 | 99.0% | poor |
+| protectiondelayrate | 0.0001 | 0.1 | 99.9% | poor |
+| latentprogressionrate | 0.0001 | 0.526 | 99.98% | poor |
+| hospitalizationrate | 10000.0 | 0.08 | 12499900.0% | poor |
+| communityrecoveryrate | 0.0001 | 0.667 | 99.99% | poor |
+| hospitalrecoveryrate | 10000.0 | 0.667 | 1499150.37% | poor |
+| hospitalmortalityrate | 10000.0 | 0.015 | 66666566.67% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **9** | Candidate: **10**
-- Precision **0.8** | Recall **1.0** | F1 **0.8889**
+- Gold count: **9** | Candidate: **9**
+- Precision **0.7778** | Recall **0.8889** | F1 **0.8296**
 ### Flows
-- Gold count: **11** | Candidate: **16**
-- Precision **0.6875** | Recall **1.0** | F1 **0.8148**
+- Gold count: **11** | Candidate: **14**
+- Precision **0.6429** | Recall **0.8182** | F1 **0.72**

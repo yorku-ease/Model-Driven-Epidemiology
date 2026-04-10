@@ -2,48 +2,73 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "burialrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.5-1",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Rate of exposure to contaminated water (contact rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
         "expected": "InfectiousCommunity->Removed",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "InfectiousCommunity->Removed",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Removed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousCommunity->Removed",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Individuals in the",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousCommunity->FuneralInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "An infectious individual in the community dies and their remains become a source of infection during traditional burial ceremonies.",
+        "reasoning": "The model explicitly subdivides infectious phases to account for transmission 'after death during traditional burial,' implying a transition from a living infectious state to a deceased infectious state relevant to funerals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Hospitalized->FuneralInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who die while hospitalized",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -53,43 +78,14 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "Hospitalized->Removed",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Hospitalized->Removed",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Removed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infected->Removed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Hospitalized->Dead",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousCommunity->Removed",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Hospitalized individuals either recover from Ebola or die due to the infection, transitioning them out of the infectious and hospitalized state.",
+        "reasoning": "This flow is necessary to account for the natural progression of disease for hospitalized patients, leading to either recovery or death, which are the ultimate outcomes for individuals in a disease model's 'Removed' compartment.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     },
     {
@@ -99,53 +95,232 @@
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "inference",
       "suggestion": {
-        "signature": "FuneralInfectious->Removed",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "Infectious->Removed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "FuneralInfectious->Removed",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Recovered humans",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Chollerae bacterial concentration",
-            "disease": "cholera",
-            "paper_id": "p1_model_cholera",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Infectious",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "flow_type": "RateFlow",
+        "description": "Deceased individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousCommunity->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals in the infectious",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Hospitalized->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Hospitalized individuals either recover",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "FuneralInfectious->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
       }
     }
   ],
   "summary": {
-    "rag_count": 9,
-    "inference_count": 0,
+    "rag_count": 1,
+    "inference_count": 8,
     "spec_entity_count": 0,
     "flagged_count": 0,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "burialrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.5-1",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Rate of exposure to contaminated water (contact rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousCommunity->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals in the",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousCommunity->FuneralInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "An infectious individual in the community dies and their remains become a source of infection during traditional burial ceremonies.",
+        "reasoning": "The model explicitly subdivides infectious phases to account for transmission 'after death during traditional burial,' implying a transition from a living infectious state to a deceased infectious state relevant to funerals.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Hospitalized->FuneralInfectious",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who die while hospitalized",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Hospitalized->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Hospitalized individuals either recover from Ebola or die due to the infection, transitioning them out of the infectious and hospitalized state.",
+        "reasoning": "This flow is necessary to account for the natural progression of disease for hospitalized patients, leading to either recovery or death, which are the ultimate outcomes for individuals in a disease model's 'Removed' compartment.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "FuneralInfectious->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Deceased individuals",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousCommunity->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals in the infectious",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Hospitalized->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Hospitalized individuals either recover",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "FuneralInfectious->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

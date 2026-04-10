@@ -54,9 +54,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
 | **Reference agreement** | 88.5% | 30% |
-| **Fill traceability** | 41.7% | 20% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **54.9/100** | — |
+| **→ Composite** | **46.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -69,10 +69,10 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 7 | 8 | 8 | 23 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 10
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 14
+- **Flagged** for manual review: 24
 
 ### susceptiblehumans (missing_compartments)
 - **Source:** flagged
@@ -103,29 +103,72 @@
 - **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### SusceptibleHumans->ExposedHumans (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedHumans->InfectiousHumans (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### InfectiousHumans->RecoveredHumans (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### susceptiblehumans (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### exposedhumans (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectioushumans (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### recoveredhumans (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### susceptiblemosquitoes (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### exposedmosquitoes (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### infectiousmosquitoes (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### SusceptibleHumans->ExposedHumans (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedHumans->InfectiousHumans (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### InfectiousHumans->RecoveredHumans (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

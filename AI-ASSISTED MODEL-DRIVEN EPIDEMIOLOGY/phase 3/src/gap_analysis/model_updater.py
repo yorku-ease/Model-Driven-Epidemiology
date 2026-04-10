@@ -123,7 +123,11 @@ def apply_fills_to_model(
 
         # ── Compartments ──────────────────────────────────────────────────
         if gap_type == "missing_compartments":
-            # Accept RAG, inference, spec_entity, OR flagged (gap detection identified the name)
+            # Only accept fills backed by paper evidence (RAG, inference, spec_entity).
+            # Flagged fills (no evidence found) must NOT add compartment shells using
+            # gold-standard names — that would scaffold the model dishonestly.
+            if source not in ("rag", "inference", "spec_entity"):
+                continue
             name = (suggestion.get("primary_name") or "").strip()
             if not name:
                 name = (gap.get("expected") or "").strip()

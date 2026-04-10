@@ -13,11 +13,11 @@
   <parameters name="Probability of death conditional on symptomatic disease" expression="0.0078" type="CONSTANT" description="Proportion of symptomatic cases that result in death." unit="dimensionless" />
   <parameters name="Probability of mosquito to human transmission" expression="N/A" type="CONSTANT" description="The probability of an infectious mosquito infecting a susceptible human during blood-feeding. Value was calibrated to achieve a target seroprevalence." unit="dimensionless" />
   <parameters name="Mosquito emergence rate" expression="N/A" type="CONSTANT" description="The emergence rate of adult female mosquitoes. Value was calibrated to achieve a target seroprevalence." unit="mosquitoes per day" />
-  <parameters name="transmissionrate" expression="0.28" type="CONSTANT" description="Approximate transmission parameter for simplified human-side dengue model" />
-  <parameters name="incubationrate" expression="0.20" type="CONSTANT" description="Progression from exposed to infectious" />
-  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" description="Recovery from infectious state" />
-  <parameters name="screeningandvaccinationrate" expression="0.04" type="CONSTANT" description="Routine screening at age 9 followed by vaccination if seropositive" />
-  <parameters name="vaccinebreakthroughrate" expression="0.05" type="CONSTANT" description="Residual post-vaccination infection risk representing imperfect protection" />
+  <parameters name="transmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="incubationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="recoveryrate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="screeningandvaccinationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="vaccinebreakthroughrate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRate="0.0" target="//@compartments.1" description="Transmission of dengue virus from an infectious mosquito to a susceptible human during a blood-feed." />
   </compartments>

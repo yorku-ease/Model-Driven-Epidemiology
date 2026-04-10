@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **2**
-- After fills gaps (re-detected): **1**
-- Delta (before - after): **1**
+- After fills gaps (re-detected): **2**
+- Delta (before - after): **0**
 - Delta missing parameters: **0**
-- Delta missing compartments: **1**
+- Delta missing compartments: **0**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -41,11 +41,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 50.0% | 30% |
-| **Reference agreement** | 28.6% | 30% |
-| **Fill traceability** | 100.0% | 20% |
+| **Gap reduction** | 0.0% | 30% |
+| **Reference agreement** | 50.0% | 30% |
+| **Fill traceability** | 0.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **63.6/100** | — |
+| **→ Composite** | **35.0/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -58,20 +58,31 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 0 | 3 | 4 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 2
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 1
+- **Flagged** for manual review: 4
+
+### aquatic toxigenic vibrio cholerae (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
 
 ### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### aquatic toxigenic vibrio cholerae (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### Infected->Aquatic toxigenic Vibrio cholerae (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **3** | Candidate: **4**
-- Precision **0.5** | Recall **0.6667** | F1 **0.5714**
+- Gold count: **3** | Candidate: **3**
+- Precision **0.6667** | Recall **0.6667** | F1 **0.6667**
 ### Flows
 - Gold count: **2** | Candidate: **4**
-- Precision **0.0** | Recall **0.0** | F1 **0.0**
+- Precision **0.25** | Recall **0.5** | F1 **0.3333**

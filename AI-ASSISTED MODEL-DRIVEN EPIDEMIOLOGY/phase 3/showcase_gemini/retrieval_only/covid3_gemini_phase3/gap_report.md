@@ -17,10 +17,10 @@
 
 ## 1b. Improvement vs Phase 2 draft
 - Phase 2 gaps (before fills): **19**
-- After fills gaps (re-detected): **8**
-- Delta (before - after): **11**
-- Delta missing parameters: **9**
-- Delta missing compartments: **2**
+- After fills gaps (re-detected): **6**
+- Delta (before - after): **13**
+- Delta missing parameters: **12**
+- Delta missing compartments: **1**
 - Delta missing flows: **0**
 
 ## 2. Required vs optional
@@ -57,11 +57,11 @@
 ## 1c. Completeness score (0–100)
 | Component | Score | Weight |
 |-----------|-------|--------|
-| **Gap reduction** | 57.9% | 30% |
-| **Reference agreement** | 37.5% | 30% |
-| **Fill traceability** | 100.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **68.6/100** | — |
+| **Gap reduction** | 68.4% | 30% |
+| **Reference agreement** | 42.9% | 30% |
+| **Fill traceability** | 68.0% | 20% |
+| **Parameter accuracy** | 15.4% | 20% |
+| **→ Composite** | **50.1/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -74,77 +74,177 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 0 | 6 | 1 | 7 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 26
+- Filled via **RAG**: 17
 - Filled via **paper entities (spec)**: 0
 - Filled via **inference**: 0
-- **Flagged** for manual review: 1
+- **Flagged** for manual review: 8
+
+### susceptible (missing_compartments)
+- **Source:** rag
+- **Primary name:** susceptible
+- **Evidence chunks:** 3 snippet(s) in database
+- *Use paper snippets to confirm compartment label and add to model.*
+
+### removed (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### population11countries (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### initialrt (missing_parameters)
 - **Source:** rag
 - **Value:** 3.8 dimensionless
-- **Description:** Average initial reproduction number estimated across the 11 countries before interventions
-- **From papers:** p2_covid3_llm_gemini_20260407_204521, p1_model_covid, p1_model_cholera
+- **Description:** Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6).
+- **From papers:** p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### generationintervaldays (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### basetransmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** InitialRt / GenerationIntervalDays 1/day
-- **Description:** Compartmental approximation of transmission intensity derived from initial Rt
-- **From papers:** p1_model_dengue, p1_model_covid, p1_model_cholera
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### publiceventsbaneffect (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### schoolclosureeffect (missing_parameters)
+- **Source:** rag
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### selfisolationeffect (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### socialdistancingeffect (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### lockdowneffect (missing_parameters)
 - **Source:** rag
-- **Value:** 0.19 dimensionless
-- **Description:** Approximate remaining transmission multiplier under lockdown, corresponding to about 81 percent reduction in Rt reported in the paper
-- **From papers:** p2_covid3_llm_gemini_20260407_204521, p1_model_covid, p2_covid3_llm_claude_20260407_213850
+- **Value:** 81 percent reduction in Rt
+- **Description:** Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)
+- **From papers:** p2_covid3_llm_claude_20260407_213850, p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639
 
 ### combinedinterventionmultiplier (missing_parameters)
 - **Source:** rag
-- **Value:** PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect dimensionless
-- **Description:** Combined multiplicative effect of interventions on transmission
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201, p2_zika3_llm_claude_20260407_215851
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_gemini_20260407_211201
 
 ### effectivetransmissionrate (missing_parameters)
 - **Source:** rag
-- **Value:** BaseTransmissionRate * CombinedInterventionMultiplier 1/day
-- **Description:** Effective transmission rate after interventions in the compartmental approximation
-- **From papers:** p1_model_covid, p1_model_cholera
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### meanoutcomedelaydays (missing_parameters)
+- **Source:** rag
+- **Value:** 0.0001-0.001 day^-1
+- **Description:** Human birth and death rate (susceptible renewal rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### removalrate (missing_parameters)
+- **Source:** rag
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### deathrate (missing_parameters)
+- **Source:** rag
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### Susceptible->Infected (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Infected->Removed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ### Infected->Dead (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### removed (missing_compartments)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill compartments gap automatically.
+
+### initialrt (missing_parameters)
 - **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Value:** 3.8 dimensionless
+- **Description:** Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6).
+- **From papers:** p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### lockdowneffect (missing_parameters)
+- **Source:** rag
+- **Value:** 81 percent reduction in Rt
+- **Description:** Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)
+- **From papers:** p2_covid3_llm_claude_20260407_213850, p2_covid3_llm_gemini_20260407_204521, p2_cholera3_llm_claude_20260407_213639
+
+### Susceptible->Infected (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Infected->Removed (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
+
+### Infected->Dead (missing_flows)
+- **Source:** flagged
+- **Action:** manual_review — Could not fill flows gap automatically.
 
 ## 6. Fill validation (vs gold standard)
-- Parameters compared: **2**
+- Parameters compared: **13**
 - Exact match (<1% error): **2**
 - Close (<10% error): **0**
 - Approximate (<50% error): **0**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **100.0%**
-- Median relative error: **0.0%**
+- Poor (>50% error): **11**
+- **Accuracy (exact+close)**: **15.4%**
+- Median relative error: **100.0%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
+| population11countries | 0.0001 | 741000000.0 | 100.0% | poor |
 | initialrt | 3.8 | 3.8 | 0.0% | exact |
-| basetransmissionrate | InitialRt / GenerationIntervalDays | InitialRt / GenerationIntervalDays | — | no_comparison |
-| lockdowneffect | 0.19 | 0.19 | 0.0% | exact |
-| combinedinterventionmultiplier | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | — | no_comparison |
-| effectivetransmissionrate | BaseTransmissionRate * CombinedInterventionMultiplier | BaseTransmissionRate * CombinedInterventionMultiplier | — | no_comparison |
+| generationintervaldays | 0.0001 | 6.5 | 100.0% | poor |
+| basetransmissionrate | 0.0001-0.001 | InitialRt / GenerationIntervalDays | — | no_comparison |
+| publiceventsbaneffect | 0.0001 | 1.0 | 99.99% | poor |
+| schoolclosureeffect | 10000.0 | 1.0 | 999900.0% | poor |
+| selfisolationeffect | 0.0001 | 1.0 | 99.99% | poor |
+| socialdistancingeffect | 0.0001 | 1.0 | 99.99% | poor |
+| lockdowneffect | 81.0 | 0.19 | 42531.58% | poor |
+| combinedinterventionmultiplier | 0.0001-0.001 | PublicEventsBanEffect * SchoolClosureEffect * SelfIsolationEffect * SocialDistancingEffect * LockdownEffect | — | no_comparison |
+| effectivetransmissionrate | 0.0001-0.001 | BaseTransmissionRate * CombinedInterventionMultiplier | — | no_comparison |
+| meanoutcomedelaydays | 0.0001 | 18.0 | 100.0% | poor |
+| removalrate | 0.5 | 1.0 | 50.0% | poor |
+| deathrate | 10000.0 | 0.005 | 199999900.0% | poor |
+| initialrt | 3.8 | 3.8 | 0.0% | exact |
+| lockdowneffect | 81.0 | 0.19 | 42531.58% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **4** | Candidate: **4**
-- Precision **0.75** | Recall **0.75** | F1 **0.75**
+- Gold count: **4** | Candidate: **3**
+- Precision **1.0** | Recall **0.75** | F1 **0.8571**
 ### Flows
 - Gold count: **3** | Candidate: **1**
 - Precision **0.0** | Recall **0.0** | F1 **0.0**

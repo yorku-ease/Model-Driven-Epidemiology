@@ -203,8 +203,17 @@ def _param_metrics(extracted: List[str], gold: List[str], threshold: float) -> D
 def _find_baseline(disease: str, baseline_dir: Path) -> Optional[Path]:
     if not baseline_dir.is_dir():
         return None
+    d = disease.lower()
+    # 1) Exact stem match anywhere in tree (handles data/diseases/covid/covid1.compmodel)
+    for cm in sorted(baseline_dir.glob(f"**/{d}.compmodel")):
+        return cm
+    # 2) Flat directory: stem contains disease name (legacy baseline_models/)
     for cm in sorted(baseline_dir.glob("*.compmodel")):
-        if disease.lower() in cm.stem.lower():
+        if d in cm.stem.lower():
+            return cm
+    # 3) Subdirectory: stem contains disease name (data/diseases/<disease>/<stem>.compmodel)
+    for cm in sorted(baseline_dir.glob("**/*.compmodel")):
+        if d in cm.stem.lower():
             return cm
     return None
 
@@ -283,7 +292,11 @@ def main() -> None:
     ap.add_argument(
         "--baseline-models-dir",
         type=Path,
-        default=Path(__file__).resolve().parent.parent / "phase 2" / "data" / "baseline_models",
+        default=Path(__file__).resolve().parent.parent / "phase 2" / "data" / "diseases",
+        help="Directory containing gold-standard .compmodel files. "
+             "Supports both flat layout (baseline_models/*.compmodel) and "
+             "nested layout (diseases/<disease>/<stem>.compmodel). "
+             "Default: ../phase 2/data/diseases",
     )
     ap.add_argument(
         "--param-threshold",

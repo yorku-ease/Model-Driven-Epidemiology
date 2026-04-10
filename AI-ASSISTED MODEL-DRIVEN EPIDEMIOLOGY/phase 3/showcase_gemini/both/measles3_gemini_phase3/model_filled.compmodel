@@ -8,13 +8,13 @@
   <parameters name="Birth rate" expression="666666" type="CONSTANT" description="Annual birth cohort in England and Wales." unit="persons/year" />
   <parameters name="Background death rate" expression="1/60" type="CONSTANT" description="Background death rate assumed for the residual age group (15-75 years)." unit="/person/year" />
   <parameters name="Contact rates" expression="Defined by WAIFW matrices" type="CONSTANT" description="Age-specific effective contact rates (beta values) defined in two alternative 'Who Acquires Infection From Whom' (WAIFW) matrices. Includes seasonal forcing for school-age children." unit="N/A" />
-  <parameters name="maternalimmunitylossrate" expression="0.167" type="CONSTANT" description="Representative loss rate of maternal protection; paper fitted duration of maternal immunity in the measles model" />
-  <parameters name="susceptibleinfectionrate" expression="0.80" type="CONSTANT" description="Baseline infection rate for susceptible individuals within one representative age-region stratum" />
-  <parameters name="effectivevaccinationrate" expression="0.03" type="CONSTANT" description="e_i * nu(t), effective vaccination rate for this representative age group" />
-  <parameters name="vaccinefailurerate" expression="0.02" type="CONSTANT" description="Vaccination flow from susceptible to vaccine-failure class, reflecting imperfect vaccine efficacy in the paper" />
-  <parameters name="vaccinefailureinfectionrate" expression="0.40" type="CONSTANT" description="Force of infection for vaccine-failure individuals exposed to wild virus; these individuals follow the same infection course as susceptibles once infected" />
-  <parameters name="latentprogressionrate" expression="0.526" type="CONSTANT" description="kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper" />
-  <parameters name="recoveryrate" expression="0.14" type="CONSTANT" description="Recovery from infectious state" />
+  <parameters name="maternalimmunitylossrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="susceptibleinfectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="effectivevaccinationrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="vaccinefailurerate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="vaccinefailureinfectionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="latentprogressionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="recoveryrate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
   <compartments PrimaryName="Maternally Immune" population="0">
     <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Waning of passive maternal immunity." />
   </compartments>
@@ -33,7 +33,8 @@
   <compartments PrimaryName="Vaccine Failure" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.7" target="//@compartments.2" description="Infection of individuals with vaccine failure through contact with infectious individuals." />
   </compartments>
-  <compartments PrimaryName="MaternalImmunity">
+  <compartments PrimaryName="Maternal Immunity">
     <outgoingFlows target="//@compartments.1" />
   </compartments>
+  <compartments PrimaryName="WaningVaccineImmunity" />
 </ns0:CompartmentalModel>

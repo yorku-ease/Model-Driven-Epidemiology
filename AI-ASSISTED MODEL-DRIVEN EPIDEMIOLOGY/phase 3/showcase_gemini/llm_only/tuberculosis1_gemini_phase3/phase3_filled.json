@@ -2,6 +2,25 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "\u03c0",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.02,
+        "unit": "per capita per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
         "expected": "Susceptible->Infected",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
@@ -11,7 +30,7 @@
       "suggestion": {
         "flow_type": "ContactFlow",
         "description": "Susceptible individuals become infected with Mycobacterium tuberculosis through contact with infectious individuals.",
-        "reasoning": "Tuberculosis is an infectious disease that spreads through person-to-person transmission, making the Susceptible to Infected transition a contact-dependent process.",
+        "reasoning": "The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population,' indicating person-to-person transmission via contact.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -27,8 +46,8 @@
       "source": "inference",
       "suggestion": {
         "flow_type": "RateFlow",
-        "description": "The rate at which infected individuals recover from tuberculosis, either naturally or through treatment, and are no longer infectious.",
-        "reasoning": "Tuberculosis is a treatable disease, and individuals can recover from infection, which is a fundamental process in disease dynamics models.",
+        "description": "The rate at which individuals actively infected with tuberculosis recover from the disease, either spontaneously or due to successful treatment, and are no longer infectious.",
+        "reasoning": "Recovery is a fundamental process in the natural history of tuberculosis, whether spontaneous or through treatment, and is essential for reducing disease prevalence.",
         "source": "llm_inference",
         "confidence": "LOW",
         "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
@@ -43,8 +62,59 @@
       "gap_type": "missing_flows",
       "source": "inference",
       "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Loss of immunity or",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
         "flow_type": "ContactFlow",
-        "description": "Recovered individuals can",
+        "description": "Susceptible individuals acquire Mycobacterium tuberculosis infection through contact with infectious individuals.",
+        "reasoning": "The excerpt discusses 'tuberculosis transmission' and 'how disease may spread in a population,' which implies person-to-person contact as the mechanism for new infections.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infected->Recovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The process by which individuals with active tuberculosis infection successfully clear the infection and transition to a recovered state, often due to effective treatment.",
+        "reasoning": "Recovery from active tuberculosis infection is a common and critical outcome, typically achieved through medical treatment, and must be included to accurately model disease dynamics and the impact of interventions.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Recovered->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who have recovered",
         "reasoning": "",
         "source": "llm_inference",
         "confidence": "LOW",
@@ -60,5 +130,127 @@
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "\u03c0",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "inference",
+      "suggestion": {
+        "value": 0.02,
+        "unit": "per capita per year",
+        "reasoning": "",
+        "range_low": null,
+        "range_high": null,
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; verify from literature."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals become infected with Mycobacterium tuberculosis through contact with infectious individuals.",
+        "reasoning": "The excerpt discusses 'dynamics of tuberculosis transmission' and 'how disease may spread in a population,' indicating person-to-person transmission via contact.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infected->Recovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The rate at which individuals actively infected with tuberculosis recover from the disease, either spontaneously or due to successful treatment, and are no longer infectious.",
+        "reasoning": "Recovery is a fundamental process in the natural history of tuberculosis, whether spontaneous or through treatment, and is essential for reducing disease prevalence.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Recovered->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Loss of immunity or",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "ContactFlow",
+        "description": "Susceptible individuals acquire Mycobacterium tuberculosis infection through contact with infectious individuals.",
+        "reasoning": "The excerpt discusses 'tuberculosis transmission' and 'how disease may spread in a population,' which implies person-to-person contact as the mechanism for new infections.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Infected->Recovered",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "The process by which individuals with active tuberculosis infection successfully clear the infection and transition to a recovered state, often due to effective treatment.",
+        "reasoning": "Recovery from active tuberculosis infection is a common and critical outcome, typically achieved through medical treatment, and must be included to accurately model disease dynamics and the impact of interventions.",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Recovered->Infected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "inference",
+      "suggestion": {
+        "flow_type": "RateFlow",
+        "description": "Individuals who have recovered",
+        "reasoning": "",
+        "source": "llm_inference",
+        "confidence": "LOW",
+        "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM."
+      }
+    }
+  ]
 }

@@ -42,10 +42,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 53.3% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 57.5% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **36.0/100** | — |
+| **→ Composite** | **47.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -66,17 +66,27 @@
 ### chollerae bacterial concentration (missing_compartments)
 - **Source:** inference
 - **Primary name:** Environmental Bacteria
+- **Reasoning:** Chol
+
+### Infectious->Chollerae bacterial concentration (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infected individuals
+
+### chollerae bacterial concentration (missing_compartments)
+- **Source:** inference
+- **Primary name:** Environmental Bacteria
 - **Reasoning:** Cholera
 
 ### Infectious->Chollerae bacterial concentration (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Infectious individuals ex
+- **Description:** Infectious individuals
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
-- Gold count: **4** | Candidate: **5**
-- Precision **0.6** | Recall **0.75** | F1 **0.6667**
+- Gold count: **4** | Candidate: **4**
+- Precision **0.75** | Recall **0.75** | F1 **0.75**
 ### Flows
 - Gold count: **3** | Candidate: **7**
 - Precision **0.2857** | Recall **0.6667** | F1 **0.4**

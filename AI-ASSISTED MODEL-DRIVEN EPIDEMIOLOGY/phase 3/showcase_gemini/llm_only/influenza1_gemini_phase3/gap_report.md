@@ -42,10 +42,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
-| **Reference agreement** | 83.9% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 94.4% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **45.2/100** | — |
+| **→ Composite** | **58.3/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -66,13 +66,18 @@
 ### Infectious->Removed (missing_flows)
 - **Source:** inference
 - **Flow type:** RateFlow
-- **Description:** Infectious individuals either recover from the disease, potentially gaining immunity, or die due to the disease, thus being removed from the pool of infectious individuals.
-- **Reasoning:** The transition from Infectious to Removed (recovery or death) is an intrinsic process for an infected individual, occurring at a specific rate per individual, independent of contact with others.
+- **Description:** Individuals who are infectious either recover from influenza or die due to the disease, thereby being removed from the infectious compartment.
+- **Reasoning:** The transition from Infectious to Removed is an intrinsic process for an infected individual (recovery or death), typically modeled as a per-capita rate rather than through contact-dependent interactions.
+
+### Infectious->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infectious individuals either recover from the disease and become immune, or die due to the disease, thus being removed from the infectious population.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **4** | Candidate: **6**
-- Precision **0.8333** | Recall **0.75** | F1 **0.7895**
+- Precision **1.0** | Recall **1.0** | F1 **1.0**
 ### Flows
 - Gold count: **5** | Candidate: **4**
 - Precision **1.0** | Recall **0.8** | F1 **0.8889**

@@ -47,10 +47,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 100.0% | 30% |
-| **Reference agreement** | 65.1% | 30% |
+| **Reference agreement** | 84.0% | 30% |
 | **Fill traceability** | 100.0% | 20% |
-| **Parameter accuracy** | 80.0% | 20% |
-| **→ Composite** | **85.5/100** | — |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **75.2/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -70,51 +70,55 @@
 
 ### hospitalizationrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.2 
-- **From papers:** p1_model_influenza, p1_model_cholera, p1_model_ebola
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639
 
 ### recoveryrate (missing_parameters)
 - **Source:** rag
-- **Value:** 0.14 
-- **Description:** Recovery from infectious state
-- **From papers:** p1_model_measles, p1_model_cholera, p1_model_dengue
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### deathratecommunity (missing_parameters)
 - **Source:** rag
-- **Value:** 0.15 
-- **From papers:** p2_zika3_llm_openai_20260407_213203, p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_gemini_20260407_211201
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_zika3_llm_claude_20260407_215851, p2_zika3_llm_gemini_20260407_211201, p2_cholera3_llm_claude_20260407_213639
 
 ### recoveryratehospital (missing_parameters)
 - **Source:** rag
-- **Value:** 0.1 
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_ebola
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ### deathratehospital (missing_parameters)
 - **Source:** rag
-- **Value:** 0.1 
-- **From papers:** p1_model_covid, p1_model_cholera, p1_model_ebola
+- **Value:** 10000 persons
+- **Description:** Total human population size (constant)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
 
 ## 6. Fill validation (vs gold standard)
 - Parameters compared: **5**
-- Exact match (<1% error): **4**
+- Exact match (<1% error): **0**
 - Close (<10% error): **0**
-- Approximate (<50% error): **1**
-- Poor (>50% error): **0**
-- **Accuracy (exact+close)**: **80.0%**
-- Median relative error: **0.0%**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **5**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **6666566.67%**
 
 | Parameter | Filled | Gold | Error % | Quality |
 |-----------|--------|------|---------|---------|
-| hospitalizationrate | 0.2 | 0.2 | 0.0% | exact |
-| recoveryrate | 0.14 | 0.1 | 40.0% | approximate |
-| deathratecommunity | 0.15 | 0.15 | 0.0% | exact |
-| recoveryratehospital | 0.1 | 0.1 | 0.0% | exact |
-| deathratehospital | 0.1 | 0.1 | 0.0% | exact |
+| hospitalizationrate | 10000.0 | 0.2 | 4999900.0% | poor |
+| recoveryrate | 0.5 | 0.1 | 400.0% | poor |
+| deathratecommunity | 10000.0 | 0.15 | 6666566.67% | poor |
+| recoveryratehospital | 10000.0 | 0.1 | 9999900.0% | poor |
+| deathratehospital | 10000.0 | 0.1 | 9999900.0% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **8**
-- Precision **0.625** | Recall **0.8333** | F1 **0.7143**
+- Precision **0.75** | Recall **1.0** | F1 **0.8571**
 ### Flows
 - Gold count: **7** | Candidate: **10**
-- Precision **0.5** | Recall **0.7143** | F1 **0.5882**
+- Precision **0.7** | Recall **1.0** | F1 **0.8235**

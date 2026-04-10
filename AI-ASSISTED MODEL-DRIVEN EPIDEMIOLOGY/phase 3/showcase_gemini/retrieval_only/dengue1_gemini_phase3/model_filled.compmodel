@@ -10,8 +10,8 @@
   <parameters name="β_h(a)" expression="18" type="CONSTANT" description="The age-specific transmission rate from infected mosquitoes to susceptible hosts" unit="per unit time" />
   <parameters name="ρ" expression="0.5" type="CONSTANT" description="The probability of exposed hosts transferring to symptomatic infectious hosts" unit="dimensionless" />
   <parameters name="σ" expression="0.007" type="CONSTANT" description="The factor characterizing the intensity of reinfection of asymptomatic infectious hosts" unit="dimensionless" />
-  <parameters name="γ1" expression="0.5" type="CONSTANT" unit="1/time" description="Recovery rate of symptomatic infectious hosts (paper: γ1a)" />
-  <parameters name="γ2" expression="0.5" type="CONSTANT" unit="1/time" description="Recovery rate of asymptomatic infectious hosts (paper: γ2a)" />
+  <parameters name="γ1" expression="1" type="CONSTANT" unit="1/day" description="Recovery rate for infectious class (range 1/4 to 1)" />
+  <parameters name="γ2" expression="1" type="CONSTANT" unit="1/day" description="Recovery rate for hospitalized class (range 1/4 to 1)" />
   <compartments PrimaryName="Susceptible Humans" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Susceptible humans become exposed through bites by infectious mosquitoes at rate β_h(a)I_v/N_h" />
     <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Natural death of susceptible humans at rate μ_h" />
@@ -35,8 +35,5 @@
   </compartments>
   <compartments PrimaryName="Infectious Mosquitoes" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRateParameter="//@parameters.0" target="//@compartments.5" description="Susceptible mosquitoes become infectious by biting symptomatic or asymptomatic humans at rate (1-I_v)∫β_v(a)P_∞(a)(i_h(a,t)+σz_h(a,t))da/N_h" />
-  </compartments>
-  <compartments PrimaryName="susceptible mosquitoes">
-    <outgoingFlows target="//@compartments.5" />
   </compartments>
 </ns0:CompartmentalModel>

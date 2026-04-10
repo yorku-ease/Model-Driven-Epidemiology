@@ -230,14 +230,30 @@ def evaluate_filled_gaps(
     return {"evaluations": evaluations, "summary": summary}
 
 
+SYNONYMS = [
+    ("exposed", "latent", "incubating"),
+    ("infectious", "infected", "symptomatic", "infective"),
+    ("recovered", "removed", "immune"),
+    ("dead", "deceased", "death"),
+    ("susceptible",),
+    ("vector", "mosquito"),
+]
+
+
 def _fuzzy_match(a: str, b: str) -> bool:
-    """Loose name match (same normalization as gap_detector)."""
+    """Loose name match: substring OR synonym group (same logic as external fuzzy evaluator)."""
     na = _normalize(a)
     nb = _normalize(b)
     if not na or not nb:
         return False
     if na == nb or na in nb or nb in na:
         return True
+    # Word-level synonym check (handles multi-word names like "Infectious Humans")
+    a_words = set(re.split(r"[^a-z]+", a.lower())) - {""}
+    b_words = set(re.split(r"[^a-z]+", b.lower())) - {""}
+    for grp in SYNONYMS:
+        if any(w in grp for w in a_words) and any(w in grp for w in b_words):
+            return True
     return False
 
 
@@ -383,9 +399,19 @@ def compute_completeness_score(
     ref_agreement = (c_recall + p_recall + f_recall) / 3 * 100 if any([c_recall, p_recall, f_recall]) else (c_f1 + f_f1) / 2 * 100
 
     # ── Fill traceability ─────────────────────────────────────────────────
+    # Scoring:
+    #   spec_entity = 1.0  (came directly from extracted paper text)
+    #   rag         = 1.0  (found in corpus index; reference-backed)
+    #   inference   = 0.5  (LLM conditioned on paper context — partial credit)
+    #   flagged     = 0.0  (not filled)
     fills = filled_result.get("filled_gaps", [])
     total_fills = len(fills)
-    traceable = sum(1 for f in fills if f.get("source") in ("rag", "spec_entity"))
+    traceable = sum(
+        1.0 if f.get("source") in ("rag", "spec_entity") else
+        0.5 if f.get("source") == "inference" else
+        0.0
+        for f in fills
+    )
     traceability = (traceable / total_fills * 100) if total_fills > 0 else 100.0
 
     # ── Parameter accuracy ────────────────────────────────────────────────

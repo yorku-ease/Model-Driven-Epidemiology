@@ -50,10 +50,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 88.9% | 30% |
-| **Reference agreement** | 89.0% | 30% |
-| **Fill traceability** | 0.0% | 20% |
+| **Reference agreement** | 83.8% | 30% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **73.4/100** | — |
+| **→ Composite** | **81.8/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -71,15 +71,64 @@
 - Filled via **inference**: 10
 - **Flagged** for manual review: 0
 
+### treated with art (missing_compartments)
+- **Source:** inference
+- **Primary name:** Treated with ART
+- **Reasoning:** The excerpt highlights antiretroviral therapy (ART) as the best option for viral suppression and reduction of mortality, indicating a distinct health state for treated individuals that would impact disease progression and transmission dynamics.
+
 ### recruitmentsource (missing_compartments)
 - **Source:** inference
-- **Primary name:** RecruitmentSource
-- **Reasoning:** The
+- **Primary name:** Susceptible
+- **Reasoning:** For
+
+### Untreated infected homosexual men->Treated with ART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The rate at which untreated HIV-infected homosexual men initiate antiretroviral therapy (ART).
+- **Reasoning:** The transition from 'Untreated infected homosexual men' to 'Treated with ART' represents individuals starting a medical intervention (ART), which is typically modeled as a rate of treatment initiation rather than a contact-based transmission.
+
+### Untreated infected homosexual men->People living with AIDS (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of untreated HIV infection to AIDS.
+- **Reasoning:** Untreated individuals with HIV will naturally progress to AIDS over time due to the unchecked replication of the virus, as implied by the benefits of antiretroviral therapy in reducing AIDS-associated morbidity and mortality.
+
+### Untreated infected women->Treated with ART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Untreated HIV-infected women initiating antiretroviral therapy (ART).
+- **Reasoning:** The excerpt describes ART as a treatment for HIV, indicating that infected individuals can transition from an untreated state to a treated state over time.
+
+### Untreated infected women->People living with AIDS (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression
+
+### Untreated infected heterosexual men->Treated with ART (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Initiation
+
+### Untreated infected heterosexual men->People living with AIDS (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Progression of untreated HIV infection to AIDS in heterosexual men.
+- **Reasoning:** The excerpt implies that without successful treatment, HIV infection progresses to AIDS, leading to associated morbidity and mortality.
+
+### Treated with ART->People living with AIDS (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals receiving antiretro
+
+### recruitmentsource (missing_compartments)
+- **Source:** inference
+- **Primary name:** Births
+- **Reasoning:** The excerpt
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **9** | Candidate: **10**
-- Precision **0.9** | Recall **1.0** | F1 **0.9474**
+- Precision **0.8** | Recall **0.8889** | F1 **0.8421**
 ### Flows
 - Gold count: **10** | Candidate: **14**
 - Precision **0.7143** | Recall **1.0** | F1 **0.8333**

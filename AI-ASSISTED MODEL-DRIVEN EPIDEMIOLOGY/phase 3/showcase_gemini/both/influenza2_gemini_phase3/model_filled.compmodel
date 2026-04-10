@@ -19,16 +19,16 @@
   <parameters name="Household quarantine external contact reduction" expression="0.75" type="CONSTANT" description="Reduction in external contact rates for quarantined households" unit="dimensionless" />
   <parameters name="Household quarantine internal contact increase" expression="1.0" type="CONSTANT" description="Increase (100%) in within-household contact rates during quarantine" unit="dimensionless" />
   <parameters name="Quarantine duration" expression="14" type="CONSTANT" description="Duration of voluntary household quarantine" unit="days" />
-  <parameters name="clinicaltransmissionrate" expression="0.45" type="CONSTANT" description="Effective transmission rate from clinical infectious cases in the compartmental abstraction of the paper" />
-  <parameters name="subclinicaltransmissionrate" expression="0.22" type="CONSTANT" description="Effective transmission rate from subclinical infectious cases" />
-  <parameters name="clinicalprogressionrate" expression="0.38" type="CONSTANT" description="Latent-to-clinical progression rate, reflecting that roughly 50 percent of infections become clinical cases in the paper" />
-  <parameters name="subclinicalprogressionrate" expression="0.38" type="CONSTANT" description="Latent-to-subclinical progression rate" />
-  <parameters name="treatmentrate" expression="1.0" type="CONSTANT" description="Rapid treatment rate for clinical cases; chosen to reflect same-day to one-day treatment emphasis in the paper" />
-  <parameters name="clinicalrecoveryrate" expression="0.33" type="CONSTANT" description="Recovery rate from untreated clinical infectiousness" />
-  <parameters name="subclinicalrecoveryrate" expression="0.33" type="CONSTANT" description="Recovery rate from subclinical infectiousness" />
-  <parameters name="protectionacquisitionrate" expression="0.02" type="CONSTANT" description="Population movement into temporary protection through prophylaxis or vaccination interventions" />
-  <parameters name="treatedrecoveryrate" expression="0.5" type="CONSTANT" description="Recovery rate from treated clinical infection" />
-  <parameters name="protectionlossrate" expression="0.05" type="CONSTANT" description="Loss of prophylactic or vaccine-induced protection" />
+  <parameters name="clinicaltransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="subclinicaltransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="clinicalprogressionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="subclinicalprogressionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatmentrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="clinicalrecoveryrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="subclinicalrecoveryrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="protectionacquisitionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="treatedrecoveryrate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="protectionlossrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
   <compartments PrimaryName="Susceptible" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.1" target="//@compartments.1" description="Infection through contact in households, schools, workplaces, and the general community" />
     <outgoingFlows target="//@compartments.5" />
@@ -41,7 +41,7 @@
     <outgoingFlows target="//@compartments.4" />
   </compartments>
   <compartments PrimaryName="Recovered" population="0" />
-  <compartments PrimaryName="Treated Clinical" />
+  <compartments PrimaryName="Treated" />
   <compartments PrimaryName="protected">
     <outgoingFlows target="//@compartments.0" />
   </compartments>

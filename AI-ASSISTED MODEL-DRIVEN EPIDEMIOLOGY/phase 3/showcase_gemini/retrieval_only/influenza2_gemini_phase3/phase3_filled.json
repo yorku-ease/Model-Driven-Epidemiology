@@ -2,58 +2,687 @@
   "filled_gaps": [
     {
       "gap": {
+        "expected": "treatedclinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill compartments gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "protected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "rag",
+      "suggestion": {
+        "primary_name": "protected",
+        "evidence_chunks": [
+          {
+            "paper_id": "p2_malaria3_llm_claude_20260407_215058",
+            "disease": "malaria",
+            "chunk_index": 1,
+            "chunk": "fections after other control measures have already reduced transmission. Screening before treatment may be preferred to reduce the number of treatments required and to prevent unnecessary risk of adverse reactions in uninfected individuals. However this would be logistically more demanding and may not have the same impact as an MDA programme. The advantage of using treatments with gametocytocidal and prophylactic effects has been discussed but the difference in impact of mass treatment between different types of antimalarials has not been formally tested. It would also be helpful to know to what extent mass treatment could have a role in elimination as part of a wider control programme, and in what settings this could be achieved. Mathematical models of mass treatment for malaria have examined the influence of transmission intensity and seasonal timing of the intervention\n\nMethods\n\n\n\nTransmission model\n\nWe use a previously described dynamic individual-based stochastic model\n\nHumans are categorized into one of 6 states: susceptible and uninfected S; symptomatic and infectious D; asymptomatic and infectious A; infectious and undetectable by standard microscopy U; treated and infectious T; uninfected and protected by antimalarial prophylaxis P. Newly infected humans develop patent parasitaemia after a time delay representing the liver stage of the parasite. A proportion of those infected develop symptoms and may be successfully treated with an antimalarial, with a subsequent period of protection against new infections of a duration dependent on the half life of the antimalarial. In the absence of treatment or following treatment which does not fully clear parasitaemia, symptomatic individuals progress to asymptomatic infection. Asymptomatic infections in state A progress to the subpatent state U (see below for more detail). We allow for superinfection in those who are infected. Based on parameter fitting we assume that the symptomatic, untreated state D results in the "
+          },
+          {
+            "paper_id": "p2_malaria3_llm_claude_20260407_215058",
+            "disease": "malaria",
+            "chunk_index": 3,
+            "chunk": "g the model to trial data (see below).\n\nInterventions\n\nAs previously described, we assume an MDA programme treats a percentage of individuals in the population regardless of infection status. For simplicity, treatment is assumed to occur in all individuals instantaneously. Those who are uninfected at the time of mass treatment enter the protected state P for a time dependent on the half life of the drug, with a probability dependent on the efficacy of the drug (defined as the probability of full parasite clearance). Infected individuals who are successfully treated by the MDA progress to the treated, infected state T and clear parasites more quickly, and may also enter the protected state after recovery depending on the half life of the drug. An MSAT programme is implemented in the same way in the model except that it is given to individuals selected by screening tests. If PCR is used as the screening tool, those in the infected A, D and U states are treated, while if microscopy is used, only those in the D and A states are treated. The model was previously fitted to detailed data available on the prevalence of microscopy-positive infection versus PCR-positive infection by age, with PCR detection assumed to be the gold-standard method\n\nWe contrast the impact of using antimalarials with different properties for mass treatment: non-gametocytocidal antimalarials such as sulphadoxine-pyrimethamine-amodiaquine (SP-AQ) versus gametocytocidal antimalarials such as combinations containing artemisinin (ACT) or artemisinin and primaquine (PQ); and shortacting antimalarials such as lumefantrine versus long-acting antimalarials such as SP or piperaquine. Sources for parameters describing antimalarial effects are given in Table\n\nAs previously\n\nOutcomes\n\nWe assess the impact of mass treatment over time on both the EIR and prevalence of infection detectable by microscopy of blood slides. We report the cumulative EIR or prevalence reduction which is the sum of the reduction each da"
+          },
+          {
+            "paper_id": "p2_malaria3_llm_gemini_20260407_210100",
+            "disease": "malaria",
+            "chunk_index": 1,
+            "chunk": "fections after other control measures have already reduced transmission. Screening before treatment may be preferred to reduce the number of treatments required and to prevent unnecessary risk of adverse reactions in uninfected individuals. However this would be logistically more demanding and may not have the same impact as an MDA programme. The advantage of using treatments with gametocytocidal and prophylactic effects has been discussed but the difference in impact of mass treatment between different types of antimalarials has not been formally tested. It would also be helpful to know to what extent mass treatment could have a role in elimination as part of a wider control programme, and in what settings this could be achieved. Mathematical models of mass treatment for malaria have examined the influence of transmission intensity and seasonal timing of the intervention\n\nMethods\n\n\n\nTransmission model\n\nWe use a previously described dynamic individual-based stochastic model\n\nHumans are categorized into one of 6 states: susceptible and uninfected S; symptomatic and infectious D; asymptomatic and infectious A; infectious and undetectable by standard microscopy U; treated and infectious T; uninfected and protected by antimalarial prophylaxis P. Newly infected humans develop patent parasitaemia after a time delay representing the liver stage of the parasite. A proportion of those infected develop symptoms and may be successfully treated with an antimalarial, with a subsequent period of protection against new infections of a duration dependent on the half life of the antimalarial. In the absence of treatment or following treatment which does not fully clear parasitaemia, symptomatic individuals progress to asymptomatic infection. Asymptomatic infections in state A progress to the subpatent state U (see below for more detail). We allow for superinfection in those who are infected. Based on parameter fitting we assume that the symptomatic, untreated state D results in the "
+          }
+        ],
+        "note": "Use paper snippets to confirm compartment label and add to model."
+      }
+    },
+    {
+      "gap": {
+        "expected": "clinicaltransmissionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "subclinicaltransmissionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "clinicalprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "subclinicalprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "treatmentrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "clinicalrecoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "subclinicalrecoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "protectionacquisitionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "treatedrecoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.5-1",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Rate of exposure to contaminated water (contact rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "protectionlossrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Protected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousClinical->TreatedClinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
         "expected": "TreatedClinical->Removed",
         "severity": "high",
         "reason": "Present in gold standard but not in extracted model (or flows list)."
       },
       "gap_type": "missing_flows",
-      "source": "rag",
+      "source": "flagged",
       "suggestion": {
-        "signature": "TreatedClinical->Removed",
-        "similar_flows_in_corpus": [
-          {
-            "signature": "TreatedClinical->Removed",
-            "disease": "influenza",
-            "paper_id": "p1_model_influenza",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infectious->Removed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Infected->Removed",
-            "disease": "covid",
-            "paper_id": "p1_model_covid",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "Hospitalized->Removed",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          },
-          {
-            "signature": "InfectiousCommunity->Removed",
-            "disease": "ebola",
-            "paper_id": "p1_model_ebola",
-            "source_phase": "phase1"
-          }
-        ],
-        "chunk_evidence": [],
-        "note": "Analogous flows from indexed models / text; align with gold wiring."
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Protected->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "treatedclinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill compartments gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousClinical->TreatedClinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "TreatedClinical->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
       }
     }
   ],
   "summary": {
-    "rag_count": 16,
+    "rag_count": 11,
     "inference_count": 0,
     "spec_entity_count": 0,
-    "flagged_count": 1,
+    "flagged_count": 8,
     "total_filled": 0,
     "fill_iterations": 2
   },
-  "filled": []
+  "filled": [
+    {
+      "gap": {
+        "expected": "treatedclinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill compartments gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "protected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "rag",
+      "suggestion": {
+        "primary_name": "protected",
+        "evidence_chunks": [
+          {
+            "paper_id": "p2_malaria3_llm_claude_20260407_215058",
+            "disease": "malaria",
+            "chunk_index": 1,
+            "chunk": "fections after other control measures have already reduced transmission. Screening before treatment may be preferred to reduce the number of treatments required and to prevent unnecessary risk of adverse reactions in uninfected individuals. However this would be logistically more demanding and may not have the same impact as an MDA programme. The advantage of using treatments with gametocytocidal and prophylactic effects has been discussed but the difference in impact of mass treatment between different types of antimalarials has not been formally tested. It would also be helpful to know to what extent mass treatment could have a role in elimination as part of a wider control programme, and in what settings this could be achieved. Mathematical models of mass treatment for malaria have examined the influence of transmission intensity and seasonal timing of the intervention\n\nMethods\n\n\n\nTransmission model\n\nWe use a previously described dynamic individual-based stochastic model\n\nHumans are categorized into one of 6 states: susceptible and uninfected S; symptomatic and infectious D; asymptomatic and infectious A; infectious and undetectable by standard microscopy U; treated and infectious T; uninfected and protected by antimalarial prophylaxis P. Newly infected humans develop patent parasitaemia after a time delay representing the liver stage of the parasite. A proportion of those infected develop symptoms and may be successfully treated with an antimalarial, with a subsequent period of protection against new infections of a duration dependent on the half life of the antimalarial. In the absence of treatment or following treatment which does not fully clear parasitaemia, symptomatic individuals progress to asymptomatic infection. Asymptomatic infections in state A progress to the subpatent state U (see below for more detail). We allow for superinfection in those who are infected. Based on parameter fitting we assume that the symptomatic, untreated state D results in the "
+          },
+          {
+            "paper_id": "p2_malaria3_llm_claude_20260407_215058",
+            "disease": "malaria",
+            "chunk_index": 3,
+            "chunk": "g the model to trial data (see below).\n\nInterventions\n\nAs previously described, we assume an MDA programme treats a percentage of individuals in the population regardless of infection status. For simplicity, treatment is assumed to occur in all individuals instantaneously. Those who are uninfected at the time of mass treatment enter the protected state P for a time dependent on the half life of the drug, with a probability dependent on the efficacy of the drug (defined as the probability of full parasite clearance). Infected individuals who are successfully treated by the MDA progress to the treated, infected state T and clear parasites more quickly, and may also enter the protected state after recovery depending on the half life of the drug. An MSAT programme is implemented in the same way in the model except that it is given to individuals selected by screening tests. If PCR is used as the screening tool, those in the infected A, D and U states are treated, while if microscopy is used, only those in the D and A states are treated. The model was previously fitted to detailed data available on the prevalence of microscopy-positive infection versus PCR-positive infection by age, with PCR detection assumed to be the gold-standard method\n\nWe contrast the impact of using antimalarials with different properties for mass treatment: non-gametocytocidal antimalarials such as sulphadoxine-pyrimethamine-amodiaquine (SP-AQ) versus gametocytocidal antimalarials such as combinations containing artemisinin (ACT) or artemisinin and primaquine (PQ); and shortacting antimalarials such as lumefantrine versus long-acting antimalarials such as SP or piperaquine. Sources for parameters describing antimalarial effects are given in Table\n\nAs previously\n\nOutcomes\n\nWe assess the impact of mass treatment over time on both the EIR and prevalence of infection detectable by microscopy of blood slides. We report the cumulative EIR or prevalence reduction which is the sum of the reduction each da"
+          },
+          {
+            "paper_id": "p2_malaria3_llm_gemini_20260407_210100",
+            "disease": "malaria",
+            "chunk_index": 1,
+            "chunk": "fections after other control measures have already reduced transmission. Screening before treatment may be preferred to reduce the number of treatments required and to prevent unnecessary risk of adverse reactions in uninfected individuals. However this would be logistically more demanding and may not have the same impact as an MDA programme. The advantage of using treatments with gametocytocidal and prophylactic effects has been discussed but the difference in impact of mass treatment between different types of antimalarials has not been formally tested. It would also be helpful to know to what extent mass treatment could have a role in elimination as part of a wider control programme, and in what settings this could be achieved. Mathematical models of mass treatment for malaria have examined the influence of transmission intensity and seasonal timing of the intervention\n\nMethods\n\n\n\nTransmission model\n\nWe use a previously described dynamic individual-based stochastic model\n\nHumans are categorized into one of 6 states: susceptible and uninfected S; symptomatic and infectious D; asymptomatic and infectious A; infectious and undetectable by standard microscopy U; treated and infectious T; uninfected and protected by antimalarial prophylaxis P. Newly infected humans develop patent parasitaemia after a time delay representing the liver stage of the parasite. A proportion of those infected develop symptoms and may be successfully treated with an antimalarial, with a subsequent period of protection against new infections of a duration dependent on the half life of the antimalarial. In the absence of treatment or following treatment which does not fully clear parasitaemia, symptomatic individuals progress to asymptomatic infection. Asymptomatic infections in state A progress to the subpatent state U (see below for more detail). We allow for superinfection in those who are infected. Based on parameter fitting we assume that the symptomatic, untreated state D results in the "
+          }
+        ],
+        "note": "Use paper snippets to confirm compartment label and add to model."
+      }
+    },
+    {
+      "gap": {
+        "expected": "clinicaltransmissionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "subclinicaltransmissionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "clinicalprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "subclinicalprogressionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "treatmentrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "clinicalrecoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "subclinicalrecoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "protectionacquisitionrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "treatedrecoveryrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.5-1",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Rate of exposure to contaminated water (contact rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "protectionlossrate",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_parameters",
+      "source": "rag",
+      "suggestion": {
+        "value": "0.0001-0.001",
+        "unit": "day^-1",
+        "source": "parameter_index",
+        "paper_id": "p2_cholera3_llm_claude_20260407_213639",
+        "description": "Human birth and death rate (susceptible renewal rate)",
+        "sources": [
+          "p2_cholera3_llm_claude_20260407_213639",
+          "p2_cholera3_llm_gemini_20260407_204240"
+        ]
+      }
+    },
+    {
+      "gap": {
+        "expected": "Susceptible->Protected",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousClinical->TreatedClinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "TreatedClinical->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "Protected->Susceptible",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "treatedclinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model."
+      },
+      "gap_type": "missing_compartments",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill compartments gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "InfectiousClinical->TreatedClinical",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    },
+    {
+      "gap": {
+        "expected": "TreatedClinical->Removed",
+        "severity": "high",
+        "reason": "Present in gold standard but not in extracted model (or flows list)."
+      },
+      "gap_type": "missing_flows",
+      "source": "flagged",
+      "suggestion": {
+        "action": "manual_review",
+        "reason": "Could not fill flows gap automatically."
+      }
+    }
+  ]
 }

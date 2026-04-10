@@ -1,25 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
 <ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
   <parameters name="R_t" expression="0.0" type="CONSTANT" description="Time-varying reproduction number, modelled as a piecewise constant function that changes when an intervention occurs." unit="dimensionless" />
-  <parameters name="Initial R_t" expression="3.8" type="CONSTANT" description="Average initial reproduction number estimated across the 11 countries before interventions" unit="dimensionless" />
+  <parameters name="Initial R_t" expression="3.8" type="CONSTANT" description="Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4–5.6)." unit="dimensionless" />
   <parameters name="Serial Interval Distribution" expression="0.0" type="CONSTANT" description="Distribution of the time between successive cases in a chain of transmission. Used to approximate the generation time distribution." unit="days" />
   <parameters name="Infection Fatality Ratio" expression="0.0" type="CONSTANT" description="Population-averaged infection fatality ratio, adjusted for the age structure and contact patterns of each country. Based on previous work." unit="dimensionless" />
   <parameters name="Infection-to-death distribution" expression="0.0" type="CONSTANT" description="Time lag distribution from infection to death, derived from assumptions about infection-to-symptom and symptom-to-death distributions." unit="days" />
-  <parameters name="Lockdown effect" expression="0.19" type="CONSTANT" description="Approximate remaining transmission multiplier under lockdown, corresponding to about 81 percent reduction in Rt reported in the paper" unit="dimensionless" />
-  <parameters name="population11countries" expression="741000000" type="CONSTANT" unit="persons" description="Approximate combined population of the 11 European countries analysed in the paper" />
-  <parameters name="generationintervaldays" expression="6.5" type="CONSTANT" unit="days" description="Representative generation interval placeholder retained for semantic fidelity to the renewal-process model" />
-  <parameters name="publiceventsbaneffect" expression="1.0" type="CONSTANT" unit="dimensionless" description="Relative multiplier for public-events-ban effect on transmission; paper found non-lockdown intervention effects hard to identify separately" />
-  <parameters name="schoolclosureeffect" expression="1.0" type="CONSTANT" unit="dimensionless" description="Relative multiplier for school-closure effect on transmission" />
-  <parameters name="selfisolationeffect" expression="1.0" type="CONSTANT" unit="dimensionless" description="Relative multiplier for case-based self-isolation effect on transmission" />
-  <parameters name="socialdistancingeffect" expression="1.0" type="CONSTANT" unit="dimensionless" description="Relative multiplier for encouraged social distancing effect on transmission" />
-  <parameters name="meanoutcomedelaydays" expression="18" type="CONSTANT" unit="days" description="Representative delay scale retained to approximate progression from infection to outcome in a simple compartmental form" />
-  <parameters name="removalrate" expression="1" type="CONSTANT" unit="1/day" description="Approximate non-fatal resolution rate from infected to removed" />
-  <parameters name="deathrate" expression="0.005" type="CONSTANT" unit="1/day" description="Small fatal transition rate used only to preserve explicit death outcome structure in this approximation; the paper infers deaths from convolution with infection-to-death distribution rather than direct compartmental death flow" />
+  <parameters name="Lockdown effect" expression="81" type="CONSTANT" description="Estimated relative reduction in Rt due to lockdown intervention (95% CI: 75–87%)" unit="percent reduction in Rt" />
+  <parameters name="population11countries" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="generationintervaldays" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="basetransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="publiceventsbaneffect" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="schoolclosureeffect" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
+  <parameters name="selfisolationeffect" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="socialdistancingeffect" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="combinedinterventionmultiplier" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="effectivetransmissionrate" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="meanoutcomedelaydays" expression="0.0001" type="CONSTANT" unit="day^-1" description="Human birth and death rate (susceptible renewal rate)" />
+  <parameters name="removalrate" expression="0.5" type="CONSTANT" unit="day^-1" description="Rate of exposure to contaminated water (contact rate)" />
+  <parameters name="deathrate" expression="10000" type="CONSTANT" unit="persons" description="Total human population size (constant)" />
   <compartments PrimaryName="Infectious" population="0">
     <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.0" contactRateParameter="//@parameters.0" target="//@compartments.0" description="Generation of new infections from existing infectious individuals. The number of new infections is modelled as the product of the time-varying reproduction number (R_t) with a discrete convolution of the previous infections, weighted by the serial interval distribution." />
   </compartments>
   <compartments PrimaryName="Dead" population="0" />
   <compartments PrimaryName="susceptible" />
-  <compartments PrimaryName="Undetected" />
-  <compartments PrimaryName="Deaths" />
+  <compartments PrimaryName="Recovered" />
 </ns0:CompartmentalModel>

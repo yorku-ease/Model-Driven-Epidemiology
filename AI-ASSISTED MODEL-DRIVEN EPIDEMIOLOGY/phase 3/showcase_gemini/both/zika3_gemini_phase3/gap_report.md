@@ -54,9 +54,9 @@
 |-----------|-------|--------|
 | **Gap reduction** | 0.0% | 30% |
 | **Reference agreement** | 88.5% | 30% |
-| **Fill traceability** | 41.7% | 20% |
+| **Fill traceability** | 50.0% | 20% |
 | **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **54.9/100** | — |
+| **→ Composite** | **56.5/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -69,14 +69,15 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 7 | 8 | 8 | 23 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 10
+- Filled via **RAG**: 0
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 14
+- Filled via **inference**: 24
 - **Flagged** for manual review: 0
 
 ### susceptiblehumans (missing_compartments)
 - **Source:** inference
 - **Primary name:** Susceptible Humans
+- **Reasoning:** The
 
 ### exposedhumans (missing_compartments)
 - **Source:** inference
@@ -89,8 +90,7 @@
 
 ### recoveredhumans (missing_compartments)
 - **Source:** inference
-- **Primary name:** Recovered
-- **Reasoning:** The excerpt
+- **Primary name:** Recovered Humans
 
 ### susceptiblemosquitoes (missing_compartments)
 - **Source:** inference
@@ -103,32 +103,93 @@
 ### infectiousmosquitoes (missing_compartments)
 - **Source:** inference
 - **Primary name:** Infectious Mosquitoes
-- **Reasoning:** The excerpt explicitly states ZIKV transmission is predominantly vector-borne, necessitating a compartment for the infectious vector in a compartmental model.
+- **Reasoning:** The paper explicitly states ZIKV transmission is predominantly vector
 
 ### SusceptibleHumans->ExposedHumans (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible humans become exposed to ZIKV through contact with infectious vectors or other infected humans.
+- **Reasoning:** The paper states ZIKV transmission is predominantly vector-borne and can also occur via sexual contact, both indicating contact
 
 ### ExposedHumans->InfectiousHumans (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The rate at which exposed
 
 ### InfectiousHumans->RecoveredHumans (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infectious humans
 
 ### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible
 
 ### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Exposed mosquitoes become infectious after completing the extrinsic incubation period.
+- **Reasoning:** Mosquitoes infected with ZIKV undergo an extrinsic incubation period before they can transmit the virus, making this a time-dependent progression within the vector population.
+
+### susceptiblehumans (missing_compartments)
+- **Source:** inference
+- **Primary name:** Susceptible Humans
+
+### exposedhumans (missing_compartments)
+- **Source:** inference
+- **Primary name:** Exposed Humans
+
+### infectioushumans (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Humans
+
+### recoveredhumans (missing_compartments)
+- **Source:** inference
+- **Primary name:** Recovered Humans
+- **Reasoning:** The
+
+### susceptiblemosquitoes (missing_compartments)
+- **Source:** inference
+- **Primary name:** Susceptible Mosquitoes
+- **Reasoning:** The excerpt states ZIKV transmission is predominantly vector-borne, necessitating a mosquito compartment, and a susceptible state is fundamental for any population
+
+### exposedmosquitoes (missing_compartments)
+- **Source:** inference
+- **Primary name:** Exposed Mosquitoes
+
+### infectiousmosquitoes (missing_compartments)
+- **Source:** inference
+- **Primary name:** Infectious Mosquitoes
+- **Reasoning:** The excerpt explicitly states ZIKV transmission is predominantly vector-
+
+### SusceptibleHumans->ExposedHumans (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible
+
+### ExposedHumans->InfectiousHumans (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** The progression of an exposed human completing their latent period and becoming infectious.
+- **Reasoning:** This transition represents the natural biological progression of ZIKV infection within an individual, moving from a state of being infected but not yet able to transmit, to a state where they can transmit the virus.
+
+### InfectiousHumans->RecoveredHumans (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Infectious humans recover from zika3 infection, becoming immune and no longer capable of transmitting the
+
+### SusceptibleMosquitoes->ExposedMosquitoes (missing_flows)
+- **Source:** inference
+- **Flow type:** ContactFlow
+- **Description:** Susceptible mosquitoes become exposed to the zika3 virus after biting an infectious human or another infectious mosquito.
+- **Reasoning:** The paper states 'Transmission of ZIKV is predominantly vector-borne,' indicating that mosquitoes acquire the infection through contact with an infectious source, which is characteristic of a contact-driven transition to an exposed state.
+
+### ExposedMosquitoes->InfectiousMosquitoes (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Mosquitoes completing their extrinsic incubation period and becoming infectious.
+- **Reasoning:** The transition from exposed to infectious in a mosquito is an internal biological process governed by the extrinsic incubation period, occurring at a specific rate rather than through contact.
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments

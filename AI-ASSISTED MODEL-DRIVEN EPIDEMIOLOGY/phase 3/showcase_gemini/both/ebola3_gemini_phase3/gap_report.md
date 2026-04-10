@@ -47,10 +47,10 @@
 | Component | Score | Weight |
 |-----------|-------|--------|
 | **Gap reduction** | 50.0% | 30% |
-| **Reference agreement** | 70.4% | 30% |
-| **Fill traceability** | 100.0% | 20% |
-| **Parameter accuracy** | 100.0% | 20% |
-| **→ Composite** | **76.1/100** | — |
+| **Reference agreement** | 78.8% | 30% |
+| **Fill traceability** | 55.6% | 20% |
+| **Parameter accuracy** | 0.0% | 20% |
+| **→ Composite** | **49.7/100** | — |
 
 ## 2b. Three-layer gap analysis
 
@@ -63,30 +63,76 @@
 | **Extra in model** | Model items not in reference (noise/convention) | 1 | 16 | 2 | 19 |
 
 ## 5. Gap filling results
-- Filled via **RAG**: 9
+- Filled via **RAG**: 1
 - Filled via **paper entities (spec)**: 0
-- Filled via **inference**: 0
+- Filled via **inference**: 8
 - **Flagged** for manual review: 0
 
-### InfectiousCommunity->Removed (missing_flows)
+### burialrate (missing_parameters)
 - **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Value:** 0.5-1 day^-1
+- **Description:** Rate of exposure to contaminated water (contact rate)
+- **From papers:** p2_cholera3_llm_claude_20260407_213639, p2_cholera3_llm_gemini_20260407_204240
+
+### InfectiousCommunity->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in the
+
+### InfectiousCommunity->FuneralInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** An infectious individual in the community dies and their remains become a source of infection during traditional burial ceremonies.
+- **Reasoning:** The model explicitly subdivides infectious phases to account for transmission 'after death during traditional burial,' implying a transition from a living infectious state to a deceased infectious state relevant to funerals.
+
+### Hospitalized->FuneralInfectious (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who die while hospitalized
 
 ### Hospitalized->Removed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Hospitalized individuals either recover from Ebola or die due to the infection, transitioning them out of the infectious and hospitalized state.
+- **Reasoning:** This flow is necessary to account for the natural progression of disease for hospitalized patients, leading to either recovery or death, which are the ultimate outcomes for individuals in a disease model's 'Removed' compartment.
 
 ### FuneralInfectious->Removed (missing_flows)
-- **Source:** rag
-- **Similar flows in corpus:** 5 match(es)
-- *Analogous flows from indexed models / text; align with gold wiring.*
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Deceased individuals
+
+### InfectiousCommunity->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals in the infectious
+
+### Hospitalized->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Hospitalized individuals either recover
+
+### FuneralInfectious->Removed (missing_flows)
+- **Source:** inference
+- **Flow type:** RateFlow
+- **Description:** Individuals who
+
+## 6. Fill validation (vs gold standard)
+- Parameters compared: **1**
+- Exact match (<1% error): **0**
+- Close (<10% error): **0**
+- Approximate (<50% error): **0**
+- Poor (>50% error): **1**
+- **Accuracy (exact+close)**: **0.0%**
+- Median relative error: **85.71%**
+
+| Parameter | Filled | Gold | Error % | Quality |
+|-----------|--------|------|---------|---------|
+| burialrate | 0.5 | 3.5 | 85.71% | poor |
 
 ## 7. Structural alignment vs gold (compartments & flows)
 ### Compartments
 - Gold count: **6** | Candidate: **6**
-- Precision **0.6667** | Recall **0.8333** | F1 **0.7407**
+- Precision **0.8333** | Recall **1.0** | F1 **0.9091**
 ### Flows
 - Gold count: **8** | Candidate: **7**
 - Precision **0.7143** | Recall **0.625** | F1 **0.6667**
