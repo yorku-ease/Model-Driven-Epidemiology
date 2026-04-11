@@ -199,27 +199,7 @@ def run_pipeline_for_llm(
     print(f"  Items with evidence: {metrics.get('items_with_evidence', 0)}")
     print(f"  Coverage: {metrics.get('coverage_percentage', 0):.1f}%")
 
-    print("\nSteps 6-7: Skipping gap analysis & gap filler...")
-    gaps = {
-        "missing_compartments": [],
-        "missing_parameters": [],
-        "missing_stratifications": [],
-        "missing_interventions": [],
-        "summary": {
-            "total_gaps": 0,
-            "critical_gaps": 0,
-            "high_gaps": 0,
-            "medium_gaps": 0,
-        },
-    }
-    gap_suggestions = {"gaps": [], "summary": {"total_gaps": 0, "total_suggestions": 0}}
-    with open(output_dir / "phase2_gap_report.json", "w") as f:
-        json.dump(gaps, f, indent=2)
-    with open(output_dir / "gap_fill_suggestions.json", "w") as f:
-        json.dump(gap_suggestions, f, indent=2)
-    print("  Saved empty gap reports")
-
-    print("\nStep 8: Running Quality Checks...")
+    print("\nStep 6: Running Quality Checks...")
     quality_checker = QualityChecker(phase1_dir=args.phase1_dir)
     quality_results = quality_checker.check_model_quality(
         str(output_dir / "model_draft.compmodel"), disease_name.title()
@@ -233,7 +213,7 @@ def run_pipeline_for_llm(
     print(f"  Uncertainty analysis: {status.get('uncertainty_analysis', 'unknown')}")
     print(f"  Sensitivity analysis: {status.get('sensitivity_analysis', 'unknown')}")
 
-    print("\nStep 9: Evaluating Extraction Quality (Recall Only)...")
+    print("\nStep 7: Evaluating Extraction Quality (Recall Only)...")
     comparator = RecallComparator(threshold=args.eval_threshold)
 
     baseline_path = find_baseline_model(args.baseline_models_dir, disease_name)

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-Re-run Phase 2 Step 9 (evaluation) only from saved artifacts — no PDF, no LLM calls.
+Re-run Phase 2 evaluation step only from saved artifacts — no PDF, no LLM calls.
 
 Reads from each report folder:
   - extracted_entities.json  (required)
-  - traceability.json          (required)
-  - phase2_gap_report.json     (optional; uses empty gap summary if missing)
+  - traceability.json        (required)
 
 Writes (does not touch the original evaluation_report.json):
   - evaluation_report_rerun.json  (default; see --output)
@@ -37,20 +36,6 @@ PHASE2 = Path(__file__).resolve().parent
 sys.path.insert(0, str(PHASE2))
 
 from src.evaluation.evaluator import Evaluator  # noqa: E402
-
-
-EMPTY_GAPS: Dict[str, Any] = {
-    "missing_compartments": [],
-    "missing_parameters": [],
-    "missing_stratifications": [],
-    "missing_interventions": [],
-    "summary": {
-        "total_gaps": 0,
-        "critical_gaps": 0,
-        "high_gaps": 0,
-        "medium_gaps": 0,
-    },
-}
 
 
 def find_baseline_for_report(
@@ -90,13 +75,6 @@ def run_one(
     with open(tr_path) as f:
         traceability = json.load(f)
 
-    gap_path = report_dir / "phase2_gap_report.json"
-    if gap_path.exists():
-        with open(gap_path) as f:
-            gaps = json.load(f)
-    else:
-        gaps = dict(EMPTY_GAPS)
-
     gold_path = gold_standard_path
     if not gold_path:
         found = find_baseline_for_report(report_dir, baseline_models_dir)
@@ -108,7 +86,7 @@ def run_one(
             print(f"           Use --gold-standard or check --baseline-models-dir ({baseline_models_dir})")
 
     evaluator = Evaluator(gold_standard_path=gold_path, threshold=eval_threshold)
-    evaluation = evaluator.evaluate(entities, traceability, gaps)
+    evaluation = evaluator.evaluate(entities, traceability)
     out_path = report_dir / output_filename
     evaluator.save_evaluation(evaluation, str(out_path))
     print(f"  Wrote {out_path.name} (original evaluation_report.json unchanged)")

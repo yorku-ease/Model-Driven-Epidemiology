@@ -380,7 +380,7 @@ def compute_completeness_score(
       Parameter accuracy          15%     fraction exact+close among compared fills
       Structural integrity        15%     1 − (structural_errors_after / max(errors_before,1))
 
-    The structural integrity component is new (Phase RLM-inspired): it measures how
+    The structural integrity component measures how
     many of the model's internal structural errors were resolved by the repair step.
     When structural checks are unavailable, its weight is redistributed to the others.
     """
@@ -420,7 +420,7 @@ def compute_completeness_score(
     close = int(validation_summary.get("close", 0))
     param_accuracy = ((exact + close) / compared * 100) if compared > 0 else 100.0
 
-    # ── Structural integrity (Phase RLM-inspired) ─────────────────────────
+    # ── Structural integrity ───────────────────────────────────────────────
     # Measures the % of structural errors resolved by the repair step.
     # 100 = no structural errors after repair; 0 = all errors remain.
     struct_available = (

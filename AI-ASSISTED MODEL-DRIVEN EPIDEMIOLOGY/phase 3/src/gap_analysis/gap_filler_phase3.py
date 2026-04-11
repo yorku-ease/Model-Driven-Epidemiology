@@ -116,7 +116,7 @@ def fill_gaps(
     if db_path.is_file():
         db_path = db_path.parent
 
-    # Severity ordering (matches Phase RLM's repair priority)
+    # Severity ordering (critical first)
     _SEV_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 
     def _sorted_gaps(gap_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -179,7 +179,7 @@ def fill_gaps(
                     result["suggestion"] = {
                         "signature": str(expected).strip(),
                         "chunk_evidence": ev["chunk_evidence"][:3],
-                        "note": "Text evidence only; structural edit may need Phase RLM.",
+                        "note": "Text evidence only; structural wiring may need manual XML edit.",
                     }
                     filled.append(result)
                     continue

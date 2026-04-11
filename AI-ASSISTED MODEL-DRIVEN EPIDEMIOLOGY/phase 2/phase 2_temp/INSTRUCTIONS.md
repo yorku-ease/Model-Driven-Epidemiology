@@ -1,6 +1,8 @@
-# Phase 2: Step-by-Step Instructions
+# Phase 2: Step-by-Step Instructions (phase 2_temp copy)
 
 Complete guide to running Phase 2 with detailed inputs and outputs for each step.
+
+**Canonical reference:** The maintained CLI and flags for Phase 2 live in **[../INSTRUCTIONS.md](../INSTRUCTIONS.md)**. Read that file first; this copy is for the alternate `phase 2_temp` tree and may lag behind.
 
 ## Quick Start
 

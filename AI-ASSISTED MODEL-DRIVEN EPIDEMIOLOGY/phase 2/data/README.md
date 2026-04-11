@@ -27,30 +27,11 @@ Optional: use **`data/diseases/<disease>/cases/`** for PDF + gold pairs if you p
 
 Legacy (still supported): **`data/<disease>/`** without the `diseases/` wrapper, with or without a per-disease `cases/` folder.
 
-Run Phase 2 on one paper:
-
-```bash
-python run_phase2.py --paper data/diseases/covid/covid2.pdf --llm-provider openai
-```
-
-This picks gold **`data/diseases/covid/covid2.compmodel`** automatically (same stem as the PDF) and writes **`reports/covid2_llm_openai_<timestamp>/`** (report prefix = PDF stem).
+**Running Phase 2** on a path like `data/diseases/covid/covid2.pdf`, migration from flat layouts, and Cholera glob notes: see **[../INSTRUCTIONS.md](../INSTRUCTIONS.md)** (not this README).
 
 ## Gold models
 
 You still **author** each `.compmodel` by hand from the paper’s equations; the pipeline does not generate gold from the PDF. Pairing is **only** by matching filenames (stem match; case-insensitive fallback on disk).
-
-## Migrating from flat `data/papers/*.pdf` + `baseline_models/*.compmodel`
-
-Example for one disease (repeat for each):
-
-```bash
-cd "$(dirname "$0")"   # phase 2/data - adjust path
-mkdir -p diseases/covid
-mv papers/covid.pdf diseases/covid/covid1.pdf
-mv ../baseline_models/covid.compmodel diseases/covid/covid1.compmodel
-```
-
-Add `covid2.pdf` / `covid2.compmodel` in `diseases/covid/` when you have a second paper, and so on.
 
 ## Phase 3
 

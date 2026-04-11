@@ -50,8 +50,6 @@ from src.gap_analysis.gap_detector import (
 from src.gap_analysis.gap_filler_phase3 import fill_gaps
 from src.gap_analysis.model_updater import apply_fills_to_model
 from src.evaluation.guess_evaluator import compute_completeness_score, evaluate_phase3_full
-from src.evaluation.structural_check import check_structural_integrity, structural_errors_as_gaps
-from src.gap_analysis.structural_repairer import repair_structural_errors
 from src.rag.paper_database import load_paper_database
 from src.reporting.gap_report import generate_gap_report
 
@@ -226,7 +224,7 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
     extra_total = threelayer["extra_in_model"]["summary"]["total"]
     print(f"  3-Layer : spec→model={spec_total}  model→gold={gold_total}  extra={extra_total}")
 
-    # 2) Gap filling — iterative loop (max 2 rounds, like Phase RLM's repair loop)
+    # 2) Gap filling — iterative loop (max 2 rounds)
     #    Round 1: full fill (RAG + spec-entity + inference)
     #    Round 2: second pass on remaining gaps (RAG + inference only — spec fills are one-shot)
     MAX_FILL_ITERATIONS = 2
@@ -320,55 +318,6 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
               f"Inference={s.get('inference_count',0)}  Flagged={s.get('flagged_count',0)}"
               f"  (across {MAX_FILL_ITERATIONS} iteration(s))")
 
-    # 2d) Structural integrity check + repair (Phase RLM-inspired)
-    #     Step 1 — Detect structural errors independent of gold standard.
-    #     Step 2 — Apply targeted repairs (parameter wiring, self-referential flows,
-    #              parameter collapse, zero populations, broken flow chains).
-    #     Step 3 — Re-validate to count remaining errors after repair.
-    structural: Dict[str, Any] = {}
-    structural_after: Dict[str, Any] = {}
-    repair_report: Dict[str, Any] = {}
-    repaired_model_path = output_dir / "model_repaired.compmodel"
-
-    if filled_model_path.exists():
-        structural = check_structural_integrity(filled_model_path)
-        if structural.get("available"):
-            n_before = structural.get("total_errors", 0)
-            print(f"  Struct  : {structural.get('summary_text', '')} [before repair]")
-            with open(output_dir / "phase3_structural_before.json", "w", encoding="utf-8") as f:
-                json.dump(structural, f, indent=2)
-
-            # Run structural repair
-            try:
-                repair_report = repair_structural_errors(
-                    filled_model_path,
-                    structural,
-                    repaired_model_path,
-                    llm_provider=provider,
-                    disease_hint=disease,
-                    paper_text=paper_text,
-                    paper_db_path=DB_PATH,
-                )
-                n_fixed = repair_report.get("repairs_applied", 0)
-                print(f"  Repair  : {n_fixed} fix(es) applied → {repaired_model_path.name}")
-
-                # Re-validate after repair
-                if repaired_model_path.exists():
-                    structural_after = check_structural_integrity(repaired_model_path)
-                    n_after = structural_after.get("total_errors", 0)
-                    delta = n_before - n_after
-                    print(f"  Struct  : {structural_after.get('summary_text','')} [after repair]  Δ={delta:+d}")
-                    with open(output_dir / "phase3_structural_after.json", "w", encoding="utf-8") as f:
-                        json.dump(structural_after, f, indent=2)
-
-                with open(output_dir / "phase3_repair_log.json", "w", encoding="utf-8") as f:
-                    json.dump(repair_report, f, indent=2)
-
-            except Exception as e:
-                print(f"  Repair  : error — {e}")
-        else:
-            print(f"  Struct  : {structural.get('note', 'Phase RLM not available')}")
-
     improvement: Optional[Dict[str, Any]] = None
     if gaps_after:
         before_summary = gaps.get("summary", {}) or {}
@@ -448,8 +397,6 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
         filled_result=filled,
         validation_summary=vs,
         threelayer=threelayer,
-        structural_before=structural if structural.get("available") else None,
-        structural_after=structural_after if structural_after.get("available") else None,
     )
     completeness_path = output_dir / "phase3_completeness.json"
     with open(completeness_path, "w", encoding="utf-8") as f:
@@ -477,9 +424,6 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
         improvement=improvement,
         threelayer=threelayer,
         completeness=completeness,
-        structural=structural,
-        structural_after=structural_after,
-        repair_report=repair_report,
     )
     print(f"  Report  : {report_md}")
 

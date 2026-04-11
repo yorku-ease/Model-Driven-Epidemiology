@@ -1,1 +1,1 @@
-"""Analysis modules: Gap analysis, gap filling"""
+"""Analysis modules for Phase 2 (temp evaluator bundle)."""

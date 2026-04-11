@@ -73,9 +73,6 @@ Examples:
     parser.add_argument('--phase1-dir', type=str,
                        default='../phase 1',
                        help='Path to Phase 1 directory (for quality checks)')
-    parser.add_argument('--prior-models-dir', type=str,
-                       default='../phase 1/reports/model_analysis',
-                       help='Directory with Phase 1 model analysis JSONs (for gap filling)')
     parser.add_argument('--gold-standard', type=str,
                        help='Path to gold standard JSON or .compmodel file (for evaluation)')
     parser.add_argument('--baseline-models-dir', type=str,
@@ -301,28 +298,8 @@ Examples:
     print(f"    - Faithfulness: {metrics.get('faithfulness_percentage', 0):.1f}%")
     print()
     
-    # Steps 6-7: Gap Analysis & Gap Filler (skipped – they add context pollution
-    # and extra LLM calls with minimal benefit for model quality)
-    print("Steps 6-7: Skipping gap analysis & gap filler (simplified pipeline)...")
-    gaps = {
-        "missing_compartments": [], "missing_parameters": [],
-        "missing_stratifications": [], "missing_interventions": [],
-        "summary": {"total_gaps": 0, "critical_gaps": 0, "high_gaps": 0, "medium_gaps": 0}
-    }
-    gap_suggestions = {
-        "gaps": [],
-        "summary": {"total_gaps": 0, "total_suggestions": 0, "suggestions_by_source": {}}
-    }
-    # Save empty reports so final-report generator doesn't crash
-    with open(output_dir / "phase2_gap_report.json", 'w') as f:
-        json.dump(gaps, f, indent=2)
-    with open(output_dir / "gap_fill_suggestions.json", 'w') as f:
-        json.dump(gap_suggestions, f, indent=2)
-    print("  ✓ Saved empty gap reports (skipped)")
-    print()
-    
-    # Step 8: Quality Checks
-    print("Step 8: Running Quality Checks (Phase 1 Analyzers)...")
+    # Step 6: Quality Checks
+    print("Step 6: Running Quality Checks (Phase 1 Analyzers)...")
     quality_checker = QualityChecker(phase1_dir=args.phase1_dir)
     
     # Extract model name from paper path
@@ -343,8 +320,8 @@ Examples:
     print(f"    - Sensitivity analysis: {status.get('sensitivity_analysis', 'unknown')}")
     print()
     
-    # Step 9: Evaluation
-    print("Step 9: Evaluating Extraction Quality...")
+    # Step 7: Evaluation
+    print("Step 7: Evaluating Extraction Quality...")
     
     # Auto-detect baseline model if not explicitly provided
     gold_standard_path = args.gold_standard
@@ -384,11 +361,7 @@ Examples:
     
     evaluator = Evaluator(gold_standard_path=gold_standard_path)
     
-    evaluation = evaluator.evaluate(
-        entities,
-        traceability,
-        gaps
-    )
+    evaluation = evaluator.evaluate(entities, traceability)
     
     # Save evaluation
     evaluator.save_evaluation(evaluation, output_dir / "evaluation_report.json")
@@ -398,8 +371,6 @@ Examples:
     print(f"    - Traceability coverage: {trace_cov.get('coverage_percentage', 0):.1f}%")
     faithfulness = evaluation.get('faithfulness', {})
     print(f"    - Faithfulness: {faithfulness.get('faithfulness_percentage', 0):.1f}%")
-    gap_analysis = evaluation.get('gap_analysis', {})
-    print(f"    - Total gaps: {gap_analysis.get('total_gaps', 0)}")
     if evaluation.get('gold_standard_comparison'):
         gs_comp = evaluation['gold_standard_comparison']
         comp_metrics = gs_comp.get('compartments', {})

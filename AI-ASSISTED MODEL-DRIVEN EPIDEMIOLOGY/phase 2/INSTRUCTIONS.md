@@ -137,8 +137,7 @@ python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
     --output reports \
     --llm-provider openai \
-    --phase1-dir "../phase 1" \
-    --prior-models-dir "../phase 1/reports/model_analysis"
+    --phase1-dir "../phase 1"
 ```
 
 **All papers in `data/papers/`:**
@@ -149,8 +148,7 @@ for paper in data/papers/*.pdf; do
       --paper "$paper" \
       --output reports \
       --llm-provider openai \
-      --phase1-dir "../phase 1" \
-      --prior-models-dir "../phase 1/reports/model_analysis"
+      --phase1-dir "../phase 1"
 done
 ```
 
@@ -168,8 +166,7 @@ python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
     --output reports \
     --llm-provider gemini \
-    --phase1-dir "../phase 1" \
-    --prior-models-dir "../phase 1/reports/model_analysis"
+    --phase1-dir "../phase 1"
 ```
 
 **Gemini 2.5 Pro – all papers:**
@@ -182,8 +179,7 @@ for paper in data/papers/*.pdf; do
       --paper "$paper" \
       --output reports \
       --llm-provider gemini \
-      --phase1-dir "../phase 1" \
-      --prior-models-dir "../phase 1/reports/model_analysis"
+      --phase1-dir "../phase 1"
 done
 ```
 
@@ -196,8 +192,7 @@ python3 run_phase2.py \
     --paper data/papers/your_paper.pdf \
     --output reports \
     --llm-provider gemini \
-    --phase1-dir "../phase 1" \
-    --prior-models-dir "../phase 1/reports/model_analysis"
+    --phase1-dir "../phase 1"
 ```
 
 **Gemini 2.5 Flash – all papers:**
@@ -210,8 +205,7 @@ for paper in data/papers/*.pdf; do
       --paper "$paper" \
       --output reports \
       --llm-provider gemini \
-      --phase1-dir "../phase 1" \
-      --prior-models-dir "../phase 1/reports/model_analysis"
+      --phase1-dir "../phase 1"
 done
 ```
 
@@ -519,46 +513,7 @@ Step 5: Creating Traceability Mapping...
 
 ---
 
-### Steps 6–7: Gap Analysis & Gap Filler (**optional**)
-
-**Default behavior:** The main pipeline **does not** run Steps 6–7. It writes **empty** `phase2_gap_report.json` and `gap_fill_suggestions.json` so downstream steps still succeed. This avoids extra LLM calls for gap fill and matches the current production path.
-
-**To run real gap analysis + gap fill:**
-
-```bash
-python run_phase2.py --paper path/to/paper.pdf --enable-gap-steps
-# Optional: point at Phase 1 model-analysis JSONs for “prior model” suggestions
-python run_phase2.py --paper path/to/paper.pdf --enable-gap-steps \
-  --prior-models-dir "../phase 1/reports/model_analysis"
-```
-
-#### Step 6: Gap Analysis (`src/analysis/gap_analyzer.py`)
-
-**Inputs:** In-memory `paper_promises` (Step 2), `extracted_entities` (Step 3), and structure parsed from `model_draft.compmodel`.
-
-**Mechanism:** Compares promised vs extracted compartments, parameters, stratifications, interventions (string / fuzzy overlap). **No LLM.**
-
-**Output:** `phase2_gap_report.json` — lists such as `missing_compartments` with entries like `{"promised": "...", "severity": "...", "reason": "..."}`.
-
-#### Step 7: Gap Filler (`src/analysis/gap_filler.py`)
-
-For each gap, suggestions are assembled from **three channels** (separate outputs in `gap_fill_suggestions.json`):
-
-1. **`paper_span`** — substring search for the promised item in full paper text; attaches a short context window.
-2. **`prior_model`** — scans `*_analysis.json` files under `--prior-models-dir` for name overlap with compartments/parameters (heuristic match). **This is not** a numbered list of “examples” pasted into the next bullet’s LLM prompt.
-3. **`domain_knowledge`** — **only for** `missing_compartments` and `missing_parameters`: one **zero-shot** LLM call per gap with a **JSON-schema / format** prompt (`_use_domain_knowledge`). There are **no** few-shot “example answers” (no COVID vs malaria exemplar block) in that prompt in the current code.
-
-**Implications for research questions:**
-
-- **“How many examples?”** — **Zero** few-shot exemplars in the domain-knowledge LLM prompt. Prior-model hits are **separate** suggestion objects, not in-prompt examples.
-- **“Does the LLM copy the last example?”** — Not applicable to the shipped prompt; ablations (with vs without exemplars) are **not** bundled as experiment results in this repo.
-- **“Prompt without examples?”** — The domain-knowledge path is already **without** in-prompt exemplars.
-
-If the LLM is unavailable, Step 7 still produces **paper_span** and **prior_model** suggestions where possible.
-
----
-
-### Step 8: Quality Checks
+### Step 6: Quality Checks
 
 **What You Provide:**
 - (Automatic) Uses `model_draft.compmodel` from Step 4
@@ -606,7 +561,7 @@ If the LLM is unavailable, Step 7 still produces **paper_span** and **prior_mode
 
 **Console Output:**
 ```
-Step 8: Running Quality Checks (Phase 1 Analyzers)...
+Step 6: Running Quality Checks (Phase 1 Analyzers)...
   ✓ Quality checks complete:
     - Model analysis: completed
     - Uncertainty analysis: completed
@@ -615,7 +570,7 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
 
 ---
 
-### Step 9: Evaluation
+### Step 7: Evaluation
 
 **What You Provide:**
 - (Automatic) Uses all previous outputs
@@ -627,9 +582,7 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
    - % of items with evidence
 2. Calculates faithfulness:
    - % of items paper-backed
-3. Analyzes gaps:
-   - Total gaps, by severity
-4. Optionally compares to baseline/gold standard:
+3. Optionally compares to baseline/gold standard:
    - **Auto-detection:** If a baseline `.compmodel` file exists in `data/baseline_models/` with a name matching the paper (e.g., `ebola_salem_smith.compmodel` for `EbolaSensitivity.pdf`), it's automatically used
    - Converts baseline `.compmodel` to gold standard format
    - Calculates precision/recall/F1 for **compartments**, **parameters**, and **flows**
@@ -641,14 +594,8 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
 - `evaluation_report.json`:
   ```json
   {
-    "traceability_coverage": 90.9,
-    "faithfulness": 81.8,
-    "gap_metrics": {
-      "total_gaps": 5,
-      "critical_gaps": 0,
-      "high_gaps": 3,
-      "medium_gaps": 2
-    },
+    "traceability_coverage": { "coverage_percentage": 90.9 },
+    "faithfulness": { "faithfulness_percentage": 81.8 },
     "gold_standard_comparison": {
       "compartments": {
         "precision": 0.85,
@@ -666,11 +613,10 @@ Step 8: Running Quality Checks (Phase 1 Analyzers)...
 
 **Console Output:**
 ```
-Step 9: Evaluating Extraction Quality...
+Step 7: Evaluating Extraction Quality...
   ✓ Evaluation complete:
     - Traceability coverage: 90.9%
     - Faithfulness: 81.8%
-    - Total gaps: 5
 ```
 
 ---
@@ -678,7 +624,7 @@ Step 9: Evaluating Extraction Quality...
 ### Final Step: Final Report Generation
 
 **What You Provide:**
-- (Automatic) Uses all output files from Steps 1-9
+- (Automatic) Uses all output files from Steps 1-7
 
 **What Happens:**
 1. Combines all outputs into one comprehensive report
@@ -700,16 +646,13 @@ Step 9: Evaluating Extraction Quality...
       },
       "quality_metrics": {
         "traceability_coverage": 90.9,
-        "faithfulness": 81.8,
-        "total_gaps": 5
+        "faithfulness": 81.8
       }
     },
     "paper_promises": {...},
     "extracted_entities": {...},
     "model_structure": {...},
     "traceability": {...},
-    "gap_analysis": {...},
-    "gap_suggestions": {...},
     "evaluation": {...},
     "quality_checks": {...}
   }
@@ -738,8 +681,6 @@ python3 run_phase2.py --help
 - `--api-key-file`: Path to API key file (default: `.api_key.txt`)
 - `--llm-provider`: LLM provider to use - `openai` or `gemini` (default: `openai`)
 - `--phase1-dir`: Path to Phase 1 directory (for quality checks)
-- `--prior-models-dir`: Directory with Phase 1 model analysis JSONs (used when **`--enable-gap-steps`** runs Step 7 prior-model search)
-- `--enable-gap-steps`: Run Steps 6–7 (gap analysis + gap-fill JSON). **Default: off** (empty gap files).
 - `--gold-standard`: Path to gold standard JSON or `.compmodel` file (for evaluation; otherwise baseline in `data/baseline_models` is auto-detected)
 - `--baseline-models-dir`: Directory with baseline `.compmodel` files (default: `data/baseline_models`)
 - `--no-llm`: Disable LLM, use pattern-based extraction only
@@ -775,8 +716,7 @@ python3 run_phase2.py \
     --paper data/papers/EbolaSensitivity.pdf \
     --output reports \
     --llm-provider openai \
-    --phase1-dir "../phase 1" \
-    --prior-models-dir "../phase 1/reports/model_analysis"
+    --phase1-dir "../phase 1"
 
 # 5. Check results
 # The run prints the exact output folder path under reports/
@@ -804,8 +744,7 @@ python3 run_phase2.py \
     --paper data/papers/EbolaSensitivity.pdf \
     --output reports \
     --llm-provider gemini \
-    --phase1-dir "../phase 1" \
-    --prior-models-dir "../phase 1/reports/model_analysis"
+    --phase1-dir "../phase 1"
 
 # 5. Check results
 # The run prints the exact output folder path under reports/
@@ -851,6 +790,47 @@ python3 run_phase2.py \
 
 ---
 
+## Benchmark: papers 2 and 3 (multi-disease glob)
+
+Paper 1 of each disease is often processed first; to run **all** second and third papers across diseases (stems ending in `2` or `3`):
+
+```bash
+cd "phase 2"
+# Optional: source ../venv/bin/activate
+
+# Single paper example
+python3 run_phase2.py \
+    --paper data/diseases/covid/covid2.pdf \
+    --llm-provider openai \
+    --phase1-dir "../phase 1"
+
+# All papers ending in 2 or 3
+for pdf in data/diseases/*/*[23].pdf; do
+  python3 run_phase2.py \
+      --paper "$pdf" \
+      --llm-provider openai \
+      --phase1-dir "../phase 1"
+done
+
+# Same loop with Gemini: set --llm-provider gemini
+```
+
+**Note:** If a disease folder name has a leading space (e.g. Cholera), the glob `data/diseases/*/*[23].pdf` still matches via normal shell expansion.
+
+## Data layout: migrating flat `papers/` + `baseline_models/`
+
+Example for one disease (repeat per disease); run from `phase 2/data/`:
+
+```bash
+mkdir -p diseases/covid
+mv papers/covid.pdf diseases/covid/covid1.pdf
+mv ../baseline_models/covid.compmodel diseases/covid/covid1.compmodel
+```
+
+See also [data/README.md](data/README.md) for the directory layout.
+
+---
+
 ## Troubleshooting
 
 ### "No PDF extraction library found"
@@ -879,7 +859,6 @@ pip install pdfplumber
 
 1. **`phase2_final_report.json`** - Start here for overview
    - Summary section shows extraction counts and quality metrics
-   - Check gap analysis for missing items
    - Review evaluation for quality scores
 
 2. **`evaluation_report.json`** - Quality and baseline comparison
@@ -891,15 +870,7 @@ pip install pdfplumber
    - Check compartments, flows, parameters
    - Verify parameter links (rateParameter/contactRateParameter)
 
-4. **`phase2_gap_report.json`** - What's missing
-   - Review missing items
-   - Check severity levels
-
-5. **`gap_fill_suggestions.json`** - How to fill gaps
-   - Review suggestions for each gap
-   - Check source and confidence
-
-6. **`RESULTS_REPORT.md`** — After running `build_results_md.py`, use this for a quick scan of **recall** (and P/F1) across diseases and providers.
+4. **`RESULTS_REPORT.md`** — After running `build_results_md.py`, use this for a quick scan of **recall** (and P/F1) across diseases and providers.
 
 ---
 
@@ -909,8 +880,8 @@ After running Phase 2, you get:
 
 - **1 main output:** `model_draft.compmodel` (the extracted model)
 - **1 comprehensive report:** `phase2_final_report.json` (all results)
-- **Evaluation:** `evaluation_report.json` (traceability, faithfulness, gaps; if baseline used: `gold_standard_comparison` with compartments, parameters, flows P/R/F1)
-- **Other detailed files:** paper_text.json, paper_promises.json, extracted_entities.json, traceability.json, phase2_gap_report.json, gap_fill_suggestions.json, quality_checks.json
+- **Evaluation:** `evaluation_report.json` (traceability, faithfulness; if baseline used: `gold_standard_comparison` with compartments, parameters, flows P/R/F1)
+- **Other detailed files:** paper_text.json, paper_promises.json, extracted_entities.json, traceability.json, quality_checks.json
 
 **Check `phase2_final_report.json` first** - it contains everything you need. Use `evaluation_report.json` for precision/recall/F1 when a baseline was auto-detected.
 

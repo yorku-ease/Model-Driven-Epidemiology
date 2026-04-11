@@ -1,7 +1,7 @@
 """Evaluation: Calculate metrics and scores using cosine similarity
 
-Calculates traceability coverage, faithfulness, gap metrics, and optionally
-compares to gold standard for precision/recall using semantic embeddings.
+Calculates traceability coverage, faithfulness, and optionally compares to
+gold standard for precision/recall using semantic embeddings.
 
 Semantic cosine similarity is **not** guaranteed to score >= fuzzy string similarity for
 the same pair of labels (different metrics). Fuzzy can look "better" on aggregate when
@@ -448,7 +448,6 @@ class Evaluator:
         self,
         extracted_entities: Dict[str, Any],
         traceability: Dict[str, Any],
-        gaps: Dict[str, Any],
     ) -> Dict[str, Any]:
         """
         Evaluate extraction quality.
@@ -461,7 +460,6 @@ class Evaluator:
                 traceability
             ),
             "faithfulness": self._calculate_faithfulness(traceability),
-            "gap_analysis": self._analyze_gaps(gaps),
             "gold_standard_comparison": None,
         }
 
@@ -489,22 +487,6 @@ class Evaluator:
         return {
             "paper_backed_items": metrics.get("paper_backed_items", 0),
             "faithfulness_percentage": metrics.get("faithfulness_percentage", 0.0),
-        }
-
-    def _analyze_gaps(self, gaps: Dict[str, Any]) -> Dict[str, Any]:
-        """Analyze gap metrics"""
-        summary = gaps.get("summary", {})
-        return {
-            "total_gaps": summary.get("total_gaps", 0),
-            "critical_gaps": summary.get("critical_gaps", 0),
-            "high_gaps": summary.get("high_gaps", 0),
-            "medium_gaps": summary.get("medium_gaps", 0),
-            "gap_breakdown": {
-                "missing_compartments": len(gaps.get("missing_compartments", [])),
-                "missing_parameters": len(gaps.get("missing_parameters", [])),
-                "missing_stratifications": len(gaps.get("missing_stratifications", [])),
-                "missing_interventions": len(gaps.get("missing_interventions", [])),
-            },
         }
 
     def _compare_to_gold_standard(

@@ -97,3 +97,17 @@ Use **`showcase_summary.json`** / **`phase3_showcase_source.json`** to see which
 - Phase 2 report directories with extracted models
 - `phase 2/.api_key.txt` for LLM inference when inference is enabled
 - No extra Python packages beyond the main project `requirements.txt`
+
+## Adding a new disease
+
+1. Add `phase 2/data/diseases/<disease>/<stem>.pdf` and `<stem>.compmodel` with the same stem.
+2. Run Phase 2 on that PDF (see [phase 2/INSTRUCTIONS.md](../phase%202/INSTRUCTIONS.md)).
+3. `python3 build_database.py`
+4. `python3 run_phase3.py --all --output reports`
+
+## Regenerate `RESULTS_PHASE3_GEMINI.md` (or similar)
+
+```bash
+cd "phase 3"
+python3 build_phase3_results_md.py --showcase showcase_gemini -o RESULTS_PHASE3_GEMINI.md
+```

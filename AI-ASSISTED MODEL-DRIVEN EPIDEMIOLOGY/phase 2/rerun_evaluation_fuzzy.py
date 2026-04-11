@@ -4,7 +4,7 @@ Re-run evaluation using the **phase 2_temp** fuzzy-string Evaluator (difflib / S
 not the main Phase 2 semantic (embedding) evaluator.
 
 Reads the same artifacts as rerun_evaluation_semantic.py:
-  - extracted_entities.json, traceability.json, phase2_gap_report.json (optional)
+  - extracted_entities.json, traceability.json
 
 Writes (default; does not overwrite evaluation_report.json):
   - evaluation_report_fuzzy_temp.json
@@ -85,13 +85,6 @@ def run_one(
     with open(tr_path) as f:
         traceability = json.load(f)
 
-    gap_path = report_dir / "phase2_gap_report.json"
-    if gap_path.exists():
-        with open(gap_path) as f:
-            gaps = json.load(f)
-    else:
-        gaps = dict(EMPTY_GAPS)
-
     gold_path = gold_standard_path
     if not gold_path:
         found = find_baseline_for_report(report_dir, baseline_models_dir)
@@ -107,7 +100,7 @@ def run_one(
             )
 
     evaluator = Evaluator(gold_standard_path=gold_path)
-    evaluation = evaluator.evaluate(entities, traceability, gaps)
+    evaluation = evaluator.evaluate(entities, traceability)
     out_path = report_dir / output_filename
     evaluator.save_evaluation(evaluation, str(out_path))
     print(f"  Wrote {out_path.name} (phase 2_temp fuzzy evaluator; evaluation_report.json unchanged)")

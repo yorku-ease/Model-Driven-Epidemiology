@@ -177,7 +177,7 @@ def infer_flow_llm(
 ) -> Dict[str, Any]:
     """
     Suggest **flow type** and narrative for a missing ``Source->Target`` edge.
-    Structural wiring into XML may still require manual or Phase RLM repair.
+    Structural wiring into XML may still require manual editing of the .compmodel file.
     """
     if llm_client is None and LLMClient is not None:
         llm_provider = os.getenv("PHASE3_LLM_PROVIDER", provider)
@@ -189,7 +189,7 @@ def infer_flow_llm(
             "reasoning": "LLM unavailable.",
             "source": "fallback_label",
             "confidence": "LOW",
-            "warning": "Manual .compmodel edit or Phase RLM recommended.",
+            "warning": "Manual .compmodel edit recommended.",
         }
 
     prompt = f"""You are an expert epidemiologist. A compartmental model is missing a transition (flow).
@@ -210,7 +210,7 @@ Return ONLY valid JSON (no markdown):
                 "reasoning": str(result.get("reasoning", "") or ""),
                 "source": "llm_inference",
                 "confidence": "LOW",
-                "warning": "AI-inferred; apply to .compmodel via tooling or Phase RLM.",
+                "warning": "AI-inferred; apply to .compmodel via manual edit or XML tooling.",
             }
     except Exception:
         pass

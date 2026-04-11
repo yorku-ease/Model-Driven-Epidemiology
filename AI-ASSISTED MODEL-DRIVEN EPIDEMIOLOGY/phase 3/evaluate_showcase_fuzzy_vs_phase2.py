@@ -232,14 +232,12 @@ def evaluate_one(
         return {"disease": disease, "error": f"No baseline for: {disease}"}
 
     phase2_draft = phase2_report_dir / "model_draft.compmodel"
-    # Prefer model_repaired.compmodel (after structural repair) over model_filled.compmodel
-    repaired_model = phase3_dir / "model_repaired.compmodel"
-    filled_model = repaired_model if repaired_model.exists() else phase3_dir / "model_filled.compmodel"
+    filled_model = phase3_dir / "model_filled.compmodel"
 
     if not phase2_draft.exists():
         return {"disease": disease, "error": f"Missing model_draft.compmodel: {phase2_draft}"}
     if not filled_model.exists():
-        return {"disease": disease, "error": f"Missing model_filled/repaired.compmodel: {filled_model}"}
+        return {"disease": disease, "error": f"Missing model_filled.compmodel: {filled_model}"}
 
     gold = _parse_compmodel(baseline)
     p2 = _parse_compmodel(phase2_draft)

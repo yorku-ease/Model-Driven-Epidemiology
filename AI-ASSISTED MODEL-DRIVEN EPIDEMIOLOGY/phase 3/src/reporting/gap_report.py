@@ -121,7 +121,7 @@ def generate_gap_report(
         lines.append(f"| **→ Composite** | **{comp_val}/100** | — |")
         lines.append("")
 
-    # Section 1d: Structural integrity (Phase RLM checks on filled/repaired model)
+    # Section 1d: Structural integrity (checks on filled/repaired model)
     if structural and structural.get("available"):
         total_before = structural.get("total_errors", 0)
         total_after = structural_after.get("total_errors", total_before) if (structural_after and structural_after.get("available")) else total_before
@@ -129,8 +129,7 @@ def generate_gap_report(
 
         lines.append("## 1d. Structural integrity & repair")
         lines.append("")
-        lines.append("*Phase RLM-inspired: checks + targeted repairs on model_filled.compmodel →*")
-        lines.append("*model_repaired.compmodel. Independent of gold standard.*")
+        lines.append("*Internal structural checks on the filled model (independent of gold standard).*")
         lines.append("")
 
         if total_before == 0:

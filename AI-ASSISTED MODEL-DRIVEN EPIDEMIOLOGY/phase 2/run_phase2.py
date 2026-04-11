@@ -119,12 +119,6 @@ Examples:
         help="Path to Phase 1 directory (for quality checks)",
     )
     parser.add_argument(
-        "--prior-models-dir",
-        type=str,
-        default="../phase 1/reports/model_analysis",
-        help="Directory with Phase 1 model analysis JSONs (for gap filling)",
-    )
-    parser.add_argument(
         "--gold-standard",
         type=str,
         help="Path to gold standard JSON or .compmodel file (for evaluation)",
@@ -167,15 +161,6 @@ Examples:
         default=0.70,
         help="Cosine similarity threshold for gold standard evaluation (default: 0.70)",
     )
-    parser.add_argument(
-        "--enable-gap-steps",
-        action="store_true",
-        help=(
-            "Run Step 6 (gap analysis: promises vs model) and Step 7 (gap-fill suggestions). "
-            "Default is OFF: empty gap JSON stubs (faster; avoids extra LLM calls for gap fill)."
-        ),
-    )
-
     args = parser.parse_args()
 
     if bool(args.paper) == bool(args.paper_id):
@@ -436,64 +421,8 @@ Examples:
     print(f"    - Faithfulness: {metrics.get('faithfulness_percentage', 0):.1f}%")
     print()
 
-    # Steps 6-7: Gap Analysis & Gap Filler (optional — default skipped)
-    if args.enable_gap_steps:
-        from src.analysis.gap_analyzer import GapAnalyzer
-        from src.analysis.gap_filler import GapFiller
-
-        print("Steps 6-7: Gap Analysis & Gap Filler...")
-        gap_analyzer = GapAnalyzer()
-        model_structure = gap_analyzer.load_model_structure(
-            str(output_dir / "model_draft.compmodel")
-        )
-        gaps = gap_analyzer.analyze_gaps(promises, entities, model_structure)
-        gap_analyzer.save_gap_report(gaps, str(output_dir / "phase2_gap_report.json"))
-        tg = gaps.get("summary", {}).get("total_gaps", 0)
-        print(f"  ✓ Gap analysis complete: {tg} gap(s)")
-
-        gap_filler = GapFiller(
-            llm_client=llm_client,
-            prior_models_dir=args.prior_models_dir if Path(args.prior_models_dir).exists() else None,
-        )
-        paper_full = pdf_data.get("full_text", "") or promise_text
-        gap_suggestions = gap_filler.fill_gaps(gaps, paper_full, entities)
-        gap_filler.save_suggestions(gap_suggestions, str(output_dir / "gap_fill_suggestions.json"))
-        ts = gap_suggestions.get("summary", {}).get("total_suggestions", 0)
-        print(f"  ✓ Gap fill suggestions: {ts} suggestion(s)")
-        print()
-    else:
-        print(
-            "Steps 6-7: Skipping gap analysis & gap filler (use --enable-gap-steps to run)..."
-        )
-        gaps = {
-            "missing_compartments": [],
-            "missing_parameters": [],
-            "missing_stratifications": [],
-            "missing_interventions": [],
-            "summary": {
-                "total_gaps": 0,
-                "critical_gaps": 0,
-                "high_gaps": 0,
-                "medium_gaps": 0,
-            },
-        }
-        gap_suggestions = {
-            "gaps": [],
-            "summary": {
-                "total_gaps": 0,
-                "total_suggestions": 0,
-                "suggestions_by_source": {},
-            },
-        }
-        with open(output_dir / "phase2_gap_report.json", "w") as f:
-            json.dump(gaps, f, indent=2)
-        with open(output_dir / "gap_fill_suggestions.json", "w") as f:
-            json.dump(gap_suggestions, f, indent=2)
-        print("  ✓ Saved empty gap reports (skipped)")
-        print()
-
-    # Step 8: Quality Checks
-    print("Step 8: Running Quality Checks (Phase 1 Analyzers)...")
+    # Step 6: Quality Checks
+    print("Step 6: Running Quality Checks (Phase 1 Analyzers)...")
     quality_checker = QualityChecker(phase1_dir=args.phase1_dir)
 
     # Extract model name from paper path
@@ -519,8 +448,8 @@ Examples:
     )
     print()
 
-    # Step 9: Evaluation
-    print("Step 9: Evaluating Extraction Quality...")
+    # Step 7: Evaluation
+    print("Step 7: Evaluating Extraction Quality...")
 
     # Auto-detect baseline model if not explicitly provided
     gold_standard_path = args.gold_standard
@@ -599,7 +528,7 @@ Examples:
         gold_standard_path=gold_standard_path, threshold=args.eval_threshold
     )
 
-    evaluation = evaluator.evaluate(entities, traceability, gaps)
+    evaluation = evaluator.evaluate(entities, traceability)
 
     # Save evaluation
     evaluator.save_evaluation(evaluation, output_dir / "evaluation_report.json")
@@ -611,8 +540,6 @@ Examples:
     )
     faithfulness = evaluation.get("faithfulness", {})
     print(f"    - Faithfulness: {faithfulness.get('faithfulness_percentage', 0):.1f}%")
-    gap_analysis = evaluation.get("gap_analysis", {})
-    print(f"    - Total gaps: {gap_analysis.get('total_gaps', 0)}")
     if evaluation.get("gold_standard_comparison"):
         gs_comp = evaluation["gold_standard_comparison"]
         comp_metrics = gs_comp.get("compartments", {})
