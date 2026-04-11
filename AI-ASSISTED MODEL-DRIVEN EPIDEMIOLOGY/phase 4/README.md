@@ -130,56 +130,45 @@ Example after the fix - Cholera P1 Recovered: P05 = 505, P50 = 883, P95 = 1,602.
 
 ### Uncertainty vs sensitivity
 
-Phase 4 reports **both**, but they answer **different questions** and use **different experiments**.
+Phase 4 gives you **two** plots. They are **not** the same thing.
 
-| | **Uncertainty (Monte Carlo → `uncertainty_bands.png`)** | **Sensitivity (one-at-a-time → `sensitivity_tornado.png`)** |
-|---|--------------------------------------------------------|-------------------------------------------------------------|
-| **Question** | Given **distributions** on *all* parameters, how **spread out** are the epidemic **outcomes** (trajectories, peaks, cases)? | Near the **baseline** model, which **individual** parameters most **move** selected outputs when we nudge **only that** parameter? |
-| **What changes between runs** | **Every** parameter is drawn **independently** from its uncertainty distribution; **all** of them vary together across the 1,000 runs. | **One** parameter at a time is set to a **low** and **high** value (±20% around its point); **every other** parameter stays fixed at its baseline. |
-| **What you see** | A **band** of plausible trajectories (percentiles over 1,000 full-model runs). **Width** = overall outcome variability from **combined** parameter uncertainty. | A **ranking** of parameters by how much **peak infections** and **total cases** change when **only** that input is perturbed. **Bar length** = **importance** of that parameter for those summaries at the baseline. |
-| **Analogy** | “If we don’t know any of the rates exactly, what range of futures is still plausible?” | “If we only wiggle **this** dial one at a time, which dials actually move the needle?” |
+**1. Uncertainty** (`uncertainty_bands.png`, Monte Carlo)
 
-**Why both matter.** Uncertainty quantification describes **how uncertain the prediction is** when all inputs are allowed to vary as specified. Sensitivity analysis describes **which named parameters deserve attention** when explaining or improving the model near the current calibration. A model can show **wide** uncertainty bands (many parameters jointly matter) while the tornado still highlights **only a few** parameters as dominating peak or cumulative cases under OAT perturbations.
+- The computer picks **new random values** for **all** the rate parameters at once (using the ranges Phase 4 assigned). It does this **1,000 times** and runs the model each time.
+- You get many possible **future curves** for each compartment. The plot shows how **spread out** those curves are.
+- **Plain meaning:** “We don’t know the true rates exactly. **Overall**, how much could the epidemic story still differ?”
 
-**They are not interchangeable.** The Monte Carlo runs do **not** show which parameter caused a given band to be wide (unless you add extra analysis). The tornado does **not** reproduce the full **joint** uncertainty in the Monte Carlo sense, because it never explores simultaneous large shifts in many parameters together—it isolates **effects of single parameters** from a fixed baseline.
+**2. Sensitivity** (`sensitivity_tornado.png`, one parameter at a time)
 
-### Reading the output plots
+- The model is run with **normal** (baseline) values for everything. Then **one** parameter is moved **down a bit** and **up a bit** while **everything else stays the same**. This is repeated for each parameter.
+- The bars show **which** parameters change **peak infections** and **total cases** the most when you move **only that** one.
+- **Plain meaning:** “**Which single dial** matters most for those two numbers, if I only turn one dial at a time?”
 
-#### `uncertainty_bands.png` (Monte Carlo ensemble)
+**Why use both?** The **bands** show **how wide** the range of outcomes is when **everything** is uncertain at once. The **tornado** shows **which inputs** matter most **one by one**. You can have a **wide** band (outcomes vary a lot) and still see **only a few** long bars (only a few parameters drive most of that change when tested alone).
 
-Phase 4 draws **1,000** independent samples from each parameter’s uncertainty distribution and runs the ODE **once per sample**. Each run produces **one trajectory per compartment** over time (e.g. Infectious vs day).
+**They don’t replace each other.** The bands don’t by themselves say *which* parameter caused the spread. The tornado doesn’t run all parameters changing at the same time, so it is **not** a second copy of the Monte Carlo experiment.
 
-For **each compartment** and **each day** on the plot, you therefore have **1,000 numbers** (one from each simulation). Those values are summarized as percentiles:
+### Reading the figures
 
-- **Solid line** — **Median** (50th percentile): the “middle” trajectory when all 1,000 values at that day are sorted. Half of the runs fall below this curve and half above at each time point. It is a typical run, not the arithmetic mean (the median is less pulled upward by a few extreme simulations).
+The section above explains **what** each analysis is. Here is **how to read the graphics** (without repeating those ideas).
 
-- **Shaded band** - **5th to 95th percentile**: the lower and upper edges of the central **90%** of outcomes (excluding the most extreme 5% on each tail). So the ribbon shows where **most** simulated trajectories lie for that compartment over time.
+#### `uncertainty_bands.png`
 
-| Plot element | Meaning |
-|--------------|--------|
-| Shaded region (P5–P95) | Range covered by the bulk of simulations for that compartment over time. |
-| Solid line (P50) | Typical (median) trajectory. |
+- **Layout:** One **panel per compartment** (Susceptible, Infectious, …). **Horizontal axis** = time (e.g. days 0–200). **Vertical axis** = **number of people** in that compartment.
+- **Solid line** — **Median** at each day: half the runs are below, half above. Think “typical” curve, not the average.
+- **Shaded band** — **5th to 95th** percentile across the 1,000 runs (middle **90%**). The top and bottom 5% of runs are left out so a few extreme simulations don’t dominate the picture.
 
-**Wide band** = Parameter uncertainty **propagates** into **meaningfully different** compartment levels or epidemic shapes across runs: outcomes are **sensitive** to the sampled parameters for that output.
+| On the plot | What it shows |
+|-------------|----------------|
+| Shaded region | Where **most** of the 1,000 curves run over time. |
+| Solid line | The **middle** trajectory over time. |
 
-**Narrow band** - Usually one of: (1) trajectories are **robust** to parameter variation for that compartment, or (2) almost all runs agree the compartment stays **near zero** or very flat (e.g. little or no epidemic growth), so there is little spread because every simulation looks similar at a low level. A narrow band does **not** by itself prove high confidence in the model; read it together with whether an outbreak actually develops in the median curve.
+**Wide band** — That compartment’s count **varies a lot** across runs. **Narrow band** — Either counts are **stable** across runs, or almost every run stays **near zero** (little epidemic). A narrow band alone does **not** mean the model is “right”; check whether the median curve shows an outbreak you care about.
 
 #### `sensitivity_tornado.png`
 
-This plot answers: **if we nudge one input rate up or down a little, how much do peak infections and cumulative cases move?** It is **not** showing +20 or −20 on the parameter axis as fixed numbers; it shows **±20% relative to that parameter’s baseline (point) value**.
-
-**What “±20%” means**
-
-- First the model is run once with **every** parameter at its **point estimate** (baseline).
-- Then, **one parameter at a time** (“one-at-a-time”, OAT), that parameter is set to a **low** and a **high** value while **all other parameters stay at baseline**:
-  - **Low** ≈ point − 20% of |point|
-  - **High** ≈ point + 20% of |point|
-- Example: if a transmission rate has point estimate **0.3** (per day), the code perturbs near **0.24** and **0.36** — not **−20** and **+20**. If the point were **2.0**, the perturbation would be near **1.6** and **2.4**.
-- Rate-type parameters are **clamped to stay strictly positive** so the ODE stays well-defined; non-rate parameters are limited by their distribution bounds where applicable. If the point estimate is **0**, a small spread based on the parameter’s uncertainty range is used instead of 20% of zero.
-
-**What the bars show**
-
-The simulator is run at **low** and **high** for that one parameter; the chart records how **peak infections** and **total cases** change **relative to the baseline run**, then ranks parameters by **combined importance** (magnitude of those normalized effects). Long bars = that parameter strongly affects those outputs when shifted by ±20%; short bars = the outputs barely move. Parameters with negligible influence may be omitted.
+- **±20%** — **Not** “add 20” or “subtract 20” in the parameter’s units. It means **20% below and 20% above** that parameter’s **baseline** value (e.g. **0.3** → about **0.24** and **0.36**; **2.0** → about **1.6** and **2.4**). Rates are kept **positive** in code; if baseline is **0**, a small range from the uncertainty limits is used instead of “20% of zero.”
+- **Bars** — **Long** = changing **only** that parameter (by that ±20% rule) moves peak infections or total cases **a lot**. **Short** = little change. The chart **ranks** parameters. Very small effects may be omitted; some models show a **short text** instead of a chart if too few parameters drive the ODE.
 
 ---
 
