@@ -60,8 +60,9 @@ Or environment variable: `PHASE3_LLM_PROVIDER=openai` (or `gemini`, `claude`).
 For a clean end-to-end run from scratch, use:
 
 1. `python3 build_database.py`
-2. `python3 run_phase3_showcase.py --llm-provider <gemini|openai|claude> --output <folder>`
-3. `python3 evaluate_showcase_fuzzy_vs_phase2.py --showcase-dir <folder>` (recall/F1 comparison vs Phase 2 fuzzy report)
+2. `python3 run_phase3.py --showcase --llm-provider <gemini|openai|claude>`  
+   (omit `--output` to write under `phase 3/reports/`; use another name if you want a separate tree)
+3. `python3 build_phase3_results_md.py` — writes `RESULTS_PHASE3.md` (Phase 3 recall tables) plus `fuzzy_phase2_vs_phase3.json` and an appended **Phase 2 draft vs Phase 3 filled** section (same directory as step 2, default `--showcase reports`)
 
 ## Showcase: best Phase 2 (3 LLMs) × Rule-Based Retrieval / LLM / both
 
@@ -81,13 +82,16 @@ Output folders: `<disease>_<phase3_llm>_phase3/`. Each contains **`phase3_showca
 cd "phase 3"
 python3 build_database.py
 
-python3 run_phase3_showcase.py --llm-provider gemini --output showcase_run
-python3 run_phase3_showcase.py --llm-provider claude --output showcase_claude
+# Default output base is reports/ (omit --output)
+python3 run_phase3.py --showcase --llm-provider gemini
+
+# Another Phase 3 inference provider without overwriting the same tree:
+python3 run_phase3.py --showcase --llm-provider claude --output reports_claude
 ```
 
 - **`--llm-provider`**: Phase 3 inference API. If omitted, set **`PHASE3_LLM_PROVIDER`**.
 - For Gemini, default model is **Flash**: `--gemini-model gemini-2.5-flash` (default value).
-- **`--output`** (default `showcase_phase3`): base for `retrieval_only/`, `llm_only/`, `both/`, `SHOWCASE_REPORT.md`, `showcase_summary.json`.
+- **`--output`** (default `reports`): base for `retrieval_only/`, `llm_only/`, `both/`, `SHOWCASE_REPORT.md`, `showcase_summary.json`.
 - **`--diseases cholera,dengue`**: limit to listed disease slugs.
 
 Use **`showcase_summary.json`** / **`phase3_showcase_source.json`** to see which Phase 2 report was used for each disease and which mode won.
@@ -105,9 +109,10 @@ Use **`showcase_summary.json`** / **`phase3_showcase_source.json`** to see which
 3. `python3 build_database.py`
 4. `python3 run_phase3.py --all --output reports`
 
-## Regenerate `RESULTS_PHASE3_GEMINI.md` (or similar)
+## Regenerate `RESULTS_PHASE3.md`
 
 ```bash
 cd "phase 3"
-python3 build_phase3_results_md.py --showcase showcase_gemini -o RESULTS_PHASE3_GEMINI.md
+python3 build_phase3_results_md.py
+# or: python3 build_phase3_results_md.py --showcase reports -o RESULTS_PHASE3.md
 ```

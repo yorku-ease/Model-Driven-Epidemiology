@@ -18,7 +18,7 @@ Compartments / flows: Rule-Based Retrieval (`structure_lookup`: text evidence + 
 3. **Validation** - Numeric: each filled parameter value vs gold (exact / close / approximate / poor). Structural: precision / recall / F1 for compartments and flows between draft/filled model and gold `.compmodel` (both appear in `phase3_validation.json` and `gap_report.md`). For cross-phase comparisons in this project, we report fuzzy recall as the primary metric.
 
 4. **Outputs** - `model_filled.compmodel`, `phase3_gaps.json`, `phase3_filled.json`, `phase3_validation.json`, `phase3_improvement.json`, and `gap_report.md` per run.
-5. **Showcase comparison (optional)** - `run_phase3_showcase.py` compares `retrieval_only` (Rule-Based Retrieval only) / `llm_only` / `both` on the best Phase 2 report per disease from `../phase 2/reports/`.
+5. **Showcase comparison (optional)** - `run_phase3.py --showcase` compares `retrieval_only` (Rule-Based Retrieval only) / `llm_only` / `both` on the best Phase 2 report per disease from `../phase 2/reports/` (default output folder: `reports/`).
 
 ---
 
@@ -121,10 +121,10 @@ This is lexical/regex retrieval; there are no semantic embeddings in the current
 
 Evaluated across 30 benchmark papers (10 diseases × 3 papers each) with hand-authored gold `.compmodel` files.
 Phase 2 baseline = best recall across OpenAI / Gemini / Claude per paper, measured with the same fuzzy evaluator used for Phase 3.
-Phase 3 = LLM provider Gemini, showcase run `showcase_gemini/`, evaluated against the same gold standards.
+Phase 3 = LLM provider Gemini, showcase output directory `reports/`, evaluated against the same gold standards.
 
 All metrics use fuzzy recall as the primary metric (synonym-aware name matching, e.g. "Infectious" = "Infected").
-Full per-paper tables are in [RESULTS_PHASE3_GEMINI.md](RESULTS_PHASE3_GEMINI.md).
+Full per-paper tables are in [RESULTS_PHASE3.md](RESULTS_PHASE3.md).
 
 ### Summary: Phase 2 vs Phase 3 (averaged over 30 papers)
 
@@ -144,7 +144,7 @@ Full per-paper tables are in [RESULTS_PHASE3_GEMINI.md](RESULTS_PHASE3_GEMINI.md
 - LLM alone closes large structural gaps but without the grounding of direct paper evidence.
 - Combining both gives the best coverage: Rule-Based Retrieval provides paper-grounded evidence first; LLM fills the remaining gaps where retrieval found nothing.
 
-Use `--mode both` (default) or `--mode auto` (auto-selects per paper based on a scoring function that balances recall improvement against remaining parameter gaps).
+Phase 3’s showcase run writes three comparable trees under `reports/` (`retrieval_only/`, `llm_only/`, `both/`). There is no `--mode` flag on a single `run_phase3.py` gap-fill invocation; you choose which filled model to use downstream. For **Phase 4** uncertainty runs on those outputs, use `run_phase4.py --showcase-dir "../phase 3/reports"` with `--mode both` (one mode for every paper) or `--mode auto` (best mode per paper); see `phase 4/INSTRUCTIONS.md`.
 
 ### Key observations
 
@@ -180,13 +180,14 @@ To regenerate the Phase 3 results Markdown, see [INSTRUCTIONS.md](INSTRUCTIONS.m
 
 ```
 phase 3/
-├── run_phase3.py              # Main entry
+├── run_phase3.py              # Main entry (--showcase = benchmark / 3-mode comparison)
 ├── build_database.py          # Index Phase 1 + 2 for Rule-Based Retrieval
-├── run_phase3_showcase.py     # Best Phase 2 per disease + 3-mode comparison
+├── build_phase3_results_md.py # RESULTS_PHASE3.md + fuzzy_phase2_vs_phase3.json (P2 vs P3 draft/filled)
 ├── src/                       # rag, gap_analysis, inference, evaluation, reporting
 ├── data/paper_database/       # Built index (index.json)
-├── reports/                   # Per-disease/provider Phase 3 runs
-└── showcase_gemini/           # Showcase outputs: per-mode runs + summary report
+└── reports/                   # Default `--output` for --showcase, --all, and --phase2-report
+                               #   --showcase: retrieval_only/ | llm_only/ | both/ + SHOWCASE_REPORT.md
+                               #   --all: flat <disease>_<provider>_phase3/ per latest Phase 2 run
 ```
 
 ## Main artifacts
@@ -198,11 +199,11 @@ phase 3/
 | `phase3_validation.json` | Error % and quality label per fill |
 | `model_filled.compmodel` | Draft with fills applied |
 | `gap_report.md` | Human-readable per-disease summary |
-| `showcase_gemini/SHOWCASE_REPORT.md` | Aggregated view across retrieval_only / llm_only / both |
+| `reports/SHOWCASE_REPORT.md` | Aggregated view across retrieval_only / llm_only / both |
 
 ## Reading aggregate results
 
-After a showcase run, `showcase_gemini/SHOWCASE_REPORT.md` summarizes per-disease winners across `retrieval_only` / `llm_only` / `both`, plus key metrics and the selected Phase 2 source per disease. The full numeric comparison table is in [RESULTS_PHASE3_GEMINI.md](RESULTS_PHASE3_GEMINI.md).
+After a showcase run, `reports/SHOWCASE_REPORT.md` (or your custom `--output` name) summarizes per-disease winners across `retrieval_only` / `llm_only` / `both`, plus key metrics and the selected Phase 2 source per disease. The full numeric comparison table is in [RESULTS_PHASE3.md](RESULTS_PHASE3.md).
 
 ## Adding diseases
 
@@ -213,4 +214,5 @@ Nothing is hardcoded: providers and diseases are inferred from directory names. 
 | File | Purpose |
 |------|---------|
 | [INSTRUCTIONS.md](INSTRUCTIONS.md) | **How to run:** commands, CLI flags, multi-provider workflow, API keys, dependencies |
-| `run_phase3_showcase.py` | Showcase: per disease, best Phase 2 among gemini / openai / claude (by eval score), then x retrieval_only / llm_only / both with your Phase 3 `--llm-provider`. See INSTRUCTIONS.md. |
+| `run_phase3.py --showcase` | Showcase: per disease, best Phase 2 among gemini / openai / claude (by eval score), then retrieval_only / llm_only / both with your Phase 3 `--llm-provider`. See INSTRUCTIONS.md. |
+| `build_phase3_results_md.py` | Builds `RESULTS_PHASE3.md` (validation-based recall) and `fuzzy_phase2_vs_phase3.json`; appends P2 draft vs P3 filled comparison when `showcase_summary.json` exists. |

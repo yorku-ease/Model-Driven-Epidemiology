@@ -6,26 +6,27 @@ Usage:
   # Step 1 — build the comprehensive database (run once, or when Phase 2 data changes)
   python build_database.py
 
-  # Step 2a — run Phase 3 for a single Phase 2 report
+  # Step 2 — showcase (benchmark): best Phase 2 per disease × retrieval_only / llm_only / both
+  python run_phase3.py --showcase --llm-provider claude
+  # (default --output reports — same folder name as --all; layouts differ)
+
+  # Or: single Phase 2 report
   python run_phase3.py --phase2-report "../phase 2/reports/<disease>_llm_<provider>_<timestamp>" \\
       --output reports/<disease>_phase3
 
-  # Step 2b — run Phase 3 for ALL latest Phase 2 reports at once
+  # Or: ALL latest Phase 2 reports (one run per disease×provider)
   python run_phase3.py --all --output reports
-
-  # Specify LLM provider (overrides auto-detection from report dir name)
   python run_phase3.py --all --llm-provider gemini --output reports
-
-  # Other options
   python run_phase3.py --all --no-rag --no-inference --output reports
 """
 
 import argparse
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 PHASE3_DIR = Path(__file__).resolve().parent
 PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
@@ -428,29 +429,355 @@ def run_for_report(report_dir: Path, output_dir: Path, *, use_rag: bool, use_inf
     print(f"  Report  : {report_md}")
 
 
+# --- Showcase: best Phase 2 per disease × retrieval_only / llm_only / both -----------------
+
+
+def _load_json(path: Path) -> Dict[str, Any]:
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _phase2_eval_path(report_dir: Path) -> Path:
+    return report_dir / "evaluation_report.json"
+
+
+def phase2_composite_score(eval_data: Dict[str, Any]) -> float:
+    """Composite Phase 2 score (0–100) from evaluation_report.json (traceability, faithfulness, recall)."""
+    if not eval_data:
+        return 0.0
+    score = 0.0
+    weight_sum = 0.0
+    cov = (eval_data.get("traceability_coverage") or {}).get("coverage_percentage")
+    if cov is not None:
+        score += float(cov) * 0.3
+        weight_sum += 0.3
+    faith = (eval_data.get("faithfulness") or {}).get("faithfulness_percentage")
+    if faith is not None:
+        score += float(faith) * 0.3
+        weight_sum += 0.3
+    gap_analysis = eval_data.get("gap_analysis") or {}
+    total_gaps = gap_analysis.get("total_gaps", 0) or 0
+    gap_penalty = max(0, 100 - int(total_gaps) * 10)
+    score += gap_penalty * 0.2
+    weight_sum += 0.2
+    gold = eval_data.get("gold_standard_comparison") or {}
+    params = gold.get("parameters") or {}
+    f1 = params.get("f1")
+    if f1 is not None:
+        score += float(f1) * 100 * 0.2
+        weight_sum += 0.2
+    else:
+        score += 50 * 0.2
+        weight_sum += 0.2
+    if weight_sum == 0:
+        return 50.0
+    return score / weight_sum
+
+
+def phase2_extractor_from_report_dir(report_dir: Path) -> str:
+    name = report_dir.name
+    if "_llm_" not in name:
+        return "unknown"
+    rest = name.split("_llm_", 1)[1]
+    return rest.split("_")[0].lower()
+
+
+def discover_all_phase2_reports_for_disease(reports_dir: Path, disease: str) -> List[Path]:
+    prefix = f"{disease}_llm_"
+    return sorted(
+        [p for p in reports_dir.iterdir() if p.is_dir() and p.name.startswith(prefix)],
+        key=lambda p: p.name,
+    )
+
+
+def best_phase2_report(
+    reports_dir: Path,
+    disease: str,
+) -> Optional[Tuple[Path, float]]:
+    candidates = discover_all_phase2_reports_for_disease(reports_dir, disease)
+    if not candidates:
+        return None
+    best: Optional[Tuple[Path, float]] = None
+    for p in candidates:
+        ev = _load_json(_phase2_eval_path(p))
+        s = phase2_composite_score(ev)
+        if best is None or s > best[1]:
+            best = (p, s)
+    return best
+
+
+def all_diseases_with_reports(reports_dir: Path) -> List[str]:
+    diseases: set = set()
+    for d in reports_dir.iterdir():
+        if not d.is_dir() or "_llm_" not in d.name:
+            continue
+        diseases.add(infer_disease(d))
+    return sorted(diseases)
+
+
+def score_phase3_run(phase3_dir: Path) -> Tuple[float, Dict[str, Any]]:
+    gaps = _load_json(phase3_dir / "phase3_gaps.json")
+    val = _load_json(phase3_dir / "phase3_validation.json")
+    g = int((gaps.get("summary") or {}).get("total_gaps", 0))
+    vs = val.get("summary") or {}
+    compared = vs.get("compared", 0) or 0
+    acc = float(vs.get("accuracy_pct") or 0) if compared else 0.0
+    cf1 = float(vs.get("compartments_f1") or 0)
+    ff1 = float(vs.get("flows_f1") or 0)
+    struct_f1 = (cf1 + ff1) / 2.0 if (cf1 or ff1) else 0.0
+    sort_key = g * 1e6 - acc - struct_f1 * 500.0
+    detail = {
+        "total_gaps": g,
+        "accuracy_pct": round(acc, 2),
+        "compartments_f1": round(cf1, 4) if cf1 else None,
+        "flows_f1": round(ff1, 4) if ff1 else None,
+        "compared_params": compared,
+    }
+    return sort_key, detail
+
+
+def write_showcase_report(
+    base: Path,
+    rows: List[Dict[str, Any]],
+    *,
+    phase3_llm_provider: str,
+) -> None:
+    prov = phase3_llm_provider
+    lines = [
+        f"# Phase 3 — Showcase (best Phase 2 LLM × Retrieval / LLM / both, Phase 3 inference: **{prov}**)",
+        "",
+        "For each disease: **best Phase 2** run among **gemini / openai / claude** (by evaluation score), then Phase 3 with **your chosen** `--llm-provider` (**"
+        f"{prov}** here) for inference in three modes.",
+        "",
+        "| Disease | Winning Phase 2 LLM | Best Phase 2 report | Phase2 score | Winner | retrieval_only | llm_only | both |",
+        "|---------|----------------------|---------------------|--------------|--------|----------|----------|------|",
+    ]
+    for r in rows:
+        d = r["disease_display"]
+        br = Path(r["best_phase2_report"]).name
+        p2s = r["phase2_score"]
+        w = r["winner_mode"]
+        ex = r.get("best_phase2_extractor", "—")
+
+        def _fmt(mode: str) -> str:
+            return r["modes"][mode].get("summary_str", "—")
+
+        lines.append(
+            f"| {d} | **{ex}** | `{br}` | {p2s:.1f} | **{w}** | {_fmt('retrieval_only')} | {_fmt('llm_only')} | {_fmt('both')} |"
+        )
+    lines.extend([
+        "",
+        "## How to read",
+        "",
+        "- **Winner** = lowest gap count, then highest parameter accuracy vs gold, then highest mean compartment/flow F1.",
+        f"- Subfolders: `retrieval_only/`, `llm_only/`, `both/` each contain `<disease>_{prov}_phase3/` with `phase3_gaps.json`, …, and `phase3_showcase_source.json` (which Phase 2 folder was used).",
+        "",
+    ])
+    (base / "SHOWCASE_REPORT.md").write_text("\n".join(lines), encoding="utf-8")
+    with open(base / "showcase_summary.json", "w", encoding="utf-8") as f:
+        json.dump(rows, f, indent=2, ensure_ascii=False)
+
+
+def run_showcase(
+    *,
+    phase2_reports: Path,
+    out_base: Path,
+    llm_pf: str,
+    gemini_model: str,
+    diseases_filter: Optional[List[str]],
+) -> None:
+    """Best Phase 2 per disease × retrieval_only / llm_only / both."""
+    idx_file = DB_PATH / "index.json"
+    if not idx_file.exists():
+        print("Paper database not found. Run:  python build_database.py")
+        sys.exit(1)
+    db = load_paper_database(DB_PATH)
+    print(
+        f"Paper database: {db.get('num_entries', 0)} entries, "
+        f"{db.get('num_parameters', 0)} parameters"
+    )
+    print(f"Phase 3 inference provider (your choice): {llm_pf}")
+    if llm_pf == "gemini":
+        os.environ["GEMINI_MODEL"] = gemini_model
+        print(f"Gemini model: {os.environ['GEMINI_MODEL']}")
+    print("Phase 2 per disease: best among all *_llm_* runs (gemini / openai / claude).")
+
+    if diseases_filter:
+        diseases = diseases_filter
+    else:
+        diseases = all_diseases_with_reports(phase2_reports)
+
+    if not diseases:
+        print(f"No diseases found with *_llm_* reports under {phase2_reports}")
+        sys.exit(1)
+
+    rows: List[Dict[str, Any]] = []
+
+    for disease in diseases:
+        picked = best_phase2_report(phase2_reports, disease)
+        if not picked:
+            print(f"\n[SKIP] {disease}: no Phase 2 report matching {disease}_llm_*")
+            continue
+        report_dir, p2_score = picked
+        p2_extractor = phase2_extractor_from_report_dir(report_dir)
+        print(f"\n{'='*60}")
+        print(
+            f"Disease: {disease}  |  Best Phase 2: {report_dir.name}  "
+            f"(extractor: {p2_extractor}, score {p2_score:.2f})"
+        )
+
+        modes = {
+            "retrieval_only": {"use_rag": True, "use_inference": False},
+            "llm_only": {"use_rag": False, "use_inference": True},
+            "both": {"use_rag": True, "use_inference": True},
+        }
+        mode_results: Dict[str, Any] = {}
+
+        for mode_name, flags in modes.items():
+            sub_out = out_base / mode_name / f"{disease}_{llm_pf}_phase3"
+            run_for_report(
+                report_dir,
+                sub_out,
+                use_rag=flags["use_rag"],
+                use_inference=flags["use_inference"],
+                llm_provider=llm_pf,
+            )
+            src_meta = {
+                "phase2_report_dir": str(report_dir),
+                "phase2_extractor": p2_extractor,
+                "phase3_inference_provider": llm_pf,
+                "showcase_mode": mode_name,
+            }
+            with open(sub_out / "phase3_showcase_source.json", "w", encoding="utf-8") as f:
+                json.dump(src_meta, f, indent=2, ensure_ascii=False)
+            sk, detail = score_phase3_run(sub_out)
+            filled = _load_json(sub_out / "phase3_filled.json").get("summary") or {}
+            detail["sort_key"] = sk
+            detail["rag_count"] = filled.get("rag_count", 0)
+            detail["inference_count"] = filled.get("inference_count", 0)
+            detail["flagged_count"] = filled.get("flagged_count", 0)
+            detail["summary_str"] = (
+                f"g={detail['total_gaps']} acc={detail['accuracy_pct']}% "
+                f"cF1={detail.get('compartments_f1')} fF1={detail.get('flows_f1')}"
+            )
+            mode_results[mode_name] = detail
+
+        winner = min(mode_results.keys(), key=lambda m: mode_results[m]["sort_key"])
+        rows.append({
+            "disease": disease,
+            "disease_display": disease.replace("_", " ").title(),
+            "best_phase2_report": str(report_dir),
+            "best_phase2_extractor": p2_extractor,
+            "phase2_score": round(p2_score, 3),
+            "phase3_llm_provider": llm_pf,
+            "phase3_gemini_model": os.environ.get("GEMINI_MODEL") if llm_pf == "gemini" else None,
+            "modes": mode_results,
+            "winner_mode": winner,
+        })
+
+    out_base.mkdir(parents=True, exist_ok=True)
+    write_showcase_report(out_base, rows, phase3_llm_provider=llm_pf)
+
+    print(f"\n{'='*60}")
+    print(f"Showcase complete: {out_base}")
+    print(f"  Report: {out_base / 'SHOWCASE_REPORT.md'}")
+    print(f"  JSON:   {out_base / 'showcase_summary.json'}")
+    phase4_dir = (PHASE3_DIR.parent / "phase 4").resolve()
+    print("\nOptional: for Phase 4, build selected_models/ from a showcase mode (e.g. both):")
+    print(f'  cd "{phase4_dir}" && python3 run_phase4.py --create-selected-models \\')
+    print(f'      --showcase-dir "{out_base.resolve()}" --mode both')
+
+
 def main():
     ap = argparse.ArgumentParser(description="Phase 3: RAG and Gap Filling")
+    ap.add_argument(
+        "--showcase",
+        action="store_true",
+        help=(
+            "Benchmark mode: per disease, pick best Phase 2 among gemini/openai/claude, "
+            "then run retrieval_only / llm_only / both. Requires --llm-provider (or PHASE3_LLM_PROVIDER). "
+            "Default output dir: reports (same folder name as --all batch runs; layouts differ)."
+        ),
+    )
     ap.add_argument("--phase2-report", type=str, help="Path to a single Phase 2 report directory")
     ap.add_argument("--all", action="store_true", help="Run for ALL latest Phase 2 reports")
-    ap.add_argument("--output", type=str, default="reports", help="Output directory")
+    ap.add_argument(
+        "--output",
+        type=str,
+        default=None,
+        help="Output directory (default: reports for --all, --phase2-report, and --showcase)",
+    )
     ap.add_argument("--llm-provider", type=str,
                     choices=["openai", "gemini", "claude"],
                     default=None,
                     help="LLM provider for inference (default: auto-detect from Phase 2 report name)")
     ap.add_argument("--no-rag", action="store_true", help="Skip RAG lookup")
     ap.add_argument("--no-inference", action="store_true", help="Skip LLM inference")
+    ap.add_argument(
+        "--phase2-reports",
+        type=str,
+        default=None,
+        help="[--showcase] Phase 2 reports directory (default: ../phase 2/reports)",
+    )
+    ap.add_argument(
+        "--gemini-model",
+        type=str,
+        default="gemini-2.5-flash",
+        help="[--showcase] Gemini model id when --llm-provider gemini",
+    )
+    ap.add_argument(
+        "--diseases",
+        type=str,
+        default=None,
+        help="[--showcase] Comma-separated disease slugs (default: all with *_llm_* reports)",
+    )
     args = ap.parse_args()
 
-    if not args.phase2_report and not args.all:
-        ap.error("Specify --phase2-report <dir> or --all")
-
-    # Check database exists
     idx_file = DB_PATH / "index.json"
     if not idx_file.exists():
         print("Paper database not found. Run  python build_database.py  first.")
         sys.exit(1)
+
+    if args.showcase:
+        llm_pf = args.llm_provider or os.environ.get("PHASE3_LLM_PROVIDER", "").strip().lower()
+        if llm_pf not in ("gemini", "openai", "claude"):
+            print(
+                "Showcase requires Phase 3 inference provider:\n"
+                "  --llm-provider {gemini,openai,claude}\n"
+                "Or:  PHASE3_LLM_PROVIDER=gemini",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+        phase2_reports = (
+            Path(args.phase2_reports)
+            if args.phase2_reports
+            else (PHASE3_DIR.parent / "phase 2" / "reports")
+        )
+        out_base = Path(args.output or "reports")
+        diseases_filter = None
+        if args.diseases:
+            diseases_filter = [x.strip().lower() for x in args.diseases.split(",") if x.strip()]
+        run_showcase(
+            phase2_reports=phase2_reports,
+            out_base=out_base,
+            llm_pf=llm_pf,
+            gemini_model=args.gemini_model,
+            diseases_filter=diseases_filter,
+        )
+        print(f"\n{'='*60}")
+        print("Phase 3 complete.")
+        return
+
+    if not args.phase2_report and not args.all:
+        ap.error("Specify --showcase, or --phase2-report <dir>, or --all")
+
     db = load_paper_database(DB_PATH)
     print(f"Paper database: {db.get('num_entries',0)} entries, {db.get('num_parameters',0)} parameters")
+
+    out_default = Path(args.output or "reports")
 
     if args.all:
         dirs = _latest_report_dirs()
@@ -458,7 +785,7 @@ def main():
             print("No Phase 2 report directories found.")
             sys.exit(1)
         print(f"Running Phase 3 for {len(dirs)} reports...")
-        out_base = Path(args.output)
+        out_base = out_default
         for rdir in sorted(dirs, key=lambda p: p.name):
             disease = infer_disease(rdir)
             provider = rdir.name.split("_llm_")[1].split("_")[0] if "_llm_" in rdir.name else "unknown"
@@ -466,15 +793,14 @@ def main():
             run_for_report(rdir, out, use_rag=not args.no_rag, use_inference=not args.no_inference,
                            llm_provider=args.llm_provider)
 
-        # Overall report is created by select_best_model.py (PHASE3_OVERALL_REPORT.md in selected_models/)
         print(f"\n  Per-report outputs in: {out_base}/<disease>_<provider>_phase3/")
-        print("  Run select_best_model.py to pick one model per disease and generate PHASE3_OVERALL_REPORT.md")
+        print("  For Phase 4 on many models: run --showcase, then phase 4/run_phase4.py --create-selected-models; or pass --model to run_phase4.py per model_filled.compmodel.")
     else:
         rdir = Path(args.phase2_report)
         if not rdir.is_dir():
             print(f"Error: not a directory: {rdir}")
             sys.exit(1)
-        run_for_report(rdir, Path(args.output), use_rag=not args.no_rag, use_inference=not args.no_inference,
+        run_for_report(rdir, out_default, use_rag=not args.no_rag, use_inference=not args.no_inference,
                        llm_provider=args.llm_provider)
 
     print(f"\n{'='*60}")

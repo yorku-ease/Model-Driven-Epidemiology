@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-Build a Phase 3 recall summary table (Compartments / Flows / Parameters).
+Build Phase 3 recall tables and Phase 2 draft vs Phase 3 filled comparison.
 
-Reads phase3_validation.json (filled_vs_gold structural alignment) and
-phase3_gaps.json (parameter gaps) from each showcase run directory.
+1. Reads ``phase3_validation.json`` / ``phase3_gaps.json`` under each mode run
+   (default showcase directory: ``reports/``).
+2. If ``showcase_summary.json`` exists, recomputes fuzzy P2 draft vs P3 filled vs gold,
+   writes ``fuzzy_phase2_vs_phase3.json``, and appends that section to the markdown.
 
 Usage:
   cd "phase 3"
-  python3 build_phase3_results_md.py --showcase showcase_gemini -o RESULTS_PHASE3_GEMINI.md
-  python3 build_phase3_results_md.py --showcase showcase_claude -o RESULTS_PHASE3_CLAUDE.md
-
-  # Compare specific modes (default: all three)
-  python3 build_phase3_results_md.py --showcase showcase_gemini --mode both -o RESULTS_PHASE3_BOTH.md
+  python3 build_phase3_results_md.py
+  python3 build_phase3_results_md.py --showcase my_run -o RESULTS_PHASE3_CLAUDE.md
+  python3 build_phase3_results_md.py --mode both --skip-fuzzy
 """
 
 from __future__ import annotations
@@ -19,7 +19,11 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
+import xml.etree.ElementTree as ET
+from difflib import SequenceMatcher
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 PHASE3_DIR = Path(__file__).resolve().parent
 PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
@@ -51,6 +55,346 @@ DISEASE_ORDER = [
     "tuberculosis1","tuberculosis2","tuberculosis3",
     "zika1","zika2","zika3",
 ]
+
+
+SYNONYMS: List[Tuple[str, ...]] = [
+    ("exposed", "latent", "incubating"),
+    ("infectious", "infected", "symptomatic", "infective"),
+    ("recovered", "removed", "immune"),
+    ("dead", "deceased", "death"),
+    ("susceptible",),
+    ("vector", "mosquito"),
+]
+
+GREEK_TO_LATIN = {
+    "α": "alpha", "β": "beta", "γ": "gamma", "δ": "delta",
+    "ε": "epsilon", "ζ": "zeta", "η": "eta", "θ": "theta",
+    "ι": "iota", "κ": "kappa", "λ": "lambda", "μ": "mu",
+    "ν": "nu", "ξ": "xi", "π": "pi", "ρ": "rho",
+    "σ": "sigma", "τ": "tau", "φ": "phi", "χ": "chi",
+    "ψ": "psi", "ω": "omega",
+}
+
+
+def _norm(s: str) -> str:
+    """Lowercase, normalize Greek → Latin, strip non-alphanum."""
+    for g, l in GREEK_TO_LATIN.items():
+        s = s.replace(g, l)
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def _fuzzy_match(a: str, b: str) -> bool:
+    """Structural name match: substring or synonym group."""
+    an = _norm(a)
+    bn = _norm(b)
+    if not an or not bn:
+        return False
+    # Substring (handles 'recovered' ↔ 'recovered humans')
+    if an in bn or bn in an:
+        return True
+    # Synonym groups
+    a_words = set(re.split(r"[^a-z]+", a.lower()))
+    b_words = set(re.split(r"[^a-z]+", b.lower()))
+    for grp in SYNONYMS:
+        if any(w in grp for w in a_words) and any(w in grp for w in b_words):
+            return True
+    return False
+
+
+def _fuzzy_match_flow(sig_a: str, sig_b: str) -> bool:
+    """Match A->B against C->D by fuzzy-matching each side."""
+    if "->" not in sig_a or "->" not in sig_b:
+        return _fuzzy_match(sig_a, sig_b)
+    aa, _, ab = sig_a.partition("->")
+    ba, _, bb = sig_b.partition("->")
+    return _fuzzy_match(aa.strip(), ba.strip()) and _fuzzy_match(ab.strip(), bb.strip())
+
+
+def _seq_match(a: str, b: str, threshold: float) -> float:
+    return SequenceMatcher(None, _norm(a), _norm(b)).ratio()
+
+
+def _load_json_file(path: Path) -> Dict[str, Any]:
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+# ── XML parsing (identical for Phase 2 draft and Phase 3 filled) ───────────
+
+def _parse_compmodel(path: Path) -> Dict[str, List[str]]:
+    """Extract compartments, parameters, and flows from a .compmodel file."""
+    raw = path.read_text(encoding="utf-8", errors="replace")
+    if "xmlns:xsi" not in raw and "xsi:" in raw:
+        raw = raw.replace(
+            "xmlns:xmi=",
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xmi=',
+        )
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError:
+        return {"compartments": [], "parameters": [], "flows": []}
+
+    def ltag(el: ET.Element) -> str:
+        return el.tag.split("}")[-1] if "}" in el.tag else el.tag
+
+    comp_order: List[str] = []
+    for el in root:
+        if ltag(el) == "compartments":
+            p = (el.get("PrimaryName") or "").strip()
+            if p:
+                comp_order.append(p)
+
+    parameters: List[str] = []
+    for el in root.iter():
+        if ltag(el) == "parameters":
+            n = (el.get("name") or "").strip()
+            if n and n.lower() not in ("none", "n/a"):
+                parameters.append(n)
+
+    flows: List[str] = []
+    for el in root:
+        if ltag(el) != "compartments":
+            continue
+        src = (el.get("PrimaryName") or "").strip()
+        if not src:
+            continue
+        for child in el:
+            if "flow" not in ltag(child).lower():
+                continue
+            tgt_ref = (child.get("target") or "").strip()
+            m = re.search(r"compartments\.(\d+)", tgt_ref)
+            if m:
+                idx = int(m.group(1))
+                if 0 <= idx < len(comp_order):
+                    flows.append(f"{src}->{comp_order[idx]}")
+
+    return {
+        "compartments": list(dict.fromkeys(comp_order)),
+        "parameters": list(dict.fromkeys(parameters)),
+        "flows": list(dict.fromkeys(flows)),
+    }
+
+
+# ── Metrics ─────────────────────────────────────────────────────────────────
+
+def _struct_metrics(extracted: List[str], gold: List[str], is_flow: bool = False) -> Dict[str, Any]:
+    """Recall/precision using substring+synonym matching (same as gap_detector)."""
+    match_fn = _fuzzy_match_flow if is_flow else _fuzzy_match
+    tp_gold = sum(1 for g in gold if any(match_fn(g, e) for e in extracted))
+    tp_cand = sum(1 for e in extracted if any(match_fn(e, g) for g in gold))
+    prec = tp_cand / len(extracted) if extracted else (1.0 if not gold else 0.0)
+    rec = tp_gold / len(gold) if gold else 1.0
+    f1 = (2 * prec * rec / (prec + rec)) if (prec + rec) > 0 else 0.0
+    unmatched_gold = [g for g in gold if not any(match_fn(g, e) for e in extracted)]
+    unmatched_ext = [e for e in extracted if not any(match_fn(e, g) for g in gold)]
+    return {
+        "precision": round(prec, 4),
+        "recall": round(rec, 4),
+        "f1": round(f1, 4),
+        "gold_count": len(gold),
+        "extracted_count": len(extracted),
+        "tp_gold": tp_gold,
+        "unmatched_gold": unmatched_gold,
+        "unmatched_extracted": unmatched_ext,
+    }
+
+
+def _param_metrics(extracted: List[str], gold: List[str], threshold: float) -> Dict[str, Any]:
+    """Recall/precision for parameters: substring OR SequenceMatcher≥threshold."""
+    def match(a: str, b: str) -> bool:
+        an, bn = _norm(a), _norm(b)
+        if an and bn and (an in bn or bn in an):
+            return True
+        return SequenceMatcher(None, an, bn).ratio() >= threshold
+
+    tp_gold = sum(1 for g in gold if any(match(g, e) for e in extracted))
+    tp_cand = sum(1 for e in extracted if any(match(e, g) for g in gold))
+    prec = tp_cand / len(extracted) if extracted else (1.0 if not gold else 0.0)
+    rec = tp_gold / len(gold) if gold else 1.0
+    f1 = (2 * prec * rec / (prec + rec)) if (prec + rec) > 0 else 0.0
+    unmatched_gold = [g for g in gold if not any(match(g, e) for e in extracted)]
+    unmatched_ext = [e for e in extracted if not any(match(e, g) for g in gold)]
+    return {
+        "precision": round(prec, 4),
+        "recall": round(rec, 4),
+        "f1": round(f1, 4),
+        "gold_count": len(gold),
+        "extracted_count": len(extracted),
+        "tp_gold": tp_gold,
+        "unmatched_gold": unmatched_gold,
+        "unmatched_extracted": unmatched_ext,
+    }
+
+
+def _find_baseline(disease: str, baseline_dir: Path) -> Optional[Path]:
+    if not baseline_dir.is_dir():
+        return None
+    d = disease.lower()
+    # 1) Exact stem match anywhere in tree (handles data/diseases/covid/covid1.compmodel)
+    for cm in sorted(baseline_dir.glob(f"**/{d}.compmodel")):
+        return cm
+    # 2) Flat directory: stem contains disease name (legacy baseline_models/)
+    for cm in sorted(baseline_dir.glob("*.compmodel")):
+        if d in cm.stem.lower():
+            return cm
+    # 3) Subdirectory: stem contains disease name (data/diseases/<disease>/<stem>.compmodel)
+    for cm in sorted(baseline_dir.glob("**/*.compmodel")):
+        if d in cm.stem.lower():
+            return cm
+    return None
+
+
+# ── Per-disease evaluation ──────────────────────────────────────────────────
+
+def _evaluate_p2_draft_vs_p3_filled(
+    disease: str,
+    phase2_report_dir: Path,
+    phase3_dir: Path,
+    baseline_dir: Path,
+    param_threshold: float,
+) -> Dict[str, Any]:
+    baseline = _find_baseline(disease, baseline_dir)
+    if not baseline:
+        return {"disease": disease, "error": f"No baseline for: {disease}"}
+
+    phase2_draft = phase2_report_dir / "model_draft.compmodel"
+    filled_model = phase3_dir / "model_filled.compmodel"
+
+    if not phase2_draft.exists():
+        return {"disease": disease, "error": f"Missing model_draft.compmodel: {phase2_draft}"}
+    if not filled_model.exists():
+        return {"disease": disease, "error": f"Missing model_filled.compmodel: {filled_model}"}
+
+    gold = _parse_compmodel(baseline)
+    p2 = _parse_compmodel(phase2_draft)
+    p3 = _parse_compmodel(filled_model)
+    phase3_model_used = filled_model.name  # track which file was evaluated
+
+    # Compute with identical algorithm
+    p2_metrics = {
+        "compartments": _struct_metrics(p2["compartments"], gold["compartments"], is_flow=False),
+        "parameters": _param_metrics(p2["parameters"], gold["parameters"], param_threshold),
+        "flows": _struct_metrics(p2["flows"], gold["flows"], is_flow=True),
+    }
+    p3_metrics = {
+        "compartments": _struct_metrics(p3["compartments"], gold["compartments"], is_flow=False),
+        "parameters": _param_metrics(p3["parameters"], gold["parameters"], param_threshold),
+        "flows": _struct_metrics(p3["flows"], gold["flows"], is_flow=True),
+    }
+
+    def rec(blob: Dict[str, Any], key: str) -> float:
+        return float((blob.get(key) or {}).get("recall", 0.0))
+
+    delta = {
+        "compartments_recall_delta": round(rec(p3_metrics, "compartments") - rec(p2_metrics, "compartments"), 4),
+        "parameters_recall_delta": round(rec(p3_metrics, "parameters") - rec(p2_metrics, "parameters"), 4),
+        "flows_recall_delta": round(rec(p3_metrics, "flows") - rec(p2_metrics, "flows"), 4),
+    }
+
+    improvement = _load_json_file(phase3_dir / "phase3_improvement.json")
+
+    return {
+        "disease": disease,
+        "phase2_report_dir": str(phase2_report_dir),
+        "phase3_dir": str(phase3_dir),
+        "baseline": str(baseline),
+        "phase2_metrics": p2_metrics,
+        "phase3_metrics": p3_metrics,
+        "phase2_to_phase3_delta": delta,
+        "phase3_improvement": improvement.get("summary", {}),
+        "note": "Both Phase2 draft and Phase3 filled evaluated with identical substring+synonym matching vs same baseline.",
+    }
+
+
+def run_fuzzy_p2_vs_p3_evaluation(
+    showcase_dir: Path,
+    baseline_models_dir: Path,
+    param_threshold: float,
+) -> list[dict[str, Any]]:
+    """Run draft vs filled comparison for each disease (winner mode from showcase_summary.json)."""
+    summary_path = showcase_dir / "showcase_summary.json"
+    summary = _load_json_file(summary_path)
+    if not isinstance(summary, list):
+        return []
+    rows: list[dict[str, Any]] = []
+    for item in summary:
+        disease = item.get("disease")
+        winner_mode = item.get("winner_mode")
+        phase3_provider = item.get("phase3_llm_provider", "gemini")
+        if not disease or not winner_mode:
+            continue
+        phase2_report = Path(item.get("best_phase2_report", ""))
+        phase3_dir = showcase_dir / winner_mode / f"{disease}_{phase3_provider}_phase3"
+        row = _evaluate_p2_draft_vs_p3_filled(
+            disease=disease,
+            phase2_report_dir=phase2_report,
+            phase3_dir=phase3_dir,
+            baseline_dir=baseline_models_dir,
+            param_threshold=param_threshold,
+        )
+        row["winner_mode"] = winner_mode
+        rows.append(row)
+    return rows
+
+
+def format_fuzzy_p2_vs_p3_markdown(rows: list[dict[str, Any]], param_threshold: float) -> str:
+    lines: list[str] = [
+        "## Phase 2 draft vs Phase 3 filled (same fuzzy algorithm vs gold)",
+        "",
+        "Both Phase 2 draft (`model_draft.compmodel`) and Phase 3 filled (`model_filled.compmodel`) are",
+        "evaluated against the **same baseline** with **identical matching** (substring + synonym groups).",
+        f"Parameter threshold: **{param_threshold}**.",
+        "",
+        "| Disease | Winner mode | Phase2 recall (C/P/F) | Phase3 recall (C/P/F) | ΔRecall (C/P/F) | Gap Δ |",
+        "|---------|------------|----------------------|----------------------|----------------|-------|",
+    ]
+    sum_dc = sum_dp = sum_df = 0.0
+    improved_total = 0
+    valid_rows = [r for r in rows if "error" not in r]
+    for r in rows:
+        if "error" in r:
+            lines.append(f"| {r.get('disease','?')} | {r.get('winner_mode','?')} | ERROR | ERROR | ERROR | — |")
+            continue
+        d = r["phase2_to_phase3_delta"]
+        p2m = r["phase2_metrics"]
+        p3m = r["phase3_metrics"]
+        imp = r.get("phase3_improvement", {})
+        gap_delta = imp.get("delta_total_gaps", 0)
+
+        def fmt_rec(m: dict[str, Any], k: str) -> str:
+            v = m.get(k, {}).get("recall", 0.0)
+            return f"{v:.3f}"
+
+        p2str = f"{fmt_rec(p2m,'compartments')}/{fmt_rec(p2m,'parameters')}/{fmt_rec(p2m,'flows')}"
+        p3str = f"{fmt_rec(p3m,'compartments')}/{fmt_rec(p3m,'parameters')}/{fmt_rec(p3m,'flows')}"
+        dc = d["compartments_recall_delta"]
+        dp = d["parameters_recall_delta"]
+        df = d["flows_recall_delta"]
+        sum_dc += dc
+        sum_dp += dp
+        sum_df += df
+        if dc > 0 or dp > 0 or df > 0:
+            improved_total += 1
+        dstr = f"{dc:+.3f}/{dp:+.3f}/{df:+.3f}"
+        lines.append(
+            f"| {r['disease']} | **{r['winner_mode']}** | {p2str} | {p3str} | {dstr} | {gap_delta:+d} |"
+        )
+    n = max(1, len(valid_rows))
+    lines += [
+        "",
+        "### Aggregate (valid diseases only)",
+        "",
+        f"- Mean ΔRecall compartments: **{sum_dc/n:+.4f}**",
+        f"- Mean ΔRecall parameters:   **{sum_dp/n:+.4f}**",
+        f"- Mean ΔRecall flows:        **{sum_df/n:+.4f}**",
+        f"- Diseases with any positive ΔRecall component: **{improved_total}/{n}**",
+        "",
+        "**Notes:** C = compartments, P = parameters, F = flows. Gap Δ = gaps before − gaps after Phase 3.",
+    ]
+    return "\n".join(lines)
 
 
 def _fmt(v) -> str:
@@ -136,7 +480,7 @@ def best_p2_recall(disease: str, metric: str, fuzzy_p2: dict | None = None) -> f
     """Phase 2 recall for a disease.
 
     Prefers fuzzy_phase2_vs_phase3.json (identical methodology to Phase 3 eval).
-    Falls back to Phase 2's own evaluation_report_fuzzy_temp.json files.
+    Falls back to Phase 2 report folders: ``evaluation_report.json`` (fuzzy vs gold).
     """
     if fuzzy_p2 and disease in fuzzy_p2:
         return fuzzy_p2[disease].get(metric)
@@ -147,7 +491,7 @@ def best_p2_recall(disease: str, metric: str, fuzzy_p2: dict | None = None) -> f
     for d in reports.iterdir():
         if not d.name.startswith(f"{disease}_llm_"):
             continue
-        f = d / "evaluation_report_fuzzy_temp.json"
+        f = d / "evaluation_report.json"
         if not f.exists():
             continue
         try:
@@ -383,13 +727,32 @@ def build_md(data: dict, showcase_dir: Path, modes: list[str]) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build Phase 3 recall summary markdown.")
-    parser.add_argument("--showcase", type=str, default="showcase_gemini",
-                        help="Showcase directory name (default: showcase_gemini)")
+    parser = argparse.ArgumentParser(
+        description="Build Phase 3 recall summary + optional Phase 2 draft vs Phase 3 filled comparison.",
+    )
+    parser.add_argument("--showcase", type=str, default="reports",
+                        help="Showcase directory under phase 3 (default: reports)")
     parser.add_argument("--mode", type=str, choices=MODES + ["rag_only", "all"], default="all",
                         help="Which fill mode(s) to include (default: all)")
     parser.add_argument("-o", "--output", type=str, default=None,
-                        help="Output .md filename (default: RESULTS_PHASE3_<showcase>.md)")
+                        help="Output .md filename (default: RESULTS_PHASE3.md)")
+    parser.add_argument(
+        "--skip-fuzzy",
+        action="store_true",
+        help="Skip writing fuzzy_phase2_vs_phase3.json and the P2 vs P3 section (uses existing fuzzy JSON if present)",
+    )
+    parser.add_argument(
+        "--baseline-models-dir",
+        type=Path,
+        default=PHASE2_DIR / "data" / "diseases",
+        help="Gold .compmodel directory for fuzzy P2 vs P3 comparison (default: phase 2/data/diseases)",
+    )
+    parser.add_argument(
+        "--param-threshold",
+        type=float,
+        default=0.6,
+        help="SequenceMatcher threshold for parameter names in fuzzy comparison (default 0.6)",
+    )
     args = parser.parse_args()
 
     showcase_dir = PHASE3_DIR / args.showcase
@@ -401,13 +764,28 @@ def main():
         modes = MODES
     else:
         modes = [LEGACY_MODE_ALIASES.get(args.mode, args.mode)]
-    out_path = PHASE3_DIR / (args.output or f"RESULTS_PHASE3_{args.showcase.upper()}.md")
+    out_path = PHASE3_DIR / (args.output or "RESULTS_PHASE3.md")
+
+    summary_path = showcase_dir / "showcase_summary.json"
+    fuzzy_md = ""
+    if summary_path.exists() and not args.skip_fuzzy:
+        rows = run_fuzzy_p2_vs_p3_evaluation(
+            showcase_dir, args.baseline_models_dir, args.param_threshold
+        )
+        out_fuzzy = showcase_dir / "fuzzy_phase2_vs_phase3.json"
+        out_fuzzy.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"Wrote {out_fuzzy}")
+        fuzzy_md = format_fuzzy_p2_vs_p3_markdown(rows, args.param_threshold)
+    elif not args.skip_fuzzy and not (showcase_dir / "showcase_summary.json").exists():
+        print("Note: no showcase_summary.json — skipping fuzzy P2 vs P3 comparison.")
 
     print(f"Reading from: {showcase_dir}")
     data = load_showcase(showcase_dir)
     print(f"Found {len(data)} diseases across modes: {modes}")
 
     md = build_md(data, showcase_dir, modes)
+    if fuzzy_md:
+        md = md + "\n\n---\n\n" + fuzzy_md
     out_path.write_text(md, encoding="utf-8")
     print(f"Wrote {out_path}")
     return 0

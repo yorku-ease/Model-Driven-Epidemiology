@@ -8,5 +8,5 @@ For each disease: **best Phase 2** run among **gemini / openai / claude** (by ev
 
 ## How to read
 
-- **Winner** = lowest gap count, then highest parameter accuracy vs gold, then highest mean compartment/flow F1 (same ordering as `select_best_model.py`).
+- **Winner** = lowest gap count, then highest parameter accuracy vs gold, then highest mean compartment/flow F1.
 - Subfolders: `retrieval_only/`, `llm_only/`, `both/` each contain `<disease>_gemini_phase3/` with `phase3_gaps.json`, …, and `phase3_showcase_source.json` (which Phase 2 folder was used).
