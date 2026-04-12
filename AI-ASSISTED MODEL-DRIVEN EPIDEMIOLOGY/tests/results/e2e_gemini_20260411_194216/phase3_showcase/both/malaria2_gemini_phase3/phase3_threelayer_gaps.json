@@ -1,0 +1,87 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "treatedclinicaldisease",
+      "untreatedclinicaldisease",
+      "prophylaxis",
+      "asymptomaticpatentinfection",
+      "asymptomaticsubpatentinfection"
+    ],
+    "missing_parameters": [],
+    "missing_flows": [
+      "Susceptible->TreatedClinicalDisease",
+      "Susceptible->UntreatedClinicalDisease",
+      "Susceptible->AsymptomaticPatentInfection",
+      "TreatedClinicalDisease->Prophylaxis",
+      "UntreatedClinicalDisease->AsymptomaticPatentInfection",
+      "Prophylaxis->Susceptible",
+      "AsymptomaticPatentInfection->AsymptomaticSubPatentInfection",
+      "AsymptomaticSubPatentInfection->Susceptible"
+    ],
+    "summary": {
+      "missing_compartments": 5,
+      "missing_parameters": 0,
+      "missing_flows": 8,
+      "total": 13
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "exposed humans",
+      "untreated clinical disease humans",
+      "treated clinical disease humans",
+      "prophylactic protection humans",
+      "patent asymptomatic infection humans",
+      "sub-patent asymptomatic infection humans",
+      "exposed mosquitoes",
+      "infectious mosquitoes"
+    ],
+    "extra_parameters": [
+      "w",
+      "ft",
+      "rt",
+      "rp",
+      "rd",
+      "ru",
+      "eir",
+      "ddt half-life",
+      "rts,s vaccine efficacy half-life",
+      "act prophylactic protection duration",
+      "llin insecticide efficacy half-life"
+    ],
+    "extra_flows": [
+      "Susceptible Humans->Exposed Humans",
+      "Exposed Humans->Untreated Clinical Disease Humans",
+      "Exposed Humans->Patent Asymptomatic Infection Humans",
+      "Untreated Clinical Disease Humans->Treated Clinical Disease Humans",
+      "Untreated Clinical Disease Humans->Patent Asymptomatic Infection Humans",
+      "Treated Clinical Disease Humans->Prophylactic Protection Humans",
+      "Prophylactic Protection Humans->Susceptible Humans",
+      "Patent Asymptomatic Infection Humans->Sub-patent Asymptomatic Infection Humans",
+      "Sub-patent Asymptomatic Infection Humans->Susceptible Humans",
+      "Susceptible Mosquitoes->Exposed Mosquitoes",
+      "Exposed Mosquitoes->Infectious Mosquitoes"
+    ],
+    "summary": {
+      "extra_compartments": 8,
+      "extra_parameters": 11,
+      "extra_flows": 11,
+      "total": 30
+    }
+  },
+  "has_gold": true
+}

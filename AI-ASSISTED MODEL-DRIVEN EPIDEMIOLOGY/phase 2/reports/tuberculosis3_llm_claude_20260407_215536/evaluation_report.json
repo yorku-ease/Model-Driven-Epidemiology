@@ -21,74 +21,174 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 1,
-      "fp": 6,
-      "fn": 6,
-      "precision": 0.1429,
-      "recall": 0.1429,
-      "f1": 0.1429
-    },
-    "flows": {
-      "tp": 0,
-      "fp": 16,
-      "fn": 18,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0
+      "precision": 0.7142857142857143,
+      "recall": 0.7142857142857143,
+      "f1": 0.7142857142857143,
+      "tp": 5,
+      "fp": 2,
+      "fn": 2,
+      "matches": [
+        {
+          "extracted": "Recently Treated and Recovered",
+          "gold": "RecentlyTreatedRecovered",
+          "similarity": 0.9411764705882353
+        },
+        {
+          "extracted": "Uninfected",
+          "gold": "Uninfected",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Active TB Smear-Negative Pulmonary",
+          "gold": "ActiveTBSmearNegative",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Active TB Smear-Positive Pulmonary",
+          "gold": "ActiveTBSmearPositive",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Active TB Extrapulmonary",
+          "gold": "ActiveTBExtrapulmonary",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Remotely Infected Latent TB",
+        "Recently Infected Latent TB"
+      ],
+      "unmatched_gold": [
+        "RecentTBInfection",
+        "RemoteTBInfection"
+      ]
     },
     "parameters": {
-      "tp": 6,
-      "fp": 13,
-      "fn": 12,
-      "precision": 0.3158,
-      "recall": 0.3333,
-      "f1": 0.3243
+      "precision": 0.15789473684210525,
+      "recall": 0.16666666666666666,
+      "f1": 0.16216216216216214,
+      "tp": 3,
+      "fp": 16,
+      "fn": 15,
+      "matches": [
+        {
+          "extracted": "natural_cure_rate_smear_positive",
+          "gold": "TreatmentOrSelfCureRateSmearPositive",
+          "similarity": 0.8055555555555556
+        },
+        {
+          "extracted": "beta",
+          "gold": "InfectionRateFromSmearNegative",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "relative_infectiousness_smear_negative",
+          "gold": "ReinfectionRateFromSmearNegative",
+          "similarity": 0.7941176470588235
+        }
+      ],
+      "unmatched_extracted": [
+        "slow_progression_rate",
+        "population_growth_rate",
+        "natural_cure_rate_smear_negative_extrapulmonary",
+        "mortality_rate_smear_negative_extrapulmonary",
+        "relapse_rate",
+        "diagnostic_rate_smear_positive_2008",
+        "diagnostic_rate_smear_negative_2008",
+        "diagnostic_rate_extrapulmonary_2008",
+        "mortality_rate_smear_positive",
+        "proportion_extrapulmonary",
+        "rapid_progression_rate",
+        "proportion_smear_positive",
+        "treatment_success_notified_2008",
+        "informal_sector_size",
+        "relative_rate_early_progression",
+        "treatment_success_informal"
+      ],
+      "unmatched_gold": [
+        "ReinfectionRateFromSmearPositive",
+        "RelapseToExtrapulmonaryRate",
+        "InfectionRateFromSmearPositive",
+        "RapidProgressionToExtrapulmonaryRate",
+        "RemoteReactivationToSmearPositiveRate",
+        "RelapseToSmearNegativeRate",
+        "RecoveredToRemoteStabilizationRate",
+        "RapidProgressionToSmearNegativeRate",
+        "TreatmentOrSelfCureRateSmearNegative",
+        "TreatmentOrSelfCureRateExtrapulmonary",
+        "RemoteReactivationToExtrapulmonaryRate",
+        "RecentToRemoteStabilizationRate",
+        "RapidProgressionToSmearPositiveRate",
+        "RelapseToSmearPositiveRate",
+        "RemoteReactivationToSmearNegativeRate"
+      ]
     },
-    "composite_score": 0.1094,
-    "compartment_matches": [
-      {
-        "gold": "Uninfected",
-        "extracted": "Uninfected",
-        "score": 1.0
-      }
-    ],
-    "flow_matches": [],
-    "parameter_matches": [
-      {
-        "gold": "InfectionRateFromSmearPositive 0.30 Representative transmission intensity from smear-positive pulmonary TB; the paper fits transmission to incidence and assumes smear-positive disease is the main infectious class",
-        "extracted": "mortality_rate_smear_positive 0.23 TB-specific mortality rate for smear-positive pulmonary TB",
-        "score": 0.7697278261184692
-      },
-      {
-        "gold": "InfectionRateFromSmearNegative 0.066 Transmission intensity from smear-negative pulmonary TB, reflecting relative infectiousness of 0.22 compared with smear-positive cases in the paper",
-        "extracted": "diagnostic_rate_smear_positive_2008 0.41 Diagnostic rate for smear-positive pulmonary TB in 2008 (primary analysis)",
-        "score": 0.7874029278755188
-      },
-      {
-        "gold": "RemoteReactivationToSmearPositiveRate 0.000325 Slow progression / reactivation from remote TB infection to smear-positive disease",
-        "extracted": "slow_progression_rate 0.0005 Rate of slow progression (reactivation) of remote TB infection",
-        "score": 0.8070955276489258
-      },
-      {
-        "gold": "TreatmentOrSelfCureRateSmearNegative 0.43 Net rate of leaving active smear-negative TB through diagnosis and treatment or self-cure",
-        "extracted": "natural_cure_rate_smear_positive 0.10 Natural (spontaneous) cure rate for smear-positive pulmonary TB",
-        "score": 0.766441822052002
-      },
-      {
-        "gold": "TreatmentOrSelfCureRateExtrapulmonary 0.77 Net rate of leaving active extrapulmonary TB through diagnosis and treatment",
-        "extracted": "diagnostic_rate_extrapulmonary_2008 0.50 Diagnostic rate for extrapulmonary TB in 2008 (primary analysis)",
-        "score": 0.7928394079208374
-      },
-      {
-        "gold": "RelapseToExtrapulmonaryRate 0.004 Relapse from recently treated/recovered into active extrapulmonary TB",
-        "extracted": "relapse_rate 0.024 Relapse rate from recently treated/recovered to active TB (fit to proportion of retreatment cases)",
-        "score": 0.7256098389625549
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.375,
+      "recall": 0.375,
+      "f1": 0.375,
+      "tp": 6,
+      "fp": 10,
+      "fn": 10,
+      "matches": [
+        {
+          "extracted": "RecentlyTreatedRecovered->ActiveTBSmearPositive",
+          "gold": "RecentlyTreatedRecovered->ActiveTBSmearPositive",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "ActiveTBExtrapulmonary->RecentlyTreatedRecovered",
+          "gold": "ActiveTBExtrapulmonary->RecentlyTreatedRecovered",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "RecentlyTreatedRecovered->ActiveTBExtrapulmonary",
+          "gold": "RecentlyTreatedRecovered->ActiveTBExtrapulmonary",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "RecentlyTreatedRecovered->ActiveTBSmearNegative",
+          "gold": "RecentlyTreatedRecovered->ActiveTBSmearNegative",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "ActiveTBSmearNegative->RecentlyTreatedRecovered",
+          "gold": "ActiveTBSmearNegative->RecentlyTreatedRecovered",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "ActiveTBSmearPositive->RecentlyTreatedRecovered",
+          "gold": "ActiveTBSmearPositive->RecentlyTreatedRecovered",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Recently Infected Latent TB->ActiveTBSmearPositive",
+        "Remotely Infected Latent TB->Recently Infected Latent TB",
+        "Remotely Infected Latent TB->ActiveTBExtrapulmonary",
+        "Recently Infected Latent TB->ActiveTBSmearNegative",
+        "Remotely Infected Latent TB->ActiveTBSmearPositive",
+        "Recently Infected Latent TB->ActiveTBExtrapulmonary",
+        "RecentlyTreatedRecovered->Recently Infected Latent TB",
+        "Remotely Infected Latent TB->ActiveTBSmearNegative",
+        "Recently Infected Latent TB->Remotely Infected Latent TB",
+        "Uninfected->Recently Infected Latent TB"
+      ],
+      "unmatched_gold": [
+        "RecentTBInfection->ActiveTBSmearNegative",
+        "RemoteTBInfection->RecentTBInfection",
+        "RemoteTBInfection->ActiveTBExtrapulmonary",
+        "Uninfected->RecentTBInfection",
+        "RemoteTBInfection->ActiveTBSmearPositive",
+        "RecentTBInfection->RemoteTBInfection",
+        "RecentTBInfection->ActiveTBSmearPositive",
+        "RecentlyTreatedRecovered->RemoteTBInfection",
+        "RemoteTBInfection->ActiveTBSmearNegative",
+        "RecentTBInfection->ActiveTBExtrapulmonary"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

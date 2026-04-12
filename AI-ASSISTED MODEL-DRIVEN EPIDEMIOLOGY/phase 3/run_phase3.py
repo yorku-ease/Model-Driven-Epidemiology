@@ -82,16 +82,22 @@ def infer_disease(report_dir: Path) -> str:
 
 
 def _latest_report_dirs() -> list:
-    """Find the latest Phase 2 report dir for each (disease, provider)."""
+    """Find the latest Phase 2 report dir for each (disease, provider).
+
+    Scans ``phase 2/reports/`` recursively (same rules as ``build_database._latest_reports``)
+    so nested runs (e.g. under ``_e2e_*/``) are included.
+    """
     reports = PHASE2_DIR / "reports"
     if not reports.is_dir():
         return []
     grouped: dict = {}
-    for d in sorted(reports.iterdir()):
+    for d in sorted(reports.rglob("*")):
         if not d.is_dir() or "_llm_" not in d.name:
             continue
         parts = d.name.split("_llm_")
         if len(parts) != 2:
+            continue
+        if not ((d / "model_draft.compmodel").is_file() or (d / "paper_text.json").is_file()):
             continue
         disease = parts[0]
         provider = parts[1].split("_")[0]
@@ -487,10 +493,14 @@ def phase2_extractor_from_report_dir(report_dir: Path) -> str:
 
 def discover_all_phase2_reports_for_disease(reports_dir: Path, disease: str) -> List[Path]:
     prefix = f"{disease}_llm_"
-    return sorted(
-        [p for p in reports_dir.iterdir() if p.is_dir() and p.name.startswith(prefix)],
-        key=lambda p: p.name,
-    )
+    out: List[Path] = []
+    for p in sorted(reports_dir.rglob("*")):
+        if not p.is_dir() or not p.name.startswith(prefix) or "_llm_" not in p.name:
+            continue
+        if not ((p / "model_draft.compmodel").is_file() or (p / "paper_text.json").is_file()):
+            continue
+        out.append(p)
+    return sorted(out, key=lambda p: p.name)
 
 
 def best_phase2_report(
@@ -511,8 +521,10 @@ def best_phase2_report(
 
 def all_diseases_with_reports(reports_dir: Path) -> List[str]:
     diseases: set = set()
-    for d in reports_dir.iterdir():
+    for d in sorted(reports_dir.rglob("*")):
         if not d.is_dir() or "_llm_" not in d.name:
+            continue
+        if not ((d / "model_draft.compmodel").is_file() or (d / "paper_text.json").is_file()):
             continue
         diseases.add(infer_disease(d))
     return sorted(diseases)

@@ -1,0 +1,346 @@
+{
+  "modelName": "Malaria2",
+  "summary": {
+    "modelName": "Malaria2",
+    "totalPopulation": null,
+    "numCompartments": 10,
+    "numParameters": 13,
+    "numGroups": 0,
+    "numProducts": 0,
+    "numExternalSources": 0,
+    "numExternalSinks": 0,
+    "hasStratification": false,
+    "hasParameters": true,
+    "hasVectorCompartments": true,
+    "hasTemperatureDependent": false
+  },
+  "data": {
+    "modelInfo": {
+      "totalPopulation": null,
+      "globalBirthRate": "0",
+      "globalDeathRate": "0"
+    },
+    "compartments": [
+      {
+        "index": 0,
+        "primaryName": "Susceptible Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.1",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.1",
+            "description": "Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "primaryName": "Exposed Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.2",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from the exposed (pre-patent) stage to clinical disease (with probability w).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "primaryName": "Untreated Clinical Disease Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.3",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Successful treatment of clinical disease (with probability fT).",
+            "stratumSpecificRates": []
+          },
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.5",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "primaryName": "Treated Clinical Disease Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.4",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Entry into a period of prophylactic protection after successful treatment (with rate rT).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "primaryName": "Prophylactic Protection Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Loss of prophylactic protection, returning to the susceptible state (with rate rP).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "primaryName": "Patent Asymptomatic Infection Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.6",
+            "rate": "",
+            "rateParameter": "//@parameters.6",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "primaryName": "Sub-patent Asymptomatic Infection Humans",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.0",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU).",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "primaryName": "Susceptible Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.8",
+            "rate": "",
+            "rateParameter": "",
+            "contactRate": "",
+            "contactRateParameter": "//@parameters.0",
+            "contactCompartment": "//@compartments.8",
+            "description": "Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "primaryName": "Exposed Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": [
+          {
+            "type": "RateFlow",
+            "target": "//@compartments.9",
+            "rate": "",
+            "rateParameter": "//@parameters.0",
+            "contactRate": "",
+            "contactRateParameter": "",
+            "contactCompartment": "",
+            "description": "Progression from the latent (exposed) state to the infectious state in mosquitoes.",
+            "stratumSpecificRates": []
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "primaryName": "Infectious Mosquitoes",
+        "secondaryName": "",
+        "population": "0",
+        "product": "",
+        "outgoingFlows": []
+      }
+    ],
+    "parameters": [
+      {
+        "index": 0,
+        "name": "L",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity.",
+        "unit": "per person per time"
+      },
+      {
+        "index": 1,
+        "name": "w",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Probability of developing clinical disease upon infection, determined by anti-disease immunity.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 2,
+        "name": "fT",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Fixed probability of successful treatment for clinical disease.",
+        "unit": "dimensionless"
+      },
+      {
+        "index": 3,
+        "name": "rT",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Rate of entering prophylactic protection after successful treatment.",
+        "unit": "per time"
+      },
+      {
+        "index": 4,
+        "name": "rP",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Rate of returning to the susceptible state from prophylactic protection.",
+        "unit": "per time"
+      },
+      {
+        "index": 5,
+        "name": "rD",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Rate of clearing untreated clinical disease and becoming patently asymptomatic.",
+        "unit": "per time"
+      },
+      {
+        "index": 6,
+        "name": "rA",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity.",
+        "unit": "per time"
+      },
+      {
+        "index": 7,
+        "name": "rU",
+        "type": "CONSTANT",
+        "expression": "Varies",
+        "description": "Rate of clearing sub-patent infection and returning to the susceptible state.",
+        "unit": "per time"
+      },
+      {
+        "index": 8,
+        "name": "EIR",
+        "type": "CONSTANT",
+        "expression": "3 to 675 (fitted annual values)",
+        "description": "Entomological Inoculation Rate, representing the intensity of transmission in different settings.",
+        "unit": "ibppy (infectious bites per person per year)"
+      },
+      {
+        "index": 9,
+        "name": "DDT half-life",
+        "type": "CONSTANT",
+        "expression": "6",
+        "description": "Half-life of DDT insecticide used in Indoor Residual Spraying (IRS).",
+        "unit": "months"
+      },
+      {
+        "index": 10,
+        "name": "RTS,S vaccine efficacy half-life",
+        "type": "CONSTANT",
+        "expression": "3",
+        "description": "Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy.",
+        "unit": "years"
+      },
+      {
+        "index": 11,
+        "name": "ACT prophylactic protection duration",
+        "type": "CONSTANT",
+        "expression": "25",
+        "description": "Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs).",
+        "unit": "days"
+      },
+      {
+        "index": 12,
+        "name": "LLIN insecticide efficacy half-life",
+        "type": "CONSTANT",
+        "expression": "2.64",
+        "description": "Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs).",
+        "unit": "years"
+      }
+    ],
+    "groups": [],
+    "products": [],
+    "externalSources": [],
+    "externalSinks": []
+  }
+}

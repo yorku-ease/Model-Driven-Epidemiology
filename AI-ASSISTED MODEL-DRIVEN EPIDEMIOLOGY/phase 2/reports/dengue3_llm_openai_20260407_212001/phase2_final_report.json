@@ -282,44 +282,112 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 0,
-        "fp": 5,
-        "fn": 9,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
-      },
-      "flows": {
-        "tp": 0,
-        "fp": 4,
-        "fn": 9,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
+        "precision": 0.4,
+        "recall": 0.2222222222222222,
+        "f1": 0.2857142857142857,
+        "tp": 2,
+        "fp": 3,
+        "fn": 7,
+        "matches": [
+          {
+            "extracted": "Susceptible Humans",
+            "gold": "PrimarySusceptible",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible Mosquitoes",
+            "gold": "SecondarySusceptible",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "Infected Mosquitoes",
+          "Infected Humans",
+          "Recovered Humans"
+        ],
+        "unmatched_gold": [
+          "PostPrimaryImmune",
+          "PostSecondaryImmune",
+          "PrimaryExposed",
+          "VaccinatedSilentInfection",
+          "SecondaryInfectious",
+          "PrimaryInfectious",
+          "PostVaccinationSusceptible"
+        ]
       },
       "parameters": {
+        "precision": 0.05263157894736842,
+        "recall": 0.125,
+        "f1": 0.07407407407407407,
         "tp": 1,
         "fp": 18,
         "fn": 7,
-        "precision": 0.0526,
-        "recall": 0.125,
-        "f1": 0.0741
+        "matches": [
+          {
+            "extracted": "Age at routine vaccination",
+            "gold": "RoutineVaccinationRate",
+            "similarity": 0.8
+          }
+        ],
+        "unmatched_extracted": [
+          "Societal cost, symptomatic case",
+          "Public payer cost, symptomatic case",
+          "Trial simulation horizon",
+          "Public payer cost, hospitalised case",
+          "Alternative vaccination ages",
+          "Symptomatic dengue DALY burden",
+          "Vaccination coverage",
+          "Probability of death among symptomatic dengue cases",
+          "Catch-up campaign coverage",
+          "Severe dengue DALY burden",
+          "Societal cost, fatal case",
+          "Discount rate",
+          "Transmission intensity (SP9)",
+          "Dose interval",
+          "Time horizon after vaccination",
+          "Vaccination schedule",
+          "DALY cost threshold",
+          "Societal cost, hospitalised case"
+        ],
+        "unmatched_gold": [
+          "SecondaryTransmissionRate",
+          "RecoveryRate",
+          "PostVaccinationTransmissionRate",
+          "IncubationRate",
+          "VaccineCrossProtectionWaningRate",
+          "PrimaryTransmissionRate",
+          "NaturalCrossProtectionWaningRate"
+        ]
       },
-      "composite_score": 0.0111,
-      "compartment_matches": [],
-      "flow_matches": [],
-      "parameter_matches": [
-        {
-          "gold": "RoutineVaccinationRate 0.05 Routine vaccination of 9-year-olds",
-          "extracted": "Vaccination coverage 80% Default routine vaccination coverage for 9-year-old children.",
-          "score": 0.7974532842636108
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "flows": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 4,
+        "fn": 9,
+        "matches": [],
+        "unmatched_extracted": [
+          "Infected Humans->Recovered Humans",
+          "SecondarySusceptible->Infected Mosquitoes",
+          "Infected Mosquitoes->SecondarySusceptible",
+          "PrimarySusceptible->Infected Humans"
+        ],
+        "unmatched_gold": [
+          "PostPrimaryImmune->SecondarySusceptible",
+          "VaccinatedSilentInfection->PostVaccinationSusceptible",
+          "SecondarySusceptible->SecondaryInfectious",
+          "SecondaryInfectious->PostSecondaryImmune",
+          "PrimaryInfectious->PostPrimaryImmune",
+          "PrimaryExposed->PrimaryInfectious",
+          "PrimarySusceptible->PrimaryExposed",
+          "PostVaccinationSusceptible->SecondaryInfectious",
+          "PrimarySusceptible->VaccinatedSilentInfection"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

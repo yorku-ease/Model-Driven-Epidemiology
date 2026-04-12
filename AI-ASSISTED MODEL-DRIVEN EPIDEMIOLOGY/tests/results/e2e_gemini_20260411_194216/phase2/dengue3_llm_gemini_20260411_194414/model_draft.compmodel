@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Vaccination_Age" expression="9" type="CONSTANT" description="Age of children targeted for routine vaccination." unit="years"/>
+  <parameters name="Vaccination_Coverage" expression="80" type="CONSTANT" description="Coverage rate for the three-dose vaccination schedule." unit="%"/>
+  <parameters name="Vaccination_Doses" expression="3" type="CONSTANT" description="Number of doses in the vaccination schedule." unit="doses"/>
+  <parameters name="Vaccination_Dose_Interval" expression="6" type="CONSTANT" description="Interval between vaccine doses." unit="months"/>
+  <parameters name="Human_Mean_Lifespan" expression="67.5" type="CONSTANT" description="Mean lifespan of humans (used for generic demography model)." unit="years"/>
+  <parameters name="Case_Fatality_Rate_Symptomatic_Dengue" expression="0.03-0.09" type="CONSTANT" description="Probability of death for symptomatic dengue cases." unit="%"/>
+  <parameters name="Symptomatic_Dengue_DALYs" expression="0.006" type="CONSTANT" description="Disability-adjusted life years incurred per symptomatic dengue case." unit="DALYs"/>
+  <parameters name="Severe_Dengue_DALYs" expression="0.02" type="CONSTANT" description="Disability-adjusted life years incurred per severe dengue case." unit="DALYs"/>
+  <parameters name="Cost_Symptomatic_Public_LatinAmerica" expression="60" type="CONSTANT" description="Cost of a symptomatic dengue case from a public payer perspective in a Latin American-like setting." unit="$USD"/>
+  <parameters name="Cost_Hospitalised_Public_LatinAmerica" expression="200" type="CONSTANT" description="Cost of a hospitalised dengue case from a public payer perspective in a Latin American-like setting." unit="$USD"/>
+  <parameters name="Cost_Symptomatic_Societal_LatinAmerica" expression="200" type="CONSTANT" description="Cost of a symptomatic dengue case from a societal perspective in a Latin American-like setting." unit="$USD"/>
+  <parameters name="Cost_Hospitalised_Societal_LatinAmerica" expression="500" type="CONSTANT" description="Cost of a hospitalised dengue case from a societal perspective in a Latin American-like setting." unit="$USD"/>
+  <parameters name="Cost_Fatal_Societal_LatinAmerica" expression="11000" type="CONSTANT" description="Cost of a fatal dengue case from a societal perspective in a Latin American-like setting." unit="$USD"/>
+  <parameters name="Cost_Symptomatic_Public_SoutheastAsia" expression="20" type="CONSTANT" description="Cost of a symptomatic dengue case from a public payer perspective in a Southeast Asian-like setting." unit="$USD"/>
+  <parameters name="Cost_Hospitalised_Public_SoutheastAsia" expression="400" type="CONSTANT" description="Cost of a hospitalised dengue case from a public payer perspective in a Southeast Asian-like setting." unit="$USD"/>
+  <parameters name="Cost_Symptomatic_Societal_SoutheastAsia" expression="40" type="CONSTANT" description="Cost of a symptomatic dengue case from a societal perspective in a Southeast Asian-like setting." unit="$USD"/>
+  <parameters name="Cost_Hospitalised_Societal_SoutheastAsia" expression="500" type="CONSTANT" description="Cost of a hospitalised dengue case from a societal perspective in a Southeast Asian-like setting." unit="$USD"/>
+  <parameters name="Cost_Fatal_Societal_SoutheastAsia" expression="3000" type="CONSTANT" description="Cost of a fatal dengue case from a societal perspective in a Southeast Asian-like setting." unit="$USD"/>
+  <parameters name="Discount_Rate_Health_Costs" expression="3" type="CONSTANT" description="Annual discount rate applied to costs and health effects." unit="% per year"/>
+  <parameters name="Time_Horizon_Evaluation" expression="30" type="CONSTANT" description="Time horizon for evaluating the impact of vaccination." unit="years"/>
+  <parameters name="Threshold_Cost_Per_DALY_Averted_BaseCase" expression="2000" type="CONSTANT" description="Base case threshold cost per DALY averted for cost-effectiveness analysis." unit="$USD"/>
+  <compartments PrimaryName="Susceptible Humans (Naive)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.2" contactRate="0.0" target="//@compartments.2" description="Natural dengue infection of naive susceptible humans by infectious mosquitoes."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.1" description="Vaccination of naive susceptible humans."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated Humans (Naive)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRate="0.0" target="//@compartments.5" description="Breakthrough dengue infection in naive vaccinated humans, which behaves immunologically as a secondary infection."/>
+  </compartments>
+  <compartments PrimaryName="Infected Humans (Primary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.3" description="Recovery from a primary dengue infection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Post-Primary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.4" description="Vaccination of humans who have recovered from one prior natural dengue infection."/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.5" contactRate="0.0" target="//@compartments.5" description="Natural dengue infection of humans who have recovered from a primary infection (secondary infection)."/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated Humans (Post-Primary)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRate="0.0" target="//@compartments.7" description="Breakthrough dengue infection in vaccinated humans with one prior natural infection, which behaves immunologically as a postsecondary infection."/>
+  </compartments>
+  <compartments PrimaryName="Infected Humans (Secondary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.6" description="Recovery from a secondary dengue infection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Post-Secondary)" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.7" contactRate="0.0" target="//@compartments.7" description="Natural dengue infection of humans who have recovered from a secondary infection (postsecondary infection)."/>
+  </compartments>
+  <compartments PrimaryName="Infected Humans (Postsecondary)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.8" description="Recovery from a postsecondary dengue infection."/>
+  </compartments>
+  <compartments PrimaryName="Recovered Humans (Post-Postsecondary)" population="0"/>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.10" contactRate="0.0" target="//@compartments.10" description="Infection of susceptible mosquitoes by infected humans (from any infected human compartment)."/>
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rate="0.0" target="//@compartments.11" description="Progression of exposed mosquitoes to the infectious state after the extrinsic incubation period."/>
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0"/>
+</compartmental:CompartmentalModel>

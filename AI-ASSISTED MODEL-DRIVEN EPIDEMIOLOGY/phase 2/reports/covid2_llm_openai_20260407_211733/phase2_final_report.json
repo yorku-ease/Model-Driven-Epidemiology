@@ -179,81 +179,116 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 3,
-        "fp": 1,
-        "fn": 1,
-        "precision": 0.75,
-        "recall": 0.75,
-        "f1": 0.75
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Recovered/Removed",
+            "gold": "Removed",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Exposed",
+            "gold": "Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious",
+            "gold": "Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0.7142857142857143,
+        "recall": 0.38461538461538464,
+        "f1": 0.5,
+        "tp": 5,
+        "fp": 2,
+        "fn": 8,
+        "matches": [
+          {
+            "extracted": "c",
+            "gold": "c",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "r",
+            "gold": "r",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "epsilon",
+            "gold": "epsilon",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "R0",
+            "gold": "R0",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "average infectious period",
+            "gold": "infectiousPeriod",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "time from onset to first medical visit and isolation",
+          "average time spent exposed but not infectious"
+        ],
+        "unmatched_gold": [
+          "baseRemovalRate",
+          "mobilityRestrictionMultiplier",
+          "N",
+          "contactReductionMultiplier",
+          "initialSeed",
+          "incubationPeriod",
+          "baseContactRate",
+          "detectionIsolationMultiplier"
+        ]
       },
       "flows": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
         "tp": 3,
         "fp": 0,
         "fn": 0,
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0
+        "matches": [
+          {
+            "extracted": "Infectious->Removed",
+            "gold": "Infectious->Removed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible->Exposed",
+            "gold": "Susceptible->Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed->Infectious",
+            "gold": "Exposed->Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
       },
-      "parameters": {
-        "tp": 2,
-        "fp": 5,
-        "fn": 11,
-        "precision": 0.2857,
-        "recall": 0.1538,
-        "f1": 0.2
-      },
-      "composite_score": 0.7737,
-      "compartment_matches": [
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible",
-          "score": 1.0
-        },
-        {
-          "gold": "Exposed",
-          "extracted": "Exposed",
-          "score": 1.0
-        },
-        {
-          "gold": "Infectious",
-          "extracted": "Infectious",
-          "score": 1.0000001192092896
-        }
-      ],
-      "flow_matches": [
-        {
-          "gold": "Susceptible->Exposed",
-          "extracted": "Susceptible->Exposed",
-          "score": 1.0
-        },
-        {
-          "gold": "Exposed->Infectious",
-          "extracted": "Exposed->Infectious",
-          "score": 1.0
-        },
-        {
-          "gold": "Infectious->Removed",
-          "extracted": "Infectious->Recovered/Removed",
-          "score": 0.910893976688385
-        }
-      ],
-      "parameter_matches": [
-        {
-          "gold": "epsilon 1 / incubationPeriod Rate of progression from exposed to infectious",
-          "extracted": "epsilon inverse of average incubation period Rate of progression from exposed to infectious.",
-          "score": 0.9265601634979248
-        },
-        {
-          "gold": "infectiousPeriod 5.8 Average infectious period proxy based on onset-to-isolation timing used before strong interventions",
-          "extracted": "time from onset to first medical visit and isolation 5.8 Used as a proxy for average infectious period under improved case identification and isolation.",
-          "score": 0.7651013731956482
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

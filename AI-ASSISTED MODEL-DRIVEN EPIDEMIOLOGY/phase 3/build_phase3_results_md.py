@@ -755,7 +755,8 @@ def main():
     )
     args = parser.parse_args()
 
-    showcase_dir = PHASE3_DIR / args.showcase
+    raw_show = Path(args.showcase)
+    showcase_dir = raw_show.resolve() if raw_show.is_absolute() else (PHASE3_DIR / raw_show).resolve()
     if not showcase_dir.is_dir():
         print(f"Error: showcase directory not found: {showcase_dir}")
         return 1
@@ -764,7 +765,11 @@ def main():
         modes = MODES
     else:
         modes = [LEGACY_MODE_ALIASES.get(args.mode, args.mode)]
-    out_path = PHASE3_DIR / (args.output or "RESULTS_PHASE3.md")
+    if args.output:
+        raw_out = Path(args.output)
+        out_path = raw_out.resolve() if raw_out.is_absolute() else (PHASE3_DIR / raw_out).resolve()
+    else:
+        out_path = PHASE3_DIR / "RESULTS_PHASE3.md"
 
     summary_path = showcase_dir / "showcase_summary.json"
     fuzzy_md = ""

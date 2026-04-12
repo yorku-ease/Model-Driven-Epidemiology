@@ -21,75 +21,157 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 2,
-      "fp": 2,
-      "fn": 9,
-      "precision": 0.5,
-      "recall": 0.1818,
-      "f1": 0.2667
-    },
-    "flows": {
+      "precision": 1.0,
+      "recall": 0.36363636363636365,
+      "f1": 0.5333333333333333,
       "tp": 4,
-      "fp": 1,
-      "fn": 17,
-      "precision": 0.8,
-      "recall": 0.1905,
-      "f1": 0.3077
+      "fp": 0,
+      "fn": 7,
+      "matches": [
+        {
+          "extracted": "Infectious",
+          "gold": "Asymptomatic infectious",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Recovered",
+          "gold": "Recovered / naturally immune",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible adults",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Vaccinated",
+          "gold": "Vaccinated adults (one dose)",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": [
+        "Vaccinated adults (two doses)",
+        "Exposed / recently infected",
+        "Vaccinated children under 5 (two doses)",
+        "Symptomatic infectious",
+        "Vaccinated children under 5 (one dose)",
+        "Susceptible children under 5",
+        "Environmental Vibrio cholerae reservoir"
+      ]
     },
     "parameters": {
+      "precision": 0.0625,
+      "recall": 0.04,
+      "f1": 0.048780487804878044,
       "tp": 1,
       "fp": 15,
       "fn": 24,
-      "precision": 0.0625,
-      "recall": 0.04,
-      "f1": 0.0488
+      "matches": [
+        {
+          "extracted": "VE_child_multiplier",
+          "gold": "\u03bc",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [
+        "VE_child_two_dose",
+        "baseline_two_dose_coverage",
+        "high_no_vaccine",
+        "two_dept_doses",
+        "VE_adult_two_dose",
+        "projection_period",
+        "three_dept_doses",
+        "baseline_one_dose_coverage",
+        "high_coverage_national_doses",
+        "high_one_dose_coverage",
+        "baseline_no_vaccine",
+        "national_doses",
+        "elimination_threshold",
+        "vaccine_protection_duration",
+        "high_two_dose_coverage"
+      ],
+      "unmatched_gold": [
+        "\u039bC",
+        "\u03c9R",
+        "\u03c92",
+        "VE2A",
+        "\u03b2C",
+        "\u03bd1",
+        "(1-\u03c3)*k",
+        "\u03c3*k",
+        "\u03b4",
+        "VE2C",
+        "\u03beA",
+        "\u03b2C_1dose",
+        "\u03c91",
+        "\u03b3",
+        "VE1A",
+        "\u03b2C_2dose",
+        "\u03bd2",
+        "\u03bcB",
+        "\u03b2A_1dose",
+        "\u039bA",
+        "\u03b2A",
+        "\u03beS",
+        "\u03b2A_2dose",
+        "VE1C"
+      ]
     },
-    "composite_score": 0.2514,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible adults",
-        "extracted": "Susceptible",
-        "score": 0.7623840570449829
-      },
-      {
-        "gold": "Symptomatic infectious",
-        "extracted": "Infectious",
-        "score": 0.7419862151145935
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible adults->Exposed / recently infected",
-        "extracted": "Susceptible->Infectious",
-        "score": 0.7169755101203918
-      },
-      {
-        "gold": "Susceptible adults->Vaccinated adults (one dose)",
-        "extracted": "Susceptible->Vaccinated",
-        "score": 0.7108601331710815
-      },
-      {
-        "gold": "Vaccinated adults (one dose)->Susceptible adults",
-        "extracted": "Vaccinated->Susceptible",
-        "score": 0.7306115627288818
-      },
-      {
-        "gold": "Symptomatic infectious->Recovered / naturally immune",
-        "extracted": "Infectious->Recovered",
-        "score": 0.7411535978317261
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "VE2C 0.469 * VE2A Two-dose vaccine effectiveness in children under 5, scaled as 46.9% of adult protection",
-        "extracted": "VE_child_two_dose 30 Vaccine efficacy in children younger than 5 years",
-        "score": 0.8307862281799316
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.8,
+      "recall": 0.19047619047619047,
+      "f1": 0.3076923076923077,
+      "tp": 4,
+      "fp": 1,
+      "fn": 17,
+      "matches": [
+        {
+          "extracted": "Vaccinated adults (one dose)->Susceptible adults",
+          "gold": "Vaccinated adults (one dose)->Susceptible adults",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible adults->Vaccinated adults (one dose)",
+          "gold": "Susceptible adults->Vaccinated adults (one dose)",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Recovered / naturally immune->Susceptible adults",
+          "gold": "Recovered / naturally immune->Susceptible adults",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Asymptomatic infectious->Recovered / naturally immune",
+          "gold": "Asymptomatic infectious->Recovered / naturally immune",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Susceptible adults->Asymptomatic infectious"
+      ],
+      "unmatched_gold": [
+        "Susceptible adults->Exposed / recently infected",
+        "Vaccinated children under 5 (two doses)->Susceptible children under 5",
+        "Susceptible adults->Vaccinated adults (two doses)",
+        "Vaccinated adults (one dose)->Exposed / recently infected",
+        "Susceptible children under 5->Vaccinated children under 5 (one dose)",
+        "Vaccinated adults (two doses)->Susceptible adults",
+        "Susceptible children under 5->Exposed / recently infected",
+        "Vaccinated children under 5 (two doses)->Exposed / recently infected",
+        "Vaccinated children under 5 (one dose)->Susceptible children under 5",
+        "Vaccinated children under 5 (one dose)->Exposed / recently infected",
+        "Exposed / recently infected->Asymptomatic infectious",
+        "Symptomatic infectious->Recovered / naturally immune",
+        "Susceptible children under 5->Vaccinated children under 5 (two doses)",
+        "Exposed / recently infected->Symptomatic infectious",
+        "Symptomatic infectious->Environmental Vibrio cholerae reservoir",
+        "Vaccinated adults (two doses)->Exposed / recently infected",
+        "Asymptomatic infectious->Environmental Vibrio cholerae reservoir"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

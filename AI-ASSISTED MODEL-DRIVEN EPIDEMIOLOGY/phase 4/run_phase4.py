@@ -8,22 +8,25 @@ Monte Carlo simulation, sensitivity analysis, visualization, and report.
 
 Usage:
   # Run on all filled models from a Phase 3 showcase directory (recommended)
-  python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --output reports
+  python run_phase4.py --showcase-dir "../phase 3/reports" --output reports
 
   # Only a specific fill mode (default: both)
-  python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --mode retrieval_only --output reports
+  python run_phase4.py --showcase-dir "../phase 3/reports" --mode retrieval_only --output reports
 
   # Auto mode: picks best fill strategy per paper based on recall + param gap score
-  python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --mode auto --output reports
+  python run_phase4.py --showcase-dir "../phase 3/reports" --mode auto --output reports
 
   # Legacy: run on Phase 3 selected_models layout (one subdir per disease)
   python run_phase4.py --selected-models "../phase 3/selected_models" --output reports
+
+  # Build selected_models/ from a showcase directory (copy only; no Monte Carlo)
+  python run_phase4.py --create-selected-models --showcase-dir "../phase 3/reports" --mode both
 
   # Run on a single model
   python run_phase4.py --model path/to/model_filled.compmodel --output reports/single
 
   # Fewer samples for quick test
-  python run_phase4.py --showcase-dir "../phase 3/showcase_gemini" --output reports --samples 100
+  python run_phase4.py --showcase-dir "../phase 3/reports" --output reports --samples 100
 """
 
 import argparse
@@ -36,23 +39,18 @@ sys.path.insert(0, str(PHASE4_DIR))
 
 from src.distributions import assign_distributions
 from src.monte_carlo import run_monte_carlo
+from src.selected_models import (
+    ALL_MODES,
+    MODE_ALIASES,
+    populate_selected_models_from_showcase,
+    resolve_showcase_mode_dir,
+    run_dir_stem,
+)
 from src.sensitivity import run_sensitivity
 from src.visualization import plot_uncertainty_bands, plot_sensitivity_tornado
 from src.report import generate_report
 
 FRAMEWORK_PATH = PHASE4_DIR / "data" / "general_framework.json"
-ALL_MODES = ["retrieval_only", "llm_only", "both"]
-MODE_ALIASES = {"rag_only": "retrieval_only"}
-
-
-def _run_dir_stem(run_dir: Path) -> str:
-    """Extract disease stem from a Phase 3 run directory name.
-
-    e.g. 'covid1_gemini_phase3' → 'covid1'
-    """
-    name = run_dir.name                        # covid1_gemini_phase3
-    stem = name.split("_phase3")[0]            # covid1_gemini
-    return "_".join(stem.split("_")[:-1])      # covid1
 
 
 def _score_mode(run_dir: Path) -> float:
@@ -106,22 +104,13 @@ def _pick_best_mode(showcase_dir: Path, disease_stem: str) -> tuple[str, Path, P
     best_run: Path | None = None
 
     for mode in ALL_MODES:
-        # Find the run_dir for this disease stem under this mode
-        mode_dir = showcase_dir / mode
-        if not mode_dir.is_dir():
-            # Backward-compat: accept old rag_only folder
-            if mode == "retrieval_only":
-                legacy = showcase_dir / "rag_only"
-                if legacy.is_dir():
-                    mode_dir = legacy
-                else:
-                    continue
-            else:
-                continue
+        mode_dir = resolve_showcase_mode_dir(showcase_dir, mode)
+        if not mode_dir:
+            continue
         for run_dir in mode_dir.iterdir():
             if not run_dir.is_dir():
                 continue
-            if _run_dir_stem(run_dir) != disease_stem:
+            if run_dir_stem(run_dir) != disease_stem:
                 continue
             model = run_dir / "model_filled.compmodel"
             if not model.exists():
@@ -147,25 +136,18 @@ def _iter_showcase_models(showcase_dir: Path, mode: str = "both"):
     Otherwise uses the specified mode directory directly.
 
     Layout: <showcase_dir>/<mode>/<disease>_<provider>_phase3/model_filled.compmodel
-    e.g.   showcase_gemini/both/covid1_gemini_phase3/model_filled.compmodel
+    e.g.   reports/both/covid1_gemini_phase3/model_filled.compmodel
     """
     if mode == "auto":
         # Collect all disease stems from any available mode directory
         stems: set[str] = set()
         for m in ALL_MODES:
-            mode_dir = showcase_dir / m
-            if not mode_dir.is_dir():
-                if m == "retrieval_only":
-                    legacy = showcase_dir / "rag_only"
-                    if legacy.is_dir():
-                        mode_dir = legacy
-                    else:
-                        continue
-                else:
-                    continue
+            mode_dir = resolve_showcase_mode_dir(showcase_dir, m)
+            if not mode_dir:
+                continue
             for run_dir in mode_dir.iterdir():
                 if run_dir.is_dir() and (run_dir / "model_filled.compmodel").exists():
-                    stems.add(_run_dir_stem(run_dir))
+                    stems.add(run_dir_stem(run_dir))
         for stem in sorted(stems):
             try:
                 best_mode, model, run_dir, score = _pick_best_mode(showcase_dir, stem)
@@ -175,9 +157,9 @@ def _iter_showcase_models(showcase_dir: Path, mode: str = "both"):
                 print(f"  [auto] SKIP {stem}: {e}")
         return
 
-    mode_dir = showcase_dir / mode
-    if not mode_dir.is_dir():
-        print(f"  [WARN] Mode directory not found: {mode_dir}")
+    mode_dir = resolve_showcase_mode_dir(showcase_dir, mode)
+    if not mode_dir:
+        print(f"  [WARN] Mode directory not found: {showcase_dir / mode}")
         return
     for run_dir in sorted(mode_dir.iterdir()):
         if not run_dir.is_dir():
@@ -185,7 +167,7 @@ def _iter_showcase_models(showcase_dir: Path, mode: str = "both"):
         model = run_dir / "model_filled.compmodel"
         if not model.exists():
             continue
-        yield _run_dir_stem(run_dir), model, run_dir
+        yield run_dir_stem(run_dir), model, run_dir
 
 
 def run_for_disease(
@@ -251,8 +233,24 @@ def run_for_disease(
 
 def main():
     ap = argparse.ArgumentParser(description="Phase 4: Uncertainty quantification (distributions, Monte Carlo, sensitivity, report)")
+    ap.add_argument(
+        "--create-selected-models",
+        action="store_true",
+        help="Copy showcase models into selected_models/ layout (needs --showcase-dir); does not run Monte Carlo",
+    )
+    ap.add_argument(
+        "--selected-models-dir",
+        type=str,
+        default="../phase 3/selected_models",
+        help="With --create-selected-models: output directory (default: ../phase 3/selected_models)",
+    )
+    ap.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="With --create-selected-models: print copy plan only",
+    )
     ap.add_argument("--showcase-dir", type=str, default=None,
-                    help="Phase 3 showcase directory (e.g. '../phase 3/showcase_gemini'); iterates all <mode>/<disease>_phase3/ runs")
+                    help="Phase 3 showcase directory (e.g. '../phase 3/reports'); iterates all <mode>/<disease>_phase3/ runs")
     ap.add_argument("--mode", type=str, default="both",
                     choices=["retrieval_only", "rag_only", "llm_only", "both", "auto"],
                     help="Which Phase 3 fill mode to use from showcase. "
@@ -269,6 +267,24 @@ def main():
     ap.add_argument("--days", type=int, default=200,
                     help="Simulation days")
     args = ap.parse_args()
+
+    if args.create_selected_models:
+        if args.model or args.selected_models:
+            ap.error("--create-selected-models cannot be used with --model or --selected-models")
+        if not args.showcase_dir:
+            ap.error("--create-selected-models requires --showcase-dir")
+        mode = MODE_ALIASES.get(args.mode, args.mode)
+        if mode == "auto":
+            ap.error("--create-selected-models does not support --mode auto; use retrieval_only, llm_only, or both")
+        showcase = Path(args.showcase_dir)
+        if not showcase.is_dir():
+            print(f"Error: showcase-dir not found: {showcase}")
+            sys.exit(1)
+        out_sel = Path(args.selected_models_dir)
+        code, _ = populate_selected_models_from_showcase(
+            showcase, args.mode, out_sel, dry_run=args.dry_run
+        )
+        sys.exit(code)
 
     if not args.showcase_dir and not args.selected_models and not args.model:
         ap.error("Specify --showcase-dir, --selected-models, or --model")

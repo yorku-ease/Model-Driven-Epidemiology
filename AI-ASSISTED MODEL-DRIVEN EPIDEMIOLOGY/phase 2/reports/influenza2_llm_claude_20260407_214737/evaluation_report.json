@@ -21,59 +21,112 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 2,
-      "fp": 2,
-      "fn": 5,
-      "precision": 0.5,
-      "recall": 0.2857,
-      "f1": 0.3636
-    },
-    "flows": {
-      "tp": 2,
+      "precision": 0.75,
+      "recall": 0.42857142857142855,
+      "f1": 0.5454545454545454,
+      "tp": 3,
       "fp": 1,
-      "fn": 8,
-      "precision": 0.6667,
-      "recall": 0.2,
-      "f1": 0.3077
+      "fn": 4,
+      "matches": [
+        {
+          "extracted": "Infectious",
+          "gold": "InfectiousClinical",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Recovered",
+          "gold": "Removed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Latent"
+      ],
+      "unmatched_gold": [
+        "Protected",
+        "InfectiousSubclinical",
+        "Exposed",
+        "TreatedClinical"
+      ]
     },
     "parameters": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0,
       "tp": 0,
       "fp": 19,
       "fn": 10,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0
+      "matches": [],
+      "unmatched_extracted": [
+        "GB population size",
+        "Household transmission fraction",
+        "Household quarantine compliance",
+        "R0",
+        "School contact rate multiplier",
+        "Vaccine efficacy (clinical case reduction)",
+        "Quarantine duration",
+        "Vaccine protection delay",
+        "Pre-pandemic vaccine efficacy (susceptibility reduction)",
+        "Household quarantine internal contact increase",
+        "Community transmission fraction",
+        "US population size",
+        "School and workplace transmission fraction",
+        "Generation time",
+        "Vaccine efficacy (infectiousness reduction)",
+        "Vaccination rate",
+        "Household quarantine external contact reduction",
+        "Vaccine efficacy (susceptibility reduction)",
+        "Clinical fraction"
+      ],
+      "unmatched_gold": [
+        "SubclinicalProgressionRate",
+        "SubclinicalRecoveryRate",
+        "TreatedRecoveryRate",
+        "ClinicalProgressionRate",
+        "SubclinicalTransmissionRate",
+        "TreatmentRate",
+        "ClinicalRecoveryRate",
+        "ProtectionAcquisitionRate",
+        "ProtectionLossRate",
+        "ClinicalTransmissionRate"
+      ]
     },
-    "composite_score": 0.2853,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 1.0
-      },
-      {
-        "gold": "InfectiousClinical",
-        "extracted": "Infectious",
-        "score": 0.7990453243255615
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->Exposed",
-        "extracted": "Susceptible->Latent",
-        "score": 0.7114595174789429
-      },
-      {
-        "gold": "InfectiousClinical->Removed",
-        "extracted": "Infectious->Recovered",
-        "score": 0.7795999050140381
-      }
-    ],
-    "parameter_matches": [],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.3333333333333333,
+      "recall": 0.1111111111111111,
+      "f1": 0.16666666666666666,
+      "tp": 1,
+      "fp": 2,
+      "fn": 8,
+      "matches": [
+        {
+          "extracted": "InfectiousClinical->Removed",
+          "gold": "InfectiousClinical->Removed",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "InfectiousClinical->InfectiousClinical",
+        "Susceptible->InfectiousClinical"
+      ],
+      "unmatched_gold": [
+        "Susceptible->Protected",
+        "InfectiousClinical->TreatedClinical",
+        "Exposed->InfectiousSubclinical",
+        "InfectiousSubclinical->Removed",
+        "Protected->Susceptible",
+        "Susceptible->Exposed",
+        "Exposed->InfectiousClinical",
+        "TreatedClinical->Removed"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

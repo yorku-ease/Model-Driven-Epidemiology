@@ -375,44 +375,148 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 0,
-        "fp": 11,
-        "fn": 9,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
-      },
-      "flows": {
-        "tp": 0,
-        "fp": 13,
-        "fn": 9,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
+        "precision": 0.5454545454545454,
+        "recall": 0.6666666666666666,
+        "f1": 0.6,
+        "tp": 6,
+        "fp": 5,
+        "fn": 3,
+        "matches": [
+          {
+            "extracted": "Susceptible Humans",
+            "gold": "PrimarySusceptible",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infectious Humans",
+            "gold": "SecondaryInfectious",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infectious Mosquitoes",
+            "gold": "PrimaryInfectious",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Vaccinated Seronegative Humans",
+            "gold": "VaccinatedSilentInfection",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible Mosquitoes",
+            "gold": "SecondarySusceptible",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Exposed Mosquitoes",
+            "gold": "PrimaryExposed",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "Recovered Humans (Temporary Cross-Protection)",
+          "Exposed Humans",
+          "Recovered Humans (Multiple Serotype Immunity)",
+          "Recovered Humans (Single Serotype Immunity)",
+          "Vaccinated Seropositive Humans"
+        ],
+        "unmatched_gold": [
+          "PostSecondaryImmune",
+          "PostPrimaryImmune",
+          "PostVaccinationSusceptible"
+        ]
       },
       "parameters": {
+        "precision": 0.05263157894736842,
+        "recall": 0.125,
+        "f1": 0.07407407407407407,
         "tp": 1,
         "fp": 18,
         "fn": 7,
-        "precision": 0.0526,
-        "recall": 0.125,
-        "f1": 0.0741
+        "matches": [
+          {
+            "extracted": "Age of routine vaccination",
+            "gold": "RoutineVaccinationRate",
+            "similarity": 0.8
+          }
+        ],
+        "unmatched_extracted": [
+          "SP9 very high transmission",
+          "SP9 low transmission",
+          "Vaccine coverage (routine)",
+          "Case fatality ratio (symptomatic dengue)",
+          "Number of vaccine doses",
+          "Number of serotypes",
+          "DALYs per severe dengue case",
+          "DALYs per symptomatic dengue case",
+          "Overall vaccine efficacy (active phase)",
+          "SP9 high transmission",
+          "Catch-up campaign coverage",
+          "Discount rate",
+          "SP9 very low transmission",
+          "Cost-effectiveness threshold",
+          "Dose interval",
+          "SP9 moderate transmission",
+          "Vaccine coverage (reduced)",
+          "Time horizon"
+        ],
+        "unmatched_gold": [
+          "SecondaryTransmissionRate",
+          "RecoveryRate",
+          "PostVaccinationTransmissionRate",
+          "IncubationRate",
+          "VaccineCrossProtectionWaningRate",
+          "PrimaryTransmissionRate",
+          "NaturalCrossProtectionWaningRate"
+        ]
       },
-      "composite_score": 0.0111,
-      "compartment_matches": [],
-      "flow_matches": [],
-      "parameter_matches": [
-        {
-          "gold": "RoutineVaccinationRate 0.05 Routine vaccination of 9-year-olds",
-          "extracted": "Vaccine coverage (routine) 80% Default coverage for routine vaccination of 9-year-old children",
-          "score": 0.8211318254470825
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "flows": {
+        "precision": 0.25,
+        "recall": 0.3333333333333333,
+        "f1": 0.28571428571428575,
+        "tp": 3,
+        "fp": 9,
+        "fn": 6,
+        "matches": [
+          {
+            "extracted": "PrimarySusceptible->Exposed Humans",
+            "gold": "PrimarySusceptible->PrimaryExposed",
+            "similarity": 0.95
+          },
+          {
+            "extracted": "PrimarySusceptible->VaccinatedSilentInfection",
+            "gold": "PrimarySusceptible->VaccinatedSilentInfection",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "PrimaryExposed->PrimaryInfectious",
+            "gold": "PrimaryExposed->PrimaryInfectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Exposed Humans->SecondaryInfectious",
+          "VaccinatedSilentInfection->Exposed Humans",
+          "Recovered Humans (Multiple Serotype Immunity)->Exposed Humans",
+          "SecondaryInfectious->Recovered Humans (Temporary Cross-Protection)",
+          "SecondarySusceptible->PrimaryExposed",
+          "Recovered Humans (Single Serotype Immunity)->VaccinatedSilentInfection",
+          "Recovered Humans (Single Serotype Immunity)->Exposed Humans",
+          "Recovered Humans (Temporary Cross-Protection)->Recovered Humans (Single Serotype Immunity)",
+          "PrimaryInfectious->PrimarySusceptible"
+        ],
+        "unmatched_gold": [
+          "PostPrimaryImmune->SecondarySusceptible",
+          "VaccinatedSilentInfection->PostVaccinationSusceptible",
+          "SecondarySusceptible->SecondaryInfectious",
+          "SecondaryInfectious->PostSecondaryImmune",
+          "PrimaryInfectious->PostPrimaryImmune",
+          "PostVaccinationSusceptible->SecondaryInfectious"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

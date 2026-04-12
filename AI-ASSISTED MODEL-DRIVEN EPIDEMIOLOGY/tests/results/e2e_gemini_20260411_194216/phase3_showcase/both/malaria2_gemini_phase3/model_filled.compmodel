@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:CompartmentalModel xmlns:ns0="http://example.com/compartmentalmodel" xmlns:ns1="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ns1:version="2.0">
+  <parameters name="L" expression="Varies" type="CONSTANT" description="Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity." unit="per person per time" />
+  <parameters name="w" expression="Varies" type="CONSTANT" description="Probability of developing clinical disease upon infection, determined by anti-disease immunity." unit="dimensionless" />
+  <parameters name="fT" expression="Varies" type="CONSTANT" description="Fixed probability of successful treatment for clinical disease." unit="dimensionless" />
+  <parameters name="rT" expression="Varies" type="CONSTANT" description="Rate of entering prophylactic protection after successful treatment." unit="per time" />
+  <parameters name="rP" expression="Varies" type="CONSTANT" description="Rate of returning to the susceptible state from prophylactic protection." unit="per time" />
+  <parameters name="rD" expression="Varies" type="CONSTANT" description="Rate of clearing untreated clinical disease and becoming patently asymptomatic." unit="per time" />
+  <parameters name="rA" expression="Varies" type="CONSTANT" description="Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity." unit="per time" />
+  <parameters name="rU" expression="Varies" type="CONSTANT" description="Rate of clearing sub-patent infection and returning to the susceptible state." unit="per time" />
+  <parameters name="EIR" expression="3 to 675 (fitted annual values)" type="CONSTANT" description="Entomological Inoculation Rate, representing the intensity of transmission in different settings." unit="ibppy (infectious bites per person per year)" />
+  <parameters name="DDT half-life" expression="6" type="CONSTANT" description="Half-life of DDT insecticide used in Indoor Residual Spraying (IRS)." unit="months" />
+  <parameters name="RTS,S vaccine efficacy half-life" expression="3" type="CONSTANT" description="Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy." unit="years" />
+  <parameters name="ACT prophylactic protection duration" expression="25" type="CONSTANT" description="Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs)." unit="days" />
+  <parameters name="LLIN insecticide efficacy half-life" expression="2.64" type="CONSTANT" description="Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs)." unit="years" />
+  <compartments PrimaryName="Susceptible Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0" target="//@compartments.1" description="Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L)." />
+  </compartments>
+  <compartments PrimaryName="Exposed Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.2" description="Progression from the exposed (pre-patent) stage to clinical disease (with probability w)." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w)." />
+  </compartments>
+  <compartments PrimaryName="Untreated Clinical Disease Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.3" description="Successful treatment of clinical disease (with probability fT)." />
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.5" description="Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT)." />
+    <outgoingFlows target="//@compartments.13" />
+  </compartments>
+  <compartments PrimaryName="Treated Clinical Disease Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.4" description="Entry into a period of prophylactic protection after successful treatment (with rate rT)." />
+    <outgoingFlows target="//@compartments.10" />
+  </compartments>
+  <compartments PrimaryName="Prophylactic Protection Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Loss of prophylactic protection, returning to the susceptible state (with rate rP)." />
+  </compartments>
+  <compartments PrimaryName="Patent Asymptomatic Infection Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.6" target="//@compartments.6" description="Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA)." />
+  </compartments>
+  <compartments PrimaryName="Sub-patent Asymptomatic Infection Humans" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.0" description="Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU)." />
+  </compartments>
+  <compartments PrimaryName="Susceptible Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.0" target="//@compartments.8" description="Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite." />
+    <outgoingFlows target="//@compartments.3" />
+    <outgoingFlows target="//@compartments.2" />
+    <outgoingFlows target="//@compartments.13" />
+  </compartments>
+  <compartments PrimaryName="Exposed Mosquitoes" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.0" target="//@compartments.9" description="Progression from the latent (exposed) state to the infectious state in mosquitoes." />
+  </compartments>
+  <compartments PrimaryName="Infectious Mosquitoes" population="0" />
+  <compartments PrimaryName="prophylaxis">
+    <outgoingFlows target="//@compartments.7" />
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Infected" />
+  <compartments PrimaryName="Asymptomatic Subpatent Infection">
+    <outgoingFlows target="//@compartments.7" />
+  </compartments>
+  <compartments PrimaryName="Asymptomatic Patent Infection">
+    <outgoingFlows target="//@compartments.12" />
+  </compartments>
+</ns0:CompartmentalModel>

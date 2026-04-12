@@ -21,49 +21,113 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 1,
-      "fp": 6,
-      "fn": 5,
-      "precision": 0.1429,
-      "recall": 0.1667,
-      "f1": 0.1538
-    },
-    "flows": {
-      "tp": 1,
-      "fp": 9,
-      "fn": 9,
-      "precision": 0.1,
-      "recall": 0.1,
-      "f1": 0.1
+      "precision": 0.42857142857142855,
+      "recall": 0.5,
+      "f1": 0.4615384615384615,
+      "tp": 3,
+      "fp": 4,
+      "fn": 3,
+      "matches": [
+        {
+          "extracted": "Early Infection",
+          "gold": "EarlyInfection",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "On ART",
+          "gold": "OnART",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Asymptomatic CD4 >350",
+        "Asymptomatic CD4 200-350",
+        "Symptomatic CD4 \u2264200",
+        "Dropped Out"
+      ],
+      "unmatched_gold": [
+        "Removed",
+        "ChronicInfection",
+        "LateInfection"
+      ]
     },
     "parameters": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0,
       "tp": 0,
       "fp": 13,
       "fn": 10,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0
+      "matches": [],
+      "unmatched_extracted": [
+        "Male HIV prevalence 2012 (no ART)",
+        "ART access",
+        "Late-stage relative transmissibility",
+        "Early infection relative transmissibility (Hollingsworth estimate)",
+        "ART introduction year",
+        "3-year retention on ART",
+        "Time from eligibility to ART initiation",
+        "ART transmission reduction",
+        "Female HIV prevalence 2012 (no ART)",
+        "ART eligibility CD4 threshold",
+        "Male HIV incidence 2012 (no ART)",
+        "Early infection relative transmissibility (Boily estimate)",
+        "Female HIV incidence 2012 (no ART)"
+      ],
+      "unmatched_gold": [
+        "BetaChronic",
+        "Progression1",
+        "DeathART",
+        "DeathLate",
+        "BetaLate",
+        "BetaEarly",
+        "BetaART",
+        "Progression2",
+        "ARTStart2",
+        "ARTStart1"
+      ]
     },
-    "composite_score": 0.1079,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 1.0
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->EarlyInfection",
-        "extracted": "Susceptible->Early Infection",
-        "score": 0.8901576995849609
-      }
-    ],
-    "parameter_matches": [],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.1,
+      "recall": 0.14285714285714285,
+      "f1": 0.11764705882352941,
+      "tp": 1,
+      "fp": 9,
+      "fn": 6,
+      "matches": [
+        {
+          "extracted": "Susceptible->EarlyInfection",
+          "gold": "Susceptible->EarlyInfection",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Asymptomatic CD4 200-350->OnART",
+        "EarlyInfection->Asymptomatic CD4 >350",
+        "OnART->OnART",
+        "OnART->Dropped Out",
+        "Asymptomatic CD4 200-350->Symptomatic CD4 \u2264200",
+        "Asymptomatic CD4 >350->OnART",
+        "Asymptomatic CD4 >350->Asymptomatic CD4 200-350",
+        "Symptomatic CD4 \u2264200->Dropped Out",
+        "Symptomatic CD4 \u2264200->OnART"
+      ],
+      "unmatched_gold": [
+        "ChronicInfection->LateInfection",
+        "LateInfection->Removed",
+        "LateInfection->OnART",
+        "EarlyInfection->ChronicInfection",
+        "ChronicInfection->OnART",
+        "OnART->Removed"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

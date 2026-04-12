@@ -21,70 +21,207 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 1,
-      "fp": 6,
-      "fn": 6,
-      "precision": 0.1429,
-      "recall": 0.1429,
-      "f1": 0.1429
-    },
-    "flows": {
-      "tp": 3,
-      "fp": 15,
-      "fn": 14,
-      "precision": 0.1667,
-      "recall": 0.1765,
-      "f1": 0.1714
+      "precision": 0.8571428571428571,
+      "recall": 0.8571428571428571,
+      "f1": 0.8571428571428571,
+      "tp": 6,
+      "fp": 1,
+      "fn": 1,
+      "matches": [
+        {
+          "extracted": "Latent Infection",
+          "gold": "LatentInfection",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Self-cured",
+          "gold": "SelfCuredState",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Non-infectious Tuberculosis",
+          "gold": "NonInfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Treatment Failure",
+          "gold": "TreatmentFailureState",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious Tuberculosis",
+          "gold": "InfectiousTuberculosis",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Cured"
+      ],
+      "unmatched_gold": [
+        "OnTreatment"
+      ]
     },
     "parameters": {
+      "precision": 0.05263157894736842,
+      "recall": 0.11764705882352941,
+      "f1": 0.07272727272727272,
       "tp": 2,
       "fp": 36,
       "fn": 15,
-      "precision": 0.0526,
-      "recall": 0.1176,
-      "f1": 0.0727
+      "matches": [
+        {
+          "extracted": "Cure rate (WHO target)",
+          "gold": "TreatmentCureRate",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Case detection rate (WHO target)",
+          "gold": "NonInfectiousCaseDetectionRate",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [
+        "Old programme case detection Eastern Europe",
+        "Current global cure rate",
+        "Ratio deaths:incidence:prevalence",
+        "Old programme cure rate Western Pacific",
+        "Relative case detection rate of non-infectious cases Sub-Saharan Africa",
+        "Incidence decline rate at 70% detection and 85% cure from steady state",
+        "ARI Western Europe",
+        "Age step",
+        "Ratio ARI to smear-positive incidence",
+        "Old programme cure rate Sub-Saharan Africa",
+        "Proportion treatment failures remaining infectious (low)",
+        "ARI Sub-Saharan Africa",
+        "Death rate decline at 70% detection and 85% cure from steady state",
+        "Proportion treatment failures remaining infectious (high)",
+        "Old programme cure rate Eastern Europe",
+        "Old programme cure rate Americas",
+        "ARI Southeast Asia",
+        "Relative case detection rate of non-infectious cases Americas",
+        "HIV-1 infection in TB cases 2020 Sub-Saharan Africa",
+        "Old programme case detection Sub-Saharan Africa",
+        "HIV-1 duration before increased TB breakdown",
+        "Old programme case detection Southeast Asia",
+        "Old programme cure rate Western Europe",
+        "ARI Eastern Mediterranean",
+        "Old programme case detection Eastern Mediterranean",
+        "ARI Americas",
+        "HIV-1 infection in TB cases 2020 Southeast Asia",
+        "ARI Western Pacific",
+        "Old programme case detection Western Europe",
+        "Time step",
+        "ARI Eastern Europe",
+        "Old programme case detection Western Pacific",
+        "Current global case detection rate",
+        "Old programme cure rate Eastern Mediterranean",
+        "Old programme cure rate Southeast Asia",
+        "Old programme case detection Americas"
+      ],
+      "unmatched_gold": [
+        "InfectiousCaseDetectionRate",
+        "PrimaryInfectionToNonInfectiousRate",
+        "ExogenousReinfectionToInfectiousRate",
+        "SelfCureRelapseToInfectiousRate",
+        "TreatmentFailureRate",
+        "PrimaryInfectionToInfectiousRate",
+        "LatentReactivationToInfectiousRate",
+        "NonInfectiousSelfCureRate",
+        "ExogenousReinfectionToNonInfectiousRate",
+        "InfectiousSelfCureRate",
+        "SelfCureRelapseToNonInfectiousRate",
+        "FailureRelapseToInfectiousRate",
+        "LatentReactivationToNonInfectiousRate",
+        "FailureRelapseToNonInfectiousRate",
+        "PrimaryInfectionToLatentRate"
+      ]
     },
-    "composite_score": 0.1445,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 1.0
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->LatentInfection",
-        "extracted": "Susceptible->Latent Infection",
-        "score": 0.82352614402771
-      },
-      {
-        "gold": "Susceptible->InfectiousTuberculosis",
-        "extracted": "Susceptible->Infectious Tuberculosis",
-        "score": 0.702073335647583
-      },
-      {
-        "gold": "LatentInfection->InfectiousTuberculosis",
-        "extracted": "Latent Infection->Infectious Tuberculosis",
-        "score": 0.7174564003944397
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "NonInfectiousCaseDetectionRate 0.42 Detection of non-infectious cases represented as a fraction of infectious case detection, reflecting the paper's region-specific relative detection of non-infectious cases",
-        "extracted": "Relative case detection rate of non-infectious cases Americas 0.7 Fraction of case detection rate applied to non-infectious cases in the Americas",
-        "score": 0.7757623791694641
-      },
-      {
-        "gold": "TreatmentFailureRate 0.15 Treatment failure / default / transfer-out complementing the DOTS cure target",
-        "extracted": "Cure rate (WHO target) 85 Target proportion of detected cases successfully cured under DOTS",
-        "score": 0.7271943092346191
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.6470588235294118,
+      "recall": 0.7333333333333333,
+      "f1": 0.6875,
+      "tp": 11,
+      "fp": 6,
+      "fn": 4,
+      "matches": [
+        {
+          "extracted": "NonInfectiousTuberculosis->SelfCuredState",
+          "gold": "NonInfectiousTuberculosis->SelfCuredState",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "TreatmentFailureState->NonInfectiousTuberculosis",
+          "gold": "TreatmentFailureState->NonInfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible->LatentInfection",
+          "gold": "Susceptible->LatentInfection",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "LatentInfection->NonInfectiousTuberculosis",
+          "gold": "LatentInfection->NonInfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible->NonInfectiousTuberculosis",
+          "gold": "Susceptible->NonInfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "SelfCuredState->InfectiousTuberculosis",
+          "gold": "SelfCuredState->InfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "SelfCuredState->NonInfectiousTuberculosis",
+          "gold": "SelfCuredState->NonInfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "TreatmentFailureState->InfectiousTuberculosis",
+          "gold": "TreatmentFailureState->InfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "LatentInfection->InfectiousTuberculosis",
+          "gold": "LatentInfection->InfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible->InfectiousTuberculosis",
+          "gold": "Susceptible->InfectiousTuberculosis",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "InfectiousTuberculosis->SelfCuredState",
+          "gold": "InfectiousTuberculosis->SelfCuredState",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "InfectiousTuberculosis->TreatmentFailureState",
+        "NonInfectiousTuberculosis->InfectiousTuberculosis",
+        "NonInfectiousTuberculosis->TreatmentFailureState",
+        "InfectiousTuberculosis->InfectiousTuberculosis",
+        "NonInfectiousTuberculosis->NonInfectiousTuberculosis",
+        "InfectiousTuberculosis->LatentInfection"
+      ],
+      "unmatched_gold": [
+        "OnTreatment->TreatmentFailureState",
+        "NonInfectiousTuberculosis->OnTreatment",
+        "InfectiousTuberculosis->OnTreatment",
+        "OnTreatment->LatentInfection"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

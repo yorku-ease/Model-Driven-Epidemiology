@@ -21,100 +21,113 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
       "tp": 4,
       "fp": 0,
       "fn": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0
+      "matches": [
+        {
+          "extracted": "Vaccinated",
+          "gold": "Vaccinated",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious",
+          "gold": "Infected",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Recovered",
+          "gold": "Recovered",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": []
+    },
+    "parameters": {
+      "precision": 0.5,
+      "recall": 0.4444444444444444,
+      "f1": 0.47058823529411764,
+      "tp": 4,
+      "fp": 4,
+      "fn": 5,
+      "matches": [
+        {
+          "extracted": "\u03b3",
+          "gold": "\u03b3",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03b8",
+          "gold": "\u03b8",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03bc",
+          "gold": "\u03bc",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03b4",
+          "gold": "\u03b4",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "\u03b2",
+        "\u03b5",
+        "u",
+        "A"
+      ],
+      "unmatched_gold": [
+        "\u03c0",
+        "\u03b1*\u03c0",
+        "\u039b",
+        "\u03b7",
+        "\u03b1"
+      ]
     },
     "flows": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666,
       "tp": 3,
       "fp": 0,
       "fn": 3,
-      "precision": 1.0,
-      "recall": 0.5,
-      "f1": 0.6667
+      "matches": [
+        {
+          "extracted": "Recovered->Susceptible",
+          "gold": "Recovered->Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Vaccinated->Susceptible",
+          "gold": "Vaccinated->Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible->Vaccinated",
+          "gold": "Susceptible->Vaccinated",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": [
+        "Susceptible->Infected",
+        "Infected->Recovered",
+        "Recovered->Infected"
+      ]
     },
-    "parameters": {
-      "tp": 5,
-      "fp": 3,
-      "fn": 4,
-      "precision": 0.625,
-      "recall": 0.5556,
-      "f1": 0.5882
-    },
-    "composite_score": 0.7966,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 0.9999999403953552
-      },
-      {
-        "gold": "Vaccinated",
-        "extracted": "Vaccinated",
-        "score": 1.0
-      },
-      {
-        "gold": "Infected",
-        "extracted": "Infectious",
-        "score": 0.8296633362770081
-      },
-      {
-        "gold": "Recovered",
-        "extracted": "Recovered",
-        "score": 1.0
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->Vaccinated",
-        "extracted": "Susceptible->Vaccinated",
-        "score": 1.0000001192092896
-      },
-      {
-        "gold": "Vaccinated->Susceptible",
-        "extracted": "Vaccinated->Susceptible",
-        "score": 1.0
-      },
-      {
-        "gold": "Recovered->Susceptible",
-        "extracted": "Recovered->Susceptible",
-        "score": 1.0000001192092896
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "\u03bc 0.000051 Natural death rate",
-        "extracted": "\u03bc 1 / (65*12) Natural death rate",
-        "score": 0.8876751065254211
-      },
-      {
-        "gold": "\u03c0 0.0059 Infection rate/probability of successful infection (S\u2192I term)",
-        "extracted": "\u03b2 [0.01, 5] Probability of successful infection rate",
-        "score": 0.7684487700462341
-      },
-      {
-        "gold": "\u03b4 0.00274 Vaccine waning rate (V\u2192S)",
-        "extracted": "\u03b8 [0.067, 0.1] Vaccine wane rate",
-        "score": 0.7977726459503174
-      },
-      {
-        "gold": "\u03b3 0.041 Recovery rate (I\u2192R)",
-        "extracted": "\u03b3 [0.5, 2] Recovery rate",
-        "score": 0.8875632286071777
-      },
-      {
-        "gold": "\u03b1 1 Reinfection correction parameter (range: 0 to 1)",
-        "extracted": "\u03b5 [0, 1] Correction parameter for reinfection term",
-        "score": 0.7208619117736816
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

@@ -21,60 +21,89 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666,
       "tp": 2,
       "fp": 0,
       "fn": 2,
-      "precision": 1.0,
-      "recall": 0.5,
-      "f1": 0.6667
-    },
-    "flows": {
-      "tp": 1,
-      "fp": 0,
-      "fn": 2,
-      "precision": 1.0,
-      "recall": 0.3333,
-      "f1": 0.5
+      "matches": [
+        {
+          "extracted": "Dead",
+          "gold": "Dead",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious",
+          "gold": "Infected",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": [
+        "Removed",
+        "Susceptible"
+      ]
     },
     "parameters": {
-      "tp": 1,
-      "fp": 5,
-      "fn": 13,
-      "precision": 0.1667,
-      "recall": 0.0714,
-      "f1": 0.1
+      "precision": 0.3333333333333333,
+      "recall": 0.14285714285714285,
+      "f1": 0.2,
+      "tp": 2,
+      "fp": 4,
+      "fn": 12,
+      "matches": [
+        {
+          "extracted": "Initial R_t",
+          "gold": "InitialRt",
+          "similarity": 0.9411764705882353
+        },
+        {
+          "extracted": "Lockdown effect",
+          "gold": "LockdownEffect",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "R_t",
+        "Infection Fatality Ratio",
+        "Serial Interval Distribution",
+        "Infection-to-death distribution"
+      ],
+      "unmatched_gold": [
+        "SchoolClosureEffect",
+        "GenerationIntervalDays",
+        "BaseTransmissionRate",
+        "PublicEventsBanEffect",
+        "Population11Countries",
+        "RemovalRate",
+        "DeathRate",
+        "CombinedInterventionMultiplier",
+        "MeanOutcomeDelayDays",
+        "SelfIsolationEffect",
+        "EffectiveTransmissionRate",
+        "SocialDistancingEffect"
+      ]
     },
-    "composite_score": 0.5108,
-    "compartment_matches": [
-      {
-        "gold": "Infected",
-        "extracted": "Infectious",
-        "score": 0.8296632766723633
-      },
-      {
-        "gold": "Dead",
-        "extracted": "Dead",
-        "score": 0.9999998807907104
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->Infected",
-        "extracted": "Infectious->Infectious",
-        "score": 0.7271520495414734
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "InitialRt 3.8 Average initial reproduction number estimated across the 11 countries before interventions",
-        "extracted": "Initial R_t 3.8 Initial reproduction number before interventions, averaged across all countries (95% credible interval: 2.4\u20135.6).",
-        "score": 0.8563216924667358
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0,
+      "tp": 0,
+      "fp": 1,
+      "fn": 3,
+      "matches": [],
+      "unmatched_extracted": [
+        "Infected->Infected"
+      ],
+      "unmatched_gold": [
+        "Infected->Removed",
+        "Susceptible->Infected",
+        "Infected->Dead"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

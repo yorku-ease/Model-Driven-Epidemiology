@@ -202,60 +202,105 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
+        "precision": 0.75,
+        "recall": 0.75,
+        "f1": 0.75,
         "tp": 3,
         "fp": 1,
         "fn": 1,
-        "precision": 0.75,
-        "recall": 0.75,
-        "f1": 0.75
-      },
-      "flows": {
-        "tp": 0,
-        "fp": 1,
-        "fn": 3,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
+        "matches": [
+          {
+            "extracted": "Dead",
+            "gold": "Dead",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious",
+            "gold": "Infected",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Symptomatic"
+        ],
+        "unmatched_gold": [
+          "Removed"
+        ]
       },
       "parameters": {
-        "tp": 1,
-        "fp": 11,
-        "fn": 13,
-        "precision": 0.0833,
-        "recall": 0.0714,
-        "f1": 0.0769
+        "precision": 0.16666666666666666,
+        "recall": 0.14285714285714285,
+        "f1": 0.15384615384615383,
+        "tp": 2,
+        "fp": 10,
+        "fn": 12,
+        "matches": [
+          {
+            "extracted": "generation_interval",
+            "gold": "GenerationIntervalDays",
+            "similarity": 0.9230769230769231
+          },
+          {
+            "extracted": "lockdown_effect",
+            "gold": "LockdownEffect",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Rt",
+          "onset_to_death",
+          "infection_to_onset",
+          "alpha_social_distancing",
+          "alpha_self_isolation",
+          "alpha_public_events",
+          "alpha_lockdown",
+          "alpha_school_closure",
+          "ifr",
+          "R0"
+        ],
+        "unmatched_gold": [
+          "SchoolClosureEffect",
+          "BaseTransmissionRate",
+          "PublicEventsBanEffect",
+          "Population11Countries",
+          "InitialRt",
+          "RemovalRate",
+          "DeathRate",
+          "CombinedInterventionMultiplier",
+          "MeanOutcomeDelayDays",
+          "SelfIsolationEffect",
+          "EffectiveTransmissionRate",
+          "SocialDistancingEffect"
+        ]
       },
-      "composite_score": 0.3303,
-      "compartment_matches": [
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible",
-          "score": 1.0
-        },
-        {
-          "gold": "Infected",
-          "extracted": "Infectious",
-          "score": 0.8296633362770081
-        },
-        {
-          "gold": "Dead",
-          "extracted": "Dead",
-          "score": 0.9999998807907104
-        }
-      ],
-      "flow_matches": [],
-      "parameter_matches": [
-        {
-          "gold": "InitialRt 3.8 Average initial reproduction number estimated across the 11 countries before interventions",
-          "extracted": "R0 3.8 Initial reproduction number before interventions, averaged across all 11 countries (95% CI: 2.4\u20135.6)",
-          "score": 0.8834366798400879
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "flows": {
+        "precision": 1.0,
+        "recall": 0.3333333333333333,
+        "f1": 0.5,
+        "tp": 1,
+        "fp": 0,
+        "fn": 2,
+        "matches": [
+          {
+            "extracted": "Infected->Dead",
+            "gold": "Infected->Dead",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": [
+          "Infected->Removed",
+          "Susceptible->Infected"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

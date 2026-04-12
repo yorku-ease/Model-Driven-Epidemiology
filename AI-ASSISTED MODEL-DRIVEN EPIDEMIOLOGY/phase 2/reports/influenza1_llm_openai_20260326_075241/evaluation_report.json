@@ -21,70 +21,103 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 3,
-      "fp": 1,
-      "fn": 3,
-      "precision": 0.75,
-      "recall": 0.5,
-      "f1": 0.6
-    },
-    "flows": {
-      "tp": 2,
-      "fp": 0,
-      "fn": 4,
       "precision": 1.0,
-      "recall": 0.3333,
-      "f1": 0.5
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "matches": [
+        {
+          "extracted": "Recovered",
+          "gold": "Removed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Exposed",
+          "gold": "Exposed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious",
+          "gold": "Infectious",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": []
     },
     "parameters": {
-      "tp": 1,
-      "fp": 12,
-      "fn": 2,
-      "precision": 0.0769,
-      "recall": 0.3333,
-      "f1": 0.125
+      "precision": 0.23076923076923078,
+      "recall": 1.0,
+      "f1": 0.375,
+      "tp": 3,
+      "fp": 10,
+      "fn": 0,
+      "matches": [
+        {
+          "extracted": "\u03c3",
+          "gold": "\u03c3",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03b2",
+          "gold": "\u03b2",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03b3",
+          "gold": "\u03b3",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "\u03c32ICU_E",
+        "\u03c0",
+        "\u03c8",
+        "\u00b5ICU_E",
+        "N2014/15",
+        "N2013/14",
+        "N2012/13",
+        "\u03bb0",
+        "pICU",
+        "\u03b7"
+      ],
+      "unmatched_gold": []
     },
-    "composite_score": 0.4863,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 1.0
-      },
-      {
-        "gold": "Exposed (E2)",
-        "extracted": "Exposed",
-        "score": 0.7059013247489929
-      },
-      {
-        "gold": "Infectious (I1)",
-        "extracted": "Infectious",
-        "score": 0.743148684501648
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->Exposed (E1)",
-        "extracted": "Susceptible->Exposed",
-        "score": 0.8495890498161316
-      },
-      {
-        "gold": "Exposed (E2)->Infectious (I1)",
-        "extracted": "Exposed->Infectious",
-        "score": 0.8019044399261475
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "\u03b2 1.24 Transmission rate in \u03bb(t)=\u03b2*I(t)/N (homogeneous mixing)",
-        "extracted": "\u03b2 not explicitly estimated in the paper's primary parameter table; implied through \u03bb(t) = \u03b2 I(t) / N Transmission rate.",
-        "score": 0.7265611886978149
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1": 0.5714285714285715,
+      "tp": 2,
+      "fp": 0,
+      "fn": 3,
+      "matches": [
+        {
+          "extracted": "Susceptible->Exposed",
+          "gold": "Susceptible->Exposed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Exposed->Infectious",
+          "gold": "Exposed->Infectious",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": [
+        "Infectious->Removed",
+        "Infectious->Infectious",
+        "Exposed->Exposed"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

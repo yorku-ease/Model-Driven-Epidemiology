@@ -242,44 +242,101 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 1,
-        "fp": 4,
-        "fn": 6,
-        "precision": 0.2,
-        "recall": 0.1429,
-        "f1": 0.1667
-      },
-      "flows": {
-        "tp": 0,
-        "fp": 3,
-        "fn": 6,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
+        "precision": 0.8,
+        "recall": 0.5714285714285714,
+        "f1": 0.6666666666666666,
+        "tp": 4,
+        "fp": 1,
+        "fn": 3,
+        "matches": [
+          {
+            "extracted": "Susceptible Mosquitoes",
+            "gold": "Infectious",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infected Mosquitoes",
+            "gold": "VaccinatedInfected",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Recovered Humans",
+            "gold": "Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible Humans",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Infected Humans"
+        ],
+        "unmatched_gold": [
+          "VaccinatedRecovered",
+          "Exposed",
+          "Vaccinated"
+        ]
       },
       "parameters": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
         "tp": 0,
         "fp": 15,
         "fn": 5,
+        "matches": [],
+        "unmatched_extracted": [
+          "Per-exposure protection from vaccination for seropositive vaccinees",
+          "Probability of hospitalization conditional on symptoms (secondary)",
+          "Sensitivity",
+          "Average duration of protection for seropositive vaccinees",
+          "Probability of hospitalization conditional on symptoms (post-secondary)",
+          "Specificity",
+          "Per-exposure protection from vaccination for seronegative vaccinees",
+          "Seropositivity among nine-year-olds",
+          "Average duration of protection for seronegative vaccinees",
+          "Probability of hospitalization conditional on symptoms (primary)",
+          "Vaccination coverage",
+          "Serological screening positivity",
+          "Probability of symptoms conditional on infection (primary)",
+          "Probability of symptoms conditional on infection (post-secondary)",
+          "Probability of symptoms conditional on infection (secondary)"
+        ],
+        "unmatched_gold": [
+          "IncubationRate",
+          "ScreeningAndVaccinationRate",
+          "VaccineBreakthroughRate",
+          "TransmissionRate",
+          "RecoveryRate"
+        ]
+      },
+      "flows": {
         "precision": 0.0,
         "recall": 0.0,
-        "f1": 0.0
+        "f1": 0,
+        "tp": 0,
+        "fp": 3,
+        "fn": 6,
+        "matches": [],
+        "unmatched_extracted": [
+          "Infectious->VaccinatedInfected",
+          "Susceptible->Recovered",
+          "Recovered->Recovered"
+        ],
+        "unmatched_gold": [
+          "VaccinatedInfected->VaccinatedRecovered",
+          "Susceptible->Vaccinated",
+          "Vaccinated->VaccinatedInfected",
+          "Susceptible->Exposed",
+          "Exposed->Infectious",
+          "Infectious->Recovered"
+        ]
       },
-      "composite_score": 0.0708,
-      "compartment_matches": [
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible Humans",
-          "score": 0.8397185206413269
-        }
-      ],
-      "flow_matches": [],
-      "parameter_matches": [],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

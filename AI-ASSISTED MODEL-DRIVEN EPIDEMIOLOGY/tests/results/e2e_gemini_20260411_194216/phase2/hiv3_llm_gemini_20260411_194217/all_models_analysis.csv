@@ -1,0 +1,41 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Hiv3,Compartment,Susceptible,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Infectious (Acute Phase),,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Infectious (Chronic Phase),,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Infectious (Final Phase),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Compartment,Infectious (On ART),,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (Acute Phase),RateFlow,//@parameters.16,False,"Susceptible individuals become infected with HIV through contact with infectious individuals and enter the acute phase. The rate depends on the 'Transmission Parameter Initial Value' and the 'Infectivity' of the source compartment, adjusted by 'Relative Transmission on ART' and 'Other Interventions Reduction in Transmission'.",,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (Chronic Phase),RateFlow,//@parameters.4,False,Infected individuals progress from the acute phase to the chronic phase. The rate is calculated as 1 / 'Acute Phase Duration'.,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (On ART),RateFlow,//@parameters.23,False,Individuals in the acute phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (Final Phase),RateFlow,//@parameters.2,False,Infected individuals progress from the chronic phase to the final phase. The rate is derived from the overall 'Survival Median' and the durations of the acute and final phases.,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (On ART),RateFlow,//@parameters.23,False,Individuals in the chronic phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (On ART),RateFlow,//@parameters.23,False,Individuals in the final phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.,,,
+Hiv3,Flow,,,,,,,Model file,Certain,,Infectious (Chronic Phase),RateFlow,//@parameters.25,False,Individuals on ART discontinue treatment at the 'Drop-out' rate and revert to the untreated chronic phase.,,,
+Hiv3,Parameter,Initial CD4 Mu,,,,,,Model file,Certain,,,,,,Location parameter for the log-normal distribution of initial CD4+ cell counts.,CONSTANT,6.98,Log normal location parameter
+Hiv3,Parameter,Initial CD4 Sigma,,,,,,Model file,Certain,,,,,,Shape parameter for the log-normal distribution of initial CD4+ cell counts.,CONSTANT,0.34,Log-normal shape parameter
+Hiv3,Parameter,Survival Median,,,,,,Model file,Certain,,,,,,"Median survival time for infected individuals, following a Weibull distribution.",CONSTANT,10.0,Years
+Hiv3,Parameter,Survival Shape,,,,,,Model file,Certain,,,,,,Shape parameter for the Weibull survival distribution of infected individuals.,CONSTANT,2.25,Dimensionless
+Hiv3,Parameter,Acute Phase Duration,,,,,,Model file,Certain,,,,,,Duration of the acute phase of HIV infection.,CONSTANT,2,Months
+Hiv3,Parameter,Acute Phase Infectivity,,,,,,Model file,Certain,,,,,,"Relative infectivity during the acute phase, used as a multiplier for the base transmission parameter.",CONSTANT,4.5,Number/year
+Hiv3,Parameter,Chronic Phase Infectivity,,,,,,Model file,Certain,,,,,,"Relative infectivity during the chronic phase of HIV infection, used as a multiplier for the base transmission parameter.",CONSTANT,0.45,Number/year
+Hiv3,Parameter,Final Phase Infectivity,,,,,,Model file,Certain,,,,,,"Relative infectivity during the final phase of HIV infection, used as a multiplier for the base transmission parameter.",CONSTANT,2.25,Number/year
+Hiv3,Parameter,Final Phase Duration,,,,,,Model file,Certain,,,,,,"Duration of the final phase of HIV infection, expressed as a proportion of the expected life.",CONSTANT,0.15,Proportion of expected life
+Hiv3,Parameter,Concurrency Number,,,,,,Model file,Certain,,,,,,Average number of concurrent sexual partnerships.,CONSTANT,4,Number
+Hiv3,Parameter,Partnership Duration,,,,,,Model file,Certain,,,,,,Mean duration of a sexual partnership.,CONSTANT,6,Months
+Hiv3,Parameter,Start ART CD4,,,,,,Model file,Certain,,,,,,CD4+ cell count threshold at which ART begins. A value of 0 implies immediate commencement regardless of CD4 count.,CONSTANT,0.0,/micro-litre
+Hiv3,Parameter,Proportion Tested Rate,,,,,,Model file,Certain,,,,,,Baseline rate at which individuals are tested for HIV (used for scenarios without intervention).,CONSTANT,0.0,/year
+Hiv3,Parameter,Monte Carlo Repeats,,,,,,Model file,Certain,,,,,,Number of Monte Carlo simulation repeats.,CONSTANT,10000,Number
+Hiv3,Parameter,Birth Rate,,,,,,Model file,Certain,,,,,,Rate at which new individuals are born into the population.,CONSTANT,0.029,/yr
+Hiv3,Parameter,Background Mortality Rate,,,,,,Model file,Certain,,,,,,"Mortality rate from causes unrelated to HIV, affecting all compartments.",CONSTANT,0.018,/yr
+Hiv3,Parameter,Transmission Parameter Initial Value,,,,,,Model file,Certain,,,,,,"Initial value of the base transmission parameter, representing the force of infection.",CONSTANT,0.767,/yr
+Hiv3,Parameter,Relative Transmission on ART,,,,,,Model file,Certain,,,,,,Factor by which infectivity is reduced for individuals receiving ART.,CONSTANT,0.01,Dimensionless
+Hiv3,Parameter,Progression Untreated,,,,,,Model file,Certain,,,,,,Mortality rate for untreated HIV-infected individuals.,CONSTANT,0.303,/yr
+Hiv3,Parameter,Progression Treated,,,,,,Model file,Certain,,,,,,Mortality rate for HIV-infected individuals receiving ART.,CONSTANT,0.165,/yr
+Hiv3,Parameter,Intervention Timing,,,,,,Model file,Certain,,,,,,"Year when the intervention (e.g., testing and ART rollout) begins.",CONSTANT,2011,yr
+Hiv3,Parameter,Intervention Rate,,,,,,Model file,Certain,,,,,,Rate of rollout for the intervention.,CONSTANT,1.0,/yr
+Hiv3,Parameter,Intervention Maximum,,,,,,Model file,Certain,,,,,,Maximum proportion of the population covered by the intervention.,CONSTANT,0.9,Dimensionless
+Hiv3,Parameter,Testing Rate,,,,,,Model file,Certain,,,,,,Rate at which individuals are tested for HIV as part of the intervention strategy.,CONSTANT,1.0,/yr
+Hiv3,Parameter,Refusal,,,,,,Model file,Certain,,,,,,Proportion of individuals who refuse HIV testing.,CONSTANT,0.08,Dimensionless
+Hiv3,Parameter,Drop-out,,,,,,Model file,Certain,,,,,,Rate at which individuals discontinue ART.,CONSTANT,0.015,/yr
+Hiv3,Parameter,Failure Rate,,,,,,Model file,Certain,,,,,,Rate at which ART treatment fails.,CONSTANT,0.1,/yr
+Hiv3,Parameter,Other Interventions Reduction in Transmission,,,,,,Model file,Certain,,,,,,Factor by which transmission is reduced by other interventions.,CONSTANT,0.4,Dimensionless

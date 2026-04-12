@@ -21,80 +21,125 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 4,
-      "fp": 3,
-      "fn": 3,
-      "precision": 0.5714,
-      "recall": 0.5714,
-      "f1": 0.5714
-    },
-    "flows": {
-      "tp": 3,
-      "fp": 5,
-      "fn": 2,
-      "precision": 0.375,
-      "recall": 0.6,
-      "f1": 0.4615
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "matches": [
+        {
+          "extracted": "Infectious Mosquitoes",
+          "gold": "InfectiousHumans",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Susceptible Mosquitoes",
+          "gold": "SusceptibleMosquitoes",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Susceptible Humans",
+          "gold": "SusceptibleHumans",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Exposed Mosquitoes",
+          "gold": "ExposedHumans",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Recovered Humans",
+          "gold": "RecoveredHumans",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Exposed Humans",
+          "gold": "ExposedMosquitoes",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Infectious Humans",
+          "gold": "InfectiousMosquitoes",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": []
     },
     "parameters": {
-      "tp": 1,
-      "fp": 9,
-      "fn": 7,
-      "precision": 0.1,
-      "recall": 0.125,
-      "f1": 0.1111
+      "precision": 0.2,
+      "recall": 0.25,
+      "f1": 0.22222222222222224,
+      "tp": 2,
+      "fp": 8,
+      "fn": 6,
+      "matches": [
+        {
+          "extracted": "\u03b2_V",
+          "gold": "HumanToVectorTransmissionRate",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "\u03b2_H",
+          "gold": "VectorToHumanTransmissionRate",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [
+        "N",
+        "1/\u03b1_H",
+        "r",
+        "1/\u03b4",
+        "\u03d5",
+        "R_0",
+        "1/\u03b3",
+        "1/\u03b1_V"
+      ],
+      "unmatched_gold": [
+        "HumanRecoveryRate",
+        "HumanLatentProgressionRate",
+        "MosquitoDeathRate",
+        "ReportingProportion",
+        "MosquitoLatentProgressionRate",
+        "ReportingDispersion"
+      ]
     },
-    "composite_score": 0.4557,
-    "compartment_matches": [
-      {
-        "gold": "SusceptibleHumans",
-        "extracted": "Susceptible Humans",
-        "score": 0.8250812292098999
-      },
-      {
-        "gold": "ExposedHumans",
-        "extracted": "Exposed Humans",
-        "score": 0.7316462397575378
-      },
-      {
-        "gold": "InfectiousHumans",
-        "extracted": "Infectious Humans",
-        "score": 0.8491145968437195
-      },
-      {
-        "gold": "RecoveredHumans",
-        "extracted": "Recovered Humans",
-        "score": 0.7033557891845703
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "SusceptibleHumans->ExposedHumans",
-        "extracted": "Susceptible Humans->Exposed Humans",
-        "score": 0.818911075592041
-      },
-      {
-        "gold": "ExposedHumans->InfectiousHumans",
-        "extracted": "Exposed Humans->Infectious Humans",
-        "score": 0.818743109703064
-      },
-      {
-        "gold": "InfectiousHumans->RecoveredHumans",
-        "extracted": "Infectious Humans->Recovered Humans",
-        "score": 0.818785548210144
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "MosquitoDeathRate 0.128 delta, mosquito death rate; mean mosquito lifespan about 7.8 days in the paper",
-        "extracted": "1/\u03b4 7.8 Mosquito lifespan, prior Gamma(\u03bc=7.8, \u03c3=0.5)",
-        "score": 0.8083545565605164
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.25,
+      "recall": 0.4,
+      "f1": 0.3076923076923077,
+      "tp": 2,
+      "fp": 6,
+      "fn": 3,
+      "matches": [
+        {
+          "extracted": "ExposedMosquitoes->InfectiousMosquitoes",
+          "gold": "ExposedMosquitoes->InfectiousMosquitoes",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "ExposedHumans->InfectiousHumans",
+          "gold": "ExposedHumans->InfectiousHumans",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "InfectiousHumans->InfectiousHumans",
+        "SusceptibleMosquitoes->SusceptibleMosquitoes",
+        "SusceptibleHumans->ExposedMosquitoes",
+        "SusceptibleMosquitoes->ExposedHumans",
+        "ExposedHumans->ExposedHumans",
+        "InfectiousMosquitoes->RecoveredHumans"
+      ],
+      "unmatched_gold": [
+        "SusceptibleMosquitoes->ExposedMosquitoes",
+        "InfectiousHumans->RecoveredHumans",
+        "SusceptibleHumans->ExposedHumans"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

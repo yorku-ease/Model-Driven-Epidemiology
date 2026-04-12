@@ -1,0 +1,420 @@
+{
+  "paper_name": "Malaria2",
+  "summary": {
+    "extraction": {
+      "compartments": 10,
+      "flows": 11,
+      "parameters": 13,
+      "stratifications": 2,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [],
+    "stratifications": [],
+    "parameters": [],
+    "interventions": [
+      "treatment",
+      "vaccination"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Untreated Clinical Disease Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Treated Clinical Disease Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Prophylactic Protection Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Patent Asymptomatic Infection Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Sub-patent Asymptomatic Infection Humans",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans",
+        "target": "Exposed Humans",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Untreated Clinical Disease Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Humans",
+        "target": "Patent Asymptomatic Infection Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Untreated Clinical Disease Humans",
+        "target": "Treated Clinical Disease Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Untreated Clinical Disease Humans",
+        "target": "Patent Asymptomatic Infection Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Treated Clinical Disease Humans",
+        "target": "Prophylactic Protection Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Prophylactic Protection Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Patent Asymptomatic Infection Humans",
+        "target": "Sub-patent Asymptomatic Infection Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Sub-patent Asymptomatic Infection Humans",
+        "target": "Susceptible Humans",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "L",
+        "value": "Varies",
+        "unit": "per person per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "w",
+        "value": "Varies",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "fT",
+        "value": "Varies",
+        "unit": "dimensionless",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "rT",
+        "value": "Varies",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "rP",
+        "value": "Varies",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "rD",
+        "value": "Varies",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "rA",
+        "value": "Varies",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "rU",
+        "value": "Varies",
+        "unit": "per time",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "EIR",
+        "value": "3 to 675 (fitted annual values)",
+        "unit": "ibppy (infectious bites per person per year)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "DDT half-life",
+        "value": "6",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "RTS,S vaccine efficacy half-life",
+        "value": "3",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "ACT prophylactic protection duration",
+        "value": "25",
+        "unit": "days",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "LLIN insecticide efficacy half-life",
+        "value": "2.64",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 10,
+    "flows": 11,
+    "parameters": 13,
+    "stratifications": 2,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 38,
+    "items_with_evidence": 38,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 38,
+    "faithfulness_percentage": 100.0
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 38,
+      "items_with_evidence": 38,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 38,
+      "faithfulness_percentage": 100.0
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.5,
+        "recall": 0.8333333333333334,
+        "f1": 0.625,
+        "tp": 5,
+        "fp": 5,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Treated Clinical Disease Humans",
+            "gold": "TreatedClinicalDisease",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Untreated Clinical Disease Humans",
+            "gold": "UntreatedClinicalDisease",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Sub-patent Asymptomatic Infection Humans",
+            "gold": "AsymptomaticSubPatentInfection",
+            "similarity": 0.7
+          },
+          {
+            "extracted": "Patent Asymptomatic Infection Humans",
+            "gold": "AsymptomaticPatentInfection",
+            "similarity": 0.7777777777777778
+          },
+          {
+            "extracted": "Susceptible Humans",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Susceptible Mosquitoes",
+          "Exposed Humans",
+          "Infectious Mosquitoes",
+          "Prophylactic Protection Humans",
+          "Exposed Mosquitoes"
+        ],
+        "unmatched_gold": [
+          "Prophylaxis"
+        ]
+      },
+      "parameters": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 13,
+        "fn": 8,
+        "matches": [],
+        "unmatched_extracted": [
+          "rA",
+          "fT",
+          "LLIN insecticide efficacy half-life",
+          "L",
+          "RTS,S vaccine efficacy half-life",
+          "rT",
+          "w",
+          "rU",
+          "DDT half-life",
+          "rP",
+          "ACT prophylactic protection duration",
+          "EIR",
+          "rD"
+        ],
+        "unmatched_gold": [
+          "UntreatedDiseaseResolutionRate",
+          "ClinicalUntreatedInfectionRate",
+          "ProphylaxisLossRate",
+          "TreatmentToProphylaxisRate",
+          "ClinicalTreatedInfectionRate",
+          "SubPatentClearanceRate",
+          "PatentToSubPatentRate",
+          "AsymptomaticInfectionRate"
+        ]
+      },
+      "flows": {
+        "precision": 0.2727272727272727,
+        "recall": 0.375,
+        "f1": 0.3157894736842105,
+        "tp": 3,
+        "fp": 8,
+        "fn": 5,
+        "matches": [
+          {
+            "extracted": "AsymptomaticSubPatentInfection->Susceptible",
+            "gold": "AsymptomaticSubPatentInfection->Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "UntreatedClinicalDisease->AsymptomaticPatentInfection",
+            "gold": "UntreatedClinicalDisease->AsymptomaticPatentInfection",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "AsymptomaticPatentInfection->AsymptomaticSubPatentInfection",
+            "gold": "AsymptomaticPatentInfection->AsymptomaticSubPatentInfection",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Exposed Humans->UntreatedClinicalDisease",
+          "Prophylactic Protection Humans->Susceptible",
+          "Exposed Mosquitoes->Infectious Mosquitoes",
+          "UntreatedClinicalDisease->TreatedClinicalDisease",
+          "TreatedClinicalDisease->Prophylactic Protection Humans",
+          "Susceptible->Exposed Mosquitoes",
+          "Susceptible->Exposed Humans",
+          "Exposed Humans->AsymptomaticPatentInfection"
+        ],
+        "unmatched_gold": [
+          "Prophylaxis->Susceptible",
+          "Susceptible->AsymptomaticPatentInfection",
+          "TreatedClinicalDisease->Prophylaxis",
+          "Susceptible->TreatedClinicalDisease",
+          "Susceptible->UntreatedClinicalDisease"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.7
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

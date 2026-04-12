@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<compartmental:CompartmentalModel xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" xmi:version="2.0">
+  <parameters name="Initial CD4 Mu" expression="6.98" type="CONSTANT" description="Location parameter for the log-normal distribution of initial CD4+ cell counts." unit="Log normal location parameter"/>
+  <parameters name="Initial CD4 Sigma" expression="0.34" type="CONSTANT" description="Shape parameter for the log-normal distribution of initial CD4+ cell counts." unit="Log-normal shape parameter"/>
+  <parameters name="Survival Median" expression="10.0" type="CONSTANT" description="Median survival time for infected individuals, following a Weibull distribution." unit="Years"/>
+  <parameters name="Survival Shape" expression="2.25" type="CONSTANT" description="Shape parameter for the Weibull survival distribution of infected individuals." unit="Dimensionless"/>
+  <parameters name="Acute Phase Duration" expression="2" type="CONSTANT" description="Duration of the acute phase of HIV infection." unit="Months"/>
+  <parameters name="Acute Phase Infectivity" expression="4.5" type="CONSTANT" description="Relative infectivity during the acute phase, used as a multiplier for the base transmission parameter." unit="Number/year"/>
+  <parameters name="Chronic Phase Infectivity" expression="0.45" type="CONSTANT" description="Relative infectivity during the chronic phase of HIV infection, used as a multiplier for the base transmission parameter." unit="Number/year"/>
+  <parameters name="Final Phase Infectivity" expression="2.25" type="CONSTANT" description="Relative infectivity during the final phase of HIV infection, used as a multiplier for the base transmission parameter." unit="Number/year"/>
+  <parameters name="Final Phase Duration" expression="0.15" type="CONSTANT" description="Duration of the final phase of HIV infection, expressed as a proportion of the expected life." unit="Proportion of expected life"/>
+  <parameters name="Concurrency Number" expression="4" type="CONSTANT" description="Average number of concurrent sexual partnerships." unit="Number"/>
+  <parameters name="Partnership Duration" expression="6" type="CONSTANT" description="Mean duration of a sexual partnership." unit="Months"/>
+  <parameters name="Start ART CD4" expression="0.0" type="CONSTANT" description="CD4+ cell count threshold at which ART begins. A value of 0 implies immediate commencement regardless of CD4 count." unit="/micro-litre"/>
+  <parameters name="Proportion Tested Rate" expression="0.0" type="CONSTANT" description="Baseline rate at which individuals are tested for HIV (used for scenarios without intervention)." unit="/year"/>
+  <parameters name="Monte Carlo Repeats" expression="10000" type="CONSTANT" description="Number of Monte Carlo simulation repeats." unit="Number"/>
+  <parameters name="Birth Rate" expression="0.029" type="CONSTANT" description="Rate at which new individuals are born into the population." unit="/yr"/>
+  <parameters name="Background Mortality Rate" expression="0.018" type="CONSTANT" description="Mortality rate from causes unrelated to HIV, affecting all compartments." unit="/yr"/>
+  <parameters name="Transmission Parameter Initial Value" expression="0.767" type="CONSTANT" description="Initial value of the base transmission parameter, representing the force of infection." unit="/yr"/>
+  <parameters name="Relative Transmission on ART" expression="0.01" type="CONSTANT" description="Factor by which infectivity is reduced for individuals receiving ART." unit="Dimensionless"/>
+  <parameters name="Progression Untreated" expression="0.303" type="CONSTANT" description="Mortality rate for untreated HIV-infected individuals." unit="/yr"/>
+  <parameters name="Progression Treated" expression="0.165" type="CONSTANT" description="Mortality rate for HIV-infected individuals receiving ART." unit="/yr"/>
+  <parameters name="Intervention Timing" expression="2011" type="CONSTANT" description="Year when the intervention (e.g., testing and ART rollout) begins." unit="yr"/>
+  <parameters name="Intervention Rate" expression="1.0" type="CONSTANT" description="Rate of rollout for the intervention." unit="/yr"/>
+  <parameters name="Intervention Maximum" expression="0.9" type="CONSTANT" description="Maximum proportion of the population covered by the intervention." unit="Dimensionless"/>
+  <parameters name="Testing Rate" expression="1.0" type="CONSTANT" description="Rate at which individuals are tested for HIV as part of the intervention strategy." unit="/yr"/>
+  <parameters name="Refusal" expression="0.08" type="CONSTANT" description="Proportion of individuals who refuse HIV testing." unit="Dimensionless"/>
+  <parameters name="Drop-out" expression="0.015" type="CONSTANT" description="Rate at which individuals discontinue ART." unit="/yr"/>
+  <parameters name="Failure Rate" expression="0.1" type="CONSTANT" description="Rate at which ART treatment fails." unit="/yr"/>
+  <parameters name="Other Interventions Reduction in Transmission" expression="0.4" type="CONSTANT" description="Factor by which transmission is reduced by other interventions." unit="Dimensionless"/>
+  <compartments PrimaryName="Susceptible" population="0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.16" target="//@compartments.1" description="Susceptible individuals become infected with HIV through contact with infectious individuals and enter the acute phase. The rate depends on the 'Transmission Parameter Initial Value' and the 'Infectivity' of the source compartment, adjusted by 'Relative Transmission on ART' and 'Other Interventions Reduction in Transmission'."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (Acute Phase)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.4" target="//@compartments.2" description="Infected individuals progress from the acute phase to the chronic phase. The rate is calculated as 1 / 'Acute Phase Duration'."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.23" target="//@compartments.4" description="Individuals in the acute phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (Chronic Phase)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.2" target="//@compartments.3" description="Infected individuals progress from the chronic phase to the final phase. The rate is derived from the overall 'Survival Median' and the durations of the acute and final phases."/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.23" target="//@compartments.4" description="Individuals in the chronic phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (Final Phase)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.23" target="//@compartments.4" description="Individuals in the final phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'."/>
+  </compartments>
+  <compartments PrimaryName="Infectious (On ART)" population="0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" rateParameter="//@parameters.25" target="//@compartments.2" description="Individuals on ART discontinue treatment at the 'Drop-out' rate and revert to the untreated chronic phase."/>
+  </compartments>
+</compartmental:CompartmentalModel>

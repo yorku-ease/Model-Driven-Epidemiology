@@ -21,69 +21,130 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 3,
-      "fp": 3,
-      "fn": 3,
-      "precision": 0.5,
-      "recall": 0.5,
-      "f1": 0.5
-    },
-    "flows": {
-      "tp": 3,
-      "fp": 2,
-      "fn": 7,
-      "precision": 0.6,
-      "recall": 0.3,
-      "f1": 0.4
+      "precision": 0.8333333333333334,
+      "recall": 0.8333333333333334,
+      "f1": 0.8333333333333334,
+      "tp": 5,
+      "fp": 1,
+      "fn": 1,
+      "matches": [
+        {
+          "extracted": "Recovered",
+          "gold": "Removed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious in the Community",
+          "gold": "InfectiousCommunity",
+          "similarity": 0.8936170212765957
+        },
+        {
+          "extracted": "Hospitalized Ebola Cases",
+          "gold": "Hospitalized",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "Exposed",
+          "gold": "Exposed",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Dead Ebola Cases"
+      ],
+      "unmatched_gold": [
+        "FuneralInfectious"
+      ]
     },
     "parameters": {
-      "tp": 0,
-      "fp": 16,
-      "fn": 10,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0
+      "precision": 0.125,
+      "recall": 0.2,
+      "f1": 0.15384615384615385,
+      "tp": 2,
+      "fp": 14,
+      "fn": 8,
+      "matches": [
+        {
+          "extracted": "d_2",
+          "gold": "HospitalDeathRate",
+          "similarity": 0.9
+        },
+        {
+          "extracted": "d_1",
+          "gold": "CommunityDeathRate",
+          "similarity": 0.9
+        }
+      ],
+      "unmatched_extracted": [
+        "b_H",
+        "c_f",
+        "z",
+        "h_1",
+        "c_h",
+        "c_i",
+        "c_d",
+        "N",
+        "a",
+        "h",
+        "d",
+        "R_0",
+        "b_F",
+        "b_I"
+      ],
+      "unmatched_gold": [
+        "BetaFuneral",
+        "HospitalRecoveryRate",
+        "BetaHospital",
+        "IncubationRate",
+        "HospitalizationRate",
+        "BetaCommunity",
+        "CommunityRecoveryRate",
+        "BurialRate"
+      ]
     },
-    "composite_score": 0.3825,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 0.9999999403953552
-      },
-      {
-        "gold": "Exposed",
-        "extracted": "Exposed",
-        "score": 0.9999998807907104
-      },
-      {
-        "gold": "InfectiousCommunity",
-        "extracted": "Infectious in the Community",
-        "score": 0.7601811289787292
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->Exposed",
-        "extracted": "Susceptible->Exposed",
-        "score": 0.9999997615814209
-      },
-      {
-        "gold": "Exposed->InfectiousCommunity",
-        "extracted": "Exposed->Infectious in the Community",
-        "score": 0.8567715287208557
-      },
-      {
-        "gold": "InfectiousCommunity->Hospitalized",
-        "extracted": "Infectious in the Community->Hospitalized Ebola Cases",
-        "score": 0.7025580406188965
-      }
-    ],
-    "parameter_matches": [],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 0.6,
+      "recall": 0.375,
+      "f1": 0.4615384615384615,
+      "tp": 3,
+      "fp": 2,
+      "fn": 5,
+      "matches": [
+        {
+          "extracted": "Susceptible->Exposed",
+          "gold": "Susceptible->Exposed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "InfectiousCommunity->Hospitalized",
+          "gold": "InfectiousCommunity->Hospitalized",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Exposed->InfectiousCommunity",
+          "gold": "Exposed->InfectiousCommunity",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "InfectiousCommunity->Dead Ebola Cases",
+        "Hospitalized->Dead Ebola Cases"
+      ],
+      "unmatched_gold": [
+        "FuneralInfectious->Removed",
+        "Hospitalized->Removed",
+        "InfectiousCommunity->FuneralInfectious",
+        "InfectiousCommunity->Removed",
+        "Hospitalized->FuneralInfectious"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

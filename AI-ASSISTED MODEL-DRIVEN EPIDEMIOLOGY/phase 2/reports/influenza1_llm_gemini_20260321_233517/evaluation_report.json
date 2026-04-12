@@ -21,95 +21,108 @@
     }
   },
   "gold_standard_comparison": {
-    "threshold": 0.7,
     "compartments": {
-      "tp": 5,
-      "fp": 1,
-      "fn": 1,
-      "precision": 0.8333,
-      "recall": 0.8333,
-      "f1": 0.8333
-    },
-    "flows": {
+      "precision": 0.6666666666666666,
+      "recall": 1.0,
+      "f1": 0.8,
       "tp": 4,
-      "fp": 0,
-      "fn": 2,
-      "precision": 1.0,
-      "recall": 0.6667,
-      "f1": 0.8
+      "fp": 2,
+      "fn": 0,
+      "matches": [
+        {
+          "extracted": "Recovered",
+          "gold": "Removed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Infectious 1",
+          "gold": "Infectious",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible",
+          "gold": "Susceptible",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Exposed 1",
+          "gold": "Exposed",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "Exposed 2",
+        "Infectious 2"
+      ],
+      "unmatched_gold": []
     },
     "parameters": {
-      "tp": 2,
-      "fp": 9,
-      "fn": 1,
-      "precision": 0.1818,
-      "recall": 0.6667,
-      "f1": 0.2857
+      "precision": 0.2727272727272727,
+      "recall": 1.0,
+      "f1": 0.42857142857142855,
+      "tp": 3,
+      "fp": 8,
+      "fn": 0,
+      "matches": [
+        {
+          "extracted": "\u03c3",
+          "gold": "\u03c3",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03b2",
+          "gold": "\u03b2",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "\u03b3",
+          "gold": "\u03b3",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [
+        "\u03c0",
+        "N",
+        "\u03c8",
+        "\u00b5_ICU|E",
+        "\u03bb0",
+        "\u03c3^2_ICU|E",
+        "p_ICU",
+        "\u03b7"
+      ],
+      "unmatched_gold": []
     },
-    "composite_score": 0.737,
-    "compartment_matches": [
-      {
-        "gold": "Susceptible",
-        "extracted": "Susceptible",
-        "score": 0.9999999403953552
-      },
-      {
-        "gold": "Exposed (E1)",
-        "extracted": "Exposed 1",
-        "score": 0.7883448600769043
-      },
-      {
-        "gold": "Exposed (E2)",
-        "extracted": "Exposed 2",
-        "score": 0.7774767279624939
-      },
-      {
-        "gold": "Infectious (I1)",
-        "extracted": "Infectious 1",
-        "score": 0.8130108118057251
-      },
-      {
-        "gold": "Infectious (I2)",
-        "extracted": "Infectious 2",
-        "score": 0.8131463527679443
-      }
-    ],
-    "flow_matches": [
-      {
-        "gold": "Susceptible->Exposed (E1)",
-        "extracted": "Susceptible->Exposed 1",
-        "score": 0.9022650718688965
-      },
-      {
-        "gold": "Exposed (E1)->Exposed (E2)",
-        "extracted": "Exposed 1->Exposed 2",
-        "score": 0.8605345487594604
-      },
-      {
-        "gold": "Exposed (E2)->Infectious (I1)",
-        "extracted": "Exposed 2->Infectious 1",
-        "score": 0.8379921317100525
-      },
-      {
-        "gold": "Infectious (I1)->Infectious (I2)",
-        "extracted": "Infectious 1->Infectious 2",
-        "score": 0.8437106609344482
-      }
-    ],
-    "parameter_matches": [
-      {
-        "gold": "\u03c3 1 Daily transition rate E1\u2192E2 and E2\u2192I1 (two-stage latent period)",
-        "extracted": "\u03c3 1 Daily rate of transition through exposed compartments (E1 to E2, and E2 to I1), leading to an average incubation period of 2/\u03c3 days.",
-        "score": 0.711846113204956
-      },
-      {
-        "gold": "\u03b3 0.5797 Daily transition rate I1\u2192I2 and I2\u2192R (two-stage infectious period)",
-        "extracted": "\u03b3 0.5797 Daily rate of transition through infectious compartments (I1 to I2, and I2 to R), leading to an average infectious period of 2/\u03b3 days.",
-        "score": 0.8743963837623596
-      }
-    ],
-    "direction_errors": [],
-    "value_errors": [],
-    "matching_method": "cosine_similarity"
+    "flows": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1": 0.7499999999999999,
+      "tp": 3,
+      "fp": 0,
+      "fn": 2,
+      "matches": [
+        {
+          "extracted": "Infectious->Infectious",
+          "gold": "Infectious->Infectious",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Susceptible->Exposed",
+          "gold": "Susceptible->Exposed",
+          "similarity": 1.0
+        },
+        {
+          "extracted": "Exposed->Infectious",
+          "gold": "Exposed->Infectious",
+          "similarity": 1.0
+        }
+      ],
+      "unmatched_extracted": [],
+      "unmatched_gold": [
+        "Infectious->Removed",
+        "Exposed->Exposed"
+      ]
+    },
+    "matching_method": "fuzzy",
+    "similarity_threshold": 0.75
   }
 }

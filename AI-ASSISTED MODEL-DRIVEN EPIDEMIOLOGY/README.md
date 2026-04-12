@@ -62,7 +62,7 @@ Phase 3 was evaluated across 30 benchmark papers (10 diseases × 3 papers each) 
 | Phase 2 baseline (best provider per paper) | 0.75 | 0.53 |
 | Phase 3 - `both` mode | **0.94** (+0.18) | **0.80** (+0.27) |
 
-Full results: `phase 3/RESULTS_PHASE3_GEMINI.md`. Phase 4 uncertainty results: `phase 4/README.md`.
+Full results: `phase 3/RESULTS_PHASE3.md`. Phase 4 (uncertainty): commands in `phase 4/INSTRUCTIONS.md`, narrative and committed outputs in `phase 4/README.md`.
 
 ## Adding a new disease
 

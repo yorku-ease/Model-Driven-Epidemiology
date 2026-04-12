@@ -13,7 +13,7 @@ Phase 4 takes the completed compartmental models from Phase 3 and performs uncer
 
 ## How to run
 
-All commands, including `run_phase4.py` with `--showcase-dir`, `--mode auto` / `both`, and single-model examples, are in **[INSTRUCTIONS.md](INSTRUCTIONS.md)**.
+All commands, including `run_phase4.py` with `--showcase-dir`, `--mode auto` / `both`, `--selected-models`, `--create-selected-models`, and single-model examples, are in **[INSTRUCTIONS.md](INSTRUCTIONS.md)**.
 
 ### How `--mode auto` selects a Phase 3 model
 
@@ -338,13 +338,13 @@ Out of 30 papers: 10 produce wide uncertainty spread, 6 produce partial spread, 
 
 ```
 phase 4/
-├── run_phase4.py                - Main entry point
-├── create_selected_models.py    - Helper to build selected_models/ from showcase
+├── run_phase4.py                - Main entry point (UQ + --create-selected-models)
 ├── data/
 │   └── general_framework.json  - Parameter type priors and distribution families
 ├── src/
 │   ├── distributions.py        - Distribution assignment
 │   ├── monte_carlo.py          - Monte Carlo simulation
+│   ├── selected_models.py      - Showcase → selected_models/ copy helper
 │   ├── sensitivity.py          - One-at-a-time sensitivity analysis
 │   ├── visualization.py        - Plot generation
 │   └── report.py               - PHASE4_REPORT.md generation

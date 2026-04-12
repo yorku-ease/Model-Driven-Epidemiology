@@ -579,7 +579,7 @@ Examples:
     print(f"\nResults saved to: {output_dir}")
     print("\nMain Output:")
     print(f"  - model_draft.compmodel (Generated model)")
-    print(f"  - evaluation_report.json  (P/R/F1 vs baseline)")
+    print(f"  - evaluation_report.json  (fuzzy match vs gold baseline: P/R/F1)")
     print(f"  - phase2_final_report.json (Comprehensive report)")
     print("\nDetailed Files (for reference):")
     print("  - paper_text.json, paper_promises.json, extracted_entities.json")

@@ -186,86 +186,117 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 3,
-        "fp": 1,
-        "fn": 1,
-        "precision": 0.75,
-        "recall": 0.75,
-        "f1": 0.75
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Recovered/Removed",
+            "gold": "Removed",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Exposed",
+            "gold": "Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious",
+            "gold": "Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
+      },
+      "parameters": {
+        "precision": 0.625,
+        "recall": 0.38461538461538464,
+        "f1": 0.4761904761904762,
+        "tp": 5,
+        "fp": 3,
+        "fn": 8,
+        "matches": [
+          {
+            "extracted": "c",
+            "gold": "c",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "incubation_period",
+            "gold": "incubationPeriod",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "r",
+            "gold": "r",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "epsilon",
+            "gold": "epsilon",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "R0",
+            "gold": "R0",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "simulation_runs",
+          "initial_infected",
+          "onset_to_first_medical_visit"
+        ],
+        "unmatched_gold": [
+          "baseRemovalRate",
+          "mobilityRestrictionMultiplier",
+          "N",
+          "contactReductionMultiplier",
+          "initialSeed",
+          "baseContactRate",
+          "detectionIsolationMultiplier",
+          "infectiousPeriod"
+        ]
       },
       "flows": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
         "tp": 3,
         "fp": 0,
         "fn": 0,
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0
+        "matches": [
+          {
+            "extracted": "Infectious->Removed",
+            "gold": "Infectious->Removed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible->Exposed",
+            "gold": "Susceptible->Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed->Infectious",
+            "gold": "Exposed->Infectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [],
+        "unmatched_gold": []
       },
-      "parameters": {
-        "tp": 3,
-        "fp": 5,
-        "fn": 10,
-        "precision": 0.375,
-        "recall": 0.2308,
-        "f1": 0.2857
-      },
-      "composite_score": 0.7866,
-      "compartment_matches": [
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible",
-          "score": 1.0
-        },
-        {
-          "gold": "Exposed",
-          "extracted": "Exposed",
-          "score": 1.0
-        },
-        {
-          "gold": "Infectious",
-          "extracted": "Infectious",
-          "score": 1.0000001192092896
-        }
-      ],
-      "flow_matches": [
-        {
-          "gold": "Susceptible->Exposed",
-          "extracted": "Susceptible->Exposed",
-          "score": 1.0
-        },
-        {
-          "gold": "Exposed->Infectious",
-          "extracted": "Exposed->Infectious",
-          "score": 1.0
-        },
-        {
-          "gold": "Infectious->Removed",
-          "extracted": "Infectious->Recovered/Removed",
-          "score": 0.910893976688385
-        }
-      ],
-      "parameter_matches": [
-        {
-          "gold": "incubationPeriod 5.2 Average incubation period from the paper",
-          "extracted": "incubation_period 5.2 Average incubation period, time spent exposed but not yet infectious (95% CI 4.1\u20137.0 days); epsilon = 1/5.2",
-          "score": 0.7296640872955322
-        },
-        {
-          "gold": "epsilon 1 / incubationPeriod Rate of progression from exposed to infectious",
-          "extracted": "epsilon 0.192 Rate of progression from exposed to infectious (1/5.2 days)",
-          "score": 0.8796598315238953
-        },
-        {
-          "gold": "initialSeed 5 Initial infected individuals in Wuhan used by the paper on December 1, 2019",
-          "extracted": "initial_infected 5 Number of initially infected people seeded in Wuhan on December 1, 2019",
-          "score": 0.8687765002250671
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

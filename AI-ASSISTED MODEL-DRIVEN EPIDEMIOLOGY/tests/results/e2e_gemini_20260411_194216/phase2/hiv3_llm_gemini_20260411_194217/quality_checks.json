@@ -1,0 +1,1172 @@
+{
+  "model_analysis": {
+    "modelName": "Hiv3",
+    "summary": {
+      "modelName": "Hiv3",
+      "totalPopulation": null,
+      "numCompartments": 5,
+      "numParameters": 28,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": false,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.16",
+              "contactCompartment": "//@compartments.1",
+              "description": "Susceptible individuals become infected with HIV through contact with infectious individuals and enter the acute phase. The rate depends on the 'Transmission Parameter Initial Value' and the 'Infectivity' of the source compartment, adjusted by 'Relative Transmission on ART' and 'Other Interventions Reduction in Transmission'.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Infectious (Acute Phase)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.4",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infected individuals progress from the acute phase to the chronic phase. The rate is calculated as 1 / 'Acute Phase Duration'.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.23",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Individuals in the acute phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Infectious (Chronic Phase)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.2",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Infected individuals progress from the chronic phase to the final phase. The rate is derived from the overall 'Survival Median' and the durations of the acute and final phases.",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.23",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Individuals in the chronic phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Infectious (Final Phase)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.23",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Individuals in the final phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Infectious (On ART)",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.25",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Individuals on ART discontinue treatment at the 'Drop-out' rate and revert to the untreated chronic phase.",
+              "stratumSpecificRates": []
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "Initial CD4 Mu",
+          "type": "CONSTANT",
+          "expression": "6.98",
+          "description": "Location parameter for the log-normal distribution of initial CD4+ cell counts.",
+          "unit": "Log normal location parameter"
+        },
+        {
+          "index": 1,
+          "name": "Initial CD4 Sigma",
+          "type": "CONSTANT",
+          "expression": "0.34",
+          "description": "Shape parameter for the log-normal distribution of initial CD4+ cell counts.",
+          "unit": "Log-normal shape parameter"
+        },
+        {
+          "index": 2,
+          "name": "Survival Median",
+          "type": "CONSTANT",
+          "expression": "10.0",
+          "description": "Median survival time for infected individuals, following a Weibull distribution.",
+          "unit": "Years"
+        },
+        {
+          "index": 3,
+          "name": "Survival Shape",
+          "type": "CONSTANT",
+          "expression": "2.25",
+          "description": "Shape parameter for the Weibull survival distribution of infected individuals.",
+          "unit": "Dimensionless"
+        },
+        {
+          "index": 4,
+          "name": "Acute Phase Duration",
+          "type": "CONSTANT",
+          "expression": "2",
+          "description": "Duration of the acute phase of HIV infection.",
+          "unit": "Months"
+        },
+        {
+          "index": 5,
+          "name": "Acute Phase Infectivity",
+          "type": "CONSTANT",
+          "expression": "4.5",
+          "description": "Relative infectivity during the acute phase, used as a multiplier for the base transmission parameter.",
+          "unit": "Number/year"
+        },
+        {
+          "index": 6,
+          "name": "Chronic Phase Infectivity",
+          "type": "CONSTANT",
+          "expression": "0.45",
+          "description": "Relative infectivity during the chronic phase of HIV infection, used as a multiplier for the base transmission parameter.",
+          "unit": "Number/year"
+        },
+        {
+          "index": 7,
+          "name": "Final Phase Infectivity",
+          "type": "CONSTANT",
+          "expression": "2.25",
+          "description": "Relative infectivity during the final phase of HIV infection, used as a multiplier for the base transmission parameter.",
+          "unit": "Number/year"
+        },
+        {
+          "index": 8,
+          "name": "Final Phase Duration",
+          "type": "CONSTANT",
+          "expression": "0.15",
+          "description": "Duration of the final phase of HIV infection, expressed as a proportion of the expected life.",
+          "unit": "Proportion of expected life"
+        },
+        {
+          "index": 9,
+          "name": "Concurrency Number",
+          "type": "CONSTANT",
+          "expression": "4",
+          "description": "Average number of concurrent sexual partnerships.",
+          "unit": "Number"
+        },
+        {
+          "index": 10,
+          "name": "Partnership Duration",
+          "type": "CONSTANT",
+          "expression": "6",
+          "description": "Mean duration of a sexual partnership.",
+          "unit": "Months"
+        },
+        {
+          "index": 11,
+          "name": "Start ART CD4",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "CD4+ cell count threshold at which ART begins. A value of 0 implies immediate commencement regardless of CD4 count.",
+          "unit": "/micro-litre"
+        },
+        {
+          "index": 12,
+          "name": "Proportion Tested Rate",
+          "type": "CONSTANT",
+          "expression": "0.0",
+          "description": "Baseline rate at which individuals are tested for HIV (used for scenarios without intervention).",
+          "unit": "/year"
+        },
+        {
+          "index": 13,
+          "name": "Monte Carlo Repeats",
+          "type": "CONSTANT",
+          "expression": "10000",
+          "description": "Number of Monte Carlo simulation repeats.",
+          "unit": "Number"
+        },
+        {
+          "index": 14,
+          "name": "Birth Rate",
+          "type": "CONSTANT",
+          "expression": "0.029",
+          "description": "Rate at which new individuals are born into the population.",
+          "unit": "/yr"
+        },
+        {
+          "index": 15,
+          "name": "Background Mortality Rate",
+          "type": "CONSTANT",
+          "expression": "0.018",
+          "description": "Mortality rate from causes unrelated to HIV, affecting all compartments.",
+          "unit": "/yr"
+        },
+        {
+          "index": 16,
+          "name": "Transmission Parameter Initial Value",
+          "type": "CONSTANT",
+          "expression": "0.767",
+          "description": "Initial value of the base transmission parameter, representing the force of infection.",
+          "unit": "/yr"
+        },
+        {
+          "index": 17,
+          "name": "Relative Transmission on ART",
+          "type": "CONSTANT",
+          "expression": "0.01",
+          "description": "Factor by which infectivity is reduced for individuals receiving ART.",
+          "unit": "Dimensionless"
+        },
+        {
+          "index": 18,
+          "name": "Progression Untreated",
+          "type": "CONSTANT",
+          "expression": "0.303",
+          "description": "Mortality rate for untreated HIV-infected individuals.",
+          "unit": "/yr"
+        },
+        {
+          "index": 19,
+          "name": "Progression Treated",
+          "type": "CONSTANT",
+          "expression": "0.165",
+          "description": "Mortality rate for HIV-infected individuals receiving ART.",
+          "unit": "/yr"
+        },
+        {
+          "index": 20,
+          "name": "Intervention Timing",
+          "type": "CONSTANT",
+          "expression": "2011",
+          "description": "Year when the intervention (e.g., testing and ART rollout) begins.",
+          "unit": "yr"
+        },
+        {
+          "index": 21,
+          "name": "Intervention Rate",
+          "type": "CONSTANT",
+          "expression": "1.0",
+          "description": "Rate of rollout for the intervention.",
+          "unit": "/yr"
+        },
+        {
+          "index": 22,
+          "name": "Intervention Maximum",
+          "type": "CONSTANT",
+          "expression": "0.9",
+          "description": "Maximum proportion of the population covered by the intervention.",
+          "unit": "Dimensionless"
+        },
+        {
+          "index": 23,
+          "name": "Testing Rate",
+          "type": "CONSTANT",
+          "expression": "1.0",
+          "description": "Rate at which individuals are tested for HIV as part of the intervention strategy.",
+          "unit": "/yr"
+        },
+        {
+          "index": 24,
+          "name": "Refusal",
+          "type": "CONSTANT",
+          "expression": "0.08",
+          "description": "Proportion of individuals who refuse HIV testing.",
+          "unit": "Dimensionless"
+        },
+        {
+          "index": 25,
+          "name": "Drop-out",
+          "type": "CONSTANT",
+          "expression": "0.015",
+          "description": "Rate at which individuals discontinue ART.",
+          "unit": "/yr"
+        },
+        {
+          "index": 26,
+          "name": "Failure Rate",
+          "type": "CONSTANT",
+          "expression": "0.1",
+          "description": "Rate at which ART treatment fails.",
+          "unit": "/yr"
+        },
+        {
+          "index": 27,
+          "name": "Other Interventions Reduction in Transmission",
+          "type": "CONSTANT",
+          "expression": "0.4",
+          "description": "Factor by which transmission is reduced by other interventions.",
+          "unit": "Dimensionless"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Hiv3",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 28,
+    "parametersWithUncertainty": 28,
+    "parameters": [
+      {
+        "parameter": "Initial CD4 Mu",
+        "yourValue": "6.98",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Log normal location parameter",
+        "description": "Location parameter for the log-normal distribution of initial CD4+ cell counts.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Initial CD4 Sigma",
+        "yourValue": "0.34",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Log-normal shape parameter",
+        "description": "Shape parameter for the log-normal distribution of initial CD4+ cell counts.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Survival Median",
+        "yourValue": "10.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Years",
+        "description": "Median survival time for infected individuals, following a Weibull distribution.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Survival Shape",
+        "yourValue": "2.25",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Dimensionless",
+        "description": "Shape parameter for the Weibull survival distribution of infected individuals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Acute Phase Duration",
+        "yourValue": "2",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Months",
+        "description": "Duration of the acute phase of HIV infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Acute Phase Infectivity",
+        "yourValue": "4.5",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Number/year",
+        "description": "Relative infectivity during the acute phase, used as a multiplier for the base transmission parameter.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Chronic Phase Infectivity",
+        "yourValue": "0.45",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Number/year",
+        "description": "Relative infectivity during the chronic phase of HIV infection, used as a multiplier for the base transmission parameter.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Final Phase Infectivity",
+        "yourValue": "2.25",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Number/year",
+        "description": "Relative infectivity during the final phase of HIV infection, used as a multiplier for the base transmission parameter.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Final Phase Duration",
+        "yourValue": "0.15",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Proportion of expected life",
+        "description": "Duration of the final phase of HIV infection, expressed as a proportion of the expected life.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Concurrency Number",
+        "yourValue": "4",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Number",
+        "description": "Average number of concurrent sexual partnerships.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Partnership Duration",
+        "yourValue": "6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Months",
+        "description": "Mean duration of a sexual partnership.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Start ART CD4",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/micro-litre",
+        "description": "CD4+ cell count threshold at which ART begins. A value of 0 implies immediate commencement regardless of CD4 count.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Proportion Tested Rate",
+        "yourValue": "0.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/year",
+        "description": "Baseline rate at which individuals are tested for HIV (used for scenarios without intervention).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Monte Carlo Repeats",
+        "yourValue": "10000",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Number",
+        "description": "Number of Monte Carlo simulation repeats.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Birth Rate",
+        "yourValue": "0.029",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Rate at which new individuals are born into the population.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Background Mortality Rate",
+        "yourValue": "0.018",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Mortality rate from causes unrelated to HIV, affecting all compartments.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Transmission Parameter Initial Value",
+        "yourValue": "0.767",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Initial value of the base transmission parameter, representing the force of infection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Relative Transmission on ART",
+        "yourValue": "0.01",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Dimensionless",
+        "description": "Factor by which infectivity is reduced for individuals receiving ART.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Progression Untreated",
+        "yourValue": "0.303",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Mortality rate for untreated HIV-infected individuals.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Progression Treated",
+        "yourValue": "0.165",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Mortality rate for HIV-infected individuals receiving ART.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Intervention Timing",
+        "yourValue": "2011",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "yr",
+        "description": "Year when the intervention (e.g., testing and ART rollout) begins.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Intervention Rate",
+        "yourValue": "1.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Rate of rollout for the intervention.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Intervention Maximum",
+        "yourValue": "0.9",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Dimensionless",
+        "description": "Maximum proportion of the population covered by the intervention.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Testing Rate",
+        "yourValue": "1.0",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Rate at which individuals are tested for HIV as part of the intervention strategy.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Refusal",
+        "yourValue": "0.08",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Dimensionless",
+        "description": "Proportion of individuals who refuse HIV testing.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Drop-out",
+        "yourValue": "0.015",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Rate at which individuals discontinue ART.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Failure Rate",
+        "yourValue": "0.1",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "/yr",
+        "description": "Rate at which ART treatment fails.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "Other Interventions Reduction in Transmission",
+        "yourValue": "0.4",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Hiv3",
+        "unit": "Dimensionless",
+        "description": "Factor by which transmission is reduced by other interventions.",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 28
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Hiv3",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "Initial CD4 Mu",
+        "type": "mortality",
+        "currentValue": 6.98,
+        "description": "Location parameter for the log-normal distribution of initial CD4+ cell counts.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Initial CD4 Sigma",
+        "type": "progression",
+        "currentValue": 0.34,
+        "description": "Shape parameter for the log-normal distribution of initial CD4+ cell counts.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Survival Median",
+        "type": "other",
+        "currentValue": 10.0,
+        "description": "Median survival time for infected individuals, following a Weibull distribution.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Survival Shape",
+        "type": "other",
+        "currentValue": 2.25,
+        "description": "Shape parameter for the Weibull survival distribution of infected individuals.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Acute Phase Duration",
+        "type": "other",
+        "currentValue": 2.0,
+        "description": "Duration of the acute phase of HIV infection.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Acute Phase Infectivity",
+        "type": "other",
+        "currentValue": 4.5,
+        "description": "Relative infectivity during the acute phase, used as a multiplier for the base transmission parameter.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Chronic Phase Infectivity",
+        "type": "other",
+        "currentValue": 0.45,
+        "description": "Relative infectivity during the chronic phase of HIV infection, used as a multiplier for the base transmission parameter.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Final Phase Infectivity",
+        "type": "other",
+        "currentValue": 2.25,
+        "description": "Relative infectivity during the final phase of HIV infection, used as a multiplier for the base transmission parameter.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Final Phase Duration",
+        "type": "other",
+        "currentValue": 0.15,
+        "description": "Duration of the final phase of HIV infection, expressed as a proportion of the expected life.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Concurrency Number",
+        "type": "other",
+        "currentValue": 4.0,
+        "description": "Average number of concurrent sexual partnerships.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Partnership Duration",
+        "type": "other",
+        "currentValue": 6.0,
+        "description": "Mean duration of a sexual partnership.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Monte Carlo Repeats",
+        "type": "other",
+        "currentValue": 10000.0,
+        "description": "Number of Monte Carlo simulation repeats.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Birth Rate",
+        "type": "other",
+        "currentValue": 0.029,
+        "description": "Rate at which new individuals are born into the population.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Background Mortality Rate",
+        "type": "mortality",
+        "currentValue": 0.018,
+        "description": "Mortality rate from causes unrelated to HIV, affecting all compartments.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Transmission Parameter Initial Value",
+        "type": "transmission",
+        "currentValue": 0.767,
+        "description": "Initial value of the base transmission parameter, representing the force of infection.",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Relative Transmission on ART",
+        "type": "transmission",
+        "currentValue": 0.01,
+        "description": "Factor by which infectivity is reduced for individuals receiving ART.",
+        "importance": "high",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Progression Untreated",
+        "type": "progression",
+        "currentValue": 0.303,
+        "description": "Mortality rate for untreated HIV-infected individuals.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Progression Treated",
+        "type": "progression",
+        "currentValue": 0.165,
+        "description": "Mortality rate for HIV-infected individuals receiving ART.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Intervention Timing",
+        "type": "other",
+        "currentValue": 2011.0,
+        "description": "Year when the intervention (e.g., testing and ART rollout) begins.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Intervention Rate",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Rate of rollout for the intervention.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Intervention Maximum",
+        "type": "mortality",
+        "currentValue": 0.9,
+        "description": "Maximum proportion of the population covered by the intervention.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Testing Rate",
+        "type": "other",
+        "currentValue": 1.0,
+        "description": "Rate at which individuals are tested for HIV as part of the intervention strategy.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Refusal",
+        "type": "other",
+        "currentValue": 0.08,
+        "description": "Proportion of individuals who refuse HIV testing.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Drop-out",
+        "type": "other",
+        "currentValue": 0.015,
+        "description": "Rate at which individuals discontinue ART.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Failure Rate",
+        "type": "other",
+        "currentValue": 0.1,
+        "description": "Rate at which ART treatment fails.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "Other Interventions Reduction in Transmission",
+        "type": "transmission",
+        "currentValue": 0.4,
+        "description": "Factor by which transmission is reduced by other interventions.",
+        "importance": "high",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "Initial CD4 Mu",
+      "Initial CD4 Sigma",
+      "Survival Median",
+      "Survival Shape",
+      "Acute Phase Duration"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "Initial CD4 Mu",
+        "Initial CD4 Sigma",
+        "Survival Median",
+        "Survival Shape",
+        "Acute Phase Duration"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "Initial CD4 Mu": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Initial CD4 Sigma": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Survival Median": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Survival Shape": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "Acute Phase Duration": {
+          "mu": -0.17445806288997118,
+          "mu_star": 0.17445806288997118,
+          "sigma": 0.06662310008778714,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

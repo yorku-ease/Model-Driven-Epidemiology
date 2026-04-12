@@ -20,7 +20,7 @@ Sources collected:
   Phase 2:
     - data/papers/*.pdf   (not raw bytes — we read full_text from reports)
     - data/baseline_models/*.compmodel
-    - reports/<disease>_llm_<provider>_<ts>/
+    - reports/<disease>_llm_<provider>_<ts>/  (top-level or nested, e.g. under reports/_e2e_*/)
         paper_text.json  (full_text only, NO word bounding boxes)
         extracted_entities.json
         paper_promises.json
@@ -48,6 +48,7 @@ PHASE3_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(PHASE3_DIR))
 PHASE1_DIR = PHASE3_DIR.parent / "phase 1"
 PHASE2_DIR = PHASE3_DIR.parent / "phase 2"
+TESTS_RESULTS_DIR = PHASE3_DIR.parent / "tests" / "results"
 DB_DIR = PHASE3_DIR / "data" / "paper_database"
 
 from src.gap_analysis.gap_detector import load_model_structure  # noqa: E402
@@ -369,15 +370,23 @@ def _collect_phase1_knowledge() -> Dict[str, Any]:
 # ─── Phase 2 ───────────────────────────────────────────────────────────────
 
 def _latest_reports(reports_dir: Path) -> Dict[str, Path]:
-    """Return dict of (disease_provider) -> latest report dir."""
+    """Return dict of (disease_provider) -> latest report dir.
+
+    Scans ``reports/`` **recursively** for Phase 2 run folders (name contains ``_llm_``),
+    keeping only directories that have ``model_draft.compmodel`` or ``paper_text.json``.
+    Nested layouts (e.g. ``reports/_e2e_gemini_*/covid1_llm_gemini_*/``) are included so
+    integration tests need not write next to top-level benchmark reports.
+    """
     grouped: Dict[str, List[Path]] = {}
     if not reports_dir.is_dir():
         return {}
-    for d in sorted(reports_dir.iterdir()):
+    for d in sorted(reports_dir.rglob("*")):
         if not d.is_dir() or "_llm_" not in d.name:
             continue
         parts = d.name.split("_llm_")
         if len(parts) != 2:
+            continue
+        if not ((d / "model_draft.compmodel").is_file() or (d / "paper_text.json").is_file()):
             continue
         disease = _canonical(parts[0])
         rest = parts[1]                     # e.g. "gemini_20260211_201419"
@@ -400,15 +409,10 @@ def _read_full_text(paper_text_path: Path) -> str:
         return ""
 
 
-def _collect_phase2_entries(
-    exclude_baselines: bool = False,
-    gold_hashes: Optional[Set[str]] = None,
-) -> List[Dict[str, Any]]:
-    entries: List[Dict[str, Any]] = []
-    reports_dir = PHASE2_DIR / "reports"
-    latest = _latest_reports(reports_dir)
-    print(f"  Phase 2 latest report dirs: {len(latest)}")
-
+def _append_phase2_report_entries(
+    entries: List[Dict[str, Any]],
+    latest: Dict[str, Path],
+) -> None:
     for key, rdir in sorted(latest.items()):
         disease = key.rsplit("_", 1)[0]
         provider = key.rsplit("_", 1)[1]
@@ -482,6 +486,32 @@ def _collect_phase2_entries(
                 entry[name.replace(".json", "")] = _load_json(gp)
 
         entries.append(entry)
+
+
+def _collect_phase2_entries(
+    exclude_baselines: bool = False,
+    gold_hashes: Optional[Set[str]] = None,
+) -> List[Dict[str, Any]]:
+    entries: List[Dict[str, Any]] = []
+    reports_dir = PHASE2_DIR / "reports"
+    latest = _latest_reports(reports_dir)
+    print(f"  Phase 2 latest report dirs: {len(latest)}")
+    _append_phase2_report_entries(entries, latest)
+
+    if TESTS_RESULTS_DIR.is_dir():
+        for run_root in sorted(TESTS_RESULTS_DIR.iterdir()):
+            if not run_root.is_dir():
+                continue
+            p2_sub = run_root / "phase2"
+            if not p2_sub.is_dir():
+                continue
+            extra = _latest_reports(p2_sub)
+            if extra:
+                print(
+                    f"  Phase 2 test reports under {p2_sub.relative_to(PHASE3_DIR.parent)}: "
+                    f"{len(extra)}"
+                )
+            _append_phase2_report_entries(entries, extra)
 
     # Legacy baseline_models/ directory (may or may not exist)
     baselines = PHASE2_DIR / "data" / "baseline_models"

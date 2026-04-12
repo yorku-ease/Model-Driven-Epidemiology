@@ -1,0 +1,35 @@
+Model,Type,Name,SecondaryName,Population,HasStratification,NumFlows,FlowTypes,Source,Confidence,Notes,Target,FlowType,Rate,HasStratumSpecificRates,Description,ParameterType,Value,Unit
+Malaria2,Compartment,Susceptible Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Exposed Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Untreated Clinical Disease Humans,,0,False,2.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Treated Clinical Disease Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Prophylactic Protection Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Patent Asymptomatic Infection Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Sub-patent Asymptomatic Infection Humans,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Susceptible Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Exposed Mosquitoes,,0,False,1.0,RateFlow,Model file,Certain,,,,,,,,,
+Malaria2,Compartment,Infectious Mosquitoes,,0,False,0.0,None,Model file,Certain,,,,,,,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Exposed Humans,RateFlow,//@parameters.0,False,"Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L).",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Untreated Clinical Disease Humans,RateFlow,//@parameters.0,False,Progression from the exposed (pre-patent) stage to clinical disease (with probability w).,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Patent Asymptomatic Infection Humans,RateFlow,//@parameters.0,False,Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w).,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Treated Clinical Disease Humans,RateFlow,//@parameters.0,False,Successful treatment of clinical disease (with probability fT).,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Patent Asymptomatic Infection Humans,RateFlow,//@parameters.0,False,"Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT).",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Prophylactic Protection Humans,RateFlow,//@parameters.0,False,Entry into a period of prophylactic protection after successful treatment (with rate rT).,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,"Loss of prophylactic protection, returning to the susceptible state (with rate rP).",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Sub-patent Asymptomatic Infection Humans,RateFlow,//@parameters.6,False,Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA).,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Susceptible Humans,RateFlow,//@parameters.0,False,"Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU).",,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Exposed Mosquitoes,RateFlow,//@parameters.0,False,Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite.,,,
+Malaria2,Flow,,,,,,,Model file,Certain,,Infectious Mosquitoes,RateFlow,//@parameters.0,False,Progression from the latent (exposed) state to the infectious state in mosquitoes.,,,
+Malaria2,Parameter,L,,,,,,Model file,Certain,,,,,,"Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity.",CONSTANT,Varies,per person per time
+Malaria2,Parameter,w,,,,,,Model file,Certain,,,,,,"Probability of developing clinical disease upon infection, determined by anti-disease immunity.",CONSTANT,Varies,dimensionless
+Malaria2,Parameter,fT,,,,,,Model file,Certain,,,,,,Fixed probability of successful treatment for clinical disease.,CONSTANT,Varies,dimensionless
+Malaria2,Parameter,rT,,,,,,Model file,Certain,,,,,,Rate of entering prophylactic protection after successful treatment.,CONSTANT,Varies,per time
+Malaria2,Parameter,rP,,,,,,Model file,Certain,,,,,,Rate of returning to the susceptible state from prophylactic protection.,CONSTANT,Varies,per time
+Malaria2,Parameter,rD,,,,,,Model file,Certain,,,,,,Rate of clearing untreated clinical disease and becoming patently asymptomatic.,CONSTANT,Varies,per time
+Malaria2,Parameter,rA,,,,,,Model file,Certain,,,,,,"Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity.",CONSTANT,Varies,per time
+Malaria2,Parameter,rU,,,,,,Model file,Certain,,,,,,Rate of clearing sub-patent infection and returning to the susceptible state.,CONSTANT,Varies,per time
+Malaria2,Parameter,EIR,,,,,,Model file,Certain,,,,,,"Entomological Inoculation Rate, representing the intensity of transmission in different settings.",CONSTANT,3 to 675 (fitted annual values),ibppy (infectious bites per person per year)
+Malaria2,Parameter,DDT half-life,,,,,,Model file,Certain,,,,,,Half-life of DDT insecticide used in Indoor Residual Spraying (IRS).,CONSTANT,6,months
+Malaria2,Parameter,"RTS,S vaccine efficacy half-life",,,,,,Model file,Certain,,,,,,"Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy.",CONSTANT,3,years
+Malaria2,Parameter,ACT prophylactic protection duration,,,,,,Model file,Certain,,,,,,Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs).,CONSTANT,25,days
+Malaria2,Parameter,LLIN insecticide efficacy half-life,,,,,,Model file,Certain,,,,,,Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs).,CONSTANT,2.64,years

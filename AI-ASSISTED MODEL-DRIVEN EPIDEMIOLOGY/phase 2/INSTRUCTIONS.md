@@ -226,7 +226,7 @@ ls reports/
 **Main Files to Check:**
 - `model_draft.compmodel` - The extracted model (XML)
 - `phase2_final_report.json` - Comprehensive report with all results
-- `evaluation_report.json` - Quality metrics; if a baseline was used, see `gold_standard_comparison` for compartments, parameters, and flows (precision, recall, F1)
+- `evaluation_report.json` - Quality metrics; if a baseline was used, `gold_standard_comparison` reports precision, recall, and F1 for compartments, parameters, and flows using **fuzzy string matching** against the gold `.compmodel` (not embedding-based similarity)
 
 ---
 
@@ -863,7 +863,7 @@ pip install pdfplumber
 
 2. **`evaluation_report.json`** - Quality and baseline comparison
    - Traceability coverage and faithfulness
-   - If a baseline was used: `gold_standard_comparison` has compartments, parameters, and flows (precision, recall, F1)
+   - If a baseline was used: `gold_standard_comparison` uses fuzzy matching vs gold for compartments, parameters, and flows (precision, recall, F1); tune with `--eval-threshold` on `run_phase2.py` if needed
 
 3. **`model_draft.compmodel`** - The extracted model
    - Open in text editor or XML viewer
@@ -880,7 +880,7 @@ After running Phase 2, you get:
 
 - **1 main output:** `model_draft.compmodel` (the extracted model)
 - **1 comprehensive report:** `phase2_final_report.json` (all results)
-- **Evaluation:** `evaluation_report.json` (traceability, faithfulness; if baseline used: `gold_standard_comparison` with compartments, parameters, flows P/R/F1)
+- **Evaluation:** `evaluation_report.json` (traceability, faithfulness; if baseline used: `gold_standard_comparison` with fuzzy-matched P/R/F1 vs gold)
 - **Other detailed files:** paper_text.json, paper_promises.json, extracted_entities.json, traceability.json, quality_checks.json
 
 **Check `phase2_final_report.json` first** - it contains everything you need. Use `evaluation_report.json` for precision/recall/F1 when a baseline was auto-detected.

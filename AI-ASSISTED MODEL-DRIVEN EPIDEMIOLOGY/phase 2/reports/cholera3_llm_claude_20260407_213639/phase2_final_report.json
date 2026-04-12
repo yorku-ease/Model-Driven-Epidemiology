@@ -195,96 +195,112 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 2,
-        "fp": 2,
-        "fn": 1,
-        "precision": 0.5,
-        "recall": 0.6667,
-        "f1": 0.5714
-      },
-      "flows": {
-        "tp": 1,
-        "fp": 2,
-        "fn": 1,
-        "precision": 0.3333,
-        "recall": 0.5,
-        "f1": 0.4
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "matches": [
+          {
+            "extracted": "Infectious",
+            "gold": "Infected",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Bacteria in Aquatic Reservoir",
+            "gold": "Aquatic toxigenic Vibrio cholerae",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Recovered"
+        ],
+        "unmatched_gold": []
       },
       "parameters": {
+        "precision": 0.8888888888888888,
+        "recall": 0.8,
+        "f1": 0.8421052631578948,
         "tp": 8,
         "fp": 1,
         "fn": 2,
-        "precision": 0.8889,
-        "recall": 0.8,
-        "f1": 0.8421
+        "matches": [
+          {
+            "extracted": "mb",
+            "gold": "mb",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "e",
+            "gold": "e",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "r",
+            "gold": "r",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "H",
+            "gold": "H",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "a",
+            "gold": "a",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "K",
+            "gold": "K",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "n",
+            "gold": "n",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "nb",
+            "gold": "nb",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "nb-mb"
+        ],
+        "unmatched_gold": [
+          "nH",
+          "mb-nb"
+        ]
       },
-      "composite_score": 0.5392,
-      "compartment_matches": [
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible",
-          "score": 1.0000001192092896
-        },
-        {
-          "gold": "Infected",
-          "extracted": "Infectious",
-          "score": 0.8296632170677185
-        }
-      ],
-      "flow_matches": [
-        {
-          "gold": "Susceptible->Infected",
-          "extracted": "Susceptible->Susceptible",
-          "score": 0.838589072227478
-        }
-      ],
-      "parameter_matches": [
-        {
-          "gold": "n 0.0001 Human birth and death rate",
-          "extracted": "n 0.0001-0.001 Human birth and death rate (susceptible renewal rate)",
-          "score": 0.8188696503639221
-        },
-        {
-          "gold": "a 1 Rate of exposure to contaminated water (used in dose-dependent infection term a * B / (K + B))",
-          "extracted": "a 0.5-1 Rate of exposure to contaminated water (contact rate)",
-          "score": 0.7580803632736206
-        },
-        {
-          "gold": "K 1e6 Concentration of V. cholerae in water giving 50% chance of infection",
-          "extracted": "K 1000000 Concentration of V. cholerae in water that yields 50% chance of catching cholera (half-saturation constant)",
-          "score": 0.8586059808731079
-        },
-        {
-          "gold": "r 0.2 Recovery rate from cholera",
-          "extracted": "r 0.2 Rate at which people recover from cholera",
-          "score": 0.9217009544372559
-        },
-        {
-          "gold": "nb 0 Growth rate of V. cholerae in the aquatic environment",
-          "extracted": "nb Growth rate of V. cholerae in the aquatic environment",
-          "score": 0.9734686017036438
-        },
-        {
-          "gold": "mb 0.33 Loss rate of V. cholerae in the aquatic environment",
-          "extracted": "mb Loss rate of V. cholerae in the aquatic environment",
-          "score": 0.9872279167175293
-        },
-        {
-          "gold": "e 10 Contribution of each infected person to aquatic V. cholerae concentration",
-          "extracted": "e 10 Contribution of each infected person to the population of V. cholerae in the aquatic environment",
-          "score": 0.958503246307373
-        },
-        {
-          "gold": "H 10000 Total human population",
-          "extracted": "H 10000 Total human population size (constant)",
-          "score": 0.922392725944519
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "flows": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
+        "tp": 0,
+        "fp": 3,
+        "fn": 2,
+        "matches": [],
+        "unmatched_extracted": [
+          "Aquatic toxigenic Vibrio cholerae->Aquatic toxigenic Vibrio cholerae",
+          "Recovered->Susceptible",
+          "Susceptible->Susceptible"
+        ],
+        "unmatched_gold": [
+          "Susceptible->Infected",
+          "Infected->Aquatic toxigenic Vibrio cholerae"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

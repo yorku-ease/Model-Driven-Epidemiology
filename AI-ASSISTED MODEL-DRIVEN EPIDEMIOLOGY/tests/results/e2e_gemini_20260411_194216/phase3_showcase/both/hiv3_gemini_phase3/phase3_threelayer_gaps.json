@@ -1,0 +1,131 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "untreatedstagei1",
+      "untreatedstagei2",
+      "untreatedstagei3",
+      "untreatedstagei4",
+      "artstagea1",
+      "artstagea2",
+      "artstagea3",
+      "artstagea4",
+      "removed"
+    ],
+    "missing_parameters": [
+      "betai1",
+      "betai2",
+      "betai3",
+      "betai4",
+      "betaa1",
+      "betaa2",
+      "betaa3",
+      "betaa4",
+      "progressi1toi2",
+      "progressi2toi3",
+      "progressi3toi4",
+      "untreatedmortalityi4",
+      "artstarti1",
+      "artstarti2",
+      "artstarti3",
+      "artstarti4",
+      "progressa1toa2",
+      "progressa2toa3",
+      "progressa3toa4",
+      "artmortalitya4",
+      "artdropoutrate"
+    ],
+    "missing_flows": [
+      "Susceptible->UntreatedStageI1",
+      "UntreatedStageI1->UntreatedStageI2",
+      "UntreatedStageI1->ARTStageA1",
+      "UntreatedStageI2->UntreatedStageI3",
+      "UntreatedStageI2->ARTStageA2",
+      "UntreatedStageI3->UntreatedStageI4",
+      "UntreatedStageI3->ARTStageA3",
+      "UntreatedStageI4->Removed",
+      "UntreatedStageI4->ARTStageA4",
+      "ARTStageA1->ARTStageA2",
+      "ARTStageA1->UntreatedStageI1",
+      "ARTStageA2->ARTStageA3",
+      "ARTStageA2->UntreatedStageI2",
+      "ARTStageA3->ARTStageA4",
+      "ARTStageA3->UntreatedStageI3",
+      "ARTStageA4->Removed",
+      "ARTStageA4->UntreatedStageI4"
+    ],
+    "summary": {
+      "missing_compartments": 9,
+      "missing_parameters": 21,
+      "missing_flows": 17,
+      "total": 47
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "infectious (acute phase)",
+      "infectious (chronic phase)",
+      "infectious (final phase)",
+      "infectious (on art)"
+    ],
+    "extra_parameters": [
+      "initial cd4 mu",
+      "initial cd4 sigma",
+      "survival median",
+      "survival shape",
+      "acute phase duration",
+      "acute phase infectivity",
+      "chronic phase infectivity",
+      "final phase infectivity",
+      "final phase duration",
+      "concurrency number",
+      "partnership duration",
+      "start art cd4",
+      "proportion tested rate",
+      "monte carlo repeats",
+      "birth rate",
+      "background mortality rate",
+      "transmission parameter initial value",
+      "relative transmission on art",
+      "progression untreated",
+      "progression treated",
+      "intervention timing",
+      "intervention rate",
+      "intervention maximum",
+      "testing rate",
+      "refusal",
+      "drop-out",
+      "failure rate",
+      "other interventions reduction in transmission"
+    ],
+    "extra_flows": [
+      "Susceptible->Infectious (Acute Phase)",
+      "Infectious (Acute Phase)->Infectious (Chronic Phase)",
+      "Infectious (Acute Phase)->Infectious (On ART)",
+      "Infectious (Chronic Phase)->Infectious (Final Phase)",
+      "Infectious (Chronic Phase)->Infectious (On ART)",
+      "Infectious (Final Phase)->Infectious (On ART)",
+      "Infectious (On ART)->Infectious (Chronic Phase)"
+    ],
+    "summary": {
+      "extra_compartments": 4,
+      "extra_parameters": 28,
+      "extra_flows": 7,
+      "total": 39
+    }
+  },
+  "has_gold": true
+}

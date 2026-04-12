@@ -304,141 +304,169 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 7,
-        "fp": 2,
-        "fn": 2,
-        "precision": 0.7778,
-        "recall": 0.7778,
-        "f1": 0.7778
-      },
-      "flows": {
-        "tp": 11,
-        "fp": 0,
-        "fn": 3,
-        "precision": 1.0,
-        "recall": 0.7857,
-        "f1": 0.88
+        "precision": 0.8888888888888888,
+        "recall": 0.8888888888888888,
+        "f1": 0.8888888888888888,
+        "tp": 8,
+        "fp": 1,
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Dead",
+            "gold": "Dead",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious",
+            "gold": "InfectiousCommunity",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Effectively Vaccinated",
+            "gold": "VaccinatedEffectiveNotYetProtected",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Protected",
+            "gold": "ProtectedByVaccination",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Hospitalized",
+            "gold": "Hospitalized",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Latent",
+            "gold": "Latent",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Ineffectively Vaccinated"
+        ],
+        "unmatched_gold": [
+          "VaccinatedIneffective"
+        ]
       },
       "parameters": {
+        "precision": 0.15384615384615385,
+        "recall": 0.2,
+        "f1": 0.17391304347826086,
         "tp": 2,
         "fp": 11,
         "fn": 8,
-        "precision": 0.1538,
-        "recall": 0.2,
-        "f1": 0.1739
+        "matches": [
+          {
+            "extracted": "gamma",
+            "gold": "CommunityRecoveryRate",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "gamma_1",
+            "gold": "HospitalRecoveryRate",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "nu(t)",
+          "beta_ij",
+          "vaccination_coverage",
+          "delta_i",
+          "kappa",
+          "t*",
+          "alpha_i",
+          "gamma_2",
+          "q",
+          "R0",
+          "e_i"
+        ],
+        "unmatched_gold": [
+          "IneffectiveVaccinationRate",
+          "EffectiveVaccinationRate",
+          "LatentProgressionRate",
+          "HospitalTransmissionRate",
+          "HospitalizationRate",
+          "CommunityTransmissionRate",
+          "ProtectionDelayRate",
+          "HospitalMortalityRate"
+        ]
       },
-      "composite_score": 0.7306,
-      "compartment_matches": [
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible",
-          "score": 1.000000238418579
-        },
-        {
-          "gold": "VaccinatedIneffective",
-          "extracted": "Effectively Vaccinated",
-          "score": 0.7909148931503296
-        },
-        {
-          "gold": "Latent",
-          "extracted": "Latent",
-          "score": 0.9999996423721313
-        },
-        {
-          "gold": "InfectiousCommunity",
-          "extracted": "Infectious",
-          "score": 0.8125841617584229
-        },
-        {
-          "gold": "Hospitalized",
-          "extracted": "Hospitalized",
-          "score": 0.9999999403953552
-        },
-        {
-          "gold": "Recovered",
-          "extracted": "Recovered",
-          "score": 1.0
-        },
-        {
-          "gold": "Dead",
-          "extracted": "Dead",
-          "score": 0.9999999403953552
-        }
-      ],
-      "flow_matches": [
-        {
-          "gold": "Susceptible->Latent",
-          "extracted": "Susceptible->Latent",
-          "score": 0.9999999403953552
-        },
-        {
-          "gold": "Susceptible->VaccinatedEffectiveNotYetProtected",
-          "extracted": "Susceptible->Ineffectively Vaccinated",
-          "score": 0.7580852508544922
-        },
-        {
-          "gold": "Susceptible->VaccinatedIneffective",
-          "extracted": "Susceptible->Effectively Vaccinated",
-          "score": 0.8782750368118286
-        },
-        {
-          "gold": "VaccinatedEffectiveNotYetProtected->ProtectedByVaccination",
-          "extracted": "Effectively Vaccinated->Protected",
-          "score": 0.7859187126159668
-        },
-        {
-          "gold": "VaccinatedIneffective->Latent",
-          "extracted": "Effectively Vaccinated->Latent",
-          "score": 0.9078693389892578
-        },
-        {
-          "gold": "VaccinatedIneffective->Latent",
-          "extracted": "Ineffectively Vaccinated->Latent",
-          "score": 0.8834000825881958
-        },
-        {
-          "gold": "Latent->InfectiousCommunity",
-          "extracted": "Latent->Infectious",
-          "score": 0.9173951148986816
-        },
-        {
-          "gold": "InfectiousCommunity->Hospitalized",
-          "extracted": "Infectious->Hospitalized",
-          "score": 0.920010507106781
-        },
-        {
-          "gold": "InfectiousCommunity->Recovered",
-          "extracted": "Infectious->Recovered",
-          "score": 0.892540693283081
-        },
-        {
-          "gold": "Hospitalized->Recovered",
-          "extracted": "Hospitalized->Recovered",
-          "score": 1.0
-        },
-        {
-          "gold": "Hospitalized->Dead",
-          "extracted": "Hospitalized->Dead",
-          "score": 1.0
-        }
-      ],
-      "parameter_matches": [
-        {
-          "gold": "ProtectionDelayRate 0.10 gamma, rate of becoming protected after vaccination; mean 10 days in the paper",
-          "extracted": "gamma 1/10 Rate at which successfully vaccinated individuals develop protection (mean 10 days)",
-          "score": 0.873105525970459
-        },
-        {
-          "gold": "LatentProgressionRate 0.526 kappa, progression rate from latent to infectious; based on mean latent period 1.9 days in the paper",
-          "extracted": "kappa 1/1.9 Rate of progression from latent to infectious state (1/kappa is the mean latent period)",
-          "score": 0.8831955194473267
-        }
-      ],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "flows": {
+        "precision": 0.9,
+        "recall": 0.8181818181818182,
+        "f1": 0.8571428571428572,
+        "tp": 9,
+        "fp": 1,
+        "fn": 2,
+        "matches": [
+          {
+            "extracted": "Susceptible->VaccinatedEffectiveNotYetProtected",
+            "gold": "Susceptible->VaccinatedEffectiveNotYetProtected",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Latent->InfectiousCommunity",
+            "gold": "Latent->InfectiousCommunity",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "VaccinatedEffectiveNotYetProtected->ProtectedByVaccination",
+            "gold": "VaccinatedEffectiveNotYetProtected->ProtectedByVaccination",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Hospitalized->Dead",
+            "gold": "Hospitalized->Dead",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible->Latent",
+            "gold": "Susceptible->Latent",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Hospitalized->Recovered",
+            "gold": "Hospitalized->Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "InfectiousCommunity->Hospitalized",
+            "gold": "InfectiousCommunity->Hospitalized",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "InfectiousCommunity->Recovered",
+            "gold": "InfectiousCommunity->Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "VaccinatedEffectiveNotYetProtected->Latent",
+            "gold": "VaccinatedEffectiveNotYetProtected->Latent",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Susceptible->Susceptible"
+        ],
+        "unmatched_gold": [
+          "Susceptible->VaccinatedIneffective",
+          "VaccinatedIneffective->Latent"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

@@ -1,0 +1,439 @@
+{
+  "compartments": [
+    {
+      "normalized_name": "Susceptible Humans",
+      "raw_text": "Susceptible Humans",
+      "page_number": 0,
+      "text_span": "Individuals not infected and susceptible to malaria.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals not infected and susceptible to malaria."
+    },
+    {
+      "normalized_name": "Exposed Humans",
+      "raw_text": "Exposed Humans",
+      "page_number": 0,
+      "text_span": "Individuals infected but in the pre-patent (liver) stage, not yet infectious to mosquitoes or showing symptoms.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals infected but in the pre-patent (liver) stage, not yet infectious to mosquitoes or showing symptoms."
+    },
+    {
+      "normalized_name": "Untreated Clinical Disease Humans",
+      "raw_text": "Untreated Clinical Disease Humans",
+      "page_number": 0,
+      "text_span": "Individuals with clinical malaria symptoms who are not successfully treated.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with clinical malaria symptoms who are not successfully treated."
+    },
+    {
+      "normalized_name": "Treated Clinical Disease Humans",
+      "raw_text": "Treated Clinical Disease Humans",
+      "page_number": 0,
+      "text_span": "Individuals with clinical malaria symptoms who receive successful treatment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with clinical malaria symptoms who receive successful treatment."
+    },
+    {
+      "normalized_name": "Prophylactic Protection Humans",
+      "raw_text": "Prophylactic Protection Humans",
+      "page_number": 0,
+      "text_span": "Individuals protected by prophylactic drugs after successful treatment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals protected by prophylactic drugs after successful treatment."
+    },
+    {
+      "normalized_name": "Patent Asymptomatic Infection Humans",
+      "raw_text": "Patent Asymptomatic Infection Humans",
+      "page_number": 0,
+      "text_span": "Individuals with detectable (by microscopy) asymptomatic malaria infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with detectable (by microscopy) asymptomatic malaria infection."
+    },
+    {
+      "normalized_name": "Sub-patent Asymptomatic Infection Humans",
+      "raw_text": "Sub-patent Asymptomatic Infection Humans",
+      "page_number": 0,
+      "text_span": "Individuals with undetectable (by microscopy) asymptomatic malaria infection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Individuals with undetectable (by microscopy) asymptomatic malaria infection."
+    },
+    {
+      "normalized_name": "Susceptible Mosquitoes",
+      "raw_text": "Susceptible Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes not infected and susceptible to malaria parasites.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes not infected and susceptible to malaria parasites."
+    },
+    {
+      "normalized_name": "Exposed Mosquitoes",
+      "raw_text": "Exposed Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes infected but in the latent (extrinsic incubation) stage, not yet infectious to humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes infected but in the latent (extrinsic incubation) stage, not yet infectious to humans."
+    },
+    {
+      "normalized_name": "Infectious Mosquitoes",
+      "raw_text": "Infectious Mosquitoes",
+      "page_number": 0,
+      "text_span": "Mosquitoes infected and capable of transmitting malaria to humans.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Mosquitoes infected and capable of transmitting malaria to humans."
+    }
+  ],
+  "flows": [
+    {
+      "source": "Susceptible Humans",
+      "target": "Exposed Humans",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L).",
+      "page_number": 0,
+      "text_span": "Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L)."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Untreated Clinical Disease Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from the exposed (pre-patent) stage to clinical disease (with probability w).",
+      "page_number": 0,
+      "text_span": "Progression from the exposed (pre-patent) stage to clinical disease (with probability w).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from the exposed (pre-patent) stage to clinical disease (with probability w)."
+    },
+    {
+      "source": "Exposed Humans",
+      "target": "Patent Asymptomatic Infection Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w).",
+      "page_number": 0,
+      "text_span": "Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w)."
+    },
+    {
+      "source": "Untreated Clinical Disease Humans",
+      "target": "Treated Clinical Disease Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Successful treatment of clinical disease (with probability fT).",
+      "page_number": 0,
+      "text_span": "Successful treatment of clinical disease (with probability fT).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Successful treatment of clinical disease (with probability fT)."
+    },
+    {
+      "source": "Untreated Clinical Disease Humans",
+      "target": "Patent Asymptomatic Infection Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT).",
+      "page_number": 0,
+      "text_span": "Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT)."
+    },
+    {
+      "source": "Treated Clinical Disease Humans",
+      "target": "Prophylactic Protection Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Entry into a period of prophylactic protection after successful treatment (with rate rT).",
+      "page_number": 0,
+      "text_span": "Entry into a period of prophylactic protection after successful treatment (with rate rT).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Entry into a period of prophylactic protection after successful treatment (with rate rT)."
+    },
+    {
+      "source": "Prophylactic Protection Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Loss of prophylactic protection, returning to the susceptible state (with rate rP).",
+      "page_number": 0,
+      "text_span": "Loss of prophylactic protection, returning to the susceptible state (with rate rP).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Loss of prophylactic protection, returning to the susceptible state (with rate rP)."
+    },
+    {
+      "source": "Patent Asymptomatic Infection Humans",
+      "target": "Sub-patent Asymptomatic Infection Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA).",
+      "page_number": 0,
+      "text_span": "Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA)."
+    },
+    {
+      "source": "Sub-patent Asymptomatic Infection Humans",
+      "target": "Susceptible Humans",
+      "flow_type": "RateFlow",
+      "raw_text": "Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU).",
+      "page_number": 0,
+      "text_span": "Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU)."
+    },
+    {
+      "source": "Susceptible Mosquitoes",
+      "target": "Exposed Mosquitoes",
+      "flow_type": "ContactFlow",
+      "raw_text": "Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite.",
+      "page_number": 0,
+      "text_span": "Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite."
+    },
+    {
+      "source": "Exposed Mosquitoes",
+      "target": "Infectious Mosquitoes",
+      "flow_type": "RateFlow",
+      "raw_text": "Progression from the latent (exposed) state to the infectious state in mosquitoes.",
+      "page_number": 0,
+      "text_span": "Progression from the latent (exposed) state to the infectious state in mosquitoes.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Progression from the latent (exposed) state to the infectious state in mosquitoes."
+    }
+  ],
+  "parameters": [
+    {
+      "normalized_name": "L",
+      "raw_text": "L",
+      "value": "Varies",
+      "unit": "per person per time",
+      "page_number": 0,
+      "text_span": "Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity."
+    },
+    {
+      "normalized_name": "w",
+      "raw_text": "w",
+      "value": "Varies",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Probability of developing clinical disease upon infection, determined by anti-disease immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Probability of developing clinical disease upon infection, determined by anti-disease immunity."
+    },
+    {
+      "normalized_name": "fT",
+      "raw_text": "fT",
+      "value": "Varies",
+      "unit": "dimensionless",
+      "page_number": 0,
+      "text_span": "Fixed probability of successful treatment for clinical disease.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Fixed probability of successful treatment for clinical disease."
+    },
+    {
+      "normalized_name": "rT",
+      "raw_text": "rT",
+      "value": "Varies",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of entering prophylactic protection after successful treatment.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of entering prophylactic protection after successful treatment."
+    },
+    {
+      "normalized_name": "rP",
+      "raw_text": "rP",
+      "value": "Varies",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of returning to the susceptible state from prophylactic protection.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of returning to the susceptible state from prophylactic protection."
+    },
+    {
+      "normalized_name": "rD",
+      "raw_text": "rD",
+      "value": "Varies",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of clearing untreated clinical disease and becoming patently asymptomatic.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of clearing untreated clinical disease and becoming patently asymptomatic."
+    },
+    {
+      "normalized_name": "rA",
+      "raw_text": "rA",
+      "value": "Varies",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity."
+    },
+    {
+      "normalized_name": "rU",
+      "raw_text": "rU",
+      "value": "Varies",
+      "unit": "per time",
+      "page_number": 0,
+      "text_span": "Rate of clearing sub-patent infection and returning to the susceptible state.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Rate of clearing sub-patent infection and returning to the susceptible state."
+    },
+    {
+      "normalized_name": "EIR",
+      "raw_text": "EIR",
+      "value": "3 to 675 (fitted annual values)",
+      "unit": "ibppy (infectious bites per person per year)",
+      "page_number": 0,
+      "text_span": "Entomological Inoculation Rate, representing the intensity of transmission in different settings.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Entomological Inoculation Rate, representing the intensity of transmission in different settings."
+    },
+    {
+      "normalized_name": "DDT half-life",
+      "raw_text": "DDT half-life",
+      "value": "6",
+      "unit": "months",
+      "page_number": 0,
+      "text_span": "Half-life of DDT insecticide used in Indoor Residual Spraying (IRS).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Half-life of DDT insecticide used in Indoor Residual Spraying (IRS)."
+    },
+    {
+      "normalized_name": "RTS,S vaccine efficacy half-life",
+      "raw_text": "RTS,S vaccine efficacy half-life",
+      "value": "3",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy.",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy."
+    },
+    {
+      "normalized_name": "ACT prophylactic protection duration",
+      "raw_text": "ACT prophylactic protection duration",
+      "value": "25",
+      "unit": "days",
+      "page_number": 0,
+      "text_span": "Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs)."
+    },
+    {
+      "normalized_name": "LLIN insecticide efficacy half-life",
+      "raw_text": "LLIN insecticide efficacy half-life",
+      "value": "2.64",
+      "unit": "years",
+      "page_number": 0,
+      "text_span": "Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs).",
+      "extraction_method": "llm",
+      "confidence": "high",
+      "paper_backed": true,
+      "description": "Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs)."
+    }
+  ],
+  "stratifications": [
+    {
+      "dimension": "age",
+      "page_number": 1,
+      "text_span": "age stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "dimension": "gender",
+      "page_number": 6,
+      "text_span": "gender stratification mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "interventions": [
+    {
+      "type": "vaccination",
+      "page_number": 1,
+      "text_span": "vaccination mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    },
+    {
+      "type": "treatment",
+      "page_number": 1,
+      "text_span": "treatment mentioned",
+      "extraction_method": "pattern",
+      "confidence": "medium",
+      "paper_backed": true
+    }
+  ],
+  "extraction_summary": {
+    "num_compartments": 10,
+    "num_flows": 11,
+    "num_parameters": 13,
+    "num_stratifications": 2,
+    "num_interventions": 2
+  }
+}

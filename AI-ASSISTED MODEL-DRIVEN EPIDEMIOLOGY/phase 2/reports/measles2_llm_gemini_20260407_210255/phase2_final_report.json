@@ -219,80 +219,121 @@
       }
     },
     "gold_standard_comparison": {
-      "threshold": 0.7,
       "compartments": {
-        "tp": 5,
-        "fp": 2,
-        "fn": 2,
-        "precision": 0.7143,
-        "recall": 0.7143,
-        "f1": 0.7143
-      },
-      "flows": {
-        "tp": 3,
+        "precision": 0.8571428571428571,
+        "recall": 0.8571428571428571,
+        "f1": 0.8571428571428571,
+        "tp": 6,
         "fp": 1,
-        "fn": 6,
-        "precision": 0.75,
-        "recall": 0.3333,
-        "f1": 0.4615
+        "fn": 1,
+        "matches": [
+          {
+            "extracted": "Vaccinated (2 doses)",
+            "gold": "VaccinatedTwoDose",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible",
+            "gold": "Susceptible",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Infectious",
+            "gold": "Infectious",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Exposed",
+            "gold": "Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Recovered",
+            "gold": "Recovered",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Vaccinated (1 dose)",
+            "gold": "VaccinatedOneDose",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "Maternally Immune"
+        ],
+        "unmatched_gold": [
+          "MaternalProtected"
+        ]
       },
       "parameters": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0,
         "tp": 0,
         "fp": 9,
         "fn": 9,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
+        "matches": [],
+        "unmatched_extracted": [
+          "duration of maternal immunity",
+          "vaccine effectiveness",
+          "existing immunity in older generations",
+          "infection rate",
+          "parameters of spatial spread",
+          "importation",
+          "primary vaccine failure",
+          "parameters for seasonality of transmission",
+          "report rate of imported cases"
+        ],
+        "unmatched_gold": [
+          "MMR1VaccinationRate",
+          "MMR2VaccinationRate",
+          "IncubationProgressionRate",
+          "SusceptibleInfectionRate",
+          "MaternalImmunityLossRate",
+          "RecoveryRate",
+          "VaccineWaningRate",
+          "OneDoseBreakthroughRate",
+          "TwoDoseBreakthroughRate"
+        ]
       },
-      "composite_score": 0.4997,
-      "compartment_matches": [
-        {
-          "gold": "MaternalProtected",
-          "extracted": "Maternally Immune",
-          "score": 0.7484333515167236
-        },
-        {
-          "gold": "Susceptible",
-          "extracted": "Susceptible",
-          "score": 1.0
-        },
-        {
-          "gold": "Exposed",
-          "extracted": "Exposed",
-          "score": 1.0
-        },
-        {
-          "gold": "Infectious",
-          "extracted": "Infectious",
-          "score": 1.0
-        },
-        {
-          "gold": "Recovered",
-          "extracted": "Recovered",
-          "score": 1.0
-        }
-      ],
-      "flow_matches": [
-        {
-          "gold": "MaternalProtected->Susceptible",
-          "extracted": "Maternally Immune->Susceptible",
-          "score": 0.8424338102340698
-        },
-        {
-          "gold": "Susceptible->VaccinatedOneDose",
-          "extracted": "Susceptible->Vaccinated (1 dose)",
-          "score": 0.7557013034820557
-        },
-        {
-          "gold": "Susceptible->Exposed",
-          "extracted": "Susceptible->Exposed",
-          "score": 0.9999997615814209
-        }
-      ],
-      "parameter_matches": [],
-      "direction_errors": [],
-      "value_errors": [],
-      "matching_method": "cosine_similarity"
+      "flows": {
+        "precision": 0.75,
+        "recall": 0.3333333333333333,
+        "f1": 0.46153846153846156,
+        "tp": 3,
+        "fp": 1,
+        "fn": 6,
+        "matches": [
+          {
+            "extracted": "Susceptible->VaccinatedOneDose",
+            "gold": "Susceptible->VaccinatedOneDose",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "Susceptible->Exposed",
+            "gold": "Susceptible->Exposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "VaccinatedOneDose->VaccinatedTwoDose",
+            "gold": "VaccinatedOneDose->VaccinatedTwoDose",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Recovered->Susceptible"
+        ],
+        "unmatched_gold": [
+          "VaccinatedTwoDose->Susceptible",
+          "MaternalProtected->Susceptible",
+          "VaccinatedOneDose->Exposed",
+          "Exposed->Infectious",
+          "VaccinatedTwoDose->Exposed",
+          "Infectious->Recovered"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.75
     }
   },
   "quality_checks": {

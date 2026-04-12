@@ -1,0 +1,516 @@
+{
+  "paper_name": "Dengue3",
+  "summary": {
+    "extraction": {
+      "compartments": 12,
+      "flows": 12,
+      "parameters": 21,
+      "stratifications": 2,
+      "interventions": 2
+    },
+    "quality_metrics": {
+      "traceability_coverage": 100.0,
+      "faithfulness": 100.0
+    },
+    "model_type": null
+  },
+  "paper_promises": {
+    "compartments": [
+      "S"
+    ],
+    "stratifications": [
+      "age"
+    ],
+    "parameters": [],
+    "interventions": [
+      "vaccination",
+      "treatment"
+    ],
+    "model_type": null,
+    "description": "",
+    "extraction_method": "pattern"
+  },
+  "extracted_entities": {
+    "compartments": [
+      {
+        "name": "Susceptible Humans (Naive)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated Humans (Naive)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected Humans (Primary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans (Post-Primary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccinated Humans (Post-Primary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected Humans (Secondary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans (Post-Secondary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infected Humans (Postsecondary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Recovered Humans (Post-Postsecondary)",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Susceptible Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Exposed Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Infectious Mosquitoes",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "flows": [
+      {
+        "source": "Susceptible Humans (Naive)",
+        "target": "Infected Humans (Primary)",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Humans (Naive)",
+        "target": "Vaccinated Humans (Naive)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Humans (Naive)",
+        "target": "Infected Humans (Secondary)",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Humans (Primary)",
+        "target": "Recovered Humans (Post-Primary)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Post-Primary)",
+        "target": "Vaccinated Humans (Post-Primary)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Post-Primary)",
+        "target": "Infected Humans (Secondary)",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Vaccinated Humans (Post-Primary)",
+        "target": "Infected Humans (Postsecondary)",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Humans (Secondary)",
+        "target": "Recovered Humans (Post-Secondary)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Recovered Humans (Post-Secondary)",
+        "target": "Infected Humans (Postsecondary)",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Infected Humans (Postsecondary)",
+        "target": "Recovered Humans (Post-Postsecondary)",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Susceptible Mosquitoes",
+        "target": "Exposed Mosquitoes",
+        "type": "ContactFlow",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "source": "Exposed Mosquitoes",
+        "target": "Infectious Mosquitoes",
+        "type": "RateFlow",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ],
+    "parameters": [
+      {
+        "name": "Vaccination_Age",
+        "value": "9",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccination_Coverage",
+        "value": "80",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccination_Doses",
+        "value": "3",
+        "unit": "doses",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Vaccination_Dose_Interval",
+        "value": "6",
+        "unit": "months",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Human_Mean_Lifespan",
+        "value": "67.5",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Case_Fatality_Rate_Symptomatic_Dengue",
+        "value": "0.03-0.09",
+        "unit": "%",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Symptomatic_Dengue_DALYs",
+        "value": "0.006",
+        "unit": "DALYs",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Severe_Dengue_DALYs",
+        "value": "0.02",
+        "unit": "DALYs",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Symptomatic_Public_LatinAmerica",
+        "value": "60",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Hospitalised_Public_LatinAmerica",
+        "value": "200",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Symptomatic_Societal_LatinAmerica",
+        "value": "200",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Hospitalised_Societal_LatinAmerica",
+        "value": "500",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Fatal_Societal_LatinAmerica",
+        "value": "11000",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Symptomatic_Public_SoutheastAsia",
+        "value": "20",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Hospitalised_Public_SoutheastAsia",
+        "value": "400",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Symptomatic_Societal_SoutheastAsia",
+        "value": "40",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Hospitalised_Societal_SoutheastAsia",
+        "value": "500",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Cost_Fatal_Societal_SoutheastAsia",
+        "value": "3000",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Discount_Rate_Health_Costs",
+        "value": "3",
+        "unit": "% per year",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Time_Horizon_Evaluation",
+        "value": "30",
+        "unit": "years",
+        "confidence": "high",
+        "method": "llm"
+      },
+      {
+        "name": "Threshold_Cost_Per_DALY_Averted_BaseCase",
+        "value": "2000",
+        "unit": "$USD",
+        "confidence": "high",
+        "method": "llm"
+      }
+    ]
+  },
+  "model_structure": {
+    "compartments": 12,
+    "flows": 12,
+    "parameters": 21,
+    "stratifications": 2,
+    "interventions": 2
+  },
+  "traceability": {
+    "total_items": 49,
+    "items_with_evidence": 49,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 49,
+    "faithfulness_percentage": 100.0
+  },
+  "evaluation": {
+    "traceability_coverage": {
+      "total_items": 49,
+      "items_with_evidence": 49,
+      "coverage_percentage": 100.0
+    },
+    "faithfulness": {
+      "paper_backed_items": 49,
+      "faithfulness_percentage": 100.0
+    },
+    "gold_standard_comparison": {
+      "compartments": {
+        "precision": 0.4166666666666667,
+        "recall": 0.5555555555555556,
+        "f1": 0.4761904761904762,
+        "tp": 5,
+        "fp": 7,
+        "fn": 4,
+        "matches": [
+          {
+            "extracted": "Exposed Mosquitoes",
+            "gold": "PrimaryExposed",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible Humans (Naive)",
+            "gold": "SecondarySusceptible",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Vaccinated Humans (Naive)",
+            "gold": "VaccinatedSilentInfection",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Susceptible Mosquitoes",
+            "gold": "PrimarySusceptible",
+            "similarity": 0.9
+          },
+          {
+            "extracted": "Infectious Mosquitoes",
+            "gold": "PrimaryInfectious",
+            "similarity": 0.9
+          }
+        ],
+        "unmatched_extracted": [
+          "Vaccinated Humans (Post-Primary)",
+          "Recovered Humans (Post-Postsecondary)",
+          "Infected Humans (Postsecondary)",
+          "Recovered Humans (Post-Secondary)",
+          "Infected Humans (Secondary)",
+          "Recovered Humans (Post-Primary)",
+          "Infected Humans (Primary)"
+        ],
+        "unmatched_gold": [
+          "PostPrimaryImmune",
+          "PostSecondaryImmune",
+          "SecondaryInfectious",
+          "PostVaccinationSusceptible"
+        ]
+      },
+      "parameters": {
+        "precision": 0.047619047619047616,
+        "recall": 0.125,
+        "f1": 0.06896551724137931,
+        "tp": 1,
+        "fp": 20,
+        "fn": 7,
+        "matches": [
+          {
+            "extracted": "Vaccination_Age",
+            "gold": "RoutineVaccinationRate",
+            "similarity": 0.7222222222222222
+          }
+        ],
+        "unmatched_extracted": [
+          "Cost_Fatal_Societal_SoutheastAsia",
+          "Cost_Symptomatic_Societal_LatinAmerica",
+          "Human_Mean_Lifespan",
+          "Vaccination_Doses",
+          "Severe_Dengue_DALYs",
+          "Threshold_Cost_Per_DALY_Averted_BaseCase",
+          "Cost_Hospitalised_Public_SoutheastAsia",
+          "Cost_Hospitalised_Public_LatinAmerica",
+          "Vaccination_Coverage",
+          "Symptomatic_Dengue_DALYs",
+          "Cost_Symptomatic_Public_SoutheastAsia",
+          "Cost_Symptomatic_Public_LatinAmerica",
+          "Discount_Rate_Health_Costs",
+          "Time_Horizon_Evaluation",
+          "Vaccination_Dose_Interval",
+          "Cost_Hospitalised_Societal_SoutheastAsia",
+          "Cost_Fatal_Societal_LatinAmerica",
+          "Cost_Symptomatic_Societal_SoutheastAsia",
+          "Case_Fatality_Rate_Symptomatic_Dengue",
+          "Cost_Hospitalised_Societal_LatinAmerica"
+        ],
+        "unmatched_gold": [
+          "SecondaryTransmissionRate",
+          "RecoveryRate",
+          "PrimaryTransmissionRate",
+          "VaccineCrossProtectionWaningRate",
+          "NaturalCrossProtectionWaningRate",
+          "IncubationRate",
+          "PostVaccinationTransmissionRate"
+        ]
+      },
+      "flows": {
+        "precision": 0.25,
+        "recall": 0.3333333333333333,
+        "f1": 0.28571428571428575,
+        "tp": 3,
+        "fp": 9,
+        "fn": 6,
+        "matches": [
+          {
+            "extracted": "SecondarySusceptible->VaccinatedSilentInfection",
+            "gold": "PrimarySusceptible->VaccinatedSilentInfection",
+            "similarity": 0.868421052631579
+          },
+          {
+            "extracted": "PrimarySusceptible->PrimaryExposed",
+            "gold": "PrimarySusceptible->PrimaryExposed",
+            "similarity": 1.0
+          },
+          {
+            "extracted": "PrimaryExposed->PrimaryInfectious",
+            "gold": "PrimaryExposed->PrimaryInfectious",
+            "similarity": 1.0
+          }
+        ],
+        "unmatched_extracted": [
+          "Recovered Humans (Post-Primary)->Infected Humans (Secondary)",
+          "Recovered Humans (Post-Secondary)->Infected Humans (Postsecondary)",
+          "Infected Humans (Postsecondary)->Recovered Humans (Post-Postsecondary)",
+          "Infected Humans (Secondary)->Recovered Humans (Post-Secondary)",
+          "Infected Humans (Primary)->Recovered Humans (Post-Primary)",
+          "Recovered Humans (Post-Primary)->VaccinatedSilentInfection",
+          "VaccinatedSilentInfection->Infected Humans (Postsecondary)",
+          "VaccinatedSilentInfection->Infected Humans (Secondary)",
+          "SecondarySusceptible->Infected Humans (Primary)"
+        ],
+        "unmatched_gold": [
+          "PostVaccinationSusceptible->SecondaryInfectious",
+          "PrimaryInfectious->PostPrimaryImmune",
+          "SecondaryInfectious->PostSecondaryImmune",
+          "PostPrimaryImmune->SecondarySusceptible",
+          "SecondarySusceptible->SecondaryInfectious",
+          "VaccinatedSilentInfection->PostVaccinationSusceptible"
+        ]
+      },
+      "matching_method": "fuzzy",
+      "similarity_threshold": 0.7
+    }
+  },
+  "quality_checks": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  },
+  "files_generated": [
+    "paper_text.json",
+    "paper_sections.json",
+    "paper_promises.json",
+    "extracted_entities.json",
+    "model_draft.compmodel",
+    "traceability.json",
+    "quality_checks.json",
+    "evaluation_report.json"
+  ]
+}

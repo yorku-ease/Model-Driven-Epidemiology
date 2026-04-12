@@ -1,0 +1,116 @@
+{
+  "spec_vs_model": {
+    "description": "Items recognised from paper text but absent from draft model (extraction/modelling failure).",
+    "missing_compartments": [],
+    "missing_parameters": [],
+    "missing_flows": [],
+    "summary": {
+      "missing_compartments": 0,
+      "missing_parameters": 0,
+      "missing_flows": 0,
+      "total": 0
+    }
+  },
+  "model_vs_gold": {
+    "description": "Reference model items absent from extracted draft (completeness vs reference).",
+    "missing_compartments": [
+      "primarysusceptible",
+      "primaryexposed",
+      "primaryinfectious",
+      "postprimaryimmune",
+      "vaccinatedsilentinfection",
+      "secondarysusceptible",
+      "postvaccinationsusceptible",
+      "secondaryinfectious",
+      "postsecondaryimmune"
+    ],
+    "missing_parameters": [
+      "primarytransmissionrate",
+      "incubationrate",
+      "recoveryrate",
+      "routinevaccinationrate",
+      "naturalcrossprotectionwaningrate",
+      "vaccinecrossprotectionwaningrate",
+      "secondarytransmissionrate",
+      "postvaccinationtransmissionrate"
+    ],
+    "missing_flows": [
+      "PrimarySusceptible->PrimaryExposed",
+      "PrimarySusceptible->VaccinatedSilentInfection",
+      "PrimaryExposed->PrimaryInfectious",
+      "PrimaryInfectious->PostPrimaryImmune",
+      "PostPrimaryImmune->SecondarySusceptible",
+      "VaccinatedSilentInfection->PostVaccinationSusceptible",
+      "SecondarySusceptible->SecondaryInfectious",
+      "PostVaccinationSusceptible->SecondaryInfectious",
+      "SecondaryInfectious->PostSecondaryImmune"
+    ],
+    "summary": {
+      "missing_compartments": 9,
+      "missing_parameters": 8,
+      "missing_flows": 9,
+      "total": 26
+    }
+  },
+  "extra_in_model": {
+    "description": "Model items absent from reference (over-specification, noise, or differing convention).",
+    "extra_compartments": [
+      "susceptible humans (naive)",
+      "vaccinated humans (naive)",
+      "infected humans (primary)",
+      "recovered humans (post-primary)",
+      "vaccinated humans (post-primary)",
+      "infected humans (secondary)",
+      "recovered humans (post-secondary)",
+      "infected humans (postsecondary)",
+      "recovered humans (post-postsecondary)",
+      "susceptible mosquitoes",
+      "exposed mosquitoes",
+      "infectious mosquitoes"
+    ],
+    "extra_parameters": [
+      "vaccination_age",
+      "vaccination_coverage",
+      "vaccination_doses",
+      "vaccination_dose_interval",
+      "human_mean_lifespan",
+      "case_fatality_rate_symptomatic_dengue",
+      "symptomatic_dengue_dalys",
+      "severe_dengue_dalys",
+      "cost_symptomatic_public_latinamerica",
+      "cost_hospitalised_public_latinamerica",
+      "cost_symptomatic_societal_latinamerica",
+      "cost_hospitalised_societal_latinamerica",
+      "cost_fatal_societal_latinamerica",
+      "cost_symptomatic_public_southeastasia",
+      "cost_hospitalised_public_southeastasia",
+      "cost_symptomatic_societal_southeastasia",
+      "cost_hospitalised_societal_southeastasia",
+      "cost_fatal_societal_southeastasia",
+      "discount_rate_health_costs",
+      "time_horizon_evaluation",
+      "threshold_cost_per_daly_averted_basecase"
+    ],
+    "extra_flows": [
+      "Susceptible Humans (Naive)->Infected Humans (Primary)",
+      "Susceptible Humans (Naive)->Vaccinated Humans (Naive)",
+      "Vaccinated Humans (Naive)->Infected Humans (Secondary)",
+      "Infected Humans (Primary)->Recovered Humans (Post-Primary)",
+      "Recovered Humans (Post-Primary)->Vaccinated Humans (Post-Primary)",
+      "Recovered Humans (Post-Primary)->Infected Humans (Secondary)",
+      "Vaccinated Humans (Post-Primary)->Infected Humans (Postsecondary)",
+      "Infected Humans (Secondary)->Recovered Humans (Post-Secondary)",
+      "Recovered Humans (Post-Secondary)->Infected Humans (Postsecondary)",
+      "Infected Humans (Postsecondary)->Recovered Humans (Post-Postsecondary)",
+      "Susceptible Mosquitoes->Exposed Mosquitoes",
+      "Exposed Mosquitoes->Infectious Mosquitoes"
+    ],
+    "summary": {
+      "extra_compartments": 12,
+      "extra_parameters": 21,
+      "extra_flows": 12,
+      "total": 45
+    }
+  },
+  "has_gold": true
+}

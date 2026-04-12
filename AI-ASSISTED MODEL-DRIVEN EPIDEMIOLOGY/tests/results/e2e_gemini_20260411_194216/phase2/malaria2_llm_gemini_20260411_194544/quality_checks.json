@@ -1,0 +1,686 @@
+{
+  "model_analysis": {
+    "modelName": "Malaria2",
+    "summary": {
+      "modelName": "Malaria2",
+      "totalPopulation": null,
+      "numCompartments": 10,
+      "numParameters": 13,
+      "numGroups": 0,
+      "numProducts": 0,
+      "numExternalSources": 0,
+      "numExternalSinks": 0,
+      "hasStratification": false,
+      "hasParameters": true,
+      "hasVectorCompartments": true,
+      "hasTemperatureDependent": false
+    },
+    "data": {
+      "modelInfo": {
+        "totalPopulation": null,
+        "globalBirthRate": "0",
+        "globalDeathRate": "0"
+      },
+      "compartments": [
+        {
+          "index": 0,
+          "primaryName": "Susceptible Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.1",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.1",
+              "description": "Infection of susceptible humans by infectious mosquitoes, at a rate determined by the force of infection (L).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "primaryName": "Exposed Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.2",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from the exposed (pre-patent) stage to clinical disease (with probability w).",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from the exposed (pre-patent) stage to patent asymptomatic infection (with probability 1-w).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "primaryName": "Untreated Clinical Disease Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.3",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Successful treatment of clinical disease (with probability fT).",
+              "stratumSpecificRates": []
+            },
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.5",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Clearance of untreated clinical disease to patent asymptomatic infection (with rate rD, for those who fail treatment 1-fT).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "primaryName": "Treated Clinical Disease Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.4",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Entry into a period of prophylactic protection after successful treatment (with rate rT).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "primaryName": "Prophylactic Protection Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Loss of prophylactic protection, returning to the susceptible state (with rate rP).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "primaryName": "Patent Asymptomatic Infection Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.6",
+              "rate": "",
+              "rateParameter": "//@parameters.6",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from patent asymptomatic infection to sub-patent asymptomatic infection (at rate rA).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "primaryName": "Sub-patent Asymptomatic Infection Humans",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.0",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Clearance of sub-patent infection, returning to the fully susceptible state (at rate rU).",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "primaryName": "Susceptible Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.8",
+              "rate": "",
+              "rateParameter": "",
+              "contactRate": "",
+              "contactRateParameter": "//@parameters.0",
+              "contactCompartment": "//@compartments.8",
+              "description": "Infection of susceptible mosquitoes by infectious humans upon taking an infectious bite.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "primaryName": "Exposed Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": [
+            {
+              "type": "RateFlow",
+              "target": "//@compartments.9",
+              "rate": "",
+              "rateParameter": "//@parameters.0",
+              "contactRate": "",
+              "contactRateParameter": "",
+              "contactCompartment": "",
+              "description": "Progression from the latent (exposed) state to the infectious state in mosquitoes.",
+              "stratumSpecificRates": []
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "primaryName": "Infectious Mosquitoes",
+          "secondaryName": "",
+          "population": "0",
+          "product": "",
+          "outgoingFlows": []
+        }
+      ],
+      "parameters": [
+        {
+          "index": 0,
+          "name": "L",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity.",
+          "unit": "per person per time"
+        },
+        {
+          "index": 1,
+          "name": "w",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Probability of developing clinical disease upon infection, determined by anti-disease immunity.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 2,
+          "name": "fT",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Fixed probability of successful treatment for clinical disease.",
+          "unit": "dimensionless"
+        },
+        {
+          "index": 3,
+          "name": "rT",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Rate of entering prophylactic protection after successful treatment.",
+          "unit": "per time"
+        },
+        {
+          "index": 4,
+          "name": "rP",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Rate of returning to the susceptible state from prophylactic protection.",
+          "unit": "per time"
+        },
+        {
+          "index": 5,
+          "name": "rD",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Rate of clearing untreated clinical disease and becoming patently asymptomatic.",
+          "unit": "per time"
+        },
+        {
+          "index": 6,
+          "name": "rA",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity.",
+          "unit": "per time"
+        },
+        {
+          "index": 7,
+          "name": "rU",
+          "type": "CONSTANT",
+          "expression": "Varies",
+          "description": "Rate of clearing sub-patent infection and returning to the susceptible state.",
+          "unit": "per time"
+        },
+        {
+          "index": 8,
+          "name": "EIR",
+          "type": "CONSTANT",
+          "expression": "3 to 675 (fitted annual values)",
+          "description": "Entomological Inoculation Rate, representing the intensity of transmission in different settings.",
+          "unit": "ibppy (infectious bites per person per year)"
+        },
+        {
+          "index": 9,
+          "name": "DDT half-life",
+          "type": "CONSTANT",
+          "expression": "6",
+          "description": "Half-life of DDT insecticide used in Indoor Residual Spraying (IRS).",
+          "unit": "months"
+        },
+        {
+          "index": 10,
+          "name": "RTS,S vaccine efficacy half-life",
+          "type": "CONSTANT",
+          "expression": "3",
+          "description": "Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy.",
+          "unit": "years"
+        },
+        {
+          "index": 11,
+          "name": "ACT prophylactic protection duration",
+          "type": "CONSTANT",
+          "expression": "25",
+          "description": "Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs).",
+          "unit": "days"
+        },
+        {
+          "index": 12,
+          "name": "LLIN insecticide efficacy half-life",
+          "type": "CONSTANT",
+          "expression": "2.64",
+          "description": "Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs).",
+          "unit": "years"
+        }
+      ],
+      "groups": [],
+      "products": [],
+      "externalSources": [],
+      "externalSinks": []
+    }
+  },
+  "uncertainty_analysis": {
+    "modelName": "Malaria2",
+    "methodologyNotes": "This task is **parameter uncertainty quantification**: documenting uncertainty about **numerical parameter values** in the .compmodel (not structural or stochastic uncertainty). Confidence is **mostly Unknown** unless a small built-in heuristic matches the disease name (COVID-19, Malaria, HIV) and parameter name substrings \u2014 assigning High/Medium/Low requires curated literature ranges or expert review; see Phase 1 README (Validity & limitations).",
+    "totalParameters": 13,
+    "parametersWithUncertainty": 13,
+    "parameters": [
+      {
+        "parameter": "L",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "per person per time",
+        "description": "Force of infection in the human population, determined by vector-to-human ratio, mosquito biting rate, proportion of infectious mosquitoes, and human anti-infection immunity.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "w",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "dimensionless",
+        "description": "Probability of developing clinical disease upon infection, determined by anti-disease immunity.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "fT",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "dimensionless",
+        "description": "Fixed probability of successful treatment for clinical disease.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "rT",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "per time",
+        "description": "Rate of entering prophylactic protection after successful treatment.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "rP",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "per time",
+        "description": "Rate of returning to the susceptible state from prophylactic protection.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "rD",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "per time",
+        "description": "Rate of clearing untreated clinical disease and becoming patently asymptomatic.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "rA",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "per time",
+        "description": "Rate of moving from patent asymptomatic infection to sub-patent asymptomatic infection, dependent on anti-parasite immunity.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "rU",
+        "yourValue": "Varies",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "per time",
+        "description": "Rate of clearing sub-patent infection and returning to the susceptible state.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "EIR",
+        "yourValue": "3 to 675 (fitted annual values)",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "ibppy (infectious bites per person per year)",
+        "description": "Entomological Inoculation Rate, representing the intensity of transmission in different settings.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "DDT half-life",
+        "yourValue": "6",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "months",
+        "description": "Half-life of DDT insecticide used in Indoor Residual Spraying (IRS).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "RTS,S vaccine efficacy half-life",
+        "yourValue": "3",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "years",
+        "description": "Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy.",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "ACT prophylactic protection duration",
+        "yourValue": "25",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "days",
+        "description": "Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs).",
+        "type": "CONSTANT"
+      },
+      {
+        "parameter": "LLIN insecticide efficacy half-life",
+        "yourValue": "2.64",
+        "source": "Model file",
+        "rangeInLiterature": {
+          "min": null,
+          "max": null,
+          "mean": null,
+          "std": null
+        },
+        "papers": [],
+        "confidence": "Unknown",
+        "notes": "Literature search needed for this parameter",
+        "model": "Malaria2",
+        "unit": "years",
+        "description": "Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs).",
+        "type": "CONSTANT"
+      }
+    ],
+    "summary": {
+      "highConfidence": 0,
+      "mediumConfidence": 0,
+      "lowConfidence": 0,
+      "unknownConfidence": 13
+    }
+  },
+  "sensitivity_analysis": {
+    "modelName": "Malaria2",
+    "method": "morris",
+    "keyParameters": [
+      {
+        "parameter": "DDT half-life",
+        "type": "other",
+        "currentValue": 6.0,
+        "description": "Half-life of DDT insecticide used in Indoor Residual Spraying (IRS).",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "RTS,S vaccine efficacy half-life",
+        "type": "other",
+        "currentValue": 3.0,
+        "description": "Half-life of the pre-erythrocytic vaccine (RTS,S) efficacy.",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "ACT prophylactic protection duration",
+        "type": "other",
+        "currentValue": 25.0,
+        "description": "Duration of prophylactic protection provided by Artemisinin-based Combination Therapies (ACTs).",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      },
+      {
+        "parameter": "LLIN insecticide efficacy half-life",
+        "type": "other",
+        "currentValue": 2.64,
+        "description": "Half-life of the insecticidal effect and wear-and-tear for Long-Lasting Insecticide-treated Nets (LLINs).",
+        "importance": "medium",
+        "source": "explicit_parameter"
+      }
+    ],
+    "parametersAnalyzed": [
+      "DDT half-life",
+      "RTS,S vaccine efficacy half-life",
+      "ACT prophylactic protection duration",
+      "LLIN insecticide efficacy half-life"
+    ],
+    "sensitivityAnalysis": {
+      "method": "Morris",
+      "parameters": [
+        "DDT half-life",
+        "RTS,S vaccine efficacy half-life",
+        "ACT prophylactic protection duration",
+        "LLIN insecticide efficacy half-life"
+      ],
+      "n_trajectories": 20,
+      "sensitivity_indices": {
+        "DDT half-life": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "RTS,S vaccine efficacy half-life": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "ACT prophylactic protection duration": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        },
+        "LLIN insecticide efficacy half-life": {
+          "mu": 0.0,
+          "mu_star": 0.0,
+          "sigma": 0.0,
+          "n_samples": 20
+        }
+      },
+      "interpretation": {
+        "mu_star": "Mean absolute effect (higher = more important)",
+        "sigma": "Standard deviation (higher = more non-linear/interactions)"
+      }
+    },
+    "variationRange": "\u00b150.0%"
+  },
+  "status": {
+    "model_analysis": "completed",
+    "uncertainty_analysis": "completed",
+    "sensitivity_analysis": "completed"
+  }
+}

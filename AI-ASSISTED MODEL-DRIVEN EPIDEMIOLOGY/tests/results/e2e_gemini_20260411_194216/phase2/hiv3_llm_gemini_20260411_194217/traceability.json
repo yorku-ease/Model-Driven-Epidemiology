@@ -1,0 +1,537 @@
+{
+  "compartments": {
+    "Susceptible": {
+      "evidence": [
+        {
+          "text_span": "Individuals not infected with HIV.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Acute Phase)": {
+      "evidence": [
+        {
+          "text_span": "Individuals recently infected with HIV, characterized by high infectivity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Chronic Phase)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the long-term phase of HIV infection, characterized by lower infectivity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Final Phase)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the late stage of HIV infection, characterized by increased infectivity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (On ART)": {
+      "evidence": [
+        {
+          "text_span": "Individuals infected with HIV who are receiving antiretroviral therapy (ART), with reduced infectivity.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "flows": {
+    "Susceptible -> Infectious (Acute Phase)": {
+      "evidence": [
+        {
+          "text_span": "Susceptible individuals become infected with HIV through contact with infectious individuals and enter the acute phase. The rate depends on the 'Transmission Parameter Initial Value' and the 'Infectivity' of the source compartment, adjusted by 'Relative Transmission on ART' and 'Other Interventions Reduction in Transmission'.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Acute Phase) -> Infectious (Chronic Phase)": {
+      "evidence": [
+        {
+          "text_span": "Infected individuals progress from the acute phase to the chronic phase. The rate is calculated as 1 / 'Acute Phase Duration'.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Chronic Phase) -> Infectious (Final Phase)": {
+      "evidence": [
+        {
+          "text_span": "Infected individuals progress from the chronic phase to the final phase. The rate is derived from the overall 'Survival Median' and the durations of the acute and final phases.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Acute Phase) -> Infectious (On ART)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the acute phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Chronic Phase) -> Infectious (On ART)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the chronic phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (Final Phase) -> Infectious (On ART)": {
+      "evidence": [
+        {
+          "text_span": "Individuals in the final phase are tested and immediately start ART. The rate is determined by 'Testing Rate' and 'Refusal'.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Infectious (On ART) -> Infectious (Chronic Phase)": {
+      "evidence": [
+        {
+          "text_span": "Individuals on ART discontinue treatment at the 'Drop-out' rate and revert to the untreated chronic phase.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "parameters": {
+    "Initial CD4 Mu": {
+      "evidence": [
+        {
+          "text_span": "Location parameter for the log-normal distribution of initial CD4+ cell counts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 6.98,
+          "unit": "Log normal location parameter"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Initial CD4 Sigma": {
+      "evidence": [
+        {
+          "text_span": "Shape parameter for the log-normal distribution of initial CD4+ cell counts.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.34,
+          "unit": "Log-normal shape parameter"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Survival Median": {
+      "evidence": [
+        {
+          "text_span": "Median survival time for infected individuals, following a Weibull distribution.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 10.0,
+          "unit": "Years"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Survival Shape": {
+      "evidence": [
+        {
+          "text_span": "Shape parameter for the Weibull survival distribution of infected individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 2.25,
+          "unit": "Dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Acute Phase Duration": {
+      "evidence": [
+        {
+          "text_span": "Duration of the acute phase of HIV infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 2,
+          "unit": "Months"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Acute Phase Infectivity": {
+      "evidence": [
+        {
+          "text_span": "Relative infectivity during the acute phase, used as a multiplier for the base transmission parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 4.5,
+          "unit": "Number/year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Chronic Phase Infectivity": {
+      "evidence": [
+        {
+          "text_span": "Relative infectivity during the chronic phase of HIV infection, used as a multiplier for the base transmission parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.45,
+          "unit": "Number/year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Final Phase Infectivity": {
+      "evidence": [
+        {
+          "text_span": "Relative infectivity during the final phase of HIV infection, used as a multiplier for the base transmission parameter.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 2.25,
+          "unit": "Number/year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Final Phase Duration": {
+      "evidence": [
+        {
+          "text_span": "Duration of the final phase of HIV infection, expressed as a proportion of the expected life.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.15,
+          "unit": "Proportion of expected life"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Concurrency Number": {
+      "evidence": [
+        {
+          "text_span": "Average number of concurrent sexual partnerships.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 4,
+          "unit": "Number"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Partnership Duration": {
+      "evidence": [
+        {
+          "text_span": "Mean duration of a sexual partnership.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 6,
+          "unit": "Months"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Start ART CD4": {
+      "evidence": [
+        {
+          "text_span": "CD4+ cell count threshold at which ART begins. A value of 0 implies immediate commencement regardless of CD4 count.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0,
+          "unit": "/micro-litre"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Proportion Tested Rate": {
+      "evidence": [
+        {
+          "text_span": "Baseline rate at which individuals are tested for HIV (used for scenarios without intervention).",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0,
+          "unit": "/year"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Monte Carlo Repeats": {
+      "evidence": [
+        {
+          "text_span": "Number of Monte Carlo simulation repeats.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 10000,
+          "unit": "Number"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Birth Rate": {
+      "evidence": [
+        {
+          "text_span": "Rate at which new individuals are born into the population.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.029,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Background Mortality Rate": {
+      "evidence": [
+        {
+          "text_span": "Mortality rate from causes unrelated to HIV, affecting all compartments.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.018,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Transmission Parameter Initial Value": {
+      "evidence": [
+        {
+          "text_span": "Initial value of the base transmission parameter, representing the force of infection.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.767,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Relative Transmission on ART": {
+      "evidence": [
+        {
+          "text_span": "Factor by which infectivity is reduced for individuals receiving ART.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.01,
+          "unit": "Dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Progression Untreated": {
+      "evidence": [
+        {
+          "text_span": "Mortality rate for untreated HIV-infected individuals.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.303,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Progression Treated": {
+      "evidence": [
+        {
+          "text_span": "Mortality rate for HIV-infected individuals receiving ART.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.165,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Intervention Timing": {
+      "evidence": [
+        {
+          "text_span": "Year when the intervention (e.g., testing and ART rollout) begins.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 2011,
+          "unit": "yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Intervention Rate": {
+      "evidence": [
+        {
+          "text_span": "Rate of rollout for the intervention.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 1.0,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Intervention Maximum": {
+      "evidence": [
+        {
+          "text_span": "Maximum proportion of the population covered by the intervention.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.9,
+          "unit": "Dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Testing Rate": {
+      "evidence": [
+        {
+          "text_span": "Rate at which individuals are tested for HIV as part of the intervention strategy.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 1.0,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Refusal": {
+      "evidence": [
+        {
+          "text_span": "Proportion of individuals who refuse HIV testing.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.08,
+          "unit": "Dimensionless"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Drop-out": {
+      "evidence": [
+        {
+          "text_span": "Rate at which individuals discontinue ART.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.015,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Failure Rate": {
+      "evidence": [
+        {
+          "text_span": "Rate at which ART treatment fails.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.1,
+          "unit": "/yr"
+        }
+      ],
+      "paper_backed": true
+    },
+    "Other Interventions Reduction in Transmission": {
+      "evidence": [
+        {
+          "text_span": "Factor by which transmission is reduced by other interventions.",
+          "page_number": 0,
+          "method": "llm",
+          "confidence": "high",
+          "value": 0.4,
+          "unit": "Dimensionless"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "stratifications": {
+    "gender": {
+      "evidence": [
+        {
+          "text_span": "gender stratification mentioned",
+          "page_number": 17,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "interventions": {
+    "treatment": {
+      "evidence": [
+        {
+          "text_span": "treatment mentioned",
+          "page_number": 16,
+          "method": "pattern",
+          "confidence": "medium"
+        }
+      ],
+      "paper_backed": true
+    }
+  },
+  "coverage_metrics": {
+    "total_items": 42,
+    "items_with_evidence": 42,
+    "coverage_percentage": 100.0,
+    "paper_backed_items": 42,
+    "faithfulness_percentage": 100.0
+  }
+}
