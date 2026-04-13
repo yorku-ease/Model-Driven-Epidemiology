@@ -10,17 +10,10 @@ Research workspace for **model-driven epidemiology**: analyzing compartmental in
 |------|------|
 | **Phase 1** | Reference model analysis, uncertainty/sensitivity tooling, epidemiology metamodel (`metamodel_epidemiology.json`) |
 | **Phase 2** | PDF → structured extraction → `.compmodel` draft |
-| **Phase 3** | Gap detection, RAG / LLM fill, validation vs gold standard |
-| **Phase RLM** | Optional structural repair on Phase 2 drafts |
+| **Phase 3** | Gap detection, rule-based retrieval + LLM fill, validation vs gold standard |
+| **Phase 4** | Uncertainty quantification (Monte Carlo, sensitivity) on filled models |
 
-Start here:
-
-```bash
-cd "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY"
-pip install -r requirements.txt
-```
-
-See **`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/README.md`** for setup, API keys, and commands.
+Start with **`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/README.md`** for the pipeline overview. Install dependencies with `pip install -r requirements.txt` from that folder. **How to run** each phase (commands, API keys, flags) lives only in each phase’s **`INSTRUCTIONS.md`**, not in README files.
 
 ## Optional: EpiMDE Eclipse workspace
 
