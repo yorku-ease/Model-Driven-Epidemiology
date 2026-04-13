@@ -17,7 +17,7 @@ Start with **`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/README.md`** for the pipelin
 
 ## Optional: EpiMDE Eclipse workspace
 
-**`Compartmental/`** holds an Eclipse/EMF **EpiMDE** workspace for editing compartmental models in the IDE. It is **not required** to run the AI-assisted Python pipeline above. This repository’s **documented scope** is **epidemiological** compartmental models only.
+**`Compartmental/`** holds an Eclipse/EMF **EpiMDE** workspace for editing compartmental models in the IDE. It is **not required** to run the AI-assisted Python pipeline above. Documentation: **[`Compartmental/README.md`](Compartmental/README.md)**.
 
 ---
 
