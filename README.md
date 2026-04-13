@@ -1,24 +1,30 @@
 # Model-Driven Epidemiology
 
-Research workspace for **model-driven epidemiology**: analyzing compartmental infectious-disease models, extracting structure from scientific papers with LLM assistance, and validating models against benchmarks.
+Research workspace for **model-driven epidemiology**: compartmental infectious-disease models, extraction from scientific papers with LLM assistance, and validation against benchmarks. It has two connected parts: the **EpiMDE** Eclipse workspace for the **`.compmodel`** metamodel, and the **phased Python pipeline** that operates on those models.
 
-## Main project (this scope)
+---
 
-**[`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/`](AI-ASSISTED%20MODEL-DRIVEN%20EPIDEMIOLOGY/README.md)** — end-to-end pipeline:
+## 1. EpiMDE compartmental workspace (`Compartmental/`)
 
-| Area | Role |
-|------|------|
+**[`Compartmental/`](Compartmental/)** is the Eclipse/EMF **EpiMDE** project: metamodel (`compartmental.ecore`), tree and Sirius editors, equation generation, and example **`.compmodel`** files. This is where the **compartmental model format** and IDE-side tooling live.
+
+Full documentation: **[`Compartmental/README.md`](Compartmental/README.md)**.
+
+---
+
+## 2. AI-assisted pipeline (Phases 1–4)
+
+**[`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/`](AI-ASSISTED%20MODEL-DRIVEN%20EPIDEMIOLOGY/README.md)** — end-to-end automation on top of the same **`.compmodel`** ecosystem:
+
+| Phase | Role |
+|-------|------|
 | **Phase 1** | Reference model analysis, uncertainty/sensitivity tooling, epidemiology metamodel (`metamodel_epidemiology.json`) |
 | **Phase 2** | PDF → structured extraction → `.compmodel` draft |
 | **Phase 3** | Gap detection, rule-based retrieval + LLM fill, validation vs gold standard |
 | **Phase 4** | Uncertainty quantification (Monte Carlo, sensitivity) on filled models |
 
-Start with **`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/README.md`** for the pipeline overview. Install dependencies with `pip install -r requirements.txt` from that folder. **How to run** each phase (commands, API keys, flags) lives only in each phase’s **`INSTRUCTIONS.md`**, not in README files.
-
-## Optional: EpiMDE Eclipse workspace
-
-**`Compartmental/`** holds an Eclipse/EMF **EpiMDE** workspace for editing compartmental models in the IDE. It is **not required** to run the AI-assisted Python pipeline above. Documentation: **[`Compartmental/README.md`](Compartmental/README.md)**.
+Overview: **`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/README.md`**. Install dependencies with `pip install -r requirements.txt` from that folder. **How to run** each phase (commands, API keys, flags) is documented in each phase’s **`INSTRUCTIONS.md`**, not in the top-level README files.
 
 ---
 
-*For thesis/paper work, use the AI-assisted pipeline README as the canonical guide.*
+*For runnable commands and environment setup, follow each phase’s **`INSTRUCTIONS.md`** after the overview README.*
