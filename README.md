@@ -12,7 +12,7 @@ Full documentation: **[`Compartmental/README.md`](Compartmental/README.md)**.
 
 ---
 
-## 2. AI-assisted pipeline (Phases 1–4)
+## 2. AI-assisted pipeline (Phases 1–2.5–3–4)
 
 **[`AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/`](AI-ASSISTED%20MODEL-DRIVEN%20EPIDEMIOLOGY/README.md)** — end-to-end automation on top of the same **`.compmodel`** ecosystem:
 
@@ -20,6 +20,7 @@ Full documentation: **[`Compartmental/README.md`](Compartmental/README.md)**.
 |-------|------|
 | **Phase 1** | Reference model analysis, uncertainty/sensitivity tooling, epidemiology metamodel (`metamodel_epidemiology.json`) |
 | **Phase 2** | PDF → structured extraction → `.compmodel` draft |
+| **Phase 2.5** | Disease-level **canonical feature profiles** (merge gold models per disease folder); optional draft alignment |
 | **Phase 3** | Gap detection, rule-based retrieval + LLM fill, validation vs gold standard |
 | **Phase 4** | Uncertainty quantification (Monte Carlo, sensitivity) on filled models |
 

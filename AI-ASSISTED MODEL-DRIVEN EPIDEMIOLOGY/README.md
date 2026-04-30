@@ -1,6 +1,6 @@
 # AI-Assisted Model-Driven Epidemiology
 
-This project implements a four-phase pipeline for the automated extraction, completion, and validation of compartmental epidemiological models from scientific papers using large language models (LLMs). A compartmental model divides a population into groups (e.g., Susceptible, Infectious, Recovered) and uses differential equations to describe how individuals move between those groups over time. Given a PDF paper, the system produces a structured `.compmodel` file that encodes the model's compartments, transitions, and parameters, validated against a hand-authored gold-standard model.
+This project implements a phased pipeline for the automated extraction, completion, and validation of compartmental epidemiological models from scientific papers using large language models (LLMs). A compartmental model divides a population into groups (e.g., Susceptible, Infectious, Recovered) and uses differential equations to describe how individuals move between those groups over time. Given a PDF paper, the system produces a structured `.compmodel` file that encodes the model's compartments, transitions, and parameters, validated against a hand-authored gold-standard model.
 
 ## Pipeline overview
 
@@ -8,25 +8,29 @@ This project implements a four-phase pipeline for the automated extraction, comp
 |-------|---------|---------------|
 | Phase 1 | Analyse existing gold-standard `.compmodel` files | Structural parsing, sensitivity analysis |
 | Phase 2 | Extract a compartmental model from a scientific PDF | LLM-driven entity extraction |
+| Phase 2.5 | **Disease-level feature configuration** (canonical profile from merged gold models; optional draft check) | Rule-based inference from `.compmodel` text + disease-folder priors (SPL-style variability) |
 | Phase 3 | Identify and fill gaps in the extracted model | Rule-Based Retrieval + LLM inference |
 | Phase 4 | Quantify uncertainty in the completed model | Monte Carlo simulation, sensitivity analysis |
 
 ## Workflow
 
 ```
-Phase 1                   Phase 2                    Phase 3
-Gold .compmodel  ──►  PDF → LLM → draft  ──►  Gap detection + filling
-analysis                 .compmodel             validated vs gold standard
-                              |                        |
-                              v                        v
-                       model_draft.compmodel     model_filled.compmodel
-                       evaluation_report.json    phase3_validation.json
-                                                        |
-                                                        v
-                                                    Phase 4
-                                              Monte Carlo + sensitivity
-                                              uncertainty_bands.png
-                                              sensitivity_tornado.png
+Phase 1
+  analyze gold .compmodel
+        │
+        v
+Phase 2   PDF ──► LLM ──► model_draft.compmodel
+        │
+        │     Phase 2.5 (parallel tooling on gold assets)
+        │     Merge all *.compmodel in data/diseases/<disease>/ into one
+        │     canonical feature profile per disease (OR over variability).
+        └──►  reports/canonical_profiles.json   (also: optional draft vs canonical)
+        │
+        v
+Phase 3   gap detection + retrieval + LLM ──► model_filled.compmodel
+        │
+        v
+Phase 4   Monte Carlo + sensitivity on filled models
 ```
 
 ## Repository structure
@@ -36,6 +40,7 @@ AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/
 ├── requirements.txt              - Python dependencies
 ├── phase 1/                      - Baseline model analysis
 ├── phase 2/                      - LLM extraction from PDFs
+├── phase 2.5/                    - Canonical feature merge + SPL configurator (FM dot, CNF constraints)
 ├── phase 3/                      - Gap filling and validation
 └── phase 4/                      - Uncertainty quantification
 ```
@@ -48,6 +53,7 @@ Setup, API keys, and all command-line examples are documented in each phase’s 
 |-------|-------------------|
 | Phase 1 | [phase 1/INSTRUCTIONS.md](phase%201/INSTRUCTIONS.md) |
 | Phase 2 | [phase 2/INSTRUCTIONS.md](phase%202/INSTRUCTIONS.md) |
+| Phase 2.5 | [phase 2.5/INSTRUCTIONS.md](phase%202.5/INSTRUCTIONS.md) |
 | Phase 3 | [phase 3/INSTRUCTIONS.md](phase%203/INSTRUCTIONS.md) |
 | Phase 4 | [phase 4/INSTRUCTIONS.md](phase%204/INSTRUCTIONS.md) |
 
