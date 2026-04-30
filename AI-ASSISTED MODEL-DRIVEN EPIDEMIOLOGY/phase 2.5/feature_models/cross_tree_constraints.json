@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "description": "Cross-tree constraints linking transmission ecology to compartment evidence, staging to treatment, etc. Compiled to CNF for unit-propagation / DPLL. Independent of Phase 3; answers whether a Boolean feature assignment is SPL-consistent.",
+
+  "implies": [
+    {
+      "id": "IMPL_VECTOR_ROUTE_NEEDS_AGENT",
+      "if": "route_vector_arthropod",
+      "then": "vector_or_intermediate_species_present",
+      "rationale": "Declaring a dominant arthropod vector route should be evidenced by mosquito/vector/agent compartments or equivalent wording."
+    },
+    {
+      "id": "IMPL_TREATMENT_OFTEN_STAGE",
+      "if": "treatment_or_art_intervention",
+      "then": "multiple_infectious_stages_or_chronic",
+      "rationale": "Treatment/ART compartments usually sit on a staged natural history (optional strict rule).",
+      "enabled": false
+    }
+  ],
+
+  "mutex": [
+    {
+      "id": "MUTEX_NO_DUAL_ZOONOTIC_VECTOR_AS_EXCLUSIVE",
+      "features": ["zoonotic_or_animal_compartment", "route_vector_arthropod"],
+      "rationale": "Optional soft mutex: many models use vector OR general zoonotic framing.",
+      "enabled": false
+    }
+  ],
+
+  "requires_any": []
+}

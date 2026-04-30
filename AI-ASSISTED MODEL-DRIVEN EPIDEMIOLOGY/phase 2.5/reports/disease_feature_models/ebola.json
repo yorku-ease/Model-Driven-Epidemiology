@@ -1,0 +1,42 @@
+{
+  "artifact": "gold_derived_disease_feature_model",
+  "schema_version": 1,
+  "disease": "ebola",
+  "description": "Per-disease Boolean assignment over the shared EpiFeatureVector schema. Built only from hand-curated gold .compmodel files under the benchmark disease folder; Phase 2 model_draft.compmodel files are compared against this assignment (same inference rules).",
+  "gold_standard": {
+    "data_directory": "/home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/phase 2/data/diseases/ebola",
+    "gold_compmodel_files": [
+      "ebola1.compmodel",
+      "ebola2.compmodel",
+      "ebola3.compmodel"
+    ],
+    "merge_rule": "logical_OR_per_boolean_field_across_listed_gold_files_then_folder_priors",
+    "detail_record": "canonical_by_disease/ebola.json",
+    "matched_signals_union": [
+      "recovered",
+      "latent/exposed class",
+      "healthcare contact",
+      "staged infection",
+      "hospital/severity"
+    ]
+  },
+  "assignment": {
+    "route_vector_arthropod": false,
+    "route_sexual_or_partner_network": false,
+    "route_airborne_or_respiratory_droplet": false,
+    "route_fecal_oral_or_waterborne": false,
+    "route_bloodborne_vertical_or_parenteral": false,
+    "route_healthcare_general_contact": true,
+    "latent_or_exposed_class": true,
+    "multiple_infectious_stages_or_chronic": true,
+    "hospitalized_or_severity_stratification": true,
+    "treatment_or_art_intervention": false,
+    "vaccination_route_compartment": false,
+    "recovered_or_immune_endpoint": true,
+    "stratification_demographic_roles": false,
+    "spatial_or_patch_like_naming": false,
+    "vector_or_intermediate_species_present": false,
+    "zoonotic_or_animal_compartment": false,
+    "recruitment_birth_or_immigration_named": false
+  }
+}

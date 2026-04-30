@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "description": "Hierarchical grouping of EpiFeatureVector Boolean fields (parallel optional features under AND groups). Used for diagram export and documentation; leaves must match field names in src/epi_features.py.",
+  "root": {
+    "id": "EpidemicCompartmentalModel",
+    "label": "Epidemic compartmental model (abstract root)",
+    "kind": "and",
+    "children": [
+      "G_Transmission",
+      "G_ClinicalPath",
+      "G_Population",
+      "G_NonHumanHosts",
+      "G_Demography"
+    ]
+  },
+  "nodes": {
+    "G_Transmission": {
+      "label": "Transmission ecology (parallel optional routes — multi-route models allowed)",
+      "kind": "and",
+      "children": [
+        "route_vector_arthropod",
+        "route_sexual_or_partner_network",
+        "route_airborne_or_respiratory_droplet",
+        "route_fecal_oral_or_waterborne",
+        "route_bloodborne_vertical_or_parenteral",
+        "route_healthcare_general_contact"
+      ]
+    },
+    "G_ClinicalPath": {
+      "label": "Natural history & pathogenesis",
+      "kind": "and",
+      "children": [
+        "latent_or_exposed_class",
+        "multiple_infectious_stages_or_chronic",
+        "hospitalized_or_severity_stratification",
+        "treatment_or_art_intervention",
+        "vaccination_route_compartment",
+        "recovered_or_immune_endpoint"
+      ]
+    },
+    "G_Population": {
+      "label": "Population structure",
+      "kind": "and",
+      "children": ["stratification_demographic_roles", "spatial_or_patch_like_naming"]
+    },
+    "G_NonHumanHosts": {
+      "label": "Hosts beyond humans",
+      "kind": "and",
+      "children": ["vector_or_intermediate_species_present", "zoonotic_or_animal_compartment"]
+    },
+    "G_Demography": {
+      "label": "Birth / recruitment / immigration",
+      "kind": "and",
+      "children": ["recruitment_birth_or_immigration_named"]
+    }
+  }
+}
