@@ -2,14 +2,31 @@
   "draft_path": "/home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/phase 2/reports/malaria3_llm_openai_20260407_212645/model_draft.compmodel",
   "disease": "malaria",
   "comparison_role": "Phase 2 extraction (draft) structural features versus gold-derived disease feature model assignment",
-  "canonical_true_count": 7,
-  "draft_true_count": 5,
+  "canonical_true_count": 6,
+  "canonical_text_grounded_count": 4,
+  "draft_true_count": 4,
+  "alignment_score_on_canonical_expectations": 0.6667,
+  "recall": 0.6667,
+  "precision": 1.0,
+  "f1": 0.8,
+  "text_grounded_recall": 0.5,
+  "text_grounded_f1": 0.6667,
+  "text_grounded_canonical_flags": [
+    "latent_or_exposed_class",
+    "recovered_or_immune_endpoint",
+    "treatment_or_art_intervention",
+    "vaccination_route_compartment"
+  ],
   "missing_relative_to_canonical": [
     "vaccination_route_compartment",
     "recovered_or_immune_endpoint"
   ],
   "extra_in_draft_not_in_canonical": [],
-  "alignment_score_on_canonical_expectations": 0.7143,
+  "prior_influenced_canonical_flags": [
+    "route_vector_arthropod",
+    "vector_or_intermediate_species_present"
+  ],
+  "note_on_priors": "prior_influenced_canonical_flags were set by disease-name priors, not by regex matches on gold .compmodel text. text_grounded_recall excludes these from the denominator and is the recommended metric for evaluating LLM extraction quality. Standard recall includes them and reflects overall coverage of the full canonical profile.",
   "draft_feature_vector": {
     "route_vector_arthropod": true,
     "route_sexual_or_partner_network": false,
@@ -18,7 +35,7 @@
     "route_bloodborne_vertical_or_parenteral": false,
     "route_healthcare_general_contact": false,
     "latent_or_exposed_class": true,
-    "multiple_infectious_stages_or_chronic": true,
+    "multiple_infectious_stages_or_chronic": false,
     "hospitalized_or_severity_stratification": false,
     "treatment_or_art_intervention": true,
     "vaccination_route_compartment": false,
@@ -31,7 +48,31 @@
     "matched_signals": [
       "vector/mosquito/snail",
       "latent/exposed class",
-      "staged infection",
+      "treatment/ART",
+      "non-human vector spp."
+    ]
+  },
+  "draft_feature_vector_with_priors": {
+    "route_vector_arthropod": true,
+    "route_sexual_or_partner_network": false,
+    "route_airborne_or_respiratory_droplet": false,
+    "route_fecal_oral_or_waterborne": false,
+    "route_bloodborne_vertical_or_parenteral": false,
+    "route_healthcare_general_contact": false,
+    "latent_or_exposed_class": true,
+    "multiple_infectious_stages_or_chronic": false,
+    "hospitalized_or_severity_stratification": false,
+    "treatment_or_art_intervention": true,
+    "vaccination_route_compartment": false,
+    "recovered_or_immune_endpoint": false,
+    "stratification_demographic_roles": false,
+    "spatial_or_patch_like_naming": false,
+    "vector_or_intermediate_species_present": true,
+    "zoonotic_or_animal_compartment": false,
+    "recruitment_birth_or_immigration_named": false,
+    "matched_signals": [
+      "vector/mosquito/snail",
+      "latent/exposed class",
       "treatment/ART",
       "non-human vector spp."
     ]

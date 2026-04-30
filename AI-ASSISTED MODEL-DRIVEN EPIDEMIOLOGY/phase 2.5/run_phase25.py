@@ -2,7 +2,8 @@
 """Phase 2.5: gold-derived disease feature models, Phase 2 draft vs FM comparison, SPL checks, diagrams (DOT+PNG/SVG).
 
 With default flags this runs: canonical profiles, per-disease ``disease_feature_models/<slug>.json`` bundles,
-feature-tree diagram exports, SPL report per disease, optional batch validation of Phase 2 ``model_draft`` paths,
+feature-tree diagram exports (shared vocabulary + one per-disease diagram per disease),
+SPL report per disease, optional batch validation of Phase 2 ``model_draft`` paths,
 and merged ``phase25_run_summary.json``.
 """
 
@@ -30,19 +31,12 @@ from src.disease_feature_model import save_disease_feature_models
 
 from src.validator import compare_draft_to_canonical, load_canonical_vector_from_profile_json
 
-
-
 from src.phase25_spl import export_feature_diagram_assets, spl_report_for_disease
 
 
 def infer_disease_slug_from_phase2_folder(dirname: str) -> Optional[str]:
     mm = re.match(r"([A-Za-z]+)\d+_", dirname)
     return mm.group(1).lower() if mm else None
-
-
-
-
-
 
 
 def validate_all_phase2_drafts(
@@ -105,7 +99,7 @@ def main() -> int:
     ap.add_argument("--profiles-only", action="store_true", help="Only canonical_profiles.json (+ per-slug)")
     ap.add_argument("--no-spl", action="store_true", help="Skip SPL CNF JSON per disease")
     ap.add_argument("--no-diagram-images", action="store_true", help="Write DOT only; skip PNG/SVG")
-    ap.add_argument("--no-diagram", action="store_true", help="Skip feature tree DOT + PNG/SVG")
+    ap.add_argument("--no-diagram", action="store_true", help="Skip all feature tree diagrams")
     ap.add_argument("--no-validate-phase2-drafts", action="store_true")
     ap.add_argument("--with-witness", action="store_true", help="Add DPLL witness in SPL JSON")
 
@@ -170,6 +164,7 @@ def main() -> int:
 
     diagram_info: Dict[str, Any] = {}
     if not args.no_diagram:
+        # Shared vocabulary diagram (all flags shown in neutral style)
         diagram_info = export_feature_diagram_assets(
             args.feature_tree,
             fm_dot,
@@ -177,7 +172,7 @@ def main() -> int:
             basename="feature_tree",
             render_images=not args.no_diagram_images,
         )
-        summary["steps"].append({"feature_diagram": diagram_info})
+        summary["steps"].append({"feature_diagram_shared": diagram_info})
 
     if not args.no_spl:
         shared = diagram_info if diagram_info else None
@@ -187,7 +182,10 @@ def main() -> int:
                 report_dir=report_dir,
                 disease_slug=slug,
                 constraints_json=args.constraints,
+                feature_tree_json=args.feature_tree if not args.no_diagram else None,
                 with_witness=args.with_witness,
+                render_disease_diagram=not args.no_diagram,
+                diagram_render_images=not args.no_diagram_images,
                 shared_feature_diagram_assets=shared,
             )
         summary["steps"].append({"spl_reports_per_disease": list(profiles.keys())})
@@ -210,7 +208,11 @@ def main() -> int:
     print(f"SPL folder: {report_dir / 'spl_configurator'}", file=sys.stderr)
     if not args.no_diagram:
         print(
-            f"Diagram outputs: {fm_diagram_dir} (feature_tree.dot + PNG/SVG when Graphviz is installed)",
+            f"Shared diagram: {fm_diagram_dir / 'feature_tree.dot'} (+ PNG/SVG when Graphviz installed)",
+            file=sys.stderr,
+        )
+        print(
+            f"Per-disease diagrams: {fm_diagram_dir / 'per_disease'}/",
             file=sys.stderr,
         )
     else:

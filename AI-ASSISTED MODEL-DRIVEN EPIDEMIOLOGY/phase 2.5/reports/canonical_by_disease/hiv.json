@@ -18,7 +18,7 @@
     "recovered_or_immune_endpoint": false,
     "stratification_demographic_roles": true,
     "spatial_or_patch_like_naming": false,
-    "vector_or_intermediate_species_present": true,
+    "vector_or_intermediate_species_present": false,
     "zoonotic_or_animal_compartment": false,
     "recruitment_birth_or_immigration_named": true,
     "matched_signals": [
@@ -26,8 +26,11 @@
       "staged infection",
       "treatment/ART",
       "demographic stratification",
-      "non-human vector spp.",
-      "recruitment/birth"
+      "recruitment/birth",
+      "[prior] bloodborne/vertical route (HIV prior)",
+      "[prior] sexual route (HIV prior)",
+      "[prior] staged/chronic infection (HIV prior)",
+      "[prior] ART/treatment (HIV prior)"
     ]
   },
   "gold_models_merged": [
@@ -51,7 +54,7 @@
       "recovered_or_immune_endpoint": false,
       "stratification_demographic_roles": true,
       "spatial_or_patch_like_naming": false,
-      "vector_or_intermediate_species_present": true,
+      "vector_or_intermediate_species_present": false,
       "zoonotic_or_animal_compartment": false,
       "recruitment_birth_or_immigration_named": true,
       "matched_signals": [
@@ -59,8 +62,10 @@
         "staged infection",
         "treatment/ART",
         "demographic stratification",
-        "non-human vector spp.",
         "recruitment/birth"
+      ],
+      "prior_signals": [
+        "[prior] bloodborne/vertical route (HIV prior)"
       ]
     },
     "hiv2": {
@@ -81,7 +86,13 @@
       "vector_or_intermediate_species_present": false,
       "zoonotic_or_animal_compartment": false,
       "recruitment_birth_or_immigration_named": false,
-      "matched_signals": []
+      "matched_signals": [],
+      "prior_signals": [
+        "[prior] sexual route (HIV prior)",
+        "[prior] bloodborne/vertical route (HIV prior)",
+        "[prior] staged/chronic infection (HIV prior)",
+        "[prior] ART/treatment (HIV prior)"
+      ]
     },
     "hiv3": {
       "route_vector_arthropod": false,
@@ -104,8 +115,12 @@
       "matched_signals": [
         "staged infection",
         "treatment/ART"
+      ],
+      "prior_signals": [
+        "[prior] sexual route (HIV prior)",
+        "[prior] bloodborne/vertical route (HIV prior)"
       ]
     }
   },
-  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
 }

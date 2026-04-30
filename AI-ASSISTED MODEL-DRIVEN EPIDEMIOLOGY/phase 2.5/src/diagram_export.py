@@ -1,205 +1,251 @@
-"""Graphviz DOT export for feature_tree.json."""
+"""Graphviz DOT export for feature_tree.json.
+
+Renders the 17-flag EpiFeatureVector as a clean grid diagram using Graphviz
+HTML-like table labels.  Each group (Transmission, Clinical, etc.) becomes a
+column; each flag becomes a cell.  Active flags (True) are coloured and bold;
+inactive flags are greyed out.
+
+Two modes:
+- Shared vocabulary diagram (no assignment): all cells shown in the group colour,
+  neutral weight — used as a legend / vocabulary reference.
+- Per-disease diagram (with assignment): True flags highlighted, False flags greyed.
+"""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-CLUSTER_FILL = ["#daf0fc", "#d4f5e8", "#f9f5d9", "#fae8fb", "#ede8fc"]
+# ---------------------------------------------------------------------------
+# Group definitions — order, display name, background colour, accent colour.
+# Must match the feature_tree.json grouping.
+# ---------------------------------------------------------------------------
+_GROUPS: List[Tuple[str, str, str, str]] = [
+    # (group_id, display_name, bg_colour, accent_colour)
+    ("G_Transmission",   "Transmission routes",             "#daf0fc", "#5a9fc2"),
+    ("G_ClinicalPath",   "Natural history &#38; pathogenesis", "#d4f5e8", "#4aaa7a"),
+    ("G_Population",     "Population structure",             "#f9f5d9", "#c8a838"),
+    ("G_NonHumanHosts",  "Non-human hosts",                  "#fae8fb", "#aa6ab8"),
+    ("G_Demography",     "Demography",                       "#ede8fc", "#8877cc"),
+]
 
-CLUSTER_EDGE = "#6b8299"
-
-# One-line hints aligned with comments in ``epi_features.py`` (SVG tooltip; PNG legend clarifies globally).
-_LEAF_HINT: Dict[str, str] = {
-    "route_vector_arthropod": "Transmission via arthropod / vector compartments or wording (e.g. mosquito).",
-    "route_sexual_or_partner_network": "Partnership sexual network or analogous route cues in flows.",
-    "route_airborne_or_respiratory_droplet": "Respiratory aerosol droplet airborne wording or lung-focused flows.",
-    "route_fecal_oral_or_waterborne": "Fecal-oral, oral, water/food-associated transmission wording.",
-    "route_bloodborne_vertical_or_parenteral": "Blood, syringe, maternal-fetal vertical, parental cues.",
-    "route_healthcare_general_contact": "Hospital ward, HCW, nonspecific institutional contact wording.",
-    "latent_or_exposed_class": "Latent, exposed, Eh, incubating, chronic carrier style compartment classes.",
-    "multiple_infectious_stages_or_chronic": "Multiple sequential infectious strata or staged chronic progression.",
-    "hospitalized_or_severity_stratification": "Hospitalized ICU severe mild stratified clinical severity strata.",
-    "treatment_or_art_intervention": "Treatment ART therapy drug compartments or explicit therapy flows.",
-    "vaccination_route_compartment": "Vaccinated vaccine immune compartment wording.",
-    "recovered_or_immune_endpoint": "Recovered immune endpoint compartment naming.",
-    "stratification_demographic_roles": "Age sex risk group MSM strata demographic roles in compartments.",
-    "spatial_or_patch_like_naming": "Patch metropolis multiple regions geographic spatial structuring.",
-    "vector_or_intermediate_species_present": "Non-human vector snail aquatic intermediate reservoir species compartments.",
-    "zoonotic_or_animal_compartment": "Zoonotic non-human vertebrate mammal bird reservoir compartments.",
-    "recruitment_birth_or_immigration_named": "Birth influx immigration recruitment into susceptible explicit naming.",
+# Human-readable short labels for each flag (used in diagram cells).
+_FLAG_LABELS: Dict[str, str] = {
+    "route_vector_arthropod":                 "Vector / Arthropod",
+    "route_sexual_or_partner_network":        "Sexual / Partner",
+    "route_airborne_or_respiratory_droplet":  "Airborne / Respiratory",
+    "route_fecal_oral_or_waterborne":         "Fecal-oral / Waterborne",
+    "route_bloodborne_vertical_or_parenteral":"Bloodborne / Vertical",
+    "route_healthcare_general_contact":       "Healthcare Contact",
+    "latent_or_exposed_class":                "Latent / Exposed",
+    "multiple_infectious_stages_or_chronic":  "Staged / Chronic",
+    "hospitalized_or_severity_stratification":"Hospitalized / Severity",
+    "treatment_or_art_intervention":          "Treatment / ART",
+    "vaccination_route_compartment":          "Vaccination",
+    "recovered_or_immune_endpoint":           "Recovered / Immune",
+    "stratification_demographic_roles":       "Demographic Stratification",
+    "spatial_or_patch_like_naming":           "Spatial / Patch",
+    "vector_or_intermediate_species_present": "Vector / Intermediate Spp.",
+    "zoonotic_or_animal_compartment":         "Zoonotic / Animal",
+    "recruitment_birth_or_immigration_named": "Birth / Recruitment",
 }
 
 
-def _esc(s: str) -> str:
-    """Escape for Graphviz quoted labels (plain string, not HTML)."""
+def _header_cell(display_name: str, bg: str, accent: str) -> str:
+    return (
+        f'<TD BGCOLOR="{bg}" BORDER="0" ALIGN="CENTER" CELLPADDING="8">'
+        f'<FONT FACE="Helvetica Neue" POINT-SIZE="11" COLOR="{accent}"><B>{display_name}</B></FONT>'
+        f'</TD>'
+    )
 
-    return str(s).replace("\\", "\\\\").replace('"', '\\"').replace("&", "\\&")
 
-
-def _pretty_leaf_feature_id(leaf_id: str, max_chars: int = 32) -> str:
-    """Readable title-ish label from snake_case; wrap long phrases across lines."""
-
-    parts: List[str] = []
-    for p in leaf_id.replace("__", "_").split("_"):
-        if not p:
-            continue
-        parts.append(p[0].upper() + p[1:] if len(p) > 1 else p.upper())
-    line = " ".join(parts)
-
-    # Soft-wrap at spaces by target width (narrow columns read better).
-    words = line.split()
-    if len(line) <= max_chars:
-        return line
-    out: List[str] = []
-    cur = ""
-    for w in words:
-        tentative = cur + (" " if cur else "") + w
-        if len(tentative) <= max_chars + 8:
-            cur = tentative
+def _flag_cell(
+    label: str,
+    is_true: bool,
+    bg: str,
+    accent: str,
+    *,
+    per_disease: bool,
+) -> str:
+    if per_disease:
+        if is_true:
+            fill = bg
+            border_col = accent
+            border_w = "2"
+            font_col = "#111111"
+            font_size = "11"
+            bold_o, bold_c = "<B>", "</B>"
         else:
-            if cur:
-                out.append(cur)
-            cur = w
-    if cur:
-        out.append(cur)
+            fill = "#f0f0f0"
+            border_col = "#dddddd"
+            border_w = "1"
+            font_col = "#aaaaaa"
+            font_size = "10"
+            bold_o, bold_c = "", ""
+    else:
+        # Shared vocabulary: all shown equally in group colour
+        fill = bg
+        border_col = accent
+        border_w = "1"
+        font_col = "#333333"
+        font_size = "10.5"
+        bold_o, bold_c = "", ""
 
-    lines = "\\n".join(out)
-    return lines
+    return (
+        f'<TD BGCOLOR="{fill}" BORDER="{border_w}" COLOR="{border_col}" '
+        f'CELLPADDING="9" STYLE="rounded">'
+        f'<FONT FACE="Helvetica Neue" POINT-SIZE="{font_size}" COLOR="{font_col}">'
+        f'{bold_o}{label}{bold_c}</FONT>'
+        f'</TD>'
+    )
 
 
-def _group_label_plain(full: str) -> str:
-    """Subgroup banner: keep first line short, rest on second line."""
-
-    s = full.strip().replace("\u2014", "-")
-    bracket = s.find("(")
-    if bracket >= 0:
-        return _esc(s[:bracket].strip()) + "\\n" + _esc(s[bracket:].strip())
-    if len(s) > 50:
-        cut = max(s.rfind(" ", 40, len(s)), 40)
-        return _esc(s[:cut].strip() + "...") + "\\n" + _esc(s[cut:].strip())
-    return _esc(s)
+def _empty_cell() -> str:
+    return '<TD BORDER="0" CELLPADDING="9"></TD>'
 
 
-def fm_tree_to_dot(tree: Dict[str, Any]) -> str:
-    rnd = tree["root"]
-    rid = rnd["id"]
-    rlab = rnd.get("label", rid)
-    nodes: Dict[str, Any] = tree.get("nodes", {})
-    ordered_groups: List[str] = list(rnd.get("children", []))
+def _spacer_row(n_cols: int) -> str:
+    return '<TR>' + ('<TD HEIGHT="5" BORDER="0"></TD>' * n_cols) + '</TR>'
 
-    lines: List[str] = [
-        "digraph EpidemiologicalFeatureTree {",
-        "  graph [",
-        '    bgcolor="white",',
-        "    fontname=\"Helvetica\",",
-        "    fontsize=12,",
-        "    margin=0.25,",
-        "    pad=0.5,",
-        "    nodesep=0.28,",
-        "    ranksep=0.75,",
-        "    splines=spline,",
-        "    compound=false,",
-        "    label=<<TABLE BORDER=\"0\" CELLBORDER=\"0\" CELLSPACING=\"0\">",
-        "      <TR><TD ALIGN=\"LEFT\"><B>What this picture is</B></TD></TR>",
-        "      <TR><TD ALIGN=\"LEFT\"><FONT POINT-SIZE=\"9.8\" COLOR=\"#333333\">"
-        "<B>Each box</B> names one Yes/No <B>EpiFeatureVector</B> signal: did we infer "
-        "(from compartments/flows) that gold models use this <B>structural choice?</B>"
-        "</FONT></TD></TR>",
-        "      <TR><TD ALIGN=\"LEFT\"><FONT POINT-SIZE=\"9.5\" COLOR=\"#444444\">"
-        "• This is <B>not</B> infection biology or a causal timeline; arrows only group related booleans.<BR ALIGN=\"LEFT\"/>"
-        "• Coloured sections = themes (transmission routes, clinical course, ...).<BR ALIGN=\"LEFT\"/>"
-        "• For one disease we OR-merge gold papers into one canonical profile; SPL checks booleans versus cross-tree logic.<BR ALIGN=\"LEFT\"/>"
-        "• Hover tooltips on leaves in <B>.svg</B> for one-line meanings."
-        "</FONT></TD></TR>",
-        "    </TABLE>>,",
-        "    labelloc=t,",
-        "    labeljust=l,",
-        "  ];",
-        "  node [fontname=\"Helvetica\", fontsize=10.5, color=\"#333333\"];",
-        f'  edge [color="{CLUSTER_EDGE}", penwidth=0.85, arrowsize=0.75];',
-        "  rankdir=TB;",
-        f'  "{rid}" [',
-        '    shape=box,',
-        '    style="filled,rounded",',
-        '    fillcolor="#e8edf3",',
-        '    penwidth=1.2,',
-        "    fontsize=12,",
-        f'    label="{_esc(rlab)}",',
-        "    width=1.6,",
-        "  ];",
-        "",
-    ]
 
-    for idx, gid in enumerate(ordered_groups):
-        gv = nodes.get(gid)
-        if not gv:
-            continue
-        cid = f"cluster_{gid}"
-        hue = CLUSTER_FILL[idx % len(CLUSTER_FILL)]
-        full_label = gv.get("label", gid)
-        banner = _group_label_plain(full_label)
-        leaf_ids = [str(x) for x in gv.get("children", [])]
+def _build_table(
+    tree: Dict[str, Any],
+    *,
+    true_flags: Optional[Set[str]],
+) -> str:
+    """Build the HTML table string for the diagram."""
+    per_disease = true_flags is not None
+    nodes = tree.get("nodes", {})
+    n_cols = len(_GROUPS)
 
-        lines.append(f"  subgraph {cid} {{")
-        lines.append("    graph [")
-        lines.append(f'      label="{banner}",')
-        lines.append("      labelloc=t,")
-        lines.append("      fontsize=11.5,")
-        lines.append('      fontname="Helvetica",')
-        lines.append(f'      style="rounded,filled",')
-        lines.append(f'      fillcolor="{hue}",')
-        lines.append(f'      color="{CLUSTER_EDGE}",')
-        lines.append("      penwidth=1.0,")
-        lines.append("      margin=14,")
-        lines.append("    ];")
+    # Collect flag lists per group
+    group_flags: List[List[str]] = []
+    for gid, _name, _bg, _acc in _GROUPS:
+        children = [str(c) for c in nodes.get(gid, {}).get("children", [])]
+        group_flags.append(children)
 
-        short_header = full_label.split("(")[0].strip()
-        if len(short_header) > 36:
-            short_header = short_header[:33] + "..."
-        lines.append(
-            f'    "{gid}" [shape=tab, style="filled,rounded", fillcolor="#ffffff", '
-            f' fontsize=10.5, label="{_esc(short_header)}"];'
+    max_rows = max(len(g) for g in group_flags)
+
+    rows: List[str] = []
+
+    # Header row
+    header_cells = "".join(
+        _header_cell(name, bg, acc)
+        for _, name, bg, acc in _GROUPS
+    )
+    rows.append(f"<TR>{header_cells}</TR>")
+    rows.append(_spacer_row(n_cols))
+
+    # Flag rows
+    for r in range(max_rows):
+        cells = []
+        for col_idx, (gid, _name, bg, acc) in enumerate(_GROUPS):
+            flags = group_flags[col_idx]
+            if r < len(flags):
+                fid = flags[r]
+                label = _FLAG_LABELS.get(fid, fid)
+                is_true = (fid in true_flags) if per_disease else False
+                cells.append(_flag_cell(label, is_true, bg, acc, per_disease=per_disease))
+            else:
+                cells.append(_empty_cell())
+        rows.append(f"<TR>{''.join(cells)}</TR>")
+
+    table_content = "".join(rows)
+    return (
+        f'<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="6" CELLPADDING="0">'
+        f'{table_content}'
+        f'</TABLE>>'
+    )
+
+
+def _build_title(*, disease_label: Optional[str]) -> str:
+    if disease_label:
+        heading = f"Feature Profile &#8212; {disease_label}"
+        subtitle = (
+            "Highlighted = True in canonical gold profile.&#160;&#160;"
+            "Grey = not present in any gold model."
+        )
+    else:
+        heading = "Epidemiological Feature Vocabulary"
+        subtitle = (
+            "The 17 Boolean flags used to describe any compartmental epidemic model. "
+            "Per-disease diagrams highlight which flags are active for that disease."
         )
 
-        for lf in leaf_ids:
-            pll = _pretty_leaf_feature_id(lf)
-            hint = _LEAF_HINT.get(str(lf), "")
-            tooltip_attr = ""
-            if hint:
-                tooltip_attr = f', tooltip="{_esc(hint)}"'
-            lines.append(
-                f'    "{lf}" [shape=box, style="rounded,filled", fillcolor="#ffffff", '
-                f' fontsize=9.5, margin=0.1, label="{_esc(pll)}"'
-                + tooltip_attr
-                + "];"
-            )
-        # Vertical chain of leaves (narrower subgraph than hub-and-spokes).
-        if leaf_ids:
-            lines.append(f'    "{gid}" -> "{leaf_ids[0]}" [ penwidth=1.05 ];')
-            for a, b in zip(leaf_ids, leaf_ids[1:]):
-                lines.append(f'    "{a}" -> "{b}" [ color="#aab8c6", penwidth=0.75, constraint=true ];')
+    return (
+        f'<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="3">'
+        f'<TR><TD ALIGN="LEFT"><FONT FACE="Helvetica Neue" POINT-SIZE="18">'
+        f'<B>{heading}</B></FONT></TD></TR>'
+        f'<TR><TD ALIGN="LEFT"><FONT FACE="Helvetica Neue" POINT-SIZE="10" COLOR="#666666">'
+        f'{subtitle}</FONT></TD></TR>'
+        f'</TABLE>>'
+    )
 
-        lines.append("  }")
-        lines.append("")
-        if idx == 0:
-            lines.append(f'  "{rid}" -> "{gid}" [ penwidth=1.2 ];')
-            lines.append("")
 
-    ordered_valid = [g for g in ordered_groups if g in nodes]
-    for i in range(len(ordered_valid) - 1):
-        g_curr, g_next = ordered_valid[i], ordered_valid[i + 1]
-        last_leaf = str(nodes[g_curr]["children"][-1])
-        lines.append(
-            f'  "{last_leaf}" -> "{g_next}" [ style=invis, weight=999, minlen=2, constraint=true ];'
-        )
+def fm_tree_to_dot(
+    tree: Dict[str, Any],
+    *,
+    true_flags: Optional[Set[str]] = None,
+    disease_label: Optional[str] = None,
+) -> str:
+    """Render a Graphviz DOT string from the feature tree.
 
-    lines.append("}")
-    return "\n".join(lines) + "\n"
+    Parameters
+    ----------
+    tree:
+        Parsed feature_tree.json content.
+    true_flags:
+        Set of flag field names that are True for this disease.  When provided
+        the diagram highlights active flags and greys out inactive ones.
+        When None (shared vocabulary diagram) all flags are shown equally.
+    disease_label:
+        Display name for the disease shown in the diagram title.
+    """
+    table = _build_table(tree, true_flags=true_flags)
+    title = _build_title(disease_label=disease_label)
+
+    return (
+        "digraph G {\n"
+        f"  graph [bgcolor=\"white\" pad=\"0.7,0.5\" label={title} labelloc=t labeljust=l]\n"
+        "  node [shape=none margin=0]\n"
+        f"  main [label={table}]\n"
+        "}\n"
+    )
 
 
 def export_dot(tree_path: Path, out_path: Path) -> None:
+    """Export the shared vocabulary diagram (all flags shown equally)."""
     tree = json.loads(tree_path.read_text(encoding="utf-8"))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(fm_tree_to_dot(tree), encoding="utf-8")
+
+
+def export_disease_dot(
+    tree_path: Path,
+    out_path: Path,
+    canonical_vector: Dict[str, Any],
+    disease_slug: str,
+) -> None:
+    """Export a per-disease diagram highlighting only the True flags.
+
+    Parameters
+    ----------
+    tree_path:
+        Path to feature_tree.json.
+    out_path:
+        Where to write the .dot file.
+    canonical_vector:
+        The canonical_feature_vector dict for this disease.
+    disease_slug:
+        Used as the display label in the diagram title.
+    """
+    tree = json.loads(tree_path.read_text(encoding="utf-8"))
+    true_flags: Set[str] = {
+        k for k, v in canonical_vector.items()
+        if v is True and k != "matched_signals"
+    }
+    label = disease_slug.replace("_", " ").title()
+    dot = fm_tree_to_dot(tree, true_flags=true_flags, disease_label=label)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(dot, encoding="utf-8")

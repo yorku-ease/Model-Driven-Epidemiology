@@ -96,26 +96,14 @@ def main() -> int:
     
 
     merged = spl_report_for_disease(
-
-
         data_root=data_root,
-
-
         report_dir=report_dir,
-
-
         disease_slug=args.disease,
-
-
         constraints_json=args.constraints,
-
-
+        feature_tree_json=args.feature_tree,
         with_witness=args.with_witness,
-
-
+        diagram_render_images=not args.no_diagram_images,
         shared_feature_diagram_assets=diagram,
-
-
     )
 
 

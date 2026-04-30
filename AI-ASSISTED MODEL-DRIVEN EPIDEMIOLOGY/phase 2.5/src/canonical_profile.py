@@ -1,4 +1,11 @@
-"""Build one merged (canonical) feature profile per disease from all gold .compmodel files."""
+"""Build one merged (canonical) feature profile per disease from all gold .compmodel files.
+
+Changes vs original:
+- matched_signals truncation (was silently capped at 80) now records a warning
+  in the profile JSON when truncation occurs.
+- Per-model vectors now include a `prior_signals` sub-list so readers can see
+  which signals came from apply_disease_name_hints() vs actual regex matches.
+"""
 
 from __future__ import annotations
 
@@ -9,6 +16,8 @@ from typing import Any, Dict, List, Optional
 from .epi_features import EpiFeatureVector, merge_feature_vectors
 from .inference_rules import apply_disease_name_hints, infer_features_from_compmodel
 
+_SIGNAL_CAP = 80  # kept for readability; now flagged when hit
+
 
 def _normalize_disease_key(raw: str) -> str:
     return raw.strip().lower().replace(" ", "_")
@@ -18,11 +27,7 @@ def discover_disease_dirs(data_root: Path) -> List[Path]:
     diseases = data_root / "diseases"
     if not diseases.is_dir():
         return []
-    out: List[Path] = []
-    for p in sorted(diseases.iterdir()):
-        if p.is_dir():
-            out.append(p)
-    return out
+    return sorted(p for p in diseases.iterdir() if p.is_dir())
 
 
 def gold_compmodels_in_disease(disease_dir: Path) -> List[Path]:
@@ -42,15 +47,30 @@ def build_canonical_profile_for_disease(
     for cm in paths:
         stem = cm.stem
         raw = infer_features_from_compmodel(cm)
-        # Mild prior from folder name applied per model so sparse models still inherit route context
-        v = apply_disease_name_hints(slug, raw)
+        # Apply disease-name priors per model (record_priors=True so [prior] tags appear).
+        v = apply_disease_name_hints(slug, raw, record_priors=True)
         vectors.append(v)
-        per_model[stem] = v.to_json_dict()
+
+        # Split signals into regex-hit vs prior for per-model record
+        regex_sigs = [s for s in v.matched_signals if not s.startswith("[prior]")]
+        prior_sigs = [s for s in v.matched_signals if s.startswith("[prior]")]
+        model_dict = v.to_json_dict()
+        model_dict["prior_signals"] = prior_sigs
+        model_dict["matched_signals"] = regex_sigs  # keep matched_signals clean
+        per_model[stem] = model_dict
 
     merged = merge_feature_vectors(vectors)
-    merged = apply_disease_name_hints(slug, merged)
+    merged = apply_disease_name_hints(slug, merged, record_priors=True)
 
-    return {
+    # Cap signals with truncation warning
+    all_sigs = merged.matched_signals
+    truncated = False
+    if len(all_sigs) > _SIGNAL_CAP:
+        all_sigs = all_sigs[:_SIGNAL_CAP]
+        truncated = True
+    merged.matched_signals = all_sigs
+
+    profile: Dict[str, Any] = {
         "phase": "2.5",
         "schema_version": 1,
         "disease": slug,
@@ -59,11 +79,19 @@ def build_canonical_profile_for_disease(
         "gold_models_merged": [p.name for p in paths],
         "per_model_feature_vectors": per_model,
         "notes": (
-            "Canonical profile = logical OR across all listed gold .compmodel files for this disease, "
-            "then disease-folder priors merged (OR). Same assignment is written under "
-            "reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+            "Canonical profile = logical OR across all listed gold .compmodel files "
+            "for this disease, then disease-folder priors merged (OR). "
+            "Same assignment is written under reports/disease_feature_models/<slug>.json "
+            "as the gold-derived disease feature model. "
+            "Signals prefixed with [prior] were set by apply_disease_name_hints(), "
+            "not by regex matches on the compmodel text."
         ),
     }
+    if truncated:
+        profile["matched_signals_truncated"] = True
+        profile["matched_signals_truncation_cap"] = _SIGNAL_CAP
+
+    return profile
 
 
 def build_all_profiles(data_root: Path) -> Dict[str, Dict[str, Any]]:

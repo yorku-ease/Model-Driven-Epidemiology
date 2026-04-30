@@ -26,7 +26,9 @@
       "latent/exposed class",
       "recovered",
       "non-human vector spp.",
-      "vaccination"
+      "vaccination",
+      "[prior] vector-borne route (disease prior)",
+      "[prior] vector species present (disease prior)"
     ]
   },
   "gold_models_merged": [
@@ -58,7 +60,8 @@
         "latent/exposed class",
         "recovered",
         "non-human vector spp."
-      ]
+      ],
+      "prior_signals": []
     },
     "dengue2": {
       "route_vector_arthropod": true,
@@ -82,6 +85,10 @@
         "latent/exposed class",
         "vaccination",
         "recovered"
+      ],
+      "prior_signals": [
+        "[prior] vector-borne route (disease prior)",
+        "[prior] vector species present (disease prior)"
       ]
     },
     "dengue3": {
@@ -105,8 +112,12 @@
       "matched_signals": [
         "vaccination",
         "recovered"
+      ],
+      "prior_signals": [
+        "[prior] vector-borne route (disease prior)",
+        "[prior] vector species present (disease prior)"
       ]
     }
   },
-  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
 }

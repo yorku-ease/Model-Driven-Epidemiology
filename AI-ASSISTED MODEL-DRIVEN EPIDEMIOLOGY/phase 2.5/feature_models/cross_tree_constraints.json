@@ -1,28 +1,57 @@
 {
   "schema_version": 1,
-  "description": "Cross-tree constraints linking transmission ecology to compartment evidence, staging to treatment, etc. Compiled to CNF for unit-propagation / DPLL. Independent of Phase 3; answers whether a Boolean feature assignment is SPL-consistent.",
+  "description": "Cross-tree constraints linking transmission ecology to compartment evidence. Compiled to CNF for unit-propagation / DPLL. Independent of Phase 3; answers whether a Boolean feature assignment is SPL-consistent.",
 
   "implies": [
     {
       "id": "IMPL_VECTOR_ROUTE_NEEDS_AGENT",
       "if": "route_vector_arthropod",
       "then": "vector_or_intermediate_species_present",
-      "rationale": "Declaring a dominant arthropod vector route should be evidenced by mosquito/vector/agent compartments or equivalent wording."
+      "rationale": "Declaring a vector-borne route should be evidenced by mosquito/vector compartments or equivalent wording.",
+      "enabled": true
     },
     {
-      "id": "IMPL_TREATMENT_OFTEN_STAGE",
+      "id": "IMPL_VACCINATION_IMPLIES_RECOVERED_OR_IMMUNE",
+      "if": "vaccination_route_compartment",
+      "then": "recovered_or_immune_endpoint",
+      "rationale": "A vaccination compartment presupposes an immune/protected endpoint in the model flow.",
+      "enabled": true
+    },
+    {
+      "id": "IMPL_HOSPITALIZATION_IMPLIES_SEVERITY",
+      "if": "hospitalized_or_severity_stratification",
+      "then": "multiple_infectious_stages_or_chronic",
+      "rationale": "Hospitalization stratification implies at least two infectious severity levels — disabled because acute-hospitalization models (COVID, Ebola, Influenza) commonly have hospitalized compartments without a staged chronic-progression structure.",
+      "enabled": false
+    },
+    {
+      "id": "IMPL_ART_IMPLIES_STAGED",
       "if": "treatment_or_art_intervention",
       "then": "multiple_infectious_stages_or_chronic",
-      "rationale": "Treatment/ART compartments usually sit on a staged natural history (optional strict rule).",
+      "rationale": "ART/treatment compartments typically sit on a staged natural history (HIV progression, TB treatment phases).",
+      "enabled": false
+    },
+    {
+      "id": "IMPL_ZOONOTIC_NEEDS_HOST",
+      "if": "zoonotic_or_animal_compartment",
+      "then": "vector_or_intermediate_species_present",
+      "rationale": "If a zoonotic reservoir compartment is modelled, a non-human host species is necessarily present.",
+      "enabled": true
+    },
+    {
+      "id": "IMPL_SPATIAL_IMPLIES_STRATIFICATION",
+      "if": "spatial_or_patch_like_naming",
+      "then": "stratification_demographic_roles",
+      "rationale": "Spatial patch models almost always also stratify the population in some way.",
       "enabled": false
     }
   ],
 
   "mutex": [
     {
-      "id": "MUTEX_NO_DUAL_ZOONOTIC_VECTOR_AS_EXCLUSIVE",
+      "id": "MUTEX_ZOONOTIC_VECTOR_EXCLUSIVE",
       "features": ["zoonotic_or_animal_compartment", "route_vector_arthropod"],
-      "rationale": "Optional soft mutex: many models use vector OR general zoonotic framing.",
+      "rationale": "Soft mutex: many models use vector OR general zoonotic framing as the primary route, not both simultaneously.",
       "enabled": false
     }
   ],

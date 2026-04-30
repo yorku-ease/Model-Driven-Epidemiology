@@ -31,23 +31,25 @@ python3 run_phase25.py --data-root "../phase 2/data" --report-dir "./reports"
 
 1. Builds **canonical profiles** for every benchmark disease (OR-merge of gold **`.compmodel`** files under each disease folder) and saves **`canonical_profiles.json`** and **`canonical_by_disease/<slug>.json`**.
 2. Writes one **gold-derived disease feature model** file per disease: **`disease_feature_models/<slug>.json`** (Boolean **`assignment`**, gold source list—primary FM citation bundle).
-3. Exports the **feature tree diagram** under **`fm_diagram/`** (DOT, and PNG/SVG when Graphviz `dot` is available).
-4. Writes one **SPL report per disease** under **`spl_configurator/`** (constraint checks on the gold tuple; references the FM path).
-5. Scans **`phase 2/reports/`** for **`model_draft.compmodel`**, compares each Phase 2 draft to the matching disease FM, writes **`draft_validations/*.json`**.
-6. Writes **`phase25_run_summary.json`** (steps include which disease FM files were written, plus draft validation payloads when produced).
+3. Exports **diagrams** under **`reports/fm_diagram/`**:
+   - **Shared vocabulary:** `feature_tree.dot` (+ PNG/SVG when Graphviz succeeds). Omit both with **`--no-diagram`**; omit only raster/SVG but keep DOT with **`--no-diagram-images`** (same for per-disease).
+   - **Per disease:** **`per_disease/<slug>/feature_profile.dot`** (+ PNG/SVG) generated during the SPL loop; metadata lives under **`spl_configurator/<slug>_spl_report.json`** → **`disease_feature_diagram`**.
+4. Writes one **SPL report per disease** under **`spl_configurator/`** (constraint checks + unit propagation references + optional `disease_feature_diagram`).
+5. Scans **`phase 2/reports/`** for **`model_draft.compmodel`**, compares Phase 2 drafts to the FM, writes **`draft_validations/*.json`**.
+6. Writes **`phase25_run_summary.json`** (steps list canonical counts, disease FM writes, **`feature_diagram_shared`**, validations, optionally embedded payloads).
 
 **Main output paths:**
 
 | Path | Contents |
 |------|----------|
-| `reports/disease_feature_models/<slug>.json` | Gold-backed **disease FM** (`assignment`, gold file list); cite for “FM from standards” |
-| `reports/canonical_profiles.json` | All diseases: merged gold tuples |
-| `reports/canonical_by_disease/<slug>.json` | Per-disease detail (per-model breakdown, signals) |
-| `reports/fm_diagram/feature_tree.dot` | Graphviz feature hierarchy |
-| `reports/fm_diagram/feature_tree.png`, `.svg` | Rendered diagram (requires `dot`) |
-| `reports/spl_configurator/<slug>_spl_report.json` | SPL/CNF check + propagation; FM path embedded |
-| `reports/draft_validations/*.json` | Phase 2 draft vs gold FM |
-| `reports/phase25_run_summary.json` | Full run summary |
+| `reports/disease_feature_models/<slug>.json` | Gold-backed disease FM bundle (`assignment`, gold sources); thesis citation artefact |
+| `reports/canonical_profiles.json` | All diseases merged |
+| `reports/canonical_by_disease/<slug>.json` | Per-disease diagnostics (`matched_signals`, `prior_signals` per gold file) |
+| `reports/fm_diagram/feature_tree.dot` (+ `.png`/`.svg`) | Shared 17-flag table legend |
+| `reports/fm_diagram/per_disease/<slug>/feature_profile.dot` (+ images) | Gold assignment overlaid |
+| `reports/spl_configurator/<slug>_spl_report.json` | SPL results + **`gold_derived_disease_feature_model`** + optional diagram metadata |
+| `reports/draft_validations/*.json` | Draft vs canonical (precision / recall / F1; **text_grounded_recall** / **text_grounded_f1**; prior disclosure) |
+| `reports/phase25_run_summary.json` | Consolidated pointers / embedded validations |
 
 ---
 
@@ -99,7 +101,7 @@ For a **single disease**, re-export the diagram and write one SPL JSON (no full 
 python3 run_configurator.py --disease malaria
 ```
 
-For reproducibility and parity with thesis experiments, prefer **`run_phase25.py`** for the full artefact set.
+For reproducibility and parity with thesis experiments, prefer **`run_phase25.py`** for the full artefact set. **`run_configurator.py`** passes **`feature_tree.json`** through so the single-disease SPL run also emits **`fm_diagram/per_disease/<slug>/feature_profile.*`** when diagrams are enabled.
 
 ---
 

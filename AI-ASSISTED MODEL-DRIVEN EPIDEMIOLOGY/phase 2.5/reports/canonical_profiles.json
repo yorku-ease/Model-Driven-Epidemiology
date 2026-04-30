@@ -19,16 +19,16 @@
       "recovered_or_immune_endpoint": true,
       "stratification_demographic_roles": true,
       "spatial_or_patch_like_naming": false,
-      "vector_or_intermediate_species_present": true,
+      "vector_or_intermediate_species_present": false,
       "zoonotic_or_animal_compartment": false,
       "recruitment_birth_or_immigration_named": false,
       "matched_signals": [
         "recovered",
+        "[prior] fecal-oral/waterborne route (cholera prior)",
         "fecal-oral/water",
         "latent/exposed class",
         "vaccination",
-        "demographic stratification",
-        "non-human vector spp."
+        "demographic stratification"
       ]
     },
     "gold_models_merged": [
@@ -57,6 +57,9 @@
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] fecal-oral/waterborne route (cholera prior)"
         ]
       },
       "Cholera2": {
@@ -83,7 +86,8 @@
           "vaccination",
           "recovered",
           "demographic stratification"
-        ]
+        ],
+        "prior_signals": []
       },
       "Cholera3": {
         "route_vector_arthropod": false,
@@ -100,17 +104,17 @@
         "recovered_or_immune_endpoint": true,
         "stratification_demographic_roles": false,
         "spatial_or_patch_like_naming": false,
-        "vector_or_intermediate_species_present": true,
+        "vector_or_intermediate_species_present": false,
         "zoonotic_or_animal_compartment": false,
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "fecal-oral/water",
-          "recovered",
-          "non-human vector spp."
-        ]
+          "recovered"
+        ],
+        "prior_signals": []
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "covid": {
     "phase": "2.5",
@@ -140,7 +144,8 @@
         "healthcare contact",
         "latent/exposed class",
         "hospital/severity",
-        "recovered"
+        "recovered",
+        "[prior] respiratory route (disease prior)"
       ]
     },
     "gold_models_merged": [
@@ -173,7 +178,8 @@
           "latent/exposed class",
           "hospital/severity",
           "recovered"
-        ]
+        ],
+        "prior_signals": []
       },
       "covid2": {
         "route_vector_arthropod": false,
@@ -196,6 +202,9 @@
         "matched_signals": [
           "latent/exposed class",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       },
       "covid3": {
@@ -219,10 +228,13 @@
         "matched_signals": [
           "latent/exposed class",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "dengue": {
     "phase": "2.5",
@@ -252,7 +264,9 @@
         "latent/exposed class",
         "recovered",
         "non-human vector spp.",
-        "vaccination"
+        "vaccination",
+        "[prior] vector-borne route (disease prior)",
+        "[prior] vector species present (disease prior)"
       ]
     },
     "gold_models_merged": [
@@ -284,7 +298,8 @@
           "latent/exposed class",
           "recovered",
           "non-human vector spp."
-        ]
+        ],
+        "prior_signals": []
       },
       "dengue2": {
         "route_vector_arthropod": true,
@@ -308,6 +323,10 @@
           "latent/exposed class",
           "vaccination",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] vector-borne route (disease prior)",
+          "[prior] vector species present (disease prior)"
         ]
       },
       "dengue3": {
@@ -331,10 +350,14 @@
         "matched_signals": [
           "vaccination",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] vector-borne route (disease prior)",
+          "[prior] vector species present (disease prior)"
         ]
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "ebola": {
     "phase": "2.5",
@@ -349,7 +372,7 @@
       "route_bloodborne_vertical_or_parenteral": false,
       "route_healthcare_general_contact": true,
       "latent_or_exposed_class": true,
-      "multiple_infectious_stages_or_chronic": true,
+      "multiple_infectious_stages_or_chronic": false,
       "hospitalized_or_severity_stratification": true,
       "treatment_or_art_intervention": false,
       "vaccination_route_compartment": false,
@@ -361,10 +384,11 @@
       "recruitment_birth_or_immigration_named": false,
       "matched_signals": [
         "recovered",
+        "[prior] healthcare contact route (Ebola prior)",
+        "[prior] hospitalization (Ebola prior)",
         "latent/exposed class",
-        "healthcare contact",
-        "staged infection",
-        "hospital/severity"
+        "hospital/severity",
+        "healthcare contact"
       ]
     },
     "gold_models_merged": [
@@ -393,6 +417,10 @@
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] healthcare contact route (Ebola prior)",
+          "[prior] hospitalization (Ebola prior)"
         ]
       },
       "ebola2": {
@@ -414,7 +442,11 @@
         "zoonotic_or_animal_compartment": false,
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
-          "latent/exposed class"
+          "latent/exposed class",
+          "hospital/severity"
+        ],
+        "prior_signals": [
+          "[prior] healthcare contact route (Ebola prior)"
         ]
       },
       "ebola3": {
@@ -425,7 +457,7 @@
         "route_bloodborne_vertical_or_parenteral": false,
         "route_healthcare_general_contact": true,
         "latent_or_exposed_class": true,
-        "multiple_infectious_stages_or_chronic": true,
+        "multiple_infectious_stages_or_chronic": false,
         "hospitalized_or_severity_stratification": true,
         "treatment_or_art_intervention": false,
         "vaccination_route_compartment": false,
@@ -438,13 +470,13 @@
         "matched_signals": [
           "healthcare contact",
           "latent/exposed class",
-          "staged infection",
           "hospital/severity",
           "recovered"
-        ]
+        ],
+        "prior_signals": []
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "hiv": {
     "phase": "2.5",
@@ -466,7 +498,7 @@
       "recovered_or_immune_endpoint": false,
       "stratification_demographic_roles": true,
       "spatial_or_patch_like_naming": false,
-      "vector_or_intermediate_species_present": true,
+      "vector_or_intermediate_species_present": false,
       "zoonotic_or_animal_compartment": false,
       "recruitment_birth_or_immigration_named": true,
       "matched_signals": [
@@ -474,8 +506,11 @@
         "staged infection",
         "treatment/ART",
         "demographic stratification",
-        "non-human vector spp.",
-        "recruitment/birth"
+        "recruitment/birth",
+        "[prior] bloodborne/vertical route (HIV prior)",
+        "[prior] sexual route (HIV prior)",
+        "[prior] staged/chronic infection (HIV prior)",
+        "[prior] ART/treatment (HIV prior)"
       ]
     },
     "gold_models_merged": [
@@ -499,7 +534,7 @@
         "recovered_or_immune_endpoint": false,
         "stratification_demographic_roles": true,
         "spatial_or_patch_like_naming": false,
-        "vector_or_intermediate_species_present": true,
+        "vector_or_intermediate_species_present": false,
         "zoonotic_or_animal_compartment": false,
         "recruitment_birth_or_immigration_named": true,
         "matched_signals": [
@@ -507,8 +542,10 @@
           "staged infection",
           "treatment/ART",
           "demographic stratification",
-          "non-human vector spp.",
           "recruitment/birth"
+        ],
+        "prior_signals": [
+          "[prior] bloodborne/vertical route (HIV prior)"
         ]
       },
       "hiv2": {
@@ -529,7 +566,13 @@
         "vector_or_intermediate_species_present": false,
         "zoonotic_or_animal_compartment": false,
         "recruitment_birth_or_immigration_named": false,
-        "matched_signals": []
+        "matched_signals": [],
+        "prior_signals": [
+          "[prior] sexual route (HIV prior)",
+          "[prior] bloodborne/vertical route (HIV prior)",
+          "[prior] staged/chronic infection (HIV prior)",
+          "[prior] ART/treatment (HIV prior)"
+        ]
       },
       "hiv3": {
         "route_vector_arthropod": false,
@@ -552,10 +595,14 @@
         "matched_signals": [
           "staged infection",
           "treatment/ART"
+        ],
+        "prior_signals": [
+          "[prior] sexual route (HIV prior)",
+          "[prior] bloodborne/vertical route (HIV prior)"
         ]
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "influenza": {
     "phase": "2.5",
@@ -571,7 +618,7 @@
       "route_healthcare_general_contact": false,
       "latent_or_exposed_class": true,
       "multiple_infectious_stages_or_chronic": false,
-      "hospitalized_or_severity_stratification": false,
+      "hospitalized_or_severity_stratification": true,
       "treatment_or_art_intervention": true,
       "vaccination_route_compartment": true,
       "recovered_or_immune_endpoint": true,
@@ -582,9 +629,11 @@
       "recruitment_birth_or_immigration_named": false,
       "matched_signals": [
         "latent/exposed class",
+        "[prior] respiratory route (disease prior)",
         "treatment/ART",
         "recovered",
         "respiratory/airborne",
+        "hospital/severity",
         "vaccination"
       ]
     },
@@ -614,6 +663,9 @@
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "latent/exposed class"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       },
       "influenza2": {
@@ -638,6 +690,9 @@
           "latent/exposed class",
           "treatment/ART",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       },
       "influenza3": {
@@ -649,7 +704,7 @@
         "route_healthcare_general_contact": false,
         "latent_or_exposed_class": true,
         "multiple_infectious_stages_or_chronic": false,
-        "hospitalized_or_severity_stratification": false,
+        "hospitalized_or_severity_stratification": true,
         "treatment_or_art_intervention": false,
         "vaccination_route_compartment": true,
         "recovered_or_immune_endpoint": true,
@@ -661,12 +716,14 @@
         "matched_signals": [
           "respiratory/airborne",
           "latent/exposed class",
+          "hospital/severity",
           "vaccination",
           "recovered"
-        ]
+        ],
+        "prior_signals": []
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "malaria": {
     "phase": "2.5",
@@ -681,7 +738,7 @@
       "route_bloodborne_vertical_or_parenteral": false,
       "route_healthcare_general_contact": false,
       "latent_or_exposed_class": true,
-      "multiple_infectious_stages_or_chronic": true,
+      "multiple_infectious_stages_or_chronic": false,
       "hospitalized_or_severity_stratification": false,
       "treatment_or_art_intervention": true,
       "vaccination_route_compartment": true,
@@ -698,7 +755,8 @@
         "vaccination",
         "recovered",
         "non-human vector spp.",
-        "staged infection"
+        "[prior] vector-borne route (disease prior)",
+        "[prior] vector species present (disease prior)"
       ]
     },
     "gold_models_merged": [
@@ -732,7 +790,8 @@
           "vaccination",
           "recovered",
           "non-human vector spp."
-        ]
+        ],
+        "prior_signals": []
       },
       "malaria2": {
         "route_vector_arthropod": true,
@@ -754,6 +813,10 @@
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "treatment/ART"
+        ],
+        "prior_signals": [
+          "[prior] vector-borne route (disease prior)",
+          "[prior] vector species present (disease prior)"
         ]
       },
       "malaria3": {
@@ -764,7 +827,7 @@
         "route_bloodborne_vertical_or_parenteral": false,
         "route_healthcare_general_contact": false,
         "latent_or_exposed_class": false,
-        "multiple_infectious_stages_or_chronic": true,
+        "multiple_infectious_stages_or_chronic": false,
         "hospitalized_or_severity_stratification": false,
         "treatment_or_art_intervention": true,
         "vaccination_route_compartment": false,
@@ -776,14 +839,14 @@
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "vector/mosquito/snail",
-          "staged infection",
           "treatment/ART",
           "recovered",
           "non-human vector spp."
-        ]
+        ],
+        "prior_signals": []
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "measles": {
     "phase": "2.5",
@@ -813,6 +876,7 @@
         "vaccination",
         "recovered",
         "demographic stratification",
+        "[prior] respiratory route (disease prior)",
         "respiratory/airborne"
       ]
     },
@@ -845,6 +909,9 @@
           "vaccination",
           "recovered",
           "demographic stratification"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       },
       "measles2": {
@@ -870,7 +937,8 @@
           "latent/exposed class",
           "vaccination",
           "recovered"
-        ]
+        ],
+        "prior_signals": []
       },
       "measles3": {
         "route_vector_arthropod": false,
@@ -895,10 +963,11 @@
           "latent/exposed class",
           "vaccination",
           "recovered"
-        ]
+        ],
+        "prior_signals": []
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "tuberculosis": {
     "phase": "2.5",
@@ -913,7 +982,7 @@
       "route_bloodborne_vertical_or_parenteral": false,
       "route_healthcare_general_contact": false,
       "latent_or_exposed_class": true,
-      "multiple_infectious_stages_or_chronic": false,
+      "multiple_infectious_stages_or_chronic": true,
       "hospitalized_or_severity_stratification": false,
       "treatment_or_art_intervention": true,
       "vaccination_route_compartment": true,
@@ -927,7 +996,10 @@
         "treatment/ART",
         "vaccination",
         "recovered",
+        "[prior] respiratory route (disease prior)",
+        "[prior] latent class (TB prior)",
         "latent/exposed class",
+        "staged infection",
         "spatial/patch naming"
       ]
     },
@@ -959,6 +1031,10 @@
           "treatment/ART",
           "vaccination",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)",
+          "[prior] latent class (TB prior)"
         ]
       },
       "tuberculosis2": {
@@ -969,7 +1045,7 @@
         "route_bloodborne_vertical_or_parenteral": false,
         "route_healthcare_general_contact": false,
         "latent_or_exposed_class": true,
-        "multiple_infectious_stages_or_chronic": false,
+        "multiple_infectious_stages_or_chronic": true,
         "hospitalized_or_severity_stratification": false,
         "treatment_or_art_intervention": true,
         "vaccination_route_compartment": false,
@@ -981,8 +1057,12 @@
         "recruitment_birth_or_immigration_named": false,
         "matched_signals": [
           "latent/exposed class",
+          "staged infection",
           "treatment/ART",
           "spatial/patch naming"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       },
       "tuberculosis3": {
@@ -1007,10 +1087,13 @@
           "latent/exposed class",
           "treatment/ART",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] respiratory route (disease prior)"
         ]
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   },
   "zika": {
     "phase": "2.5",
@@ -1040,6 +1123,7 @@
         "latent/exposed class",
         "recovered",
         "demographic stratification",
+        "[prior] vector species present (disease prior)",
         "sexual/partner network",
         "blood/vertical",
         "non-human vector spp."
@@ -1074,6 +1158,9 @@
           "latent/exposed class",
           "recovered",
           "demographic stratification"
+        ],
+        "prior_signals": [
+          "[prior] vector species present (disease prior)"
         ]
       },
       "zika2": {
@@ -1089,7 +1176,7 @@
         "treatment_or_art_intervention": false,
         "vaccination_route_compartment": false,
         "recovered_or_immune_endpoint": true,
-        "stratification_demographic_roles": true,
+        "stratification_demographic_roles": false,
         "spatial_or_patch_like_naming": false,
         "vector_or_intermediate_species_present": true,
         "zoonotic_or_animal_compartment": false,
@@ -1100,9 +1187,9 @@
           "blood/vertical",
           "latent/exposed class",
           "recovered",
-          "demographic stratification",
           "non-human vector spp."
-        ]
+        ],
+        "prior_signals": []
       },
       "zika3": {
         "route_vector_arthropod": true,
@@ -1125,9 +1212,12 @@
         "matched_signals": [
           "vector/mosquito/snail",
           "recovered"
+        ],
+        "prior_signals": [
+          "[prior] vector species present (disease prior)"
         ]
       }
     },
-    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+    "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
   }
 }

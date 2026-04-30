@@ -26,7 +26,8 @@
       "healthcare contact",
       "latent/exposed class",
       "hospital/severity",
-      "recovered"
+      "recovered",
+      "[prior] respiratory route (disease prior)"
     ]
   },
   "gold_models_merged": [
@@ -59,7 +60,8 @@
         "latent/exposed class",
         "hospital/severity",
         "recovered"
-      ]
+      ],
+      "prior_signals": []
     },
     "covid2": {
       "route_vector_arthropod": false,
@@ -82,6 +84,9 @@
       "matched_signals": [
         "latent/exposed class",
         "recovered"
+      ],
+      "prior_signals": [
+        "[prior] respiratory route (disease prior)"
       ]
     },
     "covid3": {
@@ -105,8 +110,11 @@
       "matched_signals": [
         "latent/exposed class",
         "recovered"
+      ],
+      "prior_signals": [
+        "[prior] respiratory route (disease prior)"
       ]
     }
   },
-  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
 }

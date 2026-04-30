@@ -11,7 +11,7 @@
     "route_bloodborne_vertical_or_parenteral": false,
     "route_healthcare_general_contact": false,
     "latent_or_exposed_class": true,
-    "multiple_infectious_stages_or_chronic": false,
+    "multiple_infectious_stages_or_chronic": true,
     "hospitalized_or_severity_stratification": false,
     "treatment_or_art_intervention": true,
     "vaccination_route_compartment": true,
@@ -25,7 +25,10 @@
       "treatment/ART",
       "vaccination",
       "recovered",
+      "[prior] respiratory route (disease prior)",
+      "[prior] latent class (TB prior)",
       "latent/exposed class",
+      "staged infection",
       "spatial/patch naming"
     ]
   },
@@ -57,6 +60,10 @@
         "treatment/ART",
         "vaccination",
         "recovered"
+      ],
+      "prior_signals": [
+        "[prior] respiratory route (disease prior)",
+        "[prior] latent class (TB prior)"
       ]
     },
     "tuberculosis2": {
@@ -67,7 +74,7 @@
       "route_bloodborne_vertical_or_parenteral": false,
       "route_healthcare_general_contact": false,
       "latent_or_exposed_class": true,
-      "multiple_infectious_stages_or_chronic": false,
+      "multiple_infectious_stages_or_chronic": true,
       "hospitalized_or_severity_stratification": false,
       "treatment_or_art_intervention": true,
       "vaccination_route_compartment": false,
@@ -79,8 +86,12 @@
       "recruitment_birth_or_immigration_named": false,
       "matched_signals": [
         "latent/exposed class",
+        "staged infection",
         "treatment/ART",
         "spatial/patch naming"
+      ],
+      "prior_signals": [
+        "[prior] respiratory route (disease prior)"
       ]
     },
     "tuberculosis3": {
@@ -105,8 +116,11 @@
         "latent/exposed class",
         "treatment/ART",
         "recovered"
+      ],
+      "prior_signals": [
+        "[prior] respiratory route (disease prior)"
       ]
     }
   },
-  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model."
+  "notes": "Canonical profile = logical OR across all listed gold .compmodel files for this disease, then disease-folder priors merged (OR). Same assignment is written under reports/disease_feature_models/<slug>.json as the gold-derived disease feature model. Signals prefixed with [prior] were set by apply_disease_name_hints(), not by regex matches on the compmodel text."
 }

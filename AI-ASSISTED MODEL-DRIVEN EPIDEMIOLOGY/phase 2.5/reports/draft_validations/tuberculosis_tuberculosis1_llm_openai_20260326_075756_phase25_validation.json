@@ -2,15 +2,59 @@
   "draft_path": "/home/fatemeh/Documents/york/Code/Model/Model-Driven-Epidemiology/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/phase 2/reports/tuberculosis1_llm_openai_20260326_075756/model_draft.compmodel",
   "disease": "tuberculosis",
   "comparison_role": "Phase 2 extraction (draft) structural features versus gold-derived disease feature model assignment",
-  "canonical_true_count": 6,
-  "draft_true_count": 4,
+  "canonical_true_count": 7,
+  "canonical_text_grounded_count": 5,
+  "draft_true_count": 2,
+  "alignment_score_on_canonical_expectations": 0.2857,
+  "recall": 0.2857,
+  "precision": 1.0,
+  "f1": 0.4444,
+  "text_grounded_recall": 0.4,
+  "text_grounded_f1": 0.5714,
+  "text_grounded_canonical_flags": [
+    "multiple_infectious_stages_or_chronic",
+    "recovered_or_immune_endpoint",
+    "spatial_or_patch_like_naming",
+    "treatment_or_art_intervention",
+    "vaccination_route_compartment"
+  ],
   "missing_relative_to_canonical": [
+    "route_airborne_or_respiratory_droplet",
+    "latent_or_exposed_class",
+    "multiple_infectious_stages_or_chronic",
     "treatment_or_art_intervention",
     "spatial_or_patch_like_naming"
   ],
   "extra_in_draft_not_in_canonical": [],
-  "alignment_score_on_canonical_expectations": 0.6667,
+  "prior_influenced_canonical_flags": [
+    "route_airborne_or_respiratory_droplet",
+    "latent_or_exposed_class"
+  ],
+  "note_on_priors": "prior_influenced_canonical_flags were set by disease-name priors, not by regex matches on gold .compmodel text. text_grounded_recall excludes these from the denominator and is the recommended metric for evaluating LLM extraction quality. Standard recall includes them and reflects overall coverage of the full canonical profile.",
   "draft_feature_vector": {
+    "route_vector_arthropod": false,
+    "route_sexual_or_partner_network": false,
+    "route_airborne_or_respiratory_droplet": false,
+    "route_fecal_oral_or_waterborne": false,
+    "route_bloodborne_vertical_or_parenteral": false,
+    "route_healthcare_general_contact": false,
+    "latent_or_exposed_class": false,
+    "multiple_infectious_stages_or_chronic": false,
+    "hospitalized_or_severity_stratification": false,
+    "treatment_or_art_intervention": false,
+    "vaccination_route_compartment": true,
+    "recovered_or_immune_endpoint": true,
+    "stratification_demographic_roles": false,
+    "spatial_or_patch_like_naming": false,
+    "vector_or_intermediate_species_present": false,
+    "zoonotic_or_animal_compartment": false,
+    "recruitment_birth_or_immigration_named": false,
+    "matched_signals": [
+      "vaccination",
+      "recovered"
+    ]
+  },
+  "draft_feature_vector_with_priors": {
     "route_vector_arthropod": false,
     "route_sexual_or_partner_network": false,
     "route_airborne_or_respiratory_droplet": true,
@@ -30,7 +74,9 @@
     "recruitment_birth_or_immigration_named": false,
     "matched_signals": [
       "vaccination",
-      "recovered"
+      "recovered",
+      "[prior] respiratory route (disease prior)",
+      "[prior] latent class (TB prior)"
     ]
   },
   "gold_derived_disease_feature_model": "disease_feature_models/tuberculosis.json",

@@ -3,16 +3,53 @@
   "disease": "covid",
   "comparison_role": "Phase 2 extraction (draft) structural features versus gold-derived disease feature model assignment",
   "canonical_true_count": 5,
-  "draft_true_count": 1,
+  "canonical_text_grounded_count": 4,
+  "draft_true_count": 0,
+  "alignment_score_on_canonical_expectations": 0.0,
+  "recall": 0.0,
+  "precision": 1.0,
+  "f1": 0.0,
+  "text_grounded_recall": 0.0,
+  "text_grounded_f1": 0.0,
+  "text_grounded_canonical_flags": [
+    "hospitalized_or_severity_stratification",
+    "latent_or_exposed_class",
+    "recovered_or_immune_endpoint",
+    "route_healthcare_general_contact"
+  ],
   "missing_relative_to_canonical": [
+    "route_airborne_or_respiratory_droplet",
     "route_healthcare_general_contact",
     "latent_or_exposed_class",
     "hospitalized_or_severity_stratification",
     "recovered_or_immune_endpoint"
   ],
   "extra_in_draft_not_in_canonical": [],
-  "alignment_score_on_canonical_expectations": 0.2,
+  "prior_influenced_canonical_flags": [
+    "route_airborne_or_respiratory_droplet"
+  ],
+  "note_on_priors": "prior_influenced_canonical_flags were set by disease-name priors, not by regex matches on gold .compmodel text. text_grounded_recall excludes these from the denominator and is the recommended metric for evaluating LLM extraction quality. Standard recall includes them and reflects overall coverage of the full canonical profile.",
   "draft_feature_vector": {
+    "route_vector_arthropod": false,
+    "route_sexual_or_partner_network": false,
+    "route_airborne_or_respiratory_droplet": false,
+    "route_fecal_oral_or_waterborne": false,
+    "route_bloodborne_vertical_or_parenteral": false,
+    "route_healthcare_general_contact": false,
+    "latent_or_exposed_class": false,
+    "multiple_infectious_stages_or_chronic": false,
+    "hospitalized_or_severity_stratification": false,
+    "treatment_or_art_intervention": false,
+    "vaccination_route_compartment": false,
+    "recovered_or_immune_endpoint": false,
+    "stratification_demographic_roles": false,
+    "spatial_or_patch_like_naming": false,
+    "vector_or_intermediate_species_present": false,
+    "zoonotic_or_animal_compartment": false,
+    "recruitment_birth_or_immigration_named": false,
+    "matched_signals": []
+  },
+  "draft_feature_vector_with_priors": {
     "route_vector_arthropod": false,
     "route_sexual_or_partner_network": false,
     "route_airborne_or_respiratory_droplet": true,
@@ -30,7 +67,9 @@
     "vector_or_intermediate_species_present": false,
     "zoonotic_or_animal_compartment": false,
     "recruitment_birth_or_immigration_named": false,
-    "matched_signals": []
+    "matched_signals": [
+      "[prior] respiratory route (disease prior)"
+    ]
   },
   "gold_derived_disease_feature_model": "disease_feature_models/covid.json",
   "phase2_run_folder": "covid3_llm_claude_20260407_213850"
