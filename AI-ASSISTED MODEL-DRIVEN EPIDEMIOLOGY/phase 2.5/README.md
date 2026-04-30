@@ -1,70 +1,61 @@
-# Phase 2.5: Disease feature models from gold standards, and Phase 2 alignment
+# Phase 2.5 — What it does
 
-Commands and paths: **INSTRUCTIONS.md**.
+Phase 2.5 sits **between** the LLM-based model extraction pipeline (**Phase 2**) and downstream work (retrieval, analysis, thesis reporting). Its job is **quality control via feature-model comparison**: it checks whether compartmental epidemic models **auto-extracted by an LLM** (Phase 2 **`model_draft.compmodel`** files) **structurally agree** with **hand-curated “gold”** compartment models bundled for each benchmark disease.
 
----
-
-## Idea in one sentence
-
-For **each benchmark disease**, Phase 2.5 defines a **disease-level feature model**—a concise description of **which structural options** compartmental modelling papers use for that disease when we trust curated **gold** `.compmodel` files. Every **Phase 2 extracted draft** can then be **mapped onto the same feature dimensions** so we can compare **automatic extraction** against that **gold-backed feature model** (“does the Phase 2 model agree with how we summarise the curated literature?”).
-
-Software-product-line machinery (feature **tree**, **cross-tree rules**, SPL checks) is there to document and logically relate those Booleans—not to replace epidemiology—but the research story is essentially **gold feature model versus Phase 2 feature assignment**.
+Operational commands live in **[INSTRUCTIONS.md](INSTRUCTIONS.md)**.
 
 ---
 
-## What “feature model” means here
+## The core idea
 
-In feature-oriented software engineering, a **feature model** names independent or grouped **options** in a designed family of systems. Phase 2.5 applies that analogy to compartmental modelling **structure**:
+Every compartmental model — SEIR-like families, strata, extras — can be described as a fixed set of **Boolean flags**:
 
-- Features are Booleans aligned with **`EpiFeatureVector`** (routes, natural history compartments, vaccination, strata, vectors, recruitment, …).
-- The **shared feature graph** (`feature_models/feature_tree.json`) is identical for every disease: it fixes the vocabulary and grouping.
-- The **instance** for Disease *D* is the **truth assignment** inferred from gold models for *D*: which of those Booleans appear **supported** after rule-based inference (`src/inference_rules.py`) across the curated gold `.compmodel` files.
+- Latent/exposed class? Vaccination compartment? Hospitalization strata? Birth/recruitment? Vector or zoonotic hosts? Specific **transmission routes** (fecal–oral, respiratory, bloodborne, sexual network, healthcare contact)?
 
-So the **disease-specific part** is the **Boolean tuple** (+ optional SPL view of consistency with declarative implications), not a different DAG per disease file.
+Phase 2.5 encodes those as **`EpiFeatureVector`**, with **17 Boolean dimensions** (plus optional free-text **`matched_signals`** for traceability):
 
----
+| Theme | Examples of flags |
+|--------|-------------------|
+| **Transmission routes** | Vector/arthropod, sexual/partner, airborne/respiratory, fecal–oral, bloodborne/vertical, healthcare contact |
+| **Natural history** | Latent/exposed, staged/chronic progression, hospitalized/severity stratification, treatment/ART, vaccination, recovered/immune endpoint |
+| **Population & space** | Demographic stratification, spatial/patch-style naming |
+| **Non-human hosts** | Vector or intermediate species, zoonotic/animal compartments |
+| **Demography** | Explicit birth/recruitment/immigration naming |
 
-## Where the gold standards come from
+Inference is **rule-based** (**`src/inference_rules.py`**): patterns over compartment names and flow text in the **`compmodel`** XML. For thin models, optional **folder-name priors** nudge plausible routes given the disease slug (e.g. **malaria**, **dengue**, **zika** ⇒ vector-route and vector/host flags strengthened from the banner name—not a claim that any single paper omitted those).
 
-Benchmark diseases are anchored on **hand-curated gold compartment models** bundled with epidemiology benchmarks. In this repository they are consolidated under **`phase 2/data/diseases/<disease>/`** (PDFs plus one or more **`.compmodel`** files per folder). Earlier **Phase 1** assets (individual exemplars, metamodel descriptions under `phase 1/` may inform how Prompts are written and how quality checks run; they are part of the same methodological lineage—but **Phase 2.5’s numerical “gold truth” tuple is built from whichever gold compartment files you merge in that Phase 2 disease folder**.
+**Gold benchmarks:** curated **`.compmodel`** files live under **`phase 2/data/diseases/<disease>/`** (often several papers per disease). **Canonical profile** = logical **OR over gold files**: if *any* trusted gold model activates a flag, that flag counts as expected for benchmarking.
 
-If multiple gold papers sit in one folder, Phase 2.5 builds the disease feature model’s active set by taking the **logical OR** flag-by-flag across papers (union of structural motifs present in **any** trusted gold extraction for that disease).
-
----
-
-## How Phase 2 fits in
-
-Phase 2 produces **`model_draft.compmodel`** files for individual runs (PDF + LLM + timestamp folders under **`phase 2/reports/`**). Phase 2.5 treats each draft as another compartment model encoded in XML and runs **the same inference** to derive a Phase-2-local Boolean assignment.
-
-**Comparison**, per draft and inferred disease slug:
-
-| Gold-backed disease FM (explicit bundle) | Phase 2 draft assignment |
-|------------------------------------------|-------------------------|
-| `reports/disease_feature_models/<slug>.json` → field **`assignment`** (same tuple as `canonical_feature_vector`) | Inferred flags from **`model_draft.compmodel`** |
-
-`canonical_by_disease/<slug>.json` remains the **full** record (per-model vectors, `matched_signals`, directory paths). The **`disease_feature_models`** copy is the thesis-facing **feature-model instance** for citing.
-
-Discrepancies are surfaced as **missing**, **extra**, and an **alignment score** (`reports/draft_validations/*.json`). Each record includes **`gold_derived_disease_feature_model`** (relative path) and **`comparison_role`** so the JSON states that the comparison is Phase 2 versus that gold-derived FM.
-
-This is deliberately **orthogonal** to whether the epidemic narrative in the PDF is correct; it evaluates **representation agreement** along the finite feature schema only.
+Phase 2.5 wraps that canonical tuple into an explicit **`gold_derived_disease_feature_model`** JSON under **`reports/disease_feature_models/<slug>.json`** so you can cite one artefact labelled “gold FM assignment.”
 
 ---
 
-## Artefacts tied to this story
+## The pipeline (step by step)
 
-| Output | Role in “FM + Phase 2” narrative |
-|--------|----------------------------------|
-| `reports/disease_feature_models/<slug>.json` | **Gold-derived disease FM bundle** (`assignment` Boolean tuple, list of gold filenames, pointer to extended `canonical_by_disease`). Cite this file when you mean “the disease feature model instantiated from standards.” |
-| `reports/canonical_by_disease/<slug>.json` | Extended record: same tuple as **`assignment`** above, plus per-model breakdown and `matched_signals`. |
-| `reports/canonical_profiles.json` | All diseases’ gold-backed assignments in one file. |
-| `reports/fm_diagram/feature_tree.{dot,png,svg}` | Shared **feature vocabulary** diagram (documentation; not a biological pathway). |
-| `reports/spl_configurator/<slug>_spl_report.json` | Cross-tree constraint checks on the gold tuple; each report includes **`gold_derived_disease_feature_model`** (relative path). |
-| `reports/draft_validations/` | Phase 2 drafts vs gold FM (**`comparison_role`**, **`gold_derived_disease_feature_model`**, alignment fields). |
-| `reports/phase25_run_summary.json` | Run provenance; **`steps`** include **`disease_feature_models`** (slugs written). |
+1. **Gold-backed profiles** — Per benchmark disease, read gold **`.compmodel`** XML under the disease folder, infer **`EpiFeatureVector`**, optionally apply folder-name priors, merge all gold files with **Boolean OR**, and write **`canonical_profiles.json`**, **`canonical_by_disease/<slug>.json`**, and **`disease_feature_models/<slug>.json`**.
+
+2. **Shared vocabulary figure** — The same **`feature_models/feature_tree.json`** hierarchy drives a Graphviz **`feature_tree.dot`** (+ **PNG/SVG** if **`dot`** is installed). This picture is shared across diseases; assignments differ file-to-file.
+
+3. **SPL consistency checks** — Declarative **cross-tree implications** (**`cross_tree_constraints.json`**) compile to CNF; each disease’s canonical assignment is evaluated in **`spl_configurator/<slug>_spl_report.json`** (“does this gold-derived tuple violate any enabled rule?” plus optional unit propagation).
+
+4. **Phase 2 drafts** — Scan **`phase 2/reports/**/model_draft.compmodel`**, infer flags with **the same engine**, infer disease from the Phase 2 run folder name (**`malaria3_llm_…` → malaria**), and compare draft vs canonical. Each run writes **`draft_validations/<disease>_<phase2_run>_phase25_validation.json`** with missing flags, extras, **`alignment_score_on_canonical_expectations`**, and a pointer **`gold_derived_disease_feature_model`**.
+
+Finally **`phase25_run_summary.json`** records the pipeline steps—optionally embedding all draft-validation records for one reproducible artefact bundle.
 
 ---
 
-## Optional extensions (manual or future tooling)
+## What you get — results (benchmark run snapshot)
 
-- **Appendix table (CSV/Markdown):** columns *feature × gold × Phase 2 draft* — derive from **`disease_feature_models/<slug>.json`** (`assignment`) and **`draft_validations`** **`draft_feature_vector`**.
-- **Narrower gold corpus:** restricting the OR-merge to Phase 1 `papers/epimde/` exemplars only would require extra path configuration (not enforced by defaults).
+Figures below come from **one full** `run_phase25.py` invocation over **10** benchmark diseases and every Phase 2 draft reachable by the scanner in this checkout. Your numbers update when you rerun the pipeline after new extractions.
+
+| Artefact | What it contains |
+|---------|-------------------|
+| **10 canonical disease profiles + 10 FM bundles** — `canonical_by_disease/` and **`disease_feature_models/`** | One merged gold assignment per disease. |
+| **Feature diagram** — `reports/fm_diagram/feature_tree.{dot,png,svg}` | Colour-grouped catalogue of Booleans—the **shared** FM vocabulary diagram. |
+| **10 SPL reports** — `spl_configurator/*_spl_report.json` | On default constraints in this codebase, **`all_constraints_satisfied`** is **true** for every canonical vector (violations absent). |
+| **90 Phase 2 validations** — `draft_validations/*.json`, count `90` run summary | Typical layout: nine Phase 2 extraction runs × three LLM backends per disease (**`draft_validation_records`** keyed by slug in `phase25_run_summary`). |
+| **`alignment_score_on_canonical_expectations`** distribution | On the archived run snapshot, scores ranged **approximately 0.2–1.0**; **11** drafts scored **1.0** against merged gold expectations. Drafts scoring below 1.0 mostly reflect **fewer compartments or weaker textual cues** on that run relative to multi-paper OR-merged gold, not inevitable “wrong model.” |
+
+**In short**
+
+Phase 2.5 is a structured **evaluation harness**. It replaces a vague question (“is this LLM epidemic model sensible?”) with a **measurable Boolean alignment score** across **17 epidemiological shape dimensions**, backed by curated gold merges and comparable Phase 2 artefacts. Missing vs extra lists say **what** differs structurally, not merely that an overall score dipped.
