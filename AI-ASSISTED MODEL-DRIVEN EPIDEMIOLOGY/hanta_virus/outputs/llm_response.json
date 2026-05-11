@@ -1,0 +1,213 @@
+{
+  "model_name": "Mechanistic Model of Hantavirus Zoonotic Transmission",
+  "species": [
+    {
+      "name": "Deer Mouse (Peromyscus maniculatus)",
+      "role": "Primary reservoir host"
+    },
+    {
+      "name": "Human (Homo sapiens)",
+      "role": "Incidental host"
+    },
+    {
+      "name": "Vole (e.g., Microtus spp.)",
+      "role": "Less-competent dilution host"
+    }
+  ],
+  "compartments": {
+    "deer_mouse": [
+      {
+        "symbol": "S_m, S_f",
+        "description": "Susceptible male and female rodents"
+      },
+      {
+        "symbol": "E_m, E_f",
+        "description": "Exposed (infected but not yet infectious) male and female rodents"
+      },
+      {
+        "symbol": "I_m, I_f",
+        "description": "Infective (chronically infected and shedding virus) male and female rodents"
+      },
+      {
+        "symbol": "R_m, R_f",
+        "description": "Recovered male and female rodents (assumed to have lifelong immunity)"
+      }
+    ],
+    "human": [
+      {
+        "symbol": "S_h",
+        "description": "Susceptible humans"
+      },
+      {
+        "symbol": "E_h",
+        "description": "Exposed humans (incubation period, not yet infectious)"
+      },
+      {
+        "symbol": "I_h",
+        "description": "Infective humans (symptomatic phase, capable of transmission for certain viruses)"
+      },
+      {
+        "symbol": "R_h",
+        "description": "Recovered humans (survived infection and are now immune)"
+      }
+    ]
+  },
+  "transmission_pathways": [
+    "Infective Male Rodent -> Susceptible Male Rodent (beta_m)",
+    "Infective Female Rodent -> Susceptible Male Rodent (beta_f)",
+    "Infective Male Rodent -> Susceptible Female Rodent (beta_mf)",
+    "Infective Female Rodent -> Susceptible Female Rodent (beta_f)",
+    "Infective Rodent (I_m, I_f) -> Susceptible Human (beta_rh)",
+    "Infective Human (I_h) -> Susceptible Human (beta_hh)"
+  ],
+  "ecological_factors": [
+    {
+      "factor": "Dilution Effect",
+      "description": "The presence of less-competent host species (e.g., voles) can reduce hantavirus prevalence in the primary reservoir host population (deer mice)."
+    },
+    {
+      "factor": "Climate Events (ENSO)",
+      "description": "Events like El Niño can increase precipitation and rodent food supply, leading to rodent population booms and subsequent hantavirus outbreaks in humans with a time lag (approx. 1 year)."
+    }
+  ],
+  "model_equations": {
+    "rodent_population": {
+      "description": "SEIR model for male and female rodents.",
+      "system": [
+        "dS_m/dt = B/2 - beta_f * I_f * S_m - beta_m * I_m * S_m - d(N) * S_m",
+        "dE_m/dt = beta_f * I_f * S_m + beta_m * I_m * S_m - (delta + d(N)) * E_m",
+        "dI_m/dt = delta * E_m - (gamma_m + d(N)) * I_m",
+        "dR_m/dt = gamma_m * I_m - d(N) * R_m",
+        "dS_f/dt = B/2 - beta_f * I_f * S_f - beta_mf * I_m * S_f - d(N) * S_f",
+        "dE_f/dt = beta_f * I_f * S_f + beta_mf * I_m * S_f - (delta + d(N)) * E_f",
+        "dI_f/dt = delta * E_f - (gamma_f + d(N)) * I_f",
+        "dR_f/dt = gamma_f * I_f - d(N) * R_f"
+      ],
+      "auxiliary_equations": [
+        "N = N_m + N_f = (S_m + E_m + I_m + R_m) + (S_f + E_f + I_f + R_f)",
+        "B = b * N / (1 + N/K)",
+        "d(N) = a + c*N"
+      ]
+    },
+    "human_population": {
+      "description": "SEIR model for human transmission, incorporating zoonotic and potential interhuman routes.",
+      "system": [
+        "dS_h/dt = B_h - beta_rh * (I_m + I_f) * S_h - beta_hh * I_h * S_h - d_h * S_h",
+        "dE_h/dt = beta_rh * (I_m + I_f) * S_h + beta_hh * I_h * S_h - (delta_h + d_h) * E_h",
+        "dI_h/dt = delta_h * E_h - (gamma_h + d_h + alpha_h) * I_h",
+        "dR_h/dt = gamma_h * I_h - d_h * R_h"
+      ]
+    }
+  },
+  "parameter_definitions": [
+    {
+      "symbol": "B",
+      "definition": "Harmonic birth function for the total rodent population.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "b",
+      "definition": "Average litter size of rodents.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "K",
+      "definition": "Carrying capacity of the rodent population.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "d(N)",
+      "definition": "Density-dependent death rate for rodents.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "a",
+      "definition": "Density-independent component of rodent death rate.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "c",
+      "definition": "Density-dependent component of rodent death rate.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "beta_m",
+      "definition": "Transmission rate from infective male to susceptible male rodent.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "beta_f",
+      "definition": "Transmission rate from infective female to susceptible rodent (both sexes).",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "beta_mf",
+      "definition": "Transmission rate from infective male to susceptible female rodent.",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "delta",
+      "definition": "Rate at which exposed rodents become infectious (1/delta is the incubation period).",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "gamma_m",
+      "definition": "Recovery rate for male rodents (1/gamma_m is the infectious period).",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "gamma_f",
+      "definition": "Recovery rate for female rodents (1/gamma_f is the infectious period).",
+      "context": "Rodent"
+    },
+    {
+      "symbol": "B_h",
+      "definition": "Birth rate of the human population.",
+      "context": "Human"
+    },
+    {
+      "symbol": "d_h",
+      "definition": "Natural death rate of the human population.",
+      "context": "Human"
+    },
+    {
+      "symbol": "alpha_h",
+      "definition": "Disease-induced death rate for humans.",
+      "context": "Human"
+    },
+    {
+      "symbol": "beta_rh",
+      "definition": "Zoonotic transmission rate from infective rodents to susceptible humans.",
+      "context": "Human"
+    },
+    {
+      "symbol": "beta_hh",
+      "definition": "Interhuman transmission rate from infective to susceptible humans.",
+      "context": "Human"
+    },
+    {
+      "symbol": "delta_h",
+      "definition": "Rate at which exposed humans become infectious (1/delta_h is the incubation period).",
+      "context": "Human"
+    },
+    {
+      "symbol": "gamma_h",
+      "definition": "Recovery rate for humans.",
+      "context": "Human"
+    }
+  ],
+  "virus_specific_parameters": [
+    {
+      "parameter": "beta_hh",
+      "condition": "beta_hh > 0",
+      "virus_species": "Andes virus (ANDV)",
+      "description": "Represents person-to-person transmission, which is a known feature of ANDV."
+    },
+    {
+      "parameter": "beta_hh",
+      "condition": "beta_hh = 0",
+      "virus_species": "Sin Nombre virus (SNV) and most other hantaviruses",
+      "description": "Person-to-person transmission is not a significant route for these viruses."
+    }
+  ]
+}

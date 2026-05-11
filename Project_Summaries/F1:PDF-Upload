@@ -1,0 +1,70 @@
+What This Feature Does
+User clicks "Import Paper → Generate Model" in Eclipse → selects PDF → chooses LLM provider → pipeline runs → .compmodel opens in Sirius diagram.
+Concrete Implementation Steps
+Step 0: Create a Python wrapper script (run_full_pipeline.py)
+This combines Phase 2 + Phase 3 into a single callable:
+# AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/run_full_pipeline.py
+# Usage: python run_full_pipeline.py --pdf paper.pdf --provider gemini --output output_dir/
+# 
+# 1. Runs Phase 2: run_phase2.py --paper paper.pdf --llm-provider gemini --output <temp_dir>
+# 2. Finds the model_draft.compmodel in the report dir
+# 3. Runs Phase 3: run_phase3.py --phase2-report <that_dir> --output <temp_dir>
+# 4. Copies model_filled.compmodel to --output
+# 5. Prints the output path on stdout for Java to read
+Why: The existing Phase 2 and Phase 3 are designed to be run separately with report directories. We need a single entry point the Java side can call. This script handles the glue logic and emits the final file path on stdout.
+Step 1: Create the Eclipse Command Handler (Java)
+Place in the existing CompartmentalModel.editor project (generated code project, but we add non-generated code in a new package):
+CompartmentalModel.editor/src/compartmentalmodel/editor/actions/
+├── GenerateFromPaperHandler.java    (the command handler)
+├── LmlProviderSelectionDialog.java  (simple SWT dialog for provider)
+└── PipelineRunner.java              (ProcessBuilder wrapper for Python)
+Key flow in GenerateFromPaperHandler:
+1. FileDialog for PDF (SWT.OPEN, filter *.pdf)
+2. InputDialog for model name (e.g., "my_covid_model")
+3. ComboSelectionDialog for LLM provider (gemini/openai/claude)
+4. Eclipse Job with progress monitor:
+   a. Determine paths (workspace-relative Python script)
+   b. ProcessBuilder: python3 run_full_pipeline.py --pdf ... --provider ... --output ...
+   c. Read stdout to get final .compmodel path
+   d. Copy into workspace at CompartmentalModel/<name>.compmodel
+   e. Refresh workspace
+   f. Open EMF editor + Sirius diagram on the new file
+Step 2: Register the handler in CompartmentalModel.editor/plugin.xml:
+<extension point="org.eclipse.ui.commands">
+    <category id="compartmental.editor.category" name="EpiMDE"/>
+    <command id="compartmental.editor.commands.generateFromPaper"
+             name="Generate Model from Paper"
+             categoryId="compartmental.editor.category"/>
+</extension>
+<extension point="org.eclipse.ui.handlers">
+    <handler commandId="compartmental.editor.commands.generateFromPaper"
+             class="compartmentalmodel.editor.actions.GenerateFromPaperHandler"/>
+</extension>
+<extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+        <menu id="compartmentalMenu" label="EpiMDE">
+            <command commandId="compartmental.editor.commands.generateFromPaper"
+                     label="Import Paper → Generate Model"/>
+        </menu>
+    </menuContribution>
+</extension>
+Step 3: Handle the output — open the .compmodel in the EMF editor:
+// After pipeline completes and model is copied to workspace:
+IFile modelFile = project.getFile(modelName + ".compmodel");
+IWorkbenchPage page = workbenchWindow.getActivePage();
+page.openEditor(new FileEditorInput(modelFile),
+    "compartmentalmodel.presentation.CompartmentalmodelEditorID");
+For the Sirius diagram, the .aird file will need a new representation descriptor added. This can be done programmatically or we can have the user right-click → "New Representation → Diagram" the first time. Let's start with manual representation creation and automate later.
+Step 4: Configuration
+The handler needs to know where the Python pipeline is. Approaches:
+- Hardcoded relative path: ../AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/ (works if workspace is inside the repo)
+- Eclipse preference page: user configures the path once
+- System property: set via launch config
+I recommend relative path for now — the repo structure already has the Compartmental/ and AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/ directories as siblings.
+File Summary (what we need to create/modify)
+File	Status	Purpose
+AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/run_full_pipeline.py	NEW	Phase 2+3 wrapper
+CompartmentalModel.editor/src/.../actions/GenerateFromPaperHandler.java	NEW	Eclipse command handler
+CompartmentalModel.editor/src/.../actions/PipelineRunner.java	NEW	Python subprocess runner
+CompartmentalModel.editor/plugin.xml	MODIFY	Register command + menu
+CompartmentalModel.editor/META-INF/MANIFEST.MF	MODIFY	May need additional Require-Bundle

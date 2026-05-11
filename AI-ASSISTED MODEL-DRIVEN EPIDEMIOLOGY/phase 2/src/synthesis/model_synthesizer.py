@@ -4,9 +4,10 @@ Converts extracted entities into valid .compmodel XML format.
 """
 
 import json
+import re
 from pathlib import Path
 from typing import Dict, List, Any, Optional
-from xml.etree.ElementTree import Element, SubElement, tostring
+from xml.etree.ElementTree import Element, SubElement, tostring, indent
 from xml.dom import minidom
 
 
@@ -44,12 +45,9 @@ class ModelSynthesizer:
         Returns:
             XML string of .compmodel file
         """
-        # Create root element
-        root = Element('compartmental:CompartmentalModel')
-        root.set('xmlns:xmi', 'http://www.omg.org/XMI')
-        root.set('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        root.set('xmlns:compartmental', 'http://example.com/compartmentalmodel')
-        root.set('xmi:version', '2.0')
+        # Create root element with Clark notation to place it in the correct namespace
+        root = Element('{http://example.com/compartmentalmodel}CompartmentalModel')
+        root.set('{http://www.omg.org/XMI}version', '2.0')
 
         # Create parameters as direct children (no wrapper element)
         param_index_map = {}
@@ -271,12 +269,39 @@ class ModelSynthesizer:
                         values_elem = SubElement(group_elem, 'values')
                         # Add actual values here if available
 
-        # Convert to pretty XML string
-        rough_string = tostring(root, encoding='unicode')
-        reparsed = minidom.parseString(rough_string)
-        pretty_xml = reparsed.toprettyxml(indent="  ")
+        # Indent and convert to XML string
+        indent(root, space="  ")
+        xml_str = tostring(root, encoding='unicode', xml_declaration=True)
 
-        return pretty_xml
+        # Fix namespace prefixes: ElementTree's C accelerator auto-generates
+        # ns0, ns1 etc. Map them to expected EMF prefixes by reading the
+        # xmlns declarations from the serialized XML.
+        expected = {
+            'http://example.com/compartmentalmodel': 'compartmental',
+            'http://www.omg.org/XMI': 'xmi',
+            'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+        }
+        # Build mapping: {auto_prefix -> expected_prefix}
+        prefix_map = {}
+        for match in re.finditer(r'xmlns:(ns\d+)="([^"]+)"', xml_str):
+            auto_prefix, uri = match.groups()
+            if uri in expected:
+                prefix_map[auto_prefix] = expected[uri]
+
+        if prefix_map:
+            # Sort by prefix length (longest first) to avoid partial replacements
+            for auto_prefix, target_prefix in sorted(
+                    prefix_map.items(),
+                    key=lambda x: -len(x[0])):
+                xml_str = xml_str.replace(f'xmlns:{auto_prefix}=', f'xmlns:{target_prefix}=')
+                # Replace element opening tags: <ns0: -> <compartmental:
+                xml_str = re.sub(f'(?<=<){auto_prefix}:', f'{target_prefix}:', xml_str)
+                # Replace element closing tags: </ns0: -> </compartmental:
+                xml_str = re.sub(f'(?<=</){auto_prefix}:', f'{target_prefix}:', xml_str)
+                # Replace attributes: ns0:version -> xmi:version, "ns0: -> "compartmental:
+                xml_str = re.sub(f'(?<=[\'" ]){auto_prefix}:', f'{target_prefix}:', xml_str)
+
+        return xml_str
     
     def save_compmodel(self, xml_string: str, output_path: str):
         """Save .compmodel XML to file"""

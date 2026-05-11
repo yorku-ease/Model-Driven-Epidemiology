@@ -22,8 +22,15 @@ class PDFPipeline:
         self.grobid_url = grobid_url
         self.check_grobid = check_grobid
         self.table_extractor = CamelotTableExtractor()
+        self.grobid_available = False
         if check_grobid:
-            self._check_grobid_available()
+            try:
+                self._check_grobid_available()
+                self.grobid_available = True
+            except RuntimeError as e:
+                print(f"[PDFPipeline] WARNING: {e}")
+                print("[PDFPipeline] Falling back to pdfplumber-only extraction (no GROBID).")
+                self.grobid_available = False
         else:
             print(
                 f"[PDFPipeline] WARNING: Skipping GROBID availability check. "
@@ -121,22 +128,36 @@ class PDFPipeline:
         if not pdf_path.exists():
             raise FileNotFoundError(f"PDF file not found: {pdf_path}")
 
-        print(f"[PDFPipeline] Processing {pdf_path} with GROBID...")
-
-        grobid_result = extract_sections_from_pdf(str(pdf_path), self.grobid_url)
-        sections_list = grobid_result.get("sections", [])
-
-        sections_dict = self._convert_sections_to_dict(sections_list)
-        full_text = self._build_full_text(sections_list)
-        full_text = unicodedata.normalize("NFC", full_text)
-
-        print(
-            f"[PDFPipeline] Extracted {len(sections_dict)} sections, {len(sections_list)} total chars"
-        )
+        if self.grobid_available:
+            print(f"[PDFPipeline] Processing {pdf_path} with GROBID...")
+            grobid_result = extract_sections_from_pdf(str(pdf_path), self.grobid_url)
+            sections_list = grobid_result.get("sections", [])
+            sections_dict = self._convert_sections_to_dict(sections_list)
+            full_text = self._build_full_text(sections_list)
+            full_text = unicodedata.normalize("NFC", full_text)
+            print(
+                f"[PDFPipeline] Extracted {len(sections_dict)} sections, {len(sections_list)} total chars"
+            )
+        else:
+            print(f"[PDFPipeline] Processing {pdf_path} with pdfplumber (no GROBID)...")
+            import pdfplumber
+            pages_text = []
+            with pdfplumber.open(pdf_path) as pdf:
+                for page in pdf.pages:
+                    t = page.extract_text() or ""
+                    pages_text.append(t)
+            full_text = "\n\n".join(pages_text)
+            sections_list = [{"heading": "Full Text", "content": full_text, "level": 1}]
+            sections_dict = {"section_1": {"heading": "Full Text", "text": full_text, "level": 1}}
+            print(f"[PDFPipeline] Extracted {len(pages_text)} pages via pdfplumber")
 
         print(f"[PDFPipeline] Extracting tables with Camelot...")
-        tables = self.table_extractor.extract_tables(str(pdf_path))
-        print(f"[PDFPipeline] Found {len(tables)} tables")
+        tables = []
+        try:
+            tables = self.table_extractor.extract_tables(str(pdf_path))
+            print(f"[PDFPipeline] Found {len(tables)} tables")
+        except Exception as e:
+            print(f"[PDFPipeline] WARNING: Table extraction failed: {e}")
 
         print(f"[PDFPipeline] Extracting page data with pdfplumber...")
         pages_data = self._extract_pages_with_pdfplumber(pdf_path)

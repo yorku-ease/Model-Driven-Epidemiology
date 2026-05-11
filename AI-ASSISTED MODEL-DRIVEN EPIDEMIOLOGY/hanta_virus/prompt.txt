@@ -1,0 +1,49 @@
+You are given evidence about a zoonotic virus.
+
+Using the examples above, construct a complete mechanistic model.
+
+Evidence
+
+Hantaviruses are rodent-borne zoonotic agents that cause hemorrhagic fever with renal syndrome (HFRS) in Europe/Asia and hantavirus pulmonary syndrome (HPS) in the Americas. The primary reservoir hosts are specific species of rodents — in the Americas, sigmodontine rodents, particularly deer mice (Peromyscus maniculatus) for Sin Nombre virus. The infection is typically chronic and asymptomatic in the rodent host, and there is no evidence that infection affects rodent survival.
+
+Multiple transmission routes exist. Most commonly, humans are infected through aerosolized rodent excreta. For Andes virus (ANDV), person-to-person transmission is possible. This interhuman transmission likely occurs during the prodromal phase via close and prolonged contact, with an incubation period of 15-24 days.
+
+Ecological factors influence transmission dynamics. The presence of less-competent host species (e.g., voles) can reduce hantavirus prevalence in deer mouse populations — a dilution effect, with 54-64% reduction in seroprevalence when voles are present. Climate events such as El Niño Southern Oscillation (ENSO) can trigger outbreaks by increasing precipitation and rodent food supply, with approximately a 1-year lag between ENSO events and increased human cases.
+
+A mathematical SEIR model for hantavirus in rodents has been developed with the following structure. The rodent population is subdivided into males and females, each further divided into susceptible (S), exposed (E), infective (I), and recovered (R) classes. Male rodents are denoted with subscript m, females with subscript f.
+
+For male rodents, the SEIR ODE model is:
+dS_m/dt = B/2 - beta_f * I_f * S_m - beta_m * I_m * S_m - d(N) * S_m
+dE_m/dt = beta_f * I_f * S_m + beta_m * I_m * S_m - (delta + d(N)) * E_m
+dI_m/dt = delta * E_m - (gamma_m + d(N)) * I_m
+dR_m/dt = gamma_m * I_m - d(N) * R_m
+
+For female rodents:
+dS_f/dt = B/2 - beta_f * I_f * S_f - beta_mf * I_m * S_f - d(N) * S_f
+dE_f/dt = beta_f * I_f * S_f + beta_mf * I_m * S_f - (delta + d(N)) * E_f
+dI_f/dt = delta * E_f - (gamma_f + d(N)) * I_f
+dR_f/dt = gamma_f * I_f - d(N) * R_f
+
+where N_m = S_m + E_m + I_m + R_m, N_f = S_f + E_f + I_f + R_f, and B is a harmonic birth function B = b * (N_m + N_f)/(1 + (N_m + N_f)/K) where b is average litter size and K is carrying capacity. The density-dependent death rate is d(N) = a + cN where a and c are positive constants.
+
+Parameter assumptions based on hantavirus epizoology:
+- beta_m > max{beta_mf, beta_f}: male-male aggression leads to higher contact rates
+- 1/gamma_m > 1/gamma_f: infectious period is longer in males than females
+- delta is the same for both sexes (incubation rate)
+- The incubation period 1/delta is short relative to the rodent lifespan
+- When delta is large, the model simplifies to an SIR model (E class can be ignored)
+- At equilibrium, N_m = N_f = K/2 (equal sex ratio at carrying capacity K)
+
+Seroprevalence in wild rodent populations ranges from 5-12%. The basic reproduction number R_0 depends on both male and female transmission. For example, with beta_m = 0.01, gamma_m = 0.5, delta = 4, b = 4, K = 1000, beta_m = 5*beta_f, beta_mf = beta_f, 1/gamma_m = 2*(1/gamma_f), the resulting R_0 = 1.38.
+
+---
+
+REQUIRED OUTPUT STRUCTURE (strict)
+List all species involved
+Define compartments for each species
+Draw transmission pathways (text arrows)
+Write the full ODE system
+Define every parameter
+Specify which parameters may be zero depending on virus species
+
+Output must contain equations.

@@ -31,4 +31,33 @@
       </editor>
    </extension>
 
+   <!-- ============================================================
+        LLM Pipeline Integration Commands
+        ============================================================ -->
+   <extension point="org.eclipse.ui.commands">
+      <category id="compartmental.editor.category"
+                name="EpiMDE LLM"/>
+      <command id="compartmental.editor.commands.generateFromPaper"
+               name="Generate Model from Paper"
+               description="Import a PDF paper and generate a .compmodel using the LLM pipeline"
+               categoryId="compartmental.editor.category"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler commandId="compartmental.editor.commands.generateFromPaper"
+               class="compartmentalmodel.editor.actions.GenerateFromPaperHandler"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu id="compartmentalMenu"
+               label="EpiMDE">
+            <command commandId="compartmental.editor.commands.generateFromPaper"
+                     label="Import Paper → Generate Model"
+                     mnemonic="I">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
 </plugin>

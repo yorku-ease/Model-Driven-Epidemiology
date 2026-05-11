@@ -249,16 +249,31 @@ def apply_fills_to_model(
 
     # ── Write output ───────────────────────────────────────────────────────
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    tree = ET.ElementTree(root)
     try:
-        ET.indent(tree, space="  ")
+        ET.indent(root, space="  ")
     except AttributeError:
         pass
-    tree.write(
-        output_path,
-        encoding="unicode",
-        default_namespace=None,
-        method="xml",
-        xml_declaration=True,
-    )
+    xml_str = ET.tostring(root, encoding="unicode", xml_declaration=True)
+
+    # Fix namespace prefixes: ElementTree's C accelerator auto-generates
+    # ns0, ns1 etc. Map them to expected EMF prefixes by reading the
+    # xmlns declarations from the serialized XML.
+    _NS_EXPECTED = {
+        'http://example.com/compartmentalmodel': 'compartmental',
+        'http://www.omg.org/XMI': 'xmi',
+        'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+    }
+    _prefix_map = {}
+    for _m in re.finditer(r'xmlns:(ns\d+)="([^"]+)"', xml_str):
+        _auto_prefix, _uri = _m.groups()
+        if _uri in _NS_EXPECTED:
+            _prefix_map[_auto_prefix] = _NS_EXPECTED[_uri]
+    for _auto, _target in sorted(_prefix_map.items(), key=lambda x: -len(x[0])):
+        xml_str = xml_str.replace(f'xmlns:{_auto}=', f'xmlns:{_target}=')
+        xml_str = re.sub(f'(?<=<){_auto}:', f'{_target}:', xml_str)
+        xml_str = re.sub(f'(?<=</){_auto}:', f'{_target}:', xml_str)
+        xml_str = re.sub(f'(?<=[\'" ]){_auto}:', f'{_target}:', xml_str)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(xml_str)
     return applied

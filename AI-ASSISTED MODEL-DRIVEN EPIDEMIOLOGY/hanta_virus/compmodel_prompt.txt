@@ -1,0 +1,166 @@
+You are a model conversion agent. Your task is to convert a textual mechanistic model description into a valid .compmodel XML file following the EpiMDE metamodel schema below.
+
+## Metamodel Schema Reference
+
+```json
+{
+    "root_element": {
+        "tag": "seir:SEIRModel",
+        "attributes": {
+            "xmi:version": "2.0",
+            "xmlns:xmi": "http://www.omg.org/XMI",
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xmlns:seir": "http://example.com/seirmodel"
+        },
+        "optional_attributes": ["totalPopulation", "globalBirthRate", "globalDeathRate"]
+    },
+    "parameters": {
+        "element": "parameters",
+        "required_attributes": ["name"],
+        "optional_attributes": ["type", "expression", "description", "unit"]
+    },
+    "compartments": {
+        "element": "compartments",
+        "required_attributes": ["PrimaryName"],
+        "optional_attributes": ["SecondaryName", "population"],
+        "child_elements": ["outgoingFlows"]
+    },
+    "outgoingFlows": {
+        "abstract_element": "outgoingFlows",
+        "concrete_types": ["RateFlow", "ContactFlow"],
+        "common_required_attributes": ["target"],
+        "common_optional_attributes": ["description"],
+        "constraints": {"target": "Must be 0-based index in format '//@compartments.X'"}
+    },
+    "RateFlow": {
+        "element": "outgoingFlows",
+        "xsi_type": "seir:RateFlow",
+        "required_attributes": ["rateParameter", "target"],
+        "optional_attributes": ["description"]
+    },
+    "ContactFlow": {
+        "element": "outgoingFlows",
+        "xsi_type": "seir:ContactFlow",
+        "required_attributes": ["contactRateParameter", "contactCompartment", "target"],
+        "optional_attributes": ["description"]
+    },
+    "externalSources": {
+        "element": "externalSources",
+        "required_attributes": ["name", "rateParameter", "targetCompartment"]
+    },
+    "externalSinks": {
+        "element": "externalSinks",
+        "required_attributes": ["name", "rateParameter", "sourceCompartment"]
+    }
+}
+```
+
+## One-Shot Example (format reference only — do NOT copy compartment names or parameters)
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<seir:SEIRModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seir="http://example.com/seirmodel" totalPopulation="82051">
+    <compartments PrimaryName="Susceptible children" population="2142">
+        <outgoingFlows xsi:type="seir:ContactFlow" target="//@compartments.3" contactCompartment="//@compartments.4" contactRateParameter="//@parameters.2"/>
+        <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.1" rateParameter="//@parameters.0"/>
+        <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.2" rateParameter="//@parameters.1"/>
+    </compartments>
+    <compartments PrimaryName="Exposed children" population="5">
+        <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.4" rateParameter="//@parameters.11"/>
+    </compartments>
+    <compartments PrimaryName="Infectious children" population="2">
+        <outgoingFlows xsi:type="seir:RateFlow" target="//@compartments.5" rateParameter="//@parameters.5"/>
+    </compartments>
+    <compartments PrimaryName="Immune children" population="19271"/>
+    <externalSources name="Birth" rateParameter="//@parameters.16" targetCompartment="//@compartments.0"/>
+    <externalSinks name="Natural_Death" rateParameter="//@parameters.4" sourceCompartment="//@compartments.0"/>
+    <parameters name="beta" expression="0.00188" description="transmission rate" unit="1/week"/>
+    <parameters name="gamma" expression="0.5" description="recovery rate" unit="1/week"/>
+</seir:SEIRModel>
+```
+
+## Source Data — Mechanistic Model to Convert
+
+Here is the complete mechanistic model description that you MUST convert:
+
+### Species
+- Deer Mouse (Peromyscus maniculatus) — primary reservoir host
+- Human (Homo sapiens) — incidental host
+- Vole (Microtus spp.) — less-competent dilution host (ecological factor, not directly modeled as compartments)
+
+### Rodent Compartments (SEIR, sex-stratified)
+- S_m: Susceptible male rodents
+- E_m: Exposed male rodents
+- I_m: Infectious male rodents
+- R_m: Recovered male rodents
+- S_f: Susceptible female rodents
+- E_f: Exposed female rodents
+- I_f: Infectious female rodents
+- R_f: Recovered female rodents
+
+### Human Compartments (SEIR)
+- S_h: Susceptible humans
+- E_h: Exposed humans
+- I_h: Infectious humans
+- R_h: Recovered humans
+
+### Flows (Transmission Pathways)
+1. Infectious male rodent -> Susceptible male rodent (ContactFlow, rate beta_m, contact compartment I_m)
+2. Infectious female rodent -> Susceptible male rodent (ContactFlow, rate beta_f, contact compartment I_f)
+3. Infectious male rodent -> Susceptible female rodent (ContactFlow, rate beta_mf, contact compartment I_m)
+4. Infectious female rodent -> Susceptible female rodent (ContactFlow, rate beta_f, contact compartment I_f)
+5. Infectious rodent (I_m + I_f) -> Susceptible human (ContactFlow, rate beta_rh, contact compartment I_m+I_f)
+6. Infectious human -> Susceptible human (ContactFlow, rate beta_hh, contact compartment I_h)
+7. S_m -> E_m (progression via infection, covered by flows 1-2 above)
+8. E_m -> I_m (RateFlow, rate delta)
+9. I_m -> R_m (RateFlow, rate gamma_m)
+10. S_f -> E_f (progression via infection, covered by flows 3-4 above)
+11. E_f -> I_f (RateFlow, rate delta)
+12. I_f -> R_f (RateFlow, rate gamma_f)
+13. S_h -> E_h (progression via infection, covered by flows 5-6 above)
+14. E_h -> I_h (RateFlow, rate delta_h)
+15. I_h -> R_h (RateFlow, rate gamma_h)
+
+### Birth Sources
+- Rodent birth: harmonic birth function B = b * N / (1 + N/K) flowing into both S_m and S_f (split equally: B/2 each)
+- Human birth: constant rate B_h flowing into S_h
+
+### Death Sinks
+- Rodent death: density-dependent death rate d(N) = a + c*N from all rodent compartments
+- Human natural death: rate d_h from all human compartments
+- Human disease-induced death: rate alpha_h from I_h
+
+### Parameters (18 total)
+- b (rodent average litter size)
+- K (rodent carrying capacity)
+- a (density-independent rodent death rate)
+- c (density-dependent rodent death coefficient)
+- beta_m (male-male rodent transmission rate)
+- beta_f (female-to-any rodent transmission rate)
+- beta_mf (male-to-female rodent transmission rate)
+- delta (rodent incubation rate)
+- gamma_m (male rodent recovery rate)
+- gamma_f (female rodent recovery rate)
+- B_h (human birth rate)
+- d_h (human natural death rate)
+- alpha_h (human disease-induced death rate)
+- beta_rh (zoonotic transmission rate, rodent to human)
+- beta_hh (interhuman transmission rate)
+- delta_h (human incubation rate)
+- gamma_h (human recovery rate)
+
+### Virus-Specific Parameter Notes
+- beta_hh > 0 for Andes virus (ANDV) which has person-to-person transmission
+- beta_hh = 0 for Sin Nombre virus (SNV) and most other hantaviruses
+- alpha_h > 0 for HPS-causing hantaviruses; may be 0 for asymptomatically infected species
+
+## Output Requirements
+
+1. Generate ONLY valid XML — no explanations, no markdown formatting, no code fences.
+2. Use 0-based indexing for all `//@compartments.X` and `//@parameters.X` references.
+3. All compartments must be listed BEFORE externalSources, externalSinks, and parameters.
+4. Use `xsi:type="seir:RateFlow"` for progression flows (exposed->infectious, infectious->recovered).
+5. Use `xsi:type="seir:ContactFlow"` for transmission flows (susceptible->exposed via contact with infectious).
+6. Rodent-to-human zoonotic transmission from (I_m + I_f) to S_h: since ContactFlow's contactCompartment can only reference one compartment, use two separate ContactFlow entries on S_h (one with contactCompartment referencing I_m, one referencing I_f), both with contactRateParameter beta_rh.
+7. For birth into S_m and S_f, use two externalSources elements (one targeting each susceptible rodent compartment), both referencing the same birth rate parameter. Since the birth function B is harmonic, set the expression to "b / (1 + N/K)".
+8. For density-dependent death d(N) = a + c*N, create a parameter with expression "a + c * (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f)" and reference it from each death sink.
