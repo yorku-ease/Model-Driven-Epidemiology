@@ -1,0 +1,139 @@
+\section{Threats to Validity}
+\label{sec:threats}
+
+\paragraph{Internal validity.}
+The completeness score formula (Equation~\ref{eq:completeness}) and its component weights
+(25/25/20/15/15) were defined a priori based on domain judgment rather than optimized on
+a holdout set. Different weight assignments would shift absolute scores but are unlikely to
+change the relative ordering of diseases or the qualitative patterns we report.
+To verify this, we tested three alternative weight configurations: equal weights
+(20/20/20/20/20), a coverage-heavy scheme (35/35/10/10/10), and an accuracy-heavy scheme
+(20/20/10/25/25). The disease ranking is preserved across all configurations: Dengue,
+Measles, and COVID-19 consistently score highest and Ebola consistently lowest,
+confirming that the completeness ordering is robust to reasonable weight variation.
+The structural error taxonomy reflects common failure modes observed during development; it may
+not cover all possible errors in other disease models.
+
+\paragraph{Construct validity.}
+Fuzzy string matching with synonym groups is a heuristic: it may produce false positives
+when different epidemiological concepts share a word (e.g., ``Susceptible adults'' matching
+``Susceptible children'') or false negatives for non-standard abbreviations not covered by
+our synonym list. The 0.6 \texttt{SequenceMatcher} threshold was set to minimize both error
+types on our dataset but was not tuned on a separate validation set.
+
+\paragraph{External validity.}
+Our study covers 10 diseases with models of varying complexity (4--23 flows). These were
+chosen to span a range of standard structures (SIR, SEIR, multi-group, host--vector) but
+may not represent the full diversity of published compartmental models, particularly agent-based
+or network-based models that do not fit the ODE compartmental structure. Results for
+diseases with highly non-standard parameter naming conventions (e.g., Bayesian notation)
+may differ from what we report here.
+Although evaluated on these 10 ODE compartmental models, the framework is
+design-agnostic at the pipeline level: the three-phase structure (reference construction,
+LLM-assisted extraction, gap completion) applies to any parametric model class where a
+formal reference and a natural-language description coexist, including pharmacokinetic,
+ecological, and within-host models.
+
+\paragraph{LLM non-determinism.}
+All Phase~2 extractions and Phase~3 inferences used temperature~0, which minimizes but
+does not eliminate non-determinism in some LLM backends. A small fraction of results could
+differ on replication. To mitigate this, we report averaged patterns and note that all runs
+used the same prompts and model versions.
+
+\paragraph{Gold standard quality.}
+The reference \texttt{.compmodel} files were constructed from each paper's ODE equations
+and parameter tables, and validated against the reported simulation results and figures
+in the paper---not authored from informal reading.
+Each compartment, flow, and parameter in the gold model traces directly to a named
+equation or table entry. For papers that provided simulation code, we cross-validated
+the gold model's compartment wiring and initial conditions against the code. For those
+without code, ambiguous parameter assignments were resolved by returning to the
+differential equation system and identifying which flow each symbol multiplies.
+This construction methodology ensures the gold standard is grounded in the paper's own
+formal specification, minimising subjective interpretation. The reference models and
+their source annotations are included in the project repository.
+Any residual misinterpretation of ambiguous notation propagates to the completeness score,
+which is itself the instrument for detecting such ambiguity in the source paper.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented a \textbf{measurement framework for epidemiological model completeness} as a
+systematic instrument for quantifying the gap between what a paper specifies and what a
+reader can reproduce. LLMs were used as simulated reproducers for models specified in epidemiological papers. Phase~1 builds structured reference models
+and paper promise inventories. Phase~2 employs LLM-assisted entity extraction from PDFs
+across three commercial backends, evaluated with a domain-aware fuzzy string matching
+protocol. Phase~3 closes extraction gaps via iterative retrieval-augmented completion,
+structural validation, and rule-based repair, then assigns a five-component completeness
+score that jointly measures gap reduction, reference agreement, fill traceability,
+parameter accuracy, and structural integrity.
+
+Applied to 10 peer-reviewed modeling papers across 10 infectious diseases, the pipeline
+achieves a mean completeness score of \textbf{$74.0\%$}. Phase~3 raises mean structural recall
+from $0.822$ (Phase~2 draft) to $0.965$ (winner mode), with all three Phase~3 modes improving
+recall over the Phase~2 baseline. All 10 diseases show detectable structural errors in
+their LLM-extracted models before repair; $44\%$ are resolved automatically.
+RAG-only achieves the highest recall in 9 of 10 diseases and is the safest mode because
+its fills are traceable to specific paper passages. LLM-only adds genuine value as a
+coverage tool, but its fills are unverifiable and lower the traceability component of
+the completeness score. The distinction between RAG-sourced and LLM-inferred fills is
+itself a measurement outcome: a gap that only LLM can fill---but RAG cannot---is direct
+evidence of a specification failure in the paper.
+
+These results quantify a consistent pattern: LLMs reliably extract compartment structure
+but struggle with flow paths and parameters embedded in ODE derivations or referenced
+only by symbolic expressions. The specification-validation gap is measurable and
+non-trivial: even with the enhanced extraction pipeline using GPT-5.4-mini, Phase~2 drafts
+miss on average $28\%$ of flows and $12\%$ of parameters relative to the best-case
+Phase~2 draft---gaps that Phase~3 reduces substantially, achieving perfect recall for
+all three entity types in 7 of 10 diseases.
+
+%\paragraph{Future work.}
+%Several concrete directions emerge directly from the failure cases described in this paper.
+
+%\noindent\textbf{Expand the dataset.}
+%The most immediate improvement is to include more papers per disease (currently one each).
+%A single paper per disease means that a paper-specific writing quirk---parameters in
+%figure captions (flu), composite ODE coefficients (TB), Bayesian-only values
+%(Ebola)---dominates the per-disease score. Adding two or three papers per disease would
+%separate pipeline limitations from individual paper choices, and would enable
+%within-disease variance analysis and more robust mean completeness estimates.
+
+%\noindent\textbf{Add figure and table extraction.}
+%Several of the worst failures (flu, Ebola) stem from numeric values that exist only
+%inside figures, supplementary tables, or figure captions. Integrating OCR-based figure
+%parsing and structured table extraction (beyond Camelot's current scope) would close
+%this entire class of gaps without any change to the downstream phases.
+
+%\noindent\textbf{Improve RAG for multi-part definitions.}
+%TB and Malaria show that parameters defined incrementally across multiple sections are
+%not recoverable by single-passage retrieval. A multi-hop RAG strategy---where a
+%retrieved passage can trigger further retrieval of referenced symbols---would let the
+%system assemble composite definitions that no individual passage contains in full.
+
+%\noindent\textbf{Enhance the evaluation protocol.}
+%The current fuzzy string matching works well for standard compartment and flow names
+%but still struggles with highly domain-specific notation (e.g., Bayesian posterior
+%symbols, host--vector composite terms). Extending the synonym library and adding a
+%disambiguation step for homonyms (``Susceptible adults'' vs.\ ``Susceptible children'')
+%would improve recall precision and reduce false matches that inflate precision scores.
+
+%\noindent\textbf{Extend the structural validator.}
+%Adding dimension-aware validation (e.g., detecting a rate parameter with units
+%$\text{person}^{-1}$ assigned to a flow expecting $\text{person}^{-1}\text{day}^{-1}$)
+%and a formal parameter-to-flow assignment step (to resolve orphaned parameters in
+%multi-group models like HIV and Malaria) would significantly improve the structural
+%integrity component, currently the weakest in the completeness score.
+
+%\noindent\textbf{Test generalizability.}
+%Applying the framework to stochastic, agent-based, and network models beyond ODE
+%compartmental structures would test whether the three-phase approach and the completeness
+%score translate to a broader class of mathematical models in infectious disease
+%epidemiology. This also includes models where multiple interacting patches or age-strata
+%appear as structured population layers rather than separate compartments.
+
+%\noindent\textbf{Close the loop with simulation.}
+%Finally, studying whether completeness scores correlate with downstream simulation
+%accuracy---i.e., whether a higher-scoring extracted model reproduces the paper's reported
+%trajectories more faithfully---would validate the score as a predictor of scientific
+%reproducibility and not just a structural inventory metric.

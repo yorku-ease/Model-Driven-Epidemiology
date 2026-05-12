@@ -1,0 +1,174 @@
+
+In this section, we show how the platform can be used for simple or more complex modeling tasks. We present three case studies, one for modeling HIV, another for modeling COVID-19 and a third on rapid prototyping of epidemiological models. In the first two case studies, we attempt to replicate existing modeling works and demonstrate how our platform can achieve the same results, both from a structural and a simulation results perspective, while minimizing effort, thanks to the concise metamodel, the integrated platform and the use of generative AI. In both case studies, the assumption is that the modelers attempt to model a disease from a clean slate, i.e., they cannot or do not have prior models to reuse. We demonstrate how the modelers can use either the basic or the extensible metamodels to model the disease and use its tools to automatically generate and run simulation scenarios. In the third case study, we assume that the modeler intends to model a completely new disease, but this time by trying to reuse existing models or parts of existing models.
+
+\subsection{Case Study 1: HIV Modeling}
+\label{sec:casestudy:hiv}
+
+In the first case study, we demonstrate how EpiMDE can be used to model a complex disease like HIV that also involves contact infections through sexual relationships. We replicate the model that was originally proposed by Espitia et al. (2022)\cite{Espitia2022}. This model categorizes the population into susceptible and untreated infectious groups across three distinct demographic subgroups: ``heterosexual men'', ``homosexual men''\footnote{We replicate the model by Espitia et al., which accounts for bisexual behavior through cross-group interactions (e.g., between ``homosexual men'' and ``women''), though it does not model bisexual or nonbinary individuals as separate demographic categories. This abstraction is common in mathematical epidemiology, but it necessarily simplifies the diversity of LGBT+ identities.}, and ``women''. Transitions between susceptible and infectious states are governed by contact-based transmission rates specific to each subgroup. Given that EpiMDE aims for simplicity and fast modeling, contact flows are modeled with basic flows, with rates estimated manually or from relevant literature, and as presented in the original publication.
+
+Patients transition from untreated infectious states to either a \textit{Treated with ART} state or a \textit{People Living with AIDS (PLWA)} state. These compartments are shared across all genders consistent with the original model. The PLWA compartment ultimately leads to \textit{Death due to AIDS}, while all compartments except this terminal state flow into a \textit{Natural Death} compartment. All transitions, apart from contact-dependent flows, were modeled using explicit rate parameters derived from literature.
+
+
+\subsubsection{Model Implementation in EpiMDE}
+
+The model was implemented using EpiMDE's stratification features. First, a Group called "SexualBehavior" was defined with three values: "Homosexual Men", "Women", and "Heterosexual Men". A Product referencing this group was then created to enable automatic expansion of compartments across all three demographic strata. Next, compartments representing disease states (Susceptible, Infectious-Untreated, Treated with ART, Living with AIDS, HIV Deaths) were defined and associated with the Product, allowing each compartment to automatically represent all three demographic subgroups. This stratification approach demonstrates EpiMDE's capability to handle population heterogeneity efficiently, avoiding the need to manually create separate compartments for each combination of disease state and demographic group.
+
+Subsequently, flows were defined to capture disease dynamics. ContactFlows with stratum-specific rates modeled HIV transmission through sexual contact, while RateFlows represented disease progression (e.g., from untreated to treated states, or progression to AIDS). The model also utilized ExternalSources to represent demographic recruitment into each subgroup and ExternalSinks to model natural mortality. Stratum-specific rates were employed throughout to capture heterogeneity in transmission, treatment, and demographic parameters across the three populations. To enhance visual distinction among subgroups, a color-based compartment border grouping was developed. Figure~\ref{fig:hiv_model} shows the stratified model for the women subgroup as an example; separate diagrams were generated for heterosexual men and homosexual men subgroups, each maintaining the same structure but with group-specific parameter values. Visually, the EpiMDE model is equivalent to the model in the original publication, but was constructed in a structured, disciplined (with preconditions, postconditions and constraints imposed) and replicable manner.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/HIV_Women.jpg}
+    \caption{Graphical representation of the HIV-SEIR model in EpiMDE for the women demographic subgroup. Separate stratified diagrams exist for heterosexual men and homosexual men subgroups, maintaining the same compartmental structure.}
+    \label{fig:hiv_model}
+\end{figure}
+
+
+
+\subsubsection{Simulation Automation}
+
+Differential equations describing compartmental dynamics were automatically generated from the graphical representation, providing a robust mathematical foundation for simulations.
+
+A Python script was developed to automate the simulation input process, enhancing usability by streamlining the following steps:
+\begin{enumerate}
+    \item Reading automatically generated .txt files containing differential equations.
+    \item Guiding the user to select compartments for simulation.
+    \item Collecting initial population sizes for each compartment.
+    \item Specifying the simulation duration.
+    \item Generating simulation outputs in .csv format, compatible with Excel or Google Sheets for further analysis.
+\end{enumerate}
+The results of the simulation were identical to those presented in the original publication showing the correctness and completeness of our model.
+
+
+
+\subsubsection{LLM-Based Automated Generation Results}
+
+
+
+To evaluate the LLM pipeline's capability to automatically generate the HIV model from textual specifications, we provided structured plain-text descriptions of the model's compartments, parameters, flows, and stratification structure to both GPT-4o and Gemini 2.5 Pro. The specification contained 66 total elements including compartments with behavioral stratification (sexual behavior groups), contact-based and rate-based flows, demographic sources and sinks, and stratum-specific transmission parameters.
+
+\begin{table}[htbp]
+\centering
+\caption{LLM Performance for HIV Model Generation}
+\label{tab:hiv_llm_performance}
+\begin{tabular}{lccc}
+\hline
+\textbf{LLM Model} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} \\
+\hline
+GPT-4o & 86.4\% & 86.4\% & 0.864 \\
+Gemini 2.5 Pro & 83.3\% & 100\% & 0.909 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{GPT-4o Performance:} The pipeline achieved balanced performance with Precision = 86.4\%, Recall = 86.4\%, and F1 = 0.864. All core structural elements were correctly generated: compartments with proper stratification references, the Group-Product structure for behavioral stratification, all 23 parameters with Unicode Greek letters and subscripts preserved, and birth/death sources with correct stratum assignments. The 9 false negatives and 9 false positives were primarily attributable to indexing errors in flow references—the LLM occasionally generated incorrect 0-based indices for \texttt{target} and \texttt{rateParameter} attributes. Critically, the structural integrity of the model was preserved; only specific numerical index values in flow references were incorrect. The generated simulation script (Stage 3) executed successfully, producing time-series plots for all stratified compartments with consistent variable naming and no runtime errors.
+
+\textbf{Gemini 2.5 Pro Performance:} This model achieved perfect recall (100\%) but lower precision (83.3\%), yielding F1 = 0.909. Unlike GPT-4o, Gemini generated all 66 required elements with no omissions, demonstrating superior completeness. The 11 false positives consisted of indexing errors similar to GPT-4o and placeholder value hallucinations where the model inserted \texttt{rate="0.0"} attributes in parametric flows despite user input specifying only parameter references. This represents the LLM filling perceived specification gaps based on external modeling knowledge rather than strict input adherence. The simulation script generation succeeded with semantically organized code that grouped compartments by population, improving human readability.
+
+\textbf{Key Findings:} Both models successfully captured the HIV model's core challenge—behavioral stratification with heterogeneous contact patterns—though with different error profiles. GPT-4o balanced precision and recall through conservative generation, while Gemini optimized for completeness at the cost of over-generation. The indexing errors shared by both models highlight a fundamental LLM limitation in tracking numerical references across many elements, suggesting the need for post-processing validation or intermediate index mapping steps. The perfect simulation script execution by both models validates the two-phase skeleton approach for code generation.
+
+\subsection{Case Study 2: COVID-19}
+\label{sec:casestudy:covid}
+
+In our second case study, we demonstrate the use of the basic and extensible metamodels and of the modeling platform in the context of COVID-19 modeling. More specifically, we took the work of Tuite et al.~\cite{TuiteE497} on the mathematical modeling of COVID-19 transmission and mitigation strategies and we replicated the presented model using the proposed metamodel and modeling platform. We show how we can reach the same simulation results with a much reduced cognitive load, and a more concise and easier to understand model.
+
+\subsubsection{Original model}
+
+Figure \ref{fig:tuite1} displays the original figure from the article, Model structure of COVID-19 transmission\cite[Figure~1]{TuiteE497}. Further information in the article notes that this model is stratified along sixteen age groups as well as presence and absence of comorbidity, which will be used in equations but are absent in the graphical notation. The stratifications used by the researchers are a consequence of their available data. The population age data uses 20 intervals of 5 years and one for 100 years old or older. The contact mixing data uses 14 intervals of 5 years and one for 70 or older.
+
+It is important to note that important information about the model was not possible to be extracted just from the manuscript, but part of it was extracted by further investigating the accompanying source code repository. This further emphasizes the need to gather all model elements under a single location to improve communication and reproducibility.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/tuite1.jpg}
+    \caption{Original COVID-19 Model Representation~\cite{TuiteE497}}
+    \label{fig:tuite1}
+\end{figure}
+
+
+
+\subsubsection{Translated model}
+
+In order to represent the disease model in our platform, present two approaches: using the basic metamodel (EpiMDE) and the extensible metamodel. As it can be seen in Figure~\ref{fig:covid_model}, the generated EpiMDE model is almost identical to the original model (Figure~\ref{fig:tuite1}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Covid.jpg}
+    \caption{Graphical representation of the COVID-19 SEIR model in EpiMDE Lite.}
+    \label{fig:covid_model}
+\end{figure}
+
+While the basic modeling approach with EpiMDE is good for quickly replicating the original work, the resulting model suffers from the shortcomings of the original model, i.e., reduced replicability and verbosity, in terms of number of compartments and flows. In addition, certain parameters of the original model, such as age groups, could not be easily ported in the EpiMDE model. To this end, we also explored the capabilities of the extensible metamodel and we used groups and products, as well as complex flows, to better organize the model, through better modularity and separation of concerns, and facilitate more of its advance functionalities.
+
+First, looking at the naming and coloring of the elements in the original diagram, we can see that orange refers to isolated, while purple refers to not isolated. Susceptible, exposed, hospitalized and recovered are also color coded. We begin by creating a group to place our elements into, then place unit compartments for S, R and Dead. E and I share commonalities, specifically, they are both stratified along isolation status. We will create a product to hold two groups: isolation and E-I. The isolation group simply has a isolated and non-isolated unit compartments. E-I has two groups, E and I, which have their purple and orange compartments from the original figure, so E is a compartment but I is a group containing presymptomatic, mild and severe.
+
+%The researchers responsible for the studied model made the decision not to include "within-hospital transmission cycles"\cite{TuiteE497}. For this reason, we can leave hospitalization out of the infectious group as they will not be used as contacts for transmission. Hospitalization will be a group with units for no-icu, pre-icu, icu and post-icu. 
+%Figure \ref{fig:tuite-cp1} shows the structure so far.
+
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\linewidth]{Figures/tuite-cp1.png}
+%    \caption{Model Structure}
+%    \label{fig:tuite-cp1}
+%\end{figure}
+
+After modeling the structural aspect of the model, it is time to model the behavioural aspect, by using flows. The original model contains 21 flows, but by using flows on composites, we can reduce this amount. As a model's size increases, applying flows to structures instead of individual components saves time and complexity. It also dissociates a composite's contents from the flows, allowing for inner structure modification without change to the flows. This is visually apparent in the resulting model, as shown in Figure \ref{fig:tuite-cp2}. There are now 11 flows instead of 21. Flows in our platform are named diamonds with named reference, which may help clarify the model. For example, the authors mention: "Testing was assumed to move individuals with nonsevere symptoms from the infectious to isolated compartments" \cite{TuiteE497}, while in our model we can simply name this flow "testing".
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/tuite-cp2.png}
+    \caption{Model Structure and Flows}
+    \label{fig:tuite-cp2}
+\end{figure}
+
+
+The final step is model stratification along age and comorbidity, which is simply done by placing the model in a product along with the age dimension and the comorbidity dimension. As seen in the original model, stratification along age and comorbidity is not represented graphically, which is not the case for EpiMDE. The result is a simple model of a product between age groups, which can be used in the larger model as a link (i.e., an expandable reference to an external model), and a comorbidity option.
+%, as shown in Figure~\ref{fig:tuite-cp4}.
+
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\linewidth]{Figures/tuite-cp4.png}
+%    \caption{Stratified Model}
+%    \label{fig:tuite-cp4}
+%\end{figure}
+
+The Link and Aging compartments are simple metamodel extensions. Link allows us to reference compartments from other model, here we reference the top level element from the previous model. Aging allows us to provide a list of age groups as a string, in this case, for the Canadian health data, we provide ``0-4, 5-9, 10-14, 15-19, 20-24, 25-29, 30-34, 35-39, 40-44, 45-49, 50-54, 55-59, 60-64, 65-69, 70+", which generates compartments as well as rates between the consecutive age groups.
+
+\subsubsection{Model validation}
+
+Model validation involves comparing the expected output of a model with the actual output. The output may be thought of as the graph produced for an entire simulation, but, in practice, this may change based on simulation software. The derivative produced given a population distribution, however, is predictable.
+
+In order to compare models, we randomly generated population distributions to compare both models' derivatives. The reference model's derivative is the expected derivative of the model being validated. In the event where the two are identical, the validation is done. In the event where the two are different, we need to refine the incorrect model and ideally identify where the differences come from. This is an aspect of the project which presents an opportunity for usability improvements.
+
+For the context of this work, a validation script was produced which iterates over the names of our flows of this specific model and produces derivatives for both models based on an input. The original R code was transpiled to python and its equations were deconstructed in order to map the terms to names of equation. By writing a validation script which validates a projection of the model along a single equation, it is much easier to refine. Since flows in our platform are named and names are kept in the artifacts, we can easily toggle certain sets of equations by name. In the future, model validation may be further automated so that little to no programming may be involved for similar use cases, rendering this task simpler for epidemiologists.
+
+\subsubsection{LLM-Based Automated Generation Results}
+
+The COVID-19 model presented a more complex generation challenge than HIV, with 63 total elements including 15 compartments across multiple disease stages (exposed, infectious subtypes, hospitalization states), 23 parameters, age-based stratification, and 19 flows representing disease progression and intervention pathways. This model's larger element count and intricate flow network tested the LLM pipeline's scalability.
+
+\begin{table}[htbp]
+\centering
+\caption{LLM Performance for COVID-19 Model Generation}
+\label{tab:covid_llm_performance}
+\begin{tabular}{lccc}
+\hline
+\textbf{LLM Model} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} \\
+\hline
+GPT-4o & 91.1\% & 65.1\% & 0.759 \\
+Gemini 2.5 Pro & 100\% & 100\% & 1.000 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{GPT-4o Performance:} The pipeline achieved high precision (91.1\%) but significantly lower recall (65.1\%), yielding F1 = 0.759. While compartments, parameters, groups, and products were correctly generated, 22 of the 19 specified flows were either completely absent or generated with incorrect structure. The user input clearly listed all flow transitions, but these did not materialize in the final XML with proper \texttt{<outgoingFlows>} elements. This failure mode differs fundamentally from the HIV model's indexing errors and suggests two contributing factors: context window pressure from the substantially larger specification approaching GPT-4o's effective context limits, and potential prompt ambiguity in translating complex flow networks into XML. The 4 false positives represented attribute hallucination where the model generated \texttt{multiplier} attributes within \texttt{<stratumSpecificRates>} for age-dependent transmission rates—conceptually reasonable but not part of the metamodel specification. Despite XML generation challenges, the Stage 3 simulation script executed successfully using validated ODE equations, producing correct time-series plots for all age-stratified compartments.
+
+\textbf{Gemini 2.5 Pro Performance:} In stark contrast to GPT-4o, Gemini achieved perfect generation with Precision = 100\%, Recall = 100\%, F1 = 1.000. All 63 elements were correctly generated with no hallucinations and no omissions. Critically, all 19 flows appeared with proper structure, correct \texttt{xsi:type} classification (RateFlow vs. ContactFlow), accurate \texttt{target} references, and appropriate parameter linkages. The flow omission pattern that plagued GPT-4o did not occur, suggesting the failure was not inherent to task complexity but specific to GPT-4o's context management or instruction-following capabilities for this prompt structure. The simulation script generation succeeded with compact, semantically organized code that logically grouped compartments and improved human readability while maintaining 100\% execution correctness.
+
+\textbf{Key Findings:} The dramatic performance divergence between GPT-4o and Gemini reveals that COVID-19 model generation is a context-intensive task requiring state-of-the-art LLM capabilities. GPT-4o's systematic flow omissions indicate it reached capacity limits handling the specification's size and complexity, while Gemini's perfect generation demonstrates that frontier models possess sufficient capacity for complex epidemiological models. This has practical implications: as models grow in complexity (more compartments, deeper stratification, intricate interventions), access to cutting-edge LLMs transitions from optional to necessary. The perfect simulation generation by both models (despite XML differences) again validates the robustness of the two-phase skeleton approach, which successfully isolated Stage 3 from Stage 1-2 errors by operating on independently validated ODE equations.
+
+
+
+\subsection{Case Study 3: Illustrating Support for Rapid Prototyping}
+\label{sec:casestudy:prototyping}
+\input{Text/prototyping}
+
+

@@ -1,0 +1,214 @@
+%Version 3.1 December 2024
+% See section 11 of the User Manual for version history
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                 %%
+%% Please do not use \input{...} to include other tex files.       %%
+%% Submit your LaTeX manuscript as one .tex document.              %%
+%%                                                                 %%
+%% All additional figures and files should be attached             %%
+%% separately and not embedded in the \TeX\ document itself.       %%
+%%                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
+
+%%=======================================================%%
+%% to print line numbers in the margin use lineno option %%
+%%=======================================================%%
+
+%%\documentclass[lineno,pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%=========================================================================================%%
+%% the documentclass is set to pdflatex as default. You can delete it if not appropriate.  %%
+%%=========================================================================================%%
+
+%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove Numbered in the optional parenthesis. 
+%%The option is available for: sn-basic.bst, sn-chicago.bst%  
+ 
+%%\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
+%%\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}% Math and Physical Sciences Numbered Reference Style
+%%\documentclass[pdflatex,sn-mathphys-ay]{sn-jnl}% Math and Physical Sciences Author Year Reference Style
+%%\documentclass[pdflatex,sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
+%%\documentclass[pdflatex,sn-vancouver-num]{sn-jnl}% Vancouver Numbered Reference Style
+%%\documentclass[pdflatex,sn-vancouver-ay]{sn-jnl}% Vancouver Author Year Reference Style
+%%\documentclass[pdflatex,sn-apa]{sn-jnl}% APA Reference Style
+%%\documentclass[pdflatex,sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
+
+%%%% Standard Packages
+%%<additional latex packages if required can be included here>
+
+\usepackage{graphicx}%
+\usepackage{subcaption}
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+\usepackage{url}
+\usepackage{array}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+%%%%
+
+%%%%%=============================================================================%%%%
+%%%%  Remarks: This template is provided to aid authors with the preparation
+%%%%  of original research articles intended for submission to journals published 
+%%%%  by Springer Nature. The guidance has been prepared in partnership with 
+%%%%  production teams to conform to Springer Nature technical requirements. 
+%%%%  Editorial and presentation requirements differ among journal portfolios and 
+%%%%  research disciplines. You may find sections in this template are irrelevant 
+%%%%  to your work and are empowered to omit any such section if allowed by the 
+%%%%  journal you intend to submit to. The submission guidelines and policies 
+%%%%  of the journal take precedence. A detailed User Manual is available in the 
+%%%%  template package for technical guidance.
+%%%%%=============================================================================%%%%
+
+%% as per the requirement new theorem styles can be included as shown below
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}%  meant for continuous numbers
+%%\newtheorem{theorem}{Theorem}[section]% meant for sectionwise numbers
+%% optional argument [theorem] produces theorem numbering sequence instead of independent numbers for Proposition
+\newtheorem{proposition}[theorem]{Proposition}% 
+%%\newtheorem{proposition}{Proposition}% to get separate numbers for theorem and proposition etc.
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
+
+\begin{document}
+
+\title[Article Title]{EpiMDE: A Model-Driven Engineering Platform for Reusable and Reproducible Epidemiological Models}
+
+%%=============================================================%%
+%% GivenName	-> \fnm{Joergen W.}
+%% Particle	-> \spfx{van der} -> surname prefix
+%% FamilyName	-> \sur{Ploeg}
+%% Suffix	-> \sfx{IV}
+%% \author*[1,2]{\fnm{Joergen W.} \spfx{van der} \sur{Ploeg} 
+%%  \sfx{IV}}\email{iauthor@gmail.com}
+%%=============================================================%%
+
+\author[2]{\fnm{Fatemeh} \sur{Seyeddabbaghi}}\email{fdbghi@yorku.ca}
+
+
+\author[3]{\fnm{Zahra} \sur{Fiyouzisabah}}\email{zahra.fiyouzisabah@umontreal.ca}
+
+\author[2]{\fnm{Aaditya} \sur{Karamchandani}}\email{aad1tya@my.yorku.ca}
+
+\author[1]{\fnm{Bruno} \sur{Curzi-Lalibert\'e}}\email{bruno.curzi-laliberte@polymtl.ca}
+
+
+
+\author[2]{\fnm{Marios} \sur{Fokaefs}}\email{fokaefs@yorku.ca}
+
+\author[3]{\fnm{Michalis} \sur{Famelis}}\email{famelis@iro.umontreal.ca}
+
+\author[1]{\fnm{Mohammed} \sur{Hamdaqa}}\email{mhamdaqa@polymtl.ca}
+
+\affil[1]{\orgdiv{Department of Computer and Software Engineering}, \orgname{Polytechnique Montreal}, \orgaddress{\street{2500 Chem. de Polytechnique}, \city{Montréal}, \postcode{H3T 0A3}, \state{QC}, \country{Canada}}}
+
+\affil[2]{\orgdiv{Department of Electrical Engineering and Computer Science}, \orgname{York University}, \orgaddress{\street{4700 Keele St}, \city{Toronto}, \postcode{M3J 1P3}, \state{ON}, \country{Canada}}}
+
+\affil[3]{\orgdiv{Department of Computer Science and Operations Research}, \orgname{University of Montreal}, \orgaddress{\street{2900 Edouard Montpetit Blvd}, \city{Montreal}, \postcode{H3T 1J4}, \state{QC}, \country{Canada}}}
+
+%%==================================%%
+%% Sample for unstructured abstract %%
+%%==================================%%
+
+\abstract{Modeling is a critical step in studying epidemics. It allows us to better understand and predict the progression of a disease, design interventions such as vaccination, and assess their impact. Current epidemics are modeled using compartmental and mathematical models. While these are enough to achieve the primary goal of modeling, they suffer from shortcomings with respect to communicating and sharing models, comparison and validation, reproducibility, and reusability. In this work, we propose the use of model-driven software engineering principles to better represent disease models and facilitate model management operations. We present EpiMDE, a simplified and accessible metamodel for compartmental epidemiological models that provides immediate usability for epidemiologists through familiar concepts like compartments, flows, and population stratification. We also present an extensible version of the metamodel that offers enhanced expressiveness and automation for advanced modeling needs. Both metamodels are supported by an integrated development environment that allows epidemiologists to create, compare, and manage their models and simulations graphically or through automated generation from textual specifications. We demonstrate the platform through case studies on COVID-19 and HIV modeling, where we show that the resulting models are more concise yet structurally and functionally equivalent to published models. We also illustrate rapid prototyping capabilities through model reuse and composition, and present an LLM-based pipeline for automated model generation from natural language specifications that further enhances accessibility for epidemiologists without MDE expertise.}
+
+%%================================%%
+%% Sample for structured abstract %%
+%%================================%%
+
+% \abstract{\textbf{Purpose:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+% 
+% \textbf{Methods:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+% 
+% \textbf{Results:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
+% 
+% \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
+
+\keywords{epidemiological modeling, integrated development environment, reproducibility, extensibility, metamodeling}
+
+%%\pacs[JEL Classification]{D8, H51}
+
+%%\pacs[MSC Classification]{35A01, 65L10, 65L12, 65L20, 65L70}
+
+\maketitle
+
+\section{Introduction}\label{sec1}
+\input{Text/introduction}
+
+
+\section{Related Work}
+\label{sec:related}
+\input{Text/related}
+
+\section{Epidemiological Metamodel Definition}
+\label{sec:metamodel}
+\input{Text/metamodel}
+
+\section{The EpiMDE IDE}
+\label{sec:EpiMDE}
+\input{Text/platform}
+
+
+\section{Case Studies and Evaluation}
+\label{sec:study}
+\input{Text/case_studies}
+
+\section{Discussion: Synthesis Across Case Studies}
+\label{sec:discussion}
+\input{Text/discussion}
+
+
+\section{Conclusion}
+EpiMDE is an integrated development and modeling environment for epidemiological modeling, addressing key challenges in model sharing, reproducibility, and systematic evolution. In this work, we presented \texttt{EpiMDE-model}, an extensible metamodel that supports both \textbf{basic} modeling for immediate usability through familiar epidemiological concepts (compartments, flows, stratification), but is also \textbf{extensible} with advanced features for sophisticated modeling needs. The \texttt{EpiMDE-model} prioritizes ease of use by providing explicit support for population stratification, external population dynamics (births, deaths, migration), and heterogeneous rates, while avoiding complex abstractions that require MDE expertise.
+
+We demonstrated the EpiMDE platform's effectiveness through four complementary case studies. The COVID-19 and HIV modeling case studies showed that \texttt{EpiMDE-model} produces structurally and functionally equivalent models to published mathematical models while being more concise and accessible, with the HIV case study specifically validating behavioral stratification modeling. The rapid prototyping case study illustrated how model reuse and composition accelerate development. The LLM-based automated generation case study introduced a novel approach to accessibility, demonstrating how AI-assisted transformation can bridge the gap between traditional epidemiological workflows and formal MDE approaches by accepting natural language specifications and producing metamodel-conformant models.
+
+The platform supports multiple interaction modalities—graphical modeling for exploration and composition, and text-based automated generation for reproducing published models—accommodating diverse user preferences and scenarios. The dual-metamodel approach enables a progression path: epidemiologists can start with the basic \texttt{EpiMDE-model} for its accessibility and transition to the extensible version as their needs become more sophisticated. Future work will continue implementing advanced MDE features, including formal model verification, enhanced automatic code generation, improved parameterization support, and refinement of the LLM pipeline with interactive validation workflows and semantic reasoning capabilities.
+\label{sec:conclusion}
+%%
+%% The acknowledgments section is defined using the "acks" environment
+%% (and NOT an unnumbered section). This ensures the proper
+%% identification of the section in the article metadata, and the
+%% consistent spelling of the heading.
+\bmhead{Acknowledgements}
+The authors would like to thank Dr Simon de Montigny for his invaluable input and experience in epidemiological modeling. 
+
+
+%%===========================================================================================%%
+%% If you are submitting to one of the Nature Portfolio journals, using the eJP submission   %%
+%% system, please include the references within the manuscript file itself. You may do this  %%
+%% by copying the reference list from your .bbl file, paste it into the main manuscript .tex %%
+%% file, and delete the associated \verb+\bibliography+ commands.                            %%
+%%===========================================================================================%%
+
+\bibliography{sn-bibliography}% common bib file
+%% if required, the content of .bbl file can be included here once bbl is generated
+%%\input sn-article.bbl
+
+\appendix
+\input{Text/appendix}
+
+\end{document}

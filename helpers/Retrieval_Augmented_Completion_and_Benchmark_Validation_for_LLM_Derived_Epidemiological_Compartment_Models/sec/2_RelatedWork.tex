@@ -1,0 +1,86 @@
+\section{Related Work}
+\label{sec:related}
+
+Our work sits at the intersection of four threads of prior research: (1) AI and machine
+learning for infectious-disease modelling, (2) automated or partially automated construction
+of epidemiological models, (3) uses of LLMs in epidemiology, and (4) model-driven
+engineering support for epidemiological modelling. The key distinction of our framework is
+that it does not treat the LLM as a forecasting model or as a free-form scientific assistant.
+Instead, it treats the LLM as an \emph{extraction and reconstruction instrument} whose output is checked against the paper text, a curated reference model, and structural consistency rules.
+
+\subsection{AI and Machine Learning for Infectious-Disease Modelling}
+
+Recent reviews show that AI is becoming a broad methodological layer in infectious disease epidemiology rather than a single technique. Liu \emph{et al.}~\cite{liu2023machinelearninginfectiousdisease} survey machine-learning approaches for infectious disease risk prediction and organize the literature into statistical prediction, data-driven machine learning, and epidemiology-inspired machine learning. Kraemer \emph{et al.}~\cite{Kraemer2025AI_epidemics} further broaden the picture by positioning AI for infectious-disease epidemics as a combination of machine learning, computational statistics, information retrieval, and data science, with applications spanning surveillance, data integration, forecasting, and decision support. Chopra \emph{et al.}~\cite{chopra2023differentiableagentbasedepidemiology} introduce differentiable agent-based epidemiology, showing how mechanistic simulators can be made amenable to gradient-based learning and linked to auxiliary data sources.
+
+\subsection{LLMs in Epidemiology}
+
+Wibaek \emph{et al.}~\cite{wibaek2023llm_epidemiology}
+show that large language models can be applied to epidemiological cohort text to build
+predictive models for downstream health outcomes. Matthay \emph{et al.}~\cite{Matthay2025}
+argue more broadly that AI can assist multiple stages of causal research in epidemiology,
+including data collection, variable construction, and decision support. Plecko \emph{et al.}~\cite{plecko2025epidemiologyllm} propose a benchmark for
+observational distribution knowledge across real-world domains, including health-related
+settings. Although this work is not about compartmental modelling, it is directly relevant to
+our problem formulation: it cautions against assuming that an LLM internally ``knows'' the
+population distributions or domain regularities needed for faithful epidemiological reasoning.
+That observation supports our design choice to rely on paper-grounded extraction and explicit
+validation rather than unconstrained generation.
+
+\subsection{LLMs for Epidemic and Transmission Modeling}
+
+The literature most closely related to our paper studies LLMs as assistants for epidemic or
+transmission modeling. Kwok \emph{et al.}~\cite{KWOK20243254} present a case study in which
+ChatGPT collaborates with a public-health practitioner to iteratively generate, refine, and
+debug a transmission model, ultimately fitting prevalence data and estimating epidemic
+quantities such as $R_0$ and final epidemic size. Their study shows
+that LLMs can lower the technical barrier to building a working infectious-disease model. EpiLLM~\cite{gong2025epillmunlockingpotentiallarge}
+recasts epidemic forecasting as an LLM adaptation problem, using spatio-temporal prompt
+learning, mobility signals, and autoregressive next-token prediction to improve multi-step
+forecasting accuracy on COVID-19 data. EpidemIQs~\cite{samaei2026epidemiqsprompttopaperllmagents}
+proposes a multi-agent prompt-to-paper framework that can conduct literature review,
+analytical derivation, network and mechanistic modelling, stochastic simulation,
+visualization, and manuscript drafting. This is highly relevant to our motivation because it
+shows growing interest in end-to-end LLM-supported epidemic-model development.
+
+%Our own earlier work~\cite{11344468} is the closest direct precursor. That study examined
+%whether LLMs could generate plausible epidemiological models from textual descriptions in a
+%single-case setting. The current paper goes beyond plausibility. We introduce a full
+%paper-to-model pipeline, evaluate it across 10 diseases, compare LLM backends systematically,
+%and, most importantly, define a reproducibility-oriented notion of \emph{completeness} that
+%separates paper promises, extracted content, and reference agreement.
+
+%\subsection{Model-Driven Engineering and Reproducible Model Representations}
+
+%Model-driven engineering provides the formal substrate that makes our evaluation possible.
+%MDE uses explicit metamodels to define the structure of domain artifacts and to support
+%artifact generation, checking, and transformation~\cite{brambilla2012model}. In the
+%infectious-disease setting, EpiMDE~\cite{epimde2024} is the most relevant prior platform: it
+%proposes an extensible metamodel and integrated environment for epidemiological
+%compartmental models, enabling structured model creation, simulation, and cross-model
+%comparison. Our work directly builds on this idea of a formal epidemiological representation.
+%The difference is that EpiMDE primarily supports \emph{expert-authored} models, while our
+%framework targets \emph{paper-derived} models and studies whether LLM-assisted extraction can
+%populate such a representation completely and correctly.
+
+%\subsection{Retrieval, Matching, and Verification}
+
+%RAG methods ground LLM outputs in retrieved evidence rather than relying only on
+%parametric memory~\cite{lewis2020retrieval}. This is especially important in our setting,
+%where many target items are short technical expressions, parameter symbols, or local textual
+%commitments that appear only within the paper being processed. For that reason, our system
+%uses paper-grounded retrieval over text chunks and parameter tables, not open-domain
+%retrieval.
+
+%Likewise, evaluating extracted epidemiological entities requires more than exact string match.
+%Compartment and parameter names vary across papers through abbreviations, Greek/Latin
+%notation changes, age qualifiers, and disease-specific terminology. We therefore adopt a
+%domain-aware fuzzy matching strategy based on normalized labels and
+%\texttt{SequenceMatcher}~\cite{python_difflib}. This evaluation layer is not merely an
+%implementation detail; it is part of the contribution because it enables a fair measurement of
+%whether two model artifacts refer to the same epidemiological concept.
+
+%Overall, the literature now contains substantial work on AI for epidemiology, LLM-supported
+%epidemic modelling, forecasting, and model automation. What remains underexplored is the
+%specific reproducibility question addressed here: given only a published modelling paper, how
+%faithfully can one recover the formal compartmental model it actually specifies, and how
+%should that faithfulness be measured? Our framework fills that gap.

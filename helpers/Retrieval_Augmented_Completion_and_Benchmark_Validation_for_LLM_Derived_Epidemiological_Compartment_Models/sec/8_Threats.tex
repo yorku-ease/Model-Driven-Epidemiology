@@ -1,0 +1,56 @@
+\section{Threats to Validity}
+\label{sec:threats}
+
+\textit{Internal validity.}
+The completeness score formula (Equation~\ref{eq:completeness}) and its component weights
+(25/25/20/15/15) were defined a priori based on domain judgment rather than optimized on
+a holdout set. Different weight assignments would shift absolute scores but are unlikely to
+change the relative ordering of diseases or the qualitative patterns we report.
+To verify this, we tested three alternative weight configurations: equal weights
+(20/20/20/20/20), a coverage-heavy scheme (35/35/10/10/10), and an accuracy-heavy scheme
+(20/20/10/25/25). The disease ranking is preserved across all configurations: Dengue,
+Measles, and COVID-19 consistently score highest and Ebola consistently lowest,
+confirming that the completeness ordering is robust to reasonable weight variation.
+The structural error taxonomy reflects common failure modes observed during development; it may
+not cover all possible errors in other disease models.
+
+\textit{Construct validity.}
+Fuzzy string matching with synonym groups is a heuristic: it may produce false positives
+when different epidemiological concepts share a word (e.g., ``Susceptible adults'' matching
+``Susceptible children'') or false negatives for non-standard abbreviations not covered by
+our synonym list. The 0.6 \texttt{SequenceMatcher} threshold was set to minimize both error
+types on our dataset but was not tuned on a separate validation set.
+
+\textit{External validity.}
+Our study covers 10 diseases with models of varying complexity (4--23 flows). These were
+chosen to span a range of standard structures (SIR, SEIR, multi-group, host--vector) but
+may not represent the full diversity of published compartmental models, particularly agent-based
+or network-based models that do not fit the ODE compartmental structure. Results for
+diseases with highly non-standard parameter naming conventions (e.g., Bayesian notation)
+may differ from what we report here.
+Although evaluated on these 10 ODE compartmental models, the framework is
+design-agnostic at the pipeline level: the three-phase structure (reference construction,
+LLM-assisted extraction, gap completion) applies to any parametric model class where a
+formal reference and a natural-language description coexist, including pharmacokinetic,
+ecological, and within-host models.
+
+\textit{LLM non-determinism.}
+All Phase~2 extractions and Phase~3 inferences used temperature~0, which minimizes but
+does not eliminate non-determinism in some LLM backends. A small fraction of results could
+differ on replication. To mitigate this, we report averaged patterns and note that all runs
+used the same prompts and model versions.
+
+\textit{Gold standard quality.}
+The reference \texttt{.compmodel} files were constructed from each paper's ODE equations
+and parameter tables, and validated against the reported simulation results and figures
+in the paper, not from informal reading alone.
+Each compartment, flow, and parameter in the gold model traces directly to a named
+equation or table entry. For papers that provided simulation code, we cross-validated
+the gold model's compartment wiring and initial conditions against the code. For those
+without code, ambiguous parameter assignments were resolved by returning to the
+differential equation system and identifying which flow each symbol multiplies.
+This construction methodology ensures the gold standard is grounded in the paper's own
+formal specification, minimising subjective interpretation. The reference models and
+their source annotations are included in the project repository.
+Any residual misinterpretation of ambiguous notation propagates to the completeness score,
+which is itself the instrument for detecting such ambiguity in the source paper.

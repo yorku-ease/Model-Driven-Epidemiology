@@ -1,0 +1,70 @@
+\section{Introduction}
+
+Compartmental epidemiological models are the standard tool for studying infectious disease
+dynamics. In such models, a population is partitioned into mutually exclusive states
+(e.g., Susceptible, Exposed, Infectious, Recovered), and transitions between them are
+governed by differential equations parameterized by rates such as transmission
+coefficient $\beta$ or recovery rate $\gamma$~\cite{keeling2008modeling}.
+Because this structure is widely familiar, authors often treat many components as
+conventional and leave them implicit, describing only deviations from a standard template.
+While generally harmless within a single research group, this practice creates a
+\textit{specification--validation gap}: the model described in the text is not necessarily
+the one validated in equations or code, nor the one a reader can reproduce. This gap
+inhibits reproducibility, reusability, and cross-disease extensibility, as seen during
+the COVID-19 pandemic when models were difficult to compare without harmonizing
+structures and assumptions. More broadly, published compartmental models exhibit
+substantial variation in structure and notation~\cite{keeling2008modeling}.
+
+Manual reconstruction of such models does not scale. We use large language models (LLMs)
+as \emph{extraction instruments}: they ingest full-length PDFs, identify epidemiological
+constructs, and produce structured representations. Rather than allowing LLMs to
+\emph{generate} models, which shifts the gap into opaque behavior, we constrain them to
+recover only what each paper states (explicitly or by convention), and then measure
+deviation from both paper promises and an independent reference model. This turns the
+specification--validation gap into a measurable property of the paper rather than an
+informal judgment.
+
+From a model-driven engineering perspective, the pipeline operates over an explicit
+epidemiological metamodel instantiated as \texttt{.compmodel} artifacts. Phase~2 performs
+a paper-to-model transformation producing metamodel-conformant instances, while Phase~3
+performs model validation, gap analysis, and rule-based repair, aligning the approach
+with core MDE concerns of model conformance, completeness, and transformation quality.
+
+We present a three-phase pipeline that operationalizes this idea at scale.
+\textbf{Phase~1} parses reference (``gold-standard'') XML models and constructs structured
+representations of compartments, parameters, flows, and sensitivities.
+\textbf{Phase~2} extracts a draft model from each paper by combining structured text
+parsing, LLM-assisted entity extraction, and XML synthesis. We evaluate three commercial
+LLM backends (OpenAI, Gemini, Claude) using a domain-aware fuzzy matching protocol that
+handles epidemiological label variation.
+\textbf{Phase~3} refines the draft via three-layer gap analysis, retrieval-augmented
+completion from the paper text, optional LLM inference, and rule-based structural repair.
+A composite \emph{completeness score} (0--100) summarizes coverage, traceability, accuracy,
+and structural integrity.
+
+We apply this pipeline to 10 peer-reviewed papers spanning 10 infectious diseases:
+cholera~\cite{Fung2014Cholera}, COVID-19~\cite{TuiteE497}, dengue~\cite{dengue},
+Ebola~\cite{Abbas2024Ebola}, influenza~\cite{Corbella2017MonitoringAP},
+HIV~\cite{Espitia2022}, malaria~\cite{Akowe2025Malaria}, measles~\cite{Pokharel2024Measles},
+tuberculosis~\cite{tuberculosis}, and Zika~\cite{Lee2016Zika}. Models are represented in
+the EpiMDE platform~\cite{epimde2024}, a domain-specific language based on
+\texttt{.compmodel} files, enabling consistent comparison across extracted and reference
+models. The main contributions of this paper are:
+
+\begin{enumerate}[leftmargin=*, label=\arabic*.]
+  \item A model-driven measurement framework for epidemiological model completeness that
+        separates paper promises, extracted content, and reference agreement, making the
+        specification--validation gap a measurable artifact property.
+  \item A fuzzy matching protocol for compartmental model entities that handles
+        transliteration, synonym groups, and naming variation.
+  \item A model completion, validation, and structural repair pipeline using
+        paper-grounded retrieval and deterministic repair rules.
+  \item A reproducibility-oriented completeness score measuring coverage, reference
+        agreement, traceability, parameter accuracy, and structural integrity.
+  \item An empirical study across 10 diseases identifying systematic extraction gaps and
+        structural error patterns.
+\end{enumerate}
+
+This paper extends our earlier work~\cite{11344468}, which demonstrated LLM-based model
+generation for a single SEIR disease. Here we introduce a full validation pipeline,
+a completeness metric, and a cross-disease empirical analysis.

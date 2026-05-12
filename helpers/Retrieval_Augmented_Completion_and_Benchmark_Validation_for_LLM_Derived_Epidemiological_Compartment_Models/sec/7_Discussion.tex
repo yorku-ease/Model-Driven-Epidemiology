@@ -1,0 +1,199 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{What the Completeness Score Measures---and Why 74.0\% Is Informative}
+
+The mean completeness score of 74.0/100 should not be read as a grade for the extracted
+models. It should be read as the answer to a question that has never been asked
+systematically before: \emph{if you try to reconstruct the compartmental model from a
+peer-reviewed paper, how far can you get?}
+
+Prior to this framework, that question had no instrument. Researchers either trusted
+that published models were fully specified (they are not) or informally noted missing
+details without measuring the gap. A score of 74.0\% means that, on average, the
+reconstructed model recovers roughly three-quarters of the gold-standard structure,
+traces most of its fills to source text, achieves high numerical parameter accuracy where
+parameters can be found, and resolves about half its internal structural errors
+automatically. The 26\% shortfall is not a failure of the pipeline---it is a measurement
+of what the papers themselves do not specify.
+
+This framing is the primary scientific contribution of the score. A perfect score of 100
+would not mean the model is correct; it would mean the paper is fully explicit. A low
+score, as in Ebola (55.4), does not mean the Ebola model is wrong; it means the Ebola
+paper leaves more implicit. The score is a property of the \emph{paper}, not the
+\emph{disease}.
+
+\subsection{Failure Case: Ebola---When Parameters Are Entirely Implicit}
+
+Ebola is the lowest-scoring disease (55.4/100), driven by two exceptional failures:
+low traceability ($T = 37.5\%$) and partial gap reduction ($G = 33.3\%$). Most
+Phase~3 fills for Ebola were flagged---parameter values were only partially recoverable from
+the paper text via RAG or LLM inference.
+
+Examining the paper~\cite{Abbas2024Ebola} reveals why. The Ebola model uses a
+conformable fractional-order ODE formulation. Parameter values are stated in terms of
+posterior estimates from Bayesian fitting to surveillance data, reported in a
+supplementary table with uncertainty intervals. The model text gives ODE structure but
+describes parameters only symbolically (``$\alpha_1$ is the progression rate from E to I'')
+without attaching a numeric value to any name. The structural validator correctly detected
+\emph{parameter layer contamination} in the extracted model because the LLM injected
+posterior means into parameter expressions, conflating the estimation result with the
+model input.
+
+This reveals a specific pathology in the Ebola paper's writing style: it separates
+model \emph{structure} (written in full) from model \emph{calibration} (relegated to
+supplementary material in a format not connected by name to the ODE parameters).
+This is not unusual for Bayesian epidemiological papers, and it represents exactly
+the kind of incompleteness our framework is designed to detect. A reader attempting
+to reproduce the Ebola model would face the same obstacle: the paper tells you what
+the compartments mean but not what to put in them for a default run.
+
+\subsection{Failure Case: Malaria---When Parameter Notation Resists Matching}
+
+Malaria achieves perfect compartment recall (1.0) and perfect flow recall (1.0) but
+parameter recall plateaus at 0.737---even after Phase~3. The 12 remaining gaps after
+filling are all parameters.
+
+The malaria paper~\cite{Akowe2025Malaria} integrates vector and non-vector transmission
+pathways, introducing composite rate expressions such as
+$\Lambda_h = \frac{b \beta_{mh} I_m}{N_h} + \Lambda_{nh}$, where $\Lambda_{nh}$ is
+a non-vector force of infection term defined recursively elsewhere. When the RAG index
+retrieves such a passage, the fill value is the symbolic expression, not a number. The
+Phase~3 completeness score correctly penalizes this: the fill is traced to source
+(traceability is 66.7\%) but the numeric accuracy comparison fails because the gold
+value is a constant and the fill is a formula.
+
+This failure reveals a general tension in mathematical biology writing: rate parameters
+are frequently \emph{defined compositionally}---as functions of other parameters---
+rather than as independent constants. A compartmental model extracted from such a paper
+necessarily inherits this incompleteness unless the reader also interprets the full
+mathematical derivation. This is an inherent limit of extraction from text, and
+our framework surfaces it explicitly rather than hiding it behind a high F1 score.
+
+\subsection{Other Challenging Cases: Flu, Tuberculosis, and HIV}
+
+Three other diseases score below 70/100 for distinct but related reasons.
+
+\paragraph{Influenza (63.1/100) --- parameters buried in figures.}
+The flu paper~\cite{Corbella2017MonitoringAP} achieves perfect compartment and flow
+recall before Phase~3, leaving only one unfilled gap: a transmission parameter whose
+numeric value appears only in a figure caption rather than in the main text.
+RAG indexes the paper body but cannot extract values from embedded figure graphics,
+so the gap reduction score is 0\% despite strong overall structure.
+The failure mode here is not a problem with our pipeline---it is a reporting choice in
+the paper. A numeric value placed only in a figure is inaccessible to any text-based
+extraction system. Future work on figure-level OCR or caption parsing could close
+this class of gaps.
+
+\paragraph{Tuberculosis (67.1/100) --- composite ODE coefficients.}
+The TB paper~\cite{tuberculosis} defines its transmission parameters as composed
+expressions embedded in the ODE system (e.g., $\beta_{t} = \beta_0 (1 - \varepsilon)$),
+where each component is defined in a different subsection.
+RAG retrieves individual passages but cannot assemble multi-part definitions spread
+across sections, so gap reduction reaches only 25\%.
+Fill traceability is high (100\%) because the fills that \emph{are} made are correctly
+sourced; the missing gaps are simply ones where no single passage contains a complete value.
+This reflects a writing practice common in TB and multi-strain models: parameters are
+introduced incrementally rather than in a consolidated table.
+
+\paragraph{HIV (81.6/100) --- structural complexity outpaces repair.}
+HIV scores well on recall (81.6 after Phase~3) but has the lowest structural integrity
+(25.0\%) of any disease. The HIV model~\cite{Espitia2022} is a three-risk-group formulation
+with 14+ group-specific parameters ($b_{hw}$, $b_{wm}$, $c_{hm}$, \ldots).
+After Phase~3 fills compartments and flows correctly, the structural repairer cannot
+automatically assign each group-specific rate to its correct flow without a formal
+parameter-to-flow mapping table that the paper does not provide.
+The 25\% structural integrity score is therefore not a gap in extraction --- the
+entities are found --- but a gap in the paper's formal specification of how those
+entities connect.
+
+\paragraph{Common root cause.}
+These cases share a pattern: the paper's \emph{informal} text contains enough information
+to understand the model if read by a domain expert, but that information is not organized
+in a way that supports automated extraction. Values in figures, multi-part definitions,
+and implicit parameter assignments all require reader inference that goes beyond what any
+text retrieval system can provide today.
+
+\subsection{What Structural Errors Reveal About How Modelers Write Papers}
+
+The 192 structural errors detected across 10 Phase~3 models are not random noise.
+Each error class corresponds to a recurring pattern in how compartmental modeling
+papers are written:
+
+\paragraph{Uniform parameter collapse (10 occurrences, 100\% resolved).}
+This error---where a single parameter is assigned to all flows---occurs when the paper
+introduces rate parameters symbolically ($\beta$, $\gamma$, $\mu$) but discusses each
+one in isolation without explicitly stating which transition each governs. The LLM,
+lacking an explicit assignment table, defaults to reusing the first extracted parameter
+everywhere. Papers that provide a single ``parameter table'' without a flow-by-flow
+breakdown systematically trigger this error. The 100\% resolution rate confirms that
+the error is deterministic given a correct parameter semantic classification.
+
+\paragraph{Orphaned parameters (88 occurrences, 32\% resolved).}
+This is the most common error class and the hardest to resolve. An orphaned parameter
+appears in the model's parameter list but is not connected to any flow. It arises
+because papers often declare a large parameter set in a table and then use only a
+subset in the differential equations, with the remaining parameters entering only in
+derived quantities (e.g., the basic reproduction number $R_0$). When the LLM faithfully
+copies all declared parameters into the model but does not have enough context to map
+each one to a specific flow, orphaned parameters result. This is a direct consequence
+of the gap between \emph{parameter inventory} (what the paper lists) and \emph{parameter
+deployment} (what the paper's ODEs actually use). HIV (14 orphaned params) and Malaria
+(11 orphaned) are the most affected because their multi-group and multi-pathway structures
+declare group-specific parameters ($b_{hw}$, $c_{hm}$, $\Lambda_{nh}$) whose assignment
+to specific flows is only recoverable from the ODE system itself, not the text.
+
+\paragraph{Self-referential flows (12 occurrences, 25\% resolved).}
+A self-referential flow has the same compartment as source, target, and contact
+compartment---an impossible mass-action term. This arises when a paper writes
+``susceptibles are infected at rate $\beta S I / N$'' without explicitly naming the target
+state. The LLM correctly identifies the flow as a contact process but resolves the target
+to the same compartment because no Exposed or Infectious compartment is mentioned in
+that passage. Papers that introduce S, I, R sequentially but defer the transition
+diagram to a figure (rather than stating ``S transitions to I'') trigger this pattern.
+The 25\% resolution rate reflects that only models with an explicit intermediate
+compartment can be structurally repaired; simple SIR models with no latent stage must
+remain annotated.
+
+\paragraph{Parameter layer contamination (24 occurrences, 33\% resolved).}
+This error occurs when the LLM inserts posterior estimates, likelihood values, or
+confidence intervals into parameter expressions---conflating Bayesian model fitting
+output with ODE model inputs. It is entirely a consequence of papers that present
+both the model and its fitted parameters in the same section, using identical notation
+for prior and posterior quantities. The relatively low resolution rate (33\%) reflects
+that clearing a contaminated expression removes information the paper provides but
+does not supply the correct deterministic value.
+
+\paragraph{Aggregate insight.}
+Taken together, these four patterns point to the same root cause: the convention in
+epidemiological papers of separating the structural description (compartment diagram,
+ODEs) from the operational description (parameter values, assignments, initial conditions)
+without explicitly linking them. This convention is fine for readers who can do the
+linking mentally, but it is precisely what makes automated model extraction hard and
+makes formal reproducibility assessment necessary. Our framework is designed to detect
+and quantify this gap, not to judge the papers that exhibit it.
+
+\subsection{RAG vs.\ LLM Inference: Two Roles for the Same Goal}
+
+When evaluated by \emph{recall}---the metric that measures coverage without penalizing
+extra entities---LLM-only is nearly as effective as RAG-only (mean $\bar{R}$ of 0.936
+vs.\ 0.951, Table~\ref{tab:ablation}). Both modes substantially outperform the
+Phase~2 draft (0.846). The key difference is what each mode adds when it succeeds:
+
+RAG fills are \emph{traceable}---they are sourced from a specific passage in the paper's
+own text, which is exactly the kind of evidence a completeness audit should require.
+When RAG fills a missing flow, we can point to the sentence that specifies it.
+LLM-inferred fills are \emph{plausible but unverifiable}---the LLM generates a
+structurally reasonable entity based on epidemiological conventions, but that entity
+may not correspond to anything the authors intended. LLM fills are flagged with
+\texttt{source=inference} and lower the fill traceability component of the completeness
+score accordingly.
+
+The practical implication has two sides. As a \emph{coverage tool} (``what entities
+does this model need?''), LLM inference adds real value: it reaches nearly the same
+recall as RAG and costs no additional paper reading. As an \emph{audit tool} (``what
+did the paper specify?''), only RAG-sourced fills are trustworthy evidence of the paper's
+intent. A gap that RAG cannot fill but LLM can represents a genuine specification
+failure in the paper---the model element exists in the final model but was never written
+down explicitly. That is precisely the kind of failure our framework is designed to
+surface and quantify.

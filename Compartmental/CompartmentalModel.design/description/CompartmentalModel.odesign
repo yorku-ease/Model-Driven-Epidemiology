@@ -3,7 +3,7 @@
   <ownedViewpoints name="MyViewpoint">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="Diagram" initialisation="true" domainClass="compartmentalmodel.CompartmentalModel" enablePopupBars="true">
       <metamodel href="../../CompartmentalModel/compartmental.ecore#/"/>
-      <layout xsi:type="description_1:CompositeLayout"/>
+      <layout xsi:type="description_1:CompositeLayout" padding="60" direction="LeftToRight"/>
       <defaultLayer name="Diagram">
         <nodeMappings name="Compartment" semanticCandidatesExpression="compartments" domainClass="Compartment"/>
         <edgeMappings name="Flow" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Compartment']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='Compartment']" targetFinderExpression="aql:self.target" sourceFinderExpression="aql:self.source" domainClass="Flow" useDomainElement="true">
@@ -279,6 +279,15 @@
             <centerLabelStyleDescription labelSize="12" labelExpression="aql:if self.rateParameter->notEmpty() then self.rateParameter.name else self.rate endif">
               <labelFormat>italic</labelFormat>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="ContactEdge" semanticCandidatesExpression="aql:self.compartments.outgoingFlows->select(f | f.oclIsKindOf(compartmentalmodel::ContactFlow))" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='Diagram']/@additionalLayers[name='Default']/@nodeMappings[name='CompartmentNode']" sourceFinderExpression="aql:self.oclAsType(compartmentalmodel::ContactFlow).contactCompartment" targetFinderExpression="aql:self.eContainer()" domainClass="compartmentalmodel.ContactFlow" useDomainElement="true">
+          <style lineStyle="dot" sourceArrow="OutputArrow" targetArrow="InputArrow" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+            <centerLabelStyleDescription labelSize="10" labelExpression="aql:if self.contactRateParameter->notEmpty() then self.contactRateParameter.name else self.contactRate.toString() endif">
+              <labelFormat>italic</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>

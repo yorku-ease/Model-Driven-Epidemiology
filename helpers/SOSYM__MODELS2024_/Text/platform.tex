@@ -1,0 +1,257 @@
+
+In this section, we outline the requirements for modeling platform in the context of compartmental models, and then we discuss the design and features of the proposed platform.
+
+\subsection{Platform Requirements}
+
+Understanding how and why epidemiologists will use our platform is the first step in order to design it.
+With the help of an epidemiologist, we identified atomic use cases for our platform to support, presented as user stories in \autoref{t:requirements}.
+\input{Text/user-stories} % todo this damn table better be inlined
+
+In this paper, we focus on user stories 1-5, 14 and 20 for creating and managing epidemiological models, as well as 22, 23 and 24 which enable metamodeling for platform users. The current implementation of the platform also enables user stories 9, and 15-21.
+
+We identify platform features required to fulfill the identified user stories:
+\begin{itemize}
+    \item Base metamodel type system \{1, 22, 23\}
+    \item Graphical modeling interface for model creation \{1\} and modification \{5\}
+    \item Model comparison \{4\}.
+    \item Runtime metamodel extensibility using plugins \{14, 24\}
+    \item Infer and enable simulations as derived from a model \{9,15-21\}
+\end{itemize}
+
+\subsection{Basic functionality}
+
+The EpiMDE IDE offers the ability to create models based on the metamodel we proposed previously. Based on the Eclipse user interface, the modeler can choose to create a new EpiMDE project and start modeling. The project includes the basic model, which can be augmented with selected extensions. Extensions can be included in the project as Java libraries (JAR files). Through the ``New Project'' wizard, the modeler can choose all desired extensions. Once the project is created, the elements that are defined in the base metamodel and in the extensions will be come available to the modeler. 
+
+The modeler is presented with a graphical interface and a graphical language to start creating the models. Compartments are represented using rectangles which contain flows and other compartments. Compartments and flows have their name and type displayed within their shape. Flows are not arrows, but rather diamonds with labeled arrows pointing from it to compartments. The reason for this is that a flow is not a simple relation between compartments, but a first class element with its own properties, including rates, sources, sinks and so on. Each line pointing from a flow to a compartment is labeled according to its role. For example, a contact $C$ has three arrows labeled "from", "to" and "contact" and on the diamond is displayed "Contact $C$".
+
+The IDE inherits a lot of the features of the EMF graphical editors. As such, if an element, a compartment or a flow, is clicked, its properties are displayed and can be directly edited. The label is an example of such a property. For more details, extra options can be accessed. Groups, for example, offer a form of toggle for each of their children marking them as sink, source, neither or both. This is not visible as a property but rather requires opening it in a popup. In addition, the editor presents warnings for structural errors ``live'' during development. This prevents the generation of simulations, unless all errors are fixed. Possible errors may include removing references from a flow to a compartment and not pointing it to a new one, when removing all the labels from a compartment, or making use of the same labels twice on different compartments.
+
+
+The graphical interface is made available using a Sirius\footnote{\url{https://eclipse.dev/sirius/overview.html}} viewpoint definition project. It allows us to define rules for presenting model element hierarchies and relationships. Specifically, we define two important rules, one for compartments and one for flows. Sirius allows recursive definitions using the $reused container mappings$ property, which we can apply to compartments so that their children compartments recursively display their children. A limitation from the combination of using Sirius and supporting open sets of types is that rendering types which are not compartments or flows is not supported. Our platform allows any model to be loaded, even if some elements are from an entirely different hierarchy. The Sirius viewpoint would not know how to display these objects, so they may only be accessible through properties of the object they belong to, through a popup implemented by the developer.
+
+\subsection{Advanced functionalities}
+
+Besides creating models, EpiMDE offers other modeling functions, including model comparison and differencing, parameterization, and simulation.
+
+\subsubsection{Model Comparison}
+
+Comparing models with their previous versions or with similar models helps detect errors and understand model behaviour. It is an important task to increase model reproducibility as it enables users to definitively know when two models present differences. For model versioning it accelerates common tasks such as merging or extracting commonalities.
+
+For our purposes, model comparison operates at the structural level but provides information aggregating the physical representations produced by the model. In other words, if two models are different but produce the same representation, this will be clear to the user. Similarly, if two models are structurally identical but a property differs which yields a different physical representation, this will also be presented to the user. Metamodelers may find these features helpful in the event where they want to develop a metamodel extension. By creating a reference model which produces the desired output and comparing it with the result of a model making use of the extension, they can automatically validate the output of the extension.
+
+The current implementation of model comparison identifies simple differences like renaming, adding and deleting, or compound differences like moves, which corresponding to deleting and adding the same element. We have built a domain-specific comparison algorithm on top of the EMF Compare\footnote{\url{https://eclipse.dev/emf/compare/}} and EMF DiffMerge\footnote{\url{https://wiki.eclipse.org/EMF_DiffMerge/}} frameworks. 
+
+Model comparison relies on identifying a difference as either retyping, renaming, moving, adding or deleting, then synthesizing the differences for the user in their most useful form.
+Some model difference patterns can be synthesized into more easily understood ones, such as presenting matching added and deleted elements as moves. New elements that are contributed by metamodel extensions need to override an abstract comparison method. The results of the comparison follow the hierarchical structure of the model components.
+
+The model comparison comprises of two steps. In the first step (Algorithm~\ref{alg:match}), the elements of the two models to be compared are matched. Two elements are matched if they have identical labels or if they have the exact same contents. This allow us to match elements, even if they are renamed between the two models. When considering physical compartments, the lists of labels need to be identical.
+
+\paragraph{Model Matching Algorithm Explanation}
+
+\textbf{Algorithm~\ref{alg:match} (SameUniqueLabelMatch)} establishes correspondences between compartments in two models being compared. The algorithm uses label-based matching with hierarchical propagation:
+
+\begin{enumerate}
+    \item \textbf{Identify unique labels} (line 2): Compute the intersection of labels that appear exactly once in model 1 and exactly once in model 2. These unique labels serve as reliable anchors for matching. For example, if both models have exactly one compartment labeled ``Infectious-Symptomatic'', this label is unique and trustworthy for matching.
+
+    \item \textbf{Match compartments by unique labels} (lines 4-10): For each pair of compartments $(c1, c2)$ from the two models, check three conditions: (a) $c1$ is not yet matched, (b) $c2$ is not yet matched, and (c) $c1$ and $c2$ share at least one unique label. If all conditions hold, create a match between $c1$ and $c2$. This ensures one-to-one matching using only reliable label evidence.
+
+    \item \textbf{Propagate matches to parents} (lines 12-18): For each established match, examine the parent containers of the matched compartments. If both parents are compartments (e.g., Groups or Products), have the same type, and are not yet matched, create a parent match. This hierarchical propagation enables matching of aggregate structures based on their matched children. For example, if all children of two Groups are matched, the Groups themselves should be matched.
+
+    \item \textbf{Return match result} (line 20): The algorithm produces a MatchResult containing pairs of corresponding elements, establishing the basis for subsequent difference detection.
+\end{enumerate}
+
+The algorithm's strength lies in its use of unique labels as anchors combined with hierarchical propagation, enabling robust matching even when models have been partially restructured or renamed. 
+
+
+\begin{algorithm}[th]
+\caption{SameUniqueLabelMatch}
+\label{alg:match}
+\begin{algorithmic}
+\State $res \gets$ new MatchResult()
+\State $uniqueLabels \gets$ $intersection$(unique labels of model 1, unique labels of model 2)
+
+\For{$each$ $Compartment$ $c1$ $\in$ model 1}
+    \For{$each$ $Compartment$ $c2$ $\in$ model 2}
+        \If{$res$.$find$($c1$) is empty \textbf{and} $res$.$find$($c2$) is empty \textbf{and} $intersection$($c1$.$labels$, $c2$.$labels$, $uniqueLabels$).$size$() > 0}
+            \State Add $Match$($c1$, $c2$) to $res$
+        \EndIf
+    \EndFor
+\EndFor
+
+\For{$each$ $Match$ $match$ $\in$ $res$.$matches$}
+    \State $leftParent \gets m.left.eContainer()$
+    \State $rightParent \gets m.right.eContainer()$
+    \If{$leftParent$ is a $Compartment$ \textbf{and} $leftParent$ same class as $rightParent$ \textbf{and} $leftParent$ not matched \textbf{and} $rightParent$ not matched}
+        \State Add $Match$($leftParent$, $rightParent$) to $res$
+    \EndIf
+\EndFor
+
+\State \textbf{Return} res
+\end{algorithmic}
+\end{algorithm}
+
+In the second step of the comparison (Algorithm~\ref{alg:differencing}), matched elements are compared to find differences. Each pair of matched compartments is compared, but since aggregate compartments of the same type compare their children, they are marked as \emph{accounted for} and synthesized as part of their parent comparison. The partial ordering produced by the matching algorithm allows us to iterate directly through matches and always find a parent match before their children, enabling the \emph{accounted for} process.
+Once the differencing is done, moves are also synthesized using matching additions and subtractions.
+
+\paragraph{Differencing Algorithm Explanation}
+
+\textbf{Algorithm~\ref{alg:differencing} (Differencing)} computes structural differences between matched model elements and synthesizes high-level change operations. The algorithm works as follows:
+
+\begin{enumerate}
+    \item \textbf{Initialize with root comparison} (lines 1-2): Begin by comparing the first matched pair (typically the root models). This produces an initial set of differences (additions, deletions, modifications) and marks compared elements as ``accounted for''.
+
+    \item \textbf{Compare remaining matches} (lines 4-7): Iterate through all remaining matched pairs. For each match not yet accounted for (i.e., not already compared as part of a parent's comparison), invoke the $compare$ method to identify differences. The ``accounted for'' check prevents redundant comparisons---if a Group's children were already compared recursively during the Group comparison, they are skipped here.
+
+    \item \textbf{Synthesize moves from additions and deletions} (lines 8-15): Examine all differences identified as additions. For each added compartment $c$, check if $c$ appears in the match set (meaning it exists in both models but in different locations). If so, reclassify the addition-deletion pair as a \textit{move} operation rather than separate add and delete operations. This provides more intuitive change descriptions---``compartment X moved from Group A to Group B'' is clearer than ``X deleted from A and X added to B''.
+
+    \item \textbf{Return synthesized differences} (line 16): The final result is a set of high-level differences (additions, deletions, modifications, moves) that accurately describe model evolution.
+\end{enumerate}
+
+The algorithm's key contribution is synthesizing low-level structural changes (add/delete) into semantically meaningful operations (move), making comparison results easier for modelers to understand and act upon. The ``accounted for'' mechanism ensures efficient processing by avoiding redundant comparisons in hierarchical structures.
+
+
+\begin{algorithm}[th]
+\caption{Differencing}
+\label{alg:differencing}
+\begin{algorithmic}
+\State $firstMatch \gets$ first match in $matches$
+\State $diffs \gets$ \{$firstMatch.first$.compare($firstMatch.second$)\}
+
+\For{$each$ $Match$ $match$ $\in$ $matches$}
+    \If{$match$ not yet accounted for}
+        \State $diffs$.$add$($match.first$.$compare$($match.second$))
+    \EndIf
+\EndFor
+\For{$each$ $Difference$ $d$ $\in$ $diffs$}
+    \For{$each$ $Compartment$ $c$ $\in$ $d$.$additions$}
+        \If{$c$ is matched}
+            \State Set match as move
+        \EndIf
+    \EndFor
+\EndFor
+\State \textbf{Return} $diffs$
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsubsection{Simulation}
+
+Simulation refers to the application of equations over time, making use of equations, parameters and a scenario. Typically it is used to generate graphs used for estimating hospitalization, mortality, peak cases, etc. The output of a simulation are values for each compartment at every time step. A single simulation can then be used to produce multiple graphs of different aspects. The equations can be directly generated from the model, while parameterization of the equations and specification of scenarios happen separately, as will be described next. 
+
+Before the simulation, a compilation phase where the equations are parsed and used to generate python functions is performed. Even though compilation can be computationally expensive, it only needs to happen once for every model. Each equation will be evaluated thousands of times during simulation, so any time lost to compilation can be repaid many times over by saving simulation time. The compilation phase applies some simple optimizations. For example, compartments are placed into an array, making use of indices rather than labels for accessing the values. Similarly for parameters, where the corresponding value is found during compilation in the parameterization file and inlined in the equation for simulation.
+
+To simulate, all the user needs to do is specify a time span, a set of points in time the simulation will provide values for. This time series does not require regular steps and the steps do not necessarily dictate simulation detail. For example, the user may ask for daily steps for a year, followed by weekly steps for 4 years, but the simulation will step multiple times per day independently of the time span, in order to produce accurate results.
+
+Simulation uses an ODE solver, such as the Fourth Order Runge-Kutta method, or approximates by making use only of the current derivative at a given time. The accuracy increases by making use of higher order derivatives instead of only the first derivative, at the cost of increased simulation time. The current simulation environment supports both approaches with a toggle. According to our experiments, for a model with a large amount of compartments, the cost of using an ODE is too large. Population changes to any compartment value affects hundreds of equations, leading to confusion for the ODE as to the evaluation of the higher order derivatives, which makes it collapse for very short time steps. The current implementation makes use of a very naive approach in which the user provides a tolerance which each compartment change between two steps must conform. If the tolerance is not reached between a step from $t_1$ to $t_2$, we recursively call the simulation with 10 steps [$t_1$, $t_1 + 0.1 * t_2$, ...,  $t_1 + 0.9 * t_2$, $t_2$], which may or may not further divide the steps based on tolerance. Finally, we offer a functionality to plot values easily by using the labels found in the model. For example, $plot\_by\_labels$([[$'Alive'$], [$'Deceased'$]], [$'I-TB'$]) plots two curves: $Alive$ and $Deceased$, for all $I-TB$, compartments of people infected with tuberculosis.
+
+\paragraph{Scenarios}
+A scenario is a distribution of the population in compartments at the beginning of a simulation.
+For example, a Covid-19 simulation for Canada requires a scenario with around 38 million people placed in the compartments, while a simulation for the united states requires around 330 million, but also the age and comorbidities distributions.
+Much of the code for scenarios is specific to the geographical area of the studied population, unlike parameters in equations.
+
+\paragraph{Parameterization}
+
+In order to use a model for simulation, it is necessary for the user to provide values for each equation parameter and original compartment population. Our solution offers parameterization in the same environment as the simulation, in a python notebook. This enables a very short feedback loop between verifying a model behaviour in the simulation and making changes to the parameters.
+
+Equations inside products with many dimensions produce a large amount of parameters that are likely closely related. Our solution offers an API for selecting parameters using operand criteria to set all relevant instances at once by providing a tensor of values. Generic python functions for manipulating parameters and scenario values allow for parameterizing a model in a reasonable time. If a parameterization call is invalid it is flagged right away, such as providing an incorrect amount of values for a selection of parameters.
+
+Parameters always have at least 2 arguments, the first is their name, such as $contact-mixing$ and the second is the name of the equation they are used in. More arguments are required to differentiate parameters used in variations of an equation, such as contacts between different age groups for example. Specifically for the contact, the third argument is the source compartment and the fourth is the contact compartment.
+
+\subsection{AI-powered generation of disease models and simulations}
+
+A key barrier to adopting model-driven approaches in epidemiology is the learning curve associated with metamodel concepts and XML-based model specifications. Even though EpiMDE simplifies modeling through graphical interfaces, epidemiologists still need to learn the modeling environment and understand metamodel constraints. To address this, we developed a multi-stage LLM (Large Language Model) pipeline that automatically generates EpiMDE-compatible models from plain-text specifications, transforming human-readable disease descriptions into executable simulation code.
+
+The pipeline accepts as input (a) structured textual specifications written in plain English and (b) the \texttt{EpiMDE-model} specification from Section~\ref{sec:metamodel}. It produces complete XML model files conforming to the metamodel, which can be directly imported into the EpiMDE IDE for visualization, validation, and simulation. This approach eliminates the need for users to manually author XML or learn the graphical modeling interface, making epidemiological modeling accessible to researchers who prefer working with textual descriptions.
+
+\subsubsection{Pipeline Architecture}
+
+The LLM-based pipeline consists of three stages, each addressing a specific aspect of model generation:
+
+\textbf{Stage 1 (Structural XML Generation):} The first stage generates structurally correct XML conforming to the \texttt{EpiMDE-model} from user-provided textual specifications. Users organize epidemiological information into plain-text instructions without requiring XML syntax knowledge. The input includes:
+
+\begin{itemize}
+    \item \textit{Model Type Declaration}: Specifying parametric modeling (using symbolic parameter names with Greek letters, recommended for published models) or numeric modeling (with hardcoded values).
+    \item \textit{Compartment Structure}: Listing base compartments with primary and secondary names, including stratification product references when applicable.
+    \item \textit{Stratification Specification}: Defining Groups and Products as described in Section~\ref{sec:metamodel}.
+    \item \textit{Parameters Table}: Documenting parameter names (supporting Unicode Greek symbols like $\beta$, $\gamma$, $\mu$ and subscripts), types (CONSTANT, VARIABLE, EXPRESSION), values or expressions, descriptions, and units.
+    \item \textit{Flow Specification}: Describing transitions with flow type (RateFlow/ContactFlow), source and target compartments, rate parameter references or expressions, and optional stratum-specific rates.
+    \item \textit{Birth and Death Sources}: Specifying population dynamics with rate parameters and compartment or stratum targets.
+    \item \textit{Initial Populations}: Providing starting distributions across compartments and strata.
+\end{itemize}
+
+Critically, users do not need to provide visual diagrams. This eliminates ambiguity between visual representations and declarative specifications, making the textual input the single source of truth and reducing LLM misinterpretation risk. No specific structure for the input is expected as long as the aforementioned elements are present.
+
+The LLM receives these specifications along with the metamodel definition and generates XML with proper element names, attributes, nesting, and namespaces. For parametric models, it creates \texttt{<parameters>} elements with symbolic names and references them in flows using metamodel-compliant pointer syntax (\texttt{//@parameters.X}). For numeric models, it uses placeholder values that are filled in Stage 2. The LLM includes reasoning via XML comments explaining compartment counts, stratification mappings, flow interpretations, and assumptions, providing transparency for validation.
+
+\textbf{Stage 2 (Value Mapping and Verification):} For parametric models, Stage 2 performs minimal verification, confirming that parameter definitions match flow requirements and references are correctly formed. For numeric models, Stage 2 maps rate values from user input to XML placeholders.
+
+A critical design constraint is that the LLM performs \textit{no calculations}. It locates numeric values explicitly provided in user input and copies them to appropriate XML locations. This eliminates LLM misinterpretation of mathematical expressions by moving all mathematical decisions to user input preparation, ensuring reproducibility through explicit numerical specifications. The LLM documents each modification via XML comments, maintaining full numerical precision without structural changes.
+
+\textbf{Stage 3 (Simulation Script Generation):} Stage 3 converts the EpiMDE model's Ordinary Differential Equations (ODE) (automatically generated by the platform as described in Section~\ref{sec:EpiMDE}) into executable Python code using a two-phase approach that separates structural setup from mathematical logic.
+
+\textit{Stage 3A (Setup and Structure)} fills structural components of a pre-written skeleton, handling variable declarations outside the integration loop. The LLM extracts compartment names from ODEs, converts them to valid Python identifiers, assigns initial populations, and creates history arrays for tracking simulation results. This low-risk phase involves only declarations, enabling error isolation.
+
+\textit{Stage 3B (Simulation Logi)} completes the simulation using validated variable names from Stage 3A. The LLM converts ODEs to Python by extracting right-hand sides and preserving mathematical operations, generates Euler method updates with non-negativity enforcement, implements history recording, and creates plotting commands with human-readable labels.
+
+The pre-written skeleton provides universal components (imports, user interaction, loop structure, plotting setup) that are common across all simulations. Pre-writing these eliminates formatting inconsistencies and focuses the LLM on model-specific code. Both phases mandate raw Python code only (no markdown or code fences) ensuring direct executability.
+
+\subsubsection{Key Design Principles}
+
+The pipeline architecture embodies several important design principles that enhance reliability and usability:
+
+\textbf{Separation of Concerns.} Each stage addresses a distinct aspect of model generation (structure, parameter/values, simulation), enabling targeted validation and error localization. If simulation fails, the problem can be traced to a specific stage rather than requiring regeneration of the entire pipeline.
+
+\textbf{Explicit Reasoning Through Comments.} XML and Python comments document the LLM's reasoning at each decision point, creating transparent audit trails. This allows epidemiologists to verify that their specifications were correctly interpreted without understanding the underlying metamodel or code generation mechanics.
+
+\textbf{Reproducibility.} The pipeline maintains interaction logs and uses deterministic value mapping (no implicit calculations), ensuring that the same textual specification always produces the same model. This addresses the reproducibility challenges identified in Section~\ref{sec1}.
+
+\textbf{Parametric versus Numeric Modeling.} Supporting both parametric (symbolic equations with Greek letters matching published notation) and numeric (immediate executable models) approaches accommodates different use cases. Parametric models facilitate communication with the broader epidemiological community through familiar mathematical notation, while numeric models enable rapid prototyping and exploration.
+
+\subsubsection{Advantages and Applicability}
+
+The LLM-based pipeline offers several advantages that complement the manual modeling approaches demonstrated in previous case studies:
+
+\textit{Accessibility for Non-MDE Experts.} Epidemiologists can specify models using familiar epidemiological terminology without learning the EpiMDE IDE or XML syntax. This dramatically lowers the barrier to entry compared to traditional MDE approaches.
+
+\textit{Reduced Cognitive Load.} Textual specifications are often more concise than graphical model construction for complex stratified models. For instance, describing a 16-age-group COVID-19 model requires listing the stratification once in text, whereas graphical construction involves creating multiple interconnected elements.
+
+\textit{Integration with Published Literature.} Parametric modeling with symbolic Greek letter notation enables direct transcription from published papers, reducing transcription errors and facilitating model reproduction from literature.
+
+\textit{Automated Validation Through Metamodel Conformance.} The generated XML must conform to the metamodel, providing structural validation that manual text-based modeling approaches lack. Errors are caught at generation time rather than during simulation.
+
+However, the pipeline also has limitations that must be acknowledged:
+
+\textit{Dependency on LLM Accuracy.} While the structured prompt engineering and multi-stage design reduce errors, LLM outputs require careful validation. The pipeline is best viewed as an assistive technology that accelerates modeling rather than a fully autonomous system.
+
+\textit{Manual Input Preparation.} Complex models require careful preparation of textual specifications, particularly for stratum-specific rates and intricate flow patterns. However, this is generally less error-prone than manual XML authoring.
+
+\textit{Lack of Semantic Verification.} The pipeline enforces structural constraints (valid XML, correct references) but cannot detect implausible parameter combinations or epidemiologically invalid model structures. Domain expertise remains essential for validation.
+
+\textit{Limited Support for Interactive Refinement.} The current implementation generates models in a single pass. Iterative refinement based on simulation results requires manual editing of the textual specification or switching to the graphical IDE.
+
+\subsubsection{Comparison to Manual Modeling Workflows}
+
+The LLM pipeline represents a complementary approach to the manual graphical modeling demonstrated in Case Studies 1-2. The graphical IDE excels when:
+\begin{itemize}
+    \item Modelers need visual understanding of model structure and flow patterns
+    \item Exploratory modeling requires frequent structural changes
+    \item Model composition and reuse leverage existing graphical models
+    \item Domain experts prefer direct manipulation of model elements
+\end{itemize}
+
+The LLM pipeline excels when:
+\begin{itemize}
+    \item Models are being reproduced from published textual descriptions
+    \item Modelers prefer working with mathematical notation over graphical representations
+    \item Rapid generation of multiple model variants is needed for sensitivity analysis
+    \item Accessibility considerations favor text-based interfaces over graphical tools
+\end{itemize}
+
+Importantly, the two approaches are not mutually exclusive. Models generated via the LLM pipeline can be loaded into the graphical IDE for visualization, refinement, and composition with other models. This hybrid workflow combines the accessibility benefits of automated generation with the interactive capabilities of graphical modeling.
+
+\subsubsection{Evaluation of the automated model generation}
+
+We evaluated the LLM pipeline by generating EpiMDE models for the HIV and COVID-19 case studies described in Sections~\ref{sec:casestudy:hiv} and~\ref{sec:casestudy:covid}. These models represent distinct epidemiological challenges, HIV with behavioral stratification and heterogeneous contact patterns, COVID-19 with age stratification and complex disease progression—enabling systematic assessment of the pipeline's generalizability. The pipeline was executed using two state-of-the-art LLMs: GPT-4o (OpenAI's gpt-4o model, temperature=0.7) and Gemini 2.5 Pro (Google, December 2024 release), enabling cross-model comparison of generation quality.
+
+\textbf{Evaluation Methodology:} For Stages 1 and 2 (XML generation and value mapping), we employed element-level counting to assess model correctness. Each generated \texttt{.seirmodel} file (the specialized file of the EpiMDE platform) was parsed and its elements (compartments, parameters, flows, groups, products, sources, sinks) compared against ground truth specifications. Elements were classified as True Positives (correctly generated with accurate attributes), False Positives (hallucinated or incorrect elements), and False Negatives (specified but missing or incorrectly generated). From these counts, we calculated Precision = TP/(TP+FP), Recall = TP/(TP+FN), and F1 Score (harmonic mean). For Stage 3 (simulation scripts), we evaluated through manual code inspection and successful execution, verifying scripts ran without errors and produced expected outputs.

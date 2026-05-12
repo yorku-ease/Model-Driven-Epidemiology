@@ -1,0 +1,93 @@
+Modeling has been integral to studying epidemics~\cite{ding2021value}. It is the process of mathematically abstracting the dynamics of a disease to estimate its impact on a population. It can be used to simulate how a disease spreads within a population, how demographic or other clinical factors affect the progress of the disease, and how interventions, like vaccination, can halt this progress. When an epidemic is abstracted in this way, it can also be combined with other models to assess the impact on the economy or the environment. 
+
+The COVID-19 pandemic revealed that epidemiological modeling may suffer from several shortcomings~\cite{crepey2022challenges}. Given the global scale of the disease, multiple research groups and organizations across the world worked on COVID-19 models simultaneously. Even though there usually exists a common vocabulary for disease models, provided by a basic SEIR (\textit{Susceptible, Exposed, Infectious, Recovered}) model~\cite{he2020seir}, it has not been a trivial task to share and communicate models between groups. This has been either because of different tools used for verification or simulation, rendering these tasks unique for each group, or because of different assumptions and the consideration of different factors (e.g., isolation). The lack of coordination also led to an extremely low rate of reproducibility between models, resulting in significant additional effort. Finally, due to the rapid progression and evolution of the disease, its worldwide scale, as well as the rapid advancement in designing interventions, the models had to adapt frequently and quickly, which was not always possible or was not always done properly.
+
+In this work, we propose the application of model-driven engineering (MDE) principles on epidemiological modeling. A relevant advantage of MDE in this context is the systematic and hierarchical design thanks to metamodels and domain-specific languages (DSL) that provide a common vocabulary of elements, relationships and constraints. This can facilitate communication of models between groups, reuse of model components and reproducibility. In addition, MDE development environments provide a plethora of tools on model differencing, transformation, verification and code generation. The increased automation can significantly accelerate the modeling process, aid modelers in composing models, as well as generating simulations.
+
+\subsection{Research Questions}
+
+To guide the development and evaluation of EpiMDE, we address the following research questions:
+
+\begin{enumerate}
+    \item \textbf{RQ1: Can MDE principles effectively capture epidemiological modeling concepts while maintaining accessibility for domain experts?} We investigate whether a metamodel can provide sufficient expressiveness for compartmental disease models while remaining intuitive for epidemiologists without MDE expertise.
+
+    \item \textbf{RQ2: Can the EpiMDE platform produce models that are structurally and functionally equivalent to published epidemiological models?} We evaluate whether models created using EpiMDE replicate the behavior and results of established mathematical models from the literature.
+
+    \item \textbf{RQ3: Does model-driven engineering facilitate systematic reuse and composition of epidemiological model components?} We examine whether the platform enables efficient construction of new models through composition and adaptation of existing components, addressing reproducibility challenges.
+
+    \item \textbf{RQ4: Can Large Language Models accurately generate epidemiological models from natural language specifications?} We investigate whether LLM-based automated generation can serve as an accessible alternative to manual modeling, lowering barriers to adoption while maintaining metamodel conformance and accuracy.
+\end{enumerate}
+
+This paper makes the following contributions:
+\begin{itemize}
+    \item \textbf{EpiMDE-model}: A metamodel for compartmental disease modeling designed for immediate usability by epidemiologists. It uses familiar epidemiological concepts (compartments, flows including rate-based and contact-based, and population stratification) to enable quick model construction through graphical editors. The metamodel supports essential features including birth and death dynamics, stratum-specific rates, and automatic generation of mathematical equations for disease simulations. This version prioritizes ease of use and accessibility over extensibility, lowering the barrier to entry for epidemiologists without MDE expertise. The metamodel is extensible so that it can define more complex concepts with increased expressiveness to allow for adapting to new discoveries and interventions as research progresses. While the basic metamodel focuses on accessibility through core epidemiological concepts, the extensible version allows for more complex modeling scenarios, enhanced automation, and advanced composability and reusability features.
+    \item \textbf{The \emph{EpiMDE} integrated development platform}: EpiMDE provides a modeling environment supporting both metamodels. It allows modelers to develop new models in a graphic environment, guided by the metamodel with validation for the created model. The platform offers model comparison, systematic generation of simulation scenarios, and supports the creation of domain-specific workflows (demonstrated in Section~\ref{sec:casestudy:prototyping}).
+    \item \textbf{Disease modeling case study}: We demonstrate EpiMDE's general applicability on specific case studies on COVID-19 and HIV, which also includes transmission with behavioral stratification. The case study validates that the metamodel can effectively handle diseases with different transmission dynamics and population structures, producing results equivalent to published mathematical models while being more accessible.
+    \item \textbf{Rapid prototyping demonstration}: We present a systematic approach to model reuse and composition, showing how epidemiologists can construct new models by combining and adapting existing model components. This addresses the critical need for reproducibility and efficient model development in epidemiology.
+    
+    \item \textbf{LLM-based automated model generation}: We present a multi-stage Large Language Model pipeline that automatically generates EpiMDE-compatible models from plain-text specifications. This approach eliminates the need for epidemiologists to learn the graphical IDE or XML syntax, accepting natural language descriptions with mathematical notation and producing metamodel-conformant models ready for simulation. The pipeline addresses accessibility challenges by supporting multiple interaction modalities and demonstrates how AI-assisted transformation can bridge the gap between traditional scientific workflows and formal MDE approaches.
+\end{itemize}
+The requirements and epidemiological modeling aspects of the metamodel and the platform were determined in close collaboration with Dr Simon De Montigny of the Public Health Agency Canada (PHAC). 
+
+\subsection{Background}
+
+\subsubsection{Compartmental models}
+
+The most fundamental concept in disease modeling is the compartmental models. According to this concepts, populations are assigned to labeled compartments, but they are eventually studied as a whole. The SEIR (\textbf{S}usceptible, \textbf{E}xposed, \textbf{I}nfectious, \textbf{R}ecovered) is a basic compartmental model. The distribution of the population in the labeled compartments and the probability of transition between the compartments are used to simulated scenarios about the progression of a disease.
+
+\paragraph{Notation}
+
+Throughout this paper, we use the following mathematical notation for compartmental models:
+\begin{itemize}
+    \item $S$, $E$, $I$, $R$ denote the Susceptible, Exposed, Infectious, and Recovered compartments respectively
+    \item $N(t)$ represents the total population at time $t$
+    \item $c$ denotes rate constants or parameters (e.g., transmission rate, contact rate, recovery rate)
+    \item $\frac{d}{dt}X(t)$ represents the time derivative of compartment $X$, indicating the rate of change in its population
+    \item Subscripts (e.g., $I_{Asymptomatic}$, $I_{Symptomatic}$) denote stratified compartments or sub-populations
+    \item Greek letters ($\beta$, $\gamma$, $\mu$, $\sigma$) represent epidemiological parameters such as transmission rates, recovery rates, mortality rates, and progression rates
+    \item Square brackets $[X]$ denote compartment references in equations, which may expand to vectors when stratification is applied
+\end{itemize} 
+
+Compartments can be further stratified along a particular axis, for example age, sex, location, income etc., to add detail to the model and its associated simulations. In the mathematical model, the stratification is the equivalent of the cartesian product of the stratified compartments. For example, if a SEIR model is stratified with three age groups and three geographical locations, the model will have a total of 36 compartments ($4 \times 3 \times 3 = 36$). It is also possible to stratified a single compartment instead of the entire model. For example, the infectious compartment ($I$) can be stratified into \{Symptomatic, Asymptomatic\} or \{Hospitalizaed, not Hospitalized\}. This can result in a more concise, easier to understand model, assuming that the stratification need not be applied on the entire model.
+
+To represent the evolution of different characteristics of the population, such as disease infection or simply aging, most models use Ordinary Differential Equations (ODE)\cite{White2010}. These equations can be thought of as flows, pointing from one compartment to another. Simple models make use of three types of flows: \textit{Rates}, \textit{Batches} and \textit{Contacts}.
+
+\begin{itemize}
+    \item \textit{Rate} is used to represent an evolution of a state, for example aging or becoming infectious once exposed. The amplitude of the flow is directly proportional to the source compartment. Transitions from a state to another require symmetrical operations, in this case a negative derivative for the Exposed compartment and a positive for the Infectious:
+    \begin{gather*}
+        \frac{d}{dt}E(t) = -E(t) \cdot c \\
+        \frac{d}{dt}I(t) = E(t) \cdot c
+    \end{gather*}
+    Simple rates, when combined sequentially, can produce a Poisson distribution which represents reality much more adequately.
+    While in the simple rate, there is a non negligible chance of a person becoming exposed and becoming infectious on the first day, a Poisson distribution can be much closer to what usually happens to exposed individuals, for example having a 95\% chance of becoming infected between three to five days and a negligible chance earlier than three days.
+    
+    \item \textit{Batch} is used to represent an event happening over a period, for example when a disease variant is discovered, we can represent the apparition of this variant during a single day, infecting 1000 people. This means that over this period we have a constant derivative:
+    \[
+        \frac{d}{dt}S(t)= 
+        \begin{cases}
+            -1000,& \text{if November 1st 2021}\\
+            0,              & \text{otherwise}
+        \end{cases}
+    \]
+    \[
+        \frac{d}{dt}I(t)= 
+        \begin{cases}
+            1000,& \text{if November 1st 2021}\\
+            0,              & \text{otherwise}
+        \end{cases}
+    \]
+    \item \textit{Contact} is used essentially in every epidemic compartmental model and its primary role is to represent exposure to a disease. The flow approximates physical interactions between susceptible people and infectious people, exposing some of the susceptible population to the disease.
+    Mathematically this is done by multiplying the populations of the susceptible and infectious compartments\cite{hamer1906epidemic, Bauch2008}.
+    We describe this flow as such:
+    \begin{gather*}
+        \frac{d}{dt}S(t) = \frac{-I(t) \cdot S(t) \cdot c}{N(t)} \\
+        \frac{d}{dt}E(t) = \frac{I(t) \cdot S(t) \cdot c}{N(t)}
+    \end{gather*}
+    where $N(t)$ is the total population at time $t$, $c$ is a constant that represents infectiousness based solely on population density and disease properties, independent of any other population properties.
+\end{itemize}
+
+\subsection{Declaration of extension from previous works}
+
+This work is an extension of two of our previous works~\cite{curzi2024epimde, karamchandani2025requirements}. Our previous conference paper~\cite{curzi2024epimde} introduced the extensible EpiMDE metamodel and platform. In this version, we provide more details about the implementation of the metamodel and the platform, including the exact extension mechanism and advanced features including model comparison. We also present the use and practical application of the metamodel and development platform with two new case studies: (a) \textbf{the reproduction of an HIV model}, demonstrating EpiMDE's effectiveness for modeling diseases with behavioral stratification; and (b) a \textbf{rapid prototyping case study} showing how the platform supports model reuse and composition for efficient development of new models from existing components. 
+
+Another novel contribution compared to our first conference paper is the use of LLMs for the generation of models, which was previously introduced in our second conference paper~\cite{karamchandani2025requirements}. Compared to that publication, this work provides a more systematic and extended LLM-based pipeline, including additional steps for the generation of simulations. The generation and its effectiveness is demonstrated in both the COVID-19 and HIV case studies in Section~\ref{sec:study}. Compared to the previous work, the quantitative evaluation includes two different LLMs (Open AI's ChatGPT-4o and Gemini 2.5 Pro).
