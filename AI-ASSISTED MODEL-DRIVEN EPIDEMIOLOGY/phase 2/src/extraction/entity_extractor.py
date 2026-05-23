@@ -92,6 +92,7 @@ class EntityExtractor:
         flow_fuzzy_threshold: float = 0.78,
         paper_type: Optional[Dict[str, bool]] = None,
         experiment: Optional[str] = None,
+        custom_system_prompt: Optional[str] = None,
     ):
         """
         Initialize entity extractor.
@@ -106,8 +107,10 @@ class EntityExtractor:
             flow_fuzzy_threshold: Similarity threshold used to snap LLM flow endpoints to known compartments
             paper_type: Optional {"vector_borne": bool, "climate": bool} to tailor prompts (vector/climate hints)
             experiment: Optional variant string (e.g. "B", "C", "B+C") for A/B testing; from PHASE2_EXPERIMENT
+            custom_system_prompt: Optional string containing user's custom instructions for extraction
         """
         self.llm_client = llm_client or LLMClient()
+        self.custom_system_prompt = custom_system_prompt
         self.metamodel = None
         if metamodel_path:
             self._load_metamodel(metamodel_path)
@@ -575,6 +578,13 @@ This paper appears to describe a VECTOR-BORNE model (e.g. mosquito, dengue, Zika
 Consider CLIMATE or ENVIRONMENTAL drivers if mentioned (e.g. temperature, rainfall, seasonality, humidity). Include compartments or parameters related to these only if explicitly evidenced.
 """
 
+        if self.custom_system_prompt:
+            paper_type_context += f"""
+USER CUSTOM INSTRUCTIONS:
+{self.custom_system_prompt}
+Please follow these custom instructions carefully during extraction.
+"""
+
         # Optional: promised compartments from Step 2 — only include if evidence found
         promised_context = ""
         if paper_promises:
@@ -979,6 +989,13 @@ Return ONLY valid JSON array: [{{"name": "...", "description": "...", "text_span
         if self.paper_type.get("vector_borne"):
             paper_type_context = """
 This paper appears to describe a VECTOR-BORNE model. Look for flows between HUMAN compartments (e.g. Susceptible humans -> Exposed humans) AND vector/life-stage flows (e.g. Eggs -> Larvae -> Pupae -> Susceptible female adults, and human-vector transmission flows). Only include flows for which you find clear evidence.
+"""
+
+        if self.custom_system_prompt:
+            paper_type_context += f"""
+USER CUSTOM INSTRUCTIONS:
+{self.custom_system_prompt}
+Please follow these custom instructions carefully during extraction.
 """
 
         # Build metamodel context
@@ -1684,6 +1701,13 @@ This paper appears to describe a VECTOR-BORNE model. Look for human parameters (
         if self.paper_type.get("climate"):
             paper_type_context += """
 Consider CLIMATE/ENVIRONMENTAL parameters if mentioned (e.g. temperature, rainfall, seasonality). Include only if explicitly defined in the text.
+"""
+
+        if self.custom_system_prompt:
+            paper_type_context += f"""
+USER CUSTOM INSTRUCTIONS:
+{self.custom_system_prompt}
+Please follow these custom instructions carefully during extraction.
 """
 
         # Build metamodel context

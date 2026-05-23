@@ -66,7 +66,10 @@ class LLMClient:
                     print(f"Warning: Failed to initialize OpenAI client: {e}")
             elif self.provider == "gemini":
                 try:
-                    import google.generativeai as genai
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore", category=FutureWarning)
+                        import google.generativeai as genai
 
                     genai.configure(api_key=self.api_key)
                     self.client = genai
@@ -788,3 +791,117 @@ CRITICAL RULES:
     def is_available(self) -> bool:
         """Check if LLM is available"""
         return self.available
+
+    def generate_text(self, prompt: str, model: Optional[str] = None, temperature: float = 0.3, max_tokens: int = 2000) -> str:
+        """Generate raw text from LLM."""
+        if not self.available:
+            raise RuntimeError("LLM not available.")
+            
+        if model is None:
+            if self.provider == "openai":
+                model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+            elif self.provider == "gemini":
+                model = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
+            elif self.provider == "claude":
+                model = os.getenv("CLAUDE_MODEL", "claude-3-5-sonnet-20241022")
+
+        if self.provider == "openai":
+            response = self.client.responses.create(
+                model=model,
+                input=[{"role": "user", "content": [{"type": "input_text", "text": prompt}]}],
+                temperature=temperature,
+                max_output_tokens=max_tokens,
+            )
+            return response.output_text.strip()
+        elif self.provider == "gemini":
+            gen_model = self.client.GenerativeModel(model)
+            safety_settings = [
+                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
+            ]
+            response = gen_model.generate_content(
+                prompt,
+                generation_config={"temperature": temperature, "max_output_tokens": max_tokens},
+                safety_settings=safety_settings
+            )
+            try:
+                return response.text.strip()
+            except Exception as e:
+                if model != "gemini-2.5-flash":
+                    print(f"⚠️  Gemini blocked by safety filters or hit an error. Trying Flash model...")
+                    return self.generate_text(prompt, model="gemini-2.5-flash", temperature=temperature, max_tokens=max_tokens)
+                    
+                # Fallback if flash also fails
+                if getattr(response, "candidates", None) and response.candidates:
+                    cand = response.candidates[0]
+                    if getattr(cand, "content", None) and getattr(cand.content, "parts", None):
+                        return "".join(getattr(part, "text", "") for part in cand.content.parts).strip()
+                return ""
+        elif self.provider == "claude":
+            claude_max = min(max_tokens, 4096)
+            response = self.client.messages.create(
+                model=model,
+                max_tokens=claude_max,
+                temperature=temperature,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            parts = []
+            for block in (getattr(response, "content", []) or []):
+                text = getattr(block, "text", "") or ""
+                if text: parts.append(text)
+            return "".join(parts).strip()
+        return ""
+
+    def extract_with_llm_fast(
+        self,
+        prompt: str,
+        temperature: float = 0.3,
+        max_tokens: int = 2000,
+        response_schema: Optional[Dict[str, Any]] = None,
+        retry_count: int = 0,
+    ) -> Dict[str, Any]:
+        """
+        Extract structured data using a faster, more lightweight LLM (e.g., flash models).
+        """
+        model = None
+        if self.provider == "openai":
+            model = os.getenv("OPENAI_FAST_MODEL", "gpt-4o-mini")
+        elif self.provider == "gemini":
+            model = os.getenv("GEMINI_FAST_MODEL", "gemini-2.5-flash")
+        elif self.provider == "claude":
+            model = os.getenv("CLAUDE_FAST_MODEL", "claude-3-haiku-20240307")
+            
+        return self.extract_with_llm(
+            prompt=prompt,
+            model=model,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            response_schema=response_schema,
+            retry_count=retry_count,
+        )
+
+    def generate_text_fast(
+        self, 
+        prompt: str, 
+        temperature: float = 0.3, 
+        max_tokens: int = 2000
+    ) -> str:
+        """
+        Generate raw text using a faster, more lightweight LLM (e.g., flash models).
+        """
+        model = None
+        if self.provider == "openai":
+            model = os.getenv("OPENAI_FAST_MODEL", "gpt-4o-mini")
+        elif self.provider == "gemini":
+            model = os.getenv("GEMINI_FAST_MODEL", "gemini-2.5-flash")
+        elif self.provider == "claude":
+            model = os.getenv("CLAUDE_FAST_MODEL", "claude-3-haiku-20240307")
+            
+        return self.generate_text(
+            prompt=prompt,
+            model=model,
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )

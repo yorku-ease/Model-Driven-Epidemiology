@@ -56,18 +56,22 @@ def check_dependencies():
         sys.exit(1)
 
 
-def run_phase2(pdf_path: Path, llm_provider: str, phase2_output_dir: Path) -> Path:
+def run_phase2(pdf_path: Path, llm_provider: str, phase2_output_dir: Path, system_prompt: str = None) -> Path:
     """Run Phase 2 and return the path to the report directory it created."""
     print(f"[Pipeline] Running Phase 2: {pdf_path.name} (provider: {llm_provider})")
     print(f"[Pipeline] Phase 2 output base: {phase2_output_dir}")
 
+    cmd = [
+        PYTHON_BIN, str(PHASE2_DIR / "run_phase2.py"),
+        "--paper", str(pdf_path),
+        "--llm-provider", llm_provider,
+        "--output", str(phase2_output_dir),
+    ]
+    if system_prompt:
+        cmd.extend(["--system-prompt", system_prompt])
+
     result = subprocess.run(
-        [
-            PYTHON_BIN, str(PHASE2_DIR / "run_phase2.py"),
-            "--paper", str(pdf_path),
-            "--llm-provider", llm_provider,
-            "--output", str(phase2_output_dir),
-        ],
+        cmd,
         cwd=str(PHASE2_DIR),
         capture_output=True,
         text=True,
@@ -176,6 +180,10 @@ def main():
                         help="Output model basename (default: PDF stem)")
     parser.add_argument("--repair", action="store_true", default=False,
                         help="Run model validation repair (Phase 4) after gap filling")
+    parser.add_argument("--json", action="store_true", default=False,
+                        help="Output final model as JSON to stdout")
+    parser.add_argument("--system-prompt", type=str, default=None,
+                        help="Path to custom system prompt file (optional)")
     args = parser.parse_args()
 
     pdf_path = Path(args.pdf).resolve()
@@ -207,7 +215,7 @@ def main():
         ensure_phase3_database()
 
         # Run Phase 2
-        phase2_report_dir = run_phase2(pdf_path, args.llm_provider, phase2_output)
+        phase2_report_dir = run_phase2(pdf_path, args.llm_provider, phase2_output, args.system_prompt)
 
         # Run Phase 3
         run_phase3(phase2_report_dir, args.llm_provider, phase3_output)
@@ -239,8 +247,13 @@ def main():
             else:
                 print(f"[Pipeline] WARNING: Repair module not available (src/repair/model_repair.py missing)", file=sys.stderr)
 
-    # Print the output path for programmatic consumption (Java reads this)
-    print(f"OUTPUT_PATH:{final_model_path}")
+    if args.json:
+        with open(final_model_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        print(json.dumps({"model_xml": content}))
+    else:
+        # Print the output path for programmatic consumption (Java reads this)
+        print(f"OUTPUT_PATH:{final_model_path}")
 
     return 0
 

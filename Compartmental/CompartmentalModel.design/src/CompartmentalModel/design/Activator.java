@@ -5,25 +5,32 @@ import java.util.Set;
 
 import org.eclipse.sirius.business.api.componentization.ViewpointRegistry;
 import org.eclipse.sirius.viewpoint.description.Viewpoint;
+import org.eclipse.ui.IStartup;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractUIPlugin implements IStartup {
     // The plug-in ID
     public static final String PLUGIN_ID = "CompartmentalModel.design";
 
     // The shared instance
     private static Activator plugin;
 
-    private static Set<Viewpoint> viewpoints; 
+    private static Set<Viewpoint> viewpoints;
 
     /**
      * The constructor
      */
     public Activator() {
+    }
+
+    @Override
+    public void earlyStartup() {
+        System.out.println("====== COMPARTMENTAL MODEL DESIGN EARLY STARTUP ======");
+        // The start() method is triggered by OSGi, which will register the viewpoints.
     }
 
     /*

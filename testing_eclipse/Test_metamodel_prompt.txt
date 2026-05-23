@@ -1,0 +1,1729 @@
+You are an expert epidemiologist's assistant. Your task is to build a compartmental disease model based on the user's instructions and provided documents.
+Below is the exact JSON metamodel that describes the required XML structure for the output .compmodel file:
+```json
+{
+    "epimde_compartmental_metamodel": {
+        "version": "3.1-epi-only",
+        "purpose": "Epidemiology-only metamodel for EpiMDE (.compmodel/.compartmental XML). Use this for LLM prompting and Phase 2 validation. Omits non-disease extensions from the full EpiMDE schema (e.g. supplyFunction, junctionRule, PPFIFO, extra compartment types) so extraction stays focused on infectious-disease compartmental models.",
+        "structure": {
+            "xml_declaration": {
+                "version": "1.0",
+                "encoding": "UTF-8"
+            },
+            "root_element": {
+                "tag": "compartmental:CompartmentalModel",
+                "attributes": {
+                    "xmi:version": "2.0",
+                    "xmlns:xmi": "http://www.omg.org/XMI",
+                    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                    "xmlns:compartmental": "http://example.com/compartmentalmodel"
+                },
+                "optional_attributes": [
+                    "totalPopulation",
+                    "globalBirthRate",
+                    "globalDeathRate"
+                ]
+            },
+            "parameters": {
+                "element": "parameters",
+                "required_attributes": [
+                    "name"
+                ],
+                "optional_attributes": [
+                    "type",
+                    "expression",
+                    "description",
+                    "unit"
+                ],
+                "description": "Named parameters for symbolic/parametric modeling (supports Unicode).",
+                "attributes": {
+                    "name": {
+                        "description": "Parameter identifier. Supports Unicode including Greek letters and subscripts.",
+                        "examples": [
+                            "\u03b2\u2081",
+                            "\u03bc\u2095",
+                            "a(T)",
+                            "\u03b2\u2082a(T)",
+                            "\u03b8\u1d65(T,R)",
+                            "\u03b3\u2095"
+                        ]
+                    },
+                    "type": {
+                        "description": "Parameter type",
+                        "values": [
+                            "CONSTANT",
+                            "VARIABLE",
+                            "EXPRESSION"
+                        ],
+                        "default": "CONSTANT"
+                    },
+                    "expression": {
+                        "description": "For CONSTANT/VARIABLE: numeric value. For EXPRESSION: mathematical formula referencing other parameters/compartments.",
+                        "examples": [
+                            "0.001384",
+                            "0.000203 * T * (T - 11.7) * sqrt(42.3 - T)",
+                            "\u03b2\u2082 * a(T)",
+                            "\u03bc\u2095 + 0.017325"
+                        ]
+                    },
+                    "description": {
+                        "description": "Human-readable explanation of the parameter"
+                    },
+                    "unit": {
+                        "description": "Physical unit of measurement (Unicode allowed).",
+                        "examples": [
+                            "per day",
+                            "1/time",
+                            "dimensionless",
+                            "\u00b0C",
+                            "bites/person/time"
+                        ]
+                    }
+                }
+            },
+            "compartments": {
+                "element": "compartments",
+                "required_attributes": [
+                    "PrimaryName"
+                ],
+                "optional_attributes": [
+                    "SecondaryName",
+                    "population"
+                ],
+                "child_elements": [
+                    "outgoingFlows"
+                ],
+                "attributes": {
+                    "PrimaryName": {
+                        "description": "Main identifier for the compartment",
+                        "examples": [
+                            "Susceptible",
+                            "Exposed",
+                            "Infectious",
+                            "Recovered",
+                            "Hospitalized",
+                            "ICU"
+                        ]
+                    },
+                    "SecondaryName": {
+                        "description": "Additional descriptor (stratification or sub-state)",
+                        "examples": [
+                            "Adults",
+                            "Children",
+                            "with ART",
+                            "living with AIDS",
+                            "Quarantined"
+                        ]
+                    },
+                    "population": {
+                        "description": "Initial population count",
+                        "constraint": "Must be float/decimal value"
+                    }
+                }
+            },
+            "outgoingFlows": {
+                "abstract_element": "outgoingFlows",
+                "concrete_types": [
+                    "RateFlow",
+                    "ContactFlow"
+                ],
+                "common_required_attributes": [
+                    "target"
+                ],
+                "common_optional_attributes": [
+                    "description"
+                ],
+                "constraints": {
+                    "target": "Must be 0-based index in format '//@compartments.X'"
+                }
+            },
+            "RateFlow": {
+                "element": "outgoingFlows",
+                "xsi_type": "compartmental:RateFlow",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "rate",
+                            "target"
+                        ],
+                        "description": "Use numeric rate attribute directly"
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "rateParameter",
+                            "target"
+                        ],
+                        "description": "Reference a Parameter by index (preferred for explicit parameters)"
+                    }
+                },
+                "optional_attributes": [
+                    "description"
+                ],
+                "child_elements": [
+                    "stratumSpecificRates"
+                ],
+                "attributes": {
+                    "rate": {
+                        "description": "Numeric rate value (float). For parametric models, set to 0.0 and use rateParameter.",
+                        "constraint": "Must be float/decimal value"
+                    },
+                    "rateParameter": {
+                        "description": "Reference to a Parameter defining this flow's rate. Format: '//@parameters.X' (0-based).",
+                        "constraint": "Must reference existing parameter"
+                    }
+                }
+            },
+            "ContactFlow": {
+                "element": "outgoingFlows",
+                "xsi_type": "compartmental:ContactFlow",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "contactRate",
+                            "contactCompartment",
+                            "target"
+                        ],
+                        "description": "Use numeric contactRate attribute directly"
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "contactRateParameter",
+                            "contactCompartment",
+                            "target"
+                        ],
+                        "description": "Reference a Parameter by index (preferred for explicit parameters)"
+                    }
+                },
+                "optional_attributes": [
+                    "description",
+                    "contactParameters"
+                ],
+                "child_elements": [
+                    "stratumSpecificRates"
+                ],
+                "attributes": {
+                    "contactRate": {
+                        "description": "Numeric contact/transmission rate (float). For parametric models, set to 0.0 and use contactRateParameter.",
+                        "constraint": "Must be float/decimal value"
+                    },
+                    "contactRateParameter": {
+                        "description": "Reference to a Parameter defining this flow's contact rate. Format: '//@parameters.X' (0-based).",
+                        "constraint": "Must reference existing parameter"
+                    },
+                    "contactCompartment": {
+                        "description": "Reference to compartment influencing transmission (usually Infectious or Infectious Mosquitoes).",
+                        "constraint": "Must reference existing compartment using format '//@compartments.X'"
+                    }
+                }
+            },
+            "stratumSpecificRates": {
+                "element": "stratumSpecificRates",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "stratum",
+                            "rate"
+                        ],
+                        "optional_attributes": [
+                            "multiplier"
+                        ]
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "stratum"
+                        ],
+                        "optional_attributes": [
+                            "rateParameter",
+                            "multiplierParameter"
+                        ]
+                    }
+                },
+                "attributes": {
+                    "stratum": "String identifying the stratum level (e.g., age group)",
+                    "rate": "Numeric rate value for this stratum",
+                    "rateParameter": "Reference to Parameter for this stratum's rate (//@parameters.X)",
+                    "multiplier": "Numeric multiplier applied to base rate (defaults to 1.0)",
+                    "multiplierParameter": "Reference to Parameter for multiplier (//@parameters.X)"
+                }
+            },
+            "birthSources": {
+                "element": "birthSources",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "name",
+                            "rate",
+                            "targetCompartment"
+                        ]
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "name",
+                            "rateParameter",
+                            "targetCompartment"
+                        ]
+                    }
+                },
+                "optional_attributes": [
+                    "targetStratum",
+                    "fixedRate"
+                ],
+                "attributes": {
+                    "rate": "Numeric birth rate",
+                    "rateParameter": "Reference to Parameter for birth rate (//@parameters.X)",
+                    "targetCompartment": "Reference to compartment (//@compartments.X)",
+                    "fixedRate": "Boolean, defaults to false"
+                }
+            },
+            "deathSinks": {
+                "element": "deathSinks",
+                "modeling_modes": {
+                    "numeric": {
+                        "required_attributes": [
+                            "name",
+                            "rate",
+                            "sourceCompartment"
+                        ]
+                    },
+                    "parametric": {
+                        "required_attributes": [
+                            "name",
+                            "rateParameter",
+                            "sourceCompartment"
+                        ]
+                    }
+                },
+                "optional_attributes": [
+                    "sourceStratum"
+                ],
+                "attributes": {
+                    "rate": "Numeric death rate",
+                    "rateParameter": "Reference to Parameter for death rate (//@parameters.X)",
+                    "sourceCompartment": "Reference to compartment (//@compartments.X)"
+                }
+            },
+            "groups": {
+                "element": "groups",
+                "required_attributes": [
+                    "name"
+                ],
+                "optional_attributes": [
+                    "description"
+                ],
+                "child_elements": [
+                    "values"
+                ],
+                "constraints": {
+                    "values": "Array of string values representing the group stratification levels (e.g., age bands)"
+                }
+            },
+            "products": {
+                "element": "products",
+                "required_attributes": [
+                    "name"
+                ],
+                "optional_attributes": [
+                    "description"
+                ],
+                "child_elements": [
+                    "groups"
+                ],
+                "constraints": {
+                    "groups": "Reference to groups using format '//@groups.X'"
+                }
+            }
+        },
+        "compartment_types": {
+            "epidemiological_states": [
+                "Susceptible",
+                "Exposed",
+                "Infectious",
+                "Recovered",
+                "Deceased",
+                "Dead",
+                "Removed"
+            ],
+            "treatment_states": [
+                "Vaccinated",
+                "Treated",
+                "Hospitalized",
+                "Quarantined",
+                "Isolated"
+            ],
+            "vector_states": [
+                "Susceptible Mosquitoes",
+                "Exposed Mosquitoes",
+                "Infectious Mosquitoes"
+            ],
+            "severity_modifiers": [
+                "Asymptomatic",
+                "Symptomatic",
+                "Mild",
+                "Moderate",
+                "Severe",
+                "Critical"
+            ],
+            "location_modifiers": [
+                "ICU",
+                "Hospital",
+                "Home",
+                "Community"
+            ]
+        },
+        "secondary_name_patterns": {
+            "demographic_groups": [
+                "Homosexual Men",
+                "Heterosexual Men",
+                "Women",
+                "Children",
+                "Adults",
+                "Elderly"
+            ],
+            "disease_progression": [
+                "presymptomatic",
+                "mild to moderate",
+                "severe",
+                "pre-ICU",
+                "post-ICU"
+            ],
+            "intervention_status": [
+                "isolated",
+                "quarantined",
+                "with ART",
+                "living with AIDS"
+            ],
+            "vaccination_status": [
+                "Vaccinated",
+                "Unvaccinated",
+                "First dose",
+                "Second dose"
+            ]
+        }
+    }
+}
+
+```
+
+Rules:
+1. When the user references a file like `?/file_name`, refer to the JSON block at the bottom of the prompt to find the extracted content of that file and use it as context.
+2. You MUST create a disease model exactly as described in the metamodel using the user provided information.
+3. STRICTLY output ONLY the final XML code for the `.compmodel` file. Do NOT include any markdown formatting (e.g., no ```xml), and do NOT include any conversational text or explanations. Your entire response must be valid XML starting with <?xml.
+
+User Instructions:
+Can you create a simple disease model based on this paper: ?/measles1.pdf  also use this disease model but only for refernece dont reuse its values: ?/hanta_virus.compmodel
+
+Extracted File Contexts:
+{
+  {name: hanta_virus.compmodel, path: /home/bigWheel/git/Model-Driven-Epidemiology/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/hanta_virus/hanta_virus.compmodel, content: 
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+    <compartments PrimaryName="Susceptible male rodents" SecondaryName="S_m">
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.4" description="Infection from infectious males"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.1" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.5" description="Infection from infectious females"/>
+    </compartments>
+    <compartments PrimaryName="Exposed male rodents" SecondaryName="E_m">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.7" description="Progression to infectious"/>
+    </compartments>
+    <compartments PrimaryName="Infectious male rodents" SecondaryName="I_m">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.8" description="Recovery"/>
+    </compartments>
+    <compartments PrimaryName="Recovered male rodents" SecondaryName="R_m"/>
+    <compartments PrimaryName="Susceptible female rodents" SecondaryName="S_f">
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.6" description="Infection from infectious males"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.5" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.5" description="Infection from infectious females"/>
+    </compartments>
+    <compartments PrimaryName="Exposed female rodents" SecondaryName="E_f">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.6" rateParameter="//@parameters.7" description="Progression to infectious"/>
+    </compartments>
+    <compartments PrimaryName="Infectious female rodents" SecondaryName="I_f">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.7" rateParameter="//@parameters.9" description="Recovery"/>
+    </compartments>
+    <compartments PrimaryName="Recovered female rodents" SecondaryName="R_f"/>
+    <compartments PrimaryName="Susceptible humans" SecondaryName="S_h">
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.13" description="Zoonotic infection from male rodents"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.6" contactRateParameter="//@parameters.13" description="Zoonotic infection from female rodents"/>
+        <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.9" contactCompartment="//@compartments.10" contactRateParameter="//@parameters.14" description="Interhuman infection"/>
+    </compartments>
+    <compartments PrimaryName="Exposed humans" SecondaryName="E_h">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.15" description="Progression to infectious"/>
+    </compartments>
+    <compartments PrimaryName="Infectious humans" SecondaryName="I_h">
+        <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11" rateParameter="//@parameters.16" description="Recovery"/>
+    </compartments>
+    <compartments PrimaryName="Recovered humans" SecondaryName="R_h"/>
+    <externalSources name="Rodent_Birth_Male" rateParameter="//@parameters.19" targetCompartment="//@compartments.0"/>
+    <externalSources name="Rodent_Birth_Female" rateParameter="//@parameters.19" targetCompartment="//@compartments.4"/>
+    <externalSources name="Human_Birth" rateParameter="//@parameters.10" targetCompartment="//@compartments.8"/>
+    <externalSinks name="Death_S_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.0"/>
+    <externalSinks name="Death_E_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.1"/>
+    <externalSinks name="Death_I_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.2"/>
+    <externalSinks name="Death_R_m" rateParameter="//@parameters.17" sourceCompartment="//@compartments.3"/>
+    <externalSinks name="Death_S_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.4"/>
+    <externalSinks name="Death_E_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.5"/>
+    <externalSinks name="Death_I_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.6"/>
+    <externalSinks name="Death_R_f" rateParameter="//@parameters.17" sourceCompartment="//@compartments.7"/>
+    <externalSinks name="Death_S_h" rateParameter="//@parameters.11" sourceCompartment="//@compartments.8"/>
+    <externalSinks name="Death_E_h" rateParameter="//@parameters.11" sourceCompartment="//@compartments.9"/>
+    <externalSinks name="Death_I_h_Natural" rateParameter="//@parameters.11" sourceCompartment="//@compartments.10"/>
+    <externalSinks name="Death_R_h" rateParameter="//@parameters.11" sourceCompartment="//@compartments.11"/>
+    <externalSinks name="Disease_Death_I_h" rateParameter="//@parameters.12" sourceCompartment="//@compartments.10"/>
+    <parameters name="b" description="rodent average litter size"/>
+    <parameters name="K" description="rodent carrying capacity"/>
+    <parameters name="a" description="density-independent rodent death rate"/>
+    <parameters name="c" description="density-dependent rodent death coefficient"/>
+    <parameters name="beta_m" description="male-male rodent transmission rate"/>
+    <parameters name="beta_f" description="female-to-any rodent transmission rate"/>
+    <parameters name="beta_mf" description="male-to-female rodent transmission rate"/>
+    <parameters name="delta" description="rodent incubation rate"/>
+    <parameters name="gamma_m" description="male rodent recovery rate"/>
+    <parameters name="gamma_f" description="female rodent recovery rate"/>
+    <parameters name="B_h" description="human birth rate"/>
+    <parameters name="d_h" description="human natural death rate"/>
+    <parameters name="alpha_h" description="human disease-induced death rate"/>
+    <parameters name="beta_rh" description="zoonotic transmission rate, rodent to human"/>
+    <parameters name="beta_hh" description="interhuman transmission rate"/>
+    <parameters name="delta_h" description="human incubation rate"/>
+    <parameters name="gamma_h" description="human recovery rate"/>
+    <parameters name="rodent_death_rate" expression="a + c * (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f)" description="Total density-dependent rodent death rate"/>
+    <parameters name="rodent_birth_rate_total" expression="b * (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f) / (1 + (S_m + E_m + I_m + R_m + S_f + E_f + I_f + R_f) / K)" description="Total rodent birth rate (B)"/>
+    <parameters name="rodent_birth_rate_per_sex" expression="0.5 * rodent_birth_rate_total" description="Rodent birth rate per sex (B/2)"/>
+</compartmental:CompartmentalModel>
+  }
+  {name: measles1.pdf, path: /home/bigWheel/git/Model-Driven-Epidemiology/AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY/phase 2/data/diseases/measles/measles1.pdf, content: 
+InfectiousDiseaseModelling9(2024)1007e1026
+ContentslistsavailableatScienceDirect
+Infectious Disease Modelling
+journal homepage: www.keaipublishing.com/idm
+Modeling measles transmission in adults and children:
+Implications to vaccination for eradication
+Anjana Pokharel a,b, Khagendra Adhikari b,c, Ramesh Gautam b,d,
+Kedar Nath Uprety b,e, Naveen K. Vaidya b,f,g,h,*
+aPadmaKanyaMultipleCampus,TribhuvanUniversity,Kathmandu,Nepal
+bMathematicalBiologyResearchCenter,Kathmandu,Nepal
+cAmritCampus,TribhuvanUniversity,Kathmandu,Nepal
+dRatnaRajyaLaxmiCampus,TribhuvanUniversity,Kathmandu,Nepal
+eCentralDepartmentofMathematics,TribhuvanUniversity,Kathmandu,Nepal
+fDepartmentofMathematicsandStatistics,SanDiegoStateUniversity,SanDiego,CA,USA
+gComputationalScienceResearchCenter,SanDiegoStateUniversity,SanDiego,CA,USA
+hViralInformationInstitute,SanDiegoStateUniversity,SanDiego,CA,USA
+a r t i c l e i n f o a b s t r a c t
+Articlehistory: Despitetheavailabilityofsuccessfulvaccines,measlesoutbreakshaveoccurredfrequently
+Received2February2024 in recent years, presumably due to the lack of proper vaccination implementation.
+Receivedinrevisedform17April2024 Moreover,measlescasesinadultgroups,albeitsmallinnumber,indicatethattheprevi-
+Accepted29April2024
+ously neglected adult group may need to be brought into vaccine coverage to achieve
+Availableonline4May2024
+WHO's goal of measles eradication from the globe. In this study, we develop a novel
+HandlingEditor:Dr.RalucaEftimie
+transmissiondynamicsmodeltodescribemeaslescasesinadultsandchildrentoevaluate
+the role of adult infection in persistent measles cases and vaccination programs for
+2010MSC:
+eradication. Analysisofourmodel,validatedbymeaslescasesfromoutbreaksinNepal,
+34K20
+provides the vaccination reproduction number (conditions for measles eradication or
+34L30
+92B05 persistence)andtheroleofcontactnetworksize.Ourresultshighlightthatwhilechildren
+92D30 areprimarytargetsformeaslesoutbreaks,asmallnumberofinfectionsinadultsmayact
+as a reservoir for measles, causing obstacles to eradication. Furthermore, our model
+Keywords:
+analysisshowsthatwhileimpactfulcontrolscanbeachievedbychildren-focusedvaccines,
+Measleseradication
+acombinedadult-childvaccinationprogrammayhelpasserteradicationofthedisease.
+Measlesreservoir
+©2024TheAuthors.PublishingservicesbyElsevierB.V.onbehalfofKeAi
+Adult-childvaccination
+Adultsandchildrengroups CommunicationsCo.Ltd.ThisisanopenaccessarticleundertheCCBY-NC-NDlicense
+Nepal (http://creativecommons.org/licenses/by-nc-nd/4.0/).
+1. Introduction
+Measles,adiseasecausedbythemorbillivirus,remainsamajorglobalhealthconcern.Despitetheavailabilityofeffective
+vaccines,measlesoutbreaksoccurfrequently,especiallyamongchildren,andtheinfectioncausesseverecomplicationsin
+infectedindividuals.AccordingtoWHO,measlesvaccinationavertedaround56milliondeathsduetothisdiseaseduringthe
+21-yeartime(between2000and2021)(WHO,2023a).However,in2021,therewere128,000recordeddeathsduetomeasles,
+occurringprimarilyamongunvaccinatedorpartiallyvaccinatedchildren,highlightingtheneedformorefocusedprevention
+effortstobringtheglobalmeaslescasesdown(WHO,2023a).
+* Correspondingauthor.MathematicalBiologyResearchCenter,Kathmandu,Nepal.
+E-mailaddress:nvaidya@sdsu.edu(N.K.Vaidya).
+PeerreviewunderresponsibilityofKeAiCommunicationsCo.,Ltd.
+https://doi.org/10.1016/j.idm.2024.04.012
+2468-0427/©2024TheAuthors.PublishingservicesbyElsevierB.V.onbehalfofKeAiCommunicationsCo.Ltd.ThisisanopenaccessarticleundertheCC
+BY-NC-NDlicense(http://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Variousfactors,includinglimitedaccesstohealthcaresystems,vaccinehesitancydrivenbyskepticism,andtheimpactof
+theCOVID-19pandemiconvaccinecoverage,havecollectivelyhamperedvaccinationprogramsin2021.In2021,arecordhigh
+ofnearly40millionchildrenmissedameaslesvaccinedose;25millionchildrenmissedtheirfirstdose,andanadditional14.7
+millionchildrenmissedtheirseconddose(WHO,2022).Theworlddataiswellunderthat,withonly81%ofchildrenreceiving
+theirfirstmeasles-containingvaccinedose,andonly71%ofchildrenreceivingtheirsecondone.NotethattheWorldHealth
+Organization(WHO)recommendsatleast95percentvaccinationcoveragetoachieveherdimmunityformeasles(Uniceffor
+EveryChild,2019).
+Thedeclineinvaccinecoveragecoincideswithmeaslestransmissionpatterns,impactingnotonlyinfantsbutalsoolder
+agegroups(Meredithetal.,2021).Majorchallengesformeaslescontrolincludealackofacatch-upvaccinationprogram,
+growing vaccine hesitancy, and insufficient monitoring for elimination and outbreak prevention. In response, the World
+HealthOrganizationintroducedthe“MeaslesandRubellaStrategicFramework2021e2030”in2020,targetingglobaldisease
+eliminationby2030(WHO,2020;WHO,2023a).
+InNepal,measlesvaccinationwasintroducedin1979,butuntil2007,nationalMCV1coverageremainedbelow85percent,
+resultinginchildhoodmortalityduetomeasles.From2007to2014,MCV1coverageincreasedfrom81%in2007to88%in
+2014(WHO,2023b).Asaresult,aremarkablereductionof98%inmeaslescaseswasachievedby2017(Sekharetal.,2022).
+However, the cases rose in 2018e2019 by 66% (from 260 to 431) (WHO, 2023c). In response, the National Immunization
+Program(NIP)wasintroducedin2020withaplanforacomprehensivenationwidevaccinationcampaigntargetingchildren
+aged 9e59 months against both measles and rubella (MR). While the first phase of this campaign was completed as
+scheduled,thesecondphasewasdisruptedbytheCOVID-19pandemic,consequentlycausingmeaslesoutbreaksinmultiple
+districts(Sekharetal.,2022;Thakuretal.,2024).BetweenJanuaryandApril2020,220measlescaseswerereported,with78%
+affectingindividualsoutsidethecampaign'stargetagerange(9e59months).Notably,60%ofthetotalcasesinthe5e14year
+agegroupwerenotvaccinated(Sekharetal.,2022).
+Recently,fromNovember2022toMarch2023,690caseswerereported,withapproximately86%ofinfectedindividuals
+aged15yearsandyounger,and58%ofthepatientswereunvaccinated(WHO,2023d).Whilearisingnumberofmeaslescases
+has brought attention to the potential threat of severe measles outbreaks, persistent and frequent outbreaks in specific
+districts,includingMorang,Dang,Kapilvastu,Kathmandu,Lalitpur,Dhading,Banke,Kailali,ofNepalposeasevereconcernof
+obstacletoWorldHealthOrganisation's(WHO's)globalmeasleseradicationplan“MeaslesandRubellaStrategicFramework
+2021e2030”(Dall,2023;Poudel,2019;WHO,2020;WHO,2023a;WHO,2023d).Inordertoachievethemeasleseradication
+goal,theprimaryfocushasbeenonformulatingimprovedchildren-vaccinationprograms.However,itisessentialtonotethat
+14%oftheinfectiouscasesareunvaccinatedadults.Notably,theseinfectiousadultsoriginatingfromthepoolofunvaccinated
+childrencanactasvirusreservoirsinthecommunityandsourcesfordiseaseoutbreaks,despitethecontrolinthechildren
+group,causingtheobstacletodiseaseeradication.Therefore,implementingacloselymonitoredvaccinationprogramcom-
+binedforbothchildrenandadultsmaybeimperativetodeviseaprogramforcompletelyeradicatingthedisease.
+Mathematical models play a vital role in understanding transmission dynamics, forecasting outbreaks, and proposing
+effectivecontrolstrategies(Adhikarietal.,2021;Adhikarietal.,2022;Gautametal.,2022;Mutua,Wang,&Vaidya,2015;
+Vaidya & Wang, 2022). Therefore, mathematical modeling can be a valuable tool for studying measles transmission in
+childrenandadultsubgroupswithdifferentdegreesofinteractionsbetweenintragroupandintergrouppopulationsresiding
+inthesamecommunity.Numerousmathematicalmodelshavebeendevelopedformeasles,includingSIR,SEIR,SVEIRand
+SVEIRS,SVEIHR,fractionalderivativemodels,toexplorevariousaspectsofmeaslesdynamics(Edwardetal.,2015;Farman
+etal.,2023;Haileyesus&Asnakew,2023;Kuddusetal.,2021;Peteretal.,2022,2023a,2023b;Roberts,2000;Songetal.,
+2019;Trottier&Philippe,2000).SpecificallyinthecontextofNepal,previousstudieshavediscussedprogressinmeasles
+control, case fatality rates, and the genetic type of the Asian measles virus, most incorporating vaccination (Joshi, 2009;
+Khanal,2016;Poudel,2019;Truongetal.,2001).InPokhareletal.(2022),weintroducedadeterministicmodeltoexaminethe
+effectofmonitoredandun-monitoredvaccinationinchildrenofNepal(Pokhareletal.,2022).However,noneoftheprevious
+modelshasconsideredtheadultgroup,presumablythecriticalgroupfortheglobaleradicationofmeasles.
+Inthisstudy,weconsidermeaslescasesinadults,amoremobilecriticalgrouptypicallynotincludedinregularimmu-
+nizationprograms.Weintroduceanoveldeterministicmodel,incorporatingmonitoredvaccinationforchildrenandadultsto
+assesstheimpactoftheseadult-childvaccinationapproachesonmeasleseradicationinNepal.Themodelisvalidatedusing
+fifteenweeksofmeaslesdatafromNepal.Ourmodelanalysisevaluatesthelocalandglobalstabilityofdisease-freeequi-
+libriumandtheexistenceofatleastoneendemicequilibrium.Wesimulateourmodeltoassesstheimpactofmonitored
+adult-childvaccinationprogramsonreducingmeaslestransmissioninNepalandeventuallyeradicatingthediseaseovera
+periodoftime.
+2. Modelformulation
+2.1. Datasource
+ThepubliclyavailabledatausedinthisworkisobtainedfromtheofficialwebsiteoftheWorldHealthOrganization(WHO)
+(WHO-Nepal,2023a).FromNovember24,2022,toMarch10,2023,atotalof690casesofmeasleswererecordedinwestern
+Nepal,spanningoutbreaks in sevendistricts: Banke(327 cases),Surkhet(62 cases), Bardiya (49 cases),Kailali (39 cases),
+Kanchanpur(27cases),Bajura(13cases),andDang(12cases).Additionally,threedistricts ineasternNepalalsoreported
+1008
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Fig.1. MeaslesCasesinNepal.MeaslescasesindifferentpartsofNepalfromNovember24,2022,toMarch10,2023.Themapwascreatedusingthecartography
+packageinR4.3.1.
+cases:Mahottari(103cases),Sunsari(34cases),andMorang(24cases).ThedistributionofmeaslescasesisshowninFig.1.
+Amongthesereportedcases,onedeathwasreported,indicatingaCaseFatalityRate(CFR)of0.14%(Dall,2023).
+2.2. Transmissiondynamicsmodel
+Wecategorizethepopulationintotwodifferentagegroups(0e15yrsandabove15yrs)basedonthedata(Dall,2023)and
+developadeterministicmathematicalmodel(SVEIIm)todescribethetransmissiondynamicsofmeaslesamongthosetwo
+groups.Sincemeaslescanbepreventedbycompletedosesofvaccinesandindividualsgainlifelongimmunityafterrecovery
+frominfection(Edwardetal.,2015),wedonotconsiderre-infectioninourmodel.TheindicesCandArepresentthechild
+(0e15 yrs) and adult (above 15) groups, respectively. The group of childrenand adults are divided into six distinct com-
+partmentsðS
+C
+; UV
+C
+; MV
+C
+; E
+C
+; I
+C
+; I mCÞandðS
+A
+; UV
+A
+; V
+A
+; E
+A
+; I
+A
+; I
+mA
+Þ,respectively,asshowninFig.2.Listherecruitmentrateof
+newborns,andjisthematurationrateofachildbecominganadult.
+Buildinganeffectivevaccinationprogramisoftendifficult,especiallywhenparentslackadequatehealthknowledgeand
+areskepticalaboutvaccines.Onewaytoimprovetheefficacyofimmunizationistoincorporateamonitoredvaccination
+programsothatchildrenwhosignedupforitreceivetheirimmunizationsaccuratelyandontime.Theunmonitoredclass
+includeschildrennotenrolledinthemonitoredprogram.Thechildreninthisclassmayfrequentlyskipthecompletevaccine
+dosesontime,presumablyduetothelackofparents’healthconsciousnessand/orthelackofsupervisionforproperim-
+munization.Ontheotherhand,themonitoredclassincludesthechildrenenrolledinthemonitoredprogram,whichensures
+enrolledmemberswithsupervisionfortimelyimmunizationofcompletedoses.Ourobjectiveinthisstudyistodevelopa
+modeltoevaluatesuchmonitoredvaccinationprogramsforcontrollingmeaslesinbothchildrenandadults,withthegoalof
+eradicatingmeasles.
+Inthiscontext,weassumechildrenengagedinthemonitoredvaccinationprogramexhibitalowervulnerabilitytodis-
+eases and a greater probability of acquiring immunity due to increased attention and regular supervision, in contrast to
+childrenunderunsupervisedimmunizationschemes.Consequently,thechildreneligibleforvaccinationaredividedintotwo
+distinctgroups:theUn-monitoredVaccinationGroupðUVÞ,consistingofvaccinatedchildrenundergoingroutinevaccination
+A
+without supervision, and the Monitored Vaccination Group ðMVÞ, comprising children vaccinated under supervision to
+C
+Fig.2. Schematicdiagramofthemodel:Thegroupofchildrenisdividedintosixdistinctcompartments:SC(Susceptible),UV
+C
+(Un-monitoredVaccinated),MV
+C
+(MonitoredVaccinated),EC(Exposed),IC(Infectious),andImC(Immune).Similarly,theadultagegroupisdividedintosixsubgroupsðSA ; UV
+A
+;VA ; EA ; IA ; ImAÞ.
+1009
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Table1
+Descriptionoftheparameters.
+Symbols Description
+L Recruitmentratetochildrengroup
+x U,x M Un-monitoredandMonitoredchildrenVaccinationrate
+x A AdultVaccinationrate
+b C,b A Transmissionrateonthechildrenandadults
+m Naturaldeathrate
+g Rateofbeingimmuneafterrecoveryfrominfection
+j Maturationrate
+(1(cid:2)e) Effectivenessofthevaccination
+h A RateofbeingimmuneofUn-monitoredvaccinatedadults
+h U,h M RateofbeingimmuneofUn-monitored,
+Monitoredvaccinatedchildren
+d Incubationperiod
+d Diseaseinduceddeath
+ensuretimelyadministration.Inaddition,weconsidertheAdultVaccinationGroup(VA),whichconsistsofvaccinatedadults
+undersupervisionthroughthecatch-upvaccinationprogram.
+Uponsuccessfullyreceivingbothvaccinedosespertherecommendedschedule,weassumethattheMonitoredVacci-
+nationGroupandAdultVaccinationGroupwillattainsufficientimmunizationandbecomenon-susceptibletodiseases.h
+M
+andh ArepresenttherateofimmunizationoftheMonitoredVaccinationGroupandAdultVaccinationGroup,respectively,
+andb Crepresentstherateofthefullysusceptiblechildrenbecominginfected.
+GiventhepossibilityofincompleteadministrationofvaccinedoseswithintheUn-monitoredVaccinationGroup,there
+remainsapotentialsusceptibilitytodiseases.Tocapturethisinfection,weaccountfordiseasetransmissionwithinthisgroup
+at a rate of eb C, where (1 (cid:2) e) represents the vaccine's effectiveness. Additionally, we consider a different infection rate,
+denotedbyb A,fortheadultgroup,assumingthatmeaslestransmissionislowamongadults.Thecompletedescriptionofthe
+parametersisgiveninTable1.
+Theequationsofthedynamicalsystemdescribingmeaslestransmissionareasfollows:
+dS
+C ¼L(cid:2)ðmþx þx þjÞS (cid:2)b ðI þI ÞS ; (1)
+dt M U C C C A C
+dS
+A¼jS (cid:2)b ðI þI ÞS (cid:2)mS (cid:2)x S ; (2)
+dt C A C A A A A A
+dUV
+C ¼x S (cid:2)eb ðI þI ÞUV(cid:2)ðmþh þjÞUV; (3)
+dt U C C C A C U C
+dUV
+A ¼jUV(cid:2)h UV(cid:2)b eðI þI ÞUV(cid:2)mUV; (4)
+dt C A A A C A A A
+dV
+A¼x S (cid:2)V ðmþh Þ; (5)
+dt A A A A
+dMV
+C ¼x S (cid:2)ðmþh ÞMV; (6)
+dt M C M C
+dE
+C ¼b ðI þI ÞS þb eðI þI ÞUV(cid:2)ðdþmþjÞE ; (7)
+dt C C A C C C A C C
+dE
+A¼b ðI þI ÞS þb eðI þI ÞUVþjE (cid:2)ðdþmÞE ; (8)
+dt A C A A A C A A C A
+dI
+C ¼dE (cid:2)ðgþdþmþjÞI ; (9)
+dt C C
+dI
+A¼dE þjE (cid:2)ðgþdþmÞI ; (10)
+dt A C A
+dI
+mC ¼gI þh MV(cid:2)ðmþjÞI þh UV; (11)
+dt C M C mC U C
+dI
+mA¼h ðUVþV ÞþgI (cid:2)mI þjI : (12)
+dt A A A A mA mC
+1010
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+3. Modelanalysis
+3.1. Positivityandboundednessofthesolutions
+Inthesystem(1e12),allthestatevariablesarenon-negativeandshouldremainnon-negativeforeversincetheyrepresent
+thehumanpopulation.Forthegivennon-negativeinitialconditions,itcanbeeasilyverifiedthatsystem(1-12)hasnon-
+negativesolutionsatanytimetasshowninthefollowingtheorem.
+Theorem3.1. Ifthestatevariablearenon-negativewithSC >0attimet¼0,thenthesolutionsetofthesystem(1-12)isalways
+non-negativeandbounded.
+Proof:
+First,weprovethatallthesolutionsarenon-negative.Fromthesystem(1e12),weget
+dS
+C ¼ L(cid:2)ðmþx þx þjÞS (cid:2)b ðI þI ÞS
+dt M U C C C A C
+> (cid:2)ðmþx þx þjÞS (cid:2)b ðI þI ÞS
+M U C C C A C
+(cid:1) Z (cid:3)
+t
+0S > S ð0Þexp (cid:2) ððmþx þx þjÞþb ðI þI ÞÞdt (cid:3)0;
+C C M U C C A
+0
+dS
+A ¼ jS (cid:2)b ðI þI ÞS (cid:2)mS (cid:2)x S
+dt C A C A A A A A
+> (cid:2)b ðI þI ÞS (cid:2)mS (cid:2)x S
+A C A A A A A
+(cid:1) Z (cid:3)
+t
+0S > S ð0Þexp (cid:2) b ððI þI Þþmþx Þdt >0;
+A A A C A A
+0
+dUV
+C ¼ x S (cid:2)b eðI þI ÞUV (cid:2)ðmþh þjÞUV
+dt U C C C A C U C
+> (cid:2)b eðI þI ÞUV(cid:2)ðmþh þjÞUV
+C C A C U C
+(cid:1) Z (cid:3)
+t
+0UV (cid:3) UVð0Þexpb e (cid:2) ððI þI Þþðmþh þjÞÞdt (cid:3)0;
+C C C C A U
+0
+dUV
+A ¼ jUV(cid:2)h UV(cid:2)b eðI þI ÞUV(cid:2)mUV
+dt C A A A C A A A
+> (cid:2)h UV(cid:2)b eðI þI ÞUV(cid:2)mUV
+A A A C A A A
+(cid:1) Z (cid:3)
+t
+0UV (cid:3) UVð0Þexp (cid:2) b eðh þðI þI ÞþmÞdt (cid:3)0;
+A A A A C A
+0
+dV
+A ¼ x S (cid:2)V ðmþh Þ> (cid:2)V ðmþh Þ
+dt A A A A A A
+(cid:1) Z (cid:3)
+t
+0V > V ð0Þexp (cid:2) ðh þmÞdt (cid:3)0;
+A A A
+0
+dMV
+C ¼ x S (cid:2)ðmþh ÞMV
+dt M C M C
+> (cid:2)ðmþh ÞMV
+M C
+(cid:1) Z (cid:3)
+t
+0MV (cid:3) MVð0Þexp (cid:2) ððmþh ÞÞdt (cid:3)0;
+C C M
+0
+dE
+and C ¼ b ðI þI ÞS þb eðI þI ÞUV(cid:2)ðdþmþjÞE
+dt C C A C A C A C C
+(cid:3) (cid:2)ððdþmþjÞÞE
+C
+(cid:1) Z (cid:3)
+t
+0E (cid:3) E ð0Þexp (cid:2) ððdþmþjÞÞdt (cid:3)0:
+C C
+0
+Similarly,EA,IC,IA,ImC,ImAarealsonon-negative.Hence,thesolutionsetfS
+C
+;S
+A
+;UV
+C
+;UV
+A
+;V
+A
+;MV
+C
+;E
+C
+;E
+A
+;I
+C
+;I
+A
+;I
+mC
+;I mAgofsystem
+(1e12)isalwaysnon-negative.
+1011
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Wenowprovethatthesenon-negativesolutionsarebounded.LetNh(t)bethetotalhumanpopulation,i.e.,N
+h
+ðtÞ ¼S CðtÞþ
+S
+A
+ðtÞþUV
+C
+ðtÞþUV
+A
+ðtÞþV
+A
+ðtÞþMV
+C
+ðtÞþE CðtÞþE
+A
+ðtÞþI CðtÞþI
+A
+ðtÞþI mCðtÞþI
+mA
+ðtÞ.Addingalltheequationsofthesystem
+(1e12),weobtain
+dN
+h¼L(cid:2)mN (cid:2)dðI þI Þ(cid:4)L(cid:2)mN ;
+dt h C A h
+whichimplies
+(cid:4)
+limN (cid:4)L m:
+t/∞ h
+Hence,thehumanpopulation,Nh(t),isultimatelybounded.
+Usingtheaboveconditions,wehavetha
+n
+t
+(cid:5)
+foranya>0,thereexiststa >0suchthatthesolutionofthesyst
+o
+emwitht(cid:3)ta
+liesinthecompactsetU ¼ U h,whereU h ¼ S C ;S A ;UV C ;UV A ;V A ;MV C ;E C ;E A ;I C ;I A ;I mC ;I mA Þ2R1 þ 2:N h (cid:4)L=mþa .Thus,allthe
+statevariablesrepresentingthepopulationsarenon-negativeandbounded.
+3.2. Disease-freeequilibriumandreproductionnumber
+Here,wederivetheexpressionofthedisease-freeandendemicequilibriumpoints.TakingE0 ¼0;E0 ¼0;I0 ¼ 0;I0 ¼ 0,
+C A C A
+weobtainthedisease-freeequilibrium:E0 ¼ðS0; S0; ðUVÞ 0; ðUVÞ 0;V0; ðMVÞ 0; 0; 0; 0; 0; I0 ; I0 Þ,where
+C A C A A C mC mA
+L
+S0 ¼ ;
+C mþx þx þj
+M U
+Lj
+S0 ¼ ;
+A ðx þmÞðmþx þx þjÞ
+A M U
+(cid:5) (cid:6)
+0 Lx
+UV ¼ U ;
+C Zðmþx þx þjÞ
+M U
+(cid:5) (cid:6)
+0 Ljx
+UV ¼ U ;
+A Zðh þmÞðmþx þx þjÞ
+A M U
+Ljx
+V0 ¼ A ;
+A ðh þmÞðx þmÞðmþx þx þjÞ
+A A M U
+(cid:5) (cid:6)
+0 Lx
+MV ¼ M ;
+C Z ðmþx þx þjÞ
+1 M U
+Lðh ðx Zþh x Þþmh x Þ
+I0 ¼ M M U U U U ;
+mC ZZ ðmþjÞðmþx þx þjÞ
+1 M U
+(cid:7) (cid:8)
+Lj ZZ h ðx ðmþjÞþmðZ x þh x ÞÞþm2ðZ h x þZh x Þ
+I0 ¼ 1 A A 1 M M U 1 U U M M ;
+mA ZZ m2ðmþjÞðh þmÞðmþx þx þjÞ
+1 A M U
+andZ ¼ ðmþh þjÞ; Z ¼ðmþh Þ:
+U 1 M
+Giventhatasignificantportionofthepopulationhasalreadybeenvaccinated,weadoptasimilarapproachtoourprevious
+study(Pokhareletal.,2022)indefiningthevaccinatedreproductionnumber,Rv.Thisisdoneconsideringthepresenceofthe
+vaccinatedpopulation,asopposedtoanentirepopulationsusceptibletoinfection.Thevaccinatedreproductionnumber,Rv,
+representstheaveragenumberofsecondarycasesresultingfromintroducingasingleinfectiouscaseintothemixedpop-
+ulation,whichcomprisesindividualswithbothsusceptibleandvaccinatedstatus.TocalculateRv,weutilizetheNextGen-
+eration Matrix method described in previous studies (Diekmann & Heesterbeek, 2001; van den Driessche & Watmough,
+2002;Diekmann,Heesterbeek,&Roberts,1992).
+FollowingtheNextGenerationMatrixmethod(vandenDriessche&Watmough,2002),wedividethesystemintotwo
+groups,infected ! x ¼ðx
+i
+;i¼1;2;3;4Þ¼ðE
+C
+; E
+A
+; I
+C
+; I
+A
+Þanduninfected ! y ¼ðy
+j
+;j¼1;2;3;4;5;6;7;8Þ ¼ðS
+C
+; S
+A
+; UV
+C
+; UV
+A
+; V
+A
+;
+MV C ; I mC ; I mAÞ.Wethensetx_ i ¼f i ð ! x;! yÞ¼F i ðx;yÞ(cid:2)V i ðx;yÞfori¼1,2..4andy_ j ¼g j ð ! x;! yÞforj¼1,2…,8,whereF i ðx;yÞis
+therateofappearanceofnewinfectionsinthecompartmentiandVðx;yÞisthedifferencebetweenthetransferofindividuals
+i
+outofandintothecompartmentifori¼1,2,3,4.Herewehave
+1012
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+0 1
+F ¼ B B B B B B @ b b C A ð ð I I C C þ þ I I A A Þ Þ S S C A þ þ 0 ð ð I I C C þ þ I I A A Þ Þ b b A C U U A C V V e eC C C C C C A and V¼ 0 B B @ (cid:2) (cid:2) E E C d (cid:2) d (cid:2) E þ ðd C I j I þ C j ð þ m g þ E þ þ I A ð j d ð d g Þ þ E þ þ C m m d Þ þ þ j m Þ Þ 1 C C A :
+0 A C A
+ItisstraightforwardtoconfirmthattheconditionsA(1)-A(5)mentionedinvandenDriessche&Watmough(2002)are
+satisfiedbythesetsF andV fori¼1,2,3,4.WederivetheJacobianmatricesofF andVatdisease-freeequilibriumpoint
+i i
+(E0),yieldingDFðE0Þ¼F andDVðE0Þ¼V asfollows:
+0 1
+B B0 0 b S0þb ðUVÞ 0e b S0þb ðUVÞ 0e C C
+B C C C C C C C C C
+F¼ B B B 0 0 b A S0 A þb A ðUV A Þ 0e b A S0 A þb A ðUV A Þ 0e C C C ;
+B C
+B0 0 0 0 C
+@ A
+0 0 0 0
+0 1
+dþmþj 0 0 0
+V ¼ B B @ (cid:2) (cid:2) j d dþ 0 m gþdþ 0 mþj 0 0 C C A ;
+0 (cid:2)d (cid:2)j gþdþm
+0 1
+1
+B 0 0 0 C
+B dþmþj C
+B C
+B B j 1 C C
+B 0 0 C
+B ðdþmÞðdþmþjÞ dþm C
+V(cid:2)1¼ B
+B
+C
+C
+;
+B B B B d2þ L dm 0 gþdþ 1 mþj 0 C C C C
+B C
+@djðgþdþdþ2mþjÞ d j 1 A
+LðgþdþmÞ ðdþmÞðgþdþmÞ ðgþdþmÞðgþdþmþjÞ gþdþm
+whereL¼(dþm)(dþmþj)(gþdþmþj).SinceFisanon-negativeandVisanon-singularM-matrix,thenextgeneration
+matrixFV(cid:2)1exists,anditsspectralradiusr(FV(cid:2)1)givesthevaccinatedreproductionnumberRv.Therefore,
+(cid:1) (cid:3)
+d b S0þb S0þeb ðUVÞ 0 þeb ðUVÞ 0
+C C A A C C A A
+Rv¼
+ðdþmÞðgþdþmÞ
+dLðb ex ðh þmÞðx þmÞþb jex ðx þmÞþb Zðh þmÞðx þmÞþb jZðh þmÞÞ
+¼ C U A A A U A C A A A A :
+ZðdþmÞðh þmÞðx þmÞðgþdþmÞðmþx þx þjÞ
+A A M U
+Wealsocomputethetime-dependenteffectivereproductionnumber,denotedbyRe.TheRevalueaidsusinmonitoring
+whethertheepidemicatagiventimetisexhibitinganupwardtrend(Re >1)oradownwardtrend(Re <1).Inourmodel,the
+effectivereproductionnumberisdeterminedbythefollowingexpression:
+(cid:5) (cid:6)
+d b S ðtÞþb S ðtÞþeb UVðtÞþeb UVðtÞ
+Re¼ C C
+ð
+A
+dþ
+A
+mÞðgþ
+C
+dþ
+C
+mÞ
+A A :
+3.3. StabilityofdiseasefreeequilibriumE0
+3.3.1. LocalstabilityofdiseasefreeequilibriumE0
+TheJacobianJ0ofthesystem(1e12)atthediseasefreeequilibriumE0isgivenbyJ0¼[A12(cid:5)6B12(cid:5)6],where
+1013
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+0 1
+(cid:2)m(cid:2)x (cid:2)x (cid:2)j 0 0 0 0 0
+M U
+B B j (cid:2)m(cid:2)x A 0 0 0 0 C C
+A 12(cid:5)6 ¼ B B B B B B B B B B x x 0 0 0 M U x 0 0 0 0 A (cid:2)m(cid:2) j 0 0 0 h U (cid:2)j (cid:2)h A 0 0 0 0 (cid:2)m (cid:2)h A 0 0 0 0 (cid:2)m (cid:2)m(cid:2) 0 0 0 0 h M C C C C C C C C C C ;
+B C
+B 0 0 0 0 0 0 C
+B C
+B 0 0 0 0 0 0 C
+B C
+B 0 0 0 0 0 0 C
+@ A
+0 0 h 0 0 h
+U M
+0 0 0 h h 0
+A A
+0 1
+B C
+B C
+B 0 0 (cid:2)b S (cid:2)b S 0 0 C
+B C C C C C
+B B 0 0 (cid:2)b A S A (cid:2)b A S A 0 0 C C
+B C
+B 0 0 (cid:2)b UV e (cid:2)b UV e 0 0 C
+B C C C C C
+B C
+B 0 0 (cid:2)b UV e (cid:2)b UV e 0 0 C
+B A A A A C
+B B 0 0 0 0 0 0 C C
+B C
+B 0 0 0 0 0 0 C
+B ¼B C:
+12(cid:5)6 B B B (cid:2)d(cid:2)m(cid:2)j 0 b C S C þb C UV C e b C S C þb C UV C e 0 0 C C C
+B B j (cid:2)d(cid:2)m b A S A þb A UV A e b A S A þb A UV A e 0 0 C C
+B C
+B d 0 (cid:2)g(cid:2)d(cid:2)m(cid:2)j 0 0 0 C
+B C
+B B 0 d j (cid:2)g(cid:2)d(cid:2)m 0 0 C C
+B C
+B 0 0 g 0 (cid:2)m(cid:2)j 0 C
+B C
+B @ 0 0 0 g j (cid:2)mC A
+Let l i, i ¼ 1, 2, …12, be eigenvalues of the matrix J0. Then l 1 ¼ (cid:2)m, l 2 ¼ (cid:2)(m þ x A), l 3 ¼ (cid:2)(m þ j), l 4 ¼ (cid:2)(m þ h M),
+l 5¼(cid:2)(mþh A),l 6¼(cid:2)(mþh A),l 7¼(cid:2)(mþh Uþj),
+l 8¼(cid:2)(mþx Mþx Uþj),l 9¼(cid:2)(gþdþmþj),l 10¼(cid:2)(dþmþj),
+(cid:1) qffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi(cid:3)
+l 11 ¼ (cid:2)1 2 dþdþ2mþgþ ðgþdþdþ2mÞ2(cid:2)4ð1(cid:2)RvÞðdþmÞðgþdþmÞ ,
+(cid:1) qffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffiffi(cid:3)
+l 12 ¼ (cid:2)1 2 dþdþ2mþg(cid:2) ðgþdþdþ2mÞ2(cid:2)4ð1(cid:2)RvÞðdþmÞðgþdþmÞ .Alleigenvaluesarenegativeexceptl 12,
+whichisalsonegativeforRv <1.Thus,wecanconcludethatthedisease-freeequilibriumpointislocallyasymptoticallystable
+forRv <1.
+Intheepidemiologicalsense,thelocallyasymptoticallystabilityofthedisease-freeequilibriumforRv <1impliesthatthe
+measlesdynamicsinitiatedwithasmallnumberofinfectionsintroducedinthecommunityapproachestothemeasles-free
+stateovertimewhenthevaccinatedreproductionnumberremainslessthanone.Inotherwords,thevaccinatedreproduction
+numberbeinglessthanunityassuresthatthediseaseoutbreakwilldieoutwhenasmallpopulationperturbationoccurswith
+theintroductionofasmallnumberofinfections,whichisusuallythecaseatthebeginningofinfection.Suchacondition
+allowsustodesignavaccinationpolicythatassuresRv <1,therebyavoidingtheoutbreak.However,localstabilitydoesnot
+ensureoutbreakcontrolunderallconditionsorifthesystemisperturbedsignificantly.
+3.3.2. Globalstabilityofthedisease-freeequilibriumE0
+Inthissection,weshowthatRv <1alsoassertstheglobalstabilityof thedisease-freeequilibriumE0asstatedinthe
+followingtheorem.
+Theorem3.2. Thedisease-freeequilibriumE0isgloballystablewhenRv <1.
+Here,wedeterminetheglobalstabilityofE0usingtheresultspresentedinapreviousstudy(Castillo-Ch(cid:2)avezetal.,2002).
+First,system(1e12)iswrittenasdX/dt¼F(X,Y),dY/dt¼G(X,Y),withG(X,0)¼0,whereX2R8andY2R4representthe
+uninfected and infected compartments, respectively. Then satisfying the following two conditions implies the global
+asymptoticallystabilityofthesystemarounddisease-freeequilibriumpointE0¼(X*,0):
+1014
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+1. FordX/dt¼F(X,0),X*isgloballystable,(whereX*2R8atdiseasefreestate)and
+2. G ^ ðX;YÞ ¼BY(cid:2)GðX;YÞ(cid:3)0,for(X,Y)2R12,whereBistheJacobianoftheinfectedsystematthedisease-freeequilibrium
+E0.
+Clearly,thesystem
+0 1
+B C
+B L(cid:2)S ðmþx þx þjÞ C
+B C M U C
+B B B S C j(cid:2)mS A C C C
+B B S C x U (cid:2)UV C ðmþh U þjÞ C C
+B C
+dX B B UV C j(cid:2)UV A ðmþh A Þ C C
+dt ¼B B B x A S A (cid:2)V A ðmþh A Þ; C C C
+B B B S C x M (cid:2)MV C ðmþh M Þ C C C
+B BMV C h M (cid:2)I mC ðmþjÞþUV C h U C C
+B C
+@ðUVþV Þh (cid:2)mI þI jA
+A A A mA mC
+isgloballyasymptoticallystableatX*.Thematrixoftheinfectedcompartmentsisgivenas:
+0 1
+B ðI þI Þb S þðI þI Þb UVe(cid:2)ðdþmþjÞE C
+B C A C C C A C C C C
+G¼ B B B ðI C þI A Þb A S A þðI C þI A Þb A UV A eþE C j(cid:2)E A ðdþmÞ C C C :
+B
+@
+E
+C
+d(cid:2)I
+C
+ðgþdþmþjÞ C
+A
+E dþI j(cid:2)I ðgþdþmÞ
+A C A
+TheJacobianofthematrixGatthedisease-freeequilibriumisB¼
+0 1
+(cid:5) (cid:6) (cid:5) (cid:6)
+0 0
+B B(cid:2)d(cid:2)m(cid:2)j 0 b C ðS C Þ0þb C UV C e b C ðS C Þ0þb C UV C eC C
+B (cid:5) (cid:6) (cid:5) (cid:6) C
+B B B j (cid:2)d(cid:2)m b A ðS A Þ0þb A UV A 0 e b A ðS A Þ0þb A UV A 0 e C C C :
+B C
+B @ d 0 (cid:2)g(cid:2)d(cid:2)m(cid:2)j 0 C A
+0 d j (cid:2)g(cid:2)d(cid:2)m
+0 1
+E
+C
+B C
+Y ¼ B @ E AC A ;
+I
+C
+I
+A
+0 1
+(cid:5) (cid:6)
+0
+B B (cid:2)E C ðdþmþjÞþðI C þI A Þb C ðS C Þ0þðI C þI A Þb C UV C e C C
+B (cid:5) (cid:6) C
+BY ¼ B B B(cid:2)E A ðdþmÞþðI C þI A Þb A ðS A Þ0þðI C þI A Þb A UV A 0 eþE C j C C C ;
+B C
+B @ E C d(cid:2)I C ðgþdþmþjÞ C A
+(cid:2)I ðgþdþmÞþE dþI j
+A A C
+^
+whereYisa(4(cid:5)1)matrixwithelements(EC,EA,IC,IA).ThenBY(cid:2)GorG¼
+0 (cid:1)(cid:1) (cid:3) (cid:1) (cid:3)(cid:3) 1
+L Lx
+B B B ðI (cid:1) C þ (cid:1) I A Þb C mþx M þx U þj (cid:2)S C þ (cid:3) e Zð (cid:1) mþx M þ U x U þjÞ (cid:2)UV C (cid:3)(cid:3) C C C
+B B BðI þI Þb e Ljx U (cid:2)UV þ Lj (cid:2)S C C C:
+B C A A Zðh þmÞðmþx þx þjÞ A ðmþx Þðmþx þx þjÞ A C
+B A M U A M U C
+B C
+@ 0 A
+0
+Fromthesystemofequations1e12,weultimatelyobtain
+1015
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+L Lj Lx
+S (cid:4) ;S (cid:4) ;UV (cid:4) U ;andUV
+C mþx þx þj A ðmþx Þðmþx þx þjÞ C Zðmþx þx þjÞ A
+M U A M U M U
+Ljx
+(cid:4) U :
+Zðh þmÞðmþx þx þjÞ
+A M U
+Clearly(BY(cid:2)G)isthenon-negativematrixforRv <1,sothediseasefreeequilibriumpointisgloballyasymptoticallystable
+whenRv <1.
+Epidemiologically,ourtheoremestablishingtheglobalstabilityofthedisease-freeequilibriumimpliesthatthedisease
+can'testablishsustainedtransmissionwithinthepopulationforany,evensignificantlylarge,initialnumberofinfectionsas
+long as Rv < 1. The global stability of the disease-free equilibrium point of our model helps to maintain and implement
+preventivestrategiessuchasvaccinationprogramsfordiseasecontrol.
+3.4. Endemicequilibrium
+Obtaining theendemic point in theinfectious disease modelingis crucialtounderstandingthe long-termdisease dy-
+namics.Formanysituationswithimperfectvaccinationprograms,whichislikelythecurrentconditioninNepal,theendemic
+equilibriumprovidestheepidemic'sseverity.Theepidemiclevel,atleast,informsimportantpolicyguidelinesfordisease
+controlifnoteradicated.
+(cid:5) (cid:6)
+Suppose E*¼ S *; S *; ðUVÞ * ; ðUVÞ * ; V *; ðMVÞ * ; E *; E *; I *; I *;I * ; I * be an endemic equilibriumof the system. Let,
+C A C A A C C A C A mC mA
+I* ¼I * þI * .Thensolvingsystem(1e12),weget
+C A
+L
+S * ¼ ;
+C b I*þmþx þx þj
+C M U
+Lj
+S * ¼ ;
+A ðb I*þmþx Þðb Ia*þmþx þx þjÞ
+A A C M U
+(cid:5) (cid:6)
+* Lx
+UV ¼ U ;
+C ðb I*þmþx þx þjÞðb I*eþZÞ
+C M U C
+(cid:5) (cid:6)
+* Ljx
+UV ¼ U ;
+A ðh þb I*eþmÞðb I*þmþx þx þjÞðb I*eþZÞ
+A A C M U C
+Ljx
+V * ¼ A ;
+A ðh þmÞðb I*þmþx Þðb I*þmþx þx þjÞ
+A A A C M U
+(cid:5) (cid:6)
+* Lx
+MV ¼ M ;
+C ðmþh Þðb I*þmþx þx þjÞ
+M C M U
+E * ¼ b C I*Lðb C I*eþex U þZÞ ;
+C ðdþmþjÞðb I*þmþx þx þjÞðb I*eþZÞ
+C M U C
+I * ¼ b C dI*Lðb C I*eþex U þZÞ :
+C ðdþmþjÞðgþdþmþjÞðb I*þmþx þx þjÞðb I*eþZÞ
+C M U C
+Here,E *
+A
+; I *
+A
+; I *
+mC
+; I *
+mA
+arepositivewhenRv >1(seesupplementaryfile).Aftermanipulatingtheequationsofthesystemat
+diseasedequilibriumweobtainedtheequationgivenas:
+ðA ðI * Þ4þA ðI * Þ3þA ðI * Þ2þA I * þA ÞI * ¼0; (13)
+4 3 2 1 0
+where,
+A ¼ b2b2e2ðdþmÞðgþdþmÞ;
+4 C A
+A
+0
+¼ ð1(cid:2)RvÞðdþmÞðh
+A
+þmÞðx
+A
+þmÞðgþdþmÞðmþh
+U
+þjÞðmþx
+M
+þx
+U
+þjÞ;
+andA1,A2,A3areprovidedinsupplementaryfile.NotethatI*¼0correspondstothedisease-freeequilibriumE0.SinceA0 <
+0whenRv >1andA4 >0,thenbyVieta'sTheorem,thereexistsatleastonepositiveI*andthesystemhasatleastoneendemic
+equilibriumwhenRv >1.
+WecancomputethemagnitudeofendemicequilibriumbysolvingEq.(13).Wewereunabletoestablishthestabilityofthe
+endemicequilibriumanalyticallyduetothecomplexitybroughtbythehigher-orderequationswithnonlinearity.However,
+weperformednumericalanalysisforthestabilityoftheendemicequilibriumandpresentedresultsasabifurcationdiagram
+1016
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+with the existence and stability of the endemic equilibrium for Rv > 1 (Fig. 3), for which the disease-free equilibrium is
+unstable.
+4. Numericalsimulations
+4.1. Datafitting,modelvalidation,andparameterestimation
+SincemeaslescaseswerefoundonlyintendistrictsofNepal(Fig.1),weconsideredthepopulationcorrespondingtoonly
+thesetendistrictswithatotalofN(0)¼6,564,070(N.S.Office,2021).Moreover,asthecasesappearedonlyinafewvillages
+ofthesetendistricts,thewholepopulationislesslikelytobeinthecontactnetwork.Therefore,weassumeaisaportionof
+thetotalpopulation,soonlyaN(0)isinthemeaslestransmissioncontactnetwork.InNepal,thechildrenpopulationagedup
+to14yearsis27.4%(Statista,2023),soweassumed29%ofthetotalpopulationagedupto15yearsandtookNC(0)¼0.29aN(0)
+andNA(0)¼0.71aN(0).
+The vaccinated population in Nepal is about 87e93% (WHO,2023c), and assuming children are morevaccinated than
+adults,wetook91%ofchildrenand89%ofadultswerevaccinated.Thus,wetook9%and11%ofunvaccinatedchildrenand
+adultsasrespectivesusceptibles,i.e.,SC(0)¼0.09aNC(0)andSA(0)¼0.11aNA(0).Sincetherewasnoadequatelymonitored
+vaccinationorcatch-upprogramforadultvaccinationinNepal,wetookMV
+C
+ð0Þ ¼50; V
+A
+¼0.Sincevaccineeffectivenessfor
+measlesis77e86%(Ichimuraetal.,2022;Kumaretal.,2023;Lochlainnetal.,2019),wetook89%astheimmunepopulation,
+givingImA(0)¼0.79aNA(0)andImC(0)¼0.81aNC(0).TheremainingpopulationsaretakenasUV
+C
+ð0ÞandUV
+A
+ð0Þ.Followingthe
+magnitudeofdata,weassumethattheoutbreakbeginswithasmallnumberofexposedandinfectedindividualsandtook
+EC(0)¼5,EA(0)¼3,IC(0)¼2,IA(0)¼1.
+Forthisstudy,individualsunder15werecategorizedaschildren,givingthematurationrateofj¼1/(15(cid:5)52)¼0.0013
+perweek.SincetheaveragelifespanforNepalin2023isapproximately72years(Macrotrends),wetookthenaturaldeath
+rateas1/(72(cid:5)52)perweek.Duringtheperiodofdatacollected,noimmunizationprogramwasinplaceforadults,sowetook
+boththerateofadultvaccination(x A)andtherateofbeingimmunethroughadultvaccination(h A)aszero.Wealsoassume
+therateofadultsbeingimmunethroughun-monitoredvaccination(h A)tobezero.
+Weconsideredtheincubationperiodformeaslestobe10days(range:10e14days)(WHO,2023a),implyingd¼0.7per
+week.Consideringtherecoveryperiodfromthediseaseisaround15days(range:7e23days)(WHO-Nepal,2023b),weobtain
+g¼1/2perweek.UsingtheCaseFatalityRate(CFR)of0.14%inNepal(Dall,2023;WHO-Nepal,2023a)inthedisease-induced
+deathrateformulad¼(cid:2)lnð1(cid:2)0:14=100Þgiveninthepreviousstudy(Pantha,Giri,Joshi,&Vaidya,2021)withT¼15weeks,we
+T
+obtaind¼9.3399(cid:5)10(cid:2)5perweek.
+InlinewithWHOguidelines,childrenreceivetheirfirstvaccinedoseat9monthsofageandtheseconddoseat15months
+(MoHP,2024),withasix-monthintervalbetweentwodoses.Accountingforanaveragevaccineeffectivenessof80%(Min-Shi
+etal.,2009;WHO-Measles,2019),weadoptede¼1(cid:2)0.8¼0.2.Sincetheoutbreaksusuallyremainforashorttermof15
+weeksonly,asrevealedinthedata,wecanassumethatthebirthandthedeathbalanceeachother,i.e.,L¼m(cid:5)N.
+Weestimatetheparametersb C,b A,x U,h U,h M,andabyfittingthemodelwiththemeaslescasedatafromNepal.Fromthe
+model,weeklynewinfectionsattimetaregivenbyh(t)¼qdE(t),whichweobtainusingthenumericalsolutionsofsystem(1-
+Fig.3. ForwardbifurcationatRv¼1.ThediseasefreeequilibriumisstableforRv <1.ThediseasefreeisunstableandendemicequilibriumisstableforRv >1.
+1017
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Fig.4. Datafittingandmodelvalidation.(a)TherecordedweeklycasesofmeaslesinNepal(filledcircle)alongwiththebestfitofthemodel(line).(b)The
+cumulativerecordedmeaslescasesinNepal(filledcircle)alongwiththemodelpredictionofthecumulativecases(line).
+12).Here,qrepresentstheportionoftheinfectionrecorded.Then,weestimatetheparameterswiththehelpofthenonlinear
+regressionmethod(Motulasky&Arthur,2003)thatminimizesthefollowingsumofthesquareresiduals:
+X15 ̄
+ðh (cid:2)h Þ2;
+k k
+k¼1
+̄
+wherehkdenotesthemodelpredictedweeklynewinfectionandh
+k
+denotesweeklynewinfectiondata.Allthecomputations
+arecarriedoutinMATLAB(TheMathWorks.Inc.)usingitsvariousroutines,including“ode45”(ODEsolver)and“fmincon”
+(minimizer).
+OurmodelcanfitthedataofweeklyincidencecasesinNepalwell(Fig.4a).Inaddition,wealsoshowthatthemodel
+predictionofthecumulativecasesagreeswellwiththecumulativedata(Fig.4b),therebyvalidatingourmodel.Thevaluesof
+statevariablesandparametersaregiveninTable2andTable3,respectively.Fromourestimation,thetransmissionratein
+children(b C¼0.00188)ishigherthaninadults(b A¼1.00(cid:5)10(cid:2)5).Despitethelowtransmissionrateamongadults,itmaystill
+besufficienttospreadthediseaseandcauseobstaclestoachievingthemissionofmeasleseradication.Similarly,weobtained
+themonitoredvaccinationrate(x M¼4.777(cid:5)10(cid:2)6)islessthantheun-monitoredvaccinationrate(x U¼0.0087),andtherate
+ofbeingimmunefrommonitoredvaccination(h M¼0.0167)ishigherthantheun-monitoredvaccination(h U¼3(cid:5)10(cid:2)6).Our
+estimatesindicatethatabout15%ofthemeaslescaseswererecordedinNepal(i.e.,q¼0.15)(Table3).
+4.2. Parametersensitivityanalysis
+4.2.1. SensitivityofRv
+WequantifythelocalsensitivityofRvtoeachoftheparametersb C,b A,j,g,d,d,e,m,h A,h U,h M,x M,x U,andx A.Forthis,we
+obtainedthesensitivityindex,Sx,foreachparameterxusingtherelationship:
+(cid:1) (cid:3)(cid:1) (cid:3)
+Sx¼
+R
+x
+v
+v
+v
+R
+x
+v :
+BasedonthesensitivityindexSx,wefoundthattheparametergaffectsRvthemostcomparedtotheotherparameters.The
+secondparameteraffectingRvisb C,followedbytheparameterse,j,m,x U,andb A,whiletheeffectsofd,d,h A,h M,x A,h Mandx
+M
+toRvarenegligible(Fig.5a).
+We also performed the global sensitivity analysis by using the Latin Hypercube Sampling (LHS) technique (Simeone,
+Hogue, Ray, & Kirschner, 2008) with 1000 samples of parametersets fromawider parameterrangeof ±25% of the base
+value of each parameter. We compute the partial rank correlation coefficients (PRCC) to identify the most influential
+parametertoRv.Weobservedthattheparametersg,b C,e,andjarethemostsensitiveparametersforRv,whicharefollowed
+1018
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Table2
+Statevariables.
+StateVariables Values StateVariables Values
+MV Cð0Þ 50 VA(0) 0
+EC(0) 5 EA(0) 3
+IC(0) 2 IA(0) 1
+SC(0) 2142 SA(0) 6408
+UV Cð0Þ 2382 UV Að0Þ 5703
+ImC(0) 19,271 ImA(0) 46,145
+NC(0) 23,795 NA(0) 58,256
+Table3
+Modelparameters.
+SymbolsofParameters Values Source
+x U,x
+M
+0.087,4.77(cid:5)10(cid:2)5 Datafitting
+b C,b
+A
+0.00188,1.00(cid:5)10(cid:2)5 Datafitting
+m 1/(72(cid:5)52) Calculated
+g 1/2 WHO-Nepal(2023b)
+j 1/(15(cid:5)52) Calculated
+e 0.2 [46,47]
+h A 0 Assumed
+h U,h
+M
+3(cid:5)10(cid:2)6,0.167 Datafitting
+d 0.7 WHO-Nepal(2023b)
+q 0.15 Datafitting
+d 9.3399(cid:5)10(cid:2)05 Calculated
+x A 0 Assumed
+a 0.01253 Datafitting
+Fig.5. (a)LocalsensitivityofparameterstoRv.Thesensitivityindex,Sx,showingthelevelofchangeinRvwithrespecttotheparameters.Notethatthe
+sensitivityindexSxofd,d,h A,h U,h M,x Aandx Marenegligibleanddifficulttovisualizeinthefigure.(b)GlobalsensitivityofRv.PartialRankCorrelationCo-
+efficientsforRvfromLHSmethod.
+bym,x U,andb A,andtherestoftheparametersarelesseffective(Fig.5b).BothlocalandglobalanalysesshowthatRvismostly
+influencedbytheparametersg,b C,ande.
+4.2.2. Sensitivityofmeaslesdynamics
+We also used the Latin Hypercube Sampling (Simeone, Hogue, Ray, & Kirschner, 2008) method to explore the global
+sensitivityofthemeaslesdynamicsrepresentedbythepeakinfectionandthetimetopeakinadults,children,andcombined.
+ThecomputedpartialrankcorrelationcoefficientcorrespondingtoeachparameterispresentedinFig.6.Ouranalysisshows
+1019
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Fig.6. Sensitivityofmeaslesdynamics.GlobalsensitivityoftheparameterstopeakvalueandtimetopeakinfectionforadultIA(a,d),childrenIC(b,e),and
+combinedchildandadult(c,f).Thepartialrankcorrelationcoefficientsforsensitivityarebasedon1000LatinHypercubeSamplesetsofparameters.
+thatthepeakvalueoftheinfectedclassIAishighlyinfluencedbyg,b A,e,anddfollowedbyb Candthenbyx Uwhilethe
+remainingparametersarelesseffective(Fig.6a).Also,thepeakvalueoftheinfectedclassICishighlyinfluencedbyb C,e,d,and
+g,followedbyx Uandotherparametersarelesseffective(Fig.6b).Similarly,thepeakvalueoftheinfectedclassofchildrenand
+adultscombinedisinfluencedbytheparametersb C,e,d,g,followedbyx U.Incontrast,theremainingparametersareless
+effective(Fig.6c).
+Thetimetopeakinfectionismostlyaffectedbytheparametersb C,d,andg,followedbyeandx M.Therestoftheparameters
+inIAandIClessinfluencesit.Similarly,thetimetopeakforcombinedinfectionismainlyaffectedbyd,b C,g,ande,followedby
+x M,whiletheremainingparametersarelesseffective(Fig.6f).
+4.3. Impactofthecontactnetworkoninfection
+Whileweestimatedthebasecontactnetworkinthedatacontext,thecontactnetworkmaychangedependingonthe
+situation.Therefore,wenowexploretheeffectsofthecontactnetworkonthetotalnumberofinfectionsanditspeakvaluefor
+eachinfectedclass.Anincreaseinchildren'scontactnetworkby5,10,and15timesthebasecaseresultsintheriseofpeak
+infectionofchildrenby8,16,and21times,respectively,andanincreaseinthetotalchildreninfectionby4,7,and8times,
+respectively(Fig.7a).Similarly,thesameincrementlevelintheadultcontactnetworkresultsintheincrementofthetotal
+infectionby28,85,and133timesandthepeakinfectionby28,92,and166times,respectively(Fig.7b).Anincrementinthe
+contactnetworkofallpopulationsby5,10,and15timesresultsinanincrementofapproximately8,17,and23timesinthe
+peakinfectionand7,16,and23timesinthetotalinfection,respectively(Fig.7c).
+4.4. Impactofmonitoredvaccineprogram
+4.4.1. Ondiseaseincrease-decreasetrend
+Here,weexaminetheprofoundroleofvaccinecoverageintheincrease-decreasetrendofthedisease,i.e.,reducingthe
+effective reproduction number (Re) below one. We evaluate the effect of both timeliness and extension of vaccination
+1020
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Fig.7. Effectsofthecontactnetworksize.Thetotalnumberofinfectionsandpeakinfectiononthevariationofthecontactnetworkof(a)children,(b)adults,
+and(c)total(childrenandadults).
+coverageinachievingthegoalofRe <1(decreasingtrend).Ourfindingsshowthatcompletevaccinecoveragewithinthefirst
+twoweeksofoutbreaksyieldsremarkableoutcomesinloweringtheeffectivereproductionnumber.Achievingavaccination
+coverageofover90%amongchildrenwithintwoweeksdecreasestheeffectivereproductionnumbertobelow1injusttwo
+weeks. In contrast, when vaccine coverage is limited to only 20%, this critical threshold is reached only after six weeks
+(Fig.8a).
+Our model predicts that a vaccination campaign focused only on adults may not be sufficient to reduce the effective
+reproductionnumbertobelowonewithinareasonabletimeframe.AsdepictedinFig.8b,thecompletevaccinecoverageof
+adultswithintwoweeksslightlylowerstheeffectivereproductionnumberinaboutsevenweeks.Thevaccinationdistributed
+amongthecombinedpopulationislesseffectivethanthevaccinationentirelygiventochildren.Inthiscase,thethresholdcan
+beloweredtobelowoneinoneweekby90%ofvaccinecoveragewithinthreeweeks,whileittakessixweeksfor30%of
+coveragewithintwoweeks(Fig.8c).
+4.4.2. Onthereductionofdiseaseburden
+Wealsoexploretheimpactofvaccinecoverageoveraspecificperiodonreducingmeaslescasesandthemaximumweekly
+cases.Ourmodelingrevealsasignificantvariationintheeffectsofvaccinecoverageacrossdistinctagegroups(Fig.9).20%of
+childrenvaccinationwithintwoweekscanreduceabout85%ofthetotalmeaslescasesand85%ofthemaximumweekly
+cases,while90%ofchildrenvaccinationwithinsixweekscanreducemorethan90%ofthetotalmeaslescasesandmorethan
+90%ofthemaximumweeklycases(Fig.9aandb).Incontrast,20%ofadultvaccinationswithintwoweekscanreduceonly10%
+ofthetotalcasesandonly5%ofthemaximumweeklycases.Even90%oftheadultvaccinationswithinsixweekscanreduce
+only12%ofthetotalcasesandonly7%ofthemaximumweeklycases(Fig.9candd).
+90%ofcombinedadult-childvaccinationwithintwoweeksreducesabout80%ofthetotalmeaslescasesand80%ofthe
+maximumweeklycases(Fig.9eandf).Theseresultshighlightthattheeffectivenessofvaccinationindiminishingmeasles
+Fig.8. TimeforRe<1.Time(inweeks)fortheeffectivereproductionnumbertobelessthanonewhen(a)onlychildrenareimmunized,(b)onlyadultsare
+immunized,and(c)childrenandadultsareimmunized.
+1021
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Fig.9. Effectsofmonitoredvaccination.Impactofthecoverageofmonitoredchildrenvaccinationonthepercentagereductionof(a)thetotalmeaslescases
+and(b)weeklymaximumnewcasesofmeasles,adultvaccinationonthepercentagereductionof(c)thetotalmeaslescasesand(d)weeklymaximumnewcases
+ofmeasles,thechildrenandadultvaccinationonthepercentagereductionof(e)thetotalmeaslescasesand(f)weeklymaximumnewcasesofmeasles.
+1022
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Fig.10. EffectsofvaccinationonRv.ValueofRvforcombinationsofchildrenandadultsvaccinationrates(x M-x Aparameterspace).Thedashedredlinecor-
+respondstoRv¼1.
+prevalenceisnotablymorepronouncedinvaccinationprogramsfocusedonchildren(Fig.9a)thanadults(Fig.9c).However,it
+isworthnotingthateventhoughtheadultvaccinationmayreducetheburdennegligiblycomparedtochildhoodvaccination,
+itstillplaysavitalroleincontrollingthedisease,especiallyforeradication,sinceadultsmayactasapotentialreservoirsource
+forpersistentdiseasetransmission.
+4.5. Infectionsinadults:implicationstodiseaseeradication
+Asfoundabove,vaccinationfocusedonadultsonlyhasthenegligiblebenefitofreducingthediseaseburdencomparedto
+vaccination focused on children. However, persistent infection in adults may pose an obstacle to measles eradication.
+Therefore,wefurther performeda deeperanalysis toexplorewhethera realistic adult infection-relatedparameterrange
+exists that maycause an obstacle to eradication. To examine this, we identified the region corresponding to the disease
+eradication(Rv <1)anddiseasepersistence(Rv >1)inthex M-x Aparameterspaceofchildrenandadultsvaccinationrates
+(Fig.10).
+AsillustratedinFig.10,withtheparameterrange3(cid:4)x M(cid:4)17((cid:5)10(cid:2)5)and0(cid:4)x A(cid:4)10((cid:5)10(cid:2)4),weobservethatthere
+existsarealisticparameterrange(spacebelowRv¼1curveinFig.10)forwhichRv >1.Thisindicatesthatunlessthechild
+vaccinationrateissufficientlylarge,thevalueofRvmayremainaboveoneduetosomepersistentinfectioninadults.Inthis
+case,introducingadultvaccinationontopofthechildvaccinationcanreduceRvbelowone.Therefore,inthesituationwhen
+children-focused vaccination is not sufficientlylarge enough, which is likely the case in developing countries like Nepal,
+persistentinfectioninadultscanbeamajorhurdlefordiseaseeradication,andconsideringadult-focusedvaccinationalong
+withchildren'svaccinationbecomescriticalforglobaldiseaseeradication.
+5. Discussion
+Inrecentyears,measlesoutbreakshaveoccurredfrequentlyinmanyplacesoftheglobe.Thethreatofmeaslesisgrowing
+due to the expansion of immunity gaps, COVID-19's disruption of routine immunization, and the lack of planned global
+vaccinationcampaigns.Thereductionofvaccinationisalsoattributedtovariousfactors,includingsocietalandeducational
+impactsandreligiousbarriers.InNepal,thedeclineinvaccinationcoveragecorrespondstothepatternsofmeaslesepidemics.
+Whileahigherproportionofcasesareobservedinyounginfantsandolderchildren,asmallnumberofcaseshavefrequently
+beenobservedinNepaleseadults(WHO,2023d),implyingthattheunvaccinatedadultsmayserveasavirusreservoirto
+causeobstaclestoWHO'seradicationgoal.Themodeldevelopedinthisstudywithbothchildrenandadultgroupsisessential
+toidentifytheidealmonitoredvaccinationstrategyforbothadultsandchildrentoensuretheglobaleradicationofmeasles.
+UsingourmodelvalidatedbythemeaslescasedataofdifferentregionsofNepalfromNovember24,2022,toMarch10,
+2023(WHO-Nepal,2023a),weestimatedthemeasles-vaccinatedreproductionnumberinNepaltobeRv¼11.677.Thevalue
+ofRvismuchhigherthanone,indicatingthatsignificanteffortsneedtobeputintothevaccinationprograminNepaltomeet
+WHO'sglobaleradicationgoal.Mostnotably,ourmodelpredictsacriticaladultvaccinationlevelrequiredincombination
+withapartiallysuccessfulchildren'svaccinationprogramtobringRvlessthanone.Therefore,ourstudyunderscorestheneed
+forcombinedadultandchildrenvaccinationformeasleseradication,incontrasttotheoftenignoredadultgroupinvacci-
+nationprograms.
+1023
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Weexploredtheeffectofthecontactnetwork sizeonmeaslesepidemics.Wefoundthatincreasingcontactnetworks
+ultimatelyincreasesthetotalandweeklymeaslescasesinchildrenandadults.Interestingly,theincreaseinmeaslesburdenis
+morepronouncedduetotheriseofcontactnetworksamongadultsthanchildren,mainlywhentheincreasedlevelismore
+than ten times the base case. This result further highlights the importance of adult vaccination, which lowers the adult
+susceptiblepopulation,therebyreducingthetotalinfectionandweeklyinfection.
+Wealsoexaminedtheimpactofvaccinecoverageondiseasetrends(Fig.8)andthediseaseburden(Fig.9).Ourmodel
+helpsidentifyareasonablelevelofchild-adultvaccinecoveragetoensurethedecreasingtrendofmeasles(i.e.,Re <1).For
+example,90%inthreeweeksor30%intwoweeksofvaccinecoveragecanbringRelessthanoneinonedayorsixdays,
+respectively.Similarly,ourmodelallowsustoproperlyevaluatethevaccinationprogramforreducingthediseaseburden.For
+example,an80%reductioninthetotalmeaslescasesandan80%reductioninthemaximumweeklycasescanbeachievedby
+covering90%adultandchildpopulationwithintwoweeksofvaccination.Ourresultsshowthatthevaccinefocusedentirely
+on children can reduce the disease burden more than that distributed among both children and adults, highlighting the
+significanceofprioritizingchildhoodvaccinecoverageasaprimarystrategyforreducingdiseaseburden.However,asdis-
+cussedabove,adultvaccinationshouldnotbeoverlookedasitmayhaveacriticalroleindiseaseeradication.Ourresultis
+consistentwiththepreviousstudies(Dipo&Dinda,2019;Garbaetal.,2017;Jaharuddin,2020;Lessleretal.,2016;Pokharel
+etal.,2022).
+We acknowledge some limitationsof ourstudy.The parameterestimationswerebased on the limited data ofweekly
+incidencecases.Thelackofgranulardataandinformationcouldhavehinderedtheachievementofmoreaccurateoutcomes.
+Although we successfully derived the closed form of the distinct endemic equilibrium, we were unable to complete a
+thoroughanalysisofthisequilibriumduetomodelcomplexities.Forexample,wecouldn'tachievethestabilityconditionof
+endemic equilibrium, whileweonlyexplored the stabilityof endemic equilibrium through numerical methods. We have
+ignoredthepotentialeffectsofspatialheterogeneityondiseasetransmissionandassumedahomogenousmixedpopulation.
+Spatialheterogeneitymayplayaroleindiseasetransmission,especiallyinthespreadofmeaslesinsomespecificdistrictsof
+Nepal. Further study on the cost-effectiveness analysis based on the country's financial status would benefit the optimal
+policydesigntoachievethemeasleseradicationgoal.
+Insummary,wedevelopedanovelmodelofmeaslestransmissioninthecontextofNepal,incorporatingthetwodifferent
+age groups, children (15 and under) and adults (above 15). Our model demonstrates that the adult group is a potential
+reservoirofmeasles,causingobstaclestoeradicatingthedisease.Ourresultssuggestthatimplementingtheadultvaccines
+alongwiththechildren'svaccineiscriticalforachievingWHO'sglobalmeasleseradicationgoal.Awell-plannedadult-child
+combinationofmonitoredvaccinationprogramsmaybenecessarytofacilitatetheambitiousobjectiveoferadicatingmeasles
+fromNepal.
+Declarationofcompetinginterest
+The authors declare that they have no known competing financial interests or personal relationships that could have
+appearedtoinfluencetheworkreportedinthispaper.
+Authorsdeclare
+Noconflictofinterest.
+CRediTauthorshipcontributionstatement
+AnjanaPokharel:Writingeoriginaldraft,Methodology,Investigation,Formalanalysis.KhagendraAdhikari:Writinge
+original draft, Methodology, Investigation, Formal analysis. Ramesh Gautam: Writing e original draft, Methodology,
+Investigation, Formal analysis. Kedar Nath Uprety: Writing e review & editing, Supervision, Formal analysis. Naveen K.
+Vaidya:Writingereview&editing,Supervision,Formalanalysis,Conceptualization.
+Acknowledgments
+ThisresearchissupportedbytheGRAID(GraduateResearchAssistantshipsin DevelopingCountries)awardsfromthe
+InternationalMathematicalUnion(IMU).APacknowledgestheUniversityGrantsCommission(UGC),SanothimiBhaktapur,
+Nepal,fortheSmallResearchandDevelopmentandInnovationGrants-077/078(SRDIG)award.KAacknowledgestheNepal
+AcademyofScienceandTechnology(NAST)forPh.D.Fellowship.RGacknowledgestheUniversityGrantsCommission(UGC)
+NepalforPh.D.Fellowship2021.TheworkofNKVwassupportedbyNSFgrantsDMS-1951793andDEB-2030479fromthe
+NationalScienceFoundationofUSAandUGPawardfromSanDiegoStateUniversity.
+AppendixA.Supplementarydata
+Supplementarydatatothisarticlecanbefoundonlineathttps://doi.org/10.1016/j.idm.2024.04.012.
+1024
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+References
+Adhikari,K.,Gautam,R.,Pokharel,A.,Dhimal,M.,Uprety,K.N.,&Vaidya,N.K.(2022).Insightintodeltavariantdominatedsecondwaveofcovid-19in
+Nepal.Epidemics,41,Article100642.https://doi.org/10.1016/j.epidem.2022.100642
+Adhikari,K.,Gautam,R.,Pokharel,A.,Uprety,K.N.,&Vaidya,N.K.(2021).Transmissiondynamicsofcovid-19inNepal:Mathematicalmodeluncovering
+effectivecontrols.JournalofTheoreticalBiology,521,Article110680.https://doi.org/10.1016/j.jtbi.2021.110680
+Castillo-Ch(cid:2)avez,C.,Zhilan,F.,&Huang,W.(2002).Onthecomputationofr0anditsroleinglobalstability.IMAVolumesinMathematicsanditsApplications,
+125,229e250.https://doi.org/10.1007/978-1-4757-3667-0_13
+Dall,C.(2023).Nepalhitbymeaslesoutbreak.URLhttps://www.who.int/emergencies/disease-outbreak-news/item/2023-DON446.
+Diekmann,O.,&Heesterbeek,J.A.P.(2001).Mathematicalepidemiologyofinfectiousdiseases:Modelbuilding,analysisandinterpretation.International
+JournalofEpidemiology,30(1),186.https://doi.org/10.1093/ije/30.1.186,186.
+Diekmann,O.,Heesterbeek,J.A.P.,&Roberts,M.G.(1992).Seroepidemiologyandevaluationofpassivesurveillanceduring1988e1989measlesoutbreakin
+Taiwan.InternationalJournalofEpidemiology,21(6),1165e1174.https://doi.org/10.1098/rsif.2009.0386
+Dipo, A., & Dinda, A. (2019). A deterministic model of measles with imperfect vaccination and quarantine intervention. International Conference on
+Mathematics:Pure,AppliedandComputation,1218.https://doi.org/10.1088/1742-6596/1218/1/012044,012044e012054.
+Edward,S.,KitengesoRaymond,E.,KiriaGabriel,T.,Nestory,F.,Mwema,G.,Godfrey,P.,etal.(2015).Amathematicalmodelforcontrolandeliminationof
+thetransmissiondynamicsofmeasles.AppliedandComputationalMathematics,4,396e408.https://doi.org/10.11648/j.acm.20150406.12
+Farman,M.,Shehzad,A.,Akgül,A.,Baleanu,D.,&Sen,M.D.l.(2023).Modellingandanalysisofameaslesepidemicmodelwiththeconstantproportional
+caputooperator.Symmetry,15(2).https://doi.org/10.3390/sym15020468
+Garba,S.M.,Safi,M.A.,&Usaini,S.(2017).Mathematicalmodelforassessingtheimpactofvaccinationandtreatmentonmeaslestransmissiondynamics.
+MathematicalMethodsintheAppliedSciences,40(18).https://doi.org/10.1002/mma.4462
+Gautam,R.,Pokharel,A.,Adhikari,K.,Uprety,K.N.,&Vaidya,N.K.(2022).ModelingmalariatransmissioninNepal:Impactofimportedcasesthroughcross-
+bordermobility.JournalofBiologicalDynamics,16(1),528e564.https://doi.org/10.1080/17513758.2022.2096935
+Haileyesus,T.A.,&Asnakew,M.B.(2023).Modelling,analysis,andsimulationofmeaslesdiseasetransmissiondynamics.DiscreteDynamicsinNatureand
+Society,2023.https://doi.org/10.1155/2023/9353540
+Ichimura,Y.,Yamauchi,M.,Yoshida,N.,Miyano,S.,Komada,K.,Thandar,M.,etal.(2022).Effectivenessofimmunizationactivitiesonmeaslesandrubella
+immunityamongindividualsineastsepik,PapuaNewGuinea:Across-sectionalstudy,PMC-IJID3.https://doi.org/10.1016/j.ijregi.2022.03.001
+Jaharuddin,B.T.(2020).Controlpolicymixinmeaslestransmissiondynamicsusingvaccination,therapy,andtreatment.InternationalJournalofMathe-
+maticsandMathematicalSciences,2020,20.https://doi.org/10.1155/2020/1561569
+Joshi,A.B.(2009).MeaslesdeathsinNepal:Estimatingthenationalcasesinfatalityratio.BulletinoftheWorldHealthOrganization,87(6),405e484.https://
+doi.org/10.2471/BLT.07.050427,2009.
+Khanal,etal.(2016).ProgresstowardmeasleseliminationdNepal,2007e2014.CDCMorbidityandMortalityWeeklyReport(MMWR),65(8),206e210.
+https://doi.org/10.15585/mmwr.mm6508a3externalicon
+Kuddus,M.,Mohiuddin,M.,&Rahman,A.(2021).MathematicalanalysisofameaslestransmissiondynamicsmodelinBangladeshwithdoubledose
+vaccination.ScientificReports,11(1),Article16571.https://doi.org/10.1038/s41598-021-95913-8
+Kumar,S.S.,Hartner,A.-M.,Chandran,A.,Gaythorpe,K.A.M.,Li,X.,etal.(2023).Evaluatingeffectivemeaslesvaccinecoverageinthemalaysianpopulation
+accountingforbetween-dosecorrelationandvaccineefficacy.BMCPublicHealth,23(2351).https://doi.org/10.1186/s12889-023-17082-9
+Lessler,J.,Metcalf,C.,Cutts,F.,&Grenfell,B.(2016).Impactonepidemicmeaslesofvaccinationcampaignstriggeredbydiseaseoutbreaksorserosurveys:A
+modelingstudy.PLoSMedicine,13(10).https://doi.org/10.1371/journal.pmed.1002144
+Lochlainn,L.N.,deGier,B.,vanderMaas,N.,Strebel,P.,Goodman,T.,vanBinnendijk,R.,etal.(2019).Immunogenicity,effectiveness,andsafetyofmeasles
+vaccinationininfantsyoungerthan9months:Asystematicreviewandmeta-analysis.TheLancetInfectiousDiseases,11.https://doi.org/10.1016/S1473-
+3099(19)30395-0,1235e124.
+Macrotrends,Nepalpopulation1950-2020.URLhttps://www.macrotrends.net/countries/NPL/nepal/population.
+Meredith,G.D.,Matt,F.,Sebastien,A.,Xi,L.,Allison,P.,Brian,L.,etal.(2021).Progresstowardregionalmeasleseliminationworldwide,2000e2020.
+MorbidityandMortalityWeeklyReport,70(45).
+Min-Shi,L.,Chwan-Chuen,K.,Jia-Yuh,J.,Chuan-Liang,K.,Chen,W.C.,Mei-Shang,H.,etal.(2009).Theconstructionofnext-generationmatricesfor
+compartmentalepidemicmodels.InternationalJournalofEpidemiology,(7),1165e1174.https://doi.org/10.1098/rsif.2009.0386
+Motulasky,H.,&Arthur,C.(2003).Fittingmodeltobiologicaldatausinglinearandnonlinearregression.Apracticalguidetocurvefitting.SanDiego,CA:Graph
+PadSoftwareInc.URLwww.graphpad.com.
+Mutua,J.M.,Wang,F.-B.,&Vaidya,N.K.(2015).Modelingmalariaandtyphoidfeverco-infectiondynamics.MathematicalBiosciences,264,128e144.https://
+doi.org/10.1016/j.mbs.2015.03.014
+N.S.Office.(2021).Nationalpopulationandhousingcensus(nationalreport).URLhttps://censusnepal.cbs.gov.np/results.
+Pantha,B.,Giri,S.,Joshi,H.,&Vaidya,N.K.(2021).ModelingtransmissiondynamicsofrabiesinNepal.Infect.Dis.Model,6,284e301.https://doi.org/10.1016/
+j.idm.2020.12.009
+Peter,O.J.,Fahrani,N.D.,Fatmawati,W.,&Chukwu,C.(2023).Afractionalderivativemodelingstudyformeaslesinfectionwithdoubledosevaccination.
+HealthcareAnalytics,4,Article100231.https://doi.org/10.1016/j.health.2023.100231
+Peter,O.J.,Ojo,M.M.,Viriyapong,R.,&Oguntolu,F.A.(2022).MathematicalmodelofmeaslestransmissiondynamicsusingrealdatafromNigeria.Journal
+ofDifferenceEquationsandApplications,28(6),753e770.https://doi.org/10.1080/10236198.2022.2079411
+Peter,O.J.,Qureshi,S.,Ojo,M.M.,Viriyapong,R.,&Soomro,A.(2023).MathematicaldynamicsofmeaslestransmissionwithrealdatafromPakistan.Model.
+EarthSyst.Environ,9,1545e1558.https://doi.org/10.1007/s40808-022-01564-7
+Pokharel,A.,Adhikari,K.,Gautam,R.,Uprety,K.N.,&Vaidya,N.K.(2022).ModelingtransmissiondynamicsofmeaslesinNepalanditscontrolwith
+monitoredvaccinationprogram.MathematicalBiosciencesandEngineering,19(8).https://doi.org/10.3934/mbe.2022397
+Poudel,A.(2019).Lowvaccinecoveragerate,floatingpopulationleadingtorepeatmeaslesoutbreaks.URLhttps://reliefweb.int/report/nepal/low-vaccine-
+coverage-rate-floating-population-leading-repeat-measles-outbreaks.
+Roberts,T.M.M.(2000).PredictingandpreventingmeaslesepidemicsinNewZealand.EpidemiologyandInfection,124,279e287.https://doi.org/10.1017/
+S0950268899003556
+Sekhar,B.A.,Rai,P.,Gupta,B.P.,Pradhan,R.,Lacoul,M.,Shakya,S.,etal.(2022).Nepalmeaslesoutbreakresponseimmunizationduringcovid-19:Arisk-
+basedinterventionstrategy.Vaccine,40(20),2884e2893.
+MoHP,2024.GovernmentofNepal,MinistryofHealthandPopulation,NationalImmunizationProgramme.URLhttps://mohp.gov.np/program/national-
+immunisation-programme/en.
+Simeone,M.,Hogue,I.B.,Ray,C.J.,&Kirschner,D.E.(2008).Amethodologyforperformingglobaluncertaintyandsensitivityanalysisinsystemsbiology.
+JournalofTheoreticalBiology,254(1),178e196.https://doi.org/10.1016/j.jtbi.2008.04.011
+Song,X.,Jiang,Y.,&Wei,H.(2019).AnalysisofasaturationincidenceSVEIRSepidemicmodelwithpulseandtwotimedelay.AppliedMathematicsand
+Computation,214.https://doi.org/10.1016/j.amc.2009.04.005
+Statista. (2023). Share of children in total population in Nepal from 2013 to 2022. URL https://www.statista.com/statistics/678090/nepal-children-as-a-
+percentage-of-the-population/.
+Thakur,C.K.,Gupta,N.,Pokhrel,N.,Adhikari,S.,Dhimal,M.,&Gyanwali,P.(2024).Stumblingblocksonthepathtomeasles-freeNepal:Impactofthecovid-
+19pandemic.TropicalMedicineandHealth,52(10).https://doi.org/10.1186/s12889-023-17082-9
+1025
+
+A.Pokharel,K.Adhikari,R.Gautametal. InfectiousDiseaseModelling9(2024)1007e1026
+Trottier,H.,&Philippe,P.(2000).Deterministicmodelingofinfectiousdiseases:Theoryandmethods.TheInternetJournalofInfectiousDiseases,1(2).https://
+doi.org/10.1016/S0031-8914(53)80099-6
+Truong,T.,Mulders,A.N.,Gautam,M.C.,AmmerlaanW,D.L.,deSwart,R.,King,C.,etal.(2001).GeneticanalysisofAsianmeaslesvirusstrainsenew
+endemicgenotypeinNepal.VirusResearch,76(1),71e78.https://doi.org/10.1016/s0168-1702(01)00255-6
+UnicefforEveryChild,Morethan140,000diefrommeaslesascasessurgeworldwide.(2019).URLhttps://www.who.int/news/item/05-12-2019-more-than-
+140-000-die-from-measles-as-cases-surge-worldwide#:?:text=Worldwide%20more%20than%20140%2C000%20people,devastating%20outbreaks%20in
+%20all%20regions.
+Vaidya,N.K.,&Wang,F.-B.(2022).Persistenceofmosquitovectoranddengue:Impactofseasonalanddiurnaltemperaturevariations,Discreteand
+ContinuousDynamicalSystems-B.27(1),393e420.https://doi.org/10.3934/dcdsb.2021048
+vandenDriessche,P.,&Watmough,J.(2002).Reproductionnumbersandsub-thresholdendemicequilibriaforcompartmentalmodelsofdiseasetrans-
+mission.MathematicalBiosciences,180.https://doi.org/10.1016/S0025-5564(02)00108-6
+WHO.(2020).Measlesandrubellastrategicframework2021e2030.URLhttps://www.who.int/publications/i/item/measles-and-rubella-strategic-framework-
+2021-2030.
+WHO.(2022).Nearly40millionchildrenaredangerouslysusceptibletogrowingmeaslesthreat.URLhttps://www.who.int/news/item/23-11-2022-nearly-40-
+million-children-are-dangerously-susceptible-to-growing-measles-threat.
+WHO.(2023a).Measles.URLhttps://www.who.int/news-room/fact-sheets/detail/measles.
+WHO. (2023b). Measles vaccination coverage. URL https://immunizationdata.who.int/pages/coverage/MCV.html?CODE¼GlobalþNPL&ANTIGEN¼MCV1
+&YEAR¼.
+WHO.(2023c).Measlesreportedcasesandincidence.URLhttps://immunizationdata.who.int/pages/incidence/MEASLES.html?CODE¼GlobalþNPL&YEAR¼.
+WHO.(2023d).Measles-Nepal.URLhttps://www.cidrap.umn.edu/measles/nepal-hit-measles-outbreak.
+WHO-Measles.(2019).TowardseliminationinNepal.URLhttps://www.who.int/southeastasia/news/feature-stories/detail/measles-towards-elimination-in-
+nepal.
+WorldHealthOrganization.(2023a).Measles-Nepal.URLhttps://www.who.int/emergencies/disease-outbreak-news/item/2023-DON446.
+WorldHealthOrganization.(2023b).Measles.URLhttps://www.who.int/news-room/fact-sheets/detail/measles.
+1026
+  }
+}
+
+
+==================================================
+LLM Output (gemini):
+==================================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <parameters name="L" description="Recruitment rate to children group"/>
+  <parameters name="x_U" description="Un-monitored children Vaccination rate"/>
+  <parameters name="x_M" description="Monitored children Vaccination rate"/>
+  <parameters name="x_A" description="Adult Vaccination rate"/>
+  <parameters name="b_C" description="Transmission rate on the children"/>
+  <parameters name="b_A" description="Transmission rate on the adults"/>
+  <parameters name="m" description="Natural death rate"/>
+  <parameters name="g" description="Rate of being immune after recovery from infection"/>
+  <parameters name="j" description="Maturation rate"/>
+  <parameters name="e" description="Factor for potential susceptibility in Un-monitored Vaccination Group (1-e is vaccine effectiveness)"/>
+  <parameters name="h_A" description="Rate of being immune of vaccinated adults"/>
+  <parameters name="h_U" description="Rate of being immune of Un-monitored vaccinated children"/>
+  <parameters name="h_M" description="Rate of being immune of Monitored vaccinated children"/>
+  <parameters name="d" description="Incubation rate (progression from Exposed to Infectious)"/>
+  <parameters name="δ" description="Disease induced death rate"/>
+  <parameters name="eb_C" type="EXPRESSION" expression="e * b_C" description="Breakthrough transmission rate for children"/>
+  <parameters name="eb_A" type="EXPRESSION" expression="e * b_A" description="Breakthrough transmission rate for adults"/>
+  <compartments PrimaryName="Susceptible" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.4" description="Infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.4" description="Infection from infectious adults"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.2" rateParameter="//@parameters.1" description="Un-monitored vaccination"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.5" rateParameter="//@parameters.2" description="Monitored vaccination"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.1" rateParameter="//@parameters.8" description="Maturation to adult"/>
+  </compartments>
+  <compartments PrimaryName="Susceptible" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.5" description="Infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.5" description="Infection from infectious adults"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.4" rateParameter="//@parameters.3" description="Adult vaccination"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Un-monitored Children">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.15" description="Breakthrough infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.6" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.15" description="Breakthrough infection from infectious adults"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.11" description="Gaining immunity"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.3" rateParameter="//@parameters.8" description="Maturation to adult"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Un-monitored Adults">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.8" contactRateParameter="//@parameters.16" description="Breakthrough infection from infectious children"/>
+    <outgoingFlows xsi:type="compartmental:ContactFlow" target="//@compartments.7" contactCompartment="//@compartments.9" contactRateParameter="//@parameters.16" description="Breakthrough infection from infectious adults"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11" rateParameter="//@parameters.10" description="Gaining immunity"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.11" rateParameter="//@parameters.10" description="Gaining immunity"/>
+  </compartments>
+  <compartments PrimaryName="Vaccinated" SecondaryName="Monitored Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.10" rateParameter="//@parameters.12" description="Gaining immunity"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Children">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.8" rateParameter="//@parameters.13" description="Progression to infectious"/>
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments.7" rateParameter="//@parameters.8" description="Maturation to adult"/>
+  </compartments>
+  <compartments PrimaryName="Exposed" SecondaryName="Adults">
+    <outgoingFlows xsi:type="compartmental:RateFlow" target="//@compartments

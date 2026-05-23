@@ -161,6 +161,12 @@ Examples:
         default=0.70,
         help="Cosine similarity threshold for gold standard evaluation (default: 0.70)",
     )
+    parser.add_argument(
+        "--system-prompt",
+        type=str,
+        default=None,
+        help="Path to custom system prompt file (optional)",
+    )
     args = parser.parse_args()
 
     if bool(args.paper) == bool(args.paper_id):
@@ -355,6 +361,11 @@ Examples:
         if phase1_models_path.exists():
             example_models_path_entity = str(phase1_models_path)
 
+    custom_prompt = None
+    if args.system_prompt and os.path.exists(args.system_prompt):
+        with open(args.system_prompt, 'r') as f:
+            custom_prompt = f.read().strip()
+
     experiment = os.environ.get("PHASE2_EXPERIMENT", "").strip()
     entity_extractor = EntityExtractor(
         llm_client=llm_client,
@@ -366,6 +377,7 @@ Examples:
         flow_fuzzy_threshold=args.flow_fuzzy_threshold,
         paper_type=paper_type,
         experiment=experiment,
+        custom_system_prompt=custom_prompt,
     )
 
     entities = entity_extractor.extract_all(pdf_data, paper_promises=promises)

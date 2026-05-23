@@ -1,0 +1,1085 @@
+Test! Do you see pdf text below? Say Yes or NO
+
+{
+  {name: EbolaSensitivity.pdf, path: /home/bigWheel/git/Model-Driven-Epidemiology/Compartmental/EbolaSensitivity.pdf, content: 
+A Mathematical Model of Ebola Virus Disease: Using
+Sensitivity Analysis to Determine Effective Intervention
+Targets
+DannySalem RobertSmith?
+DepartmentofBiology DepartmentofMathematicsandFacultyof
+TheUniversityofOttawa, Medicine
+OttawaONK1N6N5Canada TheUniversityofOttawa,
+dsale017@uottawa.ca OttawaONK1N6N5Canada
+rsmith43@uottawa.ca
+ABSTRACT Transmissionoftheviruscanoccurfrombatstoothermam-
+Mathematicalmodelsprovideausefulframeworktoinvesti- mals, usually chimpanzees, gorillas and baboons [2]. Infec-
+gatereal-worldproblems. Theycanbeusedinthecontextof tion of humans can occur through contact with bodily flu-
+diseasedynamicstostudyhowadiseasewillspreadandhow ids of these animals. Transmission from infected to suscep-
+we can stop or prevent an outbreak. In December of 2013, tible humans occurs through direct contact with the saliva,
+an outbreak of Ebola began in the West African country of mucus,vomit,faeces,sweat,tears,breastmilk,urineandse-
+GuineaandlaterspreadtoSierraLeoneandLiberia. Health men of an infected individual. Since direct contact of bod-
+Organisations like the US Centers for Disease Control and ily fluids is necessary, the points of entry of the virus in-
+the World Health Organization were tasked with providing cludethenose,mouth,openwounds,eyes,abrasionsandcuts
+aid to end the outbreak. We create an SEIR compartmental [14]. Symptomsincludefever,sorethroat,musclepainsand
+model of Ebola with a fifth compartment for the infectious headaches, followed by vomiting, diarrhoea, rashes and de-
+deceased to model the dynamics of an Ebola outbreak in a creasedfunctionofthekidneyandliver,theninternalandex-
+village of a thousand people. We analyse the disease-free ternalbleeding. Theriskofdeathfromthediseaseisaround
+equilibrium of the model and formulate an equation for the 50%, increasing as the disease progresses to the bleeding
+eradication threshold R . Sensitivity analyses points us in stage[1]. Thisisalsothestageatwhichinfectedindividuals
+0
+the direction of the transmission probability and the contact becomeinfectious.Unprotectedcontactwithinfectedcorpses
+ratewithinfectiousindividualsastargetsforintervention.We atGuineanburialritualsaresuspectedtohavebeenthecause
+modeltheeffectthatvaccinationandquarantine,togetherand of over 60% of cases in Guinea [8], which is potentially a
+separately, have on the outcome of the Ebola epidemic. We self-perpetuatingproblem.
+findthatquarantineisaveryeffectiveintervention,butwhen
+Informationobtainedfrommathematicalmodelscanhelpde-
+combinedwithvaccinationitcantheoreticallyleadtoeradi-
+termine the necessary response to an outbreak [19]. Most
+cationofthedisease.
+models,includingrecentonesusedtomodelthecurrentout-
+break, use the basic reproduction number or similar thresh-
+AuthorKeywords old (R ) of a virus to quantitatively describe the trend of an
+0
+Ebola;mathematicalmodel;Latinhypercubesampling; epidemic. The reproduction number is the measure of the
+partialrankcorrelationcoefficients transmissionpotentialofavirusor,inotherwords,theaver-
+agenumberofsusceptiblepeoplethatoneinfectedindividual
+will infect. The interpretation of the R value is that if it is
+INTRODUCTION 0
+greaterthan1,thenmorepeoplearegettinginfectedovertime
+InDecemberof2013,anoutbreakofEbolaVirusDiseasebe-
+andtheepidemicisspreading,whileifthevalueislessthan
+ganintheWestAfricancountryofGuineaandlaterspreadto
+1, the epidemic is dying off, since fewer people are getting
+neighbouringcountriesLiberiaandSierraLeone.ByNovem-
+infected [15]. In this sense, there is a threshold when R is
+ber 4th, 2014, the outbreak had reached 13,268 cases, 27 of 0
+equalto1; atthispoint,anyperturbationswilleitherleadto
+which had spread to neighbouring countries and overseas in
+theendorcontinuationoftheepidemic. Wedecidedtousea
+Senegal,Nigeria,Mali,SpainandtheUS[5].
+compartmentalmodeltodescribetheEbolaoutbreakinWest
+Ebola Virus Disease (known simply as Ebola) is caused by Africa.Usingthismodel,wewereabletodetermineanequa-
+the epizootic Ebola Virus, which is thought to be found in tionforR andinvestigatetheeffectofdifferentinterventions
+0
+mammals of the family Pteropodidae (aka fruit bats) [17]. onR .
+0
+A handful of compartmental models have already addressed
+therecentEbolaoutbreak. Riversetal.[23]investigatedthe
+efficiency of increased contact tracing, improved infection-
+controlpracticesandahypotheticalpharmaceuticalinterven-
+SummerSim-SCSC2016July24–27Montreal,Quebec,Canada
+(cid:13)c 2016SocietyforModeling&SimulationInternational(SCS)
+
+tiontoimprovesurvivalofhospitalisedpatientsaimedatre- The model is described by the following five differential
+ducing the reproduction number of the Ebola virus. They equations:
+showed that perfect contact tracing could reduce R from
+0
+2.22to1.89,whileadditionallyreducinghospitalisationrates S(cid:48) =Λ− βc I SI − βc d SD I
+by75%wouldfurtherreduceR to1.72. Chowelletal.[9] S+E+I+R+D S+E+I+R+D
+0 I I
+used an SEIR model to determine R 0 , the final size of the −µS
+epidemic and performed a sensitivity analysis, showing that
+education and contact tracing with quarantine would reduce Newsusceptible(S)individualsenterthepopulationatacon-
+the epidemic by a factor of 2. Fisman et al. [13] used a stantbirth/immigrationrate(Λ). Susceptibleindividualsmay
+two-parameter model to examine epidemic growth and con- die and leave the population at the background death rate
+trol. They evaluatedthe growthpatterns and determinedthe (µS),ortheymaybeinfectedandenterthenon-symptomatic
+degree to which the epidemic was being controlled, finding infected compartment (E) at the infection rate that is repre-
+only weak control in West Africa as of the end of August sentedbythetwofractions.
+2014andessentiallynocontrolinLiberia.WebbandBrowne
+[25]developedanage-structuredmodel,trackingdiseaseage E(cid:48) = βc I SI + βc d SD I
+through initial incubation, followed by an infectious phase S+E+I+R+D S+E+I+R+D
+I I
+withvariabletransmissioninfectiousness. Theyshowedthat
+−(ω+µ)E
+successive stages of hospitalisation have resulted in a miti-
+gationoftheepidemic. Browneetal.[7]developedanSEIR Newly infected individuals enter the compartment at the
+modeltoexaminetheeffectsofcontacttracinganddetermine sameratesusceptiblepeoplegetinfected. Non-symptomatic
+R 0 .Theyshowedthat,ifcontacttracingwasperfect,thenthe infected individuals become infectious and symptomatic,
+critical proportion of contacts that need to be traced could thereby leaving the compartment and joining the symp-
+be derived. Do and Lee [12] developed an SLIRD model to tomaticinfectedcompartmentatrateωE. Non-symptomatic
+determine the mathematical dynamics of the disease. Their infectedindividualsdieatthebackgrounddeathrate(µE).
+model had a single equilibrium point, which they showed
+wouldbestableifsafeburialpracticeswithouttraditionalrit- I(cid:48) =ωE−(α+γ)I
+ualswerefollowedandR <1.
+0
+Infected individuals become symptomatic at rate (ωE).
+Here we propose a compartmental model consisting of five
+Symptomatic infectious individuals may leave the compart-
+groups of individuals: susceptible (S), non-symptomatic in-
+ment via disease death (at rate αI) or through recovery (at
+fected(E),infectiousliving(I),infectiousdeceased(D )and
+I rateγI)joiningtherecovered(R)compartment, wherethey
+recovered(R). Weincludethedeadasanactivelyinfectious
+areimmunetoinfection.
+compartment in our model. We have previously performed
+such modelling in other contexts [20]; while Ebola is more R(cid:48) =γI−µR
+serious and the dead do not move about, there are neverthe-
+lesssomesimilaritiesinthemodelconstruction. Thenumberofrecoveredindividualsincreasesduetorecov-
+ery(atrateγI),anditdecreasesduetobackgrounddeath(at
+rateµR).
+D(cid:48) =αI−θD
+I I
+Thenumberofinfecteddeceasedincreasesduetodeathfrom
+thedisease(atrateαI), anditdecreasesasdeadbodieslose
+THEMODEL theirinfectivity(atrateθD ). ThemodelisshowninFigure
+I
+Weusedstandardincidencetorepresentcontactbetweensus- 1.
+ceptible(S)andinfected(I,D )individualssincecontactbe-
+I
+tweensusceptibleandinfectedindividualsisnotwell-mixed,
+occurring disproportionately more at burial rituals [8]. We
+modelled a representative West African village of 1000 in-
+dividuals, on the basis that contact rates would be close to
+uniforminasmallandrelativelyisolatedpopulation. Thein-
+fecteddeceased(D )areincludedinthedenominatorforthe
+I
+rateofinfectionsincetheyareinteractingwithsusceptiblein- Figure1.ModelFlowchart.Themovementofindividualsthroughthecom-
+partmentsviainfection,recoveryanddeath. Atbirth,individualsaresus-
+dividuals,makingthemanactivepartofthepopulation(N).
+ceptible(S). Theymaydiefromunrelatedcausesandexitthesystem,or
+Weincludepermanentimmunityinthemodelbutassumethat theymaybeinfectedeitherbyaninfectiousindividualorcorpseandbecome
+no susceptible individuals have pre-existing immunity; this non-symptomaticinfected(E). Non-symptomaticinfectedindividualsbe-
+hasbeenshowntooccur[11],butwechoosenottoincorpo- comeinfectious(I), ortheycandiefromanunrelatedcauseandexitthe
+system.Infectiousindividualscanrecover(R)fromthediseaseortheymay
+rateit,sincethefrequencyofmutationiscurrentlyunknown.
+Wemaketheassumptionthatnon-symptomaticinfectedindi-
+diefromthediseaseandbecomeaninfectiousdeadbody(DI). Recovered
+individualscannolongerbeinfected;theydieatthebackgrounddeathrate.
+viduals (E) do not become infectious dead if they die at the Infectiousdeadbodiesstopbeinginfectiousaftersafeburialorafterthelive
+backgrounddeathrate. virusisnolongerinthecorpse.
+
+Thesefiveequationsrepresenttherateofchangeovertimeof termontheleft-handsideandanegativetermonright-hand
+five different categories of individuals within a village un- side,sothesecondcriterionholds.
+dergoing an Ebola epidemic. The infected deceased com-
+Nextwelookatthea > 0criteria. Thea ,a ,a termsare
+partment (D ) represents the dead bodies of previously in- n 3 2 1
+I allpositive. Sotheonlyconditiontobemetis:
+fectedindividualswhoarestillcapableofinfectingsuscepti-
+ble individuals. This infection of susceptible individuals by (ωαθ+ωγθ+µαθ+µγθ)−βc ωθ−βc ωα>0.
+I D
+infected dead bodies is represented in Figure 1 by the dot-
+Ifthisconditionisnotmet,thentheDFEisunstableandthe
+tedlineconnectingtheSusceptible(S)andtheInfectedDe-
+epidemic will spread. If the condition is met, then the DFE
+ceased(D )compartments. Peoplewhoareinfectedarenot
+I is stable and the epidemic will end. This gives us a thresh-
+infectious until they are symptomatic [1]; as a result, once
+old condition [15] from which we can derive an eradication
+individualsfromthesusceptiblegroupareinfected,theyjoin
+threshold:
+thenon-symptomaticinfectedgroupbeforejoiningtheinfec-
+tiousgroup. R = (βc I ωθ+βc D ωα) .
+0 θ(ωα+ωγ+µα+µγ)
+ANALYSIS
+We are interested in the stability of the disease-free equilib- ItshouldbenotedthatR 0 -likethresholdscalculatedfromdif-
+rium(DFE),whichisgivenbytheexpression ferential equation models are not necessarily the reproduc-
+tion number; however, they share a stability threshold [18].
+(cid:18) (cid:19)
+(cid:0) S0,E0,I0,R0,D0(cid:1)
+=
+Λ
+,0,0,0,0 .
+Specifically, if R
+0
+< 1, then the DFE is (locally) stable,
+I µ whereas if R > 1, the DFE is unstable. However, such re-
+0
+sultsdonotestablishglobalstabilityorruleoutthepresence
+The disease-free equilibrium is the point in the epidemic
+of a backward bifurcation. The latter can sometimes be ob-
+wheretherearenoinfected(I,E),recovered(R)orinfected
+servednumerically,althoughoursimulationsdidnotdiscern
+deceased(D )individualsinthesystem; inotherwords,the
+I one. Nevertheless, such thresholds can be useful for under-
+epidemic is not occurring. To analyse the dynamics of the
+standingeradication.
+systemneartheequilibrium,wecalculatedtheJacobianma-
+trixandevaluateditattheDFE: Toinvestigatetherelationshipbetweenthecontactratesand
+ −µ 0 −βc 0 −βc 
+thetransmissionprobability,wesetR
+0
+to1andisolateβ:
+I D
+0 −ω−µ βc −γ 0 βc θ(ωα+ωγ+µα+µγ)
+ I D  β = .
+J DFE =  0 ω −α−γ 0 0   . (c I ωθ+c D ωα)
+ 0 0 γ −µ 0 
+0 0 α 0 −θ We assigned the sample values found in Table 1 to all the
+parametersexceptthecontactratesandplottedthreevariables
+Twooftheeigenvaluesofthismatrixareλ=−µ,−µ,which
+of interest, β, c and c (Figure 2). The resulting surface
+arebothnegative(sinceallparametersarepositive). There- I D
+representstheeradicationthreshold. Fromthelopsidedslope
+mainingthreeeigenvaluesoftheJacobianmatrixaregivenby
+of the surface, we see that R is influenced less by c than
+thecharacteristicequation 0 D
+c . Itfollowsthathuman-to-humancontactisagreaterdriver
+I
+λ3+(α+γ+θ+ω+µ)λ2 oftheepidemicthanthatoftheinfectiousdead.
++(ωα+ωγ+ωθ+µα+µγ+µθ+αθ+γθ+βc ω)λ
+I
++θ(ωα+ωγ+µα+µγ)−βc ωθ−βc ωα=0.
+I D 1
+0.9
+Ifwerepresenttheequationby
+0.8
+t
+i
+a
+h
+n
+s
+e
+g
+y
+n
+m
+t
+,
+w
+p
+a
+o
+t
+c
+o
+c
+c
+t
+o
+r
+ic
+i
+r
+t
+a
+d
+e
+l
+i
+r
+l
+n
+i
+y
+a
+g
+a
+s
+a
+t
+3
+t
+r
+a
+o
+λ
+e
+b
+3
+t
+n
+l
+h
+e
+e
++
+e
+:
+ce
+R
+a
+s
+2
+o
+s
+λ
+a
+u
+r
+2
+t
+y
+h
++
+–
+fo
+H
+a
+r
+u
+1
+t
+r
+h
+λ
+w
+e
++
+i
+e
+tz
+q
+a
+u
+C
+0
+il
+r
+=
+i
+i
+b
+te
+r
+0
+i
+r
+u
+i
+,
+o
+m
+n,
+to
+th
+b
+e
+e
+f
+l
+o
+o
+l
+c
+lo
+al
+w
+ly
+-
+( ytilibaborp
+noissim
+snarT
+)-
+0
+0
+0
+0
+0
+.
+.
+.
+.
+.
+4
+7
+5
+3
+6
+Persistence
+1. a >0(n=0,1,2,3) 0.2 Eradication
+n
+0.1
+0
+1
+2 F . ir a s 1 t, a w 2 e > lo a o 3 k a a 0 t . thesecondcriterion: Contact rate with infect 2 ed indiv 3 iduals 4 (cI) 5 0 0.5 1 C 1 o .5 ntact 2 rate w 2 it . h 5 infe 3 cted de 3 a .5 d bo 4 dies (c 4 D . ) 5 5
+Figure 2. Mesh plot of transmission probability (β) as a function of the
+(α+γ+θ+ω+µ)(ωα+ωγ+ωθ+µα+µγ+µθ+αθ+γθ contactrates(cD,cI)whenR0=1,withotherparameterssettotheirmedian
+values from Table 1. The surface of this function is the threshold of the
++βc I ω)>θ(ωα+ωγ+µα+µγ)−βc I ωθ−βc D ωα. epidemic.Thediseasewillpersistifparametersareabovethesurface,while
+itwillbeeradicatediftheyarebelowit.
+Thetermθ(ωα+ωγ+µα+µγ)appearsonbothsidesofthe
+inequality,whichmeansitcanbesubtractedfrombothsides. Next,wecalculatedthepartialderivativesofR withrespect
+0
+Sinceeveryparameterispositive,weareleftwithapositive to all eight parameters. Positive partial derivatives indicate
+
+Parameter Description Range SampleValue Units Reference
+α diseasedeathrate 0.5–1 0.5 weeks−1 [24]
+γ recoveryrate 0.5–1 0.5 weeks−1 [16]
+µ backgrounddeathrate 0–0.001 1/50 years−1 [10]
+Λ birthrate 0–1 1000µ peopleyears−1 [10]
+θ safeburialrate 0.33–7 1 weeks−1 [22]
+c contactratewithinfectiousindividuals 0–5 variable peopleweeks−1 -
+I
+c contactratewithinfectiousdeadbodies 0–5 variable peopleweeks−1 -
+D
+β transmissionprobability 0–1 0.75 - assumed
+ω rateatwhichinfectedindividualsbecominginfectious 0.33–3 1 weeks−1 [1]
+Table1. Parametervalues. Eachparameterisdescribed,andtherangeandsamplevaluesfoundinliteraturearelisted. Theinverseoftherateparameters
+representtheaveragedurationoftimethattheprocesstakes.
+that an increase in that parameter will increase R , whereas Forthelatter,wehave
+0
+negative partial derivatives indicate that an increase in that
+parameterwilldecreaseR 0 . ∂R 0 >0 if c D > c I and ∂R 0 <0 if c D < c I
+∂α θ γ ∂α θ γ
+The first seven partial derivatives here match the sign of the
+PartialRankCorrelationCoefficients(PRCCs)calculatedfor
+∂R c ωθ+c ωα
+0 = I D >0 theirrespectiveparameters(Figure3). ThePRCCcalculated
+∂β θ(ωα+ωγ+µα+µγ)
+forthediseasedeathrate(α)isnegative. Wedeterminedthat
+(transmissionprobability) thepartialderivativewouldonlybenegativeif cD < cI;that
+θ γ
+∂R βω is,iftheratioofcontactwiththedeadtosafeburialislower
+0 = >0
+∂c ωα+ωγ+µα+µγ thantheratioofcontactwiththeinfectedtotherecoveryrate.
+I
+This implies that, if dead bodies are sufficiently infectious,
+(contactratewithinfected)
+then a higher death rate will increase the overall risk. The
+∂R 0 = βωα >0 equality c θ D = c γ I representsacriticalcase,thethresholdbe-
+∂c D θ(ωα+ωγ+µα+µγ) yondwhichtheepidemicwillspiraloutofcontrol.
+(contactwiththedead)
+Inourcase,sincetherangesforthecontactratesusedinour
+∂R (βc θ+βc α)(θµα+θµγ) Latin Hypercube Sampling were the same and the range for
+∂ω 0 = (θω I α+θωγ D +θµα+θµγ)2 >0 θ ishigherthanγ (Table1), wewillusuallyhave cD < cI.
+θ γ
+ItfollowsthatanincreaseddeathratefromEbolawilllower
+(rateofbecominginfectious)
+theoverallrisk.
+∂R −(θα+θγ)(βc θω+βc αω)
+0 = I D <0
+∂µ (θωα+θωγ+θµα+θµγ)2
+(deathrate) NUMERICALSIMULATIONS
+Weperformedsensitivityanalysesonalltheparametersusing
+∂R −(θω+θµ)(βc θω+βc αω)
+0 = I D <0 partialrankcorrelationcoefficient(PRCC)analysis. PRCCs
+∂γ (θωα+θωγ+θµα+θµγ)2
+measuretherelativedegreeofsensitivityoftheoutcomevari-
+(recoveryrate) able to each parameter, regardless of whether the parameter
+∂R −(ωα+ωγ+µα+µγ)(βc αω) hasapositiveornegativeinfluenceontheoutcomevariable.
+0 = D <0 WeusePRCCstoranktheinfluenceoftheparametersinour
+∂θ (θωα+θωγ+θµα+θµγ)2
+modelonR . Thisisdonecomputationallybysamplingpa-
+0
+(safeburialrate) rametersfromauniformlydistributedrangeusingLatinHy-
+∂R βc ω2θγ+βc ωθµγ−(βc ω2θ2+βc ωθ2µ) percube Sampling (LHS), a statistical sampling method that
+0 = D D I I evaluatessensitivityofanoutcomevariabletoallinputvari-
+∂α (θωα+θωγ+θµα+θµγ)2
+ables. The parameters were sampled 1000 times for 1000
+(diseasedeathrate)
+runs.
+
+A
+Figure4showsthechangesobservedinR aseachofthefour
+0
+most influential parameters change, compared to the eradi-
+transmission probability cation threshold (horizontal line) in the absence of interven-
+contact rate with dead bodies tions. AdecreaseinR 0 isassociatedwithanincreaseofthe
+safeburialrateandadecreaseinthetransmissionprobability
+contact rate with infected individuals
+sretem
+safe burial rate
+o
+tr
+r
+an
+th
+s
+e
+m
+c
+is
+o
+s
+n
+io
+ta
+n
+c
+p
+t
+r
+r
+o
+a
+b
+te
+a
+s
+b
+.
+il
+T
+ity
+h
+.
+e most defined trend is found in the
+araP
+rate of becoming symptomatic
+background death rate A B
+3 3
+recovery rate 2 2
+1 1
+disease death rate 0 0
+-0.2 -0.1 0 0.1 Deg 0 r .2 ee of 0 C .3 orre 0 l . a 4 tion 0.5 0.6 0.7 0.8 R(go ) l 0 - - - 3 2 1 R(go ) l 0 - - - 3 2 1
+-4 -4
+B -5 -5
+-6 -6
+10 -70 r 1 ate at wh 2 ich infect 3 ivity of de 4 ad bodies 5 is lost (3 6 ) 7 -70 0.5 1 contac 1. t 5 rate w 2 ith in 2 fe .5 cted i 3 ndivid 3 u . a 5 ls (cI 4 ) 4.5 5
+9 C D
+8 3 3
+2 2
+7 1 1
+0 0
+R0 5
+6 R(go )
+l
+0
+-
+- -
+3
+2 1 R(go )
+l
+0
+-
+- -
+3
+2 1
+-4 -4
+4 -5 -5
+-6 -6
+3 -70 0.5 c 1 ontact 1 . r 5 ate wi 2 th infe 2 c .5 ted de 3 ad bo 3 d .5 ies (c 4 D) 4.5 5 -70 0.1 0.2 0 t . r 3 ansm 0. i 4 ssion 0 . p 5 roba 0 b .6 ility (- 0. ) 7 0.8 0.9 1
+2
+Figure4.LHSoutputforR0asafactorofthefourmostinfluentialparame-
+1 ters:(A)thesafeburialrateθ,(B)thecontactratewithinfectiousindividuals
+0
+cI,(C)thecontactratewithinfectiousdeadbodiescDand(D)thetransmis-
+sionprobabilityβ.Valuesforallnineparametersweresampled1000times.
+Figure3. A.PartialRankCorrelationCoefficientsensitivityanalysisofpa- ThehorizontallineindicatedthethresholdR0=1.
+rameters. SensitivityanalysisofR0 withrespecttoalltheparameters. B.
+Boxplotofall1000R0values.LatinHypercubeSampling(LHS)wasused
+INTERVENTIONS
+tosampleparameters.TheLHSrangesaregiveninTable5.1.Thehorizontal
+redlineindicatesthemedianofall1000oftheR0values.54%ofthevalues To investigate the effectiveness of an intervention targeting
+lieunderneathR0=1. the safe burial rate, we adjusted the range that we sampled
+from for our sensitivity analyses. The sampled range was
+changed from 0.33–7 weeks−1 to 2–7 weeks−1. (Note that
+Inclusionofinterventionsinthemodelwasachievedbymod-
+the duration of risk of a dead body is inversely proportional
+ifying the ranges for the parameters targeted by the inter-
+tothesenumbers.)Figure5Aillustratestherevisedsensitivity
+vention. For example, to increase the number of safe burial
+ofalleightparametervaluessubjecttotheadjustedrangefor
+teams,weincreasedtheratesofsafeburial(θ)andreranour
+thesafeburialrate.Wefindthat,withanimprovedsafeburial
+PRCCanalyses. Toexaminequarantineandisolation,wede-
+task force, the contact rate with dead bodies is no longer as
+creasedtherangeofthecontactratewithinfectedindividuals influentialonR . TheboxplotinFigure5Bshowsthat60%
+0
+(c I ). We used a script to check each value of R 0 to deter- oftheR valueslieunderneaththethresholdR = 1,asub-
+0 0
+mine if it was less than 1. All numerical simulations were
+stantialimprovementoverthepreviousanalysis.
+completedusingMATLAB.
+Next,weexaminedtheeffectofimprovedquarantineandiso-
+lationtechniquesbyreducingtherangeofc from0–5peo-
+SENSITIVITYANALYSIS I
+ple/week to 0–1 people/week. All other parameters were at
+Figure3AshowsthePRCCsoftheeightparametersfoundin
+theiroriginalsamplevalues.Figure5Cshowsthatthecontact
+ourequationforR . Wefindthat,atthedisease-freeequilib-
+0 ratewithinfectedindividualshasbeenreduced,whilethesafe
+rium, R ismostinfluencedbythetransmissionprobability,
+0 burialrateisnowasignificantfactor. Itfollowsthat, ifcon-
+theamountofcontactwiththedeadandthecontactratesbe-
+tactbetweensusceptibleandinfectedindividualsisreduced,
+tween infected individuals and susceptible individuals. All
+theneffortsmustbemadetoensuresafeburialpracticesare
+three parameters will increase R when they are increased,
+0 maintained,sothattheepidemicisnotsustainedbyinfection
+sincethePRCCspointtotheright. Whileincreasingthesafe
+fromthedead. TheboxplotinFigure5Dshowsthat90%of
+burialratewillhaveareductiveeffectontheepidemic(since
+allR valuesarenowfoundbelowthethresholdR =1.
+itsPRCCpointstotheleft),thiseffectisswampedbytheoth- 0 0
+ers. Figure3Billustratesall1000R valuescalculatedfrom Finally, Figure6illustratestheLHSoutputofR asafunc-
+0 0
+the sampled parameter values in a boxplot. The horizontal tion of the transmission probability, using all 1000 sampled
+red line indicates the median R value and the whiskers are values. (Each dot represents a simulation.) The parameter
+0
+foundatthefirstandthirdquartiles. Wefindthat54%ofthe rangesusedforthisplotareasinFigure5Cand5D,illustrat-
+R valueslieunderneaththethresholdR =1. ingtheeffectthatquarantineandisolationinterventionwould
+0 0
+
+A B
+A
+10
+transmission probability 9 2
+contact rate with dead bodies 8
+sretemaraP contac
+r
+t
+a
+r
+t
+a
+e
+t e
+o f
+w
+b
+i
+b
+t
+e
+h
+a
+c
+c
+o
+i
+k
+n
+m
+g
+fe
+i
+r
+n
+c
+o
+s
+g
+t
+u
+e a
+n
+s
+d f
+d
+e
+y
+i
+m
+n b
+d
+d u
+e
+p
+i
+a
+r
+t
+v i
+o
+t
+a i
+h
+d
+m
+l u
+r
+r
+a
+a
+a a
+t
+t
+t l
+i
+e
+s e
+c R0
+4
+5
+6 7
+-
+0
+2
+recovery rate 3
+C
+disease death rate
+-0.1 0 0.1 D 0. e 2 gree 0 . o 3 f Co 0 r .4 relati 0 o .5 n 0.6 0.7 0.8 D 0
+1 2 R (go )
+l
+0 -4
+5 -6
+4.5
+transmission probability
+contact rate with dead bodies 4 -8
+3.5
+contact rate with infected individuals
+sretemaraP
+rate of b
+b
+e
+a
+c
+c
+o
+k
+m
+g
+i
+r
+n
+o
+s g
+u
+a
+n
+s f
+d
+e y m b
+d
+u
+e
+p
+a
+r t i o
+t
+a
+h
+m l
+r
+r a
+a
+a t
+t
+t i
+e
+e c R0
+1
+2
+.
+.
+5
+5 2
+3
+-10 0 0.1 0.2 0
+t
+.
+r
+3
+ansm
+0.
+i
+4
+ssion
+0 .
+p
+5
+roba
+0
+b
+.6
+ility (-
+0.
+)
+7 0.8 0.9 1
+recovery rate
+1
+disease death rate
+0.5 B
+-0.4 -0.2 D 0 egree of 0 . C 2 orrelatio 0. n 4 0.6 0.8 0 2
+Figure 5. A. Partial Rank Correlation Coefficients sensitivity analysis of
+parameterswithmodifiedsafeburialrate. Thesafeburialrateθ ismodi- 0
+fied,shrinkingtherangefrom0.33–7to2–7weeks−1,whichindicatesthe
+longestadeadbodyremainsinfectiousisthreeandahalfdays.B.Boxplot -2
+o u
+y
+f n
+si
+d a
+s
+e l
+o
+l rn
+f
+1 e
+p
+0 a
+a
+0 t
+r
+0 h
+am
+R R
+e
+0 0
+te
+= v
+r
+a
+s
+l 1 u
+w
+. e
+i
+C s
+th
+. w P
+m
+i a t
+o
+h r
+d
+ti m
+i
+a
+fi
+l o
+e
+R d
+d
+i a fi
+c
+n e
+I
+k d
+.
+C
+A
+s o a r f
+d
+r e
+e
+e
+c
+b la
+r
+u t
+e
+r i
+a
+o ia
+s
+n l
+ed
+C ra o
+c
+te e
+o
+. f
+n
+fi
+t
+6
+a
+c 0
+c
+ie %
+t
+n
+r
+t
+a
+o s
+t
+f
+e
+en t
+w
+h si e
+i
+t
+t
+i
+h
+v v a i
+i
+t
+n
+l y u
+f
+e
+e
+a s
+c
+n
+t
+a l
+e
+i l
+d
+e - R (go )
+l
+0 -4
+individualsisintroducedbymodifyingtherangeofcI usedinLHSfrom -6
+0–5to0–1,whichindicatesthatonaveragethehighestnumberofinfectious
+individualsasusceptiblepersoncancomeincontactwithis1perweek. D. -8
+Boxplotofall1000R0 valueswithmodifiedcI. 90.5%ofthevalueslie
+underneathR0=1. -10
+0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1
+transmission probability (-)
+haveonR . Weseethat,ascalculatedearlier,90%oftheR
+Figure6.LHSoutputforR0asafactoroftransmissionprobability(β)with
+0 0 modifiedcI. A.Whenβ <0.3,98%ofthevalueslieunderneathR0 =1.
+valuesarebelow1. Withoutinterventions,98%ofthevalues B.Applyingquarantinedecreasedthecontactratewithinfectedindividuals
+ofR
+0
+arelessthan1whenthetransmissionprobabilityisless bymodifyingtherangeofcI usedinLHSfrom0–5to0–1,whichindicates
+than0.3. Withquarantine,98%ofallR valuesarelessthan thatonaveragethehighestamountofinfectiousindividualsasusceptible
+0
+1whenthetransmissionprobabilityislessthan0.5.
+personcancomeincontactwithis1perweek. Inthiscase, 98%ofR0
+valueswerebelow1whenβ<0.5.
+DISCUSSION
+sult,thereislesscontactbetweensusceptibleindividualsand
+Accordingtoourresults,theparameterswiththegreatestef-
+infecteddeadbodies.
+fect on the Ebola epidemic are the transmission probability
+(β),thesafeburialrate(θ)andthetwocontactrates(c ,c ). Theemploymentofsafeburialteamswasasignificantfactor
+I D
+However, the contact rate between infected and susceptible during the recent Ebola outbreak. Effectively, this increases
+individualshasconsiderablymoreinfluenceontheoutcome. the safe burial rate (θ). We investigate the effectiveness of
+This is likely because infected individuals lose their infec- thisinterventionbyusingamodifiedrangeforthesafeburial
+tivity slower than infected dead bodies do. Infectious dead rate (θ) and observing the changes in our LHS output (Fig-
+bodies remain infectious for up to a week after death [22], ure 5). We found that the influence of the rate of contact
+and they can easily be rendered safe through careful burial. withinfecteddeadbodieswasconsequentlyreduced(Figure
+Thetransmissionprobabilityisthemostinfluentialparameter 5A).However,theoveralleffectivenessofincreasingthesafe
+intheR equation. Althoughwehaveseparatedthecontact burial rate is limited, only increasing the number of simula-
+0
+ratesfromthetransmissibilityofthevirus,ourresultsindicate tionvaluesbelowtheeradicationthresholdfrom54%(Figure
+thatanyeffortstoreducethistransmission,suchasavaccine 3)to60%(Figure5). Itfollowsthateffortstoreducecontact
+ortreatment,wouldhaveasignificanteffectonreducingthe needtobediversified,evenifdeadbodiesarebeingdealtwith
+overallepidemic. inatimelymanner.
+Thereareseveralinterventionsthathavealreadybeenusedto There have been recent trials for an Ebola vaccine, some of
+reducethespreadofEbola. Quarantineofindividualsfound whichhavebeenpromising[3]. Aperfectvaccinewouldre-
+through aggressive contact tracing [6] and isolation of in- duce the susceptible pool; however, even an imperfect vac-
+fected individuals while they are treated have been effective cinewouldlikelylowerthetransmissibility.Inpractice,inter-
+methods to reduce the contact rates with infected individu- ventionsshouldbeinstitutedintandem. Combiningquaran-
+als[4]. Todealwiththeproblemofinfecteddeadbodieson tineandvaccination(byreducingboththecontactrateandthe
+the street and unsafe burial rituals, the US Centers for Dis- transmissibility) will lead to disease eradication. As shown
+ease Control (CDC) has employed safe burial teams, which in Figure 6, decreasing the transmissibility below β = 0.5,
+are tasked with safely burying corpses [21]. This increases when the quarantine is applied, would result in 98% of the
+the rate at which dead bodies lose their infectivity; as a re- cases having an R value below 1, which would ultimately
+0
+
+leadtotheeradicationoftheepidemic. Figure2showsthat, 1. Ebolavirusdiseasefactsheet.Tech.rep.,WorldHealth
+with a low transmission probability, eradication can still oc- Organization,April2015.
+curevenwithhighcontactrates.
+2. Acha,P.N.,andSzyfres,B.Zoonosesand
+Ourmodelhasseverallimitations,whichshouldbeacknowl- CommunicableDiseasesCommontoManandAnimals,
+edged. We assumed constant birth/immigration and back- 3rdedition.PanAmericanHealthOrganization,2003.
+grounddeathrates,whichmaynotholdaspopulationsmove
+3. Agnandji,S.T.,Huttner,A.,Zinser,M.E.,Njuguna,P.,
+about,astheymayinresponsetothedisease.Weassumedthe
+Dahlke,C.,Fernandes,J.F.,Yerly,S.,Dayer,J.-A.,
+sametransmissionprobabilityforthelivinganddead,which
+Kraehling,V.,Kasonta,R.,etal.Phase1trialsofrVSV
+maynotbetrue. Wealsomadetheassumptionthatindivid-
+EbolavaccineinAfricaandEurope—preliminary
+uals who die from other reasons could not be infected with
+report.NewEnglandJournalofMedicine(2015).
+Ebola after death, which may have a much larger effect on
+sustainingtheepidemic. 4. Alazard-Dany,N.,Terrangle,M.O.,andVolchkov,V.
+EbolaandMarburgviruses: thehumansstrikeback.
+Itshouldbenotedthatourmodelbearsahighdegreeofsim-
+M/S:me´decinesciences22,4(2006),405–410.
+ilaritytotheworkofDoandLee[12]. Itisthenatureofan
+emerging outbreak that multiple models may be developed 5. Aylward,B.,etal.EbolavirusdiseaseinWestAfrica—
+in parallel during the same research period, which may pro- thefirst9monthsoftheepidemicandforward
+ducesimilarconstructions. Despitethesimilarities,thereare projections.NEnglJMed371,16(2014),1481–95.
+anumberofkeydifferences:theirmodelincludedbothtrans- 6. Bausch,D.G.,Towner,J.S.,Dowell,S.F.,Kaducu,F.,
+mission and “infectious death” of latently infected individ- Lukwiya,M.,Sanchez,A.,Nichol,S.T.,Ksiazek,T.G.,
+uals, which ours didn’t. Conversely, we included birth and andRollin,P.E.AssessmentoftheriskofEbolavirus
+deathrates,aswellasthe“agingout”oftheinfectiousdead. transmissionfrombodilyfluidsandfomites.Journalof
+Furthermore, our focus was on using sensitivity analysis to InfectiousDiseases196,Supplement2(2007),
+explore the effect of parameter variation, in order to deter- S142–S147.
+mineeffectiveinterventiontargets.
+7. Browne,C.,Gulbudak,H.,andWebb,G.Modeling
+Future work will model the effects of a potential vaccine. contacttracinginoutbreakswithapplicationtoEbola.
+Withinitialtrialsyieldingpositiveresults[3],itisverylikely JournalofTheoreticalBiology384(2015),33–49.
+that, in the coming years, there will be an approved vaccine
+8. Chan,M.EbolavirusdiseaseinWestAfrica—noearly
+available for use in at-risk countries. Determining the por-
+endtotheoutbreak.NewEnglandJournalofMedicine
+tion of the population required for there to be effective herd
+371,13(2014),1183–1185.
+immunity and determining the right age to vaccinate people
+will be investigated. We will also model quarantine explic- 9. Chowell,G.,Hengartner,N.W.,Castillo-Chavez,C.,
+itlyusingaseparatecompartmentandaccountfortheroleof Fenimore,P.W.,andHyman,J.M.Thebasic
+superspreadersusingimpulsivedifferentialequations. reproductivenumberofEbolaandtheeffectsofpublic
+healthmeasures: thecasesofCongoandUganda.
+DuringtherecentoutbreakinWestAfrica,public-healthed-
+JournalofTheoreticalBiology229(2004),119–126.
+ucationprograms,quarantine,safeburialinitiativesandother
+interventions were instituted in an attempt to reduce R be- 10. CIA.CIAWorldFactbook,Liberia,2010.
+0
+low1andeventuallyendtheepidemic. Wehaveshownthat
+11. Coˆte´,M.,Misasi,J.,Ren,T.,Bruchez,A.,Lee,K.,
+doingsoisnecessarytoensuretheendofanepidemic,since
+Filone,C.M.,Hensley,L.,Li,Q.,Ory,D.,Chandran,
+no single intervention was enough to bring all the R val-
+0 K.,etal.Smallmoleculeinhibitorsrevealniemann-pick
+ues in our model below the threshold on its own. If there
+c1isessentialforEbolavirusinfection.Nature477,
+is success in the recent trials for the Ebola vaccine, then a
+7364(2011),344–348.
+public-healthprogramtovaccinateasmuchofthepopulation
+as possible is necessary to prevent future outbreaks. How- 12. Do,T.S.,andLee,Y.S.ModelingthespreadofEbola.
+ever, before such a program is possible, the combination of OsongPublicHealthandResearchPerspectives7
+other interventions will be necessary to end the current out- (2016),43–48.
+breakinWestAfricaandanyotheroutbreaksthatoccurfrom
+13. Fisman,D.,Khoo,E.,andTuite,A.Earlyepidemic
+nowuntilatimewherewehaveawidelyavailablevaccine.
+dynamicsoftheWestAfrican2014Ebolaoutbreak:
+Estimatesderivedwithasimpletwo-parametermodel.
+ACKNOWLEDGEMENTS PLoSCurrents6(2014).
+We thank David Sankoff for technical discussions and are
+14. Funk,D.J.,andKumar,A.Ebolavirusdisease: an
+grateful to Jacob Barhak, Young Lee and Ates Hailegiorgis
+updateforanesthesiologistsandintensivists.Canadian
+for their thoughtful reviews that improved the manuscript.
+JournalofAnesthesia/Journalcanadiend’anesthsie62,
+RS?issupportedbyanNSERCDiscoveryGrant.Forcitation
+1(2015),80–91.
+purposes, note that the question mark is part of the author’s
+name. 15. Heffernan,J.M.,Smith,R.J.,andWahl,L.M.
+Perspectivesonthebasicreproductiveratio.Journalof
+REFERENCES theRoyalSocietyInterface2,4(2005),281–293.
+
+16. Hunter,G.W.,andStrickland,G.T.Hunter’stropical
+medicineandemerginginfectiousdiseases,vol.857.
+WBSaunderscompany,2000.
+17. Leroy,E.M.,Kumulungui,B.,Pourrut,X.,Rouquet,P.,
+Hassanin,A.,Yaba,P.,De´licat,A.,Paweska,J.T.,
+Gonzalez,J.-P.,andSwanepoel,R.Fruitbatsas
+reservoirsofEbolavirus.Nature438,7068(2005),
+575–576.
+18. Li,J.,Blakeley,D.,andSmith?,R.ThefailureofR .
+0
+ComputationalandMathematicalMethodsinMedicine
+2011(2011),ArticleID527610.
+19. Moghadas,S.,etal.Modellinganinfluenzapandemic:
+Aguidefortheperplexed.CanadianMedical
+AssociationJournal181,3-4(2009),171–173.
+20. Munz,P.,Hudea,I.,Imad,J.,andSmith?,R.When
+zombiesattack!: Mathematicalmodellingofanoutbreak
+ofzombieinfection.InInfectiousDiseaseModelling
+ResearchProgress,J.M.TchuencheandC.Chiyaka,
+Eds.NovaScience,2009,133–150.
+21. Nielsen,C.F.,Kidd,S.,Sillah,A.R.,Davis,E.,Mermin,
+J.,andKilmarx,P.H.Improvingburialpracticesand
+cemeterymanagementduringanEbolavirusdisease
+epidemic—SierraLeone,2014.MMWR.Morbidityand
+mortalityweeklyreport64,1(2015),20–27.
+22. Prescott,J.,etal.PostmortemstabilityofEbolavirus.
+EmergingInfectiousDiseases21(2015).
+23. Rivers,C.M.,Lofgren,E.T.,Marathe,M.,Eubank,S.,
+andLewis,B.L.Modelingtheimpactofinterventions
+onanepidemicofEbolainSierraLeoneandLiberia.
+PLOSCurrentsOutbreaks(2014).
+24. Singh,S.K.,andRuzek,D.Viralhemorrhagicfevers.
+CRCPress,2014.
+25. Webb,G.,andBrowne,C.AmodeloftheEbola
+epidemicsinWestAfricaincorporatingageofinfection.
+JournalofBiologicalDynamics10(2016),18–30.
+  }
+}
+
+
+==================================================
+LLM Output (gemini):
+==================================================
+
+Yes
+
+
+==================================================
+LLM Output (gemini):
+==================================================
+
+Yes

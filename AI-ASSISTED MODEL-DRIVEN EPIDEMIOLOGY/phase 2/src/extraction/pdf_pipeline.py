@@ -38,18 +38,53 @@ class PDFPipeline:
             )
 
     def _check_grobid_available(self):
-        """Check if GROBID server is available"""
+        """Check if GROBID server is available, start it via docker if not."""
         import requests
+        import subprocess
+        import time
 
+        def is_alive():
+            try:
+                resp = requests.get(f"{self.grobid_url}/api/isalive", timeout=2)
+                return resp.status_code == 200
+            except:
+                return False
+
+        if is_alive():
+            return
+
+        print("[PDFPipeline] GROBID not running. Attempting to start via Docker...")
+        
+        # Try to start existing container if it exists
         try:
-            response = requests.get(f"{self.grobid_url}/api/isalive", timeout=5)
-            if response.status_code != 200:
-                raise RuntimeError(f"GROBID returned status {response.status_code}")
+            subprocess.run(["docker", "start", "grobid"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            time.sleep(2)
+        except Exception:
+            pass
+            
+        if is_alive():
+            print("[PDFPipeline] Started existing GROBID container.")
+            return
+            
+        # Try to run new container (remove existing if there was a name conflict but it couldn't start)
+        try:
+            subprocess.run(["docker", "rm", "-f", "grobid"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print("[PDFPipeline] Running new GROBID container (this may take a minute to download)...")
+            subprocess.run([
+                "docker", "run", "-d", "--name", "grobid", 
+                "-p", "8070:8070", "lfoppiano/grobid:0.8.1"
+            ], check=True)
+            
+            # Wait for it to be ready
+            for _ in range(15):
+                time.sleep(2)
+                if is_alive():
+                    print("[PDFPipeline] GROBID is now ready!")
+                    return
+            
+            raise RuntimeError("GROBID started but failed to become ready within 30 seconds.")
         except Exception as e:
-            raise RuntimeError(
-                f"GROBID server not available at {self.grobid_url}. "
-                "Please start GROBID with: docker run -d --name grobid -p 8070:8070 lfoppiano/grobid:0.8.1"
-            ) from e
+            raise RuntimeError(f"Failed to start GROBID via docker: {e}\nEnsure Docker is installed and running.")
 
     def _convert_sections_to_dict(
         self, sections: List[Dict[str, Any]]

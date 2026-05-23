@@ -1,0 +1,47 @@
+=== SYSTEM PROMPT ===
+You are an expert Epidemiological Modeler working within the EpiMDE Eclipse framework.
+Your task is to modify or generate a compartmental model based on the user's request.
+
+Current Model State (XML):
+<?xml version="1.0" encoding="ASCII"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel" totalPopulation="1000000.0">
+  <compartments PrimaryName="Susceptible" population="999999.0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="S to E" target="//@compartments.1" contactCompartment="//@compartments.2" contactRateParameter="//@parameters.0"/>
+  </compartments>
+  <compartments PrimaryName="Exposed">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="E to I" target="//@compartments.2" rateParameter="//@parameters.1"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="1.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="I to R" target="//@compartments.3" rateParameter="//@parameters.2"/>
+  </compartments>
+  <compartments PrimaryName="Recovered"/>
+  <parameters name="\u03b2" expression="0.2" description="Transmission rate"/>
+  <parameters name="\u03c3" expression="0.2" description="Incubation rate (1/incubation period)"/>
+  <parameters name="\u03b3" expression="0.1" description="Recovery rate (1/infectious period)"/>
+</compartmental:CompartmentalModel>
+
+
+
+
+User Request:
+The user has selected the following element in the editor:
+compartmentalmodel.impl.CompartmentImpl@67cd1db3 (PrimaryName: Infectious, population: 1.0, SecondaryName: null, junctionRule: NONE)
+
+User's edit request for this element:
+make the population 1/10 of sustible
+
+Please locate this element in the XML and apply the requested edit. Ensure the output is the fully updated XML.
+
+You MUST return your response as raw, valid JSON conforming to this exact schema:
+{
+  "model_xml": "<the full updated XML string here>"
+}
+ABSOLUTELY NO COMMENTS, NO EXPLANATIONS, AND NO MARKDOWN BLOCK BACKTICKS. JUST THE RAW JSON OBJECT.
+Follow the metamodel strictly and ensure all features are valid according to the metamodel.
+
+=== LLM RAW RESPONSE ===
+```json
+{
+  "model_xml": "<?xml version=\"1.0\" encoding=\"ASCII\"?>\n<compartmental:CompartmentalModel xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:compartmental=\"http://example.com/compartmentalmodel\" totalPopulation=\"1000000.0\">\n  <compartments PrimaryName=\"Susceptible\" population=\"900000.1\">\n    <outgoingFlows xsi:type=\"compartmental:ContactFlow\" description=\"S to E\" target=\"//@compartments.1\" contactCompartment=\"//@compartments.2\" contactRateParameter=\"//@parameters.0\"/>\n  </compartments>\n  <compartments PrimaryName=\"Exposed\">\n    <outgoingFlows xsi:type=\"compartmental:RateFlow\" description=\"E to I\" target=\"//@compartments.2\" rateParameter=\"//@parameters.1\"/>\n  </compartments>\n  <compartments PrimaryName=\"Infectious\" population=\"99999.9\">\n    <outgoingFlows xsi:type=\"compartmental:RateFlow\" description=\"I to R\" target=\"//@compartments.3\" rateParameter=\"//@parameters.2\"/>\n  </compartments>\n  <compartments PrimaryName=\"Recovered\"/>\n  <parameters name=\"\\u03b2\" expression=\"0.2\" description=\"Transmission rate\"/>\n  <parameters name=\"\\u03c3\" expression=\"0.2\" description=\"Incubation rate (1/incubation period)\"/>\n  <parameters name=\"\\u03b3\" expression=\"0.1\" description=\"Recovery rate (1/infectious period)\"/>\n</compartmental:CompartmentalModel>"
+}
+```

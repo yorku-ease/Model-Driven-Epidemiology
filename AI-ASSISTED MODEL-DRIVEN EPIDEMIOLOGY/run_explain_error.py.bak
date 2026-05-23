@@ -1,0 +1,49 @@
+import sys
+import argparse
+import os
+from pathlib import Path
+
+# Add phase 2 to path so we can import llm_client
+repo_root = Path(__file__).parent.parent
+phase2_dir = repo_root / "AI-ASSISTED MODEL-DRIVEN EPIDEMIOLOGY" / "phase 2"
+sys.path.append(str(phase2_dir))
+
+from src.utils.llm_client import LLMClient
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--error", required=True)
+    parser.add_argument("--provider", default="gemini")
+    args = parser.parse_args()
+
+    provider = args.provider.lower()
+    error_str = args.error
+    if os.path.exists(args.error):
+        with open(args.error, 'r', encoding='utf-8') as f:
+            error_str = f.read()
+
+    key_file = repo_root / ".keys" / f"{provider}.key"
+    api_key = None
+    if key_file.exists():
+        api_key = key_file.read_text().strip()
+
+    client = LLMClient(api_key=api_key, provider=provider)
+    if not client.is_available():
+        print(f"Error: LLM client for {provider} could not be initialized.")
+        sys.exit(1)
+
+    system_prompt = f"""You are an expert Eclipse plugin developer and Sirius Modeling expert. 
+A user has encountered an error in their Eclipse environment. Please explain what this error means in plain English, and provide a likely solution to fix it. Keep it concise.
+
+Error Log & Context:
+{error_str}"""
+
+    try:
+        result = client.generate_text(system_prompt, max_tokens=2048, temperature=0.2)
+        print(result)
+    except Exception as e:
+        print(f"Error communicating with LLM: {str(e)}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
