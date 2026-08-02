@@ -141,6 +141,26 @@ Follow the metamodel strictly and ensure all features are valid according to the
         # Verify it parses as JSON
         parsed = json.loads(clean_result)
         
+        # Sanitize XML to remove description attributes from elements that don't support them in the current EMF metamodel
+        if "model_xml" in parsed:
+            xml_str = parsed["model_xml"]
+            import re
+            
+            # Remove description="something" from compartments, externalSources, and externalSinks tags
+            # We use a regex that looks for these tags and removes the description attribute
+            
+            def remove_desc(match):
+                tag_content = match.group(0)
+                # Remove description="..." or description='...'
+                cleaned = re.sub(r'\s+description\s*=\s*(?:"[^"]*"|\'[^\']*\')', '', tag_content)
+                return cleaned
+
+            # Match <compartments ...> or <externalSources ...> or <externalSinks ...>
+            # This matches the start tag and its attributes up to the closing > or />
+            xml_str = re.sub(r'<(?:compartments|externalSources|externalSinks)\b[^>]*>', remove_desc, xml_str)
+            
+            parsed["model_xml"] = xml_str
+        
         # Print only the JSON to stdout as requested by architecture
         print(json.dumps(parsed))
         

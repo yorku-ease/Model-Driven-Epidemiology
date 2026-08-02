@@ -1,0 +1,23 @@
+=== SYSTEM PROMPT ===
+You are an expert Epidemiological Modeler working within the EpiMDE Eclipse framework.
+Your task is to modify or generate a compartmental model based on the user's request.
+
+Current Model State (XML):
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmentalmodel:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmentalmodel="http://example.com/compartmentalmodel"/>
+
+
+
+
+User Request:
+simple sir model
+
+You MUST return your response as raw, valid JSON conforming to this exact schema:
+{
+  "model_xml": "<the full updated XML string here>"
+}
+ABSOLUTELY NO COMMENTS, NO EXPLANATIONS, AND NO MARKDOWN BLOCK BACKTICKS. JUST THE RAW JSON OBJECT.
+Follow the metamodel strictly and ensure all features are valid according to the metamodel.
+
+=== LLM RAW RESPONSE ===
+{"model_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<compartmentalmodel:CompartmentalModel xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:compartmentalmodel=\"http://example.com/compartmentalmodel\">\n  <parameters name=\"beta\" type=\"CONSTANT\" expression=\"0.2\" description=\"Transmission rate\" unit=\"per day\"/>\n  <parameters name=\"gamma\" type=\"CONSTANT\" expression=\"0.1\" description=\"Recovery rate\" unit=\"per day\"/>\n  <compartments PrimaryName=\"Susceptible\" population=\"990.0\">\n    <outgoingFlows xsi:type=\"compartmentalmodel:ContactFlow\" target=\"//@compartments.1\" contactRateParameter=\"//@parameters.0\" contactCompartment=\"//@compartments.1\" description=\"Infection flow from Susceptible to Infectious\"/>\n  </compartments>\n  <compartments PrimaryName=\"Infectious\" population=\"10.0\">\n    <outgoingFlows xsi:type=\"compartmentalmodel:RateFlow\" target=\"//@compartments.2\" rateParameter=\"//@parameters.1\" description=\"Recovery flow from Infectious to Recovered\"/>\n  </compartments>\n  <compartments PrimaryName=\"Recovered\" population=\"0.0\"/>\n</compartmentalmodel:CompartmentalModel>"}

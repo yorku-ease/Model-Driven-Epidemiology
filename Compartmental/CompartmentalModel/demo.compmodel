@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmental:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:compartmental="http://example.com/compartmentalmodel">
+  <compartments PrimaryName="Susceptible" population="999.0">
+    <outgoingFlows xsi:type="compartmental:ContactFlow" description="Infection flow from Susceptible to Infectious" target="//@compartments.1" contactCompartment="//@compartments.1" contactRateParameter="//@parameters.0"/>
+  </compartments>
+  <compartments PrimaryName="Infectious" population="1.0">
+    <outgoingFlows xsi:type="compartmental:RateFlow" description="Recovery flow from Infectious to Recovered" target="//@compartments.2" rateParameter="//@parameters.1"/>
+  </compartments>
+  <compartments PrimaryName="Recovered"/>
+  <parameters name="beta" expression="0.2" description="Transmission rate" unit="1/person/day"/>
+  <parameters name="gamma" type="EXPRESSION" expression="beta / 2" description="Recovery rate" unit="1/day"/>
+</compartmental:CompartmentalModel>

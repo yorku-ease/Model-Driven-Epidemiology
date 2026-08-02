@@ -1,0 +1,29 @@
+=== SYSTEM PROMPT ===
+You are an expert Epidemiological Modeler working within the EpiMDE Eclipse framework.
+Your task is to modify or generate a compartmental model based on the user's request.
+
+Current Model State (XML):
+<?xml version="1.0" encoding="UTF-8"?>
+<compartmentalmodel:CompartmentalModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:compartmentalmodel="http://example.com/compartmentalmodel"/>
+
+
+=== ATTACHED FILE: covid1.pdf ===
+<Error extracting PDF: No module named 'fitz'>
+=====================
+
+
+
+User Request:
+Create a simple covid disease model using the provided paper.
+
+You MUST return your response as raw, valid JSON conforming to this exact schema:
+{
+  "model_xml": "<the full updated XML string here>"
+}
+ABSOLUTELY NO COMMENTS, NO EXPLANATIONS, AND NO MARKDOWN BLOCK BACKTICKS. JUST THE RAW JSON OBJECT.
+Follow the metamodel strictly and ensure all features are valid according to the metamodel.
+
+=== LLM RAW RESPONSE ===
+```json
+{"model_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<compartmental:CompartmentalModel xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:compartmental=\"http://example.com/compartmentalmodel\" totalPopulation=\"1000000.0\">\n  <parameters name=\"beta\" type=\"CONSTANT\" expression=\"0.2\" unit=\"per day\" description=\"Transmission rate\"/>\n  <parameters name=\"sigma\" type=\"CONSTANT\" expression=\"0.25\" unit=\"per day\" description=\"Rate of progression from Exposed to Infectious (1/incubation period)\"/>\n  <parameters name=\"gamma\" type=\"CONSTANT\" expression=\"0.1\" unit=\"per day\" description=\"Recovery rate (1/infectious period)\"/>\n  <compartments PrimaryName=\"Susceptible\" population=\"999999.0\">\n    <outgoingFlows xsi:type=\"compartmental:ContactFlow\" target=\"//@compartments.1\" contactRateParameter=\"//@parameters.0\" contactCompartment=\"//@compartments.2\" description=\"Infection of Susceptibles by Infectious individuals\"/>\n  </compartments>\n  <compartments PrimaryName=\"Exposed\" population=\"0.0\">\n    <outgoingFlows xsi:type=\"compartmental:RateFlow\" target=\"//@compartments.2\" rateParameter=\"//@parameters.1\" description=\"Progression from Exposed to Infectious state\"/>\n  </compartments>\n  <compartments PrimaryName=\"Infectious\" population=\"1.0\">\n    <outgoingFlows xsi:type=\"compartmental:RateFlow\" target=\"//@compartments.3\" rateParameter=\"//@parameters.2\" description=\"Recovery from Infectious state\"/>\n  </compartments>\n  <compartments PrimaryName=\"Recovered\" population=\"0.0\" description=\"Individuals who have recovered and are immune\"/>\n</compartmental:CompartmentalModel>"}
+```
